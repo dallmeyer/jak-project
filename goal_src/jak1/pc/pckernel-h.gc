@@ -306,6 +306,7 @@
 
    (flava-hack int64)
    
+   (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
    ;; TODO - save/restore original settings (language/sound/etc)
    )
 
@@ -401,6 +402,7 @@
   (set! (-> obj aspect-custom-x) 4)
   (set! (-> obj aspect-custom-y) 3)
   (set! (-> obj discord-rpc?) #t)
+  (set! (-> obj checkpoint-randomizer?) #f)
   (set! (-> obj window-lock?) #t)
 
   (reset-gfx obj)
