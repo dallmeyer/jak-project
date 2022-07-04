@@ -5,6 +5,14 @@
 ;; name in dgo: collectables
 ;; dgos: GAME, ENGINE
 
+;;Randomizer
+;; cell-interval serves as a counter, it counts up until it is raul to cells-needed-to-warp, then it warps jak and resets itself to count again
+(define *cell-interval* 0.0)
+;;cells-needed-to-warp can be set to any value you would like here, 1.0 will warp every cell 7.0 will warp every 7 cells.
+(define *cells-needed-to-warp 1.0)
+
+;;End Randomizer settings
+
 (declare-type vent process-drawable)
 (declare-type eco eco-collectable)
 
@@ -1665,12 +1673,17 @@
     (add-setting! 'ambient-volume 'rel (-> *setting-control* current ambient-volume-movie) 0)
     (process-spawn othercam self 10 #f #t :to self)
     (auto-save-command 'auto-save 0 0 *default-pool*)
-    (ja-play-spooled-anim
-      (-> self victory-anim)
-      (the-as art-joint-anim (-> self draw art-group data 2))
-      (the-as art-joint-anim #f)
-      (the-as (function process-drawable symbol) false-func)
+
+    ;; play powercell animation if randomizer disabled
+    (if (not (-> *pc-settings* checkpoint-randomizer?))
+      (ja-play-spooled-anim
+        (-> self victory-anim)
+        (the-as art-joint-anim (-> self draw art-group data 2))
+        (the-as art-joint-anim #f)
+        (the-as (function process-drawable symbol) false-func)
       )
+    )
+
     (remove-setting! 'music-volume)
     (remove-setting! 'sfx-volume)
     (remove-setting! 'ambient-volume)
@@ -1681,6 +1694,20 @@
     (ja-channel-set! 0)
     (suspend)
     (suspend)
+    
+    ;; warp to random checkpoint if randomizer enabled
+    (if (-> *pc-settings* checkpoint-randomizer?)
+      (begin
+        (set! *cell-interval* (+ *cell-interval* 1))
+        (if (>= *cell-interval* *cells-needed-to-warp)
+          (begin
+            (start 'play (get-continue-by-name *game-info* (-> *checkpoint-list* (rand-vu-int-range 0 61))))
+            (set! *cell-interval* 0.0)
+          )
+        )
+      )
+    )
+
     (process-spawn-function
       process
       (lambda :behavior collectable
