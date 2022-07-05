@@ -300,6 +300,8 @@
    (scenes-seen uint8 PC_SPOOL_LOG_LENGTH) ;; cutscenes that have been seen, by spool-anim (maybe use 8-char name or bits instead?)
 
    (discord-rpc? symbol) ;; enable discord rich presence integration
+
+   (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
    
    (cheats pc-cheats)
    (cheats-known pc-cheats)
@@ -402,6 +404,7 @@
   (set! (-> obj aspect-custom-x) 4)
   (set! (-> obj aspect-custom-y) 3)
   (set! (-> obj discord-rpc?) #t)
+  (set! (-> obj cells-needed-to-warp) 1.0)
   (set! (-> obj checkpoint-randomizer?) #f)
   (set! (-> obj window-lock?) #t)
 
@@ -603,6 +606,3 @@
       )
     )
   ))
-
-
-

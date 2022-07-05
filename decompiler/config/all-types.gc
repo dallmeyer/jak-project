@@ -1594,6 +1594,7 @@
   (scene-255                    #x12ff)
   (hint-0                       #x1300)
   (hint-511                     #x14ff)
+   (randomizer-options          #x1301)
 ;; GAME-TEXT-ID ENUM ENDS
   )
 
@@ -15732,6 +15733,7 @@
   (credits)
   (quit-title)
   (flava-player)
+  (randomizer-options)
   (memcard-disable-auto-save)
   (memcard-auto-save-disabled)
 
