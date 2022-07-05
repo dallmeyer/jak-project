@@ -8,10 +8,54 @@
 ;;Randomizer
 ;; cell-interval serves as a counter, it counts up until it is raul to cells-needed-to-warp, then it warps jak and resets itself to count again
 (define *cell-interval* 0.0)
+(define *randomCheckpoint* (the continue-point #f))
 ;;cells-needed-to-warp can be set to any value you would like here, 1.0 will warp every cell 7.0 will warp every 7 cells.
-(define *cells-needed-to-warp 1.0)
 
+
+
+(defun citadelCheck? ()
+(if 
+(or
+(= *randomCheckpoint* (get-continue-by-name *game-info* "citadel-start"))
+(= *randomCheckpoint* (get-continue-by-name *game-info* "citadel-entrance")) 
+(= *randomCheckpoint* (get-continue-by-name *game-info* "citadel-warp"))
+(= *randomCheckpoint* (get-continue-by-name *game-info* "citadel-launch-start"))
+(= *randomCheckpoint* (get-continue-by-name *game-info* "citadel-launch-end"))
+(= *randomCheckpoint* (get-continue-by-name *game-info* "citadel-plat-start"))
+(= *randomCheckpoint* (get-continue-by-name *game-info* "citadel-plat-end"))
+(= *randomCheckpoint* (get-continue-by-name *game-info* "citadel-generator-start"))
+(= *randomCheckpoint* (get-continue-by-name *game-info* "citadel-generator-end"))
+(= *randomCheckpoint* (get-continue-by-name *game-info* "citadel-elevator"))
+)
+(return #t)
+(return #f)
+)
+#f
+)
+(define-extern makeRandomCheckpoint (function none))
+
+
+(defun checkRandomCheckpoint()
+
+(if (and (not (task-closed? (game-task citadel-sage-green) (task-status need-hint))) (citadelCheck?))
+(begin
+(makeRandomCheckpoint)
+)
+)
+(none)
+)
+
+(defun makeRandomCheckpoint()
+
+(set! *randomCheckpoint* (get-continue-by-name *game-info* (-> *checkpoint-list* (rand-vu-int-range 0 66))))
+(checkRandomCheckpoint)
+(none)
+)
 ;;End Randomizer settings
+
+
+
+
 
 (declare-type vent process-drawable)
 (declare-type eco eco-collectable)
@@ -1530,6 +1574,9 @@
     )
   )
 
+
+
+
 (defstate pickup (fuel-cell)
   :virtual #t
   :enter (behavior ((arg0 object) (arg1 handle))
@@ -1607,6 +1654,9 @@
     (logclear! (-> self draw status) (draw-status hidden))
     (process-entity-status! self (entity-perm-status dead) #t)
     (stop! (-> self sound))
+    (if (not (-> *pc-settings* checkpoint-randomizer?))
+
+    (begin
     (while (handle->process (-> *game-info* other-camera-handle))
       (format
         #t
@@ -1664,6 +1714,11 @@
         )
       )
     (spool-push *art-control* (-> self victory-anim name) 0 self (the-as float -99.0))
+
+    )
+    )
+    
+
     (send-event *target* 'get-pickup (-> self fact pickup-type) (-> self fact pickup-amount))
     (set! (-> self draw bounds w) 32768.0)
     (logior! (-> self skel status) (janim-status inited))
@@ -1699,9 +1754,15 @@
     (if (-> *pc-settings* checkpoint-randomizer?)
       (begin
         (set! *cell-interval* (+ *cell-interval* 1))
-        (if (>= *cell-interval* *cells-needed-to-warp)
+        
+        (makeRandomCheckpoint)
+        
+
+        (if (>= *cell-interval* (-> *pc-settings* cells-needed-to-warp))
           (begin
-            (start 'play (get-continue-by-name *game-info* (-> *checkpoint-list* (rand-vu-int-range 0 61))))
+            (set! (-> *game-info* current-continue) *randomCheckpoint*)
+            
+            (start 'play *randomCheckpoint*)
             (set! *cell-interval* 0.0)
           )
         )

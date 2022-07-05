@@ -331,6 +331,8 @@
 (#x1116 "NORSK"
         "NORSK")
 
+(#x1301 "CELLS NEEDED TO WARP"
+        "CELLS NEEDED TO WARP")
 
 ;; -----------------
 ;; test

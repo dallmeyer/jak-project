@@ -148,8 +148,9 @@
 (define *misc-options* (new 'static 'boxed-array :type game-option
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id money-starburst) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id discord-rpc) :scale #t)
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-randomizer) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id checkpoint-randomizer) :scale #t :param3 (game-option-menu randomizer-options))
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
+   
     )
   )
 
@@ -158,6 +159,17 @@
     (new 'static 'game-option :option-type (game-option-type normal-inverted) :name (game-text-id camera-controls-first-vert) :scale #t)
     (new 'static 'game-option :option-type (game-option-type normal-inverted) :name (game-text-id camera-controls-third-horz) :scale #t)
     (new 'static 'game-option :option-type (game-option-type normal-inverted) :name (game-text-id camera-controls-third-vert) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id restore-defaults) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
+    )
+  )
+(define *randomizer-options* (new 'static 'boxed-array :type game-option
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-randomizer) :scale #t)
+    (new 'static 'game-option :name (game-text-id cell-count-to-trigger-warp) :scale #t :param2 101.0)
+    ;;(new 'static 'game-option :option-type (game-option-type normal-inverted) :name (game-text-id camera-controls-first-horz) :scale #t)
+    ;;(new 'static 'game-option :option-type (game-option-type normal-inverted) :name (game-text-id camera-controls-first-vert) :scale #t)
+    ;;(new 'static 'game-option :option-type (game-option-type normal-inverted) :name (game-text-id camera-controls-third-horz) :scale #t)
+    ;;(new 'static 'game-option :option-type (game-option-type normal-inverted) :name (game-text-id camera-controls-third-vert) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id restore-defaults) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
@@ -660,6 +672,7 @@
   (set! (-> *options-remap* (progress-screen secrets))                    *secrets-options*)
   (set! (-> *options-remap* (progress-screen music-player))               *music-player-options*)
   (set! (-> *options-remap* (progress-screen flava-player))               *temp-options*)
+  (set! (-> *options-remap* (progress-screen randomizer-options))         *randomizer-options*)
   (set! (-> *options-remap* (progress-screen memcard-disable-auto-save))  *yes-no-options*)
   (set! (-> *options-remap* (progress-screen memcard-auto-save-disabled)) *ok-options*)
 
@@ -2068,6 +2081,11 @@
          (hide-progress-icons)
          (draw-options self 115 25 0.65)
          )
+        (((progress-screen randomizer-options))
+         ;; camera options lines are a bit too big
+         (hide-progress-icons)
+         (draw-options self 115 25 0.65)
+         )
         (((progress-screen gfx-ps2-options))
          (hide-progress-icons)
          (draw-options self 115 25 0.72)
@@ -2345,7 +2363,3 @@
     (none)
     )
   )
-
-
-
-
