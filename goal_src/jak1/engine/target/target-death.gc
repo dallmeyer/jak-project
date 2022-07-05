@@ -191,6 +191,11 @@
     (set! *spawn-actors* #t)
     (set! *teleport* #t)
     (set! (-> *ACTOR-bank* birth-max) 1000)
+
+     (if  (-> *pc-settings* checkpoint-randomizer?)
+    (auto-save-command 'auto-save 0 0 *default-pool*)
+     )
+
     (set-blackout-frames (seconds 0.1))
     (cond
       ((logtest? (-> arg0 flags) (continue-flags title))
