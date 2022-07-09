@@ -711,11 +711,8 @@
   (set! (-> *graphic-options-no-frame-rate-pc* 2 value-to-modify) (&-> *pc-settings* vsync?))
   (set! (-> *graphic-options-pc* 4 value-to-modify) (&-> *progress-carousell* int-backup))
   (set! (-> *misc-options* 0 value-to-modify) (&-> *pc-settings* discord-rpc?))
-  (set! (-> *misc-options* 1 value-to-modify) (&-> *pc-settings* checkpoint-randomizer?))
-   (set! (-> *randomizer-options* 0 value-to-modify) (&-> *pc-settings* checkpoint-randomizer?))
+  (set! (-> *randomizer-options* 0 value-to-modify) (&-> *pc-settings* checkpoint-randomizer?))
   (set! (-> *randomizer-options* 1 value-to-modify) (&-> *pc-settings* cells-needed-to-warp))
-  (set! (-> *randomizer-options* 2 value-to-modify) (&-> *pc-settings* third-camera-h-inverted?))
-  (set! (-> *randomizer-options* 3 value-to-modify) (&-> *pc-settings* third-camera-v-inverted?))
 
   (set! (-> *camera-options* 0 value-to-modify) (&-> *pc-settings* first-camera-h-inverted?))
   (set! (-> *camera-options* 1 value-to-modify) (&-> *pc-settings* first-camera-v-inverted?))
