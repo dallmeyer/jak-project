@@ -781,8 +781,6 @@
   (set! (-> *challenges-options* 5 value-to-modify) (&-> *challenges-settings* challenges-mirrormode?))
   (set! (-> *challenges-options* 6 value-to-modify) (&-> *challenges-settings* challenges-pacifist?))
 
-
-
   (set! (-> *camera-options* 0 value-to-modify) (&-> *pc-settings* first-camera-h-inverted?))
   (set! (-> *camera-options* 1 value-to-modify) (&-> *pc-settings* first-camera-v-inverted?))
   (set! (-> *camera-options* 2 value-to-modify) (&-> *pc-settings* third-camera-h-inverted?))
