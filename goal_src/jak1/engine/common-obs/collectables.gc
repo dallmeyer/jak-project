@@ -1720,6 +1720,8 @@
     
 
     (send-event *target* 'get-pickup (-> self fact pickup-type) (-> self fact pickup-amount))
+    (if (not (-> *pc-settings* checkpoint-randomizer?))
+    (begin
     (set! (-> self draw bounds w) 32768.0)
     (logior! (-> self skel status) (janim-status inited))
     (send-event *target* 'blend-shape #t)
@@ -1727,19 +1729,21 @@
     (add-setting! 'sfx-volume 'rel (-> *setting-control* current sfx-volume-movie) 0)
     (add-setting! 'ambient-volume 'rel (-> *setting-control* current ambient-volume-movie) 0)
     (process-spawn othercam self 10 #f #t :to self)
+    ))
+   
     (auto-save-command 'auto-save 0 0 *default-pool*)
 
     ;; play powercell animation if randomizer disabled
     (if (not (-> *pc-settings* checkpoint-randomizer?))
-      (ja-play-spooled-anim
+    (begin
+          (ja-play-spooled-anim
         (-> self victory-anim)
         (the-as art-joint-anim (-> self draw art-group data 2))
         (the-as art-joint-anim #f)
         (the-as (function process-drawable symbol) false-func)
-      )
-    )
 
-    (remove-setting! 'music-volume)
+      )
+                  (remove-setting! 'music-volume)
     (remove-setting! 'sfx-volume)
     (remove-setting! 'ambient-volume)
     (send-event *target* 'blend-shape #f)
@@ -1749,6 +1753,11 @@
     (ja-channel-set! 0)
     (suspend)
     (suspend)
+    )
+
+    )
+
+
     
     ;; warp to random checkpoint if randomizer enabled
     (if (-> *pc-settings* checkpoint-randomizer?)
