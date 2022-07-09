@@ -166,11 +166,6 @@
 (define *randomizer-options* (new 'static 'boxed-array :type game-option
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-randomizer) :scale #t)
     (new 'static 'game-option :name (game-text-id cell-count-to-trigger-warp) :scale #t :param2 101.0)
-    ;;(new 'static 'game-option :option-type (game-option-type normal-inverted) :name (game-text-id camera-controls-first-horz) :scale #t)
-    ;;(new 'static 'game-option :option-type (game-option-type normal-inverted) :name (game-text-id camera-controls-first-vert) :scale #t)
-    ;;(new 'static 'game-option :option-type (game-option-type normal-inverted) :name (game-text-id camera-controls-third-horz) :scale #t)
-    ;;(new 'static 'game-option :option-type (game-option-type normal-inverted) :name (game-text-id camera-controls-third-vert) :scale #t)
-    (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id restore-defaults) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
   )
