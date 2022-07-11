@@ -9,7 +9,8 @@
 ;; cell-interval serves as a counter, it counts up until it is raul to cells-needed-to-warp, then it warps jak and resets itself to count again
 (define *cell-interval* 0.0)
 (define *randomCheckpoint* (the continue-point #f))
-;;cells-needed-to-warp can be set to any value you would like here, 1.0 will warp every cell 7.0 will warp every 7 cells.
+(define racer? #f) 
+(define flutflut? #f)
 
 
 
@@ -1715,8 +1716,8 @@
       )
     (spool-push *art-control* (-> self victory-anim name) 0 self (the-as float -99.0))
 
-    )
-    )
+  )
+)
     
 
     (send-event *target* 'get-pickup (-> self fact pickup-type) (-> self fact pickup-amount))
@@ -1743,7 +1744,20 @@
         (the-as (function process-drawable symbol) false-func)
 
       )
-                  (remove-setting! 'music-volume)
+
+    )
+
+    )
+
+ (if (and (not flutflut?) (not racer?)) 
+ (begin
+   (send-event *target* 'end-mode)
+ ))
+
+
+
+
+    (remove-setting! 'music-volume)
     (remove-setting! 'sfx-volume)
     (remove-setting! 'ambient-volume)
     (send-event *target* 'blend-shape #f)
@@ -1753,10 +1767,6 @@
     (ja-channel-set! 0)
     (suspend)
     (suspend)
-    )
-
-    )
-
 
     
     ;; warp to random checkpoint if randomizer enabled
