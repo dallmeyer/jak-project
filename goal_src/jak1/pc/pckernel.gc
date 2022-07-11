@@ -1263,6 +1263,8 @@
                 (("first-camera-v-inverted?") (set! (-> obj first-camera-v-inverted?) (file-stream-read-symbol file)))
                 (("third-camera-h-inverted?") (set! (-> obj third-camera-h-inverted?) (file-stream-read-symbol file)))
                 (("third-camera-v-inverted?") (set! (-> obj third-camera-v-inverted?) (file-stream-read-symbol file)))
+                (("checkpoint-randomizer?") (set! (-> obj checkpoint-randomizer?) (file-stream-read-symbol file)))
+                (("cells-needed-to-warp") (set! (-> obj cells-needed-to-warp) (file-stream-read-float file)))
                 (("money-starburst?") (set! (-> obj money-starburst?) (file-stream-read-symbol file)))
                 (("extra-hud?") (set! (-> obj extra-hud?) (file-stream-read-symbol file)))
                 (("music-fadein?") (set! (-> obj music-fadein?) (file-stream-read-symbol file)))
