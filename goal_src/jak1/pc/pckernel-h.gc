@@ -311,7 +311,7 @@
    (flava-hack int64)
    
    (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
-   (cells-needed-to-warp float) ;; enable Zed's checkpoint randomizer
+   (cells-needed-to-warp float) ;; number of cells to trigger checkpoint randomizer
    ;; TODO - save/restore original settings (language/sound/etc)
    )
 
