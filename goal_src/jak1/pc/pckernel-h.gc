@@ -302,15 +302,14 @@
    (scenes-seen uint8 PC_SPOOL_LOG_LENGTH) ;; cutscenes that have been seen, by spool-anim (maybe use 8-char name or bits instead?)
 
    (discord-rpc? symbol) ;; enable discord rich presence integration
-
-   (checkpoint-randomizer? symbol)
-   (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
    
    (cheats pc-cheats)
    (cheats-known pc-cheats)
 
    (flava-hack int64)
    
+   (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
+   (cells-needed-to-warp float) ;; enable Zed's checkpoint randomizer
    ;; TODO - save/restore original settings (language/sound/etc)
    )
 
