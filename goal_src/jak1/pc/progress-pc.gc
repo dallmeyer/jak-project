@@ -146,7 +146,6 @@
   )
 
 (define *misc-options* (new 'static 'boxed-array :type game-option
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id money-starburst) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id discord-rpc) :scale #t)
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id checkpoint-randomizer) :scale #t :param3 (game-option-menu randomizer-options))
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
@@ -705,8 +704,8 @@
   (set! (-> *graphic-options-no-frame-rate-pc* 2 value-to-modify) (&-> *pc-settings* vsync?))
   (set! (-> *graphic-options-pc* 4 value-to-modify) (&-> *progress-carousell* int-backup))
   (set! (-> *misc-options* 0 value-to-modify) (&-> *pc-settings* discord-rpc?))
-  (set! (-> *randomizer-options* 0 value-to-modify) (&-> *pc-settings* checkpoint-randomizer?))
-  (set! (-> *randomizer-options* 1 value-to-modify) (&-> *pc-settings* cells-needed-to-warp))
+  (set! (-> *randomizer-options* 0 value-to-modify) (&-> *randomizer-settings* checkpoint-randomizer?))
+  (set! (-> *randomizer-options* 1 value-to-modify) (&-> *randomizer-settings* cells-needed-to-warp))
 
   (set! (-> *camera-options* 0 value-to-modify) (&-> *pc-settings* first-camera-h-inverted?))
   (set! (-> *camera-options* 1 value-to-modify) (&-> *pc-settings* first-camera-v-inverted?))
@@ -2197,6 +2196,7 @@
     (apply-settings *setting-control*)
     (progress-reset-music-parms)
     (commit-to-file *pc-settings*)
+    (commit-to-file *randomizer-settings*)
     (set! (-> self particles 3 init-pos x) -320.0)
     (set! (-> self particles 4 init-pos x) -320.0)
     (set! (-> self particles 32 init-pos x) -320.0)

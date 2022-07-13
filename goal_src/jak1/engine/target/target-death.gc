@@ -192,7 +192,7 @@
     (set! *teleport* #t)
     (set! (-> *ACTOR-bank* birth-max) 1000)
 
-     (if  (-> *pc-settings* checkpoint-randomizer?)
+     (if  (-> *randomizer-settings* checkpoint-randomizer?)
     (auto-save-command 'auto-save 0 0 *default-pool*)
      )
 
