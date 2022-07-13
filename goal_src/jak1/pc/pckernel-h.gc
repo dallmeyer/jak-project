@@ -309,10 +309,6 @@
    (cheats-known pc-cheats)
 
    (flava-hack int64)
-   
-   (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
-   (cells-needed-to-warp float) ;; number of cells to trigger checkpoint randomizer
-   ;; TODO - save/restore original settings (language/sound/etc)
    )
 
   (:methods
@@ -707,6 +703,15 @@
   (commit-to-file *challenges-settings*)
 )
 
+(defmethod reset randomizer-settings ((obj randomizer-settings))
+  "Set the default settings for non-vanilla settings"
+
+  (format 0 "resetting randomizer settings~%")
+
+  (set! (-> obj version) PC_KERNEL_VERSION)
+  (set! (-> obj cells-needed-to-warp) 1.0)
+  (set! (-> obj checkpoint-randomizer?) #t)
+  (none))
 
 (defmethod reset pc-settings ((obj pc-settings))
   "Set the default settings"
@@ -731,8 +736,6 @@
   (set! (-> obj aspect-custom-x) 4)
   (set! (-> obj aspect-custom-y) 3)
   (set! (-> obj discord-rpc?) #t)
-  (set! (-> obj cells-needed-to-warp) 1.0)
-  (set! (-> obj checkpoint-randomizer?) #f)
   (set! (-> obj window-lock?) #t)
 
   (reset-gfx obj)
