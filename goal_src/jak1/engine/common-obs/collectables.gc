@@ -1925,7 +1925,7 @@
     (suspend)
 
     
-    ;; warp to random checkpoint if randomizer enabled
+    ;; if randomizer enabled, update cell-interval counter...
     (if (-> *randomizer-settings* checkpoint-randomizer?)
       (begin
         ;; first fuel cell? need to generate checkpoint list
