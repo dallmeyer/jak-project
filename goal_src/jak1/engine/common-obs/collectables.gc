@@ -48,8 +48,6 @@
   (define foundValid? #f) 
   (set! *randomCheckpointName* (-> *checkpoint-list* (rand-vu-int-range 0 66)))
   (while (not foundValid?)
-    (format 0 "RANDOMIZER: validating checkpoint ~A~%" *randomCheckpointName*)
-    
     ;; if checkpoint is valid, persist it, otherwise regenerate
     (if (checkRandomCheckpoint?)
       (begin 
@@ -1790,7 +1788,9 @@
         ;; ...and if we've hit the cells-needed-to-warp limit, randomly warp
         (if (>= *cell-interval* (-> *randomizer-settings* cells-needed-to-warp))
           (begin
+            (format 0 "RANDOMIZER: warping from ~A...~%" (-> *level* level 0 name))
             (makeRandomCheckpoint)
+            (format 0 "RANDOMIZER: ...warping to ~A~%" *randomCheckpointName*)
             (set! (-> *game-info* current-continue) *randomCheckpoint*)
             
             (start 'play *randomCheckpoint*)
