@@ -794,7 +794,7 @@
 
       (with-profiler "menu"
         (with-pc
-          (if (and (-> *pc-settings* display-sha) (-> *pc-settings* checkpoint-randomizer?))
+          (if (and (-> *pc-settings* display-sha) (-> *randomizer-settings* checkpoint-randomizer?))
               (draw-build-revision)))
 
         (*menu-hook*)

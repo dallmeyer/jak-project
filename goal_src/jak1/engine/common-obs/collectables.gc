@@ -1655,7 +1655,7 @@
     (logclear! (-> self draw status) (draw-status hidden))
     (process-entity-status! self (entity-perm-status dead) #t)
     (stop! (-> self sound))
-    (if (not (-> *pc-settings* checkpoint-randomizer?))
+    (if (not (-> *randomizer-settings* checkpoint-randomizer?))
 
     (begin
     (while (handle->process (-> *game-info* other-camera-handle))
@@ -1721,7 +1721,7 @@
     
 
     (send-event *target* 'get-pickup (-> self fact pickup-type) (-> self fact pickup-amount))
-    (if (not (-> *pc-settings* checkpoint-randomizer?))
+    (if (not (-> *randomizer-settings* checkpoint-randomizer?))
     (begin
     (set! (-> self draw bounds w) 32768.0)
     (logior! (-> self skel status) (janim-status inited))
@@ -1735,7 +1735,7 @@
     (auto-save-command 'auto-save 0 0 *default-pool*)
 
     ;; play powercell animation if randomizer disabled
-    (if (not (-> *pc-settings* checkpoint-randomizer?))
+    (if (not (-> *randomizer-settings* checkpoint-randomizer?))
     (begin
           (ja-play-spooled-anim
         (-> self victory-anim)
@@ -1770,14 +1770,14 @@
 
     
     ;; warp to random checkpoint if randomizer enabled
-    (if (-> *pc-settings* checkpoint-randomizer?)
+    (if (-> *randomizer-settings* checkpoint-randomizer?)
       (begin
         (set! *cell-interval* (+ *cell-interval* 1))
         
         (makeRandomCheckpoint)
         
 
-        (if (>= *cell-interval* (-> *pc-settings* cells-needed-to-warp))
+        (if (>= *cell-interval* (-> *randomizer-settings* cells-needed-to-warp))
           (begin
             (set! (-> *game-info* current-continue) *randomCheckpoint*)
             
