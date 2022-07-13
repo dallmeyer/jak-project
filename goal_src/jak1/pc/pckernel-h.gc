@@ -305,10 +305,6 @@
    (cheats-known pc-cheats)
 
    (flava-hack int64)
-   
-   (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
-   (cells-needed-to-warp float) ;; number of cells to trigger checkpoint randomizer
-   ;; TODO - save/restore original settings (language/sound/etc)
    )
 
   (:methods
@@ -341,6 +337,24 @@
     )
   )
 
+;; Extra PC configuration for non-vanilla OpenGOAL
+  (deftype randomizer-settings (basic)
+    (
+      (version uint64) ;; version of this settings
+      (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
+      (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
+    )
+
+    (:methods
+      (new (symbol type) _type_)
+      (reset (_type_) none)
+      (read-from-file (_type_ string) symbol)
+      (commit-to-file (_type_) none)
+      (write-to-file (_type_ string) symbol)
+      (load-settings (_type_) int)
+      )
+    )
+
 ;; information about a cutscene. placeholder. TODO look at jak 2
 (deftype pc-scene-info (structure)
   ((name string)
@@ -371,6 +385,7 @@
 (defconstant PC_TEMP_STRING_LEN 512)
 (define *pc-temp-string* (new 'global 'string PC_TEMP_STRING_LEN (the-as string #f)))
 (define *pc-settings* (the-as pc-settings #f))
+(define *randomizer-settings* (the-as randomizer-settings #f))
 (format 0 "PC kernel version: ~D.~D~%" PC_KERNEL_VERSION_MAJOR PC_KERNEL_VERSION_MINOR)
 
 (define *pc-temp-string-1* (new 'global 'string 2048 (the-as string #f)))
@@ -379,6 +394,15 @@
 ;;;; resets
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defmethod reset randomizer-settings ((obj randomizer-settings))
+  "Set the default settings for non-vanilla settings"
+
+  (format 0 "resetting randomizer settings~%")
+
+  (set! (-> obj version) PC_KERNEL_VERSION)
+  (set! (-> obj cells-needed-to-warp) 1.0)
+  (set! (-> obj checkpoint-randomizer?) #t)
+  (none))
 
 (defmethod reset pc-settings ((obj pc-settings))
   "Set the default settings"
@@ -403,8 +427,6 @@
   (set! (-> obj aspect-custom-x) 4)
   (set! (-> obj aspect-custom-y) 3)
   (set! (-> obj discord-rpc?) #t)
-  (set! (-> obj cells-needed-to-warp) 1.0)
-  (set! (-> obj checkpoint-randomizer?) #f)
   (set! (-> obj window-lock?) #t)
 
   (reset-gfx obj)
