@@ -16,16 +16,16 @@
 (defun citadelCheck? ()
 (if 
 (or
-(= *randomCheckpointName* "citadel-start")
-(= *randomCheckpointName* "citadel-entrance")
-(= *randomCheckpointName* "citadel-warp")
-(= *randomCheckpointName* "citadel-launch-start")
-(= *randomCheckpointName* "citadel-launch-end")
-(= *randomCheckpointName* "citadel-plat-start")
-(= *randomCheckpointName* "citadel-plat-end")
-(= *randomCheckpointName* "citadel-generator-start")
-(= *randomCheckpointName* "citadel-generator-end")
-(= *randomCheckpointName* "citadel-elevator")
+(string= *randomCheckpointName* "citadel-start")
+(string= *randomCheckpointName* "citadel-entrance")
+(string= *randomCheckpointName* "citadel-warp")
+(string= *randomCheckpointName* "citadel-launch-start")
+(string= *randomCheckpointName* "citadel-launch-end")
+(string= *randomCheckpointName* "citadel-plat-start")
+(string= *randomCheckpointName* "citadel-plat-end")
+(string= *randomCheckpointName* "citadel-generator-start")
+(string= *randomCheckpointName* "citadel-generator-end")
+(string= *randomCheckpointName* "citadel-elevator")
 )
 (return #t)
 (return #f)
@@ -35,10 +35,11 @@
 
 
 (defun checkRandomCheckpoint?()
+
   ;; returns whether the checkpoint is safe to use
   (if (and (not (task-closed? (game-task citadel-sage-green) (task-status need-hint))) (citadelCheck?))
-    (return #t)
     (return #f)
+    (return #t)
   )
   #f
 )
@@ -47,17 +48,17 @@
   (define foundValid? #f) 
   (set! *randomCheckpointName* (-> *checkpoint-list* (rand-vu-int-range 0 66)))
   (while (not foundValid?)
-    (format 0 "randomizer: validating checkpoint ~A~%" *randomCheckpointName*)
-
+    (format 0 "RANDOMIZER: validating checkpoint ~A~%" *randomCheckpointName*)
+    
     ;; if checkpoint is valid, persist it, otherwise regenerate
-    (if checkRandomCheckpoint?
+    (if (checkRandomCheckpoint?)
       (begin 
-        (format 0 "randomizer: checkpoint ~A is valid~%" *randomCheckpointName*)
+        (format 0 "RANDOMIZER: checkpoint ~A is valid~%" *randomCheckpointName*)
         (set! *randomCheckpoint* (get-continue-by-name *game-info* *randomCheckpointName*))
         (set! foundValid? #t) ;; to break from while loop
       )
       (begin
-        (format 0 "randomizer: checkpoint ~A is NOT valid, will generate another~%" *randomCheckpointName*)
+        (format 0 "RANDOMIZER: checkpoint ~A is NOT valid, will generate another~%" *randomCheckpointName*)
         (set! *randomCheckpointName* (-> *checkpoint-list* (rand-vu-int-range 0 66)))
       )
     )
