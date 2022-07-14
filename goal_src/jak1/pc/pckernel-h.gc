@@ -445,7 +445,7 @@
   (set! (-> obj version) PC_KERNEL_VERSION)
   (set! (-> obj checkpoint-randomizer?) #t)
   (set! (-> obj cells-needed-to-warp) 1.0)
-  (set! (-> obj randomizer-logic) #t) ;; seedless
+  (set! (-> obj randomizer-logic) #t) ;; seedless/classic
   (none))
 
 (defmethod reset pc-settings ((obj pc-settings))
