@@ -197,6 +197,18 @@
     )
   )
 
+(define *challenges-options* (new 'static 'boxed-array :type game-option
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-hardcore) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-orbless) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-damageless) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-pacifist) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-bonkless) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-casual) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-mirrormode) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
+    )
+  )
+
 (define *accessibility-options* (new 'static 'boxed-array :type game-option
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id money-starburst) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
@@ -765,6 +777,7 @@
   (set! (-> *graphic-options-no-frame-rate-pc* 4 value-to-modify) (&-> *progress-carousell* int-backup))
   (set! (-> *misc-options* 0 value-to-modify) (&-> *pc-settings* money-starburst?))
   (set! (-> *misc-options* 1 value-to-modify) (&-> *pc-settings* discord-rpc?))
+<<<<<<< HEAD
   
   ;;Randomizer menu
   (set! (-> *randomizer-options* 0 value-to-modify) (&-> *randomizer-settings* checkpoint-randomizer?))
@@ -780,6 +793,20 @@
   (set! (-> *challenges-options* 4 value-to-modify) (&-> *challenges-settings* challenges-casual?))
   (set! (-> *challenges-options* 5 value-to-modify) (&-> *challenges-settings* challenges-mirrormode?))
   (set! (-> *challenges-options* 6 value-to-modify) (&-> *challenges-settings* challenges-pacifist?))
+=======
+  (set! (-> *randomizer-options* 0 value-to-modify) (&-> *pc-settings* checkpoint-randomizer?))
+  (set! (-> *randomizer-options* 1 value-to-modify) (&-> *pc-settings* cells-needed-to-warp))
+  (set! (-> *randomizer-options* 2 value-to-modify) (&-> *randomizer-settings* randomizer-logic))
+
+  ;;Challenges menu
+  (set! (-> *challenges-options* 0 value-to-modify) (&-> *challenges-settings* orbless?))
+  (set! (-> *challenges-options* 1 value-to-modify) (&-> *challenges-settings* hardcore?))
+  (set! (-> *challenges-options* 2 value-to-modify) (&-> *challenges-settings* damageless?))
+  (set! (-> *challenges-options* 3 value-to-modify) (&-> *challenges-settings* bonkless?))
+  (set! (-> *challenges-options* 4 value-to-modify) (&-> *challenges-settings* casual?))
+  (set! (-> *challenges-options* 5 value-to-modify) (&-> *challenges-settings* mirrormode?))
+  (set! (-> *challenges-options* 6 value-to-modify) (&-> *challenges-settings* pacifist?))
+>>>>>>> 56cb95c8 (merge/resolve conflicts with zed challenges menu + keira fc skip)
 
   (set! (-> *camera-options* 0 value-to-modify) (&-> *pc-settings* first-camera-h-inverted?))
   (set! (-> *camera-options* 1 value-to-modify) (&-> *pc-settings* first-camera-v-inverted?))

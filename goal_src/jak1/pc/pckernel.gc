@@ -1384,6 +1384,17 @@
   0)
  
 
+(defmethod new challenges-settings ((allocation symbol) (type-to-make type))
+  "make a new pc-settings"
+  (let ((obj (object-new allocation type-to-make (the-as int (-> type-to-make size)))))
+    (reset obj)
+    ;; auto load settings if available
+    ;; if saved settings are corrupted or not found, use defaults
+
+    ;; (load-settings obj)
+
+    obj))
+
 (defmethod new randomizer-settings ((allocation symbol) (type-to-make type))
   "make a new pc-settings"
   (let ((obj (object-new allocation type-to-make (the-as int (-> type-to-make size)))))

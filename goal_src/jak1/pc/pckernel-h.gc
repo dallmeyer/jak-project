@@ -355,15 +355,37 @@
     ;; TODO - save/restore original settings (language/sound/etc)
     )
 
-    (:methods
-      (new (symbol type) _type_)
-      (reset (_type_) none)
-      (read-from-file (_type_ string) symbol)
-      (commit-to-file (_type_) none)
-      (write-to-file (_type_ string) symbol)
-      (load-settings (_type_) int)
-      )
+  (:methods
+    (new (symbol type) _type_)
+    (reset (_type_) none)
+    (read-from-file (_type_ string) symbol)
+    (commit-to-file (_type_) none)
+    (write-to-file (_type_ string) symbol)
+    (load-settings (_type_) int)
     )
+  )
+
+(deftype challenges-settings (basic)
+  (
+    (version uint64) ;; version of this settings
+    (orbless?     symbol)
+    (hardcore?    symbol)
+    (damageless?  symbol)
+    (bonkless?    symbol)
+    (casual?      symbol)
+    (mirrormode?  symbol)
+    (pacifist?    symbol)
+  )
+
+  (:methods
+    (new (symbol type) _type_)
+    (reset (_type_) none)
+    ;; (read-from-file (_type_ string) symbol)
+    ;; (commit-to-file (_type_) none)
+    ;; (write-to-file (_type_ string) symbol)
+    ;; (load-settings (_type_) int)
+    )
+  )
 
 (deftype challenges-settings (basic)
   (
@@ -703,8 +725,24 @@
   (commit-to-file *challenges-settings*)
 )
 
+(defmethod reset challenges-settings ((obj challenges-settings))
+  "Set the default settings for non-vanilla challenges settings"
+
+  (format 0 "resetting challenges settings~%")
+
+  (set! (-> obj version) PC_KERNEL_VERSION)
+
+  (set! (-> obj orbless?) #f)   
+  (set! (-> obj hardcore?) #f)  
+  (set! (-> obj damageless?) #f)
+  (set! (-> obj bonkless?) #f)  
+  (set! (-> obj casual?) #f)    
+  (set! (-> obj mirrormode?) #f)
+  (set! (-> obj pacifist?) #f)
+  (none))
+
 (defmethod reset randomizer-settings ((obj randomizer-settings))
-  "Set the default settings for non-vanilla settings"
+  "Set the default settings for non-vanilla randomizer settings"
 
   (format 0 "resetting randomizer settings~%")
 
