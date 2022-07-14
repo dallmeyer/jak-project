@@ -341,8 +341,9 @@
   (deftype randomizer-settings (basic)
     (
       (version uint64) ;; version of this settings
-      (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
       (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
+      (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
+      (randomizer-logic symbol) ;; boolean (#t = seedless / #f = set seed)
     )
 
     (:methods
@@ -400,8 +401,9 @@
   (format 0 "resetting randomizer settings~%")
 
   (set! (-> obj version) PC_KERNEL_VERSION)
-  (set! (-> obj cells-needed-to-warp) 1.0)
   (set! (-> obj checkpoint-randomizer?) #t)
+  (set! (-> obj cells-needed-to-warp) 1.0)
+  (set! (-> obj randomizer-logic) #t) ;; seedless
   (none))
 
 (defmethod reset pc-settings ((obj pc-settings))

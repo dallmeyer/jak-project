@@ -6,26 +6,99 @@
 ;; dgos: GAME, ENGINE
 
 ;;Randomizer
+(define *checkpoint-list* (the-as (array string) (new
+                                             'static
+                                             'boxed-array
+                                             :type string :length 67 :allocated-length 67
+"game-start"
+"village1-hut"
+"beach-start"
+"beach-start"
+"beach-start"
+"beach-start"
+"jungle-start"
+"jungle-tower"
+"jungle-start"
+"jungle-tower"
+"misty-start"
+"misty-silo"
+"misty-bike"
+"misty-backside"
+"misty-silo2"
+"firecanyon-start"
+"firecanyon-end"
+"village2-start"
+"village2-warp"
+"village2-dock"
+"sunken-start"
+"sunken1"
+"sunken2"
+"sunken-tube1"
+"sunkenb-start"
+"sunkenb-helix"
+"swamp-start"
+"swamp-dock1"
+"swamp-cave1"
+"swamp-dock2"
+"swamp-cave2"
+"swamp-game"
+"swamp-cave3"
+"rolling-start"
+"ogre-start"
+"ogre-race"
+"ogre-end"
+"village3-start"
+"village3-warp"
+"village3-farside"
+"snow-start"
+"snow-fort"
+"snow-snow-flut-flut"
+"snow-pass-to-fort"
+"snow-by-ice-lake"
+"snow-by-ice-lake-alt"
+"snow-outside-fort"
+"snow-outside-cave"
+"snow-across-from-flut"
+"maincave-start"
+"maincave-to-darkcave"
+"maincave-to-robocave"
+"darkcave-start"
+"robocave-start"
+"robocave-bottom"
+"lavatube-start"
+"lavatube-middle"
+"lavatube-after-ribbon"
+"lavatube-end"
+"citadel-start"
+"citadel-entrance"
+"citadel-warp"
+"citadel-launch-start"
+"citadel-launch-end"
+"citadel-generator-start"
+"citadel-generator-end"
+"citadel-elevator"
+)
+)
+)
+
 ;; cell-interval serves as a counter, it counts up until it is raul to cells-needed-to-warp, then it warps jak and resets itself to count again
 (define *cell-interval* 0.0)
-(define *randomCheckpointName* (the-as string #f))
-(define *randomCheckpoint* (the continue-point #f))
 (define racer? #f) 
 (define flutflut? #f)
 
-(defun citadelCheck? ()
+(defun citadelCheck? ((checkpointName string))
 (if 
 (or
-(string= *randomCheckpointName* "citadel-start")
-(string= *randomCheckpointName* "citadel-entrance")
-(string= *randomCheckpointName* "citadel-warp")
-(string= *randomCheckpointName* "citadel-launch-start")
-(string= *randomCheckpointName* "citadel-launch-end")
-(string= *randomCheckpointName* "citadel-plat-start")
-(string= *randomCheckpointName* "citadel-plat-end")
-(string= *randomCheckpointName* "citadel-generator-start")
-(string= *randomCheckpointName* "citadel-generator-end")
-(string= *randomCheckpointName* "citadel-elevator")
+(string= checkpointName "citadel-start")
+(string= checkpointName "citadel-entrance")
+(string= checkpointName "citadel-warp")
+(string= checkpointName "citadel-launch-start")
+(string= checkpointName "citadel-launch-end")
+(string= checkpointName "citadel-plat-start")
+(string= checkpointName "citadel-plat-end")
+(string= checkpointName "citadel-generator-start")
+(string= checkpointName "citadel-generator-end")
+(string= checkpointName "citadel-elevator")
 )
 (return #t)
 (return #f)
@@ -33,40 +106,97 @@
 #f
 )
 
+(define *set-seed-checkpoint-list* (cons '() '()))
 
-(defun checkRandomCheckpoint?()
+(defun generateSetSeedCheckpointList ((seed float))
+  ;; set the seed which will be used for generating checkpoint list
+  (rand-vu-init seed)
 
+  ;; We need to initially generate 96 checkpoints which are NOT citadel, 
+  ;;  just in case the player collects all the 96 non-citadel cells first.
+  ;;  After that, we just need 5 more checkpoints, citadel or otherwise.
+  (define nonCitadelCount 0)
+
+  (define currentListNode *set-seed-checkpoint-list*)
+  ;; generate checkpoints until we have 96 non-citadel
+  (while (< nonCitadelCount 96)
+    (define tempCheckpointName (-> *checkpoint-list* (rand-vu-int-range 0 66)))
+    (if (not (citadelCheck? tempCheckpointName))
+      (+! nonCitadelCount 1)
+    )
+    (set! (car currentListNode) tempCheckpointName) ;; append checkpoint
+    (set! (cdr currentListNode) (cons '() '())) ;; create next node
+    (set! currentListNode (cdr currentListNode)) ;; move current to newly created node
+  )
+  ;; generate any 5 more checkpoints
+  (define tempCount 0)
+  (dotimes (tempCount 5)
+    (define tempCheckpointName (-> *checkpoint-list* (rand-vu-int-range 0 66)))
+    (set! (car currentListNode) tempCheckpointName) ;; append checkpoint
+    (set! (cdr currentListNode) (cons '() '())) ;; create next node
+    (set! currentListNode (cdr currentListNode)) ;; move current to newly created node
+  )
+)
+
+;; For set-seed category, provide the seed here where we generate the list up-front.
+;; Any float should work. Use a whole number like 1.0 if you really love Geyser
+(generateSetSeedCheckpointList 1.418091058731079)
+
+(defun warpToCheckpoint ((checkpointName string))
+  ;; warps to checkpoint, assuming it is already safe to use
+  (format 0 "RANDOMIZER: ...warping to ~A~%" checkpointName)
+  (define checkpoint (get-continue-by-name *game-info* checkpointName))
+  (set! (-> *game-info* current-continue) checkpoint)
+  (start 'play checkpoint)
+)
+
+(defun checkRandomCheckpoint? ((checkpointName string))
   ;; returns whether the checkpoint is safe to use
-  (if (and (not (task-closed? (game-task citadel-sage-green) (task-status need-hint))) (citadelCheck?))
+  (if (and (not (task-closed? (game-task citadel-sage-green) (task-status need-hint))) (citadelCheck? checkpointName))
     (return #f)
     (return #t)
   )
   #f
 )
 
-(defun makeRandomCheckpoint()
-  (define foundValid? #f) 
-  (set! *randomCheckpointName* (-> *checkpoint-list* (rand-vu-int-range 0 66)))
-  (while (not foundValid?)
-    ;; if checkpoint is valid, persist it, otherwise regenerate
-    (if (checkRandomCheckpoint?)
+(defun getNextSetSeedCheckpoint ()
+  (define checkpointName (car *set-seed-checkpoint-list*))
+  (set! *set-seed-checkpoint-list* (cdr *set-seed-checkpoint-list*))
+
+  (while #t
+    (if (checkRandomCheckpoint? (the-as string checkpointName))
       (begin 
-        (format 0 "RANDOMIZER: checkpoint ~A is valid~%" *randomCheckpointName*)
-        (set! *randomCheckpoint* (get-continue-by-name *game-info* *randomCheckpointName*))
-        (set! foundValid? #t) ;; to break from while loop
+        (format 0 "RANDOMIZER: checkpoint ~A is valid~%" checkpointName)
+        (return checkpointName) ;; break from while loop
       )
       (begin
-        (format 0 "RANDOMIZER: checkpoint ~A is NOT valid, will generate another~%" *randomCheckpointName*)
-        (set! *randomCheckpointName* (-> *checkpoint-list* (rand-vu-int-range 0 66)))
+        (format 0 "RANDOMIZER: checkpoint ~A is NOT valid, will grab the next~%" checkpointName)
+        (set! checkpointName (car *set-seed-checkpoint-list*))
+        (set! *set-seed-checkpoint-list* (cdr *set-seed-checkpoint-list*))
       )
     )
   )
-  (none)
+  ""
+)
+
+(defun makeRandomCheckpoint ()
+  (define checkpointName (-> *checkpoint-list* (rand-vu-int-range 0 66)))
+  (while #t
+    ;; if checkpoint is valid, persist it, otherwise regenerate
+    (if (checkRandomCheckpoint? (the-as string checkpointName))
+      (begin 
+        (format 0 "RANDOMIZER: checkpoint ~A is valid~%" checkpointName)
+        (return checkpointName) ;; break from while loop
+      )
+      (begin
+        (format 0 "RANDOMIZER: checkpoint ~A is NOT valid, will generate another~%" checkpointName)
+        (set! checkpointName (-> *checkpoint-list* (rand-vu-int-range 0 66)))
+      )
+    )
+  )
+  ""
 )
 ;;End Randomizer settings
-
-
-
 
 
 (declare-type vent process-drawable)
@@ -1789,11 +1919,14 @@
         (if (>= *cell-interval* (-> *randomizer-settings* cells-needed-to-warp))
           (begin
             (format 0 "RANDOMIZER: warping from ~A...~%" (-> *level* level 0 name))
-            (makeRandomCheckpoint)
-            (format 0 "RANDOMIZER: ...warping to ~A~%" *randomCheckpointName*)
-            (set! (-> *game-info* current-continue) *randomCheckpoint*)
-            
-            (start 'play *randomCheckpoint*)
+            (if (-> *randomizer-settings* randomizer-logic)
+              (begin  ;; #t -> classic/seedless logic
+                (warpToCheckpoint (the-as string (makeRandomCheckpoint)))
+              )
+              (begin ;; #f -> set-seed logic
+                (warpToCheckpoint (the-as string (getNextSetSeedCheckpoint)))
+              )
+            )
             (set! *cell-interval* 0.0)
           )
         )
