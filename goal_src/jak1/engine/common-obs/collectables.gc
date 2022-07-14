@@ -166,12 +166,13 @@
 (defun getNextSetSeedCheckpoint ()
   (define checkpointName (car *next-set-seed-checkpoint-node*))
   (set! *next-set-seed-checkpoint-node* (cdr *next-set-seed-checkpoint-node*))
-  ;; check if we're at end of list, and reset pointer if so
-  (when (null? (car *next-set-seed-checkpoint-node*))
-    (set! *next-set-seed-checkpoint-node* *set-seed-checkpoint-list*)
-  )
 
-  (while #t
+  (while #t  
+    ;; if we're at end of list, reset pointer to head of list
+    (when (null? (car *next-set-seed-checkpoint-node*))
+      (set! *next-set-seed-checkpoint-node* *set-seed-checkpoint-list*)
+    )
+    
     (if (checkRandomCheckpoint? (the-as string checkpointName))
       (begin 
         (format 0 "RANDOMIZER: checkpoint ~A is valid~%" checkpointName)
@@ -179,8 +180,8 @@
       )
       (begin
         (format 0 "RANDOMIZER: checkpoint ~A is NOT valid, will grab the next~%" checkpointName)
-        (set! checkpointName (car *set-seed-checkpoint-list*))
-        (set! *set-seed-checkpoint-list* (cdr *set-seed-checkpoint-list*))
+        (set! checkpointName (car *next-set-seed-checkpoint-node*))
+        (set! *next-set-seed-checkpoint-node* (cdr *next-set-seed-checkpoint-node*))
       )
     )
   )
