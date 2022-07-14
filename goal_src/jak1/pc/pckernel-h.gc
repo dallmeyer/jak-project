@@ -338,23 +338,45 @@
   )
 
 ;; Extra PC configuration for non-vanilla OpenGOAL
-  (deftype randomizer-settings (basic)
-    (
-      (version uint64) ;; version of this settings
-      (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
-      (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
-      (randomizer-logic symbol) ;; boolean (#t = seedless / #f = set seed)
-    )
+(deftype randomizer-settings (basic)
+  (
+    (version uint64) ;; version of this settings
+    (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
+    (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
+    (randomizer-logic symbol) ;; boolean (#t = seedless / #f = set seed)
+  )
 
-    (:methods
-      (new (symbol type) _type_)
-      (reset (_type_) none)
-      (read-from-file (_type_ string) symbol)
-      (commit-to-file (_type_) none)
-      (write-to-file (_type_ string) symbol)
-      (load-settings (_type_) int)
-      )
+  (:methods
+    (new (symbol type) _type_)
+    (reset (_type_) none)
+    (read-from-file (_type_ string) symbol)
+    (commit-to-file (_type_) none)
+    (write-to-file (_type_ string) symbol)
+    (load-settings (_type_) int)
     )
+  )
+
+(deftype challenges-settings (basic)
+  (
+    (version uint64) ;; version of this settings
+    (orbless?     symbol)
+    (hardcore?    symbol)
+    (damageless?  symbol)
+    (bonkless?    symbol)
+    (casual?      symbol)
+    (mirrormode?  symbol)
+    (pacifist?    symbol)
+  )
+
+  (:methods
+    (new (symbol type) _type_)
+    (reset (_type_) none)
+    ;; (read-from-file (_type_ string) symbol)
+    ;; (commit-to-file (_type_) none)
+    ;; (write-to-file (_type_ string) symbol)
+    ;; (load-settings (_type_) int)
+    )
+  )
 
 ;; information about a cutscene. placeholder. TODO look at jak 2
 (deftype pc-scene-info (structure)
@@ -387,6 +409,7 @@
 (define *pc-temp-string* (new 'global 'string PC_TEMP_STRING_LEN (the-as string #f)))
 (define *pc-settings* (the-as pc-settings #f))
 (define *randomizer-settings* (the-as randomizer-settings #f))
+(define *challenges-settings* (the-as challenges-settings #f))
 (format 0 "PC kernel version: ~D.~D~%" PC_KERNEL_VERSION_MAJOR PC_KERNEL_VERSION_MINOR)
 
 (define *pc-temp-string-1* (new 'global 'string 2048 (the-as string #f)))
@@ -395,8 +418,24 @@
 ;;;; resets
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defmethod reset challenges-settings ((obj challenges-settings))
+  "Set the default settings for non-vanilla challenges settings"
+
+  (format 0 "resetting challenges settings~%")
+
+  (set! (-> obj version) PC_KERNEL_VERSION)
+
+  (set! (-> obj orbless?) #f)   
+  (set! (-> obj hardcore?) #f)  
+  (set! (-> obj damageless?) #f)
+  (set! (-> obj bonkless?) #f)  
+  (set! (-> obj casual?) #f)    
+  (set! (-> obj mirrormode?) #f)
+  (set! (-> obj pacifist?) #f)
+  (none))
+
 (defmethod reset randomizer-settings ((obj randomizer-settings))
-  "Set the default settings for non-vanilla settings"
+  "Set the default settings for non-vanilla randomizer settings"
 
   (format 0 "resetting randomizer settings~%")
 

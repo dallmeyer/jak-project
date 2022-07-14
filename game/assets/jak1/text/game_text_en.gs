@@ -340,6 +340,23 @@
 (#x1305 "SET-SEED"
         "SET-SEED")
 
+(#x1402 "TOGGLE CHALLENGES"
+        "TOGGLE CHALLENGES")
+(#x1403 "ORBLESS"
+        "ORBLESS")
+(#x1404 "HARDCORE"
+        "HARDCORE")
+(#x1405 "DAMAGELESS"
+        "DAMAGELESS")  
+(#x1406 "BONKLESS"
+        "BONKLESS")
+(#x1407 "CASUAL"
+        "CASUAL")
+(#x1408 "MIRROR MODE"
+        "MIRROR MODE")
+(#x1409 "PACIFIST"
+        "PACIFIST")
+
 ;; -----------------
 ;; test
 
