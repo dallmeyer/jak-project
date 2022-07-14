@@ -107,6 +107,7 @@
 )
 
 (define *set-seed-checkpoint-list* (cons '() '()))
+(define *next-set-seed-checkpoint-node* (cons '() '()))
 
 (defun generateSetSeedCheckpointList ((seed float))
   ;; set the seed which will be used for generating checkpoint list
@@ -133,9 +134,12 @@
   (dotimes (tempCount 5)
     (define tempCheckpointName (-> *checkpoint-list* (rand-vu-int-range 0 66)))
     (set! (car currentListNode) tempCheckpointName) ;; append checkpoint
+
     (set! (cdr currentListNode) (cons '() '())) ;; create next node
     (set! currentListNode (cdr currentListNode)) ;; move current to newly created node
   )
+
+  (set! *next-set-seed-checkpoint-node* *set-seed-checkpoint-list*)
 )
 
 ;; For set-seed category, provide the seed here where we generate the list up-front.
@@ -160,8 +164,12 @@
 )
 
 (defun getNextSetSeedCheckpoint ()
-  (define checkpointName (car *set-seed-checkpoint-list*))
-  (set! *set-seed-checkpoint-list* (cdr *set-seed-checkpoint-list*))
+  (define checkpointName (car *next-set-seed-checkpoint-node*))
+  (set! *next-set-seed-checkpoint-node* (cdr *next-set-seed-checkpoint-node*))
+  ;; check if we're at end of list, and reset pointer if so
+  (when (null? (car *next-set-seed-checkpoint-node*))
+    (set! *next-set-seed-checkpoint-node* *set-seed-checkpoint-list*)
+  )
 
   (while #t
     (if (checkRandomCheckpoint? (the-as string checkpointName))
