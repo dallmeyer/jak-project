@@ -555,8 +555,9 @@
       (return #f))
 
     (format file "(settings #x~X~%" (-> *pc-settings* version))
-    (format file "  (cells-needed-to-warp ~F)~%" (the-as float(-> obj cells-needed-to-warp)))
     (format file "  (Randomizer? ~A)~%" (-> obj checkpoint-randomizer?))
+    (format file "  (cells-needed-to-warp ~F)~%" (the-as float(-> obj cells-needed-to-warp)))
+    (format file "  (randomizer-logic ~A)~%" (-> obj randomizer-logic))
     (format file "  )~%")
     (file-stream-close file)
     )
@@ -1126,8 +1127,9 @@
               )
             (dosettings (file)
               (case-str *pc-temp-string*
-              (("cells-needed-to-warp") (set! (-> obj cells-needed-to-warp) (file-stream-read-float file)))
                 (("Randomizer?") (set! (-> obj checkpoint-randomizer?) (file-stream-read-symbol file)))
+                (("cells-needed-to-warp") (set! (-> obj cells-needed-to-warp) (file-stream-read-float file)))
+                (("randomizer-logic") (set! (-> obj randomizer-logic) (file-stream-read-symbol file)))
                 )
               )
             )

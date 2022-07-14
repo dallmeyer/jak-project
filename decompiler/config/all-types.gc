@@ -1601,7 +1601,13 @@
   (scene-255                    #x12ff)
   (hint-0                       #x1300)
   (hint-511                     #x14ff)
-   (randomizer-options          #x1301)
+  
+  (checkpoint-randomizer        #x1301)
+  (cell-count-to-trigger-warp   #x1302)
+  (randomizer-logic             #x1303)
+  (randomizer-seedless          #x1304)
+  (randomizer-set-seed          #x1305)
+
 ;; GAME-TEXT-ID ENUM ENDS
   )
 
@@ -15777,6 +15783,7 @@
   (button-flava)
   (cheat-toggle)
   (monitor)
+  (randomizer-logic)
   )
 
 (defenum game-option-menu
