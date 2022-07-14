@@ -206,9 +206,6 @@
 ;;End Randomizer settings
 
 
-
-
-
 (declare-type vent process-drawable)
 (declare-type eco eco-collectable)
 

@@ -7,9 +7,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Letterbox and blackout
-;;;;;;;;;;;;;;;;;;;;;;;;;;s
-(define-extern racer? symbol)
-(define-extern flutflut? symbol)
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define-extern racer? symbol)
 (define-extern flutflut?  symbol)
