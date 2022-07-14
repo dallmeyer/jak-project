@@ -101,6 +101,16 @@
   )
 
 (defun movie? ()
+
+(if (-> *randomizer-settings* checkpoint-randomizer?)
+(begin
+;;Skip the keira cutscene into if the player has 20 or more cells, or if they have collected the end cell.
+(if (or (>= (-> *game-info* fuel) 20) (task-complete? *game-info* (game-task firecanyon-end)) )
+(begin
+(close-specific-task! (game-task firecanyon-assistant) (task-status need-reward-speech))
+
+))
+
 (set! racer? (aif *target* (case (-> it next-state name) (
                                       ('target-racing
                                        'target-racing-bounce
@@ -124,6 +134,8 @@
                                        'target-flut-stance
                                        'target-flut-start
                                        'target-flut-walk) #t))))
+)
+)
   "Are we in a movie?"
   (logtest? (-> *kernel-context* prevent-from-run) (process-mask movie))
   )

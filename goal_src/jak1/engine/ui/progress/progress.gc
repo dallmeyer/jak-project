@@ -833,6 +833,7 @@
                         (= v1-2 (progress-screen settings-title))
                         (= v1-2 (progress-screen camera-options))
                         (= v1-2 (progress-screen randomizer-options))
+                        (= v1-2 (progress-screen challenges-options))
                         (= v1-2 (progress-screen accessibility-options))
                         (= v1-2 (progress-screen misc-options))
                         (= v1-2 (progress-screen game-ps2-options))
