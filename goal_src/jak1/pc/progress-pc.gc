@@ -148,6 +148,7 @@
 (define *misc-options* (new 'static 'boxed-array :type game-option
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id discord-rpc) :scale #t)
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id checkpoint-randomizer) :scale #t :param3 (game-option-menu randomizer-options))
+    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id custom-challenges) :scale #t :param3 (game-option-menu challenges-options))
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
    
     )
@@ -166,6 +167,18 @@
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-randomizer) :scale #t)
     (new 'static 'game-option :name (game-text-id cell-count-to-trigger-warp) :scale #t :param2 102.0)
     (new 'static 'game-option :option-type (game-option-type randomizer-logic) :name (game-text-id randomizer-logic) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
+    )
+  )
+
+(define *challenges-options* (new 'static 'boxed-array :type game-option
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-hardcore) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-orbless) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-damageless) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-pacifist) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-bonkless) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-casual) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-mirrormode) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
   )
@@ -667,6 +680,7 @@
   (set! (-> *options-remap* (progress-screen music-player))               *music-player-options*)
   (set! (-> *options-remap* (progress-screen flava-player))               *temp-options*)
   (set! (-> *options-remap* (progress-screen randomizer-options))         *randomizer-options*)
+  (set! (-> *options-remap* (progress-screen challenges-options))         *challenges-options*)
   (set! (-> *options-remap* (progress-screen memcard-disable-auto-save))  *yes-no-options*)
   (set! (-> *options-remap* (progress-screen memcard-auto-save-disabled)) *ok-options*)
 
@@ -708,6 +722,15 @@
   (set! (-> *randomizer-options* 0 value-to-modify) (&-> *randomizer-settings* checkpoint-randomizer?))
   (set! (-> *randomizer-options* 1 value-to-modify) (&-> *randomizer-settings* cells-needed-to-warp))
   (set! (-> *randomizer-options* 2 value-to-modify) (&-> *randomizer-settings* randomizer-logic))
+
+  ;;Challenges menu
+  (set! (-> *challenges-options* 0 value-to-modify) (&-> *challenges-settings* orbless?))
+  (set! (-> *challenges-options* 1 value-to-modify) (&-> *challenges-settings* hardcore?))
+  (set! (-> *challenges-options* 2 value-to-modify) (&-> *challenges-settings* damageless?))
+  (set! (-> *challenges-options* 3 value-to-modify) (&-> *challenges-settings* bonkless?))
+  (set! (-> *challenges-options* 4 value-to-modify) (&-> *challenges-settings* casual?))
+  (set! (-> *challenges-options* 5 value-to-modify) (&-> *challenges-settings* mirrormode?))
+  (set! (-> *challenges-options* 6 value-to-modify) (&-> *challenges-settings* pacifist?))
 
   (set! (-> *camera-options* 0 value-to-modify) (&-> *pc-settings* first-camera-h-inverted?))
   (set! (-> *camera-options* 1 value-to-modify) (&-> *pc-settings* first-camera-v-inverted?))
@@ -2085,7 +2108,6 @@
          (draw-options self 115 25 0.65)
          )
         (((progress-screen randomizer-options))
-         ;; camera options lines are a bit too big
          (hide-progress-icons)
          (draw-options self 115 25 0.65)
          )
@@ -2093,6 +2115,10 @@
          (hide-progress-icons)
          (draw-options self 115 25 0.75)
         )
+        (((progress-screen challenges-options))
+         (hide-progress-icons)
+         (draw-options self 115 25 0.65)
+         )
         (((progress-screen gfx-ps2-options))
          (hide-progress-icons)
          (draw-options self 115 25 0.72)
