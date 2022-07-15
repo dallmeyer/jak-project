@@ -156,7 +156,7 @@
   (aspect-native)
   (button-music)
   (button-flava)
-  (randomizer-logic)
+  (use-random-seed?)
   )
     )
   )
