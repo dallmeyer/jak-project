@@ -544,6 +544,10 @@
 
   0)
 
+
+
+
+#|
 (defmethod write-to-file randomizer-settings ((obj randomizer-settings) (filename string))
   "write settings to a file"
 
@@ -557,7 +561,7 @@
     (format file "(settings #x~X~%" (-> *pc-settings* version))
     (format file "  (Randomizer? ~A)~%" (-> obj checkpoint-randomizer?))
     (format file "  (cells-needed-to-warp ~F)~%" (the-as float(-> obj cells-needed-to-warp)))
-    (format file "  (randomizer-logic ~A)~%" (-> obj randomizer-logic))
+    (format file "  (use-random-seed? ~A)~%" (-> obj use-random-seed?))
     (format file "  )~%")
     (file-stream-close file)
     )
@@ -567,7 +571,8 @@
   #t
   )
 
-
+|#
+#|
   (defmethod commit-to-file randomizer-settings ((obj randomizer-settings))
   "commits the current settings to the file"
   ;; auto load settings if available
@@ -576,15 +581,9 @@
   (pc-mkdir-file-path *pc-temp-string-1*)
   (write-to-file obj *pc-temp-string-1*)
   (none)) 
+|#
 
-(define *pc-cheat-temp* (the-as (pointer int32) (malloc 'global (* 4 7))))
-(defmacro pc-cheat-toggle-and-tune (obj cheat)
-  `(begin
-    (cpad-clear! 0 r1)
-    (logxor! (-> ,obj cheats) (pc-cheats ,cheat))
-    (cheats-sound-play (logtest? (-> ,obj cheats) (pc-cheats ,cheat)))
-    )
-  )
+
 
 
 #|
@@ -1436,7 +1435,9 @@
               (case-str *pc-temp-string*
                 (("Randomizer?") (set! (-> obj checkpoint-randomizer?) (file-stream-read-symbol file)))
                 (("cells-needed-to-warp") (set! (-> obj cells-needed-to-warp) (file-stream-read-float file)))
-                (("randomizer-logic") (set! (-> obj randomizer-logic) (file-stream-read-symbol file)))
+                (("use-random-seed?") (set! (-> obj use-random-seed?) (file-stream-read-symbol file)))
+                (("Seed") (set! (-> obj current-seed) (file-stream-read-float file)))
+                (("backup-checkpoints-used") (set! (-> obj backup-checkpoints-used) (file-stream-read-int file)))
                 )
               )
             )
@@ -1465,6 +1466,173 @@
         (reset obj)))
     (format 0 "[PC] PC Settings not found at '~S'...initializing with defaults!~%" *pc-temp-string-1*))
   0)
+
+
+(defmethod read-from-file challenges-settings ((obj challenges-settings) (filename string))
+  "read settings from a file"
+ 
+  (if (not filename)
+    (return #f))
+ 
+  (let ((file (new 'stack 'file-stream filename 'read)))
+    (when (not (file-stream-valid? file))
+      (return #f))
+ 
+    (let ((version PC_KERNEL_VERSION))
+      (with-settings-scope (file)
+        (case-str (file-stream-read-word file)
+          (("settings")
+            (set! version (file-stream-read-int file))
+            (cond
+              ((= (logand version #xffffffff00000000) (logand PC_KERNEL_VERSION #xffffffff00000000))
+                ;; minor difference
+                )
+              (else
+                ;; major difference
+                (format 0 "PC kernel version mismatch! Got ~D.~D vs ~D.~D~%" PC_KERNEL_VERSION_MAJOR PC_KERNEL_VERSION_MINOR (bit-field int version 32 16) (bit-field int version 48 16))
+                (file-stream-close file)
+                (return #f)
+                )
+              )
+            (dosettings (file)
+              (case-str *pc-temp-string*
+              (("cells-needed-to-warp") (set! (-> obj cells-needed-to-warp) (file-stream-read-float file)))
+                (("fps") (set! (-> obj target-fps) (file-stream-read-int file)))
+                (("Randomizer?") (set! (-> obj checkpoint-randomizer?) (file-stream-read-symbol file)))
+                (("hardcore?") (set! (-> obj challenges-hardcore?) (file-stream-read-symbol file)))
+                (("orblesss?") (set! (-> obj challenges-orbless?) (file-stream-read-symbol file)))
+                (("damageless?") (set! (-> obj challenges-damageless?) (file-stream-read-symbol file)))
+                (("pacifist?") (set! (-> obj challenges-pacifist?) (file-stream-read-symbol file)))
+                (("bonkless?") (set! (-> obj challenges-bonkless?) (file-stream-read-symbol file)))
+                (("casual?") (set! (-> obj challenges-casual?) (file-stream-read-symbol file)))
+                (("mirrormode?") (set! (-> obj challenges-mirrormode?) (file-stream-read-symbol file)))
+               #| (("window-size")
+                  (set! (-> obj win-width) (file-stream-read-int file))
+                  (set! (-> obj win-height) (file-stream-read-int file))
+                  )
+                (("game-size")
+                  (set! (-> obj width) (file-stream-read-int file))
+                  (set! (-> obj height) (file-stream-read-int file))
+                  )
+                (("aspect") (set-aspect! obj (file-stream-read-int file) (file-stream-read-int file)))
+                (("aspect-test")
+                  (set! (-> obj aspect-custom-x) (file-stream-read-int file))
+                  (set! (-> obj aspect-custom-y) (file-stream-read-int file))
+                  )
+                (("aspect-auto") (set! (-> obj aspect-ratio-auto?) (file-stream-read-symbol file)))
+                (("aspect-game") (set! (-> *setting-control* default aspect-ratio) (file-stream-read-symbol file)))
+                (("video-mode") (set! (-> *setting-control* default video-mode) (file-stream-read-symbol file)))
+                (("display-mode") (set-display-mode! obj (file-stream-read-symbol file)))
+                (("letterbox") (set! (-> obj letterbox?) (file-stream-read-symbol file)))
+                (("vsync") (set! (-> obj vsync?) (file-stream-read-symbol file)))
+                (("font-scale") (set! (-> obj font-scale) (file-stream-read-float file)))
+                (("audio-latency-ms") (set! (-> obj audio-latency-ms) (file-stream-read-int file)))
+                (("audio-pan-override") (set! (-> obj audio-pan-override) (file-stream-read-float file)))
+                (("audio-volume-override") (set! (-> obj audio-volume-override) (file-stream-read-float file)))
+                (("audio-channel-nb") (set! (-> obj audio-channel-nb) (file-stream-read-int file)))
+                (("gfx-renderer") (set! (-> obj gfx-renderer) (the-as pc-gfx-renderer (file-stream-read-int file))))
+                (("gfx-resolution") (set! (-> obj gfx-resolution) (file-stream-read-float file)))
+                (("gfx-anisotropy") (set! (-> obj gfx-anisotropy) (file-stream-read-float file)))
+                (("shrub-dist-mod") (set! (-> obj shrub-dist-mod) (file-stream-read-float file)))
+                (("lod-dist-mod") (set! (-> obj lod-dist-mod) (file-stream-read-float file)))
+                (("lod-force-tfrag") (set! (-> obj lod-force-tfrag) (file-stream-read-int file)))
+                (("lod-force-tie") (set! (-> obj lod-force-tie) (file-stream-read-int file)))
+                (("lod-force-ocean") (set! (-> obj lod-force-ocean) (file-stream-read-int file)))
+                (("lod-force-actor") (set! (-> obj lod-force-actor) (file-stream-read-int file)))
+                (("subtitle-language") (set! (-> obj subtitle-language) (the-as pc-subtitle-lang (file-stream-read-int file))))
+                (("subtitle-speaker") (set! (-> obj subtitle-speaker?) (file-stream-read-symbol file)))
+                (("stick-deadzone") (set! (-> obj stick-deadzone) (file-stream-read-float file)))
+                (("ps2-read-speed?") (set! (-> obj ps2-read-speed?) (file-stream-read-symbol file)))
+                (("ps2-parts?") (set! (-> obj ps2-parts?) (file-stream-read-symbol file)))
+                (("ps2-music?") (set! (-> obj ps2-music?) (file-stream-read-symbol file)))
+                (("ps2-se?") (set! (-> obj ps2-se?) (file-stream-read-symbol file)))
+                (("ps2-hints?") (set! (-> obj ps2-hints?) (file-stream-read-symbol file)))
+                (("ps2-lod-dist?") (set! (-> obj ps2-lod-dist?) (file-stream-read-symbol file)))
+                (("force-actors?") (set! (-> obj force-actors?) (file-stream-read-symbol file)))
+                (("music-fade?") (set! (-> obj music-fade?) (file-stream-read-symbol file)))
+                (("use-vis?") (set! (-> obj use-vis?) (file-stream-read-symbol file)))
+                (("skip-movies?") (set! (-> obj skip-movies?) (file-stream-read-symbol file)))
+                (("subtitles?") (set! (-> obj subtitles?) (file-stream-read-symbol file)))
+                (("hinttitles?") (set! (-> obj hinttitles?) (file-stream-read-symbol file)))
+                (("discord-rpc?") (set! (-> obj discord-rpc?) (file-stream-read-symbol file)))
+                (("first-camera-h-inverted?") (set! (-> obj first-camera-h-inverted?) (file-stream-read-symbol file)))
+                (("first-camera-v-inverted?") (set! (-> obj first-camera-v-inverted?) (file-stream-read-symbol file)))
+                (("third-camera-h-inverted?") (set! (-> obj third-camera-h-inverted?) (file-stream-read-symbol file)))
+                (("third-camera-v-inverted?") (set! (-> obj third-camera-v-inverted?) (file-stream-read-symbol file)))
+                (("money-starburst?") (set! (-> obj money-starburst?) (file-stream-read-symbol file)))
+                (("extra-hud?") (set! (-> obj extra-hud?) (file-stream-read-symbol file)))
+                (("music-fadein?") (set! (-> obj music-fadein?) (file-stream-read-symbol file)))
+                (("music-fadeout?") (set! (-> obj music-fadeout?) (file-stream-read-symbol file)))
+                (("scenes-seen")
+                  (dotimes (i PC_SPOOL_LOG_LENGTH)
+                    (set! (-> obj scenes-seen i) (file-stream-read-int file))
+                    )
+                  )
+                (("secrets")
+                  (dosettings (file)
+                    (case-str *pc-temp-string*
+                      (("hard-rats?") (set! (-> obj secrets hard-rats?) (file-stream-read-symbol file)))
+                      (("hero-mode?") (set! (-> obj secrets hero-mode?) (file-stream-read-symbol file)))
+                      (("hud-map?") (set! (-> obj secrets hud-map?) (file-stream-read-symbol file)))
+                      (("hud-counters?") (set! (-> obj secrets hud-counters?) (file-stream-read-symbol file)))
+                      (("hud-watch?") (set! (-> obj secrets hud-watch?) (file-stream-read-symbol file)))
+                      (("watch-12hr?") (set! (-> obj secrets watch-12hr?) (file-stream-read-symbol file)))
+                      (("art") (set! (-> obj secrets art) (the-as pc-jak1-concept-art (file-stream-read-int file))))
+                      (("hard-fish-hiscore") (set! (-> obj secrets hard-fish-hiscore) (file-stream-read-int file)))
+                      (("hard-rats-hiscore") (set! (-> obj secrets hard-rats-hiscore) (file-stream-read-int file)))
+                      (("hard-rats-hiwave") (set! (-> obj secrets hard-rats-hiwave) (file-stream-read-int file)))
+                      (("music")
+                        (dotimes (i PC_MUSIC_LOG_LENGTH)
+                          (when (!= #x29 (file-stream-get-next-char-ret file))
+                              (with-settings-scope (file)
+                                (set! (-> obj secrets music i name) (file-stream-read-symbol file))
+                                (set! (-> obj secrets music i flava-mask) (file-stream-read-int file))
+                                )
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                (("panic")
+                  (when (file-stream-read-symbol file)
+                    (file-stream-close file)
+                    (reset obj)
+                    (write-to-file obj filename)
+                    (set-display-mode! obj #f)
+                    (return #f)
+                    )
+                  )|#
+                )
+              )
+            )
+          )
+        )
+ 
+      )
+      (inspect file)
+    (file-stream-close file)
+    )
+ 
+  (format 0 "pc settings file read: ~A~%" filename)
+ 
+  #t
+  )
+ 
+(defmethod load-settings challenges-settings ((obj challenges-settings))
+  "load"
+ 
+  (format (clear *pc-temp-string-1*) "~S/Mods/challenges-settings.gc" *pc-settings-folder*)
+  (if (pc-filepath-exists? *pc-temp-string-1*)
+    (begin
+      (format 0 "[PC] PC Settings found at '~S'...loading!~%" *pc-temp-string-1*)
+      (unless (read-from-file obj *pc-temp-string-1*)
+        (format 0 "[PC] PC Settings found at '~S' but could not be loaded, using defaults!~%" *pc-temp-string-1*)
+        (reset obj)))
+    (format 0 "[PC] PC Settings not found at '~S'...initializing with defaults!~%" *pc-temp-string-1*))
+  0)
+ 
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; PC settings
