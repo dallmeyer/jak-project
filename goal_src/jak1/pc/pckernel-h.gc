@@ -22,7 +22,9 @@
 
  |#
 
-
+(defmacro file-stream-valid? (fs)
+  `(>= (the-as int (-> ,fs file)) 0)
+  )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; constants
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -307,6 +309,8 @@
    (cheats-known pc-cheats)
 
    (flava-hack int64)
+   
+   ;; TODO - save/restore original settings (language/sound/etc)
    )
 
   (:methods
@@ -340,24 +344,28 @@
     )
   )
 
-;; Extra PC configuration for non-vanilla OpenGOAL
-(deftype randomizer-settings (basic)
-  (
-    (version uint64) ;; version of this settings
-    (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
-    (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
-    (randomizer-logic symbol) ;; boolean (#t = seedless / #f = set seed)
-  )
-
-  (:methods
-    (new (symbol type) _type_)
-    (reset (_type_) none)
-    (read-from-file (_type_ string) symbol)
-    (commit-to-file (_type_) none)
-    (write-to-file (_type_ string) symbol)
-    (load-settings (_type_) int)
+;; All of the configuration for the PC port in GOAL. Access things from here!
+;; Includes some methods to change parameters.
+#|
+  (deftype randomizer-settings (basic)
+    (
+      (version uint64) ;; version of this settings
+      (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
+      (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
+      (use-random-seed? symbol) ;; boolean (#t = random seed / #f = set seed)
+    
+    ;; TODO - save/restore original settings (language/sound/etc)
     )
-  )
+
+    (:methods
+      (new (symbol type) _type_)
+      (reset (_type_) none)
+      (read-from-file (_type_ string) symbol)
+      (commit-to-file (_type_) none)
+      (write-to-file (_type_ string) symbol)
+      (load-settings (_type_) int)
+      )
+    )
 
 (deftype challenges-settings (basic)
   (
@@ -374,13 +382,14 @@
   (:methods
     (new (symbol type) _type_)
     (reset (_type_) none)
+    ;; TODO - once the challenges are actually implemented, need to read from/write to file
     ;; (read-from-file (_type_ string) symbol)
     ;; (commit-to-file (_type_) none)
     ;; (write-to-file (_type_ string) symbol)
     ;; (load-settings (_type_) int)
     )
   )
-
+|#
 ;; information about a cutscene. placeholder. TODO look at jak 2
 (deftype pc-scene-info (structure)
   ((name string)
@@ -411,8 +420,12 @@
 (defconstant PC_TEMP_STRING_LEN 512)
 (define *pc-temp-string* (new 'global 'string PC_TEMP_STRING_LEN (the-as string #f)))
 (define *pc-settings* (the-as pc-settings #f))
+
+#|
 (define *randomizer-settings* (the-as randomizer-settings #f))
 (define *challenges-settings* (the-as challenges-settings #f))
+|#
+
 (format 0 "PC kernel version: ~D.~D~%" PC_KERNEL_VERSION_MAJOR PC_KERNEL_VERSION_MINOR)
 
 (define *pc-temp-string-1* (new 'global 'string 2048 (the-as string #f)))
@@ -420,7 +433,101 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; resets
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ (deftype randomizer-settings (basic)
+    ((version uint64) ;; version of this settings
+    (os symbol) ;; windows, linux, macos
+    (target-fps int16) ;; the target framerate of the game
+    (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
+    (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
+    (use-random-seed? symbol) ;; boolean (#t = random seed / #f = set seed)
+    
+    (current-seed float) ;; current seed for Bargs logic
+    (backup-checkpoints-used int) ;; backup in case of game crash
+    ;; TODO - save/restore original settings (language/sound/etc)
+    )
 
+    (:methods
+     (new (symbol type) _type_)
+       (update (_type_) none)
+    (update-from-os (_type_) none)
+    (update-to-os (_type_) none)
+      (reset (_type_) none)
+      (read-from-file (_type_ string) symbol)
+      (commit-to-file (_type_) none)
+      (write-to-file (_type_ string) symbol)
+      (load-settings (_type_) int)
+      )
+    )
+    (define *randomizer-settings* (the-as randomizer-settings #f))
+(defmethod write-to-file randomizer-settings ((obj randomizer-settings) (filename string))
+  "write settings to a file"
+
+  (if (not filename)
+    (return #f))
+
+    (let ((file (new 'stack 'file-stream filename 'write)))
+    (if (not (file-stream-valid? file))
+      (return #f))
+
+    (format file "(settings #x~X~%" (-> *pc-settings* version))
+
+  
+    (format file "  (cells-needed-to-warp ~F)~%" (the-as float(-> obj cells-needed-to-warp)))
+    (format file "  (Randomizer? ~A)~%" (-> obj checkpoint-randomizer?))
+    (format file "  (use-random-seed? ~A)~%" (-> obj use-random-seed?))
+    (format file "  (Seed ~F)~%" (-> obj current-seed))
+    (format file "  (backup-checkpoints-used ~D)~%" (-> obj backup-checkpoints-used))
+
+    (format file "  )~%")
+    (file-stream-close file)
+    )
+
+  (format 0 "pc settings file write: ~A~%" filename)
+
+  #t
+  )
+
+
+  (defmethod commit-to-file randomizer-settings ((obj randomizer-settings))
+  "commits the current settings to the file"
+  ;; auto load settings if available
+
+  (format (clear *pc-temp-string-1*) "~S/Mods/randomizer-settings.gc" *pc-settings-folder*)
+  (pc-mkdir-file-path *pc-temp-string-1*)
+  (write-to-file obj *pc-temp-string-1*)
+  (none)) 
+
+(defmethod update-from-os randomizer-settings ((obj randomizer-settings))
+  "Update settings from the C kernel to GOAL."
+
+  (set! (-> obj os) (pc-get-os))
+
+
+
+
+  (none))
+
+(defmethod update-to-os randomizer-settings ((obj randomizer-settings))
+  "Update settings from GOAL to the C kernel."
+
+
+
+
+
+
+  (none))
+
+
+(defmethod update randomizer-settings ((obj randomizer-settings))
+  "Update settings to/from PC kernel. Call this at the start of every frame.
+   This will update things like the aspect-ratio, which will be used for graphics code later."
+
+  (update-from-os obj)
+  (update-to-os obj)
+
+  (none))
+
+#|
 (defmethod reset challenges-settings ((obj challenges-settings))
   "Set the default settings for non-vanilla challenges settings"
 
@@ -436,6 +543,7 @@
   (set! (-> obj mirrormode?) #f)
   (set! (-> obj pacifist?) #f)
   (none))
+|#
 
 (defmethod reset randomizer-settings ((obj randomizer-settings))
   "Set the default settings for non-vanilla randomizer settings"
@@ -445,8 +553,158 @@
   (set! (-> obj version) PC_KERNEL_VERSION)
   (set! (-> obj checkpoint-randomizer?) #t)
   (set! (-> obj cells-needed-to-warp) 1.0)
-  (set! (-> obj randomizer-logic) #t) ;; seedless/classic
+  (set! (-> obj use-random-seed?) #t)
+  (set! (-> obj current-seed) 432.32765492375)
+  (set! (-> obj backup-checkpoints-used) 0)
   (none))
+
+ (deftype challenges-settings (basic)
+    ((version uint64) ;; version of this settings
+    (os symbol) ;; windows, linux, macos
+    (target-fps int16) ;; the target framerate of the game
+    (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
+    (challenges-hardcore? symbol)
+    (challenges-orbless? symbol)
+    (challenges-damageless? symbol)
+    (challenges-pacifist? symbol)
+    (challenges-bonkless? symbol)
+    (challenges-casual? symbol)
+    (challenges-mirrormode? symbol)
+    (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
+    ;; TODO - save/restore original settings (language/sound/etc)
+    )
+ 
+    (:methods
+     (new (symbol type) _type_)
+       (update (_type_) none)
+    (update-from-os (_type_) none)
+    (update-to-os (_type_) none)
+      (reset (_type_) none)
+      (read-from-file (_type_ string) symbol)
+      (commit-to-file (_type_) none)
+      (write-to-file (_type_ string) symbol)
+      (load-settings (_type_) int)
+      )
+    )
+    (define *challenges-settings* (the-as challenges-settings #f))
+(defmethod write-to-file challenges-settings ((obj challenges-settings) (filename string))
+  "write settings to a file"
+ 
+  (if (not filename)
+    (return #f))
+ 
+    (let ((file (new 'stack 'file-stream filename 'write)))
+    (if (not (file-stream-valid? file))
+      (return #f))
+ 
+    (format file "(settings #x~X~%" (-> *pc-settings* version))
+ 
+    (format file "  (fps ~D)~%" (-> obj target-fps))
+    (format file "  (cells-needed-to-warp ~F)~%" (the-as float(-> obj cells-needed-to-warp)))
+    (format file "  (Randomizer? ~A)~%" (-> obj checkpoint-randomizer?))
+    (format file "  (hardcore? ~A)~%" (-> obj challenges-hardcore?))
+    (format file "  (orbless? ~A)~%" (-> obj challenges-orbless?))
+    (format file "  (pacifist? ~A)~%" (-> obj challenges-pacifist?))
+    (format file "  (bonkless? ~A)~%" (-> obj challenges-bonkless?))
+    (format file "  (casual? ~A)~%" (-> obj challenges-casual?))
+    (format file "  (mirrormode? ~A)~%" (-> obj challenges-mirrormode?))
+
+ 
+    (format file "  )~%")
+    (file-stream-close file)
+    )
+ 
+  (format 0 "pc settings file write: ~A~%" filename)
+ 
+  #t
+  )
+ 
+ 
+  (defmethod commit-to-file challenges-settings ((obj challenges-settings))
+  "commits the current settings to the file"
+  ;; auto load settings if available
+ 
+  (format (clear *pc-temp-string-1*) "~S/Mods/challenges-settings.gc" *pc-settings-folder*)
+  (pc-mkdir-file-path *pc-temp-string-1*)
+  (write-to-file obj *pc-temp-string-1*)
+  (none))
+ 
+(defmethod update-from-os challenges-settings ((obj challenges-settings))
+  "Update settings from the C kernel to GOAL."
+ 
+  (set! (-> obj os) (pc-get-os))
+ 
+ 
+ 
+ 
+  (none))
+ 
+(defmethod update-to-os challenges-settings ((obj challenges-settings))
+  "Update settings from GOAL to the C kernel."
+ 
+ 
+ 
+ 
+ 
+ 
+  (none))
+ 
+ 
+(defmethod update challenges-settings ((obj challenges-settings))
+  "Update settings to/from PC kernel. Call this at the start of every frame.
+   This will update things like the aspect-ratio, which will be used for graphics code later."
+ 
+  (update-from-os obj)
+  (update-to-os obj)
+ 
+  (none))
+ 
+(defmethod reset challenges-settings ((obj challenges-settings))
+  "Set the default settings"
+ 
+  ;(format #t "pc settings reset~%")
+ 
+  (set! (-> obj version) PC_KERNEL_VERSION)
+  #|
+ 
+  (set! (-> obj user) #f)
+  (set! (-> obj debug?) #f)
+  (set! (-> obj new-lb?) #f)
+  (set! (-> obj display-actor-bank) #f)
+  (set! (-> obj debug-pad-display) #f)
+  (set! (-> obj display-bug-report) #f)
+  (set! (-> obj display-heap-status) #f)
+  (set! (-> obj display-actor-counts) #f)
+  (set! (-> obj display-text-box) #f)
+  (set! (-> obj display-sha) *debug-segment*)
+  (set! (-> obj mood-override?) #f)
+  (set! (-> obj movie?) #f)
+  (set! (-> obj font-scale) 1.0)
+  (set! (-> obj aspect-custom-x) 4)
+  (set! (-> obj aspect-custom-y) 3)
+  (set! (-> obj discord-rpc?) #t)
+  (set! (-> obj cells-needed-to-warp) 1.0)
+  (set! (-> obj checkpoint-randomizer?) #t)
+  (set! (-> obj window-lock?) #t)
+ 
+  (reset-gfx obj)
+  (reset-audio obj)
+  (reset-input obj)
+  (reset-ps2 obj)
+  (reset-misc obj)
+  (reset-extra obj)
+|#
+  (none))
+ 
+
+
+
+(defun commit-all-files ()
+  (commit-to-file *pc-settings*)
+  (commit-to-file *randomizer-settings*)
+  (commit-to-file *challenges-settings*)
+)
+
 
 (defmethod reset pc-settings ((obj pc-settings))
   "Set the default settings"

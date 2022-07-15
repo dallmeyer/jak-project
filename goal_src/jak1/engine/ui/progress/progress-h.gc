@@ -159,7 +159,7 @@
   (button-flava)
   (cheat-toggle)
   (monitor)
-  (randomizer-logic)
+  (use-random-seed?)
   )
     )
   )

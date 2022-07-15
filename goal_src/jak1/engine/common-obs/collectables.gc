@@ -5,6 +5,7 @@
 ;; name in dgo: collectables
 ;; dgos: GAME, ENGINE
 
+
 ;;Randomizer
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
@@ -106,10 +107,10 @@
 #f
 )
 
-(define *set-seed-checkpoint-list* (cons '() '()))
-(define *next-set-seed-checkpoint-node* (cons '() '()))
+(define *rando-checkpoint-list* (cons '() '()))
+(define *next-rando-checkpoint-node* (cons '() '()))
 
-(defun generateSetSeedCheckpointList ((seed float))
+(defun generateCheckpointList ((seed float))
   ;; set the seed which will be used for generating checkpoint list
   (rand-vu-init seed)
 
@@ -118,7 +119,7 @@
   ;;  After that, we just need 5 more checkpoints, citadel or otherwise.
   (define nonCitadelCount 0)
 
-  (define currentListNode *set-seed-checkpoint-list*)
+  (define currentListNode *rando-checkpoint-list*)
   ;; generate checkpoints until we have 96 non-citadel
   (while (< nonCitadelCount 96)
     (define tempCheckpointName (-> *checkpoint-list* (rand-vu-int-range 0 66)))
@@ -139,12 +140,21 @@
     (set! currentListNode (cdr currentListNode)) ;; move current to newly created node
   )
 
-  (set! *next-set-seed-checkpoint-node* *set-seed-checkpoint-list*)
+  (set! *next-rando-checkpoint-node* *rando-checkpoint-list*)
+  (none)
 )
 
-;; For set-seed category, provide the seed here where we generate the list up-front.
-;; Any float should work. Use a whole number like 1.0 if you really love Geyser
-(generateSetSeedCheckpointList 1.418091058731079)
+(defun advanceCheckpointList ((n int))
+  (define tempCount 0)
+  (dotimes (tempCount n)
+    (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
+
+    ;; if we're at end of list, reset pointer to head of list
+    (when (null? (car *next-rando-checkpoint-node*))
+      (set! *next-rando-checkpoint-node* *rando-checkpoint-list*)
+    )
+  )
+)
 
 (defun warpToCheckpoint ((checkpointName string))
   ;; warps to checkpoint, assuming it is already safe to use
@@ -163,16 +173,18 @@
   #f
 )
 
-(defun getNextSetSeedCheckpoint ()
-  (define checkpointName (car *next-set-seed-checkpoint-node*))
-  (set! *next-set-seed-checkpoint-node* (cdr *next-set-seed-checkpoint-node*))
+(defun getNextCheckpoint ()
+  (define checkpointName (car *next-rando-checkpoint-node*))
+  (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
 
-  (while #t  
+  (while #t
     ;; if we're at end of list, reset pointer to head of list
-    (when (null? (car *next-set-seed-checkpoint-node*))
-      (set! *next-set-seed-checkpoint-node* *set-seed-checkpoint-list*)
+    (when (null? (car *next-rando-checkpoint-node*))
+      (set! *next-rando-checkpoint-node* *rando-checkpoint-list*)
     )
-    
+    ;; increment number of checkpoints used (intentionally includes any skipped citadel checkpoints)
+    (+! (-> *randomizer-settings* backup-checkpoints-used) 1)
+
     (if (checkRandomCheckpoint? (the-as string checkpointName))
       (begin 
         (format 0 "RANDOMIZER: checkpoint ~A is valid~%" checkpointName)
@@ -180,32 +192,21 @@
       )
       (begin
         (format 0 "RANDOMIZER: checkpoint ~A is NOT valid, will grab the next~%" checkpointName)
-        (set! checkpointName (car *next-set-seed-checkpoint-node*))
-        (set! *next-set-seed-checkpoint-node* (cdr *next-set-seed-checkpoint-node*))
+        (set! checkpointName (car *next-rando-checkpoint-node*))
+        (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
       )
     )
   )
   ""
 )
 
-(defun makeRandomCheckpoint ()
-  (define checkpointName (-> *checkpoint-list* (rand-vu-int-range 0 66)))
-  (while #t
-    ;; if checkpoint is valid, persist it, otherwise regenerate
-    (if (checkRandomCheckpoint? (the-as string checkpointName))
-      (begin 
-        (format 0 "RANDOMIZER: checkpoint ~A is valid~%" checkpointName)
-        (return checkpointName) ;; break from while loop
-      )
-      (begin
-        (format 0 "RANDOMIZER: checkpoint ~A is NOT valid, will generate another~%" checkpointName)
-        (set! checkpointName (-> *checkpoint-list* (rand-vu-int-range 0 66)))
-      )
-    )
-  )
-  ""
+(defun peekNextCheckpoint ()
+  (car *next-rando-checkpoint-node*)
 )
 ;;End Randomizer settings
+
+
+
 
 
 (declare-type vent process-drawable)
@@ -225,10 +226,10 @@
 
 ;; DECOMP BEGINS
 
-(import "goal_src/jak1/import/buzzer-ag.gc")
-(import "goal_src/jak1/import/ecovalve-ag.gc")
-(import "goal_src/jak1/import/money-ag.gc")
-(import "goal_src/jak1/import/fuel-cell-ag.gc")
+(import "goal_src/import/buzzer-ag.gc")
+(import "goal_src/import/ecovalve-ag.gc")
+(import "goal_src/import/money-ag.gc")
+(import "goal_src/import/fuel-cell-ag.gc")
 
 (define *eco-pill-count* 0)
 
@@ -468,9 +469,12 @@
   )
 
 (defmethod animate eco-collectable ((obj eco-collectable))
+
   0
   (none)
-  )
+  
+
+)
 
 (defun add-blue-shake ((arg0 vector) (arg1 vector) (arg2 vector))
   (let* ((f0-0 (vector-vector-distance arg1 arg2))
@@ -1865,11 +1869,9 @@
         )
       )
     (spool-push *art-control* (-> self victory-anim name) 0 self (the-as float -99.0))
-
   )
 )
     
-
     (send-event *target* 'get-pickup (-> self fact pickup-type) (-> self fact pickup-amount))
     (if (not (-> *randomizer-settings* checkpoint-randomizer?))
     (begin
@@ -1904,8 +1906,8 @@
    (send-event *target* 'end-mode)
  ))
 
-
-
+ 
+  
 
     (remove-setting! 'music-volume)
     (remove-setting! 'sfx-volume)
@@ -1919,26 +1921,43 @@
     (suspend)
 
     
-    ;; if randomizer enabled, update cell-interval counter...
+    ;; warp to random checkpoint if randomizer enabled
     (if (-> *randomizer-settings* checkpoint-randomizer?)
       (begin
+        ;; first fuel cell? need to generate checkpoint list
+        (when (= (-> *game-info* fuel) 1)
+          ;; randomly generate or set seed
+          (if (-> *randomizer-settings* use-random-seed?)
+            (set! (-> *randomizer-settings* current-seed) (rand-vu-float-range 0.0 10.0))
+          )
+          ;; reset checkpoint counter backup
+          (set! (-> *randomizer-settings* backup-checkpoints-used) 0)
+
+          ;; generate checkpoint list from seed
+          (generateCheckpointList (-> *randomizer-settings* current-seed))
+        )
+
+        ;; in case of crash/closed window/etc, generate from last seed and advance checkpoints
+        (when (null? (peekNextCheckpoint))
+          (format 0 "Regenerating checkpoint list from backup, checkpoints used: ~D~%" (-> *randomizer-settings* backup-checkpoints-used))
+
+          ;; generate checkpoint list from seed
+          (generateCheckpointList (-> *randomizer-settings* current-seed))
+          (advanceCheckpointList (-> *randomizer-settings* backup-checkpoints-used))
+        )
+        
         (set! *cell-interval* (+ *cell-interval* 1))
         
-        ;; ...and if we've hit the cells-needed-to-warp limit, randomly warp
         (if (>= *cell-interval* (-> *randomizer-settings* cells-needed-to-warp))
           (begin
             (format 0 "RANDOMIZER: warping from ~A...~%" (-> *level* level 0 name))
-            (if (-> *randomizer-settings* randomizer-logic)
-              (begin  ;; #t -> classic/seedless logic
-                (warpToCheckpoint (the-as string (makeRandomCheckpoint)))
-              )
-              (begin ;; #f -> set-seed logic
-                (warpToCheckpoint (the-as string (getNextSetSeedCheckpoint)))
-              )
-            )
+            (warpToCheckpoint (the-as string (getNextCheckpoint)))
             (set! *cell-interval* 0.0)
           )
         )
+
+        ;; current-seed and backup-checkpoints-used are updated at this point, commit to file in case of crash/closed window
+        (commit-to-file *randomizer-settings*)
       )
     )
 
