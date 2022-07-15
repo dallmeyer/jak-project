@@ -1448,7 +1448,6 @@
   (camera-controls-third-horz   #x1005)
   (camera-controls-third-vert   #x1006)
   (restore-defaults             #x1007)
-  (checkpoint-randomizer        #x1008)
   
   (disable-auto-save-query      #x100d)
   (disable-auto-save            #x100e)

@@ -14,7 +14,7 @@
 (import "goal_src/jak1/import/medres-ogre2-ag.gc")
 (import "goal_src/jak1/import/medres-ogre3-ag.gc")
 (import "goal_src/jak1/import/gondolacables-ag.gc")
-
+(define s73-1 #f)
 (defskelgroup *med-res-ogre-sg* medres-ogre medres-ogre-lod0-jg medres-ogre-idle-ja
               ((medres-ogre-lod0-mg (meters 999999)))
               :bounds (static-spherem -200 0 -450 350)
