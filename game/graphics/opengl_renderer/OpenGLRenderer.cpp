@@ -462,7 +462,6 @@ void OpenGLRenderer::setup_frame(const RenderOptions& settings) {
     if (fbo_state.tex2 == -1) {
       glGenTextures(1, &fbo_state.tex2);
     }
-    glActiveTexture(GL_TEXTURE30);
     glBindTexture(GL_TEXTURE_2D, fbo_state.tex2);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, fbo_state.width, fbo_state.height, 0, GL_RGBA,
                  GL_UNSIGNED_BYTE, nullptr);
@@ -483,6 +482,7 @@ void OpenGLRenderer::setup_frame(const RenderOptions& settings) {
     } else {
       lg::error("bad framebuffer setup. fbo: {}, tex: {}, zbuf: {}, fbo2: {}, tex2: {}",
                 fbo_state.fbo, fbo_state.tex, fbo_state.zbuf, fbo_state.fbo2, fbo_state.tex2);
+      lg::error("size was: {} x {}\n", fbo_state.width, fbo_state.height);
       fbo_state.delete_objects();
     }
   } else {
@@ -598,6 +598,9 @@ void OpenGLRenderer::do_pcrtc_effects(float alp,
                                       ScopedProfilerNode& prof) {
   int w = render_state->fbo_state.width;
   int h = render_state->fbo_state.height;
+
+  // msaa "resolve" - this blit goes from a multisampled framebuffer (fbo/tex) to a normal one
+  // (fbo2/tex2)
   glBindFramebuffer(GL_READ_FRAMEBUFFER, render_state->fbo_state.fbo);
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER, render_state->fbo_state.fbo2);
   glBlitFramebuffer(0,                    // srcX0
@@ -612,7 +615,9 @@ void OpenGLRenderer::do_pcrtc_effects(float alp,
                     GL_LINEAR             // filter
   );
 
-  // Render to the screen directly now
+  // Render the resolved texture to the screen directly now
+  // TODO: if fbo and the screen have the same resolution, it might be possible to
+  // glBlitFrameBuffer to the screen directly and skip fbo2/tex2.
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
   glViewport(render_state->window_offset_x_px, render_state->window_offset_y_px,
              render_state->window_width_px, render_state->window_height_px);
@@ -626,6 +631,8 @@ void OpenGLRenderer::do_pcrtc_effects(float alp,
   glEnable(GL_BLEND);
   glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
   glBlendEquation(GL_FUNC_ADD);
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, render_state->fbo_state.tex2);
 
   m_blackout_renderer.draw(Vector4f(0, 0, 0, alp), render_state, prof);
 
