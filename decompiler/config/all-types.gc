@@ -1600,6 +1600,15 @@
   (randomizer-seedless          #x1304)
   (randomizer-set-seed          #x1305)
 
+  (custom-challenges            #x1402)
+  (challenges-orbless           #x1403)
+  (challenges-hardcore          #x1404)
+  (challenges-damageless        #x1405)
+  (challenges-bonkless          #x1406)
+  (challenges-casual            #x1407)
+  (challenges-mirrormode        #x1408)
+  (challenges-pacifist          #x1409)
+
 ;; GAME-TEXT-ID ENUM ENDS
   )
 
