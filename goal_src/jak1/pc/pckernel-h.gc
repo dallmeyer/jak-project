@@ -438,7 +438,7 @@
     (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
     (use-random-seed? symbol) ;; boolean (#t = random seed / #f = set seed)
     
-    (current-seed float) ;; current seed for Bargs logic
+    (current-seed int) ;; current seed for Bargs logic
     (backup-checkpoints-used int) ;; backup in case of game crash
     ;; TODO - save/restore original settings (language/sound/etc)
     )
@@ -472,7 +472,7 @@
     (format file "  (cells-needed-to-warp ~F)~%" (the-as float(-> obj cells-needed-to-warp)))
     (format file "  (Randomizer? ~A)~%" (-> obj checkpoint-randomizer?))
     (format file "  (use-random-seed? ~A)~%" (-> obj use-random-seed?))
-    (format file "  (Seed ~F)~%" (-> obj current-seed))
+    (format file "  (Seed ~D)~%" (-> obj current-seed))
     (format file "  (backup-checkpoints-used ~D)~%" (-> obj backup-checkpoints-used))
 
     (format file "  )~%")
@@ -551,7 +551,7 @@
   (set! (-> obj checkpoint-randomizer?) #t)
   (set! (-> obj cells-needed-to-warp) 1.0)
   (set! (-> obj use-random-seed?) #t)
-  (set! (-> obj current-seed) 432.32765492375)
+  (set! (-> obj current-seed) 42069)
   (set! (-> obj backup-checkpoints-used) 0)
   (none))
 

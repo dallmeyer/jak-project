@@ -110,9 +110,9 @@
 (define *rando-checkpoint-list* (cons '() '()))
 (define *next-rando-checkpoint-node* (cons '() '()))
 
-(defun generateCheckpointList ((seed float))
+(defun generateCheckpointList ((seed int))
   ;; set the seed which will be used for generating checkpoint list
-  (rand-vu-init seed)
+  (rand-vu-init (the float seed))
 
   ;; We need to initially generate 96 checkpoints which are NOT citadel, 
   ;;  just in case the player collects all the 96 non-citadel cells first.
@@ -202,6 +202,43 @@
 
 (defun peekNextCheckpoint ()
   (car *next-rando-checkpoint-node*)
+)
+
+(defun orchestrateCheckpointWarp ()
+  ;; first fuel cell? need to generate checkpoint list
+  (when (= (-> *game-info* fuel) 1)
+    ;; randomly generate or set seed
+    (if (-> *randomizer-settings* use-random-seed?)
+      (set! (-> *randomizer-settings* current-seed) (rand-vu-int-range -10000000 10000000))
+    )
+    ;; reset checkpoint counter backup
+    (set! (-> *randomizer-settings* backup-checkpoints-used) 0)
+
+    ;; generate checkpoint list from seed
+    (generateCheckpointList (-> *randomizer-settings* current-seed))
+  )
+
+  ;; in case of crash/closed window/etc, generate from last seed and advance checkpoints
+  (when (null? (peekNextCheckpoint))
+    (format 0 "Regenerating checkpoint list from backup, checkpoints used: ~D~%" (-> *randomizer-settings* backup-checkpoints-used))
+
+    ;; generate checkpoint list from seed
+    (generateCheckpointList (-> *randomizer-settings* current-seed))
+    (advanceCheckpointList (-> *randomizer-settings* backup-checkpoints-used))
+  )
+  
+  (set! *cell-interval* (+ *cell-interval* 1))
+  
+  (if (>= *cell-interval* (-> *randomizer-settings* cells-needed-to-warp))
+    (begin
+      (format 0 "RANDOMIZER: warping from ~A...~%" (-> *level* level 0 name))
+      (warpToCheckpoint (the-as string (getNextCheckpoint)))
+      (set! *cell-interval* 0.0)
+    )
+  )
+
+  ;; current-seed and backup-checkpoints-used are updated at this point, commit to file in case of crash/closed window
+  (commit-to-file *randomizer-settings*)
 )
 ;;End Randomizer settings
 
@@ -1923,42 +1960,7 @@
     
     ;; warp to random checkpoint if randomizer enabled
     (if (-> *randomizer-settings* checkpoint-randomizer?)
-      (begin
-        ;; first fuel cell? need to generate checkpoint list
-        (when (= (-> *game-info* fuel) 1)
-          ;; randomly generate or set seed
-          (if (-> *randomizer-settings* use-random-seed?)
-            (set! (-> *randomizer-settings* current-seed) (rand-vu-float-range -10000000.0 10000000.0))
-          )
-          ;; reset checkpoint counter backup
-          (set! (-> *randomizer-settings* backup-checkpoints-used) 0)
-
-          ;; generate checkpoint list from seed
-          (generateCheckpointList (-> *randomizer-settings* current-seed))
-        )
-
-        ;; in case of crash/closed window/etc, generate from last seed and advance checkpoints
-        (when (null? (peekNextCheckpoint))
-          (format 0 "Regenerating checkpoint list from backup, checkpoints used: ~D~%" (-> *randomizer-settings* backup-checkpoints-used))
-
-          ;; generate checkpoint list from seed
-          (generateCheckpointList (-> *randomizer-settings* current-seed))
-          (advanceCheckpointList (-> *randomizer-settings* backup-checkpoints-used))
-        )
-        
-        (set! *cell-interval* (+ *cell-interval* 1))
-        
-        (if (>= *cell-interval* (-> *randomizer-settings* cells-needed-to-warp))
-          (begin
-            (format 0 "RANDOMIZER: warping from ~A...~%" (-> *level* level 0 name))
-            (warpToCheckpoint (the-as string (getNextCheckpoint)))
-            (set! *cell-interval* 0.0)
-          )
-        )
-
-        ;; current-seed and backup-checkpoints-used are updated at this point, commit to file in case of crash/closed window
-        (commit-to-file *randomizer-settings*)
-      )
+      (orchestrateCheckpointWarp)
     )
 
     (process-spawn-function

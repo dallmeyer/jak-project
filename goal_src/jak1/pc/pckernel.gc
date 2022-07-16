@@ -1110,7 +1110,7 @@
                 (("Randomizer?") (set! (-> obj checkpoint-randomizer?) (file-stream-read-symbol file)))
                 (("cells-needed-to-warp") (set! (-> obj cells-needed-to-warp) (file-stream-read-float file)))
                 (("use-random-seed?") (set! (-> obj use-random-seed?) (file-stream-read-symbol file)))
-                (("Seed") (set! (-> obj current-seed) (file-stream-read-float file)))
+                (("Seed") (set! (-> obj current-seed) (file-stream-read-int file)))
                 (("backup-checkpoints-used") (set! (-> obj backup-checkpoints-used) (file-stream-read-int file)))
                 )
               )

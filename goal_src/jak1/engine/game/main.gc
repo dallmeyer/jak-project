@@ -138,7 +138,7 @@
   (clear *stdcon*)
   (if (> (-> *game-info* fuel) 0)
     ;; Display the current seed
-    (format *stdcon* " ~F~%"  (-> *randomizer-settings* current-seed))
+    (format *stdcon* " ~D~%"  (-> *randomizer-settings* current-seed))
   )
 
   (when (-> *randomizer-settings* use-random-seed?)
