@@ -1928,7 +1928,7 @@
         (when (= (-> *game-info* fuel) 1)
           ;; randomly generate or set seed
           (if (-> *randomizer-settings* use-random-seed?)
-            (set! (-> *randomizer-settings* current-seed) (rand-vu-float-range 0.0 10.0))
+            (set! (-> *randomizer-settings* current-seed) (rand-vu-float-range -10000000.0 10000000.0))
           )
           ;; reset checkpoint counter backup
           (set! (-> *randomizer-settings* backup-checkpoints-used) 0)
