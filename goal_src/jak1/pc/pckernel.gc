@@ -238,7 +238,7 @@
 
   (none))
 
-(define *pc-cheat-temp* (the-as (pointer int32) (malloc 'global (* 4 7))))
+(define *pc-cheat-temp* (the-as (pointer int32) (malloc 'global (* 4 8))))
 (defmacro pc-cheat-toggle-and-tune (obj cheat)
   `(begin
     (cpad-clear! 0 r1)
