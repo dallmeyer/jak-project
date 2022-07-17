@@ -362,6 +362,17 @@
   ((seed uint64))
 )
 
+(deftype java-rand-state (structure)
+  ((seed uint64))
+)
+
+(define *java-rand-state* (new 'global 'java-rand-state))
+
+(defun java-rand-init ((newSeed uint))
+  (set! (-> *java-rand-state* seed) newSeed)
+)
+(java-rand-init (the uint 42069))
+
 (define *java-rand-state* (new 'global 'java-rand-state))
 
 (defun java-rand-init ((newSeed uint))
