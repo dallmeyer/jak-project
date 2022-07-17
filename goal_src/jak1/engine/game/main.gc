@@ -99,6 +99,7 @@
           )
   )
 
+(define-extern *randomizer-version-string* (string))
 (defun movie? ()
 
 (if (-> *randomizer-settings* checkpoint-randomizer?)
@@ -108,6 +109,11 @@
 (begin
 (close-specific-task! (game-task firecanyon-assistant) (task-status need-reward-speech))
 
+))
+;;
+(if (or (>= (-> *game-info* fuel) 20) (task-complete? *game-info* (game-task lavatube-end)) )
+(begin
+(close-specific-task! (game-task lavatube-start) (task-status need-reward-speech))
 ))
 
 (set! racer? (aif *target* (case (-> it next-state name) (
@@ -133,17 +139,17 @@
                                        'target-flut-stance
                                        'target-flut-start
                                        'target-flut-walk) #t))))
-
+  
   ;;clean *stdcon*
   (clear *stdcon*)
   (if (> (-> *game-info* fuel) 0)
     ;; Display the current seed
-    (format *stdcon* " ~D~%"  (-> *randomizer-settings* current-seed))
+    (format *stdcon* "~S~%~D~%" *randomizer-version-string* (-> *randomizer-settings* current-seed))
   )
-
+  
   (when (-> *randomizer-settings* use-random-seed?)
       ;; burn through a random number every frame for improved randomness
-      (rand-vu)
+      (java-rand-advance-seed)
   )
 )
 )

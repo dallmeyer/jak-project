@@ -7,6 +7,7 @@
 
 
 ;;Randomizer
+(define *randomizer-version-string* "Rando 0.06 Release 0.1.18 Java RNG 64bit fix")
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
                                              'boxed-array
@@ -110,9 +111,9 @@
 (define *rando-checkpoint-list* (cons '() '()))
 (define *next-rando-checkpoint-node* (cons '() '()))
 
-(defun generateCheckpointList ((seed int))
+(defun generateCheckpointList ((seed uint))
   ;; set the seed which will be used for generating checkpoint list
-  (rand-vu-init (the float seed))
+  (java-rand-init seed)
 
   ;; We need to initially generate 96 checkpoints which are NOT citadel, 
   ;;  just in case the player collects all the 96 non-citadel cells first.
@@ -122,7 +123,7 @@
   (define currentListNode *rando-checkpoint-list*)
   ;; generate checkpoints until we have 96 non-citadel
   (while (< nonCitadelCount 96)
-    (define tempCheckpointName (-> *checkpoint-list* (rand-vu-int-range 0 66)))
+    (define tempCheckpointName (-> *checkpoint-list* (java-rand-nextIntRange 0 (-> *checkpoint-list* length))))
     (if (not (citadelCheck? tempCheckpointName))
       (+! nonCitadelCount 1)
     )
@@ -133,7 +134,7 @@
   ;; generate any 5 more checkpoints
   (define tempCount 0)
   (dotimes (tempCount 5)
-    (define tempCheckpointName (-> *checkpoint-list* (rand-vu-int-range 0 66)))
+    (define tempCheckpointName (-> *checkpoint-list* (java-rand-nextIntRange 0 (-> *checkpoint-list* length))))
     (set! (car currentListNode) tempCheckpointName) ;; append checkpoint
 
     (set! (cdr currentListNode) (cons '() '())) ;; create next node
@@ -209,7 +210,7 @@
   (when (= (-> *game-info* fuel) 1)
     ;; randomly generate or set seed
     (if (-> *randomizer-settings* use-random-seed?)
-      (set! (-> *randomizer-settings* current-seed) (rand-vu-int-range -10000000 10000000))
+      (set! (-> *randomizer-settings* current-seed) (java-rand-nextInt))
     )
     ;; reset checkpoint counter backup
     (set! (-> *randomizer-settings* backup-checkpoints-used) 0)
@@ -239,6 +240,18 @@
 
   ;; current-seed and backup-checkpoints-used are updated at this point, commit to file in case of crash/closed window
   (commit-to-file *randomizer-settings*)
+)
+
+(defun checkpointListTest ()
+  ;; If we have random-seed on, update our current seed.
+  (if (-> *randomizer-settings* use-random-seed?)
+        (set! (-> *randomizer-settings* current-seed) (java-rand-nextInt))
+      )
+  ;; Generate a list of checkpoints based on our new updated current-seed
+  (generateCheckpointList (-> *randomizer-settings* current-seed))
+  ;; Print this list of checkpoints to REPL for debugging purposes
+
+  *rando-checkpoint-list*
 )
 ;;End Randomizer settings
 
