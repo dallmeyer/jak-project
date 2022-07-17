@@ -438,7 +438,7 @@
     (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
     (use-random-seed? symbol) ;; boolean (#t = random seed / #f = set seed)
     
-    (current-seed int) ;; current seed for Bargs logic
+    (current-seed uint) ;; current seed for Bargs logic
     (backup-checkpoints-used int) ;; backup in case of game crash
     ;; TODO - save/restore original settings (language/sound/etc)
     )
