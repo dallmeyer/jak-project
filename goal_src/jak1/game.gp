@@ -1944,6 +1944,7 @@
  "game/effect-control.gc"
  "common-obs/water.gc"
  "common-obs/collectables-part.gc"
+ "mods/checkpoint-randomizer.gc"
  "common-obs/collectables.gc"
  "game/task/task-control.gc"
  "common-obs/process-taskable.gc"

@@ -187,8 +187,8 @@
   )
 
 (define *challenges-options* (new 'static 'boxed-array :type game-option
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-hardcore) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-orbless) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-hardcore) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-damageless) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-pacifist) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-bonkless) :scale #t)
@@ -777,10 +777,10 @@
   (set! (-> *challenges-options* 0 value-to-modify) (&-> *challenges-settings* challenges-orbless?))
   (set! (-> *challenges-options* 1 value-to-modify) (&-> *challenges-settings* challenges-hardcore?))
   (set! (-> *challenges-options* 2 value-to-modify) (&-> *challenges-settings* challenges-damageless?))
+  (set! (-> *challenges-options* 6 value-to-modify) (&-> *challenges-settings* challenges-pacifist?))
   (set! (-> *challenges-options* 3 value-to-modify) (&-> *challenges-settings* challenges-bonkless?))
   (set! (-> *challenges-options* 4 value-to-modify) (&-> *challenges-settings* challenges-casual?))
   (set! (-> *challenges-options* 5 value-to-modify) (&-> *challenges-settings* challenges-mirrormode?))
-  (set! (-> *challenges-options* 6 value-to-modify) (&-> *challenges-settings* challenges-pacifist?))
 
   (set! (-> *camera-options* 0 value-to-modify) (&-> *pc-settings* first-camera-h-inverted?))
   (set! (-> *camera-options* 1 value-to-modify) (&-> *pc-settings* first-camera-v-inverted?))

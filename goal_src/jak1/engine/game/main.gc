@@ -10,6 +10,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;s
 (define-extern racer? symbol)
 (define-extern flutflut? symbol)
+(define-extern *randomizer-version-string* (string))
+(define-extern *release-version-string* (string))
+(define-extern *comment-string* (string))
+
+(defun reset-all ()
+;;(dotimes (i 205) (sound-play-by-name (static-sound-name "caught-eel") (new-sound-id) 1024 0 0 (sound-group sfx) #t))
+(reset! *game-info* 'game (the-as game-save #f) (the-as string #f))
+  (auto-save-command 'auto-save 0 0 *default-pool*)
+  ;;(dotimes (i 205) (sound-play-by-name (static-sound-name "caught-eel") (new-sound-id) 1024 0 0 (sound-group sfx) #t))
+  (none)
+)
 
 (defun set-letterbox-frames ((arg0 time-frame))
   "Set the letterbox frame counter for arg0 frames in the future"
@@ -104,19 +115,18 @@
 
 (if (-> *randomizer-settings* checkpoint-randomizer?)
 (begin
-;;Skip the keira cutscene into if the player has 20 or more cells, or if they have collected the end cell.
-(if (or (>= (-> *game-info* fuel) 20) (task-complete? *game-info* (game-task firecanyon-end)) )
-(begin
-(close-specific-task! (game-task firecanyon-assistant) (task-status need-reward-speech))
+  ;;Skip the keira cutscene into if the player has 20 or more cells, or if they have collected the end cell.
+  (if (or (>= (-> *game-info* fuel) 20) (task-complete? *game-info* (game-task firecanyon-end)) )
+  (begin
+  (close-specific-task! (game-task firecanyon-assistant) (task-status need-reward-speech))
+  ))
 
-))
-;;
-(if (or (>= (-> *game-info* fuel) 20) (task-complete? *game-info* (game-task lavatube-end)) )
-(begin
-(close-specific-task! (game-task lavatube-start) (task-status need-reward-speech))
-))
+  (if (or (>= (-> *game-info* fuel) 20) (task-complete? *game-info* (game-task lavatube-end)) )
+  (begin
+  (close-specific-task! (game-task lavatube-start) (task-status need-reward-speech))
+  ))
 
-(set! racer? (aif *target* (case (-> it next-state name) (
+  (set! racer? (aif *target* (case (-> it next-state name) (
                                       ('target-racing
                                        'target-racing-bounce
                                        'target-racing-death
@@ -126,7 +136,7 @@
                                        'target-racing-jump
                                        'target-racing-smack
                                        'target-racing-start) #t))))
-    (set! flutflut? (aif *target* (case (-> it next-state name) (
+  (set! flutflut? (aif *target* (case (-> it next-state name) (
                                       ('target-flut-air-attack
                                        'target-flut-air-attack-hit-ground
                                        'target-flut-double-jump
@@ -140,11 +150,17 @@
                                        'target-flut-start
                                        'target-flut-walk) #t))))
   
+  ;;force coming out of warp gate for any geyser checkpoint (new game)
+  (if (string= (symbol->string (-> (level-get-target-inside *level*) name)) "training")
+    (set! (-> *game-info* current-continue) (the-as continue-point (get-continue-by-name *game-info* "game-start")))
+    (none)
+  )
+
   ;;clean *stdcon*
   (clear *stdcon*)
   (if (> (-> *game-info* fuel) 0)
     ;; Display the current seed
-    (format *stdcon* "~S~%~D~%" *randomizer-version-string* (-> *randomizer-settings* current-seed))
+    (format *stdcon* "SEED: ~D~%~S ~%~S ~%~S~%~% " (-> *randomizer-settings* current-seed) *randomizer-version-string* *release-version-string* *comment-string*)
   )
   
   (when (-> *randomizer-settings* use-random-seed?)
