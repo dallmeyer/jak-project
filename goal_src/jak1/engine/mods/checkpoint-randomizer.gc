@@ -1,0 +1,256 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+;; name: checkpoint-randomizer.gc
+;; name in dgo: checkpoint-randomizer
+;; dgos: GAME, ENGINE
+
+(define *randomizer-version-string* "Rando 0.08")
+(define *release-version-string* "Release 0.1.18")
+(define *comment-string* "Added first version of orbless")
+(define *checkpoint-list* (the-as (array string) (new
+                                             'static
+                                             'boxed-array
+                                             :type string :length 67 :allocated-length 67
+"game-start"
+"village1-hut"
+"beach-start"
+"beach-start"
+"beach-start"
+"beach-start"
+"jungle-start"
+"jungle-tower"
+"jungle-start"
+"jungle-tower"
+"misty-start"
+"misty-silo"
+"misty-bike"
+"misty-backside"
+"misty-silo2"
+"firecanyon-start"
+"firecanyon-end"
+"village2-start"
+"village2-warp"
+"village2-dock"
+"sunken-start"
+"sunken1"
+"sunken2"
+"sunken-tube1"
+"sunkenb-start"
+"sunkenb-helix"
+"swamp-start"
+"swamp-dock1"
+"swamp-cave1"
+"swamp-dock2"
+"swamp-cave2"
+"swamp-game"
+"swamp-cave3"
+"rolling-start"
+"ogre-start"
+"ogre-race"
+"ogre-end"
+"village3-start"
+"village3-warp"
+"village3-farside"
+"snow-start"
+"snow-fort"
+"snow-flut-flut"
+"snow-pass-to-fort"
+"snow-by-ice-lake"
+"snow-by-ice-lake-alt"
+"snow-outside-fort"
+"snow-outside-cave"
+"snow-across-from-flut"
+"maincave-start"
+"maincave-to-darkcave"
+"maincave-to-robocave"
+"darkcave-start"
+"robocave-start"
+"robocave-bottom"
+"lavatube-start"
+"lavatube-middle"
+"lavatube-after-ribbon"
+"lavatube-end"
+"citadel-start"
+"citadel-entrance"
+"citadel-warp"
+"citadel-launch-start"
+"citadel-launch-end"
+"citadel-generator-start"
+"citadel-generator-end"
+"citadel-elevator"
+)
+)
+)
+
+;; cell-interval serves as a counter, it counts up until it is raul to cells-needed-to-warp, then it warps jak and resets itself to count again
+(define *cell-interval* 0.0)
+(define racer? #f) 
+(define flutflut? #f)
+
+(defun citadelCheck? ((checkpointName string))
+(if 
+(or
+(string= checkpointName "citadel-start")
+(string= checkpointName "citadel-entrance")
+(string= checkpointName "citadel-warp")
+(string= checkpointName "citadel-launch-start")
+(string= checkpointName "citadel-launch-end")
+(string= checkpointName "citadel-plat-start")
+(string= checkpointName "citadel-plat-end")
+(string= checkpointName "citadel-generator-start")
+(string= checkpointName "citadel-generator-end")
+(string= checkpointName "citadel-elevator")
+)
+(return #t)
+(return #f)
+)
+#f
+)
+
+(define *rando-checkpoint-list* (cons '() '()))
+(define *next-rando-checkpoint-node* (cons '() '()))
+
+(defun generateCheckpointList ((seed uint))
+  ;; set the seed which will be used for generating checkpoint list
+  (java-rand-init seed)
+
+  ;; We need to initially generate 96 checkpoints which are NOT citadel, 
+  ;;  just in case the player collects all the 96 non-citadel cells first.
+  ;;  After that, we just need 5 more checkpoints, citadel or otherwise.
+  (define nonCitadelCount 0)
+
+  (define currentListNode *rando-checkpoint-list*)
+  ;; generate checkpoints until we have 96 non-citadel
+  (while (< nonCitadelCount 96)
+    (define tempCheckpointName (-> *checkpoint-list* (java-rand-nextIntRange 0 (-> *checkpoint-list* length))))
+    (if (not (citadelCheck? tempCheckpointName))
+      (+! nonCitadelCount 1)
+    )
+    (set! (car currentListNode) tempCheckpointName) ;; append checkpoint
+    (set! (cdr currentListNode) (cons '() '())) ;; create next node
+    (set! currentListNode (cdr currentListNode)) ;; move current to newly created node
+  )
+  ;; generate any 5 more checkpoints
+  (define tempCount 0)
+  (dotimes (tempCount 5)
+    (define tempCheckpointName (-> *checkpoint-list* (java-rand-nextIntRange 0 (-> *checkpoint-list* length))))
+    (set! (car currentListNode) tempCheckpointName) ;; append checkpoint
+
+    (set! (cdr currentListNode) (cons '() '())) ;; create next node
+    (set! currentListNode (cdr currentListNode)) ;; move current to newly created node
+  )
+
+  (set! *next-rando-checkpoint-node* *rando-checkpoint-list*)
+  (none)
+)
+
+(defun advanceCheckpointList ((n int))
+  (define tempCount 0)
+  (dotimes (tempCount n)
+    (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
+
+    ;; if we're at end of list, reset pointer to head of list
+    (when (null? (car *next-rando-checkpoint-node*))
+      (set! *next-rando-checkpoint-node* *rando-checkpoint-list*)
+    )
+  )
+)
+
+(defun warpToCheckpoint ((checkpointName string))
+  ;; warps to checkpoint, assuming it is already safe to use
+  (format 0 "RANDOMIZER: ...warping to ~A~%" checkpointName)
+  (define checkpoint (get-continue-by-name *game-info* checkpointName))
+  (set! (-> *game-info* current-continue) checkpoint)
+  (start 'play checkpoint)
+)
+
+(defun checkRandomCheckpoint? ((checkpointName string))
+  ;; returns whether the checkpoint is safe to use
+  (if (and (not (task-closed? (game-task citadel-sage-green) (task-status need-hint))) (citadelCheck? checkpointName))
+    (return #f)
+    (return #t)
+  )
+  #f
+)
+
+(defun getNextCheckpoint ()
+  (define checkpointName (car *next-rando-checkpoint-node*))
+  (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
+
+  (while #t
+    ;; if we're at end of list, reset pointer to head of list
+    (when (null? (car *next-rando-checkpoint-node*))
+      (set! *next-rando-checkpoint-node* *rando-checkpoint-list*)
+    )
+    ;; increment number of checkpoints used (intentionally includes any skipped citadel checkpoints)
+    (+! (-> *randomizer-settings* backup-checkpoints-used) 1)
+
+    (if (checkRandomCheckpoint? (the-as string checkpointName))
+      (begin 
+        (format 0 "RANDOMIZER: checkpoint ~A is valid~%" checkpointName)
+        (return checkpointName) ;; break from while loop
+      )
+      (begin
+        (format 0 "RANDOMIZER: checkpoint ~A is NOT valid, will grab the next~%" checkpointName)
+        (set! checkpointName (car *next-rando-checkpoint-node*))
+        (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
+      )
+    )
+  )
+  ""
+)
+
+(defun peekNextCheckpoint ()
+  (car *next-rando-checkpoint-node*)
+)
+
+(defun orchestrateCheckpointWarp ()
+  ;; first fuel cell? need to generate checkpoint list
+  (when (= (-> *game-info* fuel) 1)
+    ;; randomly generate or set seed
+    (if (-> *randomizer-settings* use-random-seed?)
+      (set! (-> *randomizer-settings* current-seed) (java-rand-nextInt))
+      (none)
+    )
+    ;; reset checkpoint counter backup
+    (set! (-> *randomizer-settings* backup-checkpoints-used) 0)
+
+    ;; generate checkpoint list from seed
+    (generateCheckpointList (-> *randomizer-settings* current-seed))
+  )
+
+  ;; in case of crash/closed window/etc, generate from last seed and advance checkpoints
+  (when (null? (peekNextCheckpoint))
+    (format 0 "Regenerating checkpoint list from backup, checkpoints used: ~D~%" (-> *randomizer-settings* backup-checkpoints-used))
+
+    ;; generate checkpoint list from seed
+    (generateCheckpointList (-> *randomizer-settings* current-seed))
+    (advanceCheckpointList (-> *randomizer-settings* backup-checkpoints-used))
+  )
+
+  (set! *cell-interval* (+ *cell-interval* 1))
+
+  (if (>= *cell-interval* (-> *randomizer-settings* cells-needed-to-warp))
+    (begin
+      (format 0 "RANDOMIZER: warping from ~A...~%" (-> *level* level 0 name))
+      (warpToCheckpoint (the-as string (getNextCheckpoint)))
+      (set! *cell-interval* 0.0)
+    )
+  )
+
+  ;; current-seed and backup-checkpoints-used are updated at this point, commit to file in case of crash/closed window
+  (commit-to-file *randomizer-settings*)
+)
+
+(defun checkpointListTest ()
+  ;; If we have random-seed on, update our current seed.
+  (if (-> *randomizer-settings* use-random-seed?)
+        (set! (-> *randomizer-settings* current-seed) (java-rand-nextInt))
+      )
+  ;; Generate a list of checkpoints based on our new updated current-seed
+  (generateCheckpointList (-> *randomizer-settings* current-seed))
+  ;; Print this list of checkpoints to REPL for debugging purposes
+
+  *rando-checkpoint-list*
+)

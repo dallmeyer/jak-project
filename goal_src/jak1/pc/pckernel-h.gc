@@ -481,7 +481,7 @@
     (if (not (file-stream-valid? file))
       (return #f))
 
-    (format file "(settings #x~X~%" (-> *pc-settings* version))
+    (format file "(settings #x~X~%" (-> obj version))
     (format file "  (cells-needed-to-warp ~F)~%" (the-as float(-> obj cells-needed-to-warp)))
     (format file "  (Randomizer? ~A)~%" (-> obj checkpoint-randomizer?))
     (format file "  (use-random-seed? ~A)~%" (-> obj use-random-seed?))
@@ -549,7 +549,7 @@
     (if (not (file-stream-valid? file))
       (return #f))
  
-    (format file "(settings #x~X~%" (-> *pc-settings* version))
+    (format file "(settings #x~X~%" (-> obj version))
     (format file "  (hardcore? ~A)~%" (-> obj challenges-hardcore?))
     (format file "  (orbless? ~A)~%" (-> obj challenges-orbless?))
     (format file "  (pacifist? ~A)~%" (-> obj challenges-pacifist?))
