@@ -6,7 +6,7 @@
 ;; dgos: GAME, ENGINE
 
 (define *randomizer-version-string* "Rando 0.08")
-(define *release-version-string* "Release 0.1.18")
+(define *release-version-string* "Release 0.1.20")
 (define *comment-string* "Added first version of orbless")
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
