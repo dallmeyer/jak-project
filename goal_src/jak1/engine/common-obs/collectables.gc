@@ -1665,13 +1665,6 @@
         )
       )
     (spool-push *art-control* (-> self victory-anim name) 0 self (the-as float -99.0))
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 4cf2cc8d (merge zed patches)
-=======
->>>>>>> 2771b09b (think this merges everything from zeds repo)
   )
 )
     
