@@ -84,7 +84,7 @@
 )
 
 ;; cell-interval serves as a counter, it counts up until it is raul to cells-needed-to-warp, then it warps jak and resets itself to count again
-(define *cell-interval* 0.0)
+(define *cell-interval* 0)
 (define racer? #f) 
 (define flutflut? #f)
 
@@ -145,7 +145,7 @@
   (none)
 )
 
-(defun advanceCheckpointList ((n int))
+(defun advanceCheckpointList ((n uint))
   (define tempCount 0)
   (dotimes (tempCount n)
     (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
@@ -162,7 +162,10 @@
   (format 0 "RANDOMIZER: ...warping to ~A~%" checkpointName)
   (define checkpoint (get-continue-by-name *game-info* checkpointName))
   (set! (-> *game-info* current-continue) checkpoint)
-  (start 'play checkpoint)
+  
+  ;; trigger death to ensure init functions for new level run (misty boat)
+  (initialize! *game-info* 'die (the-as game-save #f) (the-as string #f))
+  (none)
 )
 
 (defun checkRandomCheckpoint? ((checkpointName string))
@@ -213,8 +216,9 @@
       (set! (-> *randomizer-settings* current-seed) (java-rand-nextInt))
       (none)
     )
-    ;; reset checkpoint counter backup
+    ;; reset checkpoint counter backup, cell-interval
     (set! (-> *randomizer-settings* backup-checkpoints-used) 0)
+    (set! *cell-interval* 0)
 
     ;; generate checkpoint list from seed
     (generateCheckpointList (-> *randomizer-settings* current-seed))
@@ -222,20 +226,20 @@
 
   ;; in case of crash/closed window/etc, generate from last seed and advance checkpoints
   (when (null? (peekNextCheckpoint))
-    (format 0 "Regenerating checkpoint list from backup, checkpoints used: ~D~%" (-> *randomizer-settings* backup-checkpoints-used))
+    (format 0 "RANDOMIZER: Regenerating checkpoint list from backup, checkpoints used: ~D~%" (-> *randomizer-settings* backup-checkpoints-used))
 
     ;; generate checkpoint list from seed
     (generateCheckpointList (-> *randomizer-settings* current-seed))
     (advanceCheckpointList (-> *randomizer-settings* backup-checkpoints-used))
   )
 
-  (set! *cell-interval* (+ *cell-interval* 1))
+  (+! *cell-interval* 1)
 
   (if (>= *cell-interval* (-> *randomizer-settings* cells-needed-to-warp))
     (begin
       (format 0 "RANDOMIZER: warping from ~A...~%" (-> *level* level 0 name))
       (warpToCheckpoint (the-as string (getNextCheckpoint)))
-      (set! *cell-interval* 0.0)
+      (set! *cell-interval* 0)
     )
   )
 

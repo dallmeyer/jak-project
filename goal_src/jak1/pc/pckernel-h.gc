@@ -400,10 +400,10 @@
     (
       (version uint64) ;; version of this settings
       (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
-      (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
+      (cells-needed-to-warp int);; number of cells needed to trigger a random checkpoint warp
       (use-random-seed? symbol) ;; boolean (#t = random seed / #f = set seed)
       (current-seed uint) ;; seed used to generate random checkpoint.
-      (backup-checkpoints-used int) ;; backup in case of game crash
+      (backup-checkpoints-used uint) ;; backup in case of game crash
     )
 
     (:methods
@@ -427,7 +427,7 @@
       (return #f))
 
     (format file "(settings #x~X~%" (-> obj version))
-    (format file "  (cells-needed-to-warp ~F)~%" (the-as float(-> obj cells-needed-to-warp)))
+    (format file "  (cells-needed-to-warp ~D)~%" (-> obj cells-needed-to-warp))
     (format file "  (Randomizer? ~A)~%" (-> obj checkpoint-randomizer?))
     (format file "  (use-random-seed? ~A)~%" (-> obj use-random-seed?))
     (format file "  (Seed ~D)~%" (-> obj current-seed))
@@ -457,10 +457,10 @@
 
   (set! (-> obj version) RANDO_SETTINGS_VERSION)
   (set! (-> obj checkpoint-randomizer?) #t)
-  (set! (-> obj cells-needed-to-warp) 1.0)
+  (set! (-> obj cells-needed-to-warp) 1)
   (set! (-> obj use-random-seed?) #t)
   (set! (-> obj current-seed) 42069)
-  (set! (-> obj backup-checkpoints-used) 0)
+  (set! (-> obj backup-checkpoints-used) (the uint 0))
   (none))
 
  (deftype challenges-settings (basic) 
