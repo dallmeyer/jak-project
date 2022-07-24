@@ -5,9 +5,9 @@
 ;; name in dgo: checkpoint-randomizer
 ;; dgos: GAME, ENGINE
 
-(define *randomizer-version-string* "Rando 0.08")
+(define *randomizer-version-string* "Rando 0.09")
 (define *release-version-string* "Release 0.1.20")
-(define *comment-string* "Added first version of orbless")
+(define *comment-string* "Patch misty-boat/citadel-elevator")
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
                                              'boxed-array
@@ -108,6 +108,129 @@
 #f
 )
 
+(defun jak-size-run-each-frame()
+;;Jak size stuff move to seperate file soontm
+(if (and (= (-> (-> (the-as target *target* )root)scale y) 1.0) (-> *challenges-settings* challenges-smalljak?))
+(begin
+(send-event *target* 'sidekick #f)
+(set! (-> (-> (the-as target *target* )root)scale x) 0.3)
+(set! (-> (-> (the-as target *target* )root)scale y) 0.3)
+(set! (-> (-> (the-as target *target* )root)scale z) 0.3)
+)
+)
+
+(if (and (= (-> (-> (the-as target *target* )root)scale y) 0.3) (not(-> *challenges-settings* challenges-smalljak?)))
+(begin
+(send-event *target* 'sidekick #t)
+(set! (-> (-> (the-as target *target* )root)scale x) 1.0)
+(set! (-> (-> (the-as target *target* )root)scale y) 1.0)
+(set! (-> (-> (the-as target *target* )root)scale z) 1.0)
+)
+)
+
+(if (and (= (-> (-> (the-as target *target* )root)scale y) 1.0) (-> *challenges-settings* challenges-bigjak?))
+(begin
+(set! (-> (-> (the-as target *target* )root)scale x) 2.0)
+(set! (-> (-> (the-as target *target* )root)scale y) 2.0)
+(set! (-> (-> (the-as target *target* )root)scale z) 2.0)
+)
+)
+
+(if (and (= (-> (-> (the-as target *target* )root)scale y) 2.0) (not(-> *challenges-settings* challenges-bigjak?)))
+(begin
+(set! (-> (-> (the-as target *target* )root)scale x) 1.0)
+(set! (-> (-> (the-as target *target* )root)scale y) 1.0)
+(set! (-> (-> (the-as target *target* )root)scale z) 1.0)
+)
+)
+
+(if (and (= (-> (-> (the-as target *target* )root)scale x) 1.0) (-> *challenges-settings* challenges-flatjak?))
+(begin
+(set! (-> (-> (the-as target *target* )root)scale x) 0.1)
+)
+)
+
+(if (and (= (-> (-> (the-as target *target* )root)scale x) 0.1) (not(-> *challenges-settings* challenges-flatjak?)))
+(begin
+(set! (-> (-> (the-as target *target* )root)scale x) 1.0)
+)
+)
+
+(if (and (= (-> (-> (the-as target *target* )root)scale z) 1.0) (-> *challenges-settings* challenges-paperjak?))
+(begin
+(set! (-> (-> (the-as target *target* )root)scale z) 0.1)
+)
+)
+
+(if (and (= (-> (-> (the-as target *target* )root)scale z) 0.1) (not(-> *challenges-settings* challenges-paperjak?)))
+(begin
+(set! (-> (-> (the-as target *target* )root)scale z) 1.0)
+)
+)
+(none)
+)
+
+(defun randomizer-run-each-frame ()
+;;Randomzier stuff that needs to run constantly
+(if (-> *randomizer-settings* checkpoint-randomizer?)
+(begin
+  ;;Skip the keira cutscene into if the player has 20 or more cells, or if they have collected the end cell.
+  (if (or (>= (-> *game-info* fuel) 20) (task-complete? *game-info* (game-task firecanyon-end)) )
+  (begin
+    (close-specific-task! (game-task firecanyon-assistant) (task-status need-reward-speech))
+  ))
+  (if (or (>= (-> *game-info* fuel) 20) (task-complete? *game-info* (game-task lavatube-end)) )
+  (begin
+    (close-specific-task! (game-task lavatube-start) (task-status need-reward-speech))
+  ))
+
+  (set! racer? (aif *target* (case (-> it next-state name) (
+                                      ('target-racing
+                                       'target-racing-bounce
+                                       'target-racing-death
+                                       'target-racing-falling
+                                       'target-racing-grab
+                                       'target-racing-hit
+                                       'target-racing-jump
+                                       'target-racing-smack
+                                       'target-racing-start) #t))))
+  (set! flutflut? (aif *target* (case (-> it next-state name) (
+                                      ('target-flut-air-attack
+                                       'target-flut-air-attack-hit-ground
+                                       'target-flut-double-jump
+                                       'target-flut-falling
+                                       'target-flut-grab
+                                       'target-flut-hit
+                                       'target-flut-hit-ground
+                                       'target-flut-jump
+                                       'target-flut-running-attack
+                                       'target-flut-stance
+                                       'target-flut-start
+                                       'target-flut-walk) #t))))
+
+  (if (string= (symbol->string (-> (level-get-target-inside *level*) name)) "training")
+    (set! (-> *game-info* current-continue) (the-as continue-point (get-continue-by-name *game-info* "game-start")))
+    (none)
+  )
+
+  ;;clean *stdcon*
+  (clear *stdcon*)
+  (if (> (-> *game-info* fuel) 0)
+    ;; Display the current seed
+    (if (= *cheat-mode* 'debug)
+      (format *stdcon* "SEED: ~D~%~S ~%~S ~%~S~%~%                                                                                                           "  (-> *randomizer-settings* current-seed) *randomizer-version-string* *release-version-string* *comment-string*)
+      (format *stdcon* "SEED: ~D~%~S ~%~%                                                                                                           "  (-> *randomizer-settings* current-seed) *randomizer-version-string*)
+    )
+  )
+
+  (when (-> *randomizer-settings* use-random-seed?)
+      ;; burn through a random number every frame for improved randomness
+      (java-rand-advance-seed)
+  )
+)
+)
+(none))
+
 (define *rando-checkpoint-list* (cons '() '()))
 (define *next-rando-checkpoint-node* (cons '() '()))
 
@@ -163,7 +286,8 @@
   (define checkpoint (get-continue-by-name *game-info* checkpointName))
   (set! (-> *game-info* current-continue) checkpoint)
   
-  ;; trigger death to ensure init functions for new level run (misty boat)
+  ;; trigger death to warp to checkpoint
+  ;; this ensures init functions for new level run (misty boat, citadel elevator)
   (initialize! *game-info* 'die (the-as game-save #f) (the-as string #f))
   (none)
 )
@@ -257,4 +381,43 @@
   ;; Print this list of checkpoints to REPL for debugging purposes
 
   *rando-checkpoint-list*
+)
+
+(define *counts* (new 'static 'array int 67
+                        0 0 0 0 0 0 0 0 0 0 
+                        0 0 0 0 0 0 0 0 0 0 
+                        0 0 0 0 0 0 0 0 0 0 
+                        0 0 0 0 0 0 0 0 0 0 
+                        0 0 0 0 0 0 0 0 0 0 
+                        0 0 0 0 0 0 0 0 0 0 
+                        0 0 0 0 0 0 0
+                        ))
+(defun java-rand-nextIntRangeTest ((iterations int))
+  (dotimes (temp 67)
+    (set! (-> *counts* temp) 0)
+  )
+
+  (format 0 "Running 'Java' RNG test, generating ints between [0,67) for ~D iterations~%~%" iterations)
+  (dotimes (temp iterations)
+    (+! (-> *counts* (java-rand-nextIntRange 0 (-> *checkpoint-list* length))) 1)
+  )
+
+  (dotimes (temp 67)
+    (format 0 "Idx: ~2D / Count: ~2D~%" temp (-> *counts* temp))
+  )
+)
+
+(defun vu-rand-nextIntRangeTest ((iterations int))
+  (dotimes (temp 67)
+    (set! (-> *counts* temp) 0)
+  )
+
+  (format 0 "Running 'vu' RNG test, generating ints between [0,67) for ~D iterations~%~%" iterations)
+  (dotimes (temp iterations)
+    (+! (-> *counts* (rand-vu-int-range 0 (-> *checkpoint-list* length))) 1)
+  )
+
+  (dotimes (temp 67)
+    (format 0 "Idx: ~2D / Count: ~2D~%" temp (-> *counts* temp))
+  )
 )

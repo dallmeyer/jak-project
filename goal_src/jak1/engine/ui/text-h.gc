@@ -767,7 +767,11 @@
   (challenges-bonkless          #x1406)
   (challenges-casual            #x1407)
   (challenges-mirrormode        #x1408)
-  (challenges-pacifist          #x1409)
+  (challenges-pacifist          #x1409)  
+  (challenges-smalljak          #x1410)
+  (challenges-bigjak            #x1411)
+  (challenges-flatjak           #x1412)
+  (challenges-paperjak          #x1413)
 ;; GAME-TEXT-ID ENUM ENDS
   )
 

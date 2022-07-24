@@ -7,12 +7,14 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Letterbox and blackout
-;;;;;;;;;;;;;;;;;;;;;;;;;;s
-(define-extern racer? symbol)
-(define-extern flutflut? symbol)
-(define-extern *randomizer-version-string* (string))
-(define-extern *release-version-string* (string))
-(define-extern *comment-string* (string))
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define-extern randomizer-run-each-frame (function none))
+(define-extern jak-size-run-each-frame (function (none)))
+
+(defun runMods()
+(randomizer-run-each-frame)
+(jak-size-run-each-frame)
+(none))
 
 (defun reset-all ()
 ;;(dotimes (i 205) (sound-play-by-name (static-sound-name "caught-eel") (new-sound-id) 1024 0 0 (sound-group sfx) #t))
@@ -112,64 +114,7 @@
 
 (define-extern *randomizer-version-string* (string))
 (defun movie? ()
-
-(if (-> *randomizer-settings* checkpoint-randomizer?)
-(begin
-  ;;Skip the keira cutscene into if the player has 20 or more cells, or if they have collected the end cell.
-  (if (or (>= (-> *game-info* fuel) 20) (task-complete? *game-info* (game-task firecanyon-end)) )
-  (begin
-  (close-specific-task! (game-task firecanyon-assistant) (task-status need-reward-speech))
-  ))
-
-  (if (or (>= (-> *game-info* fuel) 20) (task-complete? *game-info* (game-task lavatube-end)) )
-  (begin
-  (close-specific-task! (game-task lavatube-start) (task-status need-reward-speech))
-  ))
-
-  (set! racer? (aif *target* (case (-> it next-state name) (
-                                      ('target-racing
-                                       'target-racing-bounce
-                                       'target-racing-death
-                                       'target-racing-falling
-                                       'target-racing-grab
-                                       'target-racing-hit
-                                       'target-racing-jump
-                                       'target-racing-smack
-                                       'target-racing-start) #t))))
-  (set! flutflut? (aif *target* (case (-> it next-state name) (
-                                      ('target-flut-air-attack
-                                       'target-flut-air-attack-hit-ground
-                                       'target-flut-double-jump
-                                       'target-flut-falling
-                                       'target-flut-grab
-                                       'target-flut-hit
-                                       'target-flut-hit-ground
-                                       'target-flut-jump
-                                       'target-flut-running-attack
-                                       'target-flut-stance
-                                       'target-flut-start
-                                       'target-flut-walk) #t))))
-  
-  ;;force coming out of warp gate for any geyser checkpoint (new game)
-  (if (string= (symbol->string (-> (level-get-target-inside *level*) name)) "training")
-    (set! (-> *game-info* current-continue) (the-as continue-point (get-continue-by-name *game-info* "game-start")))
-    (none)
-  )
-
-  ;;clean *stdcon*
-  (clear *stdcon*)
-  (if (> (-> *game-info* fuel) 0)
-    ;; Display the current seed
-    (format *stdcon* "SEED: ~D~%~S ~%~S ~%~S~%~% " (-> *randomizer-settings* current-seed) *randomizer-version-string* *release-version-string* *comment-string*)
-  )
-  
-  (when (-> *randomizer-settings* use-random-seed?)
-      ;; burn through a random number every frame for improved randomness
-      (java-rand-advance-seed)
-  )
-)
-)
-
+(runMods)
 
   "Are we in a movie?"
   (logtest? (-> *kernel-context* prevent-from-run) (process-mask movie))

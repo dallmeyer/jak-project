@@ -836,8 +836,8 @@
                 (task-complete? *game-info* (game-task jungle-fishgame)) 
                 (and *cheat-mode* (cpad-hold? 0 l3)) 
                 (or
-                  (string= (symbol->string (-> *level* level 0 name)) "misty")
-                  (string= (symbol->string (-> *level* level 1 name)) "misty")
+                  (= (-> *level* level 0 name) 'misty)
+                  (= (-> *level* level 1 name) 'misty)
                 )
                )
                (not (level-hint-displayed?))
