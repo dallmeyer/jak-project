@@ -142,7 +142,7 @@
 (close-specific-task! (game-task beach-ecorocks) (task-status need-introduction))
 ))
 
-;;Unlock citadel door if the randomizer is on. Cutscenes bad.
+;;Unlock citadel door if the randomizer is on. Invis wall is removed elsewhere (racer.gc). Softlocks bad.
 (if (>= *randomizer-items-collected* 1) 
 (begin
 (close-specific-task! (game-task village4-button) (task-status need-hint))
