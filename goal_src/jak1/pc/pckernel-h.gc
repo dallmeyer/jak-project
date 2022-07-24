@@ -403,7 +403,11 @@
       (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
       (use-random-seed? symbol) ;; boolean (#t = random seed / #f = set seed)
       (current-seed uint) ;; seed used to generate random checkpoint.
-      (backup-checkpoints-used uint) ;; backup in case of game crash
+      (backup-checkpoints-used int) ;; backup in case of game crash
+      (warp-on-cell? symbol) ;; warp on cell
+      (warp-on-orb? symbol) ;; warp on orb
+      (warp-on-buzzer? symbol) ;; Warp on scoutfly
+      (collectables-needed-to-warp float);; number of cells/orbs/flies needed to trigger a random checkpoint warp
     )
 
     (:methods
@@ -427,11 +431,15 @@
       (return #f))
 
     (format file "(settings #x~X~%" (-> obj version))
-    (format file "  (cells-needed-to-warp ~F)~%" (-> obj cells-needed-to-warp))
+    ;; left as "cells-needed-to-warp" in settings for backwards compatibility
+    (format file "  (cells-needed-to-warp ~F)~%" (the-as float(-> obj collectables-needed-to-warp)))
     (format file "  (Randomizer? ~A)~%" (-> obj checkpoint-randomizer?))
     (format file "  (use-random-seed? ~A)~%" (-> obj use-random-seed?))
     (format file "  (Seed ~D)~%" (-> obj current-seed))
     (format file "  (backup-checkpoints-used ~D)~%" (-> obj backup-checkpoints-used))
+    (format file "  (WarpOnCell? ~A)~%" (-> obj warp-on-cell?))
+    (format file "  (WarpOnOrb? ~A)~%" (-> obj warp-on-orb?))
+    (format file "  (WarpOnBuzzer? ~A)~%" (-> obj warp-on-buzzer?))
 
     (format file "  )~%")
     (file-stream-close file)
@@ -457,10 +465,13 @@
 
   (set! (-> obj version) RANDO_SETTINGS_VERSION)
   (set! (-> obj checkpoint-randomizer?) #t)
-  (set! (-> obj cells-needed-to-warp) 1.0)
+  (set! (-> obj collectables-needed-to-warp) 1.0)
   (set! (-> obj use-random-seed?) #t)
   (set! (-> obj current-seed) 42069)
-  (set! (-> obj backup-checkpoints-used) (the uint 0))
+  (set! (-> obj backup-checkpoints-used) 0)
+  (set! (-> obj warp-on-cell?) #t)
+  (set! (-> obj warp-on-orb?) #f)
+  (set! (-> obj warp-on-buzzer?) #f)
   (none))
 
  (deftype challenges-settings (basic) 

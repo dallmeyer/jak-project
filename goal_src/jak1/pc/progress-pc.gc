@@ -162,7 +162,7 @@
 (define *misc-options* (new 'static 'boxed-array :type game-option
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id money-starburst) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id discord-rpc) :scale #t)
-    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id checkpoint-randomizer) :scale #t :param3 (game-option-menu randomizer-options))
+    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id checkpoint-randomizer) :scale #t :param3 (game-option-menu randomizer-main-options))
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id custom-challenges) :scale #t :param3 (game-option-menu challenges-options))
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
    
@@ -178,10 +178,20 @@
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
   )
-(define *randomizer-options* (new 'static 'boxed-array :type game-option
+
+(define *randomizer-main-options* (new 'static 'boxed-array :type game-option
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-randomizer) :scale #t)
-    (new 'static 'game-option :name (game-text-id cell-count-to-trigger-warp) :scale #t :param1 1.0 :param2 102.0)
     (new 'static 'game-option :option-type (game-option-type use-random-seed?) :name (game-text-id use-random-seed?) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id randomizer-warp-options) :scale #t :param3 (game-option-menu randomizer-warp-options))
+    (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
+    )
+  )
+
+  (define *randomizer-warp-options* (new 'static 'boxed-array :type game-option
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-warpcells?) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-warporbs?) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-warpbuzzer?) :scale #t)
+    (new 'static 'game-option :name (game-text-id cell-count-to-trigger-warp) :scale #t :param1 1.0 :param2 102.0)
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
   )
@@ -728,7 +738,8 @@
   (set! (-> *options-remap* (progress-screen cheats))                     *cheats*)
   (set! (-> *options-remap* (progress-screen music-player))               *music-player-options*)
   (set! (-> *options-remap* (progress-screen flava-player))               *temp-options*)
-  (set! (-> *options-remap* (progress-screen randomizer-options))         *randomizer-options*)
+  (set! (-> *options-remap* (progress-screen randomizer-main-options))    *randomizer-main-options*)
+  (set! (-> *options-remap* (progress-screen randomizer-warp-options))    *randomizer-warp-options*)
   (set! (-> *options-remap* (progress-screen challenges-options))         *challenges-options*)
   (set! (-> *options-remap* (progress-screen memcard-disable-auto-save))  *yes-no-options*)
   (set! (-> *options-remap* (progress-screen memcard-auto-save-disabled)) *ok-options*)
@@ -773,12 +784,15 @@
   (set! (-> *misc-options* 1 value-to-modify) (&-> *pc-settings* discord-rpc?))
   
   ;;Randomizer menu
-  (set! (-> *randomizer-options* 0 value-to-modify) (&-> *randomizer-settings* checkpoint-randomizer?))
-  (set! (-> *randomizer-options* 1 value-to-modify) (&-> *randomizer-settings* cells-needed-to-warp))
-  (set! (-> *randomizer-options* 2 value-to-modify) (&-> *randomizer-settings* use-random-seed?))
+  (set! (-> *randomizer-main-options* 0 value-to-modify) (&-> *randomizer-settings* checkpoint-randomizer?))
+  (set! (-> *randomizer-main-options* 1 value-to-modify) (&-> *randomizer-settings* use-random-seed?))
+
+  (set! (-> *randomizer-warp-options* 0 value-to-modify) (&-> *randomizer-settings* warp-on-cell?))
+  (set! (-> *randomizer-warp-options* 1 value-to-modify) (&-> *randomizer-settings* warp-on-orb?))
+  (set! (-> *randomizer-warp-options* 2 value-to-modify) (&-> *randomizer-settings* warp-on-buzzer?))
+  (set! (-> *randomizer-warp-options* 3 value-to-modify) (&-> *randomizer-settings* collectables-needed-to-warp))
 
   ;;Challenges menu
-
   (set! (-> *challenges-options* 0 value-to-modify) (&-> *challenges-settings* challenges-orbless?))
   (set! (-> *challenges-options* 1 value-to-modify) (&-> *challenges-settings* challenges-hardcore?))
   (set! (-> *challenges-options* 2 value-to-modify) (&-> *challenges-settings* challenges-damageless?))
@@ -2271,9 +2285,13 @@
          (hide-progress-icons)
          (draw-options self 115 25 0.65)
          )
-        (((progress-screen randomizer-options))
+        (((progress-screen randomizer-main-options))
          (hide-progress-icons)
-         (draw-options self 115 25 0.65)
+            (draw-options self 115 25 0.75)
+         )
+        (((progress-screen randomizer-warp-options))
+         (hide-progress-icons)
+            (draw-options self 115 25 0.75)
          )
         (((progress-screen challenges-options))
          (hide-progress-icons)

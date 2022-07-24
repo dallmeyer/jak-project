@@ -758,6 +758,10 @@
   (use-random-seed?             #x1303)
   (randomizer-random-seed       #x1304)
   (randomizer-set-seed          #x1305)
+  (checkpoint-warpcells?        #x1306)
+  (checkpoint-warporbs?         #x1307)
+  (checkpoint-warpbuzzer?       #x1308)
+  (randomizer-warp-options      #x1309)
 
   ;;Challenges
   (custom-challenges            #x1402)

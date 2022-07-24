@@ -1201,6 +1201,12 @@
     (logclear! (-> self mask) (process-mask actor-pause))
     (clear-collide-with-as (-> self root-override))
     (process-entity-status! self (entity-perm-status dead) #t)
+    ;; if the randomizer is on AND set to warp on orbs, warp the target.
+    (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-orb?))
+    (begin
+       (orchestrateCheckpointWarp) 
+    )
+    )
     (convert-to-hud-object self (the-as hud (ppointer->process (-> *hud-parts* money))))
     (none)
     )
@@ -1605,7 +1611,7 @@
     (logclear! (-> self draw status) (draw-status hidden))
     (process-entity-status! self (entity-perm-status dead) #t)
     (stop! (-> self sound))
-    (if (not (-> *randomizer-settings* checkpoint-randomizer?))
+    (if (not (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-cell?)))
 
     (begin
     (while (handle->process (-> *game-info* other-camera-handle))
@@ -1669,7 +1675,7 @@
 )
     
     (send-event *target* 'get-pickup (-> self fact pickup-type) (-> self fact pickup-amount))
-    (if (not (-> *randomizer-settings* checkpoint-randomizer?))
+    (if (not (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-cell?)))
     (begin
     (set! (-> self draw bounds w) 32768.0)
     (logior! (-> self skel status) (janim-status inited))
@@ -1683,7 +1689,7 @@
     (auto-save-command 'auto-save 0 0 *default-pool*)
 
     ;; play powercell animation if randomizer disabled
-    (if (not (-> *randomizer-settings* checkpoint-randomizer?))
+    (if (not (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-cell?)))
     (begin
           (ja-play-spooled-anim
         (-> self victory-anim)
@@ -1717,7 +1723,7 @@
 
     
     ;; warp to random checkpoint if randomizer enabled
-    (if (-> *randomizer-settings* checkpoint-randomizer?)
+    (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-cell?))
       (orchestrateCheckpointWarp)
     )
 
@@ -2326,6 +2332,11 @@
           )
         )
       )
+    (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-buzzer?))
+    (begin
+       (orchestrateCheckpointWarp) 
+    )
+    )
     (none)
     )
   )
