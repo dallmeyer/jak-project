@@ -225,7 +225,7 @@
 
   (when (-> *randomizer-settings* use-random-seed?)
       ;; burn through a random number every frame for improved randomness
-      (java-rand-advance-seed)
+      (knuth-rand-advance-seed)
   )
 )
 )
@@ -236,7 +236,7 @@
 
 (defun generateCheckpointList ((seed uint))
   ;; set the seed which will be used for generating checkpoint list
-  (java-rand-init seed)
+  (knuth-rand-init seed)
 
   ;; We need to initially generate 96 checkpoints which are NOT citadel, 
   ;;  just in case the player collects all the 96 non-citadel cells first.
@@ -246,7 +246,7 @@
   (define currentListNode *rando-checkpoint-list*)
   ;; generate checkpoints until we have 96 non-citadel
   (while (< nonCitadelCount 96)
-    (define tempCheckpointName (-> *checkpoint-list* (java-rand-nextIntRange 0 (-> *checkpoint-list* length))))
+    (define tempCheckpointName (-> *checkpoint-list* (knuth-rand-nextIntRange 0 (-> *checkpoint-list* length))))
     (if (not (citadelCheck? tempCheckpointName))
       (+! nonCitadelCount 1)
     )
@@ -257,7 +257,7 @@
   ;; generate any 5 more checkpoints
   (define tempCount 0)
   (dotimes (tempCount 5)
-    (define tempCheckpointName (-> *checkpoint-list* (java-rand-nextIntRange 0 (-> *checkpoint-list* length))))
+    (define tempCheckpointName (-> *checkpoint-list* (knuth-rand-nextIntRange 0 (-> *checkpoint-list* length))))
     (set! (car currentListNode) tempCheckpointName) ;; append checkpoint
 
     (set! (cdr currentListNode) (cons '() '())) ;; create next node
@@ -337,7 +337,7 @@
   (when (= (-> *game-info* fuel) 1)
     ;; randomly generate or set seed
     (if (-> *randomizer-settings* use-random-seed?)
-      (set! (-> *randomizer-settings* current-seed) (java-rand-nextInt))
+      (set! (-> *randomizer-settings* current-seed) (knuth-rand-nextInt))
       (none)
     )
     ;; reset checkpoint counter backup, cell-interval
@@ -374,7 +374,7 @@
 (defun checkpointListTest ()
   ;; If we have random-seed on, update our current seed.
   (if (-> *randomizer-settings* use-random-seed?)
-        (set! (-> *randomizer-settings* current-seed) (java-rand-nextInt))
+        (set! (-> *randomizer-settings* current-seed) (knuth-rand-nextInt))
       )
   ;; Generate a list of checkpoints based on our new updated current-seed
   (generateCheckpointList (-> *randomizer-settings* current-seed))
@@ -392,14 +392,14 @@
                         0 0 0 0 0 0 0 0 0 0 
                         0 0 0 0 0 0 0
                         ))
-(defun java-rand-nextIntRangeTest ((iterations int))
+(defun knuth-rand-nextIntRangeTest ((iterations int))
   (dotimes (temp 67)
     (set! (-> *counts* temp) 0)
   )
 
   (format 0 "Running 'Java' RNG test, generating ints between [0,67) for ~D iterations~%~%" iterations)
   (dotimes (temp iterations)
-    (+! (-> *counts* (java-rand-nextIntRange 0 (-> *checkpoint-list* length))) 1)
+    (+! (-> *counts* (knuth-rand-nextIntRange 0 (-> *checkpoint-list* length))) 1)
   )
 
   (dotimes (temp 67)
