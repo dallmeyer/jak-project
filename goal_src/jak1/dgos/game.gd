@@ -265,6 +265,8 @@
   ("collectables-part.o" "collectables-part")
   ("collectables.o" "collectables")
   ("checkpoint-randomizer.o" "checkpoint-randomizer")
+  ("jak-size.o" "jak-size")
+  ("mods-common.o" "mods-common")
   ("task-control.o" "task-control")
   ("process-taskable.o" "process-taskable")
   ("pov-camera.o" "pov-camera")

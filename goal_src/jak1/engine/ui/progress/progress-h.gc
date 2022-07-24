@@ -123,6 +123,8 @@
   (randomizer-warp-options)
   (randomizer-main-options)
   (challenges-options)
+  (mod-options)
+  (mod-options-jak-size)
   (memcard-disable-auto-save)
   (memcard-auto-save-disabled)
   (monitor)

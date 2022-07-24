@@ -378,14 +378,20 @@
         "MIRROR MODE")
 (#x1409 "PACIFIST"
         "PACIFIST")
-(#x1410 "SMALL JAK"
+(#x140a "SMALL JAK"
         "SMALL JAK")
-(#x1411 "BIG JAK"
+(#x140b "BIG JAK"
         "BIG JAK")
-(#x1412 "FLAT JAK"
+(#x140c "FLAT JAK"
         "FLAT JAK")
-(#x1413 "PAPER JAK"
+(#x140d "PAPER JAK"
         "PAPER JAK")  
+(#x1501 "POWER CELL CUTSCENES"
+        "POWER CELL CUTSCENES")
+(#x1502 "JAK SIZE MENU"
+        "JAK SIZE MENU")
+(#x1503 "MOD OPTIONS"
+        "MOD OPTIONS")
 
 ;; -----------------
 ;; test

@@ -1209,7 +1209,73 @@
     (format 0 "[Challenges] Challenges Settings not found at '~S'...initializing with defaults!~%" *pc-temp-string-1*))
   0)
  
+(defmethod new mods-settings ((allocation symbol) (type-to-make type))
+  "make a new mods-settings"
+  (let ((obj (object-new allocation type-to-make (the-as int (-> type-to-make size)))))
+    (reset obj)
+    ;; auto load settings if available
+    ;; if saved settings are corrupted or not found, use defaults
+    (load-settings obj)
+    obj))
 
+(defmethod read-from-file mods-settings ((obj mods-settings) (filename string))
+  "read settings from a file"
+
+  (if (not filename)
+    (return #f))
+
+  (let ((file (new 'stack 'file-stream filename 'read)))
+    (when (not (file-stream-valid? file))
+      (return #f))
+
+    ;;Check version
+    (let ((version RANDO_SETTINGS_VERSION))
+      (with-settings-scope (file)
+        (case-str (file-stream-read-word file)
+          (("settings")
+            (set! version (file-stream-read-int file))
+            (cond
+              ((= (logand version #xffffffff00000000) (logand RANDO_SETTINGS_VERSION #xffffffff00000000))
+                ;; minor difference
+                )
+              (else
+                ;; major difference
+                (format 0 "Mods settings version mismatch! Got ~D.~D vs ~D.~D~%" RANDO_SETTINGS_VERSION_MAJOR RANDO_SETTINGS_VERSION_MINOR (bit-field int version 32 16) (bit-field int version 48 16))
+                (file-stream-close file)
+                (return #f)
+                )
+              )
+              ;;read through the file and set fields
+            (dosettings (file)
+              (case-str *pc-temp-string*
+                (("powercellcutscenes?") (set! (-> obj mod-powercellcutscenes?) (file-stream-read-symbol file)))
+                )
+              )
+            )
+          )
+        )
+
+      )
+      (inspect file)
+    (file-stream-close file)
+    )
+
+  (format 0 "pc settings file read: ~A~%" filename)
+
+  #t
+  )
+
+(defmethod load-settings mods-settings ((obj mods-settings))
+  "load"
+  (format (clear *pc-temp-string-1*) "~S/Mods/mods-settings.gc" *pc-settings-folder*)
+  (if (pc-filepath-exists? *pc-temp-string-1*)
+    (begin
+      (format 0 "[Randomizer] Randomizer Settings found at '~S'...loading!~%" *pc-temp-string-1*)
+      (unless (read-from-file obj *pc-temp-string-1*)
+        (format 0 "[Randomizer] Randomizer Settings found at '~S' but could not be loaded, using defaults!~%" *pc-temp-string-1*)
+        (reset obj)))
+    (format 0 "[Randomizer] Randomizer Settings not found at '~S'...initializing with defaults!~%" *pc-temp-string-1*))
+  0)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; PC settings
@@ -1219,6 +1285,7 @@
 (define *pc-settings* (new 'global 'pc-settings))
 (define *randomizer-settings* (new 'global 'randomizer-settings))
 (define *challenges-settings* (new 'global 'challenges-settings))
+(define *mods-settings* (new 'global 'mods-settings))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
