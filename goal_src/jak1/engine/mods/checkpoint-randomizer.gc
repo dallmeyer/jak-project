@@ -125,41 +125,39 @@
 ;;Randomzier stuff that needs to run constantly
 (if (-> *randomizer-settings* checkpoint-randomizer?)
 (begin
-;;Skip the keira cutscene into if the player has 20 or more cells, or if they have collected the end cell.
+
+;;Skip the keira zoomer cutscenes if the player has 20 or more cells, or if they have collected the end cell.
 (if (or (>= (-> *game-info* fuel) 20) (task-complete? *game-info* (game-task firecanyon-end)) )
 (begin
-(close-specific-task! (game-task firecanyon-assistant) (task-status need-reward-speech))
+  (close-specific-task! (game-task firecanyon-assistant) (task-status need-reward-speech))
 ))
 (if (or (>= (-> *game-info* fuel) 20) (task-complete? *game-info* (game-task lavatube-end)) )
 (begin
-(close-specific-task! (game-task lavatube-start) (task-status need-reward-speech))
+  (close-specific-task! (game-task lavatube-start) (task-status need-reward-speech))
 ))
 
 ;;Skip the samos cutscenes if the randomizer is on. Cutscenes bad.
-(if (>= *randomizer-items-collected* 1) 
-(begin
 (close-specific-task! (game-task intro) (task-status need-resolution))
 (close-specific-task! (game-task beach-ecorocks) (task-status need-introduction))
-))
 
 ;;Unlock citadel door if the randomizer is on. Invis wall is removed elsewhere (racer.gc). Softlocks bad.
-(if (>= *randomizer-items-collected* 1) 
-(begin
-(close-specific-task! (game-task village4-button) (task-status need-hint))
-
-))
+(if (entity-by-name "citb-iris-door-21")
+  ;; rather than trigger the warp gate switch at end of lava tube with:
+  ;;    (close-specific-task! (game-task village4-button) (task-status need-hint))
+  ;;
+  ;; we break the link between the citadel door's state and the warp gate switch, 
+  ;; and then manually open the door
+  (let ((citb-iris-door-21 (the eco-door (-> (entity-by-name "citb-iris-door-21") extra process))))
+    (set! (-> citb-iris-door-21 state-actor) #f)
+    (set! (-> citb-iris-door-21 locked) #f) 
+  )
+)
 
 ;;Skip the citadel cutscenes if the randomizer is on. Cutscenes bad.
-(if (>= *randomizer-items-collected* 1) 
-(begin
 (close-specific-task! (game-task citadel-sage-green) (task-status need-hint))
 (close-specific-task! (game-task citadel-sage-yellow) (task-status need-hint))
 (close-specific-task! (game-task citadel-sage-red) (task-status need-hint))
 (close-specific-task! (game-task citadel-sage-blue) (task-status need-hint))
-
-))
-
-
 
 (set! racer? (aif *target* (case (-> it next-state name) (
                                       ('target-racing

@@ -754,7 +754,7 @@
   
   ;; Randomizer
   (checkpoint-randomizer        #x1301)
-  (cell-count-to-trigger-warp   #x1302)
+  (item-count-to-trigger-warp   #x1302)
   (use-random-seed?             #x1303)
   (randomizer-random-seed       #x1304)
   (randomizer-set-seed          #x1305)
