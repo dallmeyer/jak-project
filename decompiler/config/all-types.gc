@@ -1602,20 +1602,35 @@
   (hint-0                       #x1300)
   (hint-511                     #x14ff)
   
+  ;; Randomizer
   (checkpoint-randomizer        #x1301)
   (item-count-to-trigger-warp   #x1302)
   (use-random-seed?             #x1303)
   (randomizer-random-seed       #x1304)
   (randomizer-set-seed          #x1305)
+  (checkpoint-warpcells?        #x1306)
+  (checkpoint-warporbs?         #x1307)
+  (checkpoint-warpbuzzer?       #x1308)
+  (randomizer-warp-options      #x1309)
 
+  ;;Challenges
   (custom-challenges            #x1402)
   (challenges-orbless           #x1403)
   (challenges-hardcore          #x1404)
   (challenges-damageless        #x1405)
   (challenges-bonkless          #x1406)
   (challenges-casual            #x1407)
-  (challenges-mirrormode        #x1408)
-  (challenges-pacifist          #x1409)
+  (mod-mirrormode               #x1408)
+  (challenges-pacifist          #x1409)  
+  (challenges-smalljak          #x140a)
+  (challenges-bigjak            #x140b)
+  (challenges-flatjak           #x140c)
+  (challenges-paperjak          #x140d)
+
+  ;;Mod settings
+  (mod-powercellcutscenes       #x1501)
+  (mod-options-jak-size-menu    #x1502)
+  (mod-options                  #x1503)
 
 ;; GAME-TEXT-ID ENUM ENDS
   )
@@ -15758,6 +15773,8 @@
   (randomizer-warp-options)
   (randomizer-main-options)
   (challenges-options)
+  (mod-options)
+  (mod-options-jak-size)
   (memcard-disable-auto-save)
   (memcard-auto-save-disabled)
   (monitor)
