@@ -757,16 +757,10 @@
   "read settings from a file"
 
   (if (not filename)
-  (begin
-  (format #t "error~%")
-  (send-event *target* 'get-pickup (pickup-type eco-blue) 5.5)
-    (return #f)))
+    (return #f))
 
   (let ((file (new 'stack 'file-stream filename 'read)))
     (when (not (file-stream-valid? file))
-    (format #t "error2~%")
-
-    (send-event *target* 'get-pickup (pickup-type eco-blue) 5.5)
       (return #f))
 
     (let ((version PC_KERNEL_VERSION))
@@ -782,8 +776,6 @@
                 ;; major difference
                 (format 0 "PC kernel version mismatch! Got ~D.~D vs ~D.~D~%" PC_KERNEL_VERSION_MAJOR PC_KERNEL_VERSION_MINOR (bit-field int version 32 16) (bit-field int version 48 16))
                 (file-stream-close file)
-                (format #t "error4~%")
-                (send-event *target* 'get-pickup (pickup-type eco-blue) 5.5)
                 (return #f)
                 )
               )
@@ -896,8 +888,6 @@
                     (reset obj)
                     (write-to-file obj filename)
                     (set-display-mode! obj #f)
-                    (format #t "error3~%")
-                    (send-event *target* 'get-pickup (pickup-type eco-blue) 5.5)
                     (return #f)
                     )
                   )
@@ -1092,7 +1082,7 @@
                 )
               (else
                 ;; major difference
-                (format 0 "Randomizers settings version mismatch! Got ~D.~D vs ~D.~D~%" RANDO_SETTINGS_VERSION_MAJOR RANDO_SETTINGS_VERSION_MINOR (bit-field int version 32 16) (bit-field int version 48 16))
+                (format 0 "Randomizer settings version mismatch! Got ~D.~D vs ~D.~D~%" RANDO_SETTINGS_VERSION_MAJOR RANDO_SETTINGS_VERSION_MINOR (bit-field int version 32 16) (bit-field int version 48 16))
                 (file-stream-close file)
                 (return #f)
                 )
