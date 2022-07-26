@@ -400,7 +400,6 @@
     (
       (version uint64) ;; version of this settings
       (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
-      (cells-needed-to-warp float);; number of cells needed to trigger a random checkpoint warp
       (use-random-seed? symbol) ;; boolean (#t = random seed / #f = set seed)
       (current-seed uint) ;; seed used to generate random checkpoint.
       (backup-checkpoints-used int) ;; backup in case of game crash
@@ -590,7 +589,6 @@
       (return #f))
 
     (format file "(settings #x~X~%" (-> obj version))
-    ;; left as "cells-needed-to-warp" in settings for backwards compatibility
     (format file "  (powercellcutscenes? ~A)~%" (-> obj mod-powercellcutscenes?))
     (format file "  )~%")
     (file-stream-close file)
