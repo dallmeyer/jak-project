@@ -112,7 +112,6 @@
           )
   )
 
-(define-extern *randomizer-version-string* (string))
 (defun movie? ()
 (runMods)
 
