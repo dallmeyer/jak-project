@@ -6152,7 +6152,7 @@
    )
   :method-count-assert 29
   :size-assert         #x118
-  :flag-assert         #x1e00000118
+  :flag-assert         #x1d00000118
   (:methods
     (dummy-9 () none 9)
     (dummy-10 () none 10)
