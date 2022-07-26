@@ -6150,7 +6150,7 @@
    (death-pos             basic      :offset-assert 272)
    (allow-progress        basic      :offset-assert 276)
    )
-  :method-count-assert 30
+  :method-count-assert 29
   :size-assert         #x118
   :flag-assert         #x1e00000118
   (:methods
@@ -6174,8 +6174,6 @@
     (dummy-26 () none 26)
     (dummy-27 () none 27)
     (dummy-28 () none 28)
-    (dummy-29 () none 29)
-    (dummy-29 () none 29)
     )
   )
 
