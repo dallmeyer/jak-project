@@ -443,8 +443,8 @@
         object
         (cond
           ((= v1-0 'attack)
-           (case (-> arg3 param 1)
-             (('explode)
+           (if (or (-> *randomizer-settings* checkpoint-randomizer?) (= (-> arg3 param 1) 'explode))
+            (begin
               (let ((a0-2 (handle->process (-> self fuel-cell))))
                 (if a0-2
                     (send-event a0-2 'trans (-> self root-override trans))
@@ -453,7 +453,7 @@
               (go pelican-explode #f)
               #f
               )
-             (else
+             (begin
                (let* ((gp-0 arg0)
                       (v1-13 (if (and (nonzero? gp-0) (type-type? (-> gp-0 type) process-drawable))
                                  gp-0
