@@ -227,7 +227,16 @@
                       )
                   )
         (pos-logic self #t)
-        (suspend)
+        ;; if the randomizer is on AND set to warp on orbs AND that was the last orb, warp the target.
+        (if (and 
+            (-> *randomizer-settings* checkpoint-randomizer?) 
+            (-> *randomizer-settings* warp-on-orb?)
+            (zero? (-> self money))
+          )
+          (orchestrateCheckpointWarp)
+          ;; else original logic
+          (suspend)
+        )
         )
       (calculate-pos self #f)
       (while (and (not (and (and *target* (>= (-> self active-distance)

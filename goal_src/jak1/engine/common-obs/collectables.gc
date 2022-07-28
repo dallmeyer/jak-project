@@ -1195,20 +1195,25 @@
 (defstate pickup (money)
   :virtual #t
   :code (behavior ((arg0 object) (arg1 handle))
-    (if (nonzero? (-> self part))
-        (kill-and-free-particles (-> self part))
+    (let ((money-parent (ppointer->process (-> self parent))))
+      (if (nonzero? (-> self part))
+          (kill-and-free-particles (-> self part))
+          )
+      (logclear! (-> self mask) (process-mask actor-pause))
+      (clear-collide-with-as (-> self root-override))
+      (process-entity-status! self (entity-perm-status dead) #t)
+      ;; if the randomizer is on AND set to warp on orbs AND this isn't from an orb cache, warp the target.
+      ;; see orb-cache.gc for how those warps are handled
+      (when (and 
+          (-> *randomizer-settings* checkpoint-randomizer?) 
+          (-> *randomizer-settings* warp-on-orb?)
+          (!= (-> money-parent type) orb-cache-top)
         )
-    (logclear! (-> self mask) (process-mask actor-pause))
-    (clear-collide-with-as (-> self root-override))
-    (process-entity-status! self (entity-perm-status dead) #t)
-    ;; if the randomizer is on AND set to warp on orbs, warp the target.
-    (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-orb?))
-    (begin
-       (orchestrateCheckpointWarp) 
+        (orchestrateCheckpointWarp)
+      )
+      (convert-to-hud-object self (the-as hud (ppointer->process (-> *hud-parts* money))))
+      (none)
     )
-    )
-    (convert-to-hud-object self (the-as hud (ppointer->process (-> *hud-parts* money))))
-    (none)
     )
   )
 

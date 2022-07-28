@@ -191,7 +191,7 @@
 
   ;;clean *stdcon*
   (clear *stdcon*)
-  (if (> (-> *game-info* fuel) 0)
+  (if (> *randomizer-items-collected* 0)
     ;; Display the current seed
     (if (= *cheat-mode* 'debug)
       (format *stdcon* "SEED: ~D~%~S ~%~S ~%~S~%~%                                                                                                           "  (-> *randomizer-settings* current-seed) *randomizer-version-string* *release-version-string* *comment-string*)
