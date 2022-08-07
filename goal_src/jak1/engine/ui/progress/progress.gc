@@ -834,7 +834,7 @@
                         (= v1-2 (progress-screen camera-options))
                         (= v1-2 (progress-screen randomizer-main-options))
                         (= v1-2 (progress-screen randomizer-warp-options))
-                        (= v1-2 (progress-screen challenges-options)) 
+                        (= v1-2 (progress-screen challenges-options))
                         (= v1-2 (progress-screen mod-options))
                         (= v1-2 (progress-screen mod-options-jak-size))
                         (= v1-2 (progress-screen accessibility-options))

@@ -234,7 +234,7 @@
             (zero? (-> self money))
           )
           (orchestrateCheckpointWarp)
-          ;; else original logic
+          ;; else, original logic
           (suspend)
         )
         )

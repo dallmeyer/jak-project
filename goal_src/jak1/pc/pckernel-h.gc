@@ -473,7 +473,7 @@
   (set! (-> obj warp-on-buzzer?) #f)
   (none))
 
- (deftype challenges-settings (basic) 
+ (deftype challenges-settings (basic)
     ((version uint64) ;; version of this settings
     (challenges-hardcore? symbol)
     (challenges-orbless? symbol)

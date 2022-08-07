@@ -771,7 +771,7 @@
   (challenges-bonkless          #x1406)
   (challenges-casual            #x1407)
   (mod-mirrormode               #x1408)
-  (challenges-pacifist          #x1409)  
+  (challenges-pacifist          #x1409)
   (challenges-smalljak          #x140a)
   (challenges-bigjak            #x140b)
   (challenges-flatjak           #x140c)

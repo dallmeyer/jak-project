@@ -1191,7 +1191,7 @@
     (none)
     )
   )
-
+  
 (define-extern orb-cache-top (type))
 (defstate pickup (money)
   :virtual #t
@@ -1617,14 +1617,7 @@
     (logclear! (-> self draw status) (draw-status hidden))
     (process-entity-status! self (entity-perm-status dead) #t)
     (stop! (-> self sound))
-    (if 
-      (and 
-        (not (and 
-            (-> *randomizer-settings* checkpoint-randomizer?) 
-            (-> *randomizer-settings* warp-on-cell?) 
-         ))
-        (not (-> *mods-settings* mod-powercellcutscenes?))
-      )
+    (if (enable-no-powercell-cutscenes)
 
     (begin
     (while (handle->process (-> *game-info* other-camera-handle))
@@ -1689,13 +1682,7 @@
     
     (send-event *target* 'get-pickup (-> self fact pickup-type) (-> self fact pickup-amount))
     (if 
-      (and 
-        (not (and 
-            (-> *randomizer-settings* checkpoint-randomizer?) 
-            (-> *randomizer-settings* warp-on-cell?) 
-         ))
-        (not (-> *mods-settings* mod-powercellcutscenes?))
-      ) 
+    (enable-no-powercell-cutscenes)
     (begin
     (set! (-> self draw bounds w) 32768.0)
     (logior! (-> self skel status) (janim-status inited))
@@ -1710,25 +1697,14 @@
 
     ;; play powercell animation if randomizer disabled
     (if 
-      (and 
-        (not (and 
-            (-> *randomizer-settings* checkpoint-randomizer?) 
-            (-> *randomizer-settings* warp-on-cell?) 
-         ))
-        (not (-> *mods-settings* mod-powercellcutscenes?))
-      ) 
+     (enable-no-powercell-cutscenes)
       (begin
           (ja-play-spooled-anim
         (-> self victory-anim)
         (the-as art-joint-anim (-> self draw art-group data 2))
         (the-as art-joint-anim #f)
         (the-as (function process-drawable symbol) false-func)
-
-      )
-
-    )
-
-    )
+        )))
 
  (if (and (not flutflut?) (not racer?)) 
  (begin
@@ -2008,22 +1984,22 @@
       )
     (case (the int (-> self fact pickup-amount))
       (((game-task citadel-sage-blue))
-      (if (not (-> *randomizer-settings* checkpoint-randomizer?))
+      (if (not enable-citadel-cutscene-skips)
        (send-event (process-by-name "blue-sagecage-1" *active-pool*) 'play-anim)
       )
        )
       (((game-task citadel-sage-red))
-        (if (not (-> *randomizer-settings* checkpoint-randomizer?))
+        (if (not enable-citadel-cutscene-skips)
        (send-event (process-by-name "red-sagecage-1" *active-pool*) 'play-anim)
       )
        )
       (((game-task citadel-sage-yellow))
-      (if (not (-> *randomizer-settings* checkpoint-randomizer?))
+    (if (not enable-citadel-cutscene-skips)
        (send-event (process-by-name "yellow-sagecage-1" *active-pool*) 'play-anim)
       )
        )
       (((game-task citadel-sage-green))
-      (if (not (-> *randomizer-settings* checkpoint-randomizer?))
+    (if (not enable-citadel-cutscene-skips)
        (send-event (process-by-name "green-sagecage-1" *active-pool*) 'play-anim)
       )
        )

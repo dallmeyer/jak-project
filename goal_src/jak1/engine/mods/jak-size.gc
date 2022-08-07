@@ -1,3 +1,10 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+;; name: jak-size.gc
+;; name in dgo: main
+;; dgos: GAME, ENGINE
+
 (defun jak-size-run-each-frame()
 ;;Jak size stuff move to seperate file soontm
 (if (and (= (-> (-> (the-as target *target* )root)scale y) 1.0) (-> *challenges-settings* challenges-smalljak?))
