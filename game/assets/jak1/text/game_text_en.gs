@@ -385,7 +385,7 @@
 (#x140c "FLAT JAK"
         "FLAT JAK")
 (#x140d "PAPER JAK"
-        "PAPER JAK")  
+        "PAPER JAK")
 (#x1501 "POWER CELL CUTSCENES"
         "POWER CELL CUTSCENES")
 (#x1502 "JAK SIZE MENU"
