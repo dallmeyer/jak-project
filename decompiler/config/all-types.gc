@@ -15813,7 +15813,6 @@
   (use-random-seed?)
   (cheat-toggle)
   (monitor)
-  (randomizer-logic)
   )
 
 (defenum game-option-menu
