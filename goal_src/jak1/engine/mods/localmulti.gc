@@ -20,19 +20,18 @@
                 )
   )
 
-
-#|
 (defun start3 ()
   (process-spawn
                 target
                :init init-target
-                (the continue-point #f)
+                (-> *game-info* current-continue)
                 :from *target-dead-pool*
                 :to *target-pool*
                 :stack *kernel-dram-stack*
                 )
   )
 
+#|
 (defun start4 ()
   (process-spawn
                 target
@@ -49,8 +48,9 @@
 |#
 
 (define-extern *target2* target)
-(define twoJak? 'symbol )
-(set! twoJak? #f)
+(define-extern *target3* target)
+(define multiJak? 'symbol)
+(set! multiJak? #f)
 
 
 (defun warpToMainJak ()
@@ -85,28 +85,33 @@
 (none))
 
 (defun localmulti-run-eachframe()
-;;Jak size stuff move to seperate file soontm
-(move-multi-jak)
-
+(when multiJak?
+  ;;Jak size stuff move to seperate file soontm
+  (move-multi-jak)
+)
 )
 
 (defun localmulti2-start ()
 (define *target2* (-> (start2) 0))
-(set! twoJak? #t)
+(set! multiJak? #t)
 (set! (-> *target2* control unknown-cpad-info00) (-> *cpad-list* cpads 1))
 
 
 )
 
-#|
 (defun localmulti3-start ()
-(define *target3* (-> (start3) 1))
-;;(set! (-> *target3* control unknown-cpad-info00) (-> *cpad-list* cpads 2))
+(localmulti2-start)
+
+(define *target3* (-> (start3) 0))
+(set! (-> *target3* control unknown-cpad-info00) (-> *cpad-list* cpads 2))
 )
 
+#|
 (defun localmulti4-start ()
-(define *target4* (-> (start4) 2))
-;;(set! (-> *target4* control unknown-cpad-info00) (-> *cpad-list* cpads 3))
+(localmulti3-start)
+
+(define *target4* (-> (start4) 0))
+(set! (-> *target4* control unknown-cpad-info00) (-> *cpad-list* cpads 3))
 
 )
 |#
