@@ -11,11 +11,13 @@
 (define-extern randomizer-run-each-frame (function none))
 (define-extern jak-size-run-each-frame (function (none)))
 (define-extern mods-common-run-each-frame (function (none)))
-
+(define-extern localmulti-run-eachframe (function (none)))
+(define-extern twoJak? symbol )
 (defun runMods()
 (randomizer-run-each-frame)
 (jak-size-run-each-frame)
 (mods-common-run-each-frame)
+(if twoJak? (localmulti-run-eachframe))
 (none))
 
 (defun reset-all ()

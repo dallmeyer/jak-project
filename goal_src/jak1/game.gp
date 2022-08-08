@@ -1949,6 +1949,7 @@
  "mods/mods-common.gc"
  "mods/checkpoint-randomizer.gc"
  "mods/jak-size.gc"
+ "mods/localmulti.gc"
  "common-obs/collectables.gc"
  "game/task/task-control.gc"
  "common-obs/process-taskable.gc"

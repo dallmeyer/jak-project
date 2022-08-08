@@ -271,6 +271,7 @@
   ("mods-common.o" "mods-common")
   ("checkpoint-randomizer.o" "checkpoint-randomizer")
   ("jak-size.o" "jak-size")
+  ("localmulti.o" "localmulti")
   ("task-control.o" "task-control")
   ("process-taskable.o" "process-taskable")
   ("pov-camera.o" "pov-camera")

@@ -1,0 +1,112 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+;; name: localmulti.gc
+;; name in dgo: main
+;; dgos: GAME, ENGINE
+
+
+
+
+
+(defun start2 ()
+  (process-spawn
+                target
+               :init init-target
+                (-> *game-info* current-continue)
+                :from *target-dead-pool*
+                :to *target-pool*
+                :stack *kernel-dram-stack*
+                )
+  )
+
+
+#|
+(defun start3 ()
+  (process-spawn
+                target
+               :init init-target
+                (the continue-point #f)
+                :from *target-dead-pool*
+                :to *target-pool*
+                :stack *kernel-dram-stack*
+                )
+  )
+
+(defun start4 ()
+  (process-spawn
+                target
+               :init init-target
+                (the continue-point #f)
+                :from *target-dead-pool*
+                :to *target-pool*
+                :stack *kernel-dram-stack*
+                )
+  )
+
+
+
+|#
+
+(define-extern *target2* target)
+(define twoJak? 'symbol )
+(set! twoJak? #f)
+
+
+(defun warpToMainJak ()
+      (set! (-> (-> *target* root) trans x) (-> (-> *target2* root) trans x))
+          (set! (-> (-> *target* root) trans y) (-> (-> *target2* root) trans y))
+          (set! (-> (-> *target* root) trans z) (-> (-> *target2* root) trans z))
+(none)
+
+)
+
+(defun move-multi-jak()
+          (define xyz-dist 0.0)
+          (define  xz-dist 0.0)
+          (define   y-dist 0.0)
+          (define j-vec (new 'static 'vector))
+          
+          (set! (-> j-vec x) (-> (-> *target2* root) trans x))
+          (set! (-> j-vec y) (-> (-> *target2* root) trans y))
+          (set! (-> j-vec z) (-> (-> *target2* root) trans z))
+
+
+           (set! xyz-dist (vector-vector-distance j-vec (target-pos 0)) )
+            (set!  xz-dist (vector-vector-xz-distance j-vec (target-pos 0)) )
+            (set!   y-dist (- (-> (target-pos 0) y) (-> j-vec y)) )
+
+            (if (> xyz-dist (meters 55.0)) 
+
+            (warpToMainJak)
+            )
+
+
+(none))
+
+(defun localmulti-run-eachframe()
+;;Jak size stuff move to seperate file soontm
+(move-multi-jak)
+
+)
+
+(defun localmulti2-start ()
+(define *target2* (-> (start2) 0))
+(set! twoJak? #t)
+(set! (-> *target2* control unknown-cpad-info00) (-> *cpad-list* cpads 1))
+
+
+)
+
+#|
+(defun localmulti3-start ()
+(define *target3* (-> (start3) 1))
+;;(set! (-> *target3* control unknown-cpad-info00) (-> *cpad-list* cpads 2))
+)
+
+(defun localmulti4-start ()
+(define *target4* (-> (start4) 2))
+;;(set! (-> *target4* control unknown-cpad-info00) (-> *cpad-list* cpads 3))
+
+)
+|#
