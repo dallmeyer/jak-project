@@ -327,7 +327,7 @@ void clear_pad(int pad) {
 void update_gamepads() {
   check_gamepads();
 
-  for (i = 0; i < CONTROLLER_COUNT; i++) {
+  for (int i = 0; i < CONTROLLER_COUNT; i++) {
     if (g_gamepads.gamepad_idx[i] == -1) {
       clear_pad(i);
     }
