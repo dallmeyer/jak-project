@@ -68,7 +68,7 @@
   (> xyz-dist (meters 55.0))
 )
 
-(defun move-multi-jak()
+(defun localmulti-run-eachframe()
   (if (and (> jakCount 1) (check-multi-jak-dist *target2*))
     (warp-jakA-to-jakB *target2* *target*)
   )
@@ -78,14 +78,9 @@
   (if (and (> jakCount 3) (check-multi-jak-dist *target4*))
     (warp-jakA-to-jakB *target4* *target*)
   )
-(none))
+  (none)
+  )
 
-(defun localmulti-run-eachframe()
-(when (> jakCount 1)
-  ;;Jak size stuff move to seperate file soontm
-  (move-multi-jak)
-)
-)
 
 (defun localmulti2-start ()
   (when (< jakCount 2)
