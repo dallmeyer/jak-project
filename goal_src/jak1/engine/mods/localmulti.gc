@@ -6,9 +6,6 @@
 ;; dgos: GAME, ENGINE
 
 
-
-
-
 (defun start2 ()
   (process-spawn
                 target
@@ -31,87 +28,92 @@
                 )
   )
 
-#|
+
 (defun start4 ()
   (process-spawn
                 target
                :init init-target
-                (the continue-point #f)
+                (-> *game-info* current-continue)
                 :from *target-dead-pool*
                 :to *target-pool*
                 :stack *kernel-dram-stack*
                 )
   )
 
-
-
-|#
-
 (define-extern *target2* target)
 (define-extern *target3* target)
-(define multiJak? 'symbol)
-(set! multiJak? #f)
+(define-extern *target4* target)
+(define jakCount 1)
 
+(defun warp-jakA-to-jakB ((jakA target) (jakB target))
+      (set! (-> (-> jakA root) trans x) (-> (-> jakB root) trans x))
+      (set! (-> (-> jakA root) trans y) (-> (-> jakB root) trans y))
+      (set! (-> (-> jakA root) trans z) (-> (-> jakB root) trans z))
+)
 
-(defun warpToMainJak ()
-      (set! (-> (-> *target* root) trans x) (-> (-> *target2* root) trans x))
-          (set! (-> (-> *target* root) trans y) (-> (-> *target2* root) trans y))
-          (set! (-> (-> *target* root) trans z) (-> (-> *target2* root) trans z))
-(none)
+(defun check-multi-jak-dist ((jak target))
+  (define xyz-dist 0.0)
+  (define  xz-dist 0.0)
+  (define   y-dist 0.0)
+  (define j-vec (new 'static 'vector))
+  
+  (set! (-> j-vec x) (-> (-> jak root) trans x))
+  (set! (-> j-vec y) (-> (-> jak root) trans y))
+  (set! (-> j-vec z) (-> (-> jak root) trans z))
 
+  (set! xyz-dist (vector-vector-distance j-vec (target-pos 0)) )
+  (set!  xz-dist (vector-vector-xz-distance j-vec (target-pos 0)) )
+  (set!   y-dist (- (-> (target-pos 0) y) (-> j-vec y)) )
+
+  (> xyz-dist (meters 55.0))
 )
 
 (defun move-multi-jak()
-          (define xyz-dist 0.0)
-          (define  xz-dist 0.0)
-          (define   y-dist 0.0)
-          (define j-vec (new 'static 'vector))
-          
-          (set! (-> j-vec x) (-> (-> *target2* root) trans x))
-          (set! (-> j-vec y) (-> (-> *target2* root) trans y))
-          (set! (-> j-vec z) (-> (-> *target2* root) trans z))
-
-
-           (set! xyz-dist (vector-vector-distance j-vec (target-pos 0)) )
-            (set!  xz-dist (vector-vector-xz-distance j-vec (target-pos 0)) )
-            (set!   y-dist (- (-> (target-pos 0) y) (-> j-vec y)) )
-
-            (if (> xyz-dist (meters 55.0)) 
-
-            (warpToMainJak)
-            )
-
-
+  (if (and (> jakCount 1) (check-multi-jak-dist *target2*))
+    (warp-jakA-to-jakB *target2* *target*)
+  )
+  (if (and (> jakCount 2) (check-multi-jak-dist *target3*))
+    (warp-jakA-to-jakB *target3* *target*)
+  )
+  (if (and (> jakCount 3) (check-multi-jak-dist *target4*))
+    (warp-jakA-to-jakB *target4* *target*)
+  )
 (none))
 
 (defun localmulti-run-eachframe()
-(when multiJak?
+(when (> jakCount 1)
   ;;Jak size stuff move to seperate file soontm
   (move-multi-jak)
 )
 )
 
 (defun localmulti2-start ()
-(define *target2* (-> (start2) 0))
-(set! multiJak? #t)
-(set! (-> *target2* control unknown-cpad-info00) (-> *cpad-list* cpads 1))
-
-
+  (when (< jakCount 2)
+    (define *target2* (-> (start2) 0))
+    (set! jakCount 2)
+    (set! (-> *target2* control unknown-cpad-info00) (-> *cpad-list* cpads 1))
+  )
+  (send-event *camera* 'change-target *target*)
 )
 
 (defun localmulti3-start ()
-(localmulti2-start)
+  (when (< jakCount 3)
+    (localmulti2-start)
 
-(define *target3* (-> (start3) 0))
-(set! (-> *target3* control unknown-cpad-info00) (-> *cpad-list* cpads 2))
+    (define *target3* (-> (start3) 0))
+    (set! jakCount 3)
+    (set! (-> *target3* control unknown-cpad-info00) (-> *cpad-list* cpads 2))
+  )
+  (send-event *camera* 'change-target *target*)
 )
 
-#|
 (defun localmulti4-start ()
-(localmulti3-start)
+  (when (< jakCount 4)
+    (localmulti3-start)
 
-(define *target4* (-> (start4) 0))
-(set! (-> *target4* control unknown-cpad-info00) (-> *cpad-list* cpads 3))
-
+    (define *target4* (-> (start4) 0))
+    (set! jakCount 4)
+    (set! (-> *target4* control unknown-cpad-info00) (-> *cpad-list* cpads 3))
+  )
+  (send-event *camera* 'change-target *target*)
 )
-|#

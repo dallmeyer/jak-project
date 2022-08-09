@@ -277,7 +277,7 @@ void check_gamepads() {
     if (g_gamepads.gamepad_idx[pad] == -1) {
       for (int i = GLFW_JOYSTICK_1; i <= GLFW_JOYSTICK_LAST; i++) {
         if (g_gamepads.glfw_joystick_used[i]) {
-          lg::info("Joystick {} has already been used", i);
+          // lg::info("Joystick {} has already been used", i);
           continue;
         }
         if (glfwJoystickPresent(i) && glfwJoystickIsGamepad(i)) {
