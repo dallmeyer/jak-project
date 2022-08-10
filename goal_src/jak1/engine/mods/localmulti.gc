@@ -69,6 +69,18 @@
 )
 
 (defun localmulti-run-eachframe()
+
+;;If the camera is not focus on the main target (id 1375524), then set the cameras focus to the  main target.
+;;todo this breaks pelican cutscene we can easily fix later.
+(if (and (not (= (-> *camera* drawable-target ) 1375524)) (> jakCount 1))(set! (-> *camera* drawable-target) (the handle 1375524)))
+
+;;If the camera is not set to cam-stick and we have more than one jak, then set it to cam-stick
+;;Todo fix allow camera zooming with triangle.
+;;This make the spawning in process MUCH better
+;;Not sure at this time if we want to move forward with this and fix it, or solve it another way...
+(if (and (not (= (-> (-> (-> (the-as (pointer camera-slave) (-> *camera* child)))state)name) 'cam-stick)) (> jakCount 1))(begin (send-event *camera* 'change-state cam-stick 0)))
+
+
   (if (and (> jakCount 1) (check-multi-jak-dist *target2*))
     (warp-jakA-to-jakB *target2* *target*)
   )
@@ -81,11 +93,44 @@
   (none)
   )
 
+(defun draw-xyz ((jak target) (x float) (y float) (z float))
+  (set! (-> jak draw color-mult x) x)
+  (set! (-> jak draw color-mult y) y)
+  (set! (-> jak draw color-mult z) z)
+)
+(defun draw-normal ((jak target))
+  (draw-xyz jak 1.0 1.0 1.0)
+)
+(defun draw-white ((jak target))
+  (draw-xyz jak 10.0 10.0 10.0)
+)
+(defun draw-black ((jak target))
+  (draw-xyz jak -10.0 -10.0 -10.0)
+)
+(defun draw-yellow ((jak target))
+  (draw-xyz jak 10.0 10.0 1.0)
+)
+(defun draw-blue ((jak target))
+  (draw-xyz jak -10.0 -10.0 1.0)
+)
+(defun draw-pink ((jak target))
+  (draw-xyz jak 10.0 1.0 10.0)
+)
+(defun draw-green ((jak target))
+  (draw-xyz jak -10.0 1.0 -10.0)
+)
+(defun draw-light-green ((jak target))
+  (draw-xyz jak 1.0 10.0 10.0)
+)
+(defun draw-red ((jak target))
+  (draw-xyz jak 1.0 -10.0 -10.0)
+)
 
 (defun localmulti2-start ()
   (when (< jakCount 2)
     (define *target2* (-> (start2) 0))
     (set! jakCount 2)
+    (draw-red *target2*)
     (set! (-> *target2* control unknown-cpad-info00) (-> *cpad-list* cpads 1))
   )
   (send-event *camera* 'change-target *target*)
@@ -97,6 +142,7 @@
 
     (define *target3* (-> (start3) 0))
     (set! jakCount 3)
+    (draw-green *target3*)
     (set! (-> *target3* control unknown-cpad-info00) (-> *cpad-list* cpads 2))
   )
   (send-event *camera* 'change-target *target*)
@@ -108,6 +154,7 @@
 
     (define *target4* (-> (start4) 0))
     (set! jakCount 4)
+    (draw-blue *target4*)
     (set! (-> *target4* control unknown-cpad-info00) (-> *cpad-list* cpads 3))
   )
   (send-event *camera* 'change-target *target*)
