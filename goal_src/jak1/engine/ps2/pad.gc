@@ -266,7 +266,7 @@
 ;; the four controllers
 (define *cpad-list* (new 'global 'cpad-list))
 
-;; weird leftover debug thing, enabling overrides the x position of both sticks on both controllers.
+;; weird leftover debug thing, enabling overrides the x position of both sticks on all controllers.
 (define *cpad-debug* #f)
 
 (#if PC_PORT

@@ -32,7 +32,7 @@ bool g_gamepad_buttons[CONTROLLER_COUNT][(int)Button::Max] = {{0}};
 float g_gamepad_analogs[CONTROLLER_COUNT][(int)Analog::Max] = {{0}};
 
 struct GamepadState {
-  int gamepad_idx[CONTROLLER_COUNT] = {-1};
+  int gamepad_idx[CONTROLLER_COUNT] = {-1, -1, -1, -1};
   bool glfw_joystick_used[GLFW_JOYSTICK_LAST+1] = {false};
 } g_gamepads;
 
@@ -277,7 +277,6 @@ void check_gamepads() {
     if (g_gamepads.gamepad_idx[pad] == -1) {
       for (int i = GLFW_JOYSTICK_1; i <= GLFW_JOYSTICK_LAST; i++) {
         if (g_gamepads.glfw_joystick_used[i]) {
-          // lg::info("Joystick {} has already been used", i);
           continue;
         }
         if (glfwJoystickPresent(i) && glfwJoystickIsGamepad(i)) {
@@ -288,20 +287,16 @@ void check_gamepads() {
         }
       }
     } else if (!glfwJoystickPresent(g_gamepads.gamepad_idx[pad])) {
-      for (int i = pad; i < CONTROLLER_COUNT; i++) {
-        lg::info("Pad {} has been disconnected", i);
-        g_gamepads.glfw_joystick_used[g_gamepads.gamepad_idx[i]] = false;
-        g_gamepads.gamepad_idx[i] = -1;
-      }
+      lg::info("Pad {} / joystick {} has been disconnected", pad, g_gamepads.gamepad_idx[pad]);
+      g_gamepads.glfw_joystick_used[g_gamepads.gamepad_idx[pad]] = false;
+      g_gamepads.gamepad_idx[pad] = -1;
       return false;
     }
     return true;  // pad already exists or was created
   };
 
   for (int i = 0; i < CONTROLLER_COUNT; i++) {
-    if (!check_pad(i)) {
-      break;
-    }
+    check_pad(i);
   }
 }
 
@@ -326,12 +321,6 @@ void clear_pad(int pad) {
 
 void update_gamepads() {
   check_gamepads();
-
-  for (int i = 0; i < CONTROLLER_COUNT; i++) {
-    if (g_gamepads.gamepad_idx[i] == -1) {
-      clear_pad(i);
-    }
-  }
 
   constexpr std::pair<Button, int> gamepad_map[] = {
       {Button::Select, GLFW_GAMEPAD_BUTTON_BACK},
@@ -371,9 +360,7 @@ void update_gamepads() {
     }
   };
 
-  read_pad_state(0);
-
-  for (int i = 1; i < CONTROLLER_COUNT; i++) {
+  for (int i = 0; i < CONTROLLER_COUNT; i++) {
     if (g_gamepads.gamepad_idx[i] != -1)
       read_pad_state(i);
     else
