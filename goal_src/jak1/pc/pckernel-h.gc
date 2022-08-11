@@ -407,6 +407,7 @@
       (warp-on-orb? symbol) ;; warp on orb
       (warp-on-buzzer? symbol) ;; Warp on scoutfly
       (collectables-needed-to-warp float);; number of cells/orbs/flies needed to trigger a random checkpoint warp
+      (rng-lib symbol) ;; the RNG library to use in main game (randomizer itself always uses knuth)
     )
 
     (:methods
@@ -439,6 +440,7 @@
     (format file "  (WarpOnCell? ~A)~%" (-> obj warp-on-cell?))
     (format file "  (WarpOnOrb? ~A)~%" (-> obj warp-on-orb?))
     (format file "  (WarpOnBuzzer? ~A)~%" (-> obj warp-on-buzzer?))
+    (format file "  (rng-lib ~A)~%" (-> obj rng-lib))
 
     (format file "  )~%")
     (file-stream-close file)
@@ -471,6 +473,7 @@
   (set! (-> obj warp-on-cell?) #t)
   (set! (-> obj warp-on-orb?) #f)
   (set! (-> obj warp-on-buzzer?) #f)
+  (set! (-> obj rng-lib) 'rand-vu)
   (none))
 
  (deftype challenges-settings (basic)

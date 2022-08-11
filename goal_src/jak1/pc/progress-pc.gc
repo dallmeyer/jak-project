@@ -87,7 +87,7 @@
 (def-progress-carousell *carousell-frame-rate-150fps* (60fps 100fps 150fps))
 (def-progress-carousell *carousell-frame-rate-100fps* (60fps 100fps))
 (define *carousell-frame-rate* *carousell-frame-rate-150fps*)
-
+(def-progress-carousell *carousell-rng-lib* (rand-vu knuth))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -199,7 +199,7 @@
     )
   )
 
-  (define *randomizer-warp-options* (new 'static 'boxed-array :type game-option
+(define *randomizer-warp-options* (new 'static 'boxed-array :type game-option
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-warpcells?) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-warporbs?) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-warpbuzzer?) :scale #t)
@@ -219,6 +219,16 @@
     )
   )
 
+  (define *mod-options* (new 'static 'boxed-array :type game-option
+    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id secrets) :scale #t :param3 (game-option-menu secrets))
+    (new 'static 'game-option :option-type (game-option-type rng-lib) :name (game-text-id rng-lib) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id mod-options-jak-size-menu) :scale #t :param3 (game-option-menu mod-options-jak-size))
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id mod-powercellcutscenes) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id mod-mirrormode) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
+    )
+  )
+  
   (define *mod-options-jak-size* (new 'static 'boxed-array :type game-option    
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-smalljak) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-bigjak) :scale #t)
@@ -612,6 +622,7 @@
 (defun progress-draw-carousell-from-string-list ((options (array game-text-id)) (font font-context) (y-off int) (new-val int))
   "yep."
 
+  (format 0 "max ~D~%" (length options))
   (let ((old-lang (-> *progress-carousell* selection))
         (new-lang new-val)
         (max-lang (length options))
@@ -819,6 +830,7 @@
   (set! (-> *challenges-options* 5 value-to-modify) (&-> *challenges-settings* challenges-casual?))
 
   ;;mod settings
+  (set! (-> *mod-options* 1 value-to-modify) (&-> *progress-carousell* int-backup))
   (set! (-> *mod-options* 3 value-to-modify) (&-> *mods-settings* mod-powercellcutscenes?))
   (set! (-> *mod-options* 4 value-to-modify) (&-> *challenges-settings* challenges-mirrormode?))
 
@@ -988,7 +1000,9 @@
                     (game-option-type frame-rate)
                     (game-option-type language-subtitles)
                     (game-option-type language-text)
+                    (game-option-type rng-lib)
                     )
+                  (format 0 "moving carousell left?~%")
                    ;; a carousell like language
                    (if (> (-> (the-as (pointer int) (-> options (-> obj option-index) value-to-modify))) 0)
                        (+! (-> (the-as (pointer int) (-> options (-> obj option-index) value-to-modify))) -1)
@@ -1092,7 +1106,9 @@
                     (game-option-type frame-rate)
                     (game-option-type language-subtitles)
                     (game-option-type language-text)
+                    (game-option-type rng-lib)
                     )
+                  (format 0 "moving carousell right?~%")
                    ;; same thing as before. if at last, go to first. otherwise, keep going forward.
                    (if (< (-> (the-as (pointer int) (-> options (-> obj option-index) value-to-modify))) (1- (length (-> *progress-carousell* current-carousell))))
                        (1+! (-> (the-as (pointer int) (-> options (-> obj option-index) value-to-modify))))
@@ -1413,6 +1429,13 @@
                             (set! (-> *progress-carousell* int-backup) i))
                         ))
                   )
+                 (((game-option-type rng-lib))
+                  (format 0 "backing up carousell ~A ~A~%" (-> *progress-carousell* int-backup) (-> *randomizer-settings* rng-lib))
+                  (case (-> *randomizer-settings* rng-lib)
+                    (('rand-vu) (set! (-> *progress-carousell* int-backup) 0))
+                    (('knuth) (set! (-> *progress-carousell* int-backup) 1))
+                    )
+                  )
                  )
                (sound-play "select-option")
                (cpad-clear! 0 x)
@@ -1439,6 +1462,7 @@
                      (((game-option-type frame-rate)) (set! (-> *progress-carousell* current-carousell) *carousell-frame-rate*))
                      (((game-option-type language-subtitles)) (set! (-> *progress-carousell* current-carousell) *subtitle-languages*))
                      (((game-option-type language-text)) (set! (-> *progress-carousell* current-carousell) *text-languages*))
+                     (((game-option-type rng-lib)) (set! (-> *progress-carousell* current-carousell) *carousell-rng-lib*))
                      )
                    )
                  )
@@ -1522,6 +1546,14 @@
                   ((2) (set-frame-rate! *pc-settings* 150))
                   )
                 (set-video-mode (-> *setting-control* default video-mode))
+                )
+               (((game-option-type rng-lib))
+                (format 0 "writing to settings from backup?~%")
+                ;; same thing.
+                (case (-> *progress-carousell* int-backup)
+                  ((0) (set! (-> *randomizer-settings* rng-lib) 'rand-vu))
+                  ((1) (set! (-> *randomizer-settings* rng-lib) 'knuth))
+                  )
                 )
                )
               (commit-to-file *pc-settings*)
@@ -1926,8 +1958,10 @@
                    (game-option-type frame-rate)
                    (game-option-type language-subtitles)
                    (game-option-type language-text)
+                   (game-option-type rng-lib)
                    )
                   ;; crunched down to one generic function.
+                  (format 0 "draw from list? ~A ~A ~A ~A~% " (-> *progress-carousell* current-carousell) font y-off (-> (the-as (pointer int) (-> options index value-to-modify))))
                   (progress-draw-carousell-from-string-list (-> *progress-carousell* current-carousell) font y-off (-> (the-as (pointer int) (-> options index value-to-modify))))
                   )
                  (((game-option-type language))
@@ -2018,6 +2052,7 @@
                     (game-option-type frame-rate)
                     (game-option-type normal-inverted)
                     (game-option-type use-random-seed?)
+                    (game-option-type rng-lib)
                     )
                    ;; slider and aspect ratio options just show their text
                    (set! option-str (lookup-text! *common-text* (-> options index name) #f))
