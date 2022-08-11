@@ -161,8 +161,6 @@
 
 
 (define *misc-options* (new 'static 'boxed-array :type game-option
-    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id checkpoint-randomizer) :scale #t :param3 (game-option-menu randomizer-main-options))
-    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id custom-challenges) :scale #t :param3 (game-option-menu challenges-options))
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id mod-options) :scale #t :param3 (game-option-menu mod-options))
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id disable-auto-save) :scale #t :param3 (game-option-menu memcard-disable-auto-save))
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id accessibility-options) :scale #t :param3 (game-option-menu accessibility-options))
@@ -178,6 +176,17 @@
     (new 'static 'game-option :option-type (game-option-type normal-inverted) :name (game-text-id camera-controls-third-horz) :scale #t)
     (new 'static 'game-option :option-type (game-option-type normal-inverted) :name (game-text-id camera-controls-third-vert) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id restore-defaults) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
+    )
+  )
+
+  (define *mod-options* (new 'static 'boxed-array :type game-option
+    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id checkpoint-randomizer) :scale #t :param3 (game-option-menu randomizer-main-options))
+    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id custom-challenges) :scale #t :param3 (game-option-menu challenges-options))
+    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id mod-options-jak-size-menu) :scale #t :param3 (game-option-menu mod-options-jak-size))
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id mod-powercellcutscenes) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id mod-mirrormode) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id secrets) :scale #t :param3 (game-option-menu secrets))
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
   )
@@ -206,15 +215,6 @@
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-pacifist) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-bonkless) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-casual) :scale #t)
-    (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
-    )
-  )
-
-  (define *mod-options* (new 'static 'boxed-array :type game-option
-    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id secrets) :scale #t :param3 (game-option-menu secrets))
-    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id mod-options-jak-size-menu) :scale #t :param3 (game-option-menu mod-options-jak-size))
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id mod-powercellcutscenes) :scale #t)
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id mod-mirrormode) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
   )
@@ -799,7 +799,7 @@
   (set! (-> *graphic-options-no-frame-rate-pc* 2 value-to-modify) (&-> *pc-settings* vsync?))
   (set! (-> *graphic-options-no-frame-rate-pc* 4 value-to-modify) (&-> *progress-carousell* int-backup))
   ;;(set! (-> *misc-options* 3 value-to-modify) (&-> *pc-settings* money-starburst?))
-  (set! (-> *misc-options* 5 value-to-modify) (&-> *pc-settings* discord-rpc?))
+  (set! (-> *misc-options* 3 value-to-modify) (&-> *pc-settings* discord-rpc?))
   
   ;;Randomizer menu
   (set! (-> *randomizer-main-options* 0 value-to-modify) (&-> *randomizer-settings* checkpoint-randomizer?))
@@ -819,8 +819,8 @@
   (set! (-> *challenges-options* 5 value-to-modify) (&-> *challenges-settings* challenges-casual?))
 
   ;;mod settings
-  (set! (-> *mod-options* 2 value-to-modify) (&-> *mods-settings* mod-powercellcutscenes?))
-  (set! (-> *mod-options* 3 value-to-modify) (&-> *challenges-settings* challenges-mirrormode?))
+  (set! (-> *mod-options* 3 value-to-modify) (&-> *mods-settings* mod-powercellcutscenes?))
+  (set! (-> *mod-options* 4 value-to-modify) (&-> *challenges-settings* challenges-mirrormode?))
 
   ;;jak-size settings
   (set! (-> *mod-options-jak-size* 0 value-to-modify) (&-> *challenges-settings* challenges-smalljak?))

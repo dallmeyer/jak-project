@@ -463,7 +463,7 @@
   (format 0 "resetting randomizer settings~%")
 
   (set! (-> obj version) RANDO_SETTINGS_VERSION)
-  (set! (-> obj checkpoint-randomizer?) #t)
+  (set! (-> obj checkpoint-randomizer?) #f)
   (set! (-> obj collectables-needed-to-warp) 1.0)
   (set! (-> obj use-random-seed?) #t)
   (set! (-> obj current-seed) 42069)

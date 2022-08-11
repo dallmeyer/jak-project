@@ -5,6 +5,11 @@
 ;; name in dgo: checkpoint-randomizer
 ;; dgos: GAME, ENGINE
 
+(define-extern knuth-rand-advance-seed (function int))
+(define-extern knuth-rand-init (function int int))
+(define-extern knuth-rand-int-range (function int int int))
+(define-extern knuth-rand-next-int (function int))
+
 (define *randomizer-version-string* "Rando 0.092")
 (define *release-version-string* "Release 0.1.22")
 (define *comment-string* "Rework Modifications")

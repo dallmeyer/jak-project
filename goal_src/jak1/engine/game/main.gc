@@ -11,11 +11,12 @@
 (define-extern randomizer-run-each-frame (function none))
 (define-extern jak-size-run-each-frame (function (none)))
 (define-extern mods-common-run-each-frame (function (none)))
-
+(define-extern localmulti-run-eachframe (function (none)))
 (defun runMods()
 (randomizer-run-each-frame)
 (jak-size-run-each-frame)
 (mods-common-run-each-frame)
+(localmulti-run-eachframe)
 (none))
 
 (defun reset-all ()
@@ -388,9 +389,14 @@
 (define *master-exit* #f)
 (define *progress-cheat* #f)
 (define *first-boot* #t) ;; PAL
-
+(defun-extern localmulti2-start (none))
+(defun-extern localmulti3-start (none))
+(defun-extern localmulti4-start (none))
+(defun-extern spawn-extra-targets-code (none))
 (defun main-cheats ()
   "Handle cheat codes and timeout"
+
+(spawn-extra-targets-code)
 
   ;; look for codes when L3 is pushed
   (when (and (cpad-hold? 0 l3)
