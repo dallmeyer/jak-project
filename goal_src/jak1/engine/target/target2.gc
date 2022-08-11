@@ -76,7 +76,7 @@
   :enter (behavior ()
     (set! (-> self neck flex-blend) 0.0)
     ((-> target-stance enter))
-    (let ((v1-2 (rand-vu-int-count 4)))
+    (let ((v1-2 (mod-rand-int-count 4)))
       (cond
         ((zero? v1-2)
          (set! (-> self control unknown-uint20)
@@ -1013,7 +1013,7 @@
       (ja :num! (seek!))
       )
     (loop
-      (set! (-> self anim-seed) (the-as uint (if (rand-vu-percent? (the-as float 0.1))
+      (set! (-> self anim-seed) (the-as uint (if (mod-rand-percent? (the-as float 0.1))
                                                  0
                                                  1
                                                  )

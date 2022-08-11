@@ -1370,7 +1370,7 @@
               )
           (set-setting! 'allow-progress #f 0.0 0)
           (target-death-anim gp-18)
-          (when (and (< (rand-vu-int-count (-> *game-info* death-movie-tick)) (* (-> *death-spool-array* length) 2))
+          (when (and (< (mod-rand-int-count (-> *game-info* death-movie-tick)) (* (-> *death-spool-array* length) 2))
                      (zero? (logand (-> self water flags) (water-flags wt09)))
                      (!= (-> self control ground-pat material) 9)
                      (!= (-> self control ground-pat material) 10)

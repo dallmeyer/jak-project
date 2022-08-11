@@ -622,7 +622,6 @@
 (defun progress-draw-carousell-from-string-list ((options (array game-text-id)) (font font-context) (y-off int) (new-val int))
   "yep."
 
-  (format 0 "max ~D~%" (length options))
   (let ((old-lang (-> *progress-carousell* selection))
         (new-lang new-val)
         (max-lang (length options))
@@ -1002,7 +1001,6 @@
                     (game-option-type language-text)
                     (game-option-type rng-lib)
                     )
-                  (format 0 "moving carousell left?~%")
                    ;; a carousell like language
                    (if (> (-> (the-as (pointer int) (-> options (-> obj option-index) value-to-modify))) 0)
                        (+! (-> (the-as (pointer int) (-> options (-> obj option-index) value-to-modify))) -1)
@@ -1108,7 +1106,6 @@
                     (game-option-type language-text)
                     (game-option-type rng-lib)
                     )
-                  (format 0 "moving carousell right?~%")
                    ;; same thing as before. if at last, go to first. otherwise, keep going forward.
                    (if (< (-> (the-as (pointer int) (-> options (-> obj option-index) value-to-modify))) (1- (length (-> *progress-carousell* current-carousell))))
                        (1+! (-> (the-as (pointer int) (-> options (-> obj option-index) value-to-modify))))
@@ -1430,7 +1427,6 @@
                         ))
                   )
                  (((game-option-type rng-lib))
-                  (format 0 "backing up carousell ~A ~A~%" (-> *progress-carousell* int-backup) (-> *randomizer-settings* rng-lib))
                   (case (-> *randomizer-settings* rng-lib)
                     (('rand-vu) (set! (-> *progress-carousell* int-backup) 0))
                     (('knuth) (set! (-> *progress-carousell* int-backup) 1))
@@ -1548,7 +1544,6 @@
                 (set-video-mode (-> *setting-control* default video-mode))
                 )
                (((game-option-type rng-lib))
-                (format 0 "writing to settings from backup?~%")
                 ;; same thing.
                 (case (-> *progress-carousell* int-backup)
                   ((0) (set! (-> *randomizer-settings* rng-lib) 'rand-vu))
@@ -1961,7 +1956,6 @@
                    (game-option-type rng-lib)
                    )
                   ;; crunched down to one generic function.
-                  (format 0 "draw from list? ~A ~A ~A ~A~% " (-> *progress-carousell* current-carousell) font y-off (-> (the-as (pointer int) (-> options index value-to-modify))))
                   (progress-draw-carousell-from-string-list (-> *progress-carousell* current-carousell) font y-off (-> (the-as (pointer int) (-> options index value-to-modify))))
                   )
                  (((game-option-type language))
