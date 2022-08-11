@@ -106,6 +106,13 @@
   (none)
 )
 
+;; Spawn targets up to and including target x
+(defun localmulti-start ((x int))
+  (if (> x 1) (localmulti2-start))
+  (if (> x 2) (localmulti3-start))
+  (if (> x 3) (localmulti4-start))
+)
+
 ;;This code is ran in main.gc in the same function that cheat-mode check is. When a player enters half debug code on a controller that isnt player 1 it will spawn them a jak to play as.
 (defun spawn-extra-targets-code()
   ;;Multiplayer stuff to clean and move
