@@ -788,10 +788,25 @@
       (((pickup-type eco-green))
        (sound-play "g-eco-pickup")
        )
-      (((pickup-type eco-green) (pickup-type eco-pill))
+      (((pickup-type eco-pill))
        (sound-play "pill-pickup")
        )
       )
+    
+    (if (and 
+        (-> *randomizer-settings* checkpoint-randomizer?)
+        (or 
+          (and (-> *randomizer-settings* warp-on-green-eco?) (= (-> self fact pickup-type) (pickup-type eco-green)))
+          (and (-> *randomizer-settings* warp-on-green-eco?) (= (-> self fact pickup-type) (pickup-type eco-pill)))
+          (and (-> *randomizer-settings* warp-on-blue-eco?) (= (-> self fact pickup-type) (pickup-type eco-blue)))
+          (and (-> *randomizer-settings* warp-on-red-eco?) (= (-> self fact pickup-type) (pickup-type eco-red)))
+          (and (-> *randomizer-settings* warp-on-yellow-eco?) (= (-> self fact pickup-type) (pickup-type eco-yellow)))
+        )
+      )
+     (begin
+        (orchestrateCheckpointWarp) 
+      )
+    )
     (if (nonzero? (-> self part))
         (kill-and-free-particles (-> self part))
         )
@@ -2952,6 +2967,19 @@
 
 (defstate vent-wait-for-touch (vent)
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
+    (if (and
+        (-> *randomizer-settings* checkpoint-randomizer?)
+        (or
+          (and (-> *randomizer-settings* warp-on-green-eco?) (= (-> self fact pickup-type) (pickup-type eco-green)))
+          (and (-> *randomizer-settings* warp-on-blue-eco?) (= (-> self fact pickup-type) (pickup-type eco-blue)))
+          (and (-> *randomizer-settings* warp-on-red-eco?) (= (-> self fact pickup-type) (pickup-type eco-red)))
+          (and (-> *randomizer-settings* warp-on-yellow-eco?) (= (-> self fact pickup-type) (pickup-type eco-yellow)))
+        )
+       )
+      (begin
+        (orchestrateCheckpointWarp)
+       )
+      )
     (if (and (or (= arg2 'touch) (= arg2 'attack))
              (let ((a1-1 (new 'stack-no-clear 'event-message-block)))
                (set! (-> a1-1 from) self)

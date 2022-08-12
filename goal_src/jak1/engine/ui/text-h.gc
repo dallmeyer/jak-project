@@ -762,6 +762,11 @@
   (checkpoint-warporbs?         #x1307)
   (checkpoint-warpbuzzer?       #x1308)
   (randomizer-warp-options      #x1309)
+  (checkpoint-warpgreeneco?     #x130a)
+  (checkpoint-warpblueeco?      #x130b)
+  (checkpoint-warpredeco?       #x130c)
+  (checkpoint-warpyelloweco?    #x130d)
+  (checkpoint-warpdeath?        #x130e)
 
   ;;Challenges
   (custom-challenges            #x1402)

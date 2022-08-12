@@ -54,17 +54,17 @@
 )
 
 (defun localmulti-run-eachframe()
+(if (extra-target-alive?) (begin
 
 ;;If the camera is not focus on the main target (id 1375524), then set the cameras focus to the  main target.
 ;;todo this breaks pelican cutscene we can easily fix later.
-(if (and (not (= (-> *camera* drawable-target ) 1375524)) (extra-target-alive?))(set! (-> *camera* drawable-target) (the handle 1375524)))
+(if (!= (-> *camera* drawable-target ) 1375524) (set! (-> *camera* drawable-target) (the handle 1375524)))
 
 ;;If the camera is not set to cam-stick and we have more than one jak, then set it to cam-stick
 ;;Todo Check if any target is zoomed in, and if so only let that target unzoom
 
-
 ;;Warp side jaks to main Jak
-(if (and  (= (-> (-> (-> (the-as (pointer camera-slave) (-> *camera* child)))state)name) 'cam-string) (extra-target-alive?))(begin (send-event *camera* 'change-state cam-stick 0)))
+(if (= (-> (-> (-> (the-as (pointer camera-slave) (-> *camera* child)))state)name) 'cam-string) (begin (send-event *camera* 'change-state cam-stick 0)))
   (if (and (target2-alive?) (check-multi-jak-dist *target2*))
     (warp-jakA-to-jakB *target2* *target*)
   )
@@ -75,12 +75,13 @@
     (warp-jakA-to-jakB *target4* *target*)
   )
   (none)
-  )
+  )))
+
 
 ;; Spawn target2
 (defun localmulti2-start ()
   (when (not (target2-alive?))
-    (define *target2* (-> (start-extra-target) 0))
+    (set! *target2* (-> (start-extra-target) 0))
     (draw-green *target2*)
     (set! (-> *target2* control unknown-cpad-info00) (-> *cpad-list* cpads 1))
   )
@@ -89,7 +90,7 @@
 ;; Spawn target3
 (defun localmulti3-start ()
   (when (not (target3-alive?))
-    (define *target3* (-> (start-extra-target) 0))
+    (set! *target3* (-> (start-extra-target) 0))
     (draw-blue *target3*)
     (set! (-> *target3* control unknown-cpad-info00) (-> *cpad-list* cpads 2))
   )
@@ -99,7 +100,7 @@
 ;; Spawn target4
 (defun localmulti4-start ()
   (when (not (target4-alive?))
-    (define *target4* (-> (start-extra-target) 0))
+    (set! *target4* (-> (start-extra-target) 0))
     (draw-pink *target4*)
     (set! (-> *target4* control unknown-cpad-info00) (-> *cpad-list* cpads 3))
   )

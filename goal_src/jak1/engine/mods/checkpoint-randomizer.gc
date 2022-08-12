@@ -12,7 +12,7 @@
 
 (define *randomizer-version-string* "Rando 0.092")
 (define *release-version-string* "Release 0.1.22")
-(define *comment-string* "Rework Modifications")
+(define *comment-string* "WIP 4p support; toggle RNG lib")
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
                                              'boxed-array
@@ -127,6 +127,11 @@
       (if (-> *randomizer-settings* warp-on-cell?) (the int (-> *game-info* fuel)) 0)
       (if (-> *randomizer-settings* warp-on-orb?) (the int (-> *game-info* money-total)) 0)
       (if (-> *randomizer-settings* warp-on-buzzer?) (the int (-> *game-info* buzzer-total)) 0)
+      (if (-> *randomizer-settings* warp-on-green-eco?) (the int (-> *game-info* green-eco-total)) 0)
+      (if (-> *randomizer-settings* warp-on-blue-eco?) (the int (-> *game-info* blue-eco-total)) 0)
+      (if (-> *randomizer-settings* warp-on-red-eco?) (the int (-> *game-info* red-eco-total)) 0)
+      (if (-> *randomizer-settings* warp-on-yellow-eco?) (the int (-> *game-info* yellow-eco-total)) 0)
+      (if (-> *randomizer-settings* warp-on-death?) (the int (-> *game-info* total-deaths)) 0)
       )
    )
 
@@ -255,7 +260,7 @@
 )
 
 (defun orchestrateCheckpointWarp ()
-  ;; first fuel cell/orb/buzzer? need to generate checkpoint list
+  ;; first collectable? need to generate checkpoint list
   (when (= *randomizer-items-collected* 1)
     ;; randomly generate or set seed
     (if (-> *randomizer-settings* use-random-seed?)
@@ -297,7 +302,7 @@
 
   ;; current-seed and backup-checkpoints-used are updated at this point, commit to file in case of crash/closed window
   (commit-to-file *randomizer-settings*)
-  (suspend)
+  ;;(suspend)
 )
 
 (defun checkpointListTest ()

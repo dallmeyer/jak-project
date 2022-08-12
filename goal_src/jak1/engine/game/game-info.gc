@@ -204,6 +204,11 @@
          (goto cfg-50)
          )
        )
+     (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-death?))
+      (begin
+        (orchestrateCheckpointWarp)
+       )
+      )
      )
     )
   (kill-current-level-hint '() '() 'die)
@@ -263,6 +268,10 @@
        (set! (-> obj level-opened v1-53) (the-as uint 0))
        (nop!)
        )
+     (set! (-> obj green-eco-total) 0.0)
+     (set! (-> obj blue-eco-total) 0.0)
+     (set! (-> obj red-eco-total) 0.0)
+     (set! (-> obj yellow-eco-total) 0.0)
      )
     )
   (case cause
@@ -431,6 +440,10 @@
        (set! (-> obj level-opened v1-53) (the-as uint 0))
        (nop!)
        )
+     (set! (-> obj green-eco-total) 0.0)
+     (set! (-> obj blue-eco-total) 0.0)
+     (set! (-> obj red-eco-total) 0.0)
+     (set! (-> obj yellow-eco-total) 0.0)
      )
     )
   (case cause
@@ -607,6 +620,22 @@
        buzz-count
        )
      )
+    (('eco-green 'eco-pill)
+     ;; increment our eco count
+     (+! (-> obj green-eco-total) amount)
+     )
+    (('eco-blue)
+     ;; increment our eco count
+     (+! (-> obj blue-eco-total) amount)
+     )
+    (('eco-red)
+     ;; increment our eco count
+     (+! (-> obj red-eco-total) amount)
+     )
+    (('eco-yellow)
+     ;; increment our eco count
+     (+! (-> obj yellow-eco-total) amount)
+     )
     )
   )
 
@@ -745,6 +774,8 @@
        :delay (nop!)
        )
      (-> obj health)
+
+     (adjust (-> (the-as target (-> obj process)) game) 'eco-green amount source-handle)
      )
 
     (((pickup-type eco-pill))
@@ -755,7 +786,8 @@
        (seek! (-> obj eco-pill) (-> obj eco-pill-max) amount)
 
        ;; increment big health if needed
-       (when (and (>= (-> obj eco-pill) (-> *FACT-bank* eco-pill-max-default)) (< (-> obj health) (-> obj health-max)))
+       (if (and (>= (-> obj eco-pill) (-> *FACT-bank* eco-pill-max-default)) (< (-> obj health) (-> obj health-max)))
+        (begin
          ;; decrease eco pills
          (set! (-> obj eco-pill) (- (-> obj eco-pill) (-> *FACT-bank* eco-pill-max-default)))
          ;; get a big health.
@@ -766,6 +798,11 @@
            (process->handle (-> obj process))
            )
          )
+        (begin
+          ;; only increment green-eco-total if this didn't result in big health pickup
+          (adjust (-> (the-as target (-> obj process)) game) 'eco-pill amount source-handle)
+         )
+       )
        )
      (-> obj eco-pill)
      )
@@ -941,6 +978,23 @@
            )
          )
        )
+
+     (when (> amount 0.0)
+      (case kind
+            (((pickup-type eco-blue))
+              (adjust (-> (the-as target (-> obj process)) game) 'eco-blue amount source-handle)
+              )
+            (((pickup-type eco-green))
+              (adjust (-> (the-as target (-> obj process)) game) 'eco-green amount source-handle)
+              )
+            (((pickup-type eco-yellow))
+              (adjust (-> (the-as target (-> obj process)) game) 'eco-yellow amount source-handle)
+              )
+            (((pickup-type eco-red))
+              (adjust (-> (the-as target (-> obj process)) game) 'eco-red amount source-handle)
+              )
+            )
+      )
      (-> obj eco-level)
      )
     (else

@@ -406,6 +406,11 @@
       (warp-on-cell? symbol) ;; warp on cell
       (warp-on-orb? symbol) ;; warp on orb
       (warp-on-buzzer? symbol) ;; Warp on scoutfly
+      (warp-on-green-eco? symbol) ;; Warp on green eco
+      (warp-on-blue-eco? symbol) ;; Warp on blue eco
+      (warp-on-red-eco? symbol) ;; Warp on red eco
+      (warp-on-yellow-eco? symbol) ;; Warp on yellow eco
+      (warp-on-death? symbol) ;; Warp on death
       (collectables-needed-to-warp float);; number of cells/orbs/flies needed to trigger a random checkpoint warp
       (rng-lib symbol) ;; the RNG library to use in main game (randomizer itself always uses knuth)
     )
@@ -440,6 +445,11 @@
     (format file "  (WarpOnCell? ~A)~%" (-> obj warp-on-cell?))
     (format file "  (WarpOnOrb? ~A)~%" (-> obj warp-on-orb?))
     (format file "  (WarpOnBuzzer? ~A)~%" (-> obj warp-on-buzzer?))
+    (format file "  (WarpOnGreenEco? ~A)~%" (-> obj warp-on-green-eco?))
+    (format file "  (WarpOnBlueEco? ~A)~%" (-> obj warp-on-blue-eco?))
+    (format file "  (WarpOnRedEco? ~A)~%" (-> obj warp-on-red-eco?))
+    (format file "  (WarpOnYellowEco? ~A)~%" (-> obj warp-on-yellow-eco?))
+    (format file "  (WarpOnDeath? ~A)~%" (-> obj warp-on-death?))
     (format file "  (rng-lib ~A)~%" (-> obj rng-lib))
 
     (format file "  )~%")
@@ -473,6 +483,11 @@
   (set! (-> obj warp-on-cell?) #t)
   (set! (-> obj warp-on-orb?) #f)
   (set! (-> obj warp-on-buzzer?) #f)
+  (set! (-> obj warp-on-green-eco?) #f)
+  (set! (-> obj warp-on-blue-eco?) #f)
+  (set! (-> obj warp-on-red-eco?) #f)
+  (set! (-> obj warp-on-yellow-eco?) #f)
+  (set! (-> obj warp-on-death?) #f)
   (set! (-> obj rng-lib) 'rand-vu)
   (none))
 
