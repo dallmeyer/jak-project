@@ -781,6 +781,9 @@
   (mod-powercellcutscenes       #x1501)
   (mod-options-jak-size-menu    #x1502)
   (mod-options                  #x1503)
+  (rng-lib                      #x1504)
+  (rand-vu                      #x1505)
+  (knuth                        #x1506)
 ;; GAME-TEXT-ID ENUM ENDS
   )
 

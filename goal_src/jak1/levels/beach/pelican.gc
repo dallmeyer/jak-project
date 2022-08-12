@@ -311,8 +311,8 @@
     (suspend)
     (send-event (-> self fuel-cell process 0) 'trans-hook fuel-cell-animate)
     (pelican-fly
-      (the-as (function pelican int) (lambda () (rand-vu-int-range 2 4)))
-      (the-as (function pelican int) (lambda () (rand-vu-int-range 3 5)))
+      (the-as (function pelican int) (lambda () (mod-rand-int-range 2 4)))
+      (the-as (function pelican int) (lambda () (mod-rand-int-range 3 5)))
       )
     (none)
     )
@@ -736,7 +736,7 @@
     )
   :code (behavior ()
     (pelican-fly
-      (the-as (function pelican int) (lambda () (rand-vu-int-range 2 4)))
+      (the-as (function pelican int) (lambda () (mod-rand-int-range 2 4)))
       (the-as (function pelican int) zero-func)
       )
     (none)

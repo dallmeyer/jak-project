@@ -1710,14 +1710,15 @@
  "game/settings-h.gc"
  )
 
-(goal-src "pc/util/knuth-rand.gc" "settings-h")
+(goal-src "pc/util/knuth-rand.gc" "settings-h" "vector-h")
 
 (goal-src-sequence
  ;; prefix
  "engine/"
 
  :deps
- ("$OUT/obj/settings-h.o")
+ ("$OUT/obj/settings-h.o"
+  "$OUT/obj/knuth-rand.o")
 
  "util/capture.gc"
  "debug/memory-usage-h.gc"

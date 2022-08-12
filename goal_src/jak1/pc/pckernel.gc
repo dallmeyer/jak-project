@@ -1099,6 +1099,7 @@
                 (("WarpOnCell?") (set! (-> obj warp-on-cell?) (file-stream-read-symbol file)))
                 (("WarpOnOrb?") (set! (-> obj warp-on-orb?) (file-stream-read-symbol file)))
                 (("WarpOnBuzzer?") (set! (-> obj warp-on-buzzer?) (file-stream-read-symbol file)))
+                (("rng-lib") (set! (-> obj rng-lib) (file-stream-read-symbol file)))
                 )
               )
             )

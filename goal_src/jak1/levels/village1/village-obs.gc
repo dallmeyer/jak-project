@@ -996,7 +996,7 @@
   (initialize-skeleton obj *hutlamp-sg* '())
   (set! (-> obj pivot) (new 'process 'joint-mod-set-local obj 3 #f #t #f))
   (set-period (-> obj clock) 900)
-  (set! (-> obj clock output) (rand-vu))
+  (set! (-> obj clock output) (mod-rand-next-float))
   (go hutlamp-idle)
   (none)
   )

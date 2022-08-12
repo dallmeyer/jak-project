@@ -1631,6 +1631,9 @@
   (mod-powercellcutscenes       #x1501)
   (mod-options-jak-size-menu    #x1502)
   (mod-options                  #x1503)
+  (rng-lib                      #x1504)
+  (rand-vu                      #x1505)
+  (knuth                        #x1506)
 
 ;; GAME-TEXT-ID ENUM ENDS
   )
@@ -5111,7 +5114,6 @@
 (define-extern spheres-overlap? (function sphere sphere symbol))
 (define-extern sphere<-vector! (function sphere vector sphere))
 (define-extern sphere<-vector+r! (function sphere vector float sphere))
-(define-extern rand-vu-sphere-point! (function vector float vector)) ;; todo
 
 ;; - Symbols
 
@@ -15813,6 +15815,7 @@
   (use-random-seed?)
   (cheat-toggle)
   (monitor)
+  (rng-lib)
   )
 
 (defenum game-option-menu
@@ -34972,3 +34975,13 @@
 
 (define-extern cavecrystal-light-control-cavegeyserrock-callback (function (pointer process-drawable) int float object vector none))
 
+;; ----------------------
+;; File - knuth-rand
+;; Source Path - pc/util/knuth-rand.gc
+
+(define-extern mod-rand-next-float (function float))
+(define-extern mod-rand-float-range (function float float float))
+(define-extern mod-rand-percent? (function float symbol))
+(define-extern mod-rand-int-range (function int int int))
+(define-extern mod-rand-int-count (function int int))
+(define-extern mod-rand-sphere-point! (function vector float vector))

@@ -6765,8 +6765,7 @@
     "vector3s-!",
     "spheres-overlap?",
     "sphere<-vector!",
-    "sphere<-vector+r!",
-    "rand-vu-sphere-point!"
+    "sphere<-vector+r!"
   ],
   "vector-h": [
     "*null-vector*",

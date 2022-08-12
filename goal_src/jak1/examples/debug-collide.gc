@@ -357,7 +357,7 @@
     (run-next-time-in-process 
       proc
       (lambda ()
-        (let ((my-off (rand-vu-float-range 0.0 1000.0)))
+        (let ((my-off (mod-rand-float-range 0.0 1000.0)))
           (while #t
             (debug-draw-collide-work my-off)
             (suspend)

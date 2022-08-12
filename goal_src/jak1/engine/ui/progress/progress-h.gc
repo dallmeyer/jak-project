@@ -163,6 +163,7 @@
   (use-random-seed?)
   (cheat-toggle)
   (monitor)
+  (rng-lib)
   )
     )
   )

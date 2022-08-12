@@ -392,6 +392,12 @@
         "JAK SIZE MENU")
 (#x1503 "MOD OPTIONS"
         "MOD OPTIONS")
+(#x1504 "RNG LIBRARY"
+        "RNG LIBRARY")
+(#x1505 "RAND-VU (ORIGINAL)"
+        "RAND-VU (ORIGINAL)")
+(#x1506 "KNUTH"
+        "KNUTH")
 
 ;; -----------------
 ;; test

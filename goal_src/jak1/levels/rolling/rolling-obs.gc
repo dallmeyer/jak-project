@@ -222,9 +222,9 @@
   )
 
 (defun dark-plant-randomize ((arg0 dark-plant))
-  (quaternion-axis-angle! (-> arg0 root quat) 0.0 1.0 0.0 (rand-vu-float-range 0.0 65536.0))
+  (quaternion-axis-angle! (-> arg0 root quat) 0.0 1.0 0.0 (mod-rand-float-range 0.0 65536.0))
   (let ((s5-1 (new 'stack-no-clear 'vector)))
-    (set-vector! s5-1 (rand-vu-float-range -1024.0 1024.0) 0.0 (rand-vu-float-range -1024.0 1024.0) 1.0)
+    (set-vector! s5-1 (mod-rand-float-range -1024.0 1024.0) 0.0 (mod-rand-float-range -1024.0 1024.0) 1.0)
     (vector+! (-> arg0 root trans) (-> arg0 entity extra trans) s5-1)
     )
   )
@@ -344,7 +344,7 @@
                  *target*
                  (>= 81920.0 (vector-vector-distance (-> self root trans) (-> *target* control trans)))
                  )
-        (if (rand-vu-percent? 0.3)
+        (if (mod-rand-percent? 0.3)
             (sound-play "darkvine-move")
             )
         (when (task-closed? (game-task rolling-plants) (task-status need-hint))
