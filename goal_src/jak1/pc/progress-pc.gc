@@ -196,8 +196,7 @@
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-randomizer) :scale #t)
     (new 'static 'game-option :option-type (game-option-type use-random-seed?) :name (game-text-id use-random-seed?) :scale #t)
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id randomizer-warp-options) :scale #t :param3 (game-option-menu randomizer-warp-options))
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id show-warp-collectables-counter?) :scale #t) 
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id show-total-collectables-counter?) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id show-warp-counter?) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
   )
@@ -812,8 +811,7 @@
   ;;Randomizer menu
   (set! (-> *randomizer-main-options* 0 value-to-modify) (&-> *randomizer-settings* checkpoint-randomizer?))
   (set! (-> *randomizer-main-options* 1 value-to-modify) (&-> *randomizer-settings* use-random-seed?))
-  (set! (-> *randomizer-main-options* 3 value-to-modify) (&-> *randomizer-settings* show-warp-collectables-counter?))
-  (set! (-> *randomizer-main-options* 4 value-to-modify) (&-> *randomizer-settings* show-total-collectables-counter?))
+  (set! (-> *randomizer-main-options* 3 value-to-modify) (&-> *randomizer-settings* show-warp-counter?))
 
   (set! (-> *randomizer-warp-options* 0 value-to-modify) (&-> *randomizer-settings* warp-on-cell?))
   (set! (-> *randomizer-warp-options* 1 value-to-modify) (&-> *randomizer-settings* warp-on-orb?))
@@ -2344,7 +2342,7 @@
          )
         (((progress-screen randomizer-main-options))
          (hide-progress-icons)
-            (draw-options self 115 25 0.60)
+            (draw-options self 115 25 0.75)
          )
         (((progress-screen randomizer-warp-options))
          (hide-progress-icons)
