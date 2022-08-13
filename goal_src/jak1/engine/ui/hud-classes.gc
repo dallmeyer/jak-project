@@ -749,21 +749,18 @@
       (cond
         ((cpad-hold? 0 up)
           ;; show total collectables across entire game
-          (format (clear *temp-string*) "~D" (the int (-> *game-info* money-total)))
+          (format (clear *temp-string*) "~D~%/~D" 
+            (the int (-> *game-info* money-total))
+            2000  ;;(-> (the progress (-> *progress-process* 0)) total-nb-of-orbs)
+            )
         )
         ((cpad-hold? 0 down)
           (let ((lvl-idx (-> *level-task-data-remap* (+ (-> *target* current-level info index) -1))))
-            ;; show collectables this level, break across two lines for levels with 100+
-            (if (> (-> *game-counts* data lvl-idx money-count) 99)
-              (format (clear *temp-string*) "~D~%/~D"
-                (-> *game-info* money-per-level lvl-idx)
-                (-> *game-counts* data lvl-idx money-count)
-                )
-              (format (clear *temp-string*) "~D/~D"
-                (-> *game-info* money-per-level lvl-idx)
-                (-> *game-counts* data lvl-idx money-count)
-                )
-            )
+            ;; show collectables this level
+            (format (clear *temp-string*) "~D~%/~D"
+              (-> *game-info* money-per-level lvl-idx)
+              (-> *game-counts* data lvl-idx money-count)
+              )
             )
         )
         (else
@@ -1152,7 +1149,10 @@
       (cond
         ((cpad-hold? 0 up)
           ;; show total collectables across entire game
-          (format (clear *temp-string*) "~D" (the int (-> *game-info* fuel)))
+          (format (clear *temp-string*) "~D~%/~D" 
+            (the int (-> *game-info* fuel))
+            101  ;;(-> (the progress (-> *progress-process* 0)) total-nb-of-power-cells)
+            )
         )
         ((cpad-hold? 0 down)
           (let ((lvl-idx (-> *level-task-data-remap* (+ (-> *target* current-level info index) -1)))
@@ -1165,7 +1165,7 @@
             )
 
             ;; show collectables this level
-            (format (clear *temp-string*) "~D/~D"
+            (format (clear *temp-string*) "~D~%/~D"
               completed-task-count
               (-> *level-task-data* lvl-idx nb-of-tasks)
               )
@@ -1447,12 +1447,15 @@
       (cond
         ((cpad-hold? 0 up)
           ;; show total collectables across entire game
-          (format (clear *temp-string*) " ~D" (the int (-> *game-info* buzzer-total)))
+          (format (clear *temp-string*) " ~D~% /~D" 
+            (the int (-> *game-info* buzzer-total)) 
+            112 ;; (-> (the progress (-> *progress-process* 0)) total-nb-of-buzzers)
+            )
         )
         ((cpad-hold? 0 down)
           (let ((lvl-idx (-> *level-task-data-remap* (+ (-> *target* current-level info index) -1))))
             ;; show collectables this level
-            (format (clear *temp-string*) " ~D/~D"
+            (format (clear *temp-string*) " ~D~% /~D"
               (buzzer-count *game-info* (-> *level-task-data* lvl-idx task-info (-> *level-task-data* lvl-idx buzzer-task-index) task-id))
               (-> *game-counts* data lvl-idx buzzer-count)
               )
