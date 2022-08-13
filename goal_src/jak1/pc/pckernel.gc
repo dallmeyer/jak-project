@@ -1093,6 +1093,8 @@
                 (("Randomizer?") (set! (-> obj checkpoint-randomizer?) (file-stream-read-symbol file)))
                 ;; left as "cells-needed-to-warp" in settings for backwards compatibility
                 (("cells-needed-to-warp") (set! (-> obj collectables-needed-to-warp) (file-stream-read-float file)))
+                (("show-total-collectables-counter?") (set! (-> obj show-total-collectables-counter?) (file-stream-read-symbol file)))
+                (("show-warp-collectables-counter?") (set! (-> obj show-warp-collectables-counter?) (file-stream-read-symbol file)))
                 (("use-random-seed?") (set! (-> obj use-random-seed?) (file-stream-read-symbol file)))
                 (("Seed") (set! (-> obj current-seed) (file-stream-read-uint file)))
                 (("backup-checkpoints-used") (set! (-> obj backup-checkpoints-used) (file-stream-read-int file)))

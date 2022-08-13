@@ -767,6 +767,8 @@
   (checkpoint-warpredeco?       #x130c)
   (checkpoint-warpyelloweco?    #x130d)
   (checkpoint-warpdeath?        #x130e)
+  (show-total-collectables-counter? #x130f)
+  (show-warp-collectables-counter?  #x1310)
 
   ;;Challenges
   (custom-challenges            #x1402)

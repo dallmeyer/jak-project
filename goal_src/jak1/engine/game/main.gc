@@ -116,8 +116,6 @@
   )
 
 (defun movie? ()
-(runMods)
-
   "Are we in a movie?"
   (logtest? (-> *kernel-context* prevent-from-run) (process-mask movie))
   )
@@ -650,6 +648,8 @@
     (while *run*
       ;; start immediately after all process updates finish.
       (profiler-instant-event "display-loop-top")
+
+      (runMods)
 
       ;; drawing effects to be used in foreground drawing.
       (with-profiler "foreground-effects"

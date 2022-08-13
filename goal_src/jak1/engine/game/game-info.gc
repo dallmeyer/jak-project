@@ -623,7 +623,7 @@
      )
     (('eco-green 'eco-pill)
      ;; increment our eco count
-     (+! (-> obj green-eco-total) amount)
+     (when (> amount 0) (+! (-> obj green-eco-total) amount))
      )
     (('eco-blue)
      ;; increment our eco count

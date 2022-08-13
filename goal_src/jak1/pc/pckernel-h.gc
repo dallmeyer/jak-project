@@ -412,6 +412,8 @@
       (warp-on-yellow-eco? symbol) ;; Warp on yellow eco
       (warp-on-death? symbol) ;; Warp on death
       (collectables-needed-to-warp float);; number of cells/orbs/flies needed to trigger a random checkpoint warp
+      (show-total-collectables-counter? symbol) ;; boolean controlling if total collectable count displayed (fuel+money+buzzer)
+      (show-warp-collectables-counter? symbol) ;; boolean controlling if warp collectable count displayed
       (rng-lib symbol) ;; the RNG library to use in main game (randomizer itself always uses knuth)
     )
 
@@ -438,6 +440,8 @@
     (format file "(settings #x~X~%" (-> obj version))
     ;; left as "cells-needed-to-warp" in settings for backwards compatibility
     (format file "  (cells-needed-to-warp ~F)~%" (the-as float(-> obj collectables-needed-to-warp)))
+    (format file "  (show-total-collectables-counter? ~A)~%" (-> obj show-total-collectables-counter?))
+    (format file "  (show-warp-collectables-counter? ~A)~%" (-> obj show-warp-collectables-counter?))
     (format file "  (Randomizer? ~A)~%" (-> obj checkpoint-randomizer?))
     (format file "  (use-random-seed? ~A)~%" (-> obj use-random-seed?))
     (format file "  (Seed ~D)~%" (-> obj current-seed))
@@ -477,6 +481,8 @@
   (set! (-> obj version) RANDO_SETTINGS_VERSION)
   (set! (-> obj checkpoint-randomizer?) #f)
   (set! (-> obj collectables-needed-to-warp) 1.0)
+  (set! (-> obj show-total-collectables-counter?) #f)
+  (set! (-> obj show-warp-collectables-counter?) #f) 
   (set! (-> obj use-random-seed?) #t)
   (set! (-> obj current-seed) 42069)
   (set! (-> obj backup-checkpoints-used) 0)
