@@ -234,9 +234,8 @@
             (zero? (-> self money))
           )
           (orchestrateCheckpointWarp)
-          ;; else, original logic
-          (suspend)
         )
+        (suspend)
         )
       (calculate-pos self #f)
       (while (and (not (and (and *target* (>= (-> self active-distance)

@@ -311,12 +311,12 @@
       (begin
         (format 0 "RANDOMIZER: warping from ~A...~%" (-> *level* level 0 name))
         (warpToCheckpoint (the-as string (getNextCheckpoint)))
-        (set! *collectable-interval* 0.0)
       )
       (begin
         (format 0 "RANDOMIZER: skipping warp as we're already blackout~%")
       )
     )
+    (set! *collectable-interval* 0.0)
   )
 
   ;; current-seed and backup-checkpoints-used are updated at this point, commit to file in case of crash/closed window
