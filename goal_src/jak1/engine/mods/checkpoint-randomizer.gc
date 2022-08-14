@@ -10,9 +10,9 @@
 (define-extern knuth-rand-int-range (function int int int))
 (define-extern knuth-rand-next-int (function int))
 
-(define *randomizer-version-string* "Rando 0.092")
+(define *randomizer-version-string* "Rando 0.11")
 (define *release-version-string* "Release 0.1.22")
-(define *comment-string* "WIP 4p support; toggle RNG lib")
+(define *comment-string* "Warp on eco/death, HUD counters")
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
                                              'boxed-array
