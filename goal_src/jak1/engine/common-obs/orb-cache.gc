@@ -131,6 +131,12 @@
           )
         )
       (+! (-> obj money) -1)
+      (when (and
+          (-> *randomizer-settings* checkpoint-randomizer?)
+          (-> *randomizer-settings* warp-on-orb?)
+        )
+        (orchestrateCheckpointWarp)
+      )
       (calculate-pos obj arg0)
       (+! s4-0 -1)
       (let ((v1-15 (-> obj entity extra perm)))
@@ -227,14 +233,6 @@
                       )
                   )
         (pos-logic self #t)
-        ;; if the randomizer is on AND set to warp on orbs AND that was the last orb, warp the target.
-        (if (and 
-            (-> *randomizer-settings* checkpoint-randomizer?) 
-            (-> *randomizer-settings* warp-on-orb?)
-            (zero? (-> self money))
-          )
-          (orchestrateCheckpointWarp)
-        )
         (suspend)
         )
       (calculate-pos self #f)

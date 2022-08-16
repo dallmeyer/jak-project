@@ -49,6 +49,13 @@ tasks:
         msg: "Couldn't locate runtime executable in '{{.GK_BIN_RELEASE_DIR}}/gk'"
     cmds:
       - "{{.GK_BIN_RELEASE_DIR}}/gk -fakeiso -debug -v"
+  run-game-retail:
+    desc: "Boot the game in retail mode"
+    preconditions:
+      - sh: test -f {{.GK_BIN_RELEASE_DIR}}/gk{{.EXE_FILE_EXTENSION}}
+        msg: "Couldn't locate runtime executable in '{{.GK_BIN_RELEASE_DIR}}/gk'"
+    cmds:
+      - "{{.GK_BIN_RELEASE_DIR}}/gk"
   # DEVELOPMENT
   repl:
     desc: "Start the REPL"

@@ -1358,6 +1358,11 @@
            (sound-play "death-drown")
            )
           )
+        (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-death?))
+          (begin
+            (orchestrateCheckpointWarp)
+            )
+          )
         (+! (-> *game-info* death-movie-tick) 1)
         (if (= (death-movie-remap (+ (-> *game-info* death-movie-tick) -1) (-> *death-spool-array* length))
                (death-movie-remap (-> *game-info* death-movie-tick) (-> *death-spool-array* length))
