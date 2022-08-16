@@ -123,7 +123,7 @@
   )
 
 (defmethod pos-logic orb-cache-top ((obj orb-cache-top) (arg0 symbol))
-  (let ((orbs-collected #f))
+  (let ((orbs-collected? #f))
     (dotimes (s4-0 (-> obj money))
       (when (not (handle->process (-> obj money-list s4-0)))
         (dotimes (v1-6 (-> obj money))
@@ -133,7 +133,7 @@
             )
           )
         (+! (-> obj money) -1)
-        (set! orbs-collected #t)
+        (set! orbs-collected? #t)
         (calculate-pos obj arg0)
         (+! s4-0 -1)
         (let ((v1-15 (-> obj entity extra perm)))
@@ -144,7 +144,7 @@
       )
       ;; if we collected orbs and now there are no more, give credit for the total orbs in this cache
       (when (and
-            orbs-collected
+            orbs-collected?
             (zero? (-> obj money))
             (-> *randomizer-settings* checkpoint-randomizer?)
             (-> *randomizer-settings* warp-on-orb?)
