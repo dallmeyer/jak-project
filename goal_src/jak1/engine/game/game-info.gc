@@ -163,7 +163,7 @@
   (-> obj task-perm-list data arg0)
   )
 
-(define-extern orchestrateCheckpointWarp (function none))
+(define-extern orchestrateCheckpointWarp (function int none))
 (defmethod initialize! game-info ((obj game-info) (cause symbol) (save-to-load game-save) (continue-point-override string))
   "Initialize the game-info.
     The cause can be 'dead if you die, or 'game to reset everything.
@@ -207,7 +207,7 @@
        )
      (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-death?))
       (begin
-        (orchestrateCheckpointWarp)
+        (orchestrateCheckpointWarp 1)
        )
       )
      )

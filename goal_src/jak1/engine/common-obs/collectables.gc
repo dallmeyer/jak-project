@@ -804,7 +804,7 @@
         )
       )
      (begin
-        (orchestrateCheckpointWarp) 
+        (orchestrateCheckpointWarp 1)
       )
     )
     (if (nonzero? (-> self part))
@@ -1225,7 +1225,7 @@
           (-> *randomizer-settings* warp-on-orb?)
           (!= (-> money-parent type) orb-cache-top)
         )
-        (orchestrateCheckpointWarp)
+        (orchestrateCheckpointWarp 1)
       )
       (convert-to-hud-object self (the-as hud (ppointer->process (-> *hud-parts* money))))
       (none)
@@ -1742,7 +1742,7 @@
     
     ;; warp to random checkpoint if randomizer enabled
     (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-cell?))
-      (orchestrateCheckpointWarp)
+      (orchestrateCheckpointWarp 1)
     )
 
     (process-spawn-function
@@ -2360,7 +2360,7 @@
       )
     (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-buzzer?))
     (begin
-       (orchestrateCheckpointWarp) 
+       (orchestrateCheckpointWarp 1)
     )
     )
     (none)
@@ -2977,7 +2977,7 @@
         )
        )
       (begin
-        (orchestrateCheckpointWarp)
+        (orchestrateCheckpointWarp 1)
        )
       )
     (if (and (or (= arg2 'touch) (= arg2 'attack))

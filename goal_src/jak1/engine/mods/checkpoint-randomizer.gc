@@ -278,7 +278,7 @@
   (< (current-time) (-> *game-info* blackout-time))
 )
 
-(defun orchestrateCheckpointWarp ()
+(defun orchestrateCheckpointWarp ((amount int))
   ;; first collectable? need to generate checkpoint list
   (when (= *randomizer-items-collected* 1)
     ;; randomly generate or set seed
@@ -302,10 +302,10 @@
     (advanceCheckpointList (-> *randomizer-settings* backup-checkpoints-used))
   )
 
-  ;; if blacked out we're already warping, so skip (i.e. to handle orb crate case)
+  ;; if blacked out we're already warping, so skip
   (if (not (blacked-out?))
     (begin
-      (set! *collectable-interval* (+ *collectable-interval* 1))
+      (+! *collectable-interval* amount)
 
       ;; if we're above the collectable threshold, then warp
       (when (>= *collectable-interval* (-> *randomizer-settings* collectables-needed-to-warp))

@@ -1360,7 +1360,7 @@
           )
         (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-death?))
           (begin
-            (orchestrateCheckpointWarp)
+            (orchestrateCheckpointWarp 1)
             )
           )
         (+! (-> *game-info* death-movie-tick) 1)
