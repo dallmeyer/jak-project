@@ -11,7 +11,7 @@
 (define-extern knuth-rand-next-int (function int))
 
 (define *randomizer-version-string* "Rando 0.11")
-(define *release-version-string* "Release 0.1.22")
+(define *release-version-string* "Release 0.1.24")
 (define *comment-string* "Warp on eco/death, HUD counters")
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
