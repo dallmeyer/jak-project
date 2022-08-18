@@ -765,7 +765,7 @@
       (case *hud-collectable-view*
         (((hud-collectable-view game-totals))
           ;; show orbs collected/total across entire game
-          (draw-string-xy
+          (draw-string-xy-scaled
             (string-format 
               "~D~%/~D"
               (the int (-> *game-info* money-total))
@@ -773,15 +773,16 @@
               )
             buf
             string-x
-            string-y
+            (- string-y 5)
             (font-color dark-yellow)
             (font-flags shadow kerning large)
+            0.8
             )
           )
         (((hud-collectable-view level-totals))
           (let ((lvl-idx (-> *level-task-data-remap* (+ (-> *target* current-level info index) -1))))
             ;; show orbs collected/total this level
-            (draw-string-xy
+            (draw-string-xy-scaled
               (string-format 
                 "~D~%/~D"
                 (-> *game-info* money-per-level lvl-idx)
@@ -789,9 +790,10 @@
                 )
               buf
               string-x
-              string-y
+              (- string-y 5)
               (font-color dark-yellow)
               (font-flags shadow kerning large)
+              0.8
               )
             )
         )
@@ -1178,7 +1180,7 @@
       (case *hud-collectable-view*
         (((hud-collectable-view game-totals))
           ;; show cells collected/total across entire game
-          (draw-string-xy
+          (draw-string-xy-scaled
             (string-format 
               "~D~%/~D"
               (the int (-> *game-info* fuel))
@@ -1186,9 +1188,10 @@
               )
             buf
             string-x
-            string-y
+            (- string-y 5)
             (font-color dark-yellow)
             (font-flags shadow kerning large)
+            0.8
             )
           )
         (((hud-collectable-view level-totals))
@@ -1202,7 +1205,7 @@
             )
 
             ;; show cells/total collected this level
-            (draw-string-xy
+            (draw-string-xy-scaled
               (string-format 
                 "~D~%/~D"
                 completed-task-count
@@ -1210,9 +1213,10 @@
                 )
               buf
               string-x
-              string-y
+              (- string-y 5)
               (font-color dark-yellow)
               (font-flags shadow kerning large)
+              0.8
               )
             )
           )
@@ -1489,7 +1493,7 @@
       (case *hud-collectable-view*
         (((hud-collectable-view game-totals))
           ;; show flies collected/total across entire game
-          (draw-string-xy
+          (draw-string-xy-scaled
             (string-format 
               " ~D~% /~D"
               (the int (-> *game-info* buzzer-total))
@@ -1497,15 +1501,16 @@
               )
             buf
             string-x
-            string-y
+            (- string-y 5)
             (font-color dark-yellow)
             (font-flags shadow kerning large)
+            0.8
             )
           )
         (((hud-collectable-view level-totals))
           (let ((lvl-idx (-> *level-task-data-remap* (+ (-> *target* current-level info index) -1))))
             ;; show flies collected/total this level
-            (draw-string-xy
+            (draw-string-xy-scaled
               (string-format 
                 " ~D~% /~D"
                 (buzzer-count *game-info* (-> *level-task-data* lvl-idx task-info (-> *level-task-data* lvl-idx buzzer-task-index) task-id))
@@ -1513,9 +1518,10 @@
                 )
               buf
               string-x
-              string-y
+              (- string-y 5)
               (font-color dark-yellow)
               (font-flags shadow kerning large)
+              0.8
               )
             )
           )
