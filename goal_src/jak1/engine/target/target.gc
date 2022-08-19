@@ -46,6 +46,14 @@
   )
 )
 
+(defun reset-shop ()
+  (set! *shop-count* (the int (-> *game-info* money-total)))
+  (dotimes (i 7)
+    (set! (-> *shop-first-purchase* i) 1)
+    )
+  (none)
+  )
+
 (defun buy ((idx int))
   "purchase the item"
   (cond ((and (>= *shop-count* (-> *shop-price* idx)) (= (-> *shop-first-purchase* idx) 1))

@@ -746,7 +746,7 @@
          (gp-0 (-> s5-0 base))
          )
     (let ((s4-0 draw-string-xy))
-      (format (clear *temp-string*) "~D" (-> obj value))
+      (format (clear *temp-string*) "~D~%(~D)" (-> obj value) *shop-count*)
       (s4-0
         *temp-string*
         s5-0

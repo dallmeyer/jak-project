@@ -232,6 +232,7 @@
      (set! (-> obj auto-save-count) 0)
      (set! (-> *setting-control* default auto-save) #f)
      (set! (-> obj money) 0.0)
+     (set! *shop-count* 0)
      (set! (-> obj fuel) 0.0)
      (set! (-> obj money-total) 0.0)
      (set! (-> obj buzzer-total) 0.0)

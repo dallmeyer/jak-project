@@ -759,6 +759,7 @@
   (none)
   )
 
+(define-extern reset-shop (function none))
 (defmethod load-game! game-info ((obj game-info) (save game-save))
   "Copy save data from a game-save to a game-info"
   (let ((save-data (the-as game-save-tag (-> save tag))))
@@ -860,6 +861,7 @@
          )
         (((game-save-elt money-total))
          (set! (-> obj money-total) (-> data user-float0))
+         (reset-shop)
          )
         (((game-save-elt money-per-level))
          (let ((v1-34 (min 32 (-> data elt-count))))
