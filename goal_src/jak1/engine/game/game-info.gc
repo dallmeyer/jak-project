@@ -375,7 +375,9 @@
        )
 
      ;; increment our current money count
-     (+! *shop-count* amount)
+     (if (> amount 0.0)
+      (+! *shop-count* amount)
+      )
      (+! (-> obj money) amount)
      )
     (('fuel-cell)
