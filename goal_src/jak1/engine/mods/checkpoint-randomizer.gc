@@ -91,6 +91,124 @@
 )
 )
 
+(define *checkpoint-list-by-level-idx* 
+  (new 'static 'boxed-array :type (array string) :length 16 :allocated-length 16
+    ;; Geyser Rock
+    (new 'static 'boxed-array :type string :length 1
+      "game-start"
+    )
+    ;; Sandover
+    (new 'static 'boxed-array :type string :length 2
+      "village1-hut"
+      "village1-warp"
+    )
+    ;; Sentinel Beach
+    (new 'static 'boxed-array :type string :length 1
+      "beach-start"
+    )
+    ;; Forbidden Jungle
+    (new 'static 'boxed-array :type string :length 2
+      "jungle-start"
+      "jungle-tower"
+    )
+    ;; Misty Island
+    (new 'static 'boxed-array :type string :length 5
+      "misty-start"
+      "misty-silo"
+      "misty-bike"
+      "misty-backside"
+      "misty-silo2"
+    )
+    ;; Fire Canyon
+    (new 'static 'boxed-array :type string :length 2
+      "firecanyon-start"
+      "firecanyon-end"
+    )
+    ;; Rock Village
+    (new 'static 'boxed-array :type string :length 3
+      "village2-start"
+      "village2-warp"
+      "village2-dock"
+    )
+    ;; Lost Precursor City
+    (new 'static 'boxed-array :type string :length 6
+      "sunken-start"
+      "sunken1"
+      "sunken2"
+      "sunken-tube1"
+      "sunkenb-start"
+      "sunkenb-helix"
+    )
+    ;; Boggy Swamp
+    (new 'static 'boxed-array :type string :length 7
+      "swamp-start"
+      "swamp-dock1"
+      "swamp-cave1"
+      "swamp-dock2"
+      "swamp-cave2"
+      "swamp-game"
+      "swamp-cave3"
+    )
+    ;; Precursor Basin
+    (new 'static 'boxed-array :type string :length 1
+      "rolling-start"
+    )
+    ;; Mountain Pass
+    (new 'static 'boxed-array :type string :length 3
+      "ogre-start"
+      "ogre-race"
+      "ogre-end"
+    )
+    ;; Volcanic Crater
+    (new 'static 'boxed-array :type string :length 3
+      "village3-start"
+      "village3-warp"
+      "village3-farside"
+    )
+    ;; Snowy Mountain
+    (new 'static 'boxed-array :type string :length 9
+      "snow-start"
+      "snow-fort"
+      "snow-flut-flut"
+      "snow-pass-to-fort"
+      "snow-by-ice-lake"
+      "snow-by-ice-lake-alt"
+      "snow-outside-fort"
+      "snow-outside-cave"
+      "snow-across-from-flut"
+    )
+    ;; Spider Cave
+    (new 'static 'boxed-array :type string :length 6
+      "maincave-start"
+      "maincave-to-darkcave"
+      "maincave-to-robocave"
+      "darkcave-start"
+      "robocave-start"
+      "robocave-bottom"
+    )
+    ;; Lava Tube
+    (new 'static 'boxed-array :type string :length 6
+      "lavatube-start"
+      "lavatube-middle"
+      "lavatube-after-ribbon"
+      "lavatube-end"
+      "citadel-entrance"
+      "citadel-warp"
+    )
+    ;; Gol and Maia's Citadel
+    (new 'static 'boxed-array :type string :length 8
+      "citadel-start"
+      "citadel-plat-start"
+      "citadel-plat-end"
+      "citadel-launch-start"
+      "citadel-launch-end"
+      "citadel-generator-start"
+      "citadel-generator-end"
+      "citadel-elevator"
+    )
+  )
+)
+
 ;; collectable-interval serves as a counter, it counts up until it is raul to collectables-needed-to-warp, then it warps jak and resets itself to count again
 (define *collectable-interval* 0.0)
 
@@ -184,7 +302,26 @@
   (define currentListNode *rando-checkpoint-list*)
 
   (dotimes (temp length)
-    (define tempCheckpointName (-> *checkpoint-list* (knuth-rand-int-range 0 (-> *checkpoint-list* length))))
+    (define tempCheckpointName 
+      (case (-> *randomizer-settings* checkpoint-logic)
+        (('logic-random-checkpoint)
+          ;; original logic, just choose random checkpoint from list
+          (-> *checkpoint-list* (knuth-rand-int-range 0 (-> *checkpoint-list* length)))
+        )
+        (('logic-random-level)
+          ;; choose random level first...
+          (let ((random-level-idx (knuth-rand-int-range 0 (-> *checkpoint-list-by-level-idx* length))))
+            ;; ...then choose random checkpoint within that level
+            (let ((random-level-checkpoint-idx (knuth-rand-int-range 0 (-> *checkpoint-list-by-level-idx* random-level-idx length))))
+              (-> *checkpoint-list-by-level-idx* 
+                random-level-idx 
+                random-level-checkpoint-idx
+              )
+            )
+          )
+        )
+      ) 
+    )
     (set! (car currentListNode) tempCheckpointName) ;; append checkpoint
     (set! (cdr currentListNode) (cons '() '())) ;; create next node
     (set! currentListNode (cdr currentListNode)) ;; move current to newly created node

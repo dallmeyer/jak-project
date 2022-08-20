@@ -768,7 +768,10 @@
   (checkpoint-warpyelloweco?    #x130d)
   (checkpoint-warpdeath?        #x130e)
   (show-warp-counter?           #x131f)
-
+  (checkpoint-logic             #x1320)
+  (logic-random-checkpoint      #x1321)
+  (logic-random-level           #x1322)
+  
   ;;Challenges
   (custom-challenges            #x1402)
   (challenges-orbless           #x1403)

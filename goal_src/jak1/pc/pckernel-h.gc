@@ -414,6 +414,7 @@
       (collectables-needed-to-warp float);; number of cells/orbs/flies needed to trigger a random checkpoint warp
       (show-warp-counter? symbol) ;; boolean controlling if warp collectable count displayed
       (rng-lib symbol) ;; the RNG library to use in main game (randomizer itself always uses knuth)
+      (checkpoint-logic symbol) ;; the logic used when generating checkpoint lists
     )
 
     (:methods
@@ -453,6 +454,7 @@
     (format file "  (WarpOnYellowEco? ~A)~%" (-> obj warp-on-yellow-eco?))
     (format file "  (WarpOnDeath? ~A)~%" (-> obj warp-on-death?))
     (format file "  (rng-lib ~A)~%" (-> obj rng-lib))
+    (format file "  (checkpoint-logic ~A)~%" (-> obj checkpoint-logic))
 
     (format file "  )~%")
     (file-stream-close file)
@@ -492,6 +494,7 @@
   (set! (-> obj warp-on-yellow-eco?) #f)
   (set! (-> obj warp-on-death?) #f)
   (set! (-> obj rng-lib) 'rand-vu)
+  (set! (-> obj checkpoint-logic) 'random-checkpoint-logic)
   (none))
 
  (deftype challenges-settings (basic)

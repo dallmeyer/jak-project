@@ -164,6 +164,7 @@
   (cheat-toggle)
   (monitor)
   (rng-lib)
+  (checkpoint-logic)
   )
     )
   )

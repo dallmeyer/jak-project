@@ -88,6 +88,7 @@
 (def-progress-carousell *carousell-frame-rate-100fps* (60fps 100fps))
 (define *carousell-frame-rate* *carousell-frame-rate-150fps*)
 (def-progress-carousell *carousell-rng-lib* (rand-vu knuth))
+(def-progress-carousell *carousell-checkpoint-logic* (logic-random-checkpoint logic-random-level))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -195,6 +196,7 @@
 (define *randomizer-main-options* (new 'static 'boxed-array :type game-option
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-randomizer) :scale #t)
     (new 'static 'game-option :option-type (game-option-type use-random-seed?) :name (game-text-id use-random-seed?) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type checkpoint-logic) :name (game-text-id checkpoint-logic) :scale #t)
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id randomizer-warp-options) :scale #t :param3 (game-option-menu randomizer-warp-options))
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id show-warp-counter?) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
@@ -811,7 +813,8 @@
   ;;Randomizer menu
   (set! (-> *randomizer-main-options* 0 value-to-modify) (&-> *randomizer-settings* checkpoint-randomizer?))
   (set! (-> *randomizer-main-options* 1 value-to-modify) (&-> *randomizer-settings* use-random-seed?))
-  (set! (-> *randomizer-main-options* 3 value-to-modify) (&-> *randomizer-settings* show-warp-counter?))
+  (set! (-> *randomizer-main-options* 2 value-to-modify) (&-> *progress-carousell* int-backup)) ;; checkpoint-logic
+  (set! (-> *randomizer-main-options* 4 value-to-modify) (&-> *randomizer-settings* show-warp-counter?))
 
   (set! (-> *randomizer-warp-options* 0 value-to-modify) (&-> *randomizer-settings* warp-on-cell?))
   (set! (-> *randomizer-warp-options* 1 value-to-modify) (&-> *randomizer-settings* warp-on-orb?))
@@ -1003,6 +1006,7 @@
                     (game-option-type language-subtitles)
                     (game-option-type language-text)
                     (game-option-type rng-lib)
+                    (game-option-type checkpoint-logic)
                     )
                    ;; a carousell like language
                    (if (> (-> (the-as (pointer int) (-> options (-> obj option-index) value-to-modify))) 0)
@@ -1108,6 +1112,7 @@
                     (game-option-type language-subtitles)
                     (game-option-type language-text)
                     (game-option-type rng-lib)
+                    (game-option-type checkpoint-logic)
                     )
                    ;; same thing as before. if at last, go to first. otherwise, keep going forward.
                    (if (< (-> (the-as (pointer int) (-> options (-> obj option-index) value-to-modify))) (1- (length (-> *progress-carousell* current-carousell))))
@@ -1430,6 +1435,12 @@
                     (('knuth) (set! (-> *progress-carousell* int-backup) 1))
                     )
                   )
+                 (((game-option-type checkpoint-logic))
+                  (case (-> *randomizer-settings* checkpoint-logic)
+                    (('logic-random-checkpoint) (set! (-> *progress-carousell* int-backup) 0))
+                    (('logic-random-level) (set! (-> *progress-carousell* int-backup) 1))
+                    )
+                  )
                  )
                (sound-play "select-option")
                (cpad-clear! 0 x)
@@ -1457,6 +1468,7 @@
                      (((game-option-type language-subtitles)) (set! (-> *progress-carousell* current-carousell) *subtitle-languages*))
                      (((game-option-type language-text)) (set! (-> *progress-carousell* current-carousell) *text-languages*))
                      (((game-option-type rng-lib)) (set! (-> *progress-carousell* current-carousell) *carousell-rng-lib*))
+                     (((game-option-type checkpoint-logic)) (set! (-> *progress-carousell* current-carousell) *carousell-checkpoint-logic*))
                      )
                    )
                  )
@@ -1552,6 +1564,13 @@
                 (case (-> *progress-carousell* int-backup)
                   ((0) (set! (-> *randomizer-settings* rng-lib) 'rand-vu))
                   ((1) (set! (-> *randomizer-settings* rng-lib) 'knuth))
+                  )
+                )
+               (((game-option-type checkpoint-logic))
+                ;; same thing.
+                (case (-> *progress-carousell* int-backup)
+                  ((0) (set! (-> *randomizer-settings* checkpoint-logic) 'logic-random-checkpoint))
+                  ((1) (set! (-> *randomizer-settings* checkpoint-logic) 'logic-random-level))
                   )
                 )
                )
@@ -1958,6 +1977,7 @@
                    (game-option-type language-subtitles)
                    (game-option-type language-text)
                    (game-option-type rng-lib)
+                   (game-option-type checkpoint-logic)
                    )
                   ;; crunched down to one generic function.
                   (progress-draw-carousell-from-string-list (-> *progress-carousell* current-carousell) font y-off (-> (the-as (pointer int) (-> options index value-to-modify))))
@@ -2051,6 +2071,7 @@
                     (game-option-type normal-inverted)
                     (game-option-type use-random-seed?)
                     (game-option-type rng-lib)
+                    (game-option-type checkpoint-logic)
                     )
                    ;; slider and aspect ratio options just show their text
                    (set! option-str (lookup-text! *common-text* (-> options index name) #f))
