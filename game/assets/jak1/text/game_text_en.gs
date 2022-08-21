@@ -220,6 +220,15 @@
 (#x10a0 "HUGE HEAD JAK"
         "HUGE HEAD JAK")
 
+(#x10bc "SMALL JAK"
+        "SMALL JAK")
+(#x10bd "BIG JAK"
+        "BIG JAK")
+(#x10be "FLAT JAK"
+        "FLAT JAK")
+(#x10bf "PAPER JAK"
+        "PAPER JAK")
+
 (#x10c0 "MUSIC PLAYER"
         "MUSIC PLAYER")
 (#x10c1 "SCENE PLAYER"
@@ -356,77 +365,71 @@
         "DANSK")
 (#x1116 "NORSK"
         "NORSK")
-
-(#x1301 "CHECKPOINT RANDOMIZER"
-        "CHECKPOINT RANDOMIZER")
-(#x1302 "ITEM/DEATH COUNT TO WARP"
-        "ITEM/DEATH COUNT TO WARP")
-(#x1303 "RANDOMIZER LOGIC"
-        "RANDOMIZER LOGIC")
-(#x1304 "RANDOM-SEED"
-        "RANDOM-SEED")
-(#x1305 "SET-SEED"
-        "SET-SEED")
-(#x1309 "WARP SETTINGS"
-        "WARP SETTINGS")
-(#x1306 "WARP ON CELLS?"
-        "WARP ON CELLS?")
-(#x1307 "WARP ON ORBS?"
-        "WARP ON ORBS?")
-(#x1308 "WARP ON FLIES?"
-        "WARP ON FLIES?")
-(#x130a "WARP ON GREEN ECO?"
-        "WARP ON GREEN ECO?")
-(#x130b "WARP ON BLUE ECO?"
-        "WARP ON BLUE ECO?")
-(#x130c "WARP ON RED ECO?"
-        "WARP ON RED ECO?")
-(#x130d "WARP ON YELLOW ECO?"
-        "WARP ON YELLOW ECO?")
-(#x130e "WARP ON DEATH?"
-        "WARP ON DEATH?")
-(#x131f "SHOW WARP COUNTER?"
-        "SHOW WARP COUNTER?")
-
-(#x1402 "TOGGLE CHALLENGES"
-        "TOGGLE CHALLENGES")
-(#x1403 "ORBLESS"
-        "ORBLESS")
-(#x1404 "HARDCORE"
-        "HARDCORE")
-(#x1405 "DAMAGELESS"
-        "DAMAGELESS")  
-(#x1406 "BONKLESS"
-        "BONKLESS")
-(#x1407 "CASUAL"
-        "CASUAL")
-(#x1408 "MIRROR MODE"
-        "MIRROR MODE")
-(#x1409 "PACIFIST"
-        "PACIFIST")
-(#x140a "SMALL JAK"
-        "SMALL JAK")
-(#x140b "BIG JAK"
-        "BIG JAK")
-(#x140c "FLAT JAK"
-        "FLAT JAK")
-(#x140d "PAPER JAK"
-        "PAPER JAK")
-(#x1501 "POWER CELL CUTSCENES"
-        "POWER CELL CUTSCENES")
-(#x1502 "JAK SIZE MENU"
-        "JAK SIZE MENU")
-(#x1503 "MOD OPTIONS"
-        "MOD OPTIONS")
-(#x1504 "RNG LIBRARY"
-        "RNG LIBRARY")
-(#x1505 "RAND-VU (ORIGINAL)"
-        "RAND-VU (ORIGINAL)")
-(#x1506 "KNUTH"
-        "KNUTH")
         
 (#x1500 "SPEEDRUNNER MODE"
         "SPEEDRUNNER MODE")
+
+;; Mod Options
+(#x1600 "MOD OPTIONS"
+        "MOD OPTIONS")
+(#x1601 "CHECKPOINT RANDOMIZER"
+        "CHECKPOINT RANDOMIZER")
+(#x1602 "TOGGLE CHALLENGES"
+        "TOGGLE CHALLENGES")
+(#x1603 "RNG LIBRARY"
+        "RNG LIBRARY")
+(#x1604 "POWER CELL CUTSCENES"
+        "POWER CELL CUTSCENES")
+
+;; Checkpoint Randomizer
+(#x1610 "ITEM/DEATH COUNT TO WARP"
+        "ITEM/DEATH COUNT TO WARP")
+(#x1611 "RANDOMIZER LOGIC"
+        "RANDOMIZER LOGIC")
+(#x1612 "RANDOM-SEED"
+        "RANDOM-SEED")
+(#x1613 "SET-SEED"
+        "SET-SEED")
+(#x1614 "WARP SETTINGS"
+        "WARP SETTINGS")
+(#x1615 "WARP ON CELLS?"
+        "WARP ON CELLS?")
+(#x1616 "WARP ON ORBS?"
+        "WARP ON ORBS?")
+(#x1617 "WARP ON FLIES?"
+        "WARP ON FLIES?")
+(#x1618 "WARP ON GREEN ECO?"
+        "WARP ON GREEN ECO?")
+(#x1619 "WARP ON BLUE ECO?"
+        "WARP ON BLUE ECO?")
+(#x161a "WARP ON RED ECO?"
+        "WARP ON RED ECO?")
+(#x161b "WARP ON YELLOW ECO?"
+        "WARP ON YELLOW ECO?")
+(#x161c "WARP ON DEATH?"
+        "WARP ON DEATH?")
+(#x161d "SHOW WARP COUNTER?"
+        "SHOW WARP COUNTER?")
+
+;; Challenges
+(#x1630 "ORBLESS"
+        "ORBLESS")
+(#x1631 "HARDCORE"
+        "HARDCORE")
+(#x1632 "DAMAGELESS"
+        "DAMAGELESS")  
+(#x1633 "BONKLESS"
+        "BONKLESS")
+(#x1634 "CASUAL"
+        "CASUAL")
+(#x1635 "PACIFIST"
+        "PACIFIST")
+
+;; RNG Library
+(#x1640 "RAND-VU (ORIGINAL)"
+        "RAND-VU (ORIGINAL)")
+(#x1641 "KNUTH"
+        "KNUTH")
 
 ;; -----------------
 ;; test (DO NOT TRANSLATE)

@@ -113,8 +113,8 @@
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id sound-options) :scale #t :param3 (game-option-menu sound-settings))
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id load-game) :scale #t :param3 (game-option-menu load-game))
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id save-game) :scale #t :param3 (game-option-menu save-game))
-    ;;(new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id disable-auto-save) :scale #t :param3 (game-option-menu memcard-disable-auto-save))
-    ;;(new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id secrets) :scale #t :param3 (game-option-menu secrets))
+    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id disable-auto-save) :scale #t :param3 (game-option-menu memcard-disable-auto-save))
+    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id secrets) :scale #t :param3 (game-option-menu secrets))
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id quit-game) :scale #t :param3 (game-option-menu quit))
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
@@ -183,11 +183,8 @@
 (define *mod-options* (new 'static 'boxed-array :type game-option
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id checkpoint-randomizer) :scale #t :param3 (game-option-menu randomizer-main-options))
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id custom-challenges) :scale #t :param3 (game-option-menu challenges-options))
-    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id mod-options-jak-size-menu) :scale #t :param3 (game-option-menu mod-options-jak-size))
     (new 'static 'game-option :option-type (game-option-type rng-lib) :name (game-text-id rng-lib) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id mod-powercellcutscenes) :scale #t)
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id mod-mirrormode) :scale #t)
-    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id secrets) :scale #t :param3 (game-option-menu secrets))
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
   )
@@ -222,15 +219,6 @@
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-pacifist) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-bonkless) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-casual) :scale #t)
-    (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
-    )
-  )
-
-(define *mod-options-jak-size* (new 'static 'boxed-array :type game-option    
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-smalljak) :scale #t)
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-bigjak) :scale #t)
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-flatjak) :scale #t)
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-paperjak) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
   )
@@ -277,9 +265,9 @@
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id new-game) :scale #t :param3 (game-option-menu save-game-title))
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id load-game) :scale #t :param3 (game-option-menu load-game))
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id options) :scale #t :param3 (game-option-menu settings-title))
-    ;;(new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id secrets) :scale #t :param3 (game-option-menu secrets))
+    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id secrets) :scale #t :param3 (game-option-menu secrets))
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id quit-game) :scale #t :param3 (game-option-menu quit-title))
-    ;;(new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
   )
 
@@ -305,6 +293,13 @@
     (new 'static 'game-option :option-type (game-option-type cheat-toggle) :name (game-text-id cheat-tunes) :scale #t :param1 6.0)
     (new 'static 'game-option :option-type (game-option-type cheat-toggle) :name (game-text-id cheat-sky) :scale #t :param1 7.0)
     (new 'static 'game-option :option-type (game-option-type cheat-toggle) :name (game-text-id cheat-huge-head) :scale #t :param1 15.0)
+    
+    ;; Added in mod, so doesn't use cheat-toggle
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-smalljak) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-bigjak) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-flatjak) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-paperjak) :scale #t)
+
     (new 'static 'game-option :option-type (game-option-type cheat-toggle) :name (game-text-id cheat-mirror) :scale #t :param1 8.0)
     (new 'static 'game-option :option-type (game-option-type cheat-toggle) :name (game-text-id cheat-eco-yellow) :scale #t :param1 3.0)
     (new 'static 'game-option :option-type (game-option-type cheat-toggle) :name (game-text-id cheat-eco-blue) :scale #t :param1 2.0)
@@ -772,7 +767,6 @@
   (set! (-> *options-remap* (progress-screen randomizer-warp-options))    *randomizer-warp-options*)
   (set! (-> *options-remap* (progress-screen challenges-options))         *challenges-options*)
   (set! (-> *options-remap* (progress-screen mod-options))                *mod-options*)
-  (set! (-> *options-remap* (progress-screen mod-options-jak-size))       *mod-options-jak-size*)
   (set! (-> *options-remap* (progress-screen memcard-disable-auto-save))  *yes-no-options*)
   (set! (-> *options-remap* (progress-screen memcard-auto-save-disabled)) *ok-options*)
   (set! (-> *options-remap* (progress-screen monitor))                    *temp-options*)
@@ -841,16 +835,9 @@
   (set! (-> *challenges-options* 5 value-to-modify) (&-> *challenges-settings* challenges-casual?))
   
   ;;mod settings
-  (set! (-> *mod-options* 3 value-to-modify) (&-> *progress-carousell* int-backup))
-  (set! (-> *mod-options* 4 value-to-modify) (&-> *mods-settings* mod-powercellcutscenes?))
-  (set! (-> *mod-options* 5 value-to-modify) (&-> *challenges-settings* challenges-mirrormode?))
+  (set! (-> *mod-options* 2 value-to-modify) (&-> *progress-carousell* int-backup)) ;; RNG Lib
+  (set! (-> *mod-options* 3 value-to-modify) (&-> *mods-settings* mod-powercellcutscenes?))
 
-  ;;jak-size settings
-  (set! (-> *mod-options-jak-size* 0 value-to-modify) (&-> *challenges-settings* challenges-smalljak?))
-  (set! (-> *mod-options-jak-size* 1 value-to-modify) (&-> *challenges-settings* challenges-bigjak?))
-  (set! (-> *mod-options-jak-size* 2 value-to-modify) (&-> *challenges-settings* challenges-flatjak?))
-  (set! (-> *mod-options-jak-size* 3 value-to-modify) (&-> *challenges-settings* challenges-paperjak?))
-  
   (set! (-> *camera-options* 0 value-to-modify) (&-> *pc-settings* first-camera-h-inverted?))
   (set! (-> *camera-options* 1 value-to-modify) (&-> *pc-settings* first-camera-v-inverted?))
   (set! (-> *camera-options* 2 value-to-modify) (&-> *pc-settings* third-camera-h-inverted?))
@@ -864,11 +851,16 @@
   (set! (-> *sound-options-pc* 0 value-to-modify) (&-> *setting-control* default sfx-volume))
   (set! (-> *sound-options-pc* 1 value-to-modify) (&-> *setting-control* default music-volume))
   (set! (-> *sound-options-pc* 2 value-to-modify) (&-> *setting-control* default dialog-volume))
-  (dotimes (i (1- (-> *cheats* length)))
-    (set! (-> *cheats* i value-to-modify) (&-> *progress-carousell* symbol-backup))
-    )
   ;(set! (-> *sound-options-pc* 3 value-to-modify) (&-> *pc-settings* music-fadein?))
 
+  (dotimes (i (1- (-> *cheats* length)))
+      (set! (-> *cheats* i value-to-modify) (&-> *progress-carousell* symbol-backup))
+    )
+  (set! (-> *cheats* 8 value-to-modify) (&-> *challenges-settings* challenges-smalljak?))
+  (set! (-> *cheats* 9 value-to-modify) (&-> *challenges-settings* challenges-bigjak?))
+  (set! (-> *cheats* 10 value-to-modify) (&-> *challenges-settings* challenges-flatjak?))
+  (set! (-> *cheats* 11 value-to-modify) (&-> *challenges-settings* challenges-paperjak?))
+  
   (set! (-> *progress-carousell* aspect-native-choice) (-> *pc-settings* use-vis?))
 
   ;; scroll stuff!
@@ -2406,10 +2398,6 @@
          (draw-options self 115 25 0.65)
          )
         (((progress-screen mod-options))
-         (hide-progress-icons)
-         (draw-options self 115 25 0.65)
-         )
-        (((progress-screen mod-options-jak-size))
          (hide-progress-icons)
          (draw-options self 115 25 0.65)
          )
