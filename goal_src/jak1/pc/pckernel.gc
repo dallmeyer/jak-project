@@ -1123,6 +1123,7 @@
                 (("WarpOnBlueEco?") (set! (-> obj warp-on-blue-eco?) (file-stream-read-symbol file)))
                 (("WarpOnRedEco?") (set! (-> obj warp-on-red-eco?) (file-stream-read-symbol file)))
                 (("WarpOnYellowEco?") (set! (-> obj warp-on-yellow-eco?) (file-stream-read-symbol file)))
+                (("WarpOnEcoVents?") (set! (-> obj warp-on-eco-vents?) (file-stream-read-symbol file)))
                 (("WarpOnDeath?") (set! (-> obj warp-on-death?) (file-stream-read-symbol file)))
                 (("rng-lib") (set! (-> obj rng-lib) (file-stream-read-symbol file)))
                 (("checkpoint-logic") (set! (-> obj checkpoint-logic) (file-stream-read-symbol file)))

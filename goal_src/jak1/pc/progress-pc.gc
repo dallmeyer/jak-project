@@ -208,6 +208,7 @@
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-warpblueeco?) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-warpredeco?) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-warpyelloweco?) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-warpecovents?) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-warpdeath?) :scale #t)
     (new 'static 'game-option :name (game-text-id item-count-to-trigger-warp) :scale #t :param1 1.0 :param2 102.0)
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
@@ -826,8 +827,9 @@
   (set! (-> *randomizer-warp-options* 4 value-to-modify) (&-> *randomizer-settings* warp-on-blue-eco?))
   (set! (-> *randomizer-warp-options* 5 value-to-modify) (&-> *randomizer-settings* warp-on-red-eco?))
   (set! (-> *randomizer-warp-options* 6 value-to-modify) (&-> *randomizer-settings* warp-on-yellow-eco?))
-  (set! (-> *randomizer-warp-options* 7 value-to-modify) (&-> *randomizer-settings* warp-on-death?))
-  (set! (-> *randomizer-warp-options* 8 value-to-modify) (&-> *randomizer-settings* collectables-needed-to-warp))
+  (set! (-> *randomizer-warp-options* 7 value-to-modify) (&-> *randomizer-settings* warp-on-eco-vents?))
+  (set! (-> *randomizer-warp-options* 8 value-to-modify) (&-> *randomizer-settings* warp-on-death?))
+  (set! (-> *randomizer-warp-options* 9 value-to-modify) (&-> *randomizer-settings* collectables-needed-to-warp))
 
   ;;Challenges menu
   (set! (-> *challenges-options* 0 value-to-modify) (&-> *challenges-settings* challenges-orbless?))

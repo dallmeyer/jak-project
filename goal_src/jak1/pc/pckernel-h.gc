@@ -422,6 +422,7 @@
       (warp-on-blue-eco? symbol) ;; Warp on blue eco
       (warp-on-red-eco? symbol) ;; Warp on red eco
       (warp-on-yellow-eco? symbol) ;; Warp on yellow eco
+      (warp-on-eco-vents? symbol) ;; Controls whether eco vents count towards above eco warps
       (warp-on-death? symbol) ;; Warp on death
       (collectables-needed-to-warp float);; number of cells/orbs/flies needed to trigger a random checkpoint warp
       (show-warp-counter? symbol) ;; boolean controlling if warp collectable count displayed
@@ -464,6 +465,7 @@
     (format file "  (WarpOnBlueEco? ~A)~%" (-> obj warp-on-blue-eco?))
     (format file "  (WarpOnRedEco? ~A)~%" (-> obj warp-on-red-eco?))
     (format file "  (WarpOnYellowEco? ~A)~%" (-> obj warp-on-yellow-eco?))
+    (format file "  (WarpOnEcoVents? ~A)~%" (-> obj warp-on-eco-vents?))
     (format file "  (WarpOnDeath? ~A)~%" (-> obj warp-on-death?))
     (format file "  (rng-lib ~A)~%" (-> obj rng-lib))
     (format file "  (checkpoint-logic ~A)~%" (-> obj checkpoint-logic))
@@ -504,6 +506,7 @@
   (set! (-> obj warp-on-blue-eco?) #f)
   (set! (-> obj warp-on-red-eco?) #f)
   (set! (-> obj warp-on-yellow-eco?) #f)
+  (set! (-> obj warp-on-eco-vents?) #f)
   (set! (-> obj warp-on-death?) #f)
   (set! (-> obj rng-lib) 'rand-vu)
   (set! (-> obj checkpoint-logic) 'random-checkpoint-logic)

@@ -2969,6 +2969,7 @@
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
     (if (and
         (-> *randomizer-settings* checkpoint-randomizer?)
+        (-> *randomizer-settings* warp-on-eco-vents?)
         (or
           (and (-> *randomizer-settings* warp-on-green-eco?) (= (-> self fact pickup-type) (pickup-type eco-green)))
           (and (-> *randomizer-settings* warp-on-blue-eco?) (= (-> self fact pickup-type) (pickup-type eco-blue)))

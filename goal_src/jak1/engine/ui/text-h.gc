@@ -787,11 +787,12 @@
   (checkpoint-warpblueeco?      #x1619)
   (checkpoint-warpredeco?       #x161a)
   (checkpoint-warpyelloweco?    #x161b)
-  (checkpoint-warpdeath?        #x161c)
-  (show-warp-counter?           #x161d)
-  (checkpoint-logic             #x161e)
-  (logic-random-checkpoint      #x161f)
-  (logic-random-level           #x1620)
+  (checkpoint-warpecovents?     #x161c)
+  (checkpoint-warpdeath?        #x161d)
+  (show-warp-counter?           #x161e)
+  (checkpoint-logic             #x161f)
+  (logic-random-checkpoint      #x1620)
+  (logic-random-level           #x1621)
 
   ;;Challenges
   (challenges-orbless           #x1630)
