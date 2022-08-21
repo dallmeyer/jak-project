@@ -680,6 +680,19 @@
   (cheat-sky                    #x1097)
   (cheat-req-100-percent        #x1098)
   (cheat-req-beat-game          #x1099)
+  (cheat-big-head               #x109a)
+  (cheat-small-head             #x109b)
+  (cheat-big-fist               #x109c)
+  (cheat-big-head-npc           #x109d)
+  (cheat-no-tex                 #x109e)
+  (cheat-mirror                 #x109f)
+  (cheat-huge-head              #x10a0)
+
+  (challenges-smalljak          #x10bc)
+  (challenges-bigjak            #x10bd)
+  (challenges-flatjak           #x10be)
+  (challenges-paperjak          #x10bf)
+
   (music-player                 #x10c0)
   (scene-player                 #x10c1)
   (play-credits                 #x10c2)
@@ -751,48 +764,47 @@
   (scene-255                    #x12ff)
   (hint-0                       #x1300)
   (hint-511                     #x14ff)
-  
-  ;; Randomizer
-  (checkpoint-randomizer        #x1301)
-  (item-count-to-trigger-warp   #x1302)
-  (use-random-seed?             #x1303)
-  (randomizer-random-seed       #x1304)
-  (randomizer-set-seed          #x1305)
-  (checkpoint-warpcells?        #x1306)
-  (checkpoint-warporbs?         #x1307)
-  (checkpoint-warpbuzzer?       #x1308)
-  (randomizer-warp-options      #x1309)
-  (checkpoint-warpgreeneco?     #x130a)
-  (checkpoint-warpblueeco?      #x130b)
-  (checkpoint-warpredeco?       #x130c)
-  (checkpoint-warpyelloweco?    #x130d)
-  (checkpoint-warpdeath?        #x130e)
-  (show-warp-counter?           #x131f)
-  (checkpoint-logic             #x1320)
-  (logic-random-checkpoint      #x1321)
-  (logic-random-level           #x1322)
-  
-  ;;Challenges
-  (custom-challenges            #x1402)
-  (challenges-orbless           #x1403)
-  (challenges-hardcore          #x1404)
-  (challenges-damageless        #x1405)
-  (challenges-bonkless          #x1406)
-  (challenges-casual            #x1407)
-  (mod-mirrormode               #x1408)
-  (challenges-pacifist          #x1409)
-  (challenges-smalljak          #x140a)
-  (challenges-bigjak            #x140b)
-  (challenges-flatjak           #x140c)
-  (challenges-paperjak          #x140d)
 
-  ;;Mod settings
-  (mod-powercellcutscenes       #x1501)
-  (mod-options-jak-size-menu    #x1502)
-  (mod-options                  #x1503)
-  (rng-lib                      #x1504)
-  (rand-vu                      #x1505)
-  (knuth                        #x1506)
+  (speedrunner-mode             #x1500)
+
+  ;; Mod Options
+  (mod-options                  #x1600)
+  (checkpoint-randomizer        #x1601)
+  (custom-challenges            #x1602)
+  (rng-lib                      #x1603)
+  (mod-powercellcutscenes       #x1604)
+  
+  ;; Checkpoint Randomizer
+  (item-count-to-trigger-warp   #x1610)
+  (use-random-seed?             #x1611)
+  (randomizer-random-seed       #x1612)
+  (randomizer-set-seed          #x1613)
+  (randomizer-warp-options      #x1614)
+  (checkpoint-warpcells?        #x1615)
+  (checkpoint-warporbs?         #x1616)
+  (checkpoint-warpbuzzer?       #x1617)
+  (checkpoint-warpgreeneco?     #x1618)
+  (checkpoint-warpblueeco?      #x1619)
+  (checkpoint-warpredeco?       #x161a)
+  (checkpoint-warpyelloweco?    #x161b)
+  (checkpoint-warpdeath?        #x161c)
+  (show-warp-counter?           #x161d)
+  (checkpoint-logic             #x161e)
+  (logic-random-checkpoint      #x161f)
+  (logic-random-level           #x1620)
+
+  ;;Challenges
+  (challenges-orbless           #x1630)
+  (challenges-hardcore          #x1631)
+  (challenges-damageless        #x1632)
+  (challenges-bonkless          #x1633)
+  (challenges-casual            #x1634)
+  (challenges-pacifist          #x1635)
+
+  ;;RNG Library
+  (rand-vu                      #x1640)
+  (knuth                        #x1641)
+
 ;; GAME-TEXT-ID ENUM ENDS
   )
 

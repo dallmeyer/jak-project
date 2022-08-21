@@ -9,7 +9,7 @@
 (defun start-extra-target ()
   (process-spawn
                 target
-               :init init-target
+                :init init-target
                 (-> *game-info* current-continue)
                 :from *target-dead-pool*
                 :to *target-pool*
