@@ -127,6 +127,11 @@
   (plunger-lurker-hit 113)
   (leaving-misty 114)
   (assistant-village3 115)
-  (misty-leaving 116) ;; added
-  (max 117)
+  (speedrun-misty-boat-firstcutscene 116)
+  (speedrun-misty-boat-secondcutscene 117)
+  (speedrun-training-usewarpgate 118)
+  (speedrun-ogre-racerscutscene 119)
+  (speedrun-lavatube-LTS 120)
+
+  (max 121)
   )
