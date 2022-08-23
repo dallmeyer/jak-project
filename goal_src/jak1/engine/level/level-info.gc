@@ -96,6 +96,30 @@
         :lev1 'village1
         :disp1 'special
         )
+      (new 'static 'continue-point
+        :name "training-far"
+        :level 'training
+        :trans (new 'static 'vector :x -4992741.0000 :y 112107.3593 :z 3521065.0000 :w 1.0)
+        :quat (new 'static 'quaternion :y -0.5227 :w 0.8525)
+        :camera-trans (new 'static 'vector :x -4952588.5000 :y 131398.8750 :z 3502225.2500 :w 1.0)
+        :camera-rot (new 'static 'array float 9 0.0825 0.1487 0.9854  0.0000 0.9888 -0.1492  -0.9965 0.0123 0.0815)
+        :load-commands '((special "med-res-level-1" #t)
+          (special "med-res-level-2" #t)
+          (special "med-res-level-4" #t)
+          (special "med-res-level-6" #t)
+          (special "med-res-level-7" #t)
+          (special "med-res-level-8" #t)
+          (special "med-res-level-9" #t)
+          (special "med-res-level-14" #t)
+          (special "med-res-level-22" #t)
+          (special "med-res-level-23" #t)
+          )
+        :vis-nick 'tra
+        :lev0 'training
+        :disp0 'display
+        :lev1 'village1
+        :disp1 'special
+        )
       )
     :tasks '(92 93 94 95)
     :priority 100
@@ -209,6 +233,20 @@
         :lev0 'village1
         :disp0 'display
         :lev1 'misty
+        :disp1 #f
+        )
+      (new 'static 'continue-point
+        :name "village1-far"
+        :level 'village1
+        :trans (new 'static 'vector :x -22184.5214 :y 71808.6953 :z -9146.8037 :w 1.0)
+        :quat (new 'static 'quaternion :y 0.9387 :w 0.3445)
+        :camera-trans (new 'static 'vector :x 13723.9384 :y 91625.5468 :z -38547.2539 :w 1.0)
+        :camera-rot (new 'static 'array float 9 0.6144 0.1165 0.7802  0.0000 0.9890 -0.1477  -0.7889 0.0908 0.6077)
+        :load-commands '()
+        :vis-nick 'vi1
+        :lev0 'village1
+        :disp0 'display
+        :lev1 'beach
         :disp1 #f
         )
       )

@@ -446,6 +446,8 @@
         "BEACH-PELICAN")
 (#x1651 "BEACH-FAR"
         "BEACH-FAR")
+(#x1651 "JUNGLE-FAR"
+        "JUNGLE-FAR")
 
 ;; -----------------
 ;; test (DO NOT TRANSLATE)

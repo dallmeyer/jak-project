@@ -16,17 +16,21 @@
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
                                              'boxed-array
-                                             :type string :length 70 :allocated-length 70
+                                             :type string :length 74 :allocated-length 74
 "game-start"
 "village1-hut"
 "village1-warp"
 "beach-start"
+"beach-pelican"
+"beach-far"
 "beach-start"
-"beach-start"
-"beach-start"
+"beach-pelican"
+"beach-far"
 "jungle-start"
+"jungle-far"
 "jungle-tower"
 "jungle-start"
+"jungle-far"
 "jungle-tower"
 "misty-start"
 "misty-silo"
@@ -94,21 +98,26 @@
 (define *checkpoint-list-by-level-idx* 
   (new 'static 'boxed-array :type (array string) :length 16 :allocated-length 16
     ;; Geyser Rock
-    (new 'static 'boxed-array :type string :length 1
+    (new 'static 'boxed-array :type string :length 2
       "game-start"
+      "training-far"
     )
     ;; Sandover
-    (new 'static 'boxed-array :type string :length 2
+    (new 'static 'boxed-array :type string :length 3
       "village1-hut"
       "village1-warp"
+      "village1-far"
     )
     ;; Sentinel Beach
-    (new 'static 'boxed-array :type string :length 1
+    (new 'static 'boxed-array :type string :length 3
       "beach-start"
+      "beach-pelican"
+      "beach-far"
     )
     ;; Forbidden Jungle
-    (new 'static 'boxed-array :type string :length 2
+    (new 'static 'boxed-array :type string :length 3
       "jungle-start"
+      "jungle-far"
       "jungle-tower"
     )
     ;; Misty Island
