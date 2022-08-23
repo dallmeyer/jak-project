@@ -453,6 +453,16 @@
                              (game-text-id zero)
                              )
                         )
+                                           (new 'static 'task-info-data
+                        :task-id (game-task misty-leaving)
+                        :task-name
+                        (new 'static 'array game-text-id 4
+                             (game-text-id jungle-plant)
+                             (game-text-id jungle-plant)
+                             (game-text-id jungle-plant)
+                             (game-text-id zero)
+                             )
+                        )
                    (new 'static 'task-info-data
                         :task-id (game-task jungle-fishgame)
                         :task-name
@@ -498,7 +508,7 @@
          (new 'static 'level-tasks-info
               :level-name-id (game-text-id misty-level-name)
               :text-group-index 1
-              :nb-of-tasks 8
+              :nb-of-tasks 9
               :buzzer-task-index 7
               :task-info
               (new 'static 'array task-info-data 8
@@ -575,6 +585,16 @@
                         )
                    (new 'static 'task-info-data
                         :task-id (game-task misty-buzzer)
+                        :task-name
+                        (new 'static 'array game-text-id 4
+                             (game-text-id beach-buzzer)
+                             (game-text-id beach-buzzer)
+                             (game-text-id beach-buzzer)
+                             (game-text-id zero)
+                             )
+                        )
+                                       (new 'static 'task-info-data
+                        :task-id (game-task misty-leaving)
                         :task-name
                         (new 'static 'array game-text-id 4
                              (game-text-id beach-buzzer)
