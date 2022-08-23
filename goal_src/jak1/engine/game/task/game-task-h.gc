@@ -127,6 +127,6 @@
   (plunger-lurker-hit 113)
   (leaving-misty 114)
   (assistant-village3 115)
-  (max 116)
-  (misty-leaving 117)
+  (misty-leaving 116) ;; added
+  (max 117)
   )
