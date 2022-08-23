@@ -254,6 +254,20 @@
         :lev1 'village1
         :disp1 'display
         )
+        (new 'static 'continue-point
+        :name "beach-addl"
+        :level 'beach
+        :trans (new 'static 'vector :x -988223.5000 :y 34618.9492 :z -1674829.7500 :w 1.0)
+        :quat (new 'static 'quaternion :y 0.7691 :w 0.6391)
+        :camera-trans (new 'static 'vector :x -937688.8750 :y 55687.8085 :z -1667184.6250 :w 1.0)
+        :camera-rot (new 'static 'array float 9 -0.1929 0.1475 0.9700  -0.0000 0.9886 -0.1504  -0.9812 -0.0290 -0.190)
+        :load-commands '()
+        :vis-nick 'bea
+        :lev0 'beach
+        :disp0 'display
+        :lev1 'village1
+        :disp1 'display
+        )
       )
     :tasks '(15 16 17 18 19 20 21 22)
     :priority 100
