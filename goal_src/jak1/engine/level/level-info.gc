@@ -325,6 +325,20 @@
         :lev1 'village1
         :disp1 'display
         )
+        (new 'static 'continue-point
+        :name "jungle-far"
+        :level 'jungle
+        :trans (new 'static 'vector :x 1696097.3750 :y 108484.8515 :z -1377842.5000 :w 1.0)
+        :quat (new 'static 'quaternion :y 0.1241 :w -0.9922)
+        :camera-trans (new 'static 'vector :x 1710405.6250 :y 129562.8828 :z -1426943.2500 :w 1.0)
+        :camera-rot (new 'static 'array float 9 0.9603 0.0339 0.2766  0.0000 0.9925 -0.1216  -0.2787 0.1168 0.9532)
+        :load-commands '()
+        :vis-nick 'jun
+        :lev0 'jungle
+        :disp0 'display
+        :lev1 'village1
+        :disp1 'display
+        )
       )
     :tasks '(2 3 4 5 7 8 9)
     :priority 100
