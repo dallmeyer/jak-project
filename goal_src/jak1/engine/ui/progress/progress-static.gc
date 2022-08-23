@@ -1352,6 +1352,16 @@
                              (game-text-id zero)
                              )
                         )
+                    (new 'static 'task-info-data
+                        :task-id (game-task speedrun-misty-boat-firstcutscene)
+                        :task-name
+                        (new 'static 'array game-text-id 4
+                             (game-text-id citadel-buzzer)
+                             (game-text-id citadel-buzzer)
+                             (game-text-id citadel-buzzer)
+                             (game-text-id zero)
+                             )
+                        )
                    )
               )
          )
