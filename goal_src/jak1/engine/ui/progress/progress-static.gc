@@ -1269,7 +1269,7 @@
          (new 'static 'level-tasks-info
               :level-name-id (game-text-id lavatube-level-name)
               :text-group-index 3
-              :nb-of-tasks 2
+              :nb-of-tasks 3
               :buzzer-task-index 1
               :task-info
               (new 'static 'array task-info-data 8
@@ -1290,6 +1290,16 @@
                              (game-text-id lavatube-buzzer)
                              (game-text-id lavatube-buzzer)
                              (game-text-id lavatube-buzzer)
+                             (game-text-id zero)
+                             )
+                        )
+                   (new 'static 'task-info-data
+                        :task-id (game-task speedrun-lavatube-LTS)
+                        :task-name
+                        (new 'static 'array game-text-id 4
+                             (game-text-id jungle-plant)
+                             (game-text-id jungle-plant)
+                             (game-text-id jungle-plant)
                              (game-text-id zero)
                              )
                         )
