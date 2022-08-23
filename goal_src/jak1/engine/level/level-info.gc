@@ -255,7 +255,21 @@
         :disp1 'display
         )
         (new 'static 'continue-point
-        :name "beach-addl"
+        :name "beach-pelican"
+        :level 'beach
+        :trans (new 'static 'vector :x -707794.0000 :y 45171.0195 :z -1755679.6250 :w 1.0)
+        :quat (new 'static 'quaternion :y -0.9820 :w 0.1886)
+        :camera-trans (new 'static 'vector :x -731001.3750 :y 66196.4843 :z -1801026.2500 :w 1.0)
+        :camera-rot (new 'static 'array float 9 0.8837 -0.0713 -0.4624  0.0000 0.9883 -0.1524  0.4679 0.1346 0.8734)
+        :load-commands '()
+        :vis-nick 'bea
+        :lev0 'beach
+        :disp0 'display
+        :lev1 'village1
+        :disp1 'display
+        )
+        (new 'static 'continue-point
+        :name "beach-far"
         :level 'beach
         :trans (new 'static 'vector :x -988223.5000 :y 34618.9492 :z -1674829.7500 :w 1.0)
         :quat (new 'static 'quaternion :y 0.7691 :w 0.6391)
