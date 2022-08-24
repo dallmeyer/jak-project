@@ -16,7 +16,7 @@
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
                                              'boxed-array
-                                             :type string :length 74 :allocated-length 74
+                                             :type string :length 75 :allocated-length 75
 "game-start"
 "village1-hut"
 "village1-warp"
@@ -55,6 +55,7 @@
 "swamp-cave2"
 "swamp-game"
 "swamp-cave3"
+"swamp-flut-flut"
 "rolling-start"
 "ogre-start"
 "ogre-race"
@@ -149,7 +150,7 @@
       "sunkenb-helix"
     )
     ;; Boggy Swamp
-    (new 'static 'boxed-array :type string :length 7
+    (new 'static 'boxed-array :type string :length 8
       "swamp-start"
       "swamp-dock1"
       "swamp-cave1"
@@ -157,6 +158,7 @@
       "swamp-cave2"
       "swamp-game"
       "swamp-cave3"
+      "swamp-flut-flut"
     )
     ;; Precursor Basin
     (new 'static 'boxed-array :type string :length 1

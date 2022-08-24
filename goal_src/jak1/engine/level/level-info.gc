@@ -1012,6 +1012,27 @@
         :lev1 'village2
         :disp1 'special-vis
         )
+      (new 'static 'continue-point
+        :name "swamp-flut-flut"
+        :level 'swamp
+        :trans (new 'static 'vector :x (meters 563.3038) :y (meters 0.6789) :z (meters -2114.5437):w 1.0)
+        :quat (new 'static 'quaternion :y -1.6975 :w 0.7165)
+        :camera-trans (new 'static 'vector :x 0.0 :y 0.0 :z 0.0 :w 1.0)
+        :camera-rot (new 'static 'array float 9 -0.5883 0.0 0.8085 -0.1074 -0.9911 -0.0781 -0.8014 0.1328 -0.5831)
+        :load-commands
+        '((special "swamp-blimp-3" #t)
+          (special "precursor-arm-3" #t)
+          (special "swamp-tetherrock-13" #t)
+          (special "swamp-tetherrock-14" #t)
+          (special "swamp-tetherrock-15" #t)
+          (special "swamp-tetherrock-16" #t)
+          )
+        :vis-nick 'swa
+        :lev0 'swamp
+        :disp0 'display
+        :lev1 'village2
+        :disp1 'special-vis
+          )
       )
     :tasks '(36 37 38 39 40 41 42 43)
     :priority 100
