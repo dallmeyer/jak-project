@@ -56,7 +56,7 @@
 "swamp-cave2"
 "swamp-game"
 "swamp-cave3"
-"swamp-flut-flut"
+"swamp-flutflut"
 "rolling-start"
 "ogre-start"
 "ogre-race"
@@ -160,7 +160,7 @@
       "swamp-cave2"
       "swamp-game"
       "swamp-cave3"
-      "swamp-flut-flut"
+      "swamp-flutflut"
     )
     ;; Precursor Basin
     (new 'static 'boxed-array :type string :length 1
@@ -374,49 +374,11 @@
         (return #f)
       )
     )
-    ;; additional checkpoints enabled/disabled
-    (
-      ("training-far")
-      (if (not (-> *randomizer-settings* checkpoint-training-far))
-        (return #f)
-      )
-    )
-    (
-      ("village1-far")
-      (if (not (-> *randomizer-settings* checkpoint-village1-far))
-        (return #f)
-      )
-    )
-    (
-      ("beach-pelican")
-      (if (not (-> *randomizer-settings* checkpoint-beach-pelican))
-        (return #f)
-      )
-    )
-    (
-      ("beach-far")
-      (if (not (-> *randomizer-settings* checkpoint-beach-far))
-        (return #f)
-      )
-    )
-    (
-      ("jungle-far")
-      (if (not (-> *randomizer-settings* checkpoint-jungle-far))
-        (return #f)
-      )
-    )
-    (
-      ("swamp-flut-flut")
-      (if (not (-> *randomizer-settings* checkpoint-swamp-flut-flut))
-        (return #f)
-      )
-    )
-    (
-      ("village3-cart")
-      (if (not (-> *randomizer-settings* checkpoint-village3-cart))
-        (return #f)
-      )
-    )
+  )
+
+  ;; additional checkpoints enabled/disabled
+  (if (logtest? (-> (get-continue-by-name *game-info* checkpointName) flags) (continue-flags additional-disabled))
+    (return #f)
   )
 
   #t

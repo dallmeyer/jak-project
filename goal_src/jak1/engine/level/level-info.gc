@@ -1013,7 +1013,7 @@
         :disp1 'special-vis
         )
       (new 'static 'continue-point
-        :name "swamp-flut-flut"
+        :name "swamp-flutflut"
         :level 'swamp
         :trans (new 'static 'vector :x (meters 563.3038) :y (meters 0.6789) :z (meters -2114.5437):w 1.0)
         :quat (new 'static 'quaternion :y -1.6975 :w 0.7165)

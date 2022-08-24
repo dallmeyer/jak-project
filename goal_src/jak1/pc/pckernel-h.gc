@@ -426,14 +426,6 @@
       (show-warp-counter? symbol) ;; boolean controlling if warp collectable count displayed
       (rng-lib symbol) ;; the RNG library to use in main game (randomizer itself always uses knuth)
       (checkpoint-logic symbol) ;; the logic used when generating checkpoint lists
-      ;; additional checkpoints on/off
-      (checkpoint-training-far symbol)
-      (checkpoint-village1-far symbol)
-      (checkpoint-beach-pelican symbol)
-      (checkpoint-beach-far symbol)
-      (checkpoint-jungle-far symbol)
-      (checkpoint-swamp-flut-flut symbol)
-      (checkpoint-village3-cart symbol)
     )
 
     (:methods
@@ -475,14 +467,6 @@
     (format file "  (WarpOnDeath? ~A)~%" (-> obj warp-on-death?))
     (format file "  (rng-lib ~A)~%" (-> obj rng-lib))
     (format file "  (checkpoint-logic ~A)~%" (-> obj checkpoint-logic))
-    ;; additional checkpoints
-    (format file "  (checkpoint-training-far ~A)~%" (-> obj checkpoint-training-far))
-    (format file "  (checkpoint-village1-far ~A)~%" (-> obj checkpoint-village1-far))
-    (format file "  (checkpoint-beach-pelican ~A)~%" (-> obj checkpoint-beach-pelican))
-    (format file "  (checkpoint-beach-far ~A)~%" (-> obj checkpoint-beach-far))
-    (format file "  (checkpoint-jungle-far ~A)~%" (-> obj checkpoint-jungle-far))
-    (format file "  (checkpoint-swamp-flut-flut ~A)~%" (-> obj checkpoint-swamp-flut-flut))
-    (format file "  (checkpoint-village3-cart ~A)~%" (-> obj checkpoint-village3-cart))
 
     (format file "  )~%")
     (file-stream-close file)
@@ -525,13 +509,6 @@
   (set! (-> obj rng-lib) 'rand-vu)
   (set! (-> obj checkpoint-logic) 'logic-random-checkpoint)
 
-  (set! (-> obj checkpoint-training-far) #t)
-  (set! (-> obj checkpoint-village1-far) #t)
-  (set! (-> obj checkpoint-beach-pelican) #t)
-  (set! (-> obj checkpoint-beach-far) #t)
-  (set! (-> obj checkpoint-jungle-far) #t)
-  (set! (-> obj checkpoint-swamp-flut-flut) #t)
-  (set! (-> obj checkpoint-village3-cart) #t)
   (none))
 
  (deftype challenges-settings (basic)
@@ -624,6 +601,14 @@
     (
       (version uint64) ;; version of this settings
       (mod-powercellcutscenes? symbol) ;; enable or disable powercell cutscenes.
+      ;; additional checkpoints on/off
+      (checkpoint-training-far symbol)
+      (checkpoint-village1-far symbol)
+      (checkpoint-beach-pelican symbol)
+      (checkpoint-beach-far symbol)
+      (checkpoint-jungle-far symbol)
+      (checkpoint-swamp-flutflut symbol)
+      (checkpoint-village3-cart symbol)
 
     )
 
@@ -651,11 +636,19 @@
 
     (format file "(settings #x~X~%" (-> obj version))
     (format file "  (powercellcutscenes? ~A)~%" (-> obj mod-powercellcutscenes?))
+    ;; additional checkpoints
+    (format file "  (checkpoint-training-far ~A)~%" (-> obj checkpoint-training-far))
+    (format file "  (checkpoint-village1-far ~A)~%" (-> obj checkpoint-village1-far))
+    (format file "  (checkpoint-beach-pelican ~A)~%" (-> obj checkpoint-beach-pelican))
+    (format file "  (checkpoint-beach-far ~A)~%" (-> obj checkpoint-beach-far))
+    (format file "  (checkpoint-jungle-far ~A)~%" (-> obj checkpoint-jungle-far))
+    (format file "  (checkpoint-swamp-flutflut ~A)~%" (-> obj checkpoint-swamp-flutflut))
+    (format file "  (checkpoint-village3-cart ~A)~%" (-> obj checkpoint-village3-cart))
     (format file "  )~%")
     (file-stream-close file)
     )
 
-  (format 0 "randomizer settings file write: ~A~%" filename)
+  (format 0 "mods settings file write: ~A~%" filename)
   #t
   )
 
@@ -670,10 +663,19 @@
 (defmethod reset mods-settings ((obj mods-settings))
   "Set the default settings for non-vanilla randomizer settings"
 
-  (format 0 "resetting randomizer settings~%")
+  (format 0 "resetting mods settings~%")
 
   (set! (-> obj version) RANDO_SETTINGS_VERSION)
   (set! (-> obj mod-powercellcutscenes?) #t)
+
+  (set! (-> obj checkpoint-training-far) #t)
+  (set! (-> obj checkpoint-village1-far) #t)
+  (set! (-> obj checkpoint-beach-pelican) #t)
+  (set! (-> obj checkpoint-beach-far) #t)
+  (set! (-> obj checkpoint-jungle-far) #t)
+  (set! (-> obj checkpoint-swamp-flutflut) #t)
+  (set! (-> obj checkpoint-village3-cart) #t)
+
 
 
   (none))

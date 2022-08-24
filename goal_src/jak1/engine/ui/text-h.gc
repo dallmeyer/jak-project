@@ -813,7 +813,7 @@
   (checkpoint-beach-pelican     #x1652)
   (checkpoint-beach-far         #x1653)
   (checkpoint-jungle-far        #x1654)
-  (checkpoint-swamp-flut-flut   #x1655)
+  (checkpoint-swamp-flutflut    #x1655)
   (checkpoint-village3-cart     #x1656)
 
 ;; GAME-TEXT-ID ENUM ENDS

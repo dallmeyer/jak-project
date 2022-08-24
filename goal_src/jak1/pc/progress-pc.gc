@@ -237,7 +237,7 @@
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-beach-pelican) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-beach-far) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-jungle-far) :scale #t)
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-swamp-flut-flut) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-swamp-flutflut) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-village3-cart) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
@@ -861,13 +861,13 @@
   (set! (-> *mod-options* 2 value-to-modify) (&-> *progress-carousell* int-backup)) ;; RNG Lib
   (set! (-> *mod-options* 3 value-to-modify) (&-> *mods-settings* mod-powercellcutscenes?))
 
-  (set! (-> *additional-checkpoint-options* 0 value-to-modify) (&-> *randomizer-settings* checkpoint-training-far))
-  (set! (-> *additional-checkpoint-options* 1 value-to-modify) (&-> *randomizer-settings* checkpoint-village1-far))
-  (set! (-> *additional-checkpoint-options* 2 value-to-modify) (&-> *randomizer-settings* checkpoint-beach-pelican))
-  (set! (-> *additional-checkpoint-options* 3 value-to-modify) (&-> *randomizer-settings* checkpoint-beach-far))
-  (set! (-> *additional-checkpoint-options* 4 value-to-modify) (&-> *randomizer-settings* checkpoint-jungle-far))
-  (set! (-> *additional-checkpoint-options* 5 value-to-modify) (&-> *randomizer-settings* checkpoint-swamp-flut-flut))
-  (set! (-> *additional-checkpoint-options* 5 value-to-modify) (&-> *randomizer-settings* checkpoint-village3-cart))
+  (set! (-> *additional-checkpoint-options* 0 value-to-modify) (&-> *mods-settings* checkpoint-training-far))
+  (set! (-> *additional-checkpoint-options* 1 value-to-modify) (&-> *mods-settings* checkpoint-village1-far))
+  (set! (-> *additional-checkpoint-options* 2 value-to-modify) (&-> *mods-settings* checkpoint-beach-pelican))
+  (set! (-> *additional-checkpoint-options* 3 value-to-modify) (&-> *mods-settings* checkpoint-beach-far))
+  (set! (-> *additional-checkpoint-options* 4 value-to-modify) (&-> *mods-settings* checkpoint-jungle-far))
+  (set! (-> *additional-checkpoint-options* 5 value-to-modify) (&-> *mods-settings* checkpoint-swamp-flutflut))
+  (set! (-> *additional-checkpoint-options* 6 value-to-modify) (&-> *mods-settings* checkpoint-village3-cart))
 
   (set! (-> *camera-options* 0 value-to-modify) (&-> *pc-settings* first-camera-h-inverted?))
   (set! (-> *camera-options* 1 value-to-modify) (&-> *pc-settings* first-camera-v-inverted?))
@@ -2297,6 +2297,8 @@
 
   0)
 
+(define-extern update-additional-continue-flags (function game-info none))
+
 (defmethod draw-notice-screen progress ((obj progress))
   (hide-progress-icons)
   (when *common-text*
@@ -2570,6 +2572,7 @@
     (apply-settings *setting-control*)
     (progress-reset-music-parms)
     (commit-all-files)
+    (update-additional-continue-flags *game-info*)
     (set! (-> self particles 3 init-pos x) -320.0)
     (set! (-> self particles 4 init-pos x) -320.0)
     (set! (-> self particles 32 init-pos x) -320.0)

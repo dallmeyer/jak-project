@@ -115,6 +115,7 @@
   (contf09)
   (game-start)
   (sage-ecorocks)
+  (additional-disabled)
   )
 
 ;; static data for a continue point
