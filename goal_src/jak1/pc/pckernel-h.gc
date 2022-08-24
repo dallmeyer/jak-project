@@ -69,8 +69,6 @@
 (defconstant PC_SPOOL_LOG_LENGTH 170)
 
 
-(defconstant PC_SETTINGS_FILE_NAME "game_config/pc-settings.txt")
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; types and enums
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -509,7 +507,7 @@
   (set! (-> obj warp-on-eco-vents?) #f)
   (set! (-> obj warp-on-death?) #f)
   (set! (-> obj rng-lib) 'rand-vu)
-  (set! (-> obj checkpoint-logic) 'random-checkpoint-logic)
+  (set! (-> obj checkpoint-logic) 'logic-random-checkpoint)
   (none))
 
  (deftype challenges-settings (basic)
