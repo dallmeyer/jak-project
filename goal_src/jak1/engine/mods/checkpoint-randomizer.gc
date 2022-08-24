@@ -16,7 +16,7 @@
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
                                              'boxed-array
-                                             :type string :length 76 :allocated-length 76
+                                             :type string :length 77 :allocated-length 77
 "game-start"
 "training-far"
 "village1-hut"

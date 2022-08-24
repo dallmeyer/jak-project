@@ -1142,7 +1142,7 @@
                 (("checkpoint-beach-far") (set! (-> obj checkpoint-beach-far) (file-stream-read-symbol file)))
                 (("checkpoint-jungle-far") (set! (-> obj checkpoint-jungle-far) (file-stream-read-symbol file)))
                 (("checkpoint-swamp-flut-flut") (set! (-> obj checkpoint-swamp-flut-flut) (file-stream-read-symbol file)))
-                (("checkpoint-village3-cart) (set! (-> obj checkpoint-village3-cart) (file-stream-read-symbol file)))
+                (("checkpoint-village3-cart") (set! (-> obj checkpoint-village3-cart) (file-stream-read-symbol file)))
 
                 )
               )
