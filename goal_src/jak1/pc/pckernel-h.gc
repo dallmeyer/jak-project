@@ -509,7 +509,7 @@
   (set! (-> obj warp-on-eco-vents?) #f)
   (set! (-> obj warp-on-death?) #f)
   (set! (-> obj rng-lib) 'rand-vu)
-  (set! (-> obj checkpoint-logic) 'random-checkpoint-logic)
+  (set! (-> obj checkpoint-logic) 'logic-random-checkpoint)
   (none))
 
  (deftype challenges-settings (basic)

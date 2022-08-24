@@ -304,10 +304,6 @@
   (dotimes (temp length)
     (define tempCheckpointName 
       (case (-> *randomizer-settings* checkpoint-logic)
-        (('logic-random-checkpoint)
-          ;; original logic, just choose random checkpoint from list
-          (-> *checkpoint-list* (knuth-rand-int-range 0 (-> *checkpoint-list* length)))
-        )
         (('logic-random-level)
           ;; choose random level first...
           (let ((random-level-idx (knuth-rand-int-range 0 (-> *checkpoint-list-by-level-idx* length))))
@@ -319,6 +315,14 @@
               )
             )
           )
+        )
+        (('logic-random-checkpoint)
+          ;; original logic, just choose random checkpoint from list
+          (-> *checkpoint-list* (knuth-rand-int-range 0 (-> *checkpoint-list* length)))
+        )
+        (else
+          ;; original logic, just choose random checkpoint from list
+          (-> *checkpoint-list* (knuth-rand-int-range 0 (-> *checkpoint-list* length)))
         )
       ) 
     )
