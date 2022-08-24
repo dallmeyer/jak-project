@@ -11,13 +11,14 @@
 (define-extern knuth-rand-next-int (function int))
 
 (define *randomizer-version-string* "Rando 0.12")
-(define *release-version-string* "Release 0.1.25")
+(define *release-version-string* "Release 0.1.26")
 (define *comment-string* "Option to randomize by level, then by checkpoint")
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
                                              'boxed-array
-                                             :type string :length 75 :allocated-length 75
+                                             :type string :length 76 :allocated-length 76
 "game-start"
+"training-far"
 "village1-hut"
 "village1-warp"
 "beach-start"
@@ -63,6 +64,7 @@
 "village3-start"
 "village3-warp"
 "village3-farside"
+"village3-cart"
 "snow-start"
 "snow-fort"
 "snow-flut-flut"
@@ -171,10 +173,11 @@
       "ogre-end"
     )
     ;; Volcanic Crater
-    (new 'static 'boxed-array :type string :length 3
+    (new 'static 'boxed-array :type string :length 4
       "village3-start"
       "village3-warp"
       "village3-farside"
+      "village3-cart"
     )
     ;; Snowy Mountain
     (new 'static 'boxed-array :type string :length 9
@@ -224,26 +227,6 @@
 (define *collectable-interval* 0.0)
 
 (define *randomizer-items-collected* 0)
-
-(defun citadelCheck? ((checkpointName string))
-(if 
-(or
-(string= checkpointName "citadel-start")
-(string= checkpointName "citadel-entrance")
-(string= checkpointName "citadel-warp")
-(string= checkpointName "citadel-launch-start")
-(string= checkpointName "citadel-launch-end")
-(string= checkpointName "citadel-plat-start")
-(string= checkpointName "citadel-plat-end")
-(string= checkpointName "citadel-generator-start")
-(string= checkpointName "citadel-generator-end")
-(string= checkpointName "citadel-elevator")
-)
-(return #t)
-(return #f)
-)
-#f
-)
 
 (defun update-collectable-hud-counters ()
   (when 
@@ -371,26 +354,71 @@
 )
 
 (defun checkpointValid? ((checkpointName string))
-  ;; avoid citadel warps if cutscene task not closed
-  (if 
-    (and 
-      (not (task-closed? (game-task citadel-sage-green) (task-status need-hint))) 
-      (citadelCheck? checkpointName)
+  (case-str checkpointName
+    ;; avoid citadel warps if cutscene task not closed
+    (  
+      ("citadel-start" "citadel-entrance" "citadel-warp" "citadel-launch-start" 
+        "citadel-launch-end" "citadel-plat-start" "citadel-plat-end" 
+        "citadel-generator-start" "citadel-generator-end" "citadel-elevator")
+      (if (not (task-closed? (game-task citadel-sage-green) (task-status need-hint)))
+        (return #f)
+      )
     )
-    (return #f)
+    ;; avoid village1-warp if cutscene tasks not closed
+    (
+      ("village1-warp")
+      (if (or 
+          (not (task-closed? (game-task intro) (task-status need-resolution))) 
+          (not (task-closed? (game-task beach-ecorocks) (task-status need-introduction)))
+        )
+        (return #f)
+      )
+    )
+    ;; additional checkpoints enabled/disabled
+    (
+      ("training-far")
+      (if (not (-> *randomizer-settings* checkpoint-training-far))
+        (return #f)
+      )
+    )
+    (
+      ("village1-far")
+      (if (not (-> *randomizer-settings* checkpoint-village1-far))
+        (return #f)
+      )
+    )
+    (
+      ("beach-pelican")
+      (if (not (-> *randomizer-settings* checkpoint-beach-pelican))
+        (return #f)
+      )
+    )
+    (
+      ("beach-far")
+      (if (not (-> *randomizer-settings* checkpoint-beach-far))
+        (return #f)
+      )
+    )
+    (
+      ("jungle-far")
+      (if (not (-> *randomizer-settings* checkpoint-jungle-far))
+        (return #f)
+      )
+    )
+    (
+      ("swamp-flut-flut")
+      (if (not (-> *randomizer-settings* checkpoint-swamp-flut-flut))
+        (return #f)
+      )
+    )
+    (
+      ("village3-cart")
+      (if (not (-> *randomizer-settings* checkpoint-village3-cart))
+        (return #f)
+      )
+    )
   )
 
-  ;; avoid village1-warp if cutscene tasks not closed
-  (if 
-    (and 
-      (or 
-        (not (task-closed? (game-task intro) (task-status need-resolution))) 
-        (not (task-closed? (game-task beach-ecorocks) (task-status need-introduction)))
-      )
-      (string= checkpointName "village1-warp")
-    )
-    (return #f)
-  )
   #t
 )
 

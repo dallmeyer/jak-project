@@ -426,6 +426,14 @@
       (show-warp-counter? symbol) ;; boolean controlling if warp collectable count displayed
       (rng-lib symbol) ;; the RNG library to use in main game (randomizer itself always uses knuth)
       (checkpoint-logic symbol) ;; the logic used when generating checkpoint lists
+      ;; additional checkpoints on/off
+      (checkpoint-training-far symbol)
+      (checkpoint-village1-far symbol)
+      (checkpoint-beach-pelican symbol)
+      (checkpoint-beach-far symbol)
+      (checkpoint-jungle-far symbol)
+      (checkpoint-swamp-flut-flut symbol)
+      (checkpoint-village3-cart symbol)
     )
 
     (:methods
@@ -467,6 +475,14 @@
     (format file "  (WarpOnDeath? ~A)~%" (-> obj warp-on-death?))
     (format file "  (rng-lib ~A)~%" (-> obj rng-lib))
     (format file "  (checkpoint-logic ~A)~%" (-> obj checkpoint-logic))
+    ;; additional checkpoints
+    (format file "  (checkpoint-training-far ~A)~%" (-> obj checkpoint-training-far))
+    (format file "  (checkpoint-village1-far ~A)~%" (-> obj checkpoint-village1-far))
+    (format file "  (checkpoint-beach-pelican ~A)~%" (-> obj checkpoint-beach-pelican))
+    (format file "  (checkpoint-beach-far ~A)~%" (-> obj checkpoint-beach-far))
+    (format file "  (checkpoint-jungle-far ~A)~%" (-> obj checkpoint-jungle-far))
+    (format file "  (checkpoint-swamp-flut-flut ~A)~%" (-> obj checkpoint-swamp-flut-flut))
+    (format file "  (checkpoint-village3-cart ~A)~%" (-> obj checkpoint-village3-cart))
 
     (format file "  )~%")
     (file-stream-close file)
@@ -477,7 +493,7 @@
   #t
   )
 
-  (defmethod commit-to-file randomizer-settings ((obj randomizer-settings))
+(defmethod commit-to-file randomizer-settings ((obj randomizer-settings))
   "commits the current settings to the file"
   ;; auto load settings if available
   (format (clear *pc-temp-string-1*) "~S/Mods/randomizer-settings.gc" *pc-settings-folder*)
@@ -508,6 +524,14 @@
   (set! (-> obj warp-on-death?) #f)
   (set! (-> obj rng-lib) 'rand-vu)
   (set! (-> obj checkpoint-logic) 'logic-random-checkpoint)
+
+  (set! (-> obj checkpoint-training-far) #t)
+  (set! (-> obj checkpoint-village1-far) #t)
+  (set! (-> obj checkpoint-beach-pelican) #t)
+  (set! (-> obj checkpoint-beach-far) #t)
+  (set! (-> obj checkpoint-jungle-far) #t)
+  (set! (-> obj checkpoint-swamp-flut-flut) #t)
+  (set! (-> obj checkpoint-village3-cart) #t)
   (none))
 
  (deftype challenges-settings (basic)

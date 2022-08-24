@@ -1216,6 +1216,20 @@
         :lev1 'snow
         :disp1 #f
         )
+      (new 'static 'continue-point
+        :name "village3-cart"
+        :level 'village3
+        :trans (new 'static 'vector :x 4675205.5000 :y 202571.6406 :z -13990358.0000 :w 1.0)
+        :quat (new 'static 'quaternion :y 0.1474 :w 0.9890)
+        :camera-trans (new 'static 'vector :x 4669675.0000 :y 221362.2187 :z -13948159.0000 :w 1.0)
+        :camera-rot (new 'static 'array float 9 -0.9826 0.0264 0.1834  0.0000 0.9897 -0.1428  -0.1853 -0.1404 -0.9725)
+        :load-commands '()
+        :vis-nick 'vi3
+        :lev0 'village3
+        :disp0 'display
+        :lev1 'snow
+        :disp1 #f
+        )
       )
     :tasks '(96 97 98 99 100 101 74 77)
     :priority #xc8

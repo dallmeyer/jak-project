@@ -442,12 +442,20 @@
         "KNUTH")
 
 ;; Additional Checkpoints
-(#x1650 "BEACH-PELICAN"
+(#x1650 "TRAINING-FAR"
+        "TRAINING-FAR")
+(#x1651 "VILLAGE1-FAR"
+        "VILLAGE1-FAR")
+(#x1652 "BEACH-PELICAN"
         "BEACH-PELICAN")
-(#x1651 "BEACH-FAR"
+(#x1653 "BEACH-FAR"
         "BEACH-FAR")
-(#x1651 "JUNGLE-FAR"
+(#x1654 "JUNGLE-FAR"
         "JUNGLE-FAR")
+(#x1655 "SWAMP-FLUT-FLUT"
+        "SWAMP-FLUT-FLUT")
+(#x1656 "VILLAGE3-CART"
+        "VILLAGE3-CART")
 
 ;; -----------------
 ;; test (DO NOT TRANSLATE)

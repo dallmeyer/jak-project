@@ -847,6 +847,7 @@
                         (= v1-2 (progress-screen music-player))
                         (= v1-2 (progress-screen flava-player))
                         (= v1-2 (progress-screen monitor))
+                        (= v1-2 (progress-screen additional-checkpoint-options))
                         )
                     )
                   )
