@@ -773,6 +773,7 @@
   (custom-challenges            #x1602)
   (rng-lib                      #x1603)
   (mod-powercellcutscenes       #x1604)
+  (additional-checkpoints       #x1605)
   
   ;; Checkpoint Randomizer
   (item-count-to-trigger-warp   #x1610)
@@ -805,6 +806,15 @@
   ;;RNG Library
   (rand-vu                      #x1640)
   (knuth                        #x1641)
+
+  ;;Additional Checkpoints
+  (checkpoint-training-far      #x1650)
+  (checkpoint-village1-far      #x1651)
+  (checkpoint-beach-pelican     #x1652)
+  (checkpoint-beach-far         #x1653)
+  (checkpoint-jungle-far        #x1654)
+  (checkpoint-swamp-flutflut    #x1655)
+  (checkpoint-village3-cart     #x1656)
 
 ;; GAME-TEXT-ID ENUM ENDS
   )

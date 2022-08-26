@@ -163,6 +163,24 @@
   (-> obj task-perm-list data arg0)
   )
 
+(defun enable-or-disable-additional-continue-flag ((obj game-info) (continue-name string) (enable? symbol))
+  (if enable?
+    (logclear! (-> (get-continue-by-name obj continue-name) flags) (continue-flags additional-disabled))
+    (logior! (-> (get-continue-by-name obj continue-name) flags) (continue-flags additional-disabled))
+    )
+  (none)
+  )
+
+(defun update-additional-continue-flags ((obj game-info))
+  (enable-or-disable-additional-continue-flag obj "training-far" (-> *mods-settings* checkpoint-training-far))
+  (enable-or-disable-additional-continue-flag obj "village1-far" (-> *mods-settings* checkpoint-village1-far))
+  (enable-or-disable-additional-continue-flag obj "beach-pelican" (-> *mods-settings* checkpoint-beach-pelican))
+  (enable-or-disable-additional-continue-flag obj "beach-far" (-> *mods-settings* checkpoint-beach-far))
+  (enable-or-disable-additional-continue-flag obj "jungle-far" (-> *mods-settings* checkpoint-jungle-far))
+  (enable-or-disable-additional-continue-flag obj "swamp-flutflut" (-> *mods-settings* checkpoint-swamp-flutflut))
+  (enable-or-disable-additional-continue-flag obj "village3-cart" (-> *mods-settings* checkpoint-village3-cart))
+  )
+
 (define-extern orchestrateCheckpointWarp (function int none))
 (defmethod initialize! game-info ((obj game-info) (cause symbol) (save-to-load game-save) (continue-point-override string))
   "Initialize the game-info.
@@ -338,6 +356,7 @@
       )
     )
   (label cfg-50)
+  (update-additional-continue-flags obj)
   obj
   )
 

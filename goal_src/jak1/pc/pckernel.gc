@@ -1135,6 +1135,7 @@
                 (("WarpOnDeath?") (set! (-> obj warp-on-death?) (file-stream-read-symbol file)))
                 (("rng-lib") (set! (-> obj rng-lib) (file-stream-read-symbol file)))
                 (("checkpoint-logic") (set! (-> obj checkpoint-logic) (file-stream-read-symbol file)))
+
                 )
               )
             )
@@ -1275,6 +1276,14 @@
             (dosettings (file)
               (case-str *pc-temp-string*
                 (("powercellcutscenes?") (set! (-> obj mod-powercellcutscenes?) (file-stream-read-symbol file)))
+                
+                (("checkpoint-training-far") (set! (-> obj checkpoint-training-far) (file-stream-read-symbol file)))
+                (("checkpoint-village1-far") (set! (-> obj checkpoint-village1-far) (file-stream-read-symbol file)))
+                (("checkpoint-beach-pelican") (set! (-> obj checkpoint-beach-pelican) (file-stream-read-symbol file)))
+                (("checkpoint-beach-far") (set! (-> obj checkpoint-beach-far) (file-stream-read-symbol file)))
+                (("checkpoint-jungle-far") (set! (-> obj checkpoint-jungle-far) (file-stream-read-symbol file)))
+                (("checkpoint-swamp-flutflut") (set! (-> obj checkpoint-swamp-flutflut) (file-stream-read-symbol file)))
+                (("checkpoint-village3-cart") (set! (-> obj checkpoint-village3-cart) (file-stream-read-symbol file)))
                 )
               )
             )

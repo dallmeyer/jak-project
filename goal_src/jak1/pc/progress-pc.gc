@@ -190,6 +190,7 @@
     (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id custom-challenges) :scale #t :param3 (game-option-menu challenges-options))
     (new 'static 'game-option :option-type (game-option-type rng-lib) :name (game-text-id rng-lib) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id mod-powercellcutscenes) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type menu) :name (game-text-id additional-checkpoints) :scale #t :param3 (game-option-menu additional-checkpoint-options))
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
   )
@@ -226,6 +227,18 @@
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-pacifist) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-bonkless) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id challenges-casual) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
+    )
+  )
+
+(define *additional-checkpoint-options* (new 'static 'boxed-array :type game-option
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-training-far) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-village1-far) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-beach-pelican) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-beach-far) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-jungle-far) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-swamp-flutflut) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (game-text-id checkpoint-village3-cart) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (game-text-id back) :scale #t)
     )
   )
@@ -777,6 +790,7 @@
   (set! (-> *options-remap* (progress-screen memcard-disable-auto-save))  *yes-no-options*)
   (set! (-> *options-remap* (progress-screen memcard-auto-save-disabled)) *ok-options*)
   (set! (-> *options-remap* (progress-screen monitor))                    *temp-options*)
+  (set! (-> *options-remap* (progress-screen additional-checkpoint-options)) *additional-checkpoint-options*)
 
   ;; set default params
   (set! (-> *progress-state* aspect-ratio-choice) (get-aspect-ratio))
@@ -846,6 +860,14 @@
   ;;mod settings
   (set! (-> *mod-options* 2 value-to-modify) (&-> *progress-carousell* int-backup)) ;; RNG Lib
   (set! (-> *mod-options* 3 value-to-modify) (&-> *mods-settings* mod-powercellcutscenes?))
+
+  (set! (-> *additional-checkpoint-options* 0 value-to-modify) (&-> *mods-settings* checkpoint-training-far))
+  (set! (-> *additional-checkpoint-options* 1 value-to-modify) (&-> *mods-settings* checkpoint-village1-far))
+  (set! (-> *additional-checkpoint-options* 2 value-to-modify) (&-> *mods-settings* checkpoint-beach-pelican))
+  (set! (-> *additional-checkpoint-options* 3 value-to-modify) (&-> *mods-settings* checkpoint-beach-far))
+  (set! (-> *additional-checkpoint-options* 4 value-to-modify) (&-> *mods-settings* checkpoint-jungle-far))
+  (set! (-> *additional-checkpoint-options* 5 value-to-modify) (&-> *mods-settings* checkpoint-swamp-flutflut))
+  (set! (-> *additional-checkpoint-options* 6 value-to-modify) (&-> *mods-settings* checkpoint-village3-cart))
 
   (set! (-> *camera-options* 0 value-to-modify) (&-> *pc-settings* first-camera-h-inverted?))
   (set! (-> *camera-options* 1 value-to-modify) (&-> *pc-settings* first-camera-v-inverted?))
@@ -2275,6 +2297,8 @@
 
   0)
 
+(define-extern update-additional-continue-flags (function game-info none))
+
 (defmethod draw-notice-screen progress ((obj progress))
   (hide-progress-icons)
   (when *common-text*
@@ -2424,6 +2448,10 @@
          (hide-progress-icons)
             (draw-options self 115 25 0.75)
          )
+        (((progress-screen additional-checkpoint-options))
+         (hide-progress-icons)
+            (draw-options self 115 25 0.75)
+         )
         (((progress-screen challenges-options))
          (hide-progress-icons)
          (draw-options self 115 25 0.65)
@@ -2544,6 +2572,7 @@
     (apply-settings *setting-control*)
     (progress-reset-music-parms)
     (commit-all-files)
+    (update-additional-continue-flags *game-info*)
     (set! (-> self particles 3 init-pos x) -320.0)
     (set! (-> self particles 4 init-pos x) -320.0)
     (set! (-> self particles 32 init-pos x) -320.0)

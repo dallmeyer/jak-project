@@ -380,6 +380,8 @@
         "RNG LIBRARY")
 (#x1604 "POWER CELL CUTSCENES"
         "POWER CELL CUTSCENES")
+(#x1605 "ADDITIONAL CHECKPOINTS"
+        "ADDITIONAL CHECKPOINTS")
 
 ;; Checkpoint Randomizer
 (#x1610 "ITEM/DEATH COUNT TO WARP"
@@ -438,6 +440,22 @@
         "RAND-VU (ORIGINAL)")
 (#x1641 "KNUTH"
         "KNUTH")
+
+;; Additional Checkpoints
+(#x1650 "TRAINING-FAR"
+        "TRAINING-FAR")
+(#x1651 "VILLAGE1-FAR"
+        "VILLAGE1-FAR")
+(#x1652 "BEACH-PELICAN"
+        "BEACH-PELICAN")
+(#x1653 "BEACH-FAR"
+        "BEACH-FAR")
+(#x1654 "JUNGLE-FAR"
+        "JUNGLE-FAR")
+(#x1655 "SWAMP-FLUTFLUT"
+        "SWAMP-FLUTFLUT")
+(#x1656 "VILLAGE3-CART"
+        "VILLAGE3-CART")
 
 ;; -----------------
 ;; test (DO NOT TRANSLATE)

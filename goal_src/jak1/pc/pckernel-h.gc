@@ -477,7 +477,7 @@
   #t
   )
 
-  (defmethod commit-to-file randomizer-settings ((obj randomizer-settings))
+(defmethod commit-to-file randomizer-settings ((obj randomizer-settings))
   "commits the current settings to the file"
   ;; auto load settings if available
   (format (clear *pc-temp-string-1*) "~S/Mods/randomizer-settings.gc" *pc-settings-folder*)
@@ -508,6 +508,7 @@
   (set! (-> obj warp-on-death?) #f)
   (set! (-> obj rng-lib) 'rand-vu)
   (set! (-> obj checkpoint-logic) 'logic-random-checkpoint)
+
   (none))
 
  (deftype challenges-settings (basic)
@@ -600,6 +601,14 @@
     (
       (version uint64) ;; version of this settings
       (mod-powercellcutscenes? symbol) ;; enable or disable powercell cutscenes.
+      ;; additional checkpoints on/off
+      (checkpoint-training-far symbol)
+      (checkpoint-village1-far symbol)
+      (checkpoint-beach-pelican symbol)
+      (checkpoint-beach-far symbol)
+      (checkpoint-jungle-far symbol)
+      (checkpoint-swamp-flutflut symbol)
+      (checkpoint-village3-cart symbol)
 
     )
 
@@ -627,11 +636,19 @@
 
     (format file "(settings #x~X~%" (-> obj version))
     (format file "  (powercellcutscenes? ~A)~%" (-> obj mod-powercellcutscenes?))
+    ;; additional checkpoints
+    (format file "  (checkpoint-training-far ~A)~%" (-> obj checkpoint-training-far))
+    (format file "  (checkpoint-village1-far ~A)~%" (-> obj checkpoint-village1-far))
+    (format file "  (checkpoint-beach-pelican ~A)~%" (-> obj checkpoint-beach-pelican))
+    (format file "  (checkpoint-beach-far ~A)~%" (-> obj checkpoint-beach-far))
+    (format file "  (checkpoint-jungle-far ~A)~%" (-> obj checkpoint-jungle-far))
+    (format file "  (checkpoint-swamp-flutflut ~A)~%" (-> obj checkpoint-swamp-flutflut))
+    (format file "  (checkpoint-village3-cart ~A)~%" (-> obj checkpoint-village3-cart))
     (format file "  )~%")
     (file-stream-close file)
     )
 
-  (format 0 "randomizer settings file write: ~A~%" filename)
+  (format 0 "mods settings file write: ~A~%" filename)
   #t
   )
 
@@ -646,10 +663,19 @@
 (defmethod reset mods-settings ((obj mods-settings))
   "Set the default settings for non-vanilla randomizer settings"
 
-  (format 0 "resetting randomizer settings~%")
+  (format 0 "resetting mods settings~%")
 
   (set! (-> obj version) RANDO_SETTINGS_VERSION)
   (set! (-> obj mod-powercellcutscenes?) #t)
+
+  (set! (-> obj checkpoint-training-far) #t)
+  (set! (-> obj checkpoint-village1-far) #t)
+  (set! (-> obj checkpoint-beach-pelican) #t)
+  (set! (-> obj checkpoint-beach-far) #t)
+  (set! (-> obj checkpoint-jungle-far) #t)
+  (set! (-> obj checkpoint-swamp-flutflut) #t)
+  (set! (-> obj checkpoint-village3-cart) #t)
+
 
 
   (none))

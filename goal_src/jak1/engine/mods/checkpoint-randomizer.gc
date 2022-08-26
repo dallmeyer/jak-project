@@ -11,22 +11,27 @@
 (define-extern knuth-rand-next-int (function int))
 
 (define *randomizer-version-string* "Rando 0.12")
-(define *release-version-string* "Release 0.1.25")
+(define *release-version-string* "Release 0.1.26")
 (define *comment-string* "Option to randomize by level, then by checkpoint")
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
                                              'boxed-array
-                                             :type string :length 70 :allocated-length 70
+                                             :type string :length 77 :allocated-length 77
 "game-start"
+"training-far"
 "village1-hut"
 "village1-warp"
 "beach-start"
+"beach-pelican"
+"beach-far"
 "beach-start"
-"beach-start"
-"beach-start"
+"beach-pelican"
+"beach-far"
 "jungle-start"
+"jungle-far"
 "jungle-tower"
 "jungle-start"
+"jungle-far"
 "jungle-tower"
 "misty-start"
 "misty-silo"
@@ -51,6 +56,7 @@
 "swamp-cave2"
 "swamp-game"
 "swamp-cave3"
+"swamp-flutflut"
 "rolling-start"
 "ogre-start"
 "ogre-race"
@@ -58,6 +64,7 @@
 "village3-start"
 "village3-warp"
 "village3-farside"
+"village3-cart"
 "snow-start"
 "snow-fort"
 "snow-flut-flut"
@@ -94,21 +101,26 @@
 (define *checkpoint-list-by-level-idx* 
   (new 'static 'boxed-array :type (array string) :length 16 :allocated-length 16
     ;; Geyser Rock
-    (new 'static 'boxed-array :type string :length 1
+    (new 'static 'boxed-array :type string :length 2
       "game-start"
+      "training-far"
     )
     ;; Sandover
-    (new 'static 'boxed-array :type string :length 2
+    (new 'static 'boxed-array :type string :length 3
       "village1-hut"
       "village1-warp"
+      "village1-far"
     )
     ;; Sentinel Beach
-    (new 'static 'boxed-array :type string :length 1
+    (new 'static 'boxed-array :type string :length 3
       "beach-start"
+      "beach-pelican"
+      "beach-far"
     )
     ;; Forbidden Jungle
-    (new 'static 'boxed-array :type string :length 2
+    (new 'static 'boxed-array :type string :length 3
       "jungle-start"
+      "jungle-far"
       "jungle-tower"
     )
     ;; Misty Island
@@ -140,7 +152,7 @@
       "sunkenb-helix"
     )
     ;; Boggy Swamp
-    (new 'static 'boxed-array :type string :length 7
+    (new 'static 'boxed-array :type string :length 8
       "swamp-start"
       "swamp-dock1"
       "swamp-cave1"
@@ -148,6 +160,7 @@
       "swamp-cave2"
       "swamp-game"
       "swamp-cave3"
+      "swamp-flutflut"
     )
     ;; Precursor Basin
     (new 'static 'boxed-array :type string :length 1
@@ -160,10 +173,11 @@
       "ogre-end"
     )
     ;; Volcanic Crater
-    (new 'static 'boxed-array :type string :length 3
+    (new 'static 'boxed-array :type string :length 4
       "village3-start"
       "village3-warp"
       "village3-farside"
+      "village3-cart"
     )
     ;; Snowy Mountain
     (new 'static 'boxed-array :type string :length 9
@@ -213,26 +227,6 @@
 (define *collectable-interval* 0.0)
 
 (define *randomizer-items-collected* 0)
-
-(defun citadelCheck? ((checkpointName string))
-(if 
-(or
-(string= checkpointName "citadel-start")
-(string= checkpointName "citadel-entrance")
-(string= checkpointName "citadel-warp")
-(string= checkpointName "citadel-launch-start")
-(string= checkpointName "citadel-launch-end")
-(string= checkpointName "citadel-plat-start")
-(string= checkpointName "citadel-plat-end")
-(string= checkpointName "citadel-generator-start")
-(string= checkpointName "citadel-generator-end")
-(string= checkpointName "citadel-elevator")
-)
-(return #t)
-(return #f)
-)
-#f
-)
 
 (defun update-collectable-hud-counters ()
   (when 
@@ -360,26 +354,33 @@
 )
 
 (defun checkpointValid? ((checkpointName string))
-  ;; avoid citadel warps if cutscene task not closed
-  (if 
-    (and 
-      (not (task-closed? (game-task citadel-sage-green) (task-status need-hint))) 
-      (citadelCheck? checkpointName)
+  (case-str checkpointName
+    ;; avoid citadel warps if cutscene task not closed
+    (  
+      ("citadel-start" "citadel-entrance" "citadel-warp" "citadel-launch-start" 
+        "citadel-launch-end" "citadel-plat-start" "citadel-plat-end" 
+        "citadel-generator-start" "citadel-generator-end" "citadel-elevator")
+      (if (not (task-closed? (game-task citadel-sage-green) (task-status need-hint)))
+        (return #f)
+      )
     )
+    ;; avoid village1-warp if cutscene tasks not closed
+    (
+      ("village1-warp")
+      (if (or 
+          (not (task-closed? (game-task intro) (task-status need-resolution))) 
+          (not (task-closed? (game-task beach-ecorocks) (task-status need-introduction)))
+        )
+        (return #f)
+      )
+    )
+  )
+
+  ;; additional checkpoints enabled/disabled
+  (if (logtest? (-> (get-continue-by-name *game-info* checkpointName) flags) (continue-flags additional-disabled))
     (return #f)
   )
 
-  ;; avoid village1-warp if cutscene tasks not closed
-  (if 
-    (and 
-      (or 
-        (not (task-closed? (game-task intro) (task-status need-resolution))) 
-        (not (task-closed? (game-task beach-ecorocks) (task-status need-introduction)))
-      )
-      (string= checkpointName "village1-warp")
-    )
-    (return #f)
-  )
   #t
 )
 
