@@ -327,6 +327,7 @@
 
    (discord-rpc? symbol) ;; enable discord rich presence integration
    (speedrunner-mode? symbol) ;; enable speedrunner mode
+   (cutscene-skips? symbol) ;; enable cutscene skips
 
    (cheats pc-cheats)
    (cheats-known pc-cheats)
@@ -398,16 +399,9 @@
   )
 
 (defconstant PC_TEMP_STRING_LEN 512)
-<<<<<<< HEAD
-(define *pc-temp-string* (new 'global 'string PC_TEMP_STRING_LEN (the-as string #f)))
-(define *pc-settings* (the-as pc-settings #f))
-
-(format 0 "PC kernel version: ~D.~D~%" PC_KERNEL_VERSION_MAJOR PC_KERNEL_VERSION_MINOR)
-=======
 (define *pc-temp-string* (new 'global 'string PC_TEMP_STRING_LEN (the string #f)))
 (define *pc-settings* (the pc-settings #f))
 (format 0 "PC kernel version: ~D.~D~%" PC_KERNEL_VER_MAJOR PC_KERNEL_VER_MINOR)
->>>>>>> master
 
 (define *pc-temp-string-1* (new 'global 'string 2048 (the string #f)))
 
@@ -724,6 +718,7 @@
   (set! (-> obj aspect-custom-y) 3)
   (set! (-> obj discord-rpc?) #t)
   (set! (-> obj speedrunner-mode?) #f)
+  (set! (-> obj cutscene-skips?) #t)
   (set! (-> obj window-lock?) #t)
 
   (reset-gfx obj)

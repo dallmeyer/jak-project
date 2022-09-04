@@ -766,6 +766,7 @@
   (hint-511                     #x14ff)
 
   (speedrunner-mode             #x1500)
+  (cutscene-skips               #x1501)
 
   ;; Mod Options
   (mod-options                  #x1600)

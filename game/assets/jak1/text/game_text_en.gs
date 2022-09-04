@@ -368,6 +368,8 @@
         
 (#x1500 "SPEEDRUNNER MODE"
         "SPEEDRUNNER MODE")
+(#x1501 "CUTSCENE SKIPS"
+        "CUTSCENE SKIPS")
 
 ;; Mod Options
 (#x1600 "MOD OPTIONS"
