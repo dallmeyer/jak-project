@@ -1923,7 +1923,7 @@
   self
   )
 
-(defbehavior init-target target ((arg0 continue-point))
+(defbehavior init-target target ((arg0 continue-point) (target-idx int))
   (set-setting! 'allow-pause #f 0.0 0)
   (set-setting! 'allow-progress #f 0.0 0)
   (apply-settings *setting-control*)
@@ -2027,8 +2027,11 @@
   (if *debug-segment*
       (add-connection *debug-engine* self target-print-stats self *stdcon0* #f)
       )
-  (activate-hud self)
-  (set! (-> self fp-hud) (the-as handle #f))
+  ;; do hud stuff for player 0 only
+  (when (= target-idx 0)
+    (activate-hud self)
+    (set! (-> self fp-hud) (the-as handle #f))
+    )
   ;; PAL patch here
   (set! (-> self burn-proc) (the-as handle #f))
   (set! (-> self water) (new 'process 'water-control self 9 0.0 8192.0 2048.0))
@@ -2068,7 +2071,7 @@
   (let ((v1-3 (process-spawn
                 target
                 :init init-target
-                arg1
+                  arg1 0
                 :from *target-dead-pool*
                 :to *target-pool*
                 :stack *kernel-dram-stack*

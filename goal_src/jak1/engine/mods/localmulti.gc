@@ -6,11 +6,11 @@
 ;; dgos: GAME, ENGINE
 
 ;;Spawn a new target process
-(defun start-extra-target ()
+(defun start-extra-target ((idx int))
   (process-spawn
                 target
                 :init init-target
-                (-> *game-info* current-continue)
+                  (-> *game-info* current-continue) idx
                 :from *target-dead-pool*
                 :to *target-pool*
                 :stack *kernel-dram-stack*
@@ -81,7 +81,7 @@
 ;; Spawn target2
 (defun localmulti2-start ()
   (when (not (target2-alive?))
-    (set! *target2* (-> (start-extra-target) 0))
+    (set! *target2* (-> (start-extra-target 1) 0))
     (draw-green *target2*)
     (set! (-> *target2* control unknown-cpad-info00) (-> *cpad-list* cpads 1))
   )
@@ -90,7 +90,7 @@
 ;; Spawn target3
 (defun localmulti3-start ()
   (when (not (target3-alive?))
-    (set! *target3* (-> (start-extra-target) 0))
+    (set! *target3* (-> (start-extra-target 2) 0))
     (draw-blue *target3*)
     (set! (-> *target3* control unknown-cpad-info00) (-> *cpad-list* cpads 2))
   )
@@ -100,7 +100,7 @@
 ;; Spawn target4
 (defun localmulti4-start ()
   (when (not (target4-alive?))
-    (set! *target4* (-> (start-extra-target) 0))
+    (set! *target4* (-> (start-extra-target 3) 0))
     (draw-pink *target4*)
     (set! (-> *target4* control unknown-cpad-info00) (-> *cpad-list* cpads 3))
   )
