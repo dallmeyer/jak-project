@@ -587,7 +587,7 @@
        )
       ((begin
          (target-timed-invulnerable (-> arg0 invinc-time) self)
-         (cpad-set-buzz! (-> *cpad-list* cpads 0) 0 255 (seconds 0.5))
+         (cpad-set-buzz! (-> self control unknown-cpad-info00) 0 255 (seconds 0.5))
          (let ((v1-13 (-> arg0 angle)))
            (= v1-13 'up)
            )

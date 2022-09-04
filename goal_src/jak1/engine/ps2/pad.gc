@@ -288,6 +288,9 @@
              (cond
                ;; check if okay to buzz:
                ((and (-> pad buzz) (< (get-current-time) (-> pad buzz-time buzz-idx)) (= *master-mode* 'game))
+                (if (> (-> pad buzz-val buzz-idx) 0) 
+                  (format 0 "ok to buzz pad-idx ~D ~%" pad-idx)
+                  )
                 (let ((v1-10 buzz-idx))
                   (cond
                     ((zero? v1-10)
@@ -305,6 +308,9 @@
                   )
                 )
                (else
+                (if (> (-> pad buzz-val buzz-idx) 0) 
+                  (format 0 "NOT ok to buzz pad-idx ~D, buzz: ~A, buzz-time: ~E vs current ~E ~%" pad-idx (-> pad buzz) (-> pad buzz-time buzz-idx) (get-current-time))
+                  )
                  ;; not okay to buzz this motor, set to zero.
                  (set! (-> pad buzz-val buzz-idx) (the-as uint 0))
                  (set! (-> pad direct buzz-idx) (the-as uint 0))

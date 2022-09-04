@@ -622,7 +622,7 @@
 
 (defbehavior racer-buzz target ((arg0 float))
   (let ((f1-0 (lerp-scale 0.2 1.0 (-> self control unknown-float01) 0.0 (-> self racer transv-max))))
-    (cpad-set-buzz! (-> *cpad-list* cpads 0) 1 (the int (* 255.0 (fmin 1.0 (* arg0 f1-0)))) (seconds 0.05))
+    (cpad-set-buzz! (-> self control unknown-cpad-info00) 1 (the int (* 255.0 (fmin 1.0 (* arg0 f1-0)))) (seconds 0.05))
     )
   0
   (none)
@@ -885,7 +885,7 @@
                           )
         )
       )
-    (cpad-set-buzz! (-> *cpad-list* cpads 0) 0 1 (seconds 0.1))
+    (cpad-set-buzz! (-> self control unknown-cpad-info00) 0 1 (seconds 0.1))
     )
   (when (logtest? (-> self control status) (cshape-moving-flags twall))
     (let* ((gp-8 (racer-find-prop-point (new 'stack-no-clear 'vector) (-> self control unknown-vector70)))
@@ -909,7 +909,7 @@
            )
       (launch-particles a1-54 gp-8)
       )
-    (cpad-set-buzz! (-> *cpad-list* cpads 0) 0 51 (seconds 0.05))
+    (cpad-set-buzz! (-> self control unknown-cpad-info00) 0 51 (seconds 0.05))
     (sound-play-by-name
       (sound-name-with-material 'zoom-hit (-> self control wall-pat) "")
       (-> self racer scrape-sound-id)

@@ -2554,7 +2554,7 @@
           (the-as handle #f)
           )
         )
-      (if (zero? (logand (-> *cpad-list* cpads 0 button0-abs 0) (pad-buttons l3)))
+      (if (zero? (logand (-> self control unknown-cpad-info00 button0-abs 0) (pad-buttons l3)))
           (target-timed-invulnerable (-> *TARGET-bank* hit-invulnerable-timeout) self)
           )
       )
@@ -2564,7 +2564,7 @@
        (go target-death 'target-hit-ground-hard)
        )
       (else
-        (cpad-set-buzz! (-> *cpad-list* cpads 0) 1 255 (seconds 0.1))
+        (cpad-set-buzz! (-> self control unknown-cpad-info00) 1 255 (seconds 0.1))
         (ja-channel-push! 1 1)
         (ja :group! eichar-painful-land-ja :num! min)
         (until (and (ja-done? 0) (= (-> self skel root-channel 0) (-> self skel channel)))
