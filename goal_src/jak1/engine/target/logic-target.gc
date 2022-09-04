@@ -1923,6 +1923,7 @@
   self
   )
 
+(define *fact-info-target* (the fact-info-target #f))
 (defbehavior init-target target ((arg0 continue-point) (target-idx int))
   (set-setting! 'allow-pause #f 0.0 0)
   (set-setting! 'allow-progress #f 0.0 0)
@@ -2020,8 +2021,13 @@
   (set! (-> self control unknown-cspace10 parent) (-> self node-list data 64))
   (set! (-> self neck) (new 'process 'joint-mod (joint-mod-handler-mode look-at) self 7))
   (set! (-> self fact-info-target)
-        (new 'process 'fact-info-target self (pickup-type eco-pill-random) (-> *FACT-bank* default-pill-inc))
+        (if *fact-info-target*
+          *fact-info-target*
+          ;; only create a new fact-info-target for player 0
+          (new 'process 'fact-info-target self (pickup-type eco-pill-random) (-> *FACT-bank* default-pill-inc))
+          )
         )
+  (set! *fact-info-target* (-> self fact-info-target))
   (set! (-> self sound) (new 'process 'ambient-sound 'none (-> self control trans)))
   (set! (-> self control unknown-soundid00) (new-sound-id))
   (if *debug-segment*
@@ -2051,6 +2057,7 @@
 
 (defmethod deactivate target ((obj target))
   (set-zero! *camera-smush-control*)
+  (set! *fact-info-target* #f)
   ((the-as (function process-drawable none) (find-parent-method target 10)) obj)
   (none)
   )
