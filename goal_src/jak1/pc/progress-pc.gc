@@ -833,10 +833,10 @@
   (set! (-> *graphic-options-no-frame-rate-pc* 2 value-to-modify) (&-> *pc-settings* vsync?))
   (set! (-> *graphic-options-no-frame-rate-pc* 4 value-to-modify) (&-> *progress-carousell* int-backup))
 
-  (set! (-> *misc-options* 0 value-to-modify) (&-> *pc-settings* money-starburst?))
-  (set! (-> *misc-options* 1 value-to-modify) (&-> *pc-settings* discord-rpc?))
-  (set! (-> *misc-options* 2 value-to-modify) (&-> *pc-settings* cutscene-skips?))
-  (set! (-> *misc-options* 3 value-to-modify) (&-> *pc-settings* speedrunner-mode?))
+  (set! (-> *misc-options* 1 value-to-modify) (&-> *pc-settings* money-starburst?))
+  (set! (-> *misc-options* 2 value-to-modify) (&-> *pc-settings* discord-rpc?))
+  (set! (-> *misc-options* 3 value-to-modify) (&-> *pc-settings* cutscene-skips?))
+  (set! (-> *misc-options* 4 value-to-modify) (&-> *pc-settings* speedrunner-mode?))
   
   ;;Randomizer menu
   (set! (-> *randomizer-main-options* 0 value-to-modify) (&-> *randomizer-settings* checkpoint-randomizer?))
