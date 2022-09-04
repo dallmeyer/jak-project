@@ -116,6 +116,11 @@
 
 ;;This code is ran in main.gc in the same function that cheat-mode check is. When a player enters half debug code on a controller that isnt player 1 it will spawn them a jak to play as.
 (defun spawn-extra-targets-code()
+
+  (if (cpad-hold? 1 l3)
+    (format 0 "pad1 L3, cheat-mode is ~A~%" *cheat-mode*)
+  )
+
   ;;Multiplayer stuff to clean and move
  (when (and (cpad-hold? 1 l3)
              (or *cheat-mode* (= *kernel-boot-message* 'play)) ;; not in demo

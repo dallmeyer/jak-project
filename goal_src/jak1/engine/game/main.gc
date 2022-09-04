@@ -394,7 +394,7 @@
 (defun main-cheats ()
   "Handle cheat codes and timeout"
 
-(spawn-extra-targets-code)
+  (spawn-extra-targets-code)
 
   ;; look for codes when L3 is pushed
   (when (and (cpad-hold? 0 l3)
