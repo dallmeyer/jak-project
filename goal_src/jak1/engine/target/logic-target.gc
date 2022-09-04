@@ -1041,6 +1041,7 @@
                        (< 4096.0 (-> self control unknown-float01))
                        )
                   )
+             (= self *target*)  ;; only support first person for player 1
              )
         (send-event self 'change-mode 'look-around)
         )
