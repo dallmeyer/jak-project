@@ -10,9 +10,9 @@
 (define-extern knuth-rand-int-range (function int int int))
 (define-extern knuth-rand-next-int (function int))
 
-(define *randomizer-version-string* "Rando 0.12")
+(define *randomizer-version-string* "Rando 0.13")
 (define *release-version-string* "Release 0.1.28")
-(define *comment-string* "Option to randomize by level, then by checkpoint")
+(define *comment-string* "Misc multiplayer fixes")
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
                                              'boxed-array

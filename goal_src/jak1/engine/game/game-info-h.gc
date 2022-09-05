@@ -198,9 +198,9 @@
    (red-eco-total         float                         :offset-assert 332)
    (yellow-eco-total      float                         :offset-assert 336)
    )
-  :method-count-assert 30
+  :method-count-assert 29
   :size-assert         #x154
-  :flag-assert         #x1e00000154
+  :flag-assert         #x1d00000154
   (:methods
    (initialize! (_type_ symbol game-save string) _type_ 9)
    (adjust (_type_ symbol float handle) float 10)
@@ -222,7 +222,6 @@
    (clear-text-seen! (_type_ game-text-id) none 26)
    (get-death-count (_type_ symbol) int 27)
    (get-health-percent-lost (_type_ symbol) float 28)
-   (reset! (_type_ symbol game-save string) _type_ 29)
    )
   )
 

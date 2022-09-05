@@ -9779,9 +9779,9 @@
    (dummy                 basic     :offset-assert 316)
    (auto-save-count       int32     :offset-assert 320)
    )
-  :method-count-assert 30
+  :method-count-assert 29
   :size-assert         #x144
-  :flag-assert         #x1e00000144
+  :flag-assert         #x1d00000144
   ;; field dummy is a basic loaded with a signed load
   (:methods
    (initialize! (_type_ symbol game-save string) _type_ 9)
@@ -9804,7 +9804,6 @@
    (clear-text-seen! (_type_ game-text-id) none 26)
    (get-death-count (_type_ symbol) int 27)
    (get-health-percent-lost (_type_ symbol) float 28)
-   (reset! (_type_ symbol game-save string) _type_ 29)
    )
   )
 
