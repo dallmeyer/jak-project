@@ -2066,7 +2066,6 @@
   (when *target*
     (kill-by-name 'target *active-pool*)
     (set! *target* #f)
-    (format 0 "here stop~%")
     (set! (-> *target-list* 0) (process->handle *target*))
     )
   (set! (-> *game-info* mode) arg0)
@@ -2091,9 +2090,7 @@
         (set! *target* (the-as target (-> v1-3 0 self)))
         (set! *target* #f)
         )
-    (format 0 "here start~%")
     (set! (-> *target-list* 0) (process->handle *target*))
-    (format 0 "here start2~%")
     )
   *target*
   )

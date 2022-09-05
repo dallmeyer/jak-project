@@ -1119,6 +1119,36 @@
   (none)
   )
 
+(defun target-pos-multi ((arg0 int) (tgt-idx int))
+  (let ((a1-0 (get-target tgt-idx)))
+    (cond
+      (a1-0
+        (if (zero? arg0)
+            (-> a1-0 control trans)
+            (vector<-cspace! (new 'static 'vector) (-> a1-0 node-list data arg0))
+            )
+        )
+      (else
+        (camera-pos)
+        )
+      )
+    )
+  )
+
+(defun target-pos-specific ((arg0 int) (tgt target))
+  (cond
+    (tgt
+      (if (zero? arg0)
+          (-> tgt control trans)
+          (vector<-cspace! (new 'static 'vector) (-> tgt node-list data arg0))
+          )
+      )
+    (else
+      (camera-pos)
+      )
+    )
+  )
+
 (defun target-pos ((arg0 int))
   (let ((a1-0 *target*))
     (cond

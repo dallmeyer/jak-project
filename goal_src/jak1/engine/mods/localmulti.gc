@@ -58,46 +58,57 @@
 )
 
 (defun localmulti-run-eachframe()
-  (when (extra-target-alive?)
-    ;;If the camera is not focus on the main target (id 1375524), then set the cameras focus to the  main target.
-    ;;todo this breaks pelican cutscene we can easily fix later.
-    (if (!= (-> *camera* drawable-target ) 1375524) (set! (-> *camera* drawable-target) (the handle 1375524)))
+  ;;If the camera is not focus on the main target (id 1375524), then set the cameras focus to the  main target.
+  ;;todo this breaks pelican cutscene we can easily fix later.
+  (if (and (extra-target-alive?) (!= (-> *camera* drawable-target ) 1375524))
+    (set! (-> *camera* drawable-target) (the handle 1375524))
+    )
 
-    ;;If the camera is not set to cam-stick, we're not on zoomer, and we have more than one jak, then set it to cam-stick
-    (cond
-      (racer?
-        ;; reset zoomer camera
-        (send-event *camera* 'change-state cam-string 0)
-        (send-event *camera* 'set-slave-option #x6000)
-        )
-      ((= (-> (-> (-> (the-as (pointer camera-slave) (-> *camera* child))) state) name) 'cam-string)
-        (send-event *camera* 'change-state cam-stick 0)
-        )
+  ;;If the camera is not set to cam-stick, we're not on zoomer, and we have more than one jak, then set it to cam-stick
+  (cond
+    (racer?
+      ;; reset zoomer camera
+      (send-event *camera* 'change-state cam-string 0)
+      (send-event *camera* 'set-slave-option #x6000)
       )
+    ((and (extra-target-alive?) (= (-> (-> (-> (the-as (pointer camera-slave) (-> *camera* child))) state) name) 'cam-string))
+      (send-event *camera* 'change-state cam-stick 0)
+      )
+    )
 
-    ;;Warp side jaks to main Jak if too far
-    (dotimes (tgt-idx (-> *target-list* length))
-      (let ((tgt (get-target tgt-idx)))
-        (if (and (> tgt-idx 0) (target-alive? tgt) (check-multi-jak-dist tgt))
-          (warp-jakA-to-jakB tgt *target*)
-          )
+  ;;Warp side jaks to main Jak if too far
+  (dotimes (tgt-idx (-> *target-list* length))
+    (let ((tgt (get-target tgt-idx)))
+      (if (and (> tgt-idx 0) (target-alive? tgt) (check-multi-jak-dist tgt))
+        (warp-jakA-to-jakB tgt *target*)
         )
       )
     )
+  
   (none)
   )
 
 (defun localmulti-start ((tgt-idx int))
   (let ((tgt (get-target tgt-idx)))
-    (when (and (> tgt-idx 0) (not (target-alive? tgt)))
-      (set! tgt (-> (start-extra-target tgt-idx) 0))
-      (set! (-> *target-list* tgt-idx) (process->handle tgt))
-      (case tgt-idx
-        ((1) (draw-green tgt))
-        ((2) (draw-red tgt))
-        ((3) (draw-blue tgt))
+    (when (> tgt-idx 0)
+      (if (target-alive? tgt)
+        (begin
+          ;; despawn target
+          (deactivate tgt)
+          (set! (-> *target-list* tgt-idx) (the-as handle #f))
+          )
+        (begin
+          ;; spawn new target
+          (set! tgt (-> (start-extra-target tgt-idx) 0))
+          (set! (-> *target-list* tgt-idx) (process->handle tgt))
+          (case tgt-idx
+            ((1) (draw-green tgt))
+            ((2) (draw-red tgt))
+            ((3) (draw-blue tgt))
+            )
+          (set! (-> tgt control unknown-cpad-info00) (-> *cpad-list* cpads tgt-idx))
+          )
         )
-      (set! (-> tgt control unknown-cpad-info00) (-> *cpad-list* cpads tgt-idx))
       )
     )
   (none)
