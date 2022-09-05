@@ -18,11 +18,21 @@
   )
 
 ;;These return true if the specified target is currently "alive".
-(defun target2-alive? () (not (or (= (-> *target2* state) #f) (= (-> *target2* state) symbol))))
-(defun target3-alive? () (not (or (= (-> *target3* state) #f) (= (-> *target3* state) symbol))))
-(defun target4-alive? () (not (or (= (-> *target4* state) #f) (= (-> *target4* state) symbol))))
-(defun extra-target-alive? () (or (target2-alive?)(target3-alive?)(target4-alive?)))
+(defun target-alive? ((tgt target))
+  (and tgt 
+    (not (or (= (-> tgt state) #f) (= (-> tgt state) symbol)))
+    )
+  )
 
+(defun extra-target-alive? () 
+  (dotimes (tgt-idx (-> *target-list* length))
+    (if (and (> tgt-idx 0) (target-alive? (get-target tgt-idx)))
+      (return #t)
+      )
+    )
+  #f
+  )
+  
 ;;Command to warp a target to another (normally to warp someone to main target to bring back on camera)
 (defun warp-jakA-to-jakB ((jakA target) (jakB target))
       (set! (-> (-> jakA root) trans x) (-> (-> jakB root) trans x))
@@ -58,95 +68,55 @@
       (send-event *camera* 'change-state cam-stick 0)
       )
 
-    ;;Warp side jaks to main Jak
-    (if (and (target2-alive?) (check-multi-jak-dist *target2*))
-      (warp-jakA-to-jakB *target2* *target*)
-    )
-    (if (and (target3-alive?) (check-multi-jak-dist *target3*))
-      (warp-jakA-to-jakB *target3* *target*)
-    )
-    (if (and (target4-alive?) (check-multi-jak-dist *target4*))
-      (warp-jakA-to-jakB *target4* *target*)
-    )
+    (dotimes (tgt-idx (-> *target-list* length))
+      (let ((tgt (get-target tgt-idx)))
+        ;;Warp side jaks to main Jak if too far
+        (if (and (> tgt-idx 0) (target-alive? tgt) (check-multi-jak-dist tgt))
+          (warp-jakA-to-jakB tgt *target*)
+          )
+        )
+      )
     )
   (none)
   )
 
-
-;; Spawn target2
-(defun localmulti2-start ()
-  (when (not (target2-alive?))
-    (set! *target2* (-> (start-extra-target 1) 0))
-    (draw-green *target2*)
-    (set! (-> *target2* control unknown-cpad-info00) (-> *cpad-list* cpads 1))
-  )
+(defun localmulti-start ((tgt-idx int))
+  (let ((tgt (get-target tgt-idx)))
+    (when (and (> tgt-idx 0) (not (target-alive? tgt)))
+      (set! tgt (-> (start-extra-target tgt-idx) 0))
+      (set! (-> *target-list* tgt-idx) (process->handle tgt))
+      (draw-green tgt)
+      (set! (-> tgt control unknown-cpad-info00) (-> *cpad-list* cpads 1))
+      )
+    )
   (none)
-)
-;; Spawn target3
-(defun localmulti3-start ()
-  (when (not (target3-alive?))
-    (set! *target3* (-> (start-extra-target 2) 0))
-    (draw-blue *target3*)
-    (set! (-> *target3* control unknown-cpad-info00) (-> *cpad-list* cpads 2))
   )
-  (none)
-)
-
-;; Spawn target4
-(defun localmulti4-start ()
-  (when (not (target4-alive?))
-    (set! *target4* (-> (start-extra-target 3) 0))
-    (draw-pink *target4*)
-    (set! (-> *target4* control unknown-cpad-info00) (-> *cpad-list* cpads 3))
-  )
-  (none)
-)
 
 ;; Spawn targets up to and including target x
-(defun localmulti-start ((x int))
-  (if (> x 1) (localmulti2-start))
-  (if (> x 2) (localmulti3-start))
-  (if (> x 3) (localmulti4-start))
-)
+(defun localmulti-start-all ((x int))
+  (dotimes (tgt-idx x)
+    (localmulti-start tgt-idx)
+    )
+  )
 
 ;;This code is ran in main.gc in the same function that cheat-mode check is. When a player enters half debug code on a controller that isnt player 1 it will spawn them a jak to play as.
 (defun spawn-extra-targets-code()
   ;;Multiplayer stuff to clean and move
- (when (and (cpad-hold? 1 l3)
-             (or *cheat-mode* (= *kernel-boot-message* 'play)) ;; not in demo
-             )
-(check-cheat-code (-> *cheat-temp* 1) 1
+  (dotimes (tgt-idx (-> *target-list* length))
+    (when (and (> tgt-idx 0)
+               (cpad-hold? tgt-idx l3)
+               (or *cheat-mode* (= *kernel-boot-message* 'play)) ;; not in demo
+               )
+      (check-cheat-code (-> *cheat-temp* tgt-idx) tgt-idx
         (up up down down left right left right x x square circle square circle)
-          (cpad-clear! 1 r1)
-          ;; toggle!
-        
-          (cheats-sound-play *cheat-mode*)
-          (localmulti2-start)
+        (cpad-clear! tgt-idx r1)
+        ;; toggle!
+      
+        (cheats-sound-play *cheat-mode*)
+        (localmulti-start tgt-idx)
         )
- )
-  (when (and (cpad-hold? 2 l3)
-             (or *cheat-mode* (= *kernel-boot-message* 'play)) ;; not in demo
-             )
-(check-cheat-code (-> *cheat-temp* 2) 2
-        (up up down down left right left right x x square circle square circle)
-          (cpad-clear! 2 r1)
-          ;; toggle!
-        
-          (cheats-sound-play *cheat-mode*)
-          (localmulti3-start)
-        )
- )
-  (when (and (cpad-hold? 3 l3)
-             (or *cheat-mode* (= *kernel-boot-message* 'play)) ;; not in demo
-             )
-(check-cheat-code (-> *cheat-temp* 3) 3
-        (up up down down left right left right x x square circle square circle)
-          (cpad-clear! 3 r1)
-          ;; toggle!
-        
-          (cheats-sound-play *cheat-mode*)
-          (localmulti4-start)
-        )
- )
- ;; back to normal main.gc code.)
- (none))
+      )
+    )
+  ;; back to normal main.gc code.)
+  (none)
+  )

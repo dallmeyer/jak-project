@@ -161,10 +161,15 @@
 
 
 (define-perm *target* target #f)
-;;Placeholders for multiplayer
-(define *target2* (the-as target #f))
-(define *target3* (the-as target #f))
-(define *target4* (the-as target #f))
+;; For multiplayer
+(define *target-list* (new 'global 'boxed-array handle 4))
+
+(defun get-target ((tgt-idx int))
+  (if (zero? (-> *target-list* tgt-idx))
+    (the-as target #f)
+    (the-as target (handle->process (-> *target-list* tgt-idx)))
+    )
+  )
 
 (deftype sidekick (process-drawable)
   ((parent-override  (pointer target)  :offset         12)
