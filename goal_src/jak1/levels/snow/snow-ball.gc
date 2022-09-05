@@ -65,7 +65,7 @@
   (:methods
     (follow-path (_type_) none 20)
     (play-landing-sound (_type_ float) sound-id 21)
-    (dummy-22 (_type_ process-drawable) none 22)
+    (dummy-22 (_type_ target) none 22)
     )
   (:states
     snow-ball-roller-idle
@@ -312,7 +312,7 @@
   (none)
   )
 
-(defmethod dummy-22 snow-ball-roller ((obj snow-ball-roller) (arg0 process-drawable))
+(defmethod dummy-22 snow-ball-roller ((obj snow-ball-roller) (arg0 target))
   (cond
     ((< (+ 4096.0 (-> arg0 root trans y)) (-> obj root-override trans y))
      (let ((f0-2 81920.0))
@@ -372,7 +372,7 @@
                          (do-push-aways! (-> self root-override))
                          (when (>= (- (-> *display* base-frame-counter) (-> self hit-player-time)) (seconds 0.5))
                            (set! (-> self hit-player-time) (-> *display* base-frame-counter))
-                           (dummy-22 self *target*)
+                           (dummy-22 self (the-as target arg0))
                            )
                          )
                        )
