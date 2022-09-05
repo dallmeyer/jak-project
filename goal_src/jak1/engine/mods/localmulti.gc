@@ -17,12 +17,6 @@
                 )
   )
 
-
-;;Placeholders
-(define *target2* (the-as target #f))
-(define *target3* (the-as target #f))
-(define *target4* (the-as target #f))
-
 ;;These return true if the specified target is currently "alive".
 (defun target2-alive? () (not (or (= (-> *target2* state) #f) (= (-> *target2* state) symbol))))
 (defun target3-alive? () (not (or (= (-> *target3* state) #f) (= (-> *target3* state) symbol))))
@@ -54,28 +48,29 @@
 )
 
 (defun localmulti-run-eachframe()
-(if (extra-target-alive?) (begin
+  (when (extra-target-alive?)
+    ;;If the camera is not focus on the main target (id 1375524), then set the cameras focus to the  main target.
+    ;;todo this breaks pelican cutscene we can easily fix later.
+    (if (!= (-> *camera* drawable-target ) 1375524) (set! (-> *camera* drawable-target) (the handle 1375524)))
 
-;;If the camera is not focus on the main target (id 1375524), then set the cameras focus to the  main target.
-;;todo this breaks pelican cutscene we can easily fix later.
-(if (!= (-> *camera* drawable-target ) 1375524) (set! (-> *camera* drawable-target) (the handle 1375524)))
+    ;;If the camera is not set to cam-stick and we have more than one jak, then set it to cam-stick
+    (if (= (-> (-> (-> (the-as (pointer camera-slave) (-> *camera* child))) state) name) 'cam-string)
+      (send-event *camera* 'change-state cam-stick 0)
+      )
 
-;;If the camera is not set to cam-stick and we have more than one jak, then set it to cam-stick
-;;Todo Check if any target is zoomed in, and if so only let that target unzoom
-
-;;Warp side jaks to main Jak
-(if (= (-> (-> (-> (the-as (pointer camera-slave) (-> *camera* child)))state)name) 'cam-string) (begin (send-event *camera* 'change-state cam-stick 0)))
-  (if (and (target2-alive?) (check-multi-jak-dist *target2*))
-    (warp-jakA-to-jakB *target2* *target*)
-  )
-  (if (and (target3-alive?) (check-multi-jak-dist *target3*))
-    (warp-jakA-to-jakB *target3* *target*)
-  )
-  (if (and (target4-alive?) (check-multi-jak-dist *target4*))
-    (warp-jakA-to-jakB *target4* *target*)
-  )
+    ;;Warp side jaks to main Jak
+    (if (and (target2-alive?) (check-multi-jak-dist *target2*))
+      (warp-jakA-to-jakB *target2* *target*)
+    )
+    (if (and (target3-alive?) (check-multi-jak-dist *target3*))
+      (warp-jakA-to-jakB *target3* *target*)
+    )
+    (if (and (target4-alive?) (check-multi-jak-dist *target4*))
+      (warp-jakA-to-jakB *target4* *target*)
+    )
+    )
   (none)
-  )))
+  )
 
 
 ;; Spawn target2

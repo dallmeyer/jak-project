@@ -109,7 +109,7 @@
          v0-0
          )
         ((= v1-0 'continue)
-         (go target-continue (the-as continue-point (-> arg3 param 0)))
+         (go target-continue (the-as continue-point (-> arg3 param 0)) 0) ;; TODO should this be dynamic by target idx?
          )
         ((= v1-0 'query)
          (case (-> arg3 param 0)

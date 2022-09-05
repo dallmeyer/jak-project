@@ -1417,8 +1417,8 @@
   ()
   :heap-base #x70
   :method-count-assert 30
-  :size-assert         #xdc
-  :flag-assert         #x1e007000dc
+  :size-assert         #xd4
+  :flag-assert         #x1e007000d4
   )
 
 
@@ -1449,7 +1449,10 @@
     (set! (-> v1-2 far-fade-dist) 245760.0)
     (set! (-> v1-2 waveform) (the-as ripple-wave-set ripple-for-rolling-water))
     )
-  (logclear! (-> obj flags) (water-flags wt23))
+
+  (dotimes (tgt-idx 4)
+    (logclear! (-> obj flags tgt-idx) (water-flags wt23))
+    )
   (none)
   )
 

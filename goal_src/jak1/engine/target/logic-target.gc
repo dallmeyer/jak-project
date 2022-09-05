@@ -2051,7 +2051,7 @@
   (set! (-> self event-hook) target-generic-event-handler)
   (set! (-> self current-level) #f)
   (level-setup)
-  (go target-continue arg0)
+  (go target-continue arg0 target-idx)
   (none)
   )
 

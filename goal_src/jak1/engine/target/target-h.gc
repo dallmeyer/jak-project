@@ -56,7 +56,7 @@
     (target-attack-uppercut-jump float float)
     target-billy-game
     (target-clone-anim handle)
-    (target-continue continue-point)
+    (target-continue continue-point int)
     (target-death symbol)
     target-demo
     (target-double-jump float float)
@@ -161,6 +161,10 @@
 
 
 (define-perm *target* target #f)
+;;Placeholders for multiplayer
+(define *target2* (the-as target #f))
+(define *target3* (the-as target #f))
+(define *target4* (the-as target #f))
 
 (deftype sidekick (process-drawable)
   ((parent-override  (pointer target)  :offset         12)
