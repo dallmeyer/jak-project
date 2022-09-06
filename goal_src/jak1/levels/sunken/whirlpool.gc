@@ -308,7 +308,7 @@
           (when (get-target tgt-idx)
             (let ((gp-1 (-> (get-target tgt-idx) control)))
               (send-event (-> gp-1 process) 'rotate-y-angle f30-0)
-              (fill-cache-for-shape! gp-1 8192.0 (-> gp-1 root-prim collide-with))
+              (fill-cache-for-shape! gp-1 8192.0 (-> gp-1 root-prim collide-with) *collide-cache* *collide-work*) ;; TODO: split by player?
               (let ((s3-0 (-> gp-1 status)))
                 (integrate-and-collide! gp-1 s4-1)
                 (set! (-> gp-1 status) s3-0)

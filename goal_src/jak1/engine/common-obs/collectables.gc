@@ -2739,6 +2739,7 @@
                   (the-as process-drawable #f)
                   s1-1
                   (new 'static 'pat-surface :noentity #x1)
+                  *collide-work*
                   )
                 0.0
                 )
