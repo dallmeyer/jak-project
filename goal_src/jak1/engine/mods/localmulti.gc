@@ -64,13 +64,29 @@
     (set! (-> *camera* drawable-target) (the handle 1375524))
     )
 
-  ;;If the camera is not set to cam-stick, we're not on zoomer, and we have more than one jak, then set it to cam-stick
   (cond
     (racer?
       ;; reset zoomer camera
       (send-event *camera* 'change-state cam-string 0)
       (send-event *camera* 'set-slave-option #x6000)
+      ;; despawn additional targets, if any
+      (dotimes (tgt-idx (-> *target-list* length))
+        (when (and (> tgt-idx 0) (get-target tgt-idx))
+          (deactivate (get-target tgt-idx))
+          (set! (-> *target-list* tgt-idx) (the-as handle #f))
+          )
+        )
       )
+    (flutflut?
+      ;; despawn additional targets, if any
+      (dotimes (tgt-idx (-> *target-list* length))
+        (when (and (> tgt-idx 0) (get-target tgt-idx))
+          (deactivate (get-target tgt-idx))
+          (set! (-> *target-list* tgt-idx) (the-as handle #f))
+          )
+        )
+      )
+    ;;If the camera is not set to cam-stick, and we have more than one jak, then set it to cam-stick
     ((and (extra-target-alive?) (= (-> (-> (-> (the-as (pointer camera-slave) (-> *camera* child))) state) name) 'cam-string))
       (send-event *camera* 'change-state cam-stick 0)
       )
@@ -130,7 +146,7 @@
                (or *cheat-mode* (= *kernel-boot-message* 'play)) ;; not in demo
                )
       (check-cheat-code (-> *cheat-temp* tgt-idx) tgt-idx
-        (up up down down left right left right x x square circle square circle)
+        (up up down down left right left right)
         (cpad-clear! tgt-idx r1)
         ;; toggle!
       
