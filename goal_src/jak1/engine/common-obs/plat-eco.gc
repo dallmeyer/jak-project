@@ -65,8 +65,8 @@
   :trans (behavior ()
     (dotimes (tgt-idx (-> *target-list* length))
       (let ((tgt (get-target tgt-idx)))
-        (when (and 
-                tgt 
+        (when (and
+                tgt
                 (>= (-> self notice-dist) (vector-vector-distance (-> self root-override trans) (-> tgt control trans)))
                 (send-event tgt 'query 'powerup (pickup-type eco-blue))
                 )
@@ -125,9 +125,9 @@
       (set! (-> a1-0 param 0) (the-as uint 'powerup))
       (set! (-> a1-0 param 1) (the-as uint 3))
       (dotimes (tgt-idx (-> *target-list* length))
-        (when (and 
+        (when (and
                 (get-target tgt-idx)
-                (or 
+                (or
                   (send-event-function (get-target tgt-idx) a1-0)
                   (begin (logior! (-> self mask) (process-mask sleep-code)) (-> self bouncing))
                   )
