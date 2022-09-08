@@ -47,7 +47,7 @@
   )
 
 ;; definition for function emerc-vu1-init-buffer
-;; INFO: Return type mismatch int vs none.
+;; WARN: Return type mismatch int vs none.
 (defun emerc-vu1-init-buffer ((dma-bucket bucket-id) (test gs-test) (arg2 int))
   (let ((bucket (-> *display* frames (-> *display* on-screen) bucket-group dma-bucket)))
     (when (!= bucket (-> bucket last))
@@ -69,25 +69,24 @@
                (a0-6 (the-as object (-> v1-13 base)))
                )
           (set! (-> (the-as gs-gif-tag a0-6) tag) (new 'static 'gif-tag64 :nloop #x1 :eop #x1 :nreg #x1))
-          (set! (-> (the-as gs-gif-tag a0-6) regs)
-                (new 'static 'gif-tag-regs
-                  :regs0 (gif-reg-id a+d)
-                  :regs1 (gif-reg-id a+d)
-                  :regs2 (gif-reg-id a+d)
-                  :regs3 (gif-reg-id a+d)
-                  :regs4 (gif-reg-id a+d)
-                  :regs5 (gif-reg-id a+d)
-                  :regs6 (gif-reg-id a+d)
-                  :regs7 (gif-reg-id a+d)
-                  :regs8 (gif-reg-id a+d)
-                  :regs9 (gif-reg-id a+d)
-                  :regs10 (gif-reg-id a+d)
-                  :regs11 (gif-reg-id a+d)
-                  :regs12 (gif-reg-id a+d)
-                  :regs13 (gif-reg-id a+d)
-                  :regs14 (gif-reg-id a+d)
-                  :regs15 (gif-reg-id a+d)
-                  )
+          (set! (-> (the-as gs-gif-tag a0-6) regs) (new 'static 'gif-tag-regs
+                                                     :regs0 (gif-reg-id a+d)
+                                                     :regs1 (gif-reg-id a+d)
+                                                     :regs2 (gif-reg-id a+d)
+                                                     :regs3 (gif-reg-id a+d)
+                                                     :regs4 (gif-reg-id a+d)
+                                                     :regs5 (gif-reg-id a+d)
+                                                     :regs6 (gif-reg-id a+d)
+                                                     :regs7 (gif-reg-id a+d)
+                                                     :regs8 (gif-reg-id a+d)
+                                                     :regs9 (gif-reg-id a+d)
+                                                     :regs10 (gif-reg-id a+d)
+                                                     :regs11 (gif-reg-id a+d)
+                                                     :regs12 (gif-reg-id a+d)
+                                                     :regs13 (gif-reg-id a+d)
+                                                     :regs14 (gif-reg-id a+d)
+                                                     :regs15 (gif-reg-id a+d)
+                                                     )
                 )
           (set! (-> v1-13 base) (&+ (the-as pointer a0-6) 16))
           )
@@ -113,7 +112,7 @@
   )
 
 ;; definition for function emerc-vu1-init-buffers
-;; INFO: Return type mismatch int vs none.
+;; WARN: Return type mismatch int vs none.
 (defun emerc-vu1-init-buffers ()
   (when (logtest? (-> *display* vu1-enable-user) (vu1-renderer-mask rn14))
     (emerc-vu1-init-buffer (bucket-id bucket-15) (new 'static 'gs-test :zte #x1 :ztst (gs-ztest greater-equal)) 0)
@@ -254,7 +253,3 @@
   0
   (none)
   )
-
-
-
-
