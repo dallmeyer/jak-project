@@ -49,8 +49,9 @@
                        (the-as pickup-type s4-0)
                        (the-as float 0.0)
                        (the-as handle #f)
+                       self
                        )
-                     (pickup-collectable! (-> self fact-info-target) (the-as pickup-type s4-0) f28-0 (process->handle arg0))
+                     (pickup-collectable! (-> self fact-info-target) (the-as pickup-type s4-0) f28-0 (process->handle arg0) self)
                      )
                  #t
                  'full
@@ -86,6 +87,7 @@
                                                                (pickup-type buzzer)
                                                                (the float (logior -65536 v1-22))
                                                                (the-as handle #f)
+                                                               self
                                                                )
                            )
                      )
@@ -122,6 +124,7 @@
               (the-as pickup-type (-> arg3 param 1))
               (the-as float 0.0)
               (the-as handle #f)
+              self
               )
             )
            (('ground-height)
@@ -402,6 +405,7 @@
          (pickup-type eco-green)
          (- (-> *FACT-bank* health-single-inc))
          (the-as handle #f)
+         self
          )
        (process-spawn
          part-tracker

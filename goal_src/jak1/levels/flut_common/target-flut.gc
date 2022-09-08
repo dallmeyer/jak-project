@@ -1630,7 +1630,7 @@
   :trans (behavior ()
     (when (= *cheat-mode* 'debug)
       (when (and (not *pause-lock*) (cpad-hold? (-> self control unknown-cpad-info00 number) r2))
-        (pickup-collectable! (-> self fact-info-target) (pickup-type eco-green) (the-as float 1.0) (the-as handle #f))
+        (pickup-collectable! (-> self fact-info-target) (pickup-type eco-green) (the-as float 1.0) (the-as handle #f) self)
         (go target-flut-stance)
         )
       )
@@ -1707,6 +1707,7 @@
                    (pickup-type eco-green)
                    (the-as float -1000.0)
                    (the-as handle #f)
+                   self
                    )
                  (go target-flut-death (-> gp-0 mode))
                  )
@@ -1718,6 +1719,7 @@
                (pickup-type eco-green)
                (the-as float -1000.0)
                (the-as handle #f)
+               self
                )
              (if (= (-> self game mode) 'play)
                  (go target-flut-death (-> gp-0 mode))
@@ -1729,6 +1731,7 @@
                (pickup-type eco-green)
                (the-as float -1000.0)
                (the-as handle #f)
+               self
                )
              )
             (else
@@ -1737,6 +1740,7 @@
                 (pickup-type eco-green)
                 (- (-> *FACT-bank* health-single-inc))
                 (the-as handle #f)
+                self
                 )
               )
             )

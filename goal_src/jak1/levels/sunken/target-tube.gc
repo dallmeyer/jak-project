@@ -782,6 +782,7 @@
           (pickup-type eco-green)
           (- (-> *FACT-bank* health-single-inc))
           (the-as handle #f)
+          self
           )
         (target-hit-effect gp-0)
         )
