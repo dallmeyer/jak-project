@@ -730,6 +730,7 @@
                  ;; otherwise, only draw if we are in debug mode and the setting isn't enabled
                  (draw-build-revision))
                 )
+          )
         (*menu-hook*)
         (add-ee-profile-frame 'draw :g #x40)
 
