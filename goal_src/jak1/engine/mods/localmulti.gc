@@ -68,7 +68,11 @@
 (defun localmulti-run-eachframe()
   ;;If the camera is not focus on the main target (id 1375524), then set the cameras focus to the  main target.
   ;;todo this breaks pelican cutscene we can easily fix later.
-  (if (and (extra-target-alive?) (!= (-> *camera* drawable-target) *target*))
+  (when (and
+          (extra-target-alive?)
+          (!= (-> *camera* drawable-target) *target*)
+          (!= (-> *target* state name) 'target-pole-cycle)
+          )
     (set! (-> *camera* drawable-target) (the-as handle *target*))
     )
 
@@ -95,7 +99,9 @@
         )
       )
     ;;If the camera is not set to cam-stick, and we have more than one jak, then set it to cam-stick
-    ((and (extra-target-alive?) (= (-> (-> (-> (the-as (pointer camera-slave) (-> *camera* child))) state) name) 'cam-string))
+    ((and
+        (extra-target-alive?)
+        (= (-> (-> (-> (the-as (pointer camera-slave) (-> *camera* child))) state) name) 'cam-string))
       (send-event *camera* 'change-state cam-stick 0)
       )
     )
