@@ -1984,7 +1984,7 @@
   (none)
   )
 
-(defmethod target-above-threshold? fisher ((obj fisher))
+(defmethod target-above-threshold? fisher ((obj fisher) (tgt-idx int))
   (or (= (current-task (-> obj tasks)) (game-task jungle-fishgame)) (-> obj hard))
   )
 

@@ -415,7 +415,7 @@
     )
   )
 
-(defmethod target-above-threshold? assistant-bluehut ((obj assistant-bluehut))
+(defmethod target-above-threshold? assistant-bluehut ((obj assistant-bluehut) (tgt-idx int))
   (when (not (play-reminder obj))
     (set! (-> obj im-talking) #f)
     (return #f)
@@ -443,7 +443,7 @@
                    (-> (the-as sage-bluehut s5-0) node-list data (-> (the-as sage-bluehut s5-0) center-joint-index))
                    )
                  )
-           (f0-1 (- (vector-vector-distance (target-pos 0) s3-0) (vector-vector-distance (target-pos 0) s4-0)))
+           (f0-1 (- (vector-vector-distance (target-pos-multi 0 tgt-idx) s3-0) (vector-vector-distance (target-pos-multi 0 tgt-idx) s4-0)))
            )
       (cond
         ((< f0-1 -4096.0)
@@ -1372,7 +1372,7 @@
     )
   )
 
-(defmethod target-above-threshold? assistant-levitator ((obj assistant-levitator))
+(defmethod target-above-threshold? assistant-levitator ((obj assistant-levitator) (tgt-idx int))
   (= (get-task-status (game-task village2-levitator)) (task-status need-reward-speech))
   )
 
