@@ -558,6 +558,7 @@
           (let ((gp-0 (get-response (-> self query))))
             (cond
               ((and (= gp-0 'yes) (process-release? *target*))
+               (process-release-all-targets)
                (go-virtual enter-playing)
                )
               ((= gp-0 'no)
