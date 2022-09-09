@@ -804,6 +804,14 @@
     )
   )
 
+(defun process-release-all-targets ()
+  (dotimes (tgt-idx (-> *target-list* length))
+    (let ((tgt (get-target tgt-idx)))
+      (process-release? tgt)
+      )
+    )
+  )
+
 (defbehavior process-release? process ((arg0 process))
   (let ((gp-0 (command-get-process arg0 *target*)))
     (the-as symbol (if (and gp-0 (send-event gp-0 'query 'mode) 'target-grab)
