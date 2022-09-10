@@ -8,6 +8,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Letterbox and blackout
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define racer? #f) 
+(define flutflut? #f)
+
 
 (defun set-letterbox-frames ((arg0 time-frame))
   "Set the letterbox frame counter for arg0 frames in the future"
@@ -98,6 +101,23 @@
   )
 
 (defun movie? ()
+
+(set! flutflut? (aif *target* (case (-> it next-state name) (
+                                      ('target-flut-air-attack
+                                       'target-flut-air-attack-hit-ground
+                                       'target-flut-double-jump
+                                       'target-flut-falling
+                                       'target-flut-grab
+                                       'target-flut-hit
+                                       'target-flut-hit-ground
+                                       'target-flut-jump
+                                       'target-flut-running-attack
+                                       'target-flut-stance
+                                       'target-flut-start
+                                       'target-flut-walk) #t))))
+
+(if (not flutflut?)  (send-event *target* 'change-mode 'flut #f))
+
   "Are we in a movie?"
   (logtest? (-> *kernel-context* prevent-from-run) (process-mask movie))
   )
@@ -695,9 +715,9 @@
 
       (with-profiler "menu"
         (with-pc
-          (if 
-            (and (-> *pc-settings* display-sha) *debug-segment*)
-            (draw-build-revision)))
+          (if (and (-> *pc-settings* display-sha) *debug-segment*)
+              (draw-build-revision)))
+
         (*menu-hook*)
         (add-ee-profile-frame 'draw :g #x40)
 

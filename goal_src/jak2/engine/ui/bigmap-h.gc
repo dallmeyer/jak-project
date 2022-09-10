@@ -294,6 +294,5 @@
   )
 
 
-(define-extern *bigmap* bigmap)
 
 

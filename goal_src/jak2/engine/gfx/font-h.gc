@@ -14,8 +14,6 @@
   (default 0)
   (one 1)
   (orange-red 3)
-  (fc-5  5)
-  (fc-6  6)
   )
 
 ;; copied from jak1, not completely confirmed.
@@ -31,13 +29,7 @@
   (pc-hack 6)
   )
 
-;; added type
-(deftype draw-string-result (uint64)
-  ((length float :offset 0)
-   (b float :offset 32))
-  )
-
-(define-extern draw-string-xy (function string dma-buffer int int font-color font-flags draw-string-result))
+(define-extern draw-string-xy (function string dma-buffer int int font-color font-flags float))
 
 ;; DECOMP BEGINS
 

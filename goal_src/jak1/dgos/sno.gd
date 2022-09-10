@@ -1,10 +1,8 @@
 
 ("SNO.DGO"
   ("blocking-plane.o" "blocking-plane")
-  ("flut-part.o" "flut-part")
-  ("flutflut.o" "flutflut")
-  ("target-flut.o" "target-flut")
-  ("eichar-flut+0-ag.go" "eichar-flut+0")
+
+
   ("target-snowball.o" "target-snowball")
   ("target-ice.o" "target-ice")
   ("ice-cube.o" "ice-cube")
@@ -27,7 +25,7 @@
   ("babak-ag.go" "babak")
   ("ecovalve-ag.go" "ecovalve")
   ("ef-plane-ag.go" "ef-plane")
-  ("flut-saddle-ag.go" "flut-saddle")
+
   ("flutflut-plat-large-ag.go" "flutflut-plat-large")
   ("flutflut-plat-med-ag.go" "flutflut-plat-med")
   ("flutflut-plat-small-ag.go" "flutflut-plat-small")

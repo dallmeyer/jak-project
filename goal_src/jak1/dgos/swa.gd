@@ -2,10 +2,8 @@
 ("SWA.DGO"
   ("battlecontroller.o" "battlecontroller")
   ("blocking-plane.o" "blocking-plane")
-  ("flut-part.o" "flut-part")
-  ("flutflut.o" "flutflut")
-  ("target-flut.o" "target-flut")
-  ("eichar-flut+0-ag.go" "eichar-flut+0")
+
+
   ("swamp-obs.o" "swamp-obs")
   ("swamp-bat.o" "swamp-bat")
   ("swamp-rat.o" "swamp-rat")
@@ -25,7 +23,7 @@
   ("ecovalve-ag.go" "ecovalve")
   ("ef-plane-ag.go" "ef-plane")
   ("farthy-snack-ag.go" "farthy-snack")
-  ("flut-saddle-ag.go" "flut-saddle")
+
   ("kermit-ag.go" "kermit")
   ("sharkey-ag.go" "sharkey")
   ("swamp-bat-ag.go" "swamp-bat")

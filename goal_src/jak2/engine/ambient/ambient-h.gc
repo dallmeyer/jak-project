@@ -991,7 +991,6 @@
     )
   )
 
-(define-extern talker-surpress! (function none))
 
 
 
