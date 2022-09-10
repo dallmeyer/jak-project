@@ -110,7 +110,7 @@
                  (and (>= (-> self level-slot) 0)
                       (not (movie?))
                       (not (level-hint-displayed?))
-                      (zero? (logand (-> *target* control root-prim prim-core action) (collide-action ca-7 ca-8 ca-9 ca-12 ca-13 ca-14))
+                      (zero? (logand (-> *target* control root-prim prim-core action) (collide-action ca-7 ca-8 ca-9 ca-12 ca-13))
                              )
                       (let* ((v1-16 (-> self root))
                              (a1-2 (-> *target* control trans))
@@ -502,7 +502,7 @@
 (defmethod pressable? warp-gate-switch ((obj warp-gate-switch))
   (let ((v1-2 (-> obj entity extra perm task)))
     (cond
-      ((logtest? (-> *target* control root-prim prim-core action) (collide-action ca-7 ca-8 ca-9 ca-12 ca-13 ca-14))
+      ((logtest? (-> *target* control root-prim prim-core action) (collide-action ca-7 ca-8 ca-9 ca-12 ca-13))
        #f
        )
       ((= v1-2 (game-task training-door))

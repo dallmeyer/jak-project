@@ -1033,7 +1033,7 @@
              )
     (if (and (= (-> self cam-user-mode) 'normal)
              (logtest? (-> self control unknown-surface00 flags) (surface-flags allow-look-around))
-             (zero? (logand (-> self control root-prim prim-core action) (collide-action ca-7 ca-8 ca-9 ca-12 ca-13 ca-14))
+             (zero? (logand (-> self control root-prim prim-core action) (collide-action ca-7 ca-8 ca-9 ca-12 ca-13))
                     )
              (-> *setting-control* current allow-look-around)
              (>= (- (-> *display* base-frame-counter) (-> self no-look-around-wait)) (seconds 0.05))
