@@ -69,7 +69,7 @@
                            :alignv 1.0
                            :slope-up-traction 1.0
                            :align-speed 1.0
-                           :flags (surface-flags no-turn-around)
+                           :flags (surface-flags allow-look-around no-turn-around)
                            )
         )
 
@@ -336,6 +336,9 @@
          (case (-> arg3 param 0)
            (('grab)
             (go target-flut-grab)
+            )
+           (else  ;; handles changing to look-around, fish game, rats game, periscopes, etc
+            (target-standard-event-handler arg0 arg1 arg2 arg3)
             )
            )
          )

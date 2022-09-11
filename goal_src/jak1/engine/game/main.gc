@@ -105,8 +105,14 @@
 (set! flutflut? (aif *target* (case (-> it next-state name) (
                                       ('target-flut-air-attack
                                        'target-flut-air-attack-hit-ground
-                                       'target-flut-double-jump
-                                       'target-flut-falling
+                                       'target-flut-clone-anim 
+                                       'target-flut-death 
+                                       'target-flut-double-jump 
+                                       'target-flut-falling 
+                                       'target-flut-get-off 
+                                       'target-flut-get-off-hit-ground 
+                                       'target-flut-get-off-jump
+                                       'target-flut-get-on
                                        'target-flut-grab
                                        'target-flut-hit
                                        'target-flut-hit-ground
@@ -114,9 +120,19 @@
                                        'target-flut-running-attack
                                        'target-flut-stance
                                        'target-flut-start
-                                       'target-flut-walk) #t))))
+                                       'target-flut-walk
+                                       ;; not flutflut, but we don't need to force flutflut in these cases
+                                       'target-periscope
+                                       'target-falling
+                                       'target-clone-anim
+                                       'target-play-anim
+                                       'target-billy-game
+                                       'target-look-around
+                                       'target-fishing) #t))))
 
-(if (not flutflut?)  (send-event *target* 'change-mode 'flut #f))
+(when (not flutflut?)
+  (send-event *target* 'change-mode 'flut #f)
+  )
 
   "Are we in a movie?"
   (logtest? (-> *kernel-context* prevent-from-run) (process-mask movie))
