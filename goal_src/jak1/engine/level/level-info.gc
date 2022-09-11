@@ -14,7 +14,7 @@
     :visname 'training-vis
     :nickname 'tra
     :packages '(training)
-    :sound-banks '(training)
+    :sound-banks '(training snow)
     :music-bank 'village1
     :ambient-sounds '()
     :mood '*training-mood*
@@ -117,7 +117,7 @@
     :visname 'village1-vis
     :nickname 'vi1
     :packages '(village1)
-    :sound-banks '(village1)
+    :sound-banks '(village1 snow)
     :music-bank 'village1
     :ambient-sounds '()
     :mood '*village1-mood*
@@ -232,7 +232,7 @@
     :visname 'beach-vis
     :nickname 'bea
     :packages '(beach)
-    :sound-banks '(beach)
+    :sound-banks '(beach snow)
     :music-bank 'beach
     :ambient-sounds '()
     :mood '*beach-mood*
@@ -275,7 +275,7 @@
     :visname 'jungle-vis
     :nickname 'jun
     :packages '(jungle)
-    :sound-banks '(jungle)
+    :sound-banks '(jungle snow)
     :music-bank 'jungle
     :ambient-sounds '()
     :mood '*jungle-mood*
@@ -318,7 +318,7 @@
     :visname 'jungleb-vis
     :nickname 'jub
     :packages '(jungleb)
-    :sound-banks '(jungleb)
+    :sound-banks '(jungleb snow)
     :music-bank 'jungleb
     :ambient-sounds '()
     :mood '*jungleb-mood*
@@ -359,7 +359,7 @@
     :visname 'misty-vis
     :nickname 'mis
     :packages '(misty)
-    :sound-banks '(misty)
+    :sound-banks '(misty snow)
     :music-bank 'misty
     :ambient-sounds '()
     :mood '*misty-mood*
@@ -518,7 +518,7 @@
     :visname 'firecanyon-vis
     :nickname 'fic
     :packages '(firecanyon)
-    :sound-banks '(firecanyon)
+    :sound-banks '(firecanyon snow)
     :music-bank 'firecanyon
     :ambient-sounds '()
     :mood '*firecanyon-mood*
@@ -574,7 +574,7 @@
     :visname 'village2-vis
     :nickname 'vi2
     :packages '(village2)
-    :sound-banks '(village2)
+    :sound-banks '(village2 snow)
     :music-bank 'village2
     :ambient-sounds '()
     :mood '*village2-mood*
@@ -645,7 +645,7 @@
     :visname 'sunken-vis
     :nickname 'sun
     :packages '(sunken)
-    :sound-banks '(sunken)
+    :sound-banks '(sunken snow)
     :music-bank 'sunken
     :ambient-sounds '()
     :mood '*sunken-mood*
@@ -729,7 +729,7 @@
     :visname 'sunkenb-vis
     :nickname 'sub
     :packages '()
-    :sound-banks '(sunken)
+    :sound-banks '(sunken snow)
     :music-bank 'sunken
     :ambient-sounds '()
     :mood '*sunkenb-mood*
@@ -953,7 +953,7 @@
     :visname 'rolling-vis
     :nickname 'rol
     :packages '(rolling)
-    :sound-banks '(rolling)
+    :sound-banks '(rolling snow)
     :music-bank 'rolling
     :ambient-sounds '()
     :mood '*rolling-mood*
@@ -995,7 +995,7 @@
     :visname 'ogre-vis
     :nickname 'ogr
     :packages '(ogre)
-    :sound-banks '(ogre)
+    :sound-banks '(ogre snow)
     :music-bank 'ogre
     :ambient-sounds '()
     :mood '*ogre-mood*
@@ -1065,7 +1065,7 @@
     :visname 'village3-vis
     :nickname 'vi3
     :packages '(village3)
-    :sound-banks '(village3)
+    :sound-banks '(village3 snow)
     :music-bank 'village3
     :ambient-sounds '()
     :mood '*village3-mood*
@@ -1291,7 +1291,7 @@
     :visname 'maincave-vis
     :nickname 'mai
     :packages '(maincave)
-    :sound-banks '(maincave)
+    :sound-banks '(maincave snow)
     :music-bank 'maincave
     :ambient-sounds '()
     :mood '*maincave-mood*
@@ -1361,7 +1361,7 @@
     :visname 'darkcave-vis
     :nickname 'dar
     :packages '(darkcave)
-    :sound-banks '(darkcave)
+    :sound-banks '(darkcave snow)
     :music-bank 'maincave
     :ambient-sounds '()
     :mood '*darkcave-mood*
@@ -1403,7 +1403,7 @@
     :visname 'robocave-vis
     :nickname 'rob
     :packages '(robocave)
-    :sound-banks '(robocave)
+    :sound-banks '(robocave snow)
     :music-bank 'maincave
     :ambient-sounds '()
     :mood '*robocave-mood*
@@ -1459,7 +1459,7 @@
     :visname 'lavatube-vis
     :nickname 'lav
     :packages '(lavatube)
-    :sound-banks '(lavatube)
+    :sound-banks '(lavatube snow)
     :music-bank 'lavatube
     :ambient-sounds '()
     :mood '*lavatube-mood*
@@ -1543,7 +1543,7 @@
     :visname 'citadel-vis
     :nickname 'cit
     :packages '(citadel)
-    :sound-banks '(citadel)
+    :sound-banks '(citadel snow)
     :music-bank 'citadel
     :ambient-sounds '()
     :mood '*citadel-mood*
@@ -1712,7 +1712,7 @@
     :visname 'finalboss-vis
     :nickname 'fin
     :packages '(finalboss)
-    :sound-banks '(finalboss)
+    :sound-banks '(finalboss snow)
     :music-bank 'finalboss
     :ambient-sounds '()
     :mood '*finalboss-mood*
@@ -1795,7 +1795,7 @@
     :visname 'demo-vis
     :nickname 'dem
     :packages '()
-    :sound-banks '(village1)
+    :sound-banks '(village1 snow)
     :music-bank 'village1
     :ambient-sounds '()
     :mood '*default-mood*

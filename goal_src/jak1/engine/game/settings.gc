@@ -331,6 +331,7 @@
                       (zero? (rpc-busy? 1))
                       *sound-bank-1*
                       *sound-bank-2*
+                      *sound-bank-3*
                       )
                  )
         (cond
