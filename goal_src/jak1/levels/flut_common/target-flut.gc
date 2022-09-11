@@ -342,6 +342,16 @@
             )
            )
          )
+        (('launch)
+         (mem-copy! (&-> (-> self control) unknown-pointer00) (the-as pointer arg3) 72)
+         (let ((a0-9 (-> self control unknown-dword60))
+                (a1-5 (-> self control unknown-dword61))
+                (a2-5 (-> self control unknown-vector102))
+                )
+            (set! (-> a2-5 quad) (-> (the-as vector (-> self control unknown-dword62)) quad))
+            (go target-launch (the-as float a0-9) (the-as symbol a1-5) a2-5 (-> self control unknown-dword63))
+            )
+         )
         (('clone-anim)
          (go target-flut-clone-anim (process->handle (the-as process (-> arg3 param 0))))
          )
@@ -793,6 +803,48 @@
       )
     )
   :enter (behavior ((arg0 float) (arg1 float))
+    (when (= (-> self control unknown-symbol40) 'launch)
+      (level-hint-spawn
+        (game-text-id sidekick-launcher1)
+        "sksp009d"
+        (the-as entity #f)
+        *entity-pool*
+        (game-task none)
+        )
+      (level-hint-spawn
+        (game-text-id sidekick-launcher2)
+        "sksp009e"
+        (the-as entity #f)
+        *entity-pool*
+        (game-task none)
+        )
+      (case (-> (level-get-target-inside *level*) name)
+        (('citadel)
+         (level-hint-spawn
+           (game-text-id citadel-launcher2)
+           "sksp0393"
+           (the-as entity #f)
+           *entity-pool*
+           (game-task none)
+           )
+         (level-hint-spawn
+           (game-text-id citadel-launcher)
+           "sksp0388"
+           (the-as entity #f)
+           *entity-pool*
+           (game-task none)
+           )
+         )
+        )
+      enter-state
+      (let ((a0-9 (-> self control unknown-dword60))
+            (a1-5 (-> self control unknown-dword61))
+            (a2-5 (-> self control unknown-vector102))
+            )
+        (set! (-> a2-5 quad) (-> (the-as vector (-> self control unknown-dword62)) quad))
+        (go target-launch (the-as float a0-9) (the-as symbol a1-5) a2-5 (-> self control unknown-dword63))
+        )
+      )
     (set! (-> self state-time) (-> *display* base-frame-counter))
     (sound-play "jump" :pitch -0.5)
     (init-var-jump arg0 arg1 (the-as vector #t) (the-as vector #t) (-> self control transv))
@@ -924,6 +976,16 @@
 (defstate target-flut-double-jump (target)
   :event (-> target-flut-jump event)
   :enter (behavior ((arg0 float) (arg1 float))
+    (when (= (-> self control unknown-symbol40) 'launch)
+      enter-state
+      (let ((a0-3 (-> self control unknown-dword60))
+            (a1-1 (-> self control unknown-dword61))
+            (a2-0 (-> self control unknown-vector102))
+            )
+        (set! (-> a2-0 quad) (-> (the-as vector (-> self control unknown-dword62)) quad))
+        (go target-launch (the-as float a0-3) (the-as symbol a1-1) a2-0 (-> self control unknown-dword63))
+        )
+      )
     (set! (-> self state-time) (-> *display* base-frame-counter))
     (init-var-jump arg0 arg1 (the-as vector #t) (the-as vector #t) (-> self control transv))
     (set! (-> self control dynam gravity-max) 40960.0)

@@ -128,11 +128,15 @@
                                        'target-play-anim
                                        'target-billy-game
                                        'target-look-around
-                                       'target-fishing) #t))))
+                                       'target-fishing
+                                       ;; launcher crap
+                                       'target-launch
+                                       'target-high-jump
+                                       'target-duck-high-jump
+                                       'target-duck-high-jump-jump
+                                       'target-hit-ground) #t))))
 
-(when (not flutflut?)
-  (send-event *target* 'change-mode 'flut #f)
-  )
+(if (not flutflut?) (send-event *target* 'change-mode 'flut #f))
 
   "Are we in a movie?"
   (logtest? (-> *kernel-context* prevent-from-run) (process-mask movie))

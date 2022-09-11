@@ -1917,7 +1917,7 @@
 
 (defstate launcher-active (launcher)
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
-    (when (or (= arg2 'touch) (= arg2 'attack))
+    (when (= arg2 'attack)
       (set! (-> self state-time) (-> *display* base-frame-counter))
       (send-event arg0 'launch (-> self spring-height) (-> self camera) (-> self dest) (-> self seek-time))
       )
