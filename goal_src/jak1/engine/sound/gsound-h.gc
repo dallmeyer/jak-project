@@ -535,7 +535,7 @@
   )
 
 ;; currently loaded sound effect banks.
-;; there is an always-loaded common bank and two level-specific banks.
+;; there is an always-loaded common bank and three level-specific banks.
 (define *sound-bank-1* #f)
 (define *sound-bank-2* #f)
 (define *sound-bank-3* #f)
