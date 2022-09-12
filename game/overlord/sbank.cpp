@@ -4,15 +4,16 @@
 
 #include "soundcommon.h"
 
-constexpr int N_BANKS = 3;
+constexpr int N_BANKS = 4;
 SoundBank* gBanks[N_BANKS];
 SoundBank gCommonBank;
-SoundBank gLevelBank[2];
+SoundBank gLevelBank[3];
 
 void sbank_init_globals() {
   gBanks[0] = &gCommonBank;
   gBanks[1] = &gLevelBank[0];
   gBanks[2] = &gLevelBank[1];
+  gBanks[3] = &gLevelBank[2];
   memset((void*)&gCommonBank, 0, sizeof(gCommonBank));
   memset((void*)&gLevelBank, 0, sizeof(gLevelBank));
 }
