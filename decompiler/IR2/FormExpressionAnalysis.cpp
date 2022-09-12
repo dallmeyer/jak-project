@@ -13,7 +13,7 @@
 #include "decompiler/ObjectFile/LinkedObjectFile.h"
 #include "decompiler/util/DecompilerTypeSystem.h"
 #include "decompiler/util/data_decompile.h"
-#include "decompiler/util/goal_constants.h"
+#include "decompiler/util/type_utils.h"
 
 /*
  * TODO
@@ -72,12 +72,33 @@ Form* strip_pcypld_64(Form* in) {
   }
 }
 
-std::optional<float> get_goal_float_constant(Form* in) {
-  auto as_fc = in->try_as_element<ConstantFloatElement>();
+std::optional<float> get_goal_float_constant(FormElement* in) {
+  auto as_fc = dynamic_cast<ConstantFloatElement*>(in);
   if (as_fc) {
     return as_fc->value();
   }
   return {};
+}
+
+std::optional<float> get_goal_float_constant(Form* in) {
+  auto elt = in->try_as_single_element();
+  if (elt) {
+    return get_goal_float_constant(elt);
+  } else {
+    return {};
+  }
+}
+
+bool cond_has_only_single_elements(CondWithElseElement* in) {
+  for (auto& entry : in->entries) {
+    if (entry.body->elts().size() > 1) {
+      return false;
+    }
+  }
+  if (in->else_ir->elts().size() > 1) {
+    return false;
+  }
+  return true;
 }
 }  // namespace
 
@@ -198,6 +219,27 @@ Form* try_cast_simplify(Form* in,
 
   auto type_info = env.dts->ts.lookup_type_allow_partial_def(new_type);
   auto bitfield_info = dynamic_cast<BitFieldType*>(type_info);
+  auto enum_info = dynamic_cast<EnumType*>(type_info);
+  auto* in_as_cond = in->try_as_element<CondWithElseElement>();
+
+  // try to fix (the-as <enum> (if foo 12 13)) type stuff by applying the casts inside a cond if:
+  // - it's casting to a bitfield/enum (this could be expanded to more in the future if needed)
+  // - the cond has an explicit else case (otherwise the #f from not hitting any case...)
+  // - it's not a sound-id - these are basically used like ints so it gets worse
+  // - the cond doesn't have multiple entries in the body
+  //    in theory this could be better if we could only apply a cast to the last element in the body
+  //    but this is a bit too much work for exactly 1 case in jak 1.
+  if ((bitfield_info || enum_info) && in_as_cond && type_info->get_name() != "sound-id" &&
+      cond_has_only_single_elements(in_as_cond)) {
+    for (auto& cas : in_as_cond->entries) {
+      cas.body = try_cast_simplify(cas.body, new_type, pool, env, tc_pass);
+      cas.body->parent_element = in_as_cond;
+    }
+    in_as_cond->else_ir = try_cast_simplify(in_as_cond->else_ir, new_type, pool, env, tc_pass);
+    in_as_cond->else_ir->parent_element = in_as_cond;
+    return in;
+  }
+
   if (bitfield_info) {
     // todo remove this.
     if (bitfield_info->get_load_size() == 8) {
@@ -206,7 +248,6 @@ Form* try_cast_simplify(Form* in,
     return cast_to_bitfield(bitfield_info, new_type, pool, env, in);
   }
 
-  auto enum_info = dynamic_cast<EnumType*>(type_info);
   if (enum_info) {
     if (enum_info->is_bitfield()) {
       return cast_to_bitfield_enum(enum_info, new_type, pool, env, in);
@@ -647,6 +688,21 @@ void LoadSourceElement::update_from_stack(const Env& env,
                                           bool allow_side_effects) {
   mark_popped();
   m_addr->update_children_from_stack(env, pool, stack, allow_side_effects);
+
+  // most of the time, the AtomicOpForm logic is able to figure the load, but sometimes
+  // it's impossible before expressions:
+
+  //  ori a2, r0, 33708
+  //  lw a3, *level*(s7)
+  //  daddu a2, a2, a3
+  //  lq a2, 0(a2)
+
+  /*
+  if (m_load_source_ro && m_load_source_ro->offset == 0) {
+    // maybe a case like above, try to improve
+  }
+  */
+
   result->push_back(this);
 }
 
@@ -984,19 +1040,9 @@ void SimpleExpressionElement::update_from_stack_add_i(const Env& env,
 
     // try to find symbol to string stuff
     auto arg0_int = get_goal_integer_constant(args.at(0), env);
-    u64 symbol_to_string_offset = -1;
-    switch (env.version) {
-      case GameVersion::Jak1:
-        symbol_to_string_offset = DECOMP_SYM_INFO_OFFSET + 4;
-        break;
-      case GameVersion::Jak2:
-        symbol_to_string_offset = jak2::SYM_TO_STRING_OFFSET;
-        break;
-      default:
-        ASSERT(false);
-    }
-    if (arg0_int && (*arg0_int == symbol_to_string_offset) &&
-        arg1_type.typespec() == TypeSpec("symbol")) {
+
+    if (arg0_int && (*arg0_int == SYMBOL_TO_STRING_MEM_OFFSET_DECOMP[env.version]) &&
+        allowable_base_type_for_symbol_to_string(arg1_type.typespec())) {
       result->push_back(pool.alloc_element<GetSymbolStringPointer>(args.at(1)));
       return;
     }
@@ -1209,10 +1255,29 @@ void SimpleExpressionElement::update_from_stack_add_i(const Env& env,
           throw std::runtime_error("Failed to match product_with_constant inline array access 2.");
         }
       }
+    } else if (arg0_type.kind == TP_Type::Kind::INTEGER_CONSTANT) {
+      // try to see if this is valid, from the type system.
+      FieldReverseLookupInput input;
+      input.offset = arg0_type.get_integer_constant();
+      input.stride = 0;
+      input.base_type = arg1_type.typespec();
+      auto out = env.dts->ts.reverse_field_lookup(input);
+      if (out.success && !out.has_variable_token()) {
+        // it is. now we have to modify things
+        // first, look for the index
+        std::vector<DerefToken> tokens;
+        for (auto& tok : out.tokens) {
+          tokens.push_back(to_token(tok));
+        }
+
+        result->push_back(pool.alloc_element<DerefElement>(args.at(1), out.addr_of, tokens));
+        return;
+      }
     }
   }
 
-  if (env.dts->ts.tc(TypeSpec("structure"), arg0_type.typespec()) && m_expr.get_arg(1).is_int()) {
+  if (env.dts->ts.tc(TypeSpec("structure"), arg0_type.typespec()) && m_expr.get_arg(1).is_int() &&
+      arg0_type.kind != TP_Type::Kind::INTEGER_CONSTANT_PLUS_VAR) {
     auto type_info = env.dts->ts.lookup_type(arg0_type.typespec());
     if (type_info->get_size_in_memory() == m_expr.get_arg(1).get_int()) {
       auto new_form = pool.alloc_element<GenericElement>(
@@ -1235,7 +1300,7 @@ void SimpleExpressionElement::update_from_stack_add_i(const Env& env,
     }
   }
 
-  if (arg0_ptr) {
+  if (arg0_ptr && arg0_type.kind != TP_Type::Kind::INTEGER_CONSTANT_PLUS_VAR) {
     auto new_form = pool.alloc_element<GenericElement>(
         GenericOperator::make_fixed(FixedOperatorKind::ADDITION_PTR), args.at(0), args.at(1));
     result->push_back(new_form);
@@ -4913,7 +4978,7 @@ void ReturnElement::push_to_stack(const Env& env, FormPool& pool, FormStack& sta
 namespace {
 
 void push_asm_srl_to_stack(const AsmOp* op,
-                           FormElement* /*form_elt*/,
+                           FormElement* form_elt,
                            const Env& env,
                            FormPool& pool,
                            FormStack& stack) {
@@ -4940,7 +5005,7 @@ void push_asm_srl_to_stack(const AsmOp* op,
     stack.push_value_to_reg(*dst, pool.alloc_single_form(nullptr, other), true,
                             env.get_variable_type(*dst, true));
   } else {
-    // stack.push_form_element(form_elt, true);
+    //
     auto src_var = pop_to_forms({*var}, env, pool, stack, true).at(0);
     auto as_ba = src_var->try_as_element<BitfieldAccessElement>();
     if (as_ba) {
@@ -4950,9 +5015,10 @@ void push_asm_srl_to_stack(const AsmOp* op,
       stack.push_value_to_reg(*dst, pool.alloc_single_form(nullptr, other), true,
                               env.get_variable_type(*dst, true));
     } else {
-      throw std::runtime_error(
-          fmt::format("Got invalid bitfield manip for srl at op {}: {} type was {}", op->op_id(),
-                      src_var->to_string(env), arg0_type.print()));
+      stack.push_form_element(form_elt, true);
+      //  throw std::runtime_error(
+      //  fmt::format("Got invalid bitfield manip for srl at op {}: {} type was {}", op->op_id(),
+      //             src_var->to_string(env), arg0_type.print()));
     }
   }
 }

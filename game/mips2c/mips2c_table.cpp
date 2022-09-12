@@ -119,8 +119,10 @@ namespace collide_do_primitives { extern void link(); }
 namespace moving_sphere_triangle_intersect { extern void link(); }
 namespace calc_animation_from_spr { extern void link(); }
 namespace cspace_parented_transformq_joint { extern void link(); }
-
-
+namespace draw_string_asm { extern void link(); }
+namespace draw_string { extern void link(); }
+namespace get_string_length { extern void link(); }
+namespace adgif_shader_texture_with_update { extern void link(); }
 }
 // clang-format on
 
@@ -198,8 +200,10 @@ PerGameVersion<std::unordered_map<std::string, std::vector<void (*)()>>> gMips2C
     /////////// JAK 2
     {{"collide-func",
       {jak2::collide_do_primitives::link, jak2::moving_sphere_triangle_intersect::link}},
-     {"joint",
-      {jak2::calc_animation_from_spr::link, jak2::cspace_parented_transformq_joint::link}}},
+     {"joint", {jak2::calc_animation_from_spr::link, jak2::cspace_parented_transformq_joint::link}},
+     {"font",
+      {jak2::draw_string::link, jak2::get_string_length::link, jak2::draw_string_asm::link}},
+     {"texture", {jak2::adgif_shader_texture_with_update::link}}},
 };
 
 void LinkedFunctionTable::reg(const std::string& name, u64 (*exec)(void*), u32 stack_size) {

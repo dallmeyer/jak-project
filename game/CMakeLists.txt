@@ -83,7 +83,9 @@ set(RUNTIME_SOURCE
         mips2c/jak1_functions/tie_methods.cpp
         mips2c/jak1_functions/time_of_day.cpp
         mips2c/jak2_functions/collide_func.cpp
+        mips2c/jak2_functions/font.cpp
         mips2c/jak2_functions/joint.cpp
+        mips2c/jak2_functions/texture.cpp
         overlord/dma.cpp
         overlord/fake_iso.cpp
         overlord/iso.cpp
@@ -142,6 +144,7 @@ set(RUNTIME_SOURCE
         graphics/opengl_renderer/TextureUploadHandler.cpp
         graphics/opengl_renderer/DepthCue.cpp
         graphics/texture/jak1_tpage_dir.cpp
+        graphics/texture/jak2_tpage_dir.cpp
         graphics/texture/TextureConverter.cpp
         graphics/texture/TexturePool.cpp
         graphics/pipelines/opengl.cpp

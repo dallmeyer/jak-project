@@ -1,7 +1,9 @@
 {
   "dgos": [
   "CGO/KERNEL.CGO",
-  "CGO/ENGINE.CGO"
+  "CGO/ENGINE.CGO",
+  "CGO/COMMON.CGO",
+  "CGO/GAME.CGO"
   ],
 
   "skip_compile_files": [],
@@ -40,6 +42,8 @@
     "(method 3 sprite-aux-list)",
     // sprite-distort
     "sprite-draw-distorters", // uses clipping flag.
+    // debug
+    "(method 3 debug-vertex-stats)", // multiple defined
     // asm, weird vector dot
     "(method 17 trsqv)",
     // history - rgba issues
@@ -57,19 +61,10 @@
     "ja-play-spooled-anim",
 
     // default menu
-    // - causes a decompiler hang
-    "dm-cam-setting-float",
-    "debug-menu-make-camera-menu", // requires the above, fine on it's own
-    // - delayed until game-info is better understood
-    "debug-menu-make-play-menu",
-    "debug-menu-make-task-sub-menu",
     // - weird array accessing pattern, we never fixed it in jak 1
     "all-texture-tweak-adjust",
     "debug-menu-make-shader-menu", // requires the above, fine on it's own
-    // - process-spawn macro issues
-    "dm-scene-load-pick-func",
-    "popup-menu-context-make-default-menus",
-    "debug-menu-context-make-default-menus",
+
     // camera
     // - vector-dot issue
     "slave-set-rotation!",
@@ -92,10 +87,42 @@
     "cam-los-collide", // vector-dot with stack
     // cam-update
     "update-visible", // assertion crash when filling out bsp-header
-    // placeholder
-    
+    // sparticle-launcher
+    // - field loaded as signed and unsigned
+    "sp-relaunch-particle-3d",
+    // - annoying arbitrary data usage functions
+    "execute-part-engine",
+    "sparticle-respawn-heights",
+    "sparticle-respawn-timer",
+    "sparticle-mode-animate",
+    "sparticle-mode-animate",
+    "sparticle-texture-animate",
+    "sparticle-texture-day-night",
+    "sparticle-motion-blur", // clipping
+    "birth-func-texture-group",
+    "(method 10 sparticle-launcher)", // very strange handling of ambiguous type
+
+    // editable - remainder
+    "(method 27 editable-face)",
+    "(method 27 editable-plane)",
+    "(method 13 editable-face)",
+    "(method 13 editable-plane)",
+    "(method 29 editable-face)",
+    "(method 12 editable-array)",
+    "insert-box",
+    "dm-editable-light-float-func",
+    "dm-editable-boolean-toggle-pick-func",
+
+    // debug
+    "add-debug-bound-internal",
+    "add-debug-bound",
+
     // gun-util
     "draw-beam", "(method 9 gun-info)",
+    // mood
+    "update-mood-direction", // power of two case
+    // texture
+    "(method 9 texture-page-dir)", // asm
 
     "i-hopefully-will-never-exist-dont-add-anything-after-me-please"
   ],

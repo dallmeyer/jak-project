@@ -160,7 +160,7 @@
   (with-gensyms (new-proc)
     `(let ((,new-proc (the-as ,proc-type (get-process ,from ,proc-type ,stack-size))))
         (when ,new-proc
-          ((method-of-type ,proc-type activate) ,new-proc ,to ,(if name name `(quote ,proc-type)) ,stack)
+          ((method-of-type ,proc-type activate) ,new-proc ,to ,(if name name `(symbol->string ,proc-type)) ,stack)
           (run-next-time-in-process ,new-proc ,func ,@args)
           (the (pointer ,proc-type) (-> ,new-proc ppointer))
           )
@@ -175,7 +175,7 @@
   (with-gensyms (new-proc)
     `(let ((,new-proc (the-as ,proc-type (get-process ,from ,proc-type ,stack-size))))
         (when ,new-proc
-          ((method-of-type ,proc-type activate) ,new-proc ,to ,(if name name `(quote ,proc-type)) ,stack)
+          ((method-of-type ,proc-type activate) ,new-proc ,to ,(if name name `(symbol->string ,proc-type)) ,stack)
           (run-now-in-process ,new-proc ,(if init init (string->symbol (fmt #f "{}-init-by-other" proc-type))) ,@args)
           (the (pointer ,proc-type) (-> ,new-proc ppointer))
           )
@@ -898,3 +898,23 @@
   `(ja :eval? #f :chan ,chan :group! ,group! :num! ,num! :param0 ,param0 :param1 ,param1 :num-func ,num-func :frame-num ,frame-num :frame-interp ,frame-interp :dist ,dist)
   )
 
+(defconstant GIF_REGS_ALL_AD
+  (new 'static 'gif-tag-regs
+       :regs0 (gif-reg-id a+d)
+       :regs1 (gif-reg-id a+d)
+       :regs2 (gif-reg-id a+d)
+       :regs3 (gif-reg-id a+d)
+       :regs4 (gif-reg-id a+d)
+       :regs5 (gif-reg-id a+d)
+       :regs6 (gif-reg-id a+d)
+       :regs7 (gif-reg-id a+d)
+       :regs8 (gif-reg-id a+d)
+       :regs9 (gif-reg-id a+d)
+       :regs10 (gif-reg-id a+d)
+       :regs11 (gif-reg-id a+d)
+       :regs12 (gif-reg-id a+d)
+       :regs13 (gif-reg-id a+d)
+       :regs14 (gif-reg-id a+d)
+       :regs15 (gif-reg-id a+d)
+       )
+  )

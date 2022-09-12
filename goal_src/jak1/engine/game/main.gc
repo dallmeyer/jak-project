@@ -722,11 +722,7 @@
 
       (with-profiler "menu"
         (with-pc
-          (cond ((and (= (-> *pc-settings* speedrunner-mode?) #t)
-                      (< (-> *autosplit-info-jak1* num-power-cells) 1))
-                 ;; display the revision before you collect your first powercell
-                 (draw-build-revision))
-                ((and (-> *pc-settings* display-sha) (-> *randomizer-settings* checkpoint-randomizer?))
+          (cond ((and (-> *pc-settings* display-sha) (-> *randomizer-settings* checkpoint-randomizer?))
                  ;; display the revision in randomizer mode
                  (draw-build-revision))
                 ((and (-> *pc-settings* display-sha) *debug-segment*)
