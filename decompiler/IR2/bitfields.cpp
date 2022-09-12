@@ -859,9 +859,13 @@ Form* cast_to_bitfield(const BitFieldType* type_info,
   // check if it's just a constant:
   auto in_as_atom = form_as_atom(in);
   if (in_as_atom && in_as_atom->is_int()) {
+    s64 val = in_as_atom->get_int();
+    if (type_info->get_name() == "gif-tag-regs" && (u64)val == 0xeeeeeeeeeeeeeeee) {
+      return pool.form<ConstantTokenElement>("GIF_REGS_ALL_AD");
+    }
+
     // will always be 64-bits
-    auto fields =
-        try_decompile_bitfield_from_int(typespec, env.dts->ts, in_as_atom->get_int(), false, {});
+    auto fields = try_decompile_bitfield_from_int(typespec, env.dts->ts, val, false, {});
     if (!fields) {
       return pool.form<CastElement>(typespec, in);
     }
@@ -944,6 +948,9 @@ Form* cast_to_bitfield_enum(const EnumType* type_info,
                             bool no_head) {
   ASSERT(type_info->is_bitfield());
   auto elts = decompile_bitfield_enum_from_int(TypeSpec(type_info->get_name()), env.dts->ts, in);
+  if (in == -1) {
+    return nullptr;
+  }
   if (no_head) {
     ASSERT(elts.size() >= 1);
   }
