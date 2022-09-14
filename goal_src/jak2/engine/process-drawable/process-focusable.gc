@@ -8,9 +8,38 @@
 (defenum focus-status
   :bitfield #t
   :type uint32
-  (fs0 0) ;; if set, all collide checks fail
-  (fs1 1) ;; if set, all collide checks fail
-  (fs2 2)
+  (disable 0) ;; if set, all collide checks fail
+  (dead 1)    ;; if set, all collide checks fail
+  (ignore 2)
+  (inactive 3)
+  (dangerous 4)
+  (in-air 5)
+  (hit 6)
+  (grabbed 7)
+  (in-head 8)
+  (touch-water 9)
+  (on-water 10)
+  (under-water 11)
+  (edge-grab 12)
+  (pole 13)
+  (pilot-riding 14)
+  (flut 15)
+  (tube 16)
+  (ice 17)
+  (board 18)
+  (gun 19)
+  (pilot 20) ;; also racer?
+  (mech 21)
+  (dark 22)
+  (rail 23)
+  (halfpipe 24)
+  (carry 25)
+  (super 26)
+  (shooting 27)
+  (indax 28)
+  (arrestable 29)
+  (teleporting 30)
+  (fs31 31)
   )
 
 ;; DECOMP BEGINS
@@ -28,23 +57,11 @@
     (get-transv (_type_) vector 22)
     (process-focusable-method-23 (_type_) none 23)
     (process-focusable-method-24 (_type_) none 24)
-    (process-focusable-method-25 (_type_) none 25)
+    (process-focusable-method-25 (_type_) int 25)
     (process-focusable-method-26 (_type_) none 26)
     )
   )
 
-(defmethod inspect process-focusable ((obj process-focusable))
-  (when (not obj)
-    (set! obj obj)
-    (goto cfg-4)
-    )
-  (let ((t9-0 (method-of-type process-drawable inspect)))
-    (t9-0 obj)
-    )
-  (format #t "~2Tfocus-status: ~D~%" (-> obj focus-status))
-  (label cfg-4)
-  obj
-  )
 
 (defmethod get-trans process-focusable ((obj process-focusable) (arg0 int))
   (let ((gp-0 (-> obj root)))
@@ -91,5 +108,10 @@
 
 (defmethod process-focusable-method-25 process-focusable ((obj process-focusable))
   0
-  (none)
   )
+
+0
+
+
+
+

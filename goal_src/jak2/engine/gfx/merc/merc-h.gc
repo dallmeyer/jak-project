@@ -5,6 +5,9 @@
 ;; name in dgo: merc-h
 ;; dgos: ENGINE, GAME
 
+;; NOTE - for default-menu
+(define-extern merc-stats (function none))
+
 ;; DECOMP BEGINS
 
 (deftype ripple-merc-query (inline-array-class)
@@ -49,7 +52,7 @@
   :size-assert         #x18
   :flag-assert         #xa00000018
   (:methods
-    (login-adgifs (_type_) none 9)
+    (login-adgifs (_type_) merc-fragment 9)
     )
   )
 
@@ -328,12 +331,12 @@
   )
 
 (deftype emerc-vu1-low-mem (structure)
-  ((tri-strip-gif qword  :inline   :offset-assert   0)
-   (ad-gif        qword  :inline   :offset-assert  16)
-   (hvdf-offset   vector :inline   :offset-assert  32)
-   (perspective   vector 4 :inline :offset-assert  48)
-   (fog           vector :inline   :offset-assert 112)
-   (unperspect    vector :inline   :offset-assert 128)
+  ((tri-strip-gif gs-gif-tag :inline   :offset-assert   0)
+   (ad-gif        gs-gif-tag :inline   :offset-assert  16)
+   (hvdf-offset   vector     :inline   :offset-assert  32)
+   (perspective   vector     4 :inline :offset-assert  48)
+   (fog           vector     :inline   :offset-assert 112)
+   (unperspect    vector     :inline   :offset-assert 128)
    )
   :method-count-assert 9
   :size-assert         #x90

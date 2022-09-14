@@ -55,7 +55,7 @@ tasks:
       - sh: test -f {{.GK_BIN_RELEASE_DIR}}/gk{{.EXE_FILE_EXTENSION}}
         msg: "Couldn't locate runtime executable in '{{.GK_BIN_RELEASE_DIR}}/gk'"
     cmds:
-      - "{{.GK_BIN_RELEASE_DIR}}/gk -fakeiso -debug -v"
+      - "{{.GK_BIN_RELEASE_DIR}}/gk -fakeiso -debug -{{.GAME}} -v"
   # DEVELOPMENT
   repl:
     desc: "Start the REPL"
@@ -115,7 +115,7 @@ tasks:
       - cmd: python ./scripts/tasks/default-file-or-folder.py --path failures
       - cmd: '{{.OFFLINETEST_BIN_RELEASE_DIR}}/offline-test --iso_data_path "./iso_data/{{.GAME}}" --game {{.GAME}} --dump_current_output'
         ignore_error: true
-      - python ./scripts/update_decomp_reference.py ./failures ./test/decompiler/reference/
+      - python ./scripts/update_decomp_reference.py ./failures ./test/decompiler/reference/ --game {{.GAME}}
       - task: offline-tests
   # check-gsrc-file:
   #   cmds:
