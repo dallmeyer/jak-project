@@ -564,9 +564,9 @@
          )
        )
 
-     ;; some sort of hack for eco vents.
+     ;; special green eco jump to red/yellow/blue eco channeling, only for zoomer/flutflut
      (b!
-       (and (logtest? (-> (the-as collide-shape (-> obj process root)) root-prim prim-core action) (collide-action ca-9 ca-14)) ;; zoomer or flutflut
+       (and (logtest? (-> (the-as collide-shape (-> obj process root)) root-prim prim-core action) (collide-action ca-9 ca-14)) 
             (type-type? (-> (handle->process source-handle) type) vent)
             )
        cfg-80

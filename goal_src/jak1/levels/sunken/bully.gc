@@ -268,7 +268,7 @@
            )
           ((= (-> arg0 type) target)
            (cond
-             ((= (-> arg3 param 1) 'flop)
+             ((or (= (-> arg3 param 1) 'flop)(= (-> arg3 param 1) 'flut-attack))
               (go bully-die)
               (return (the-as object #t))
               v0-0

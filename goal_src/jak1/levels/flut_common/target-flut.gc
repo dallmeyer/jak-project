@@ -318,6 +318,10 @@
            (go target-flut-hit 'shove (-> self attack-info-rec))
            )
          )
+         (('launch)
+          ;; handles changing to look-around, fish game, rats game, periscopes, etc
+          (target-standard-event-handler arg0 arg1 arg2 arg3)
+         )
         (('falling)
          (if #t
              (go target-flut-falling #f)
@@ -351,7 +355,7 @@
            (('grab)
             (go target-flut-grab)
             )
-           (else  ;; handles changing to look-around, fish game, rats game, periscopes, etc
+           (('fishing 'billy 'look-around 'periscope) ;; handles changing to look-around, fish game, rats game, periscopes, etc
             (target-standard-event-handler arg0 arg1 arg2 arg3)
             )
            )

@@ -655,6 +655,9 @@
     )
   (ja-post)
   (update-transforms! (-> obj root-override))
+  ;;flutflut
+      (when (process-by-ename "dark-crystal-2")(go-process(process-by-ename "dark-crystal-2")dark-crystal-activate))
+      (when (process-by-ename "dark-crystal-5")(go-process(process-by-ename "dark-crystal-5")dark-crystal-activate))
   (if (and (-> obj entity) (logtest? (-> obj entity extra perm status) (entity-perm-status complete)))
       (go dark-crystal-spawn-fuel-cell)
       (go dark-crystal-idle)
