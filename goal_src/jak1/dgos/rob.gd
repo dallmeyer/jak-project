@@ -14,7 +14,7 @@
   ("caveelevator-ag.go" "caveelevator")
   ("cavespatulatwo-ag.go" "cavespatulatwo")
   ("cavetrapdoor-ag.go" "cavetrapdoor")
-  ("driller-lurker-ag.go" "driller-lurker")
+  ;; ("driller-lurker-ag.go" "driller-lurker")
   ("ecovalve-ag.go" "ecovalve")
   ("plat-ag.go" "plat")
   ("plat-eco-ag.go" "plat-eco")

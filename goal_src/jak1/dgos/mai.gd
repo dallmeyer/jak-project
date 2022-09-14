@@ -21,7 +21,7 @@
   ("baby-spider-ag.go" "baby-spider")
   ("cavetrapdoor-ag.go" "cavetrapdoor")
   ("dark-crystal-ag.go" "dark-crystal")
-  ("driller-lurker-ag.go" "driller-lurker")
+  ;; ("driller-lurker-ag.go" "driller-lurker")
   ("ecovalve-ag.go" "ecovalve")
   ("gnawer-ag.go" "gnawer")
   ("launcherdoor-maincave-ag.go" "launcherdoor-maincave")

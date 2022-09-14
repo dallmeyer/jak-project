@@ -1843,7 +1843,10 @@
                 )
               )
             )
-          (target-hit-move gp-0 (target-hit-orient gp-0 s5-0) target-flut-falling-anim-trans f30-0)
+          ;; only keep bouncing if we have some health left
+          (if (< 0.0 (-> self fact-info-target health))
+            (target-hit-move gp-0 (target-hit-orient gp-0 s5-0) target-flut-falling-anim-trans f30-0)
+            )      
           )
         )
       (if (and (= (-> self game mode) 'play) (>= 0.0 (-> self fact-info-target health)))
