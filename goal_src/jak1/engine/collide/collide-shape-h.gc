@@ -313,8 +313,8 @@
   (ca-5 5) ;; unused?
   (ca-6 6) ;; swing pole, manipy
   (ca-7 7) ;; camera
-  (ca-8 8)  ;; swingpole
-  (ca-9 9) ;; eco vents?
+  (ca-8 8) ;; swingpole
+  (ca-9 9) ;; racer
   (ca-10 10)
   (ca-11 11)
   (ca-12 12)

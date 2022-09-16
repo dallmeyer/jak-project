@@ -601,7 +601,7 @@
   "This is in progress..."
 
   ;; increase our stack size.
-  (stack-size-set! (-> self main-thread) 512)
+  (stack-size-set! (-> self main-thread) 1024)
 
   (let ((disp *display*))
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -740,6 +740,23 @@
                  (or (not (-> *pc-settings* use-vis?)) (and (-> *pc-settings* use-vis?) (= (-> *setting-control* current aspect-ratio) 'aspect4x3))))
             (letterbox)
             )
+        )
+
+      (case (-> *target* next-state name)
+        (('target-racing
+          'target-racing-bounce
+          'target-racing-death
+          'target-racing-falling
+          'target-racing-grab
+          'target-racing-hit
+          'target-racing-jump
+          'target-racing-smack
+          'target-racing-start)
+          )
+        (else
+            (if (not (logtest? (-> *kernel-context* prevent-from-run) (process-mask movie)))
+              (send-event *target* 'change-mode 'racing #f))
+          )
         )
 
       ;; add blackout effect

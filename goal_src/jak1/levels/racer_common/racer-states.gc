@@ -15,10 +15,11 @@
       ((and (= arg2 'query) (= (-> arg3 param 0) 'mode))
        'racer
        )
-      ((and (= arg2 'get-pickup) (= (-> arg3 param 0) 3))
+      ((and (= arg2 'get-pickup) (= (-> arg3 param 0) (pickup-type eco-blue)))
        (if (>= (- (-> *display* base-frame-counter) (-> self racer boost-time)) (seconds 1))
            (send-event self 'boost (fmax 1.0 (fmin 2.0 (the-as float (-> arg3 param 1)))))
            )
+        (target-generic-event-handler arg0 arg1 arg2 arg3)  ;; actually channel blue eco to open doors and such
        )
       (else
         (case arg2

@@ -338,5 +338,13 @@
   ("plat-eco.o" "plat-eco")
   ("ropebridge.o" "ropebridge")
   ("ticky.o" "ticky")
+  ("collide-reaction-racer.o" "collide-reaction-racer")
+  ("racer-part.o" "racer-part")
+  ("racer-states.o" "racer-states")
+  ("racer.o" "racer")
+  ("target-racer-h.o" "target-racer-h")
+  ("target-racer.o" "target-racer")
+  ("racer-ag.go" "racer")
+  ("eichar-racer+0-ag.go" "eichar-racer+0")
   ("hud-classes-pc.o" "hud-classes-pc") ;; added
   )
