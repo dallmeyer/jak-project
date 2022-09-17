@@ -12,6 +12,8 @@
 #include "game/graphics/opengl_renderer/opengl_utils.h"
 #include "game/tools/subtitles/subtitle_editor.h"
 
+enum SplitScreen { LowLeft, LowRight, TopLeft, TopRight, SplitScreenLen };
+
 struct RenderOptions {
   bool draw_render_debug_window = false;
   bool draw_profiler_window = false;
@@ -107,7 +109,7 @@ class OpenGLRenderer {
   void render(DmaFollower dma, const RenderOptions& settings);
 
  private:
-  void setup_frame(const RenderOptions& settings);
+  void setup_frame(const RenderOptions& settings, const SplitScreen split_screen);
   void dispatch_buckets(DmaFollower dma, ScopedProfilerNode& prof, bool sync_after_buckets);
   void dispatch_buckets_jak1(DmaFollower dma, ScopedProfilerNode& prof, bool sync_after_buckets);
   void dispatch_buckets_jak2(DmaFollower dma, ScopedProfilerNode& prof, bool sync_after_buckets);

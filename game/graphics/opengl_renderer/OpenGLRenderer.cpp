@@ -335,99 +335,110 @@ void OpenGLRenderer::init_bucket_renderers_jak1() {
  * Main render function. This is called from the gfx loop with the chain passed from the game.
  */
 void OpenGLRenderer::render(DmaFollower dma, const RenderOptions& settings) {
-  m_profiler.clear();
-  m_render_state.reset();
-  m_render_state.ee_main_memory = g_ee_main_mem;
-  m_render_state.offset_of_s7 = offset_of_s7();
+  // Enable scissor test
+  glEnable(GL_SCISSOR_TEST);
 
-  {
-    auto prof = m_profiler.root()->make_scoped_child("frame-setup");
-    setup_frame(settings);
+  for (int i = 0; i < 4; i++) {
+    SplitScreen split_screen = static_cast<SplitScreen>(i);
+
+    m_profiler.clear();
+    m_render_state.reset();
+    m_render_state.ee_main_memory = g_ee_main_mem;
+    m_render_state.offset_of_s7 = offset_of_s7();
+
+    {
+      auto prof = m_profiler.root()->make_scoped_child("frame-setup");
+      setup_frame(settings, split_screen);
+      if (settings.gpu_sync) {
+        glFinish();
+      }
+    }
+
+    {
+      auto prof = m_profiler.root()->make_scoped_child("loader");
+      if (m_last_pmode_alp == 0 && settings.pmode_alp_register != 0 &&
+          m_enable_fast_blackout_loads) {
+        // blackout, load everything and don't worry about frame rate
+        m_render_state.loader->update_blocking(*m_render_state.texture_pool);
+
+      } else {
+        m_render_state.loader->update(*m_render_state.texture_pool);
+      }
+    }
+
+    // render the buckets!
+    {
+      auto prof = m_profiler.root()->make_scoped_child("buckets");
+      dispatch_buckets(dma, prof, settings.gpu_sync);
+    }
+
+    // apply effects done with PCRTC registers
+    {
+      auto prof = m_profiler.root()->make_scoped_child("pcrtc");
+      do_pcrtc_effects(settings.pmode_alp_register, &m_render_state, prof);
+      if (settings.gpu_sync) {
+        glFinish();
+      }
+    }
+
+    if (settings.draw_render_debug_window) {
+      auto prof = m_profiler.root()->make_scoped_child("render-window");
+      draw_renderer_selection_window();
+      // add a profile bar for the imgui stuff
+      // vif_interrupt_callback(0);
+      if (settings.gpu_sync) {
+        glFinish();
+      }
+    }
+
+    m_last_pmode_alp = settings.pmode_alp_register;
+
+    m_profiler.finish();
+    if (settings.draw_profiler_window) {
+      m_profiler.draw();
+    }
+
+    //  if (m_profiler.root_time() > 0.018) {
+    //    fmt::print("Slow frame: {:.2f} ms\n", m_profiler.root_time() * 1000);
+    //    fmt::print("{}\n", m_profiler.to_string());
+    //  }
+
+    if (settings.draw_small_profiler_window) {
+      SmallProfilerStats stats;
+      stats.draw_calls = m_profiler.root()->stats().draw_calls;
+      stats.triangles = m_profiler.root()->stats().triangles;
+      for (int i = 0; i < (int)BucketCategory::MAX_CATEGORIES; i++) {
+        stats.time_per_category[i] = m_category_times[i];
+      }
+      m_small_profiler.draw(m_render_state.load_status_debug, stats);
+    }
+
+    if (settings.draw_subtitle_editor_window) {
+      m_subtitle_editor.draw_window();
+    }
+
+    if (settings.save_screenshot) {
+      Fbo* screenshot_src;
+      int read_buffer;
+
+      // can't screenshot from a multisampled buffer directly -
+      if (m_fbo_state.resources.resolve_buffer.valid) {
+        screenshot_src = &m_fbo_state.resources.resolve_buffer;
+        read_buffer = GL_COLOR_ATTACHMENT0;
+      } else {
+        screenshot_src = m_fbo_state.render_fbo;
+        read_buffer = GL_FRONT;
+      }
+      finish_screenshot(settings.screenshot_path, screenshot_src->width, screenshot_src->height, 0,
+                        0, screenshot_src->fbo_id, read_buffer);
+    }
     if (settings.gpu_sync) {
       glFinish();
     }
   }
 
-  {
-    auto prof = m_profiler.root()->make_scoped_child("loader");
-    if (m_last_pmode_alp == 0 && settings.pmode_alp_register != 0 && m_enable_fast_blackout_loads) {
-      // blackout, load everything and don't worry about frame rate
-      m_render_state.loader->update_blocking(*m_render_state.texture_pool);
-
-    } else {
-      m_render_state.loader->update(*m_render_state.texture_pool);
-    }
-  }
-
-  // render the buckets!
-  {
-    auto prof = m_profiler.root()->make_scoped_child("buckets");
-    dispatch_buckets(dma, prof, settings.gpu_sync);
-  }
-
-  // apply effects done with PCRTC registers
-  {
-    auto prof = m_profiler.root()->make_scoped_child("pcrtc");
-    do_pcrtc_effects(settings.pmode_alp_register, &m_render_state, prof);
-    if (settings.gpu_sync) {
-      glFinish();
-    }
-  }
-
-  if (settings.draw_render_debug_window) {
-    auto prof = m_profiler.root()->make_scoped_child("render-window");
-    draw_renderer_selection_window();
-    // add a profile bar for the imgui stuff
-    // vif_interrupt_callback(0);
-    if (settings.gpu_sync) {
-      glFinish();
-    }
-  }
-
-  m_last_pmode_alp = settings.pmode_alp_register;
-
-  m_profiler.finish();
-  if (settings.draw_profiler_window) {
-    m_profiler.draw();
-  }
-
-  //  if (m_profiler.root_time() > 0.018) {
-  //    fmt::print("Slow frame: {:.2f} ms\n", m_profiler.root_time() * 1000);
-  //    fmt::print("{}\n", m_profiler.to_string());
-  //  }
-
-  if (settings.draw_small_profiler_window) {
-    SmallProfilerStats stats;
-    stats.draw_calls = m_profiler.root()->stats().draw_calls;
-    stats.triangles = m_profiler.root()->stats().triangles;
-    for (int i = 0; i < (int)BucketCategory::MAX_CATEGORIES; i++) {
-      stats.time_per_category[i] = m_category_times[i];
-    }
-    m_small_profiler.draw(m_render_state.load_status_debug, stats);
-  }
-
-  if (settings.draw_subtitle_editor_window) {
-    m_subtitle_editor.draw_window();
-  }
-
-  if (settings.save_screenshot) {
-    Fbo* screenshot_src;
-    int read_buffer;
-
-    // can't screenshot from a multisampled buffer directly -
-    if (m_fbo_state.resources.resolve_buffer.valid) {
-      screenshot_src = &m_fbo_state.resources.resolve_buffer;
-      read_buffer = GL_COLOR_ATTACHMENT0;
-    } else {
-      screenshot_src = m_fbo_state.render_fbo;
-      read_buffer = GL_FRONT;
-    }
-    finish_screenshot(settings.screenshot_path, screenshot_src->width, screenshot_src->height, 0, 0,
-                      screenshot_src->fbo_id, read_buffer);
-  }
-  if (settings.gpu_sync) {
-    glFinish();
-  }
+  // Disable scissor test
+  glDisable(GL_SCISSOR_TEST);
 }
 
 /*!
@@ -553,7 +564,7 @@ Fbo make_fbo(int w, int h, int msaa, bool make_zbuf_and_stencil) {
 /*!
  * Pre-render frame setup.
  */
-void OpenGLRenderer::setup_frame(const RenderOptions& settings) {
+void OpenGLRenderer::setup_frame(const RenderOptions& settings, const SplitScreen split_screen) {
   // glfw controls the window framebuffer, so we just update the size:
   auto& window_fb = m_fbo_state.resources.window;
   bool window_resized = window_fb.width != settings.window_framebuffer_width ||
@@ -613,7 +624,27 @@ void OpenGLRenderer::setup_frame(const RenderOptions& settings) {
 
   if (!m_fbo_state.render_fbo->is_window) {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glViewport(0, 0, m_fbo_state.resources.window.width, m_fbo_state.resources.window.height);
+    int w = m_fbo_state.resources.window.width, h = m_fbo_state.resources.window.height;
+
+    switch (split_screen) {
+      case LowLeft:
+        glViewport(0, 0, w / 2, h / 2);
+        glScissor(0, 0, w / 2, h / 2);
+        break;
+      case LowRight:
+        glViewport(w / 2, 0, w / 2, h / 2);
+        glScissor(w / 2, 0, w / 2, h / 2);
+        break;
+      case TopLeft:
+        glViewport(0, h / 2, w / 2, h / 2);
+        glScissor(0, h / 2, w / 2, h / 2);
+        break;
+      case TopRight:
+        glViewport(w / 2, h / 2, w / 2, h / 2);
+        glScissor(w / 2, h / 2, w / 2, h / 2);
+        break;
+    }
+
     glClearColor(0.0, 0.0, 0.0, 0.0);
     glClearDepth(0.0);
     glDepthMask(GL_TRUE);
@@ -667,7 +698,27 @@ void OpenGLRenderer::setup_frame(const RenderOptions& settings) {
     m_render_state.render_fb_y = 0;
     m_render_state.render_fb_w = settings.game_res_w;
     m_render_state.render_fb_h = settings.game_res_h;
-    glViewport(0, 0, settings.game_res_w, settings.game_res_h);
+
+    int w = settings.game_res_w, h = settings.game_res_h;
+
+    switch (split_screen) {
+      case LowLeft:
+        glViewport(0, 0, w / 2, h / 2);
+        glScissor(0, 0, w / 2, h / 2);
+        break;
+      case LowRight:
+        glViewport(w / 2, 0, w / 2, h / 2);
+        glScissor(w / 2, 0, w / 2, h / 2);
+        break;
+      case TopLeft:
+        glViewport(0, h / 2, w / 2, h / 2);
+        glScissor(0, h / 2, w / 2, h / 2);
+        break;
+      case TopRight:
+        glViewport(w / 2, h / 2, w / 2, h / 2);
+        glScissor(w / 2, h / 2, w / 2, h / 2);
+        break;
+    }
   }
 }
 
