@@ -12,7 +12,7 @@
 #include "game/graphics/opengl_renderer/opengl_utils.h"
 #include "game/tools/subtitles/subtitle_editor.h"
 
-enum SplitScreen { LowLeft, LowRight, TopLeft, TopRight, SplitScreenLen };
+enum SplitScreen { TopLeft, TopRight, BottomLeft, BottomRight, SplitScreenLen };
 
 struct RenderOptions {
   bool draw_render_debug_window = false;
@@ -106,7 +106,7 @@ class OpenGLRenderer {
 
   // rendering interface: takes the dma chain from the game, and some size/debug settings from
   // the graphics system.
-  void render(DmaFollower dma, const RenderOptions& settings);
+  void render(DmaFollower dma, const RenderOptions& settings, int cam_idx);
 
  private:
   void setup_frame(const RenderOptions& settings, const SplitScreen split_screen);
@@ -146,7 +146,7 @@ class OpenGLRenderer {
   FullScreenDraw m_blackout_renderer;
   CollideMeshRenderer m_collide_renderer;
 
-  float m_last_pmode_alp = 1.;
+  std::array<float, 4> m_last_pmode_alp = {1., 1, 1., 1.};
   bool m_enable_fast_blackout_loads = true;
 
   struct FboState {

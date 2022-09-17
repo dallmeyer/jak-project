@@ -325,6 +325,7 @@
 (define-extern __read-ee-timer (function uint))
 (define-extern __mem-move (function pointer pointer uint none))
 (define-extern __send-gfx-dma-chain (function object object none))
+(define-extern __send-gfx-dma-chain-split (function object object int none))
 (define-extern __pc-texture-upload-now (function object object none))
 (define-extern __pc-texture-relocate (function object object object none))
 (define-extern __pc-get-mips2c (function string function))

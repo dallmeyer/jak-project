@@ -305,7 +305,7 @@
 
 (define *start-pos* (new 'global 'vector))
 
-(defun update-camera ()
+(defun update-camera-split ((cam-idx int))
   (when *start-timer*
     (when (= *timer-value* 180)
       (format
@@ -373,6 +373,10 @@
     (-> *setting-control* current video-mode)
     (-> *setting-control* current aspect-ratio)
     )
+
+  ;; dummy thing to try diff cameras per screen
+  (+! (-> *math-camera* camera-rot vector 0 x) (* 0.25 cam-idx))
+
   (update! *camera-smush-control*)
   (cond
     ((or (= *master-mode* 'pause) (= *master-mode* 'progress) *progress-process*)
@@ -589,6 +593,9 @@
   #f
   )
 
+(defun update-camera ()
+  (update-camera-split 0)
+  )
 
 
 

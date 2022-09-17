@@ -627,7 +627,7 @@
   "This is in progress..."
 
   ;; increase our stack size.
-  (stack-size-set! (-> self main-thread) 512)
+  (stack-size-set! (-> self main-thread) 2048)
 
   (let ((disp *display*))
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -716,247 +716,273 @@
       ;; debug hook
       (with-profiler "debug" (*debug-hook*) (main-cheats))
       (add-ee-profile-frame 'draw :r #x20 :g #x20)
-      (with-profiler "camera" (update-camera))
-      (add-ee-profile-frame 'draw :r #x40 :b #x40)
-      (with-profiler "draw-hook" (*draw-hook*))
-      (add-ee-profile-frame 'draw :g #x80)
+      
+      ;; do split screen shenanigans
+      (format 0 "display-sync-split-pre~%")
+      (display-sync-split-pre disp)
+      (dotimes (cam-idx 4)
+        ;; initialize next frame
+        (format 0 " display-frame-start-split ~D~%" cam-idx)
+        (display-frame-start-split disp (-> disp on-screen) *oddeven*)
 
-      (with-profiler "menu"
-        (with-pc
-          (cond ((and (-> *pc-settings* display-sha) (-> *randomizer-settings* checkpoint-randomizer?))
-                 ;; display the revision in randomizer mode
-                 (draw-build-revision))
-                ((and (-> *pc-settings* display-sha) *debug-segment*)
-                 ;; otherwise, only draw if we are in debug mode and the setting isn't enabled
-                 (draw-build-revision))
-                )
+        ;; WATER111 do the main draw-hook. This calls real-main-draw-hook, which does _most_ DMA generation
+        (with-profiler "camera" (update-camera-split cam-idx))
+        (add-ee-profile-frame 'draw :r #x40 :b #x40)
+        (with-profiler "draw-hook" (*draw-hook*))
+        (add-ee-profile-frame 'draw :g #x80)
+
+        (format 0 " after *draw-hook* ~D~%" cam-idx)
+
+        (with-profiler "menu"
+          (with-pc
+            (cond ((and (-> *pc-settings* display-sha) (-> *randomizer-settings* checkpoint-randomizer?))
+                  ;; display the revision in randomizer mode
+                  (draw-build-revision))
+                  ((and (-> *pc-settings* display-sha) *debug-segment*)
+                  ;; otherwise, only draw if we are in debug mode and the setting isn't enabled
+                  (draw-build-revision))
+                  )
+            )
+          (*menu-hook*)
+          (format 0 " after *menu-hook* ~D~%" cam-idx)
+          (add-ee-profile-frame 'draw :g #x40)
+
+          ;; finally, update hints/text
+          (make-current-level-available-to-progress)
+          (update-task-hints)
+          (load-level-text-files -1)
+
+          (add-ee-profile-frame 'unknown-cpu-time)
+          ;; collect perf stats
+          (read! (-> *perf-stats* data (perf-stat-bucket all-code)))
           )
-        (*menu-hook*)
-        (add-ee-profile-frame 'draw :g #x40)
+        (format 0 " after menu ~D~%" cam-idx)
 
-        ;; finally, update hints/text
-        (make-current-level-available-to-progress)
-        (update-task-hints)
-        (load-level-text-files -1)
+        (with-profiler "dma-sync"
+          (when (nonzero? (sync-path 0 0))
+            (*dma-timeout-hook*)
+            (reset-vif1-path)
+            (if *debug-segment*
+                (format 0 "profile bar at ~D.~%" (-> (current-frame) profile-bar 1 profile-frame-count))
+                )
+            )
+          (reset! (-> *perf-stats* data (perf-stat-bucket all-code)))
+          )
+        (format 0 " after dma-sync ~D~%" cam-idx)
 
-        (add-ee-profile-frame 'unknown-cpu-time)
-        ;; collect perf stats
+        ;; depth cue
+        (if (not *progress-process*)
+            (depth-cue disp)
+            )
+
+        ;; screen filter
+
+        (with-profiler "post-sync-draw"
+        ;; add letterbox effect
+        (when (or (movie?) (< (-> *display* base-frame-counter) (-> *game-info* letterbox-time)))
+          (if (< (-> *game-info* letterbox-time) (-> *display* base-frame-counter))
+              (set! (-> *game-info* letterbox-time) (-> *display* base-frame-counter))
+              )
+          (if (#if (not PC_PORT)
+                  (= (-> *setting-control* current aspect-ratio) 'aspect4x3)
+                  (or (not (-> *pc-settings* use-vis?)) (and (-> *pc-settings* use-vis?) (= (-> *setting-control* current aspect-ratio) 'aspect4x3))))
+              (letterbox)
+              )
+          )
+
+        ;; add blackout effect
+        (if (< (-> *display* base-frame-counter) (-> *game-info* blackout-time))
+            (set! (-> *setting-control* default bg-a-force) 1.0)
+            (set! (-> *setting-control* default bg-a-force) 0.0)
+            )
         (read! (-> *perf-stats* data (perf-stat-bucket all-code)))
-        )
 
-      (with-profiler "dma-sync"
-        (when (nonzero? (sync-path 0 0))
-          (*dma-timeout-hook*)
-          (reset-vif1-path)
-          (if *debug-segment*
-              (format 0 "profile bar at ~D.~%" (-> (current-frame) profile-bar 1 profile-frame-count))
-              )
-          )
-        (reset! (-> *perf-stats* data (perf-stat-bucket all-code)))
-        )
-
-      ;; depth cue
-      (if (not *progress-process*)
-          (depth-cue disp)
-          )
-
-      ;; screen filter
-
-      (with-profiler "post-sync-draw"
-      ;; add letterbox effect
-      (when (or (movie?) (< (-> *display* base-frame-counter) (-> *game-info* letterbox-time)))
-        (if (< (-> *game-info* letterbox-time) (-> *display* base-frame-counter))
-            (set! (-> *game-info* letterbox-time) (-> *display* base-frame-counter))
-            )
-        (if (#if (not PC_PORT)
-                 (= (-> *setting-control* current aspect-ratio) 'aspect4x3)
-                 (or (not (-> *pc-settings* use-vis?)) (and (-> *pc-settings* use-vis?) (= (-> *setting-control* current aspect-ratio) 'aspect4x3))))
-            (letterbox)
-            )
-        )
-
-      ;; add blackout effect
-      (if (< (-> *display* base-frame-counter) (-> *game-info* blackout-time))
-          (set! (-> *setting-control* default bg-a-force) 1.0)
-          (set! (-> *setting-control* default bg-a-force) 0.0)
-          )
-      (read! (-> *perf-stats* data (perf-stat-bucket all-code)))
-
-      ;; grab a buffer for drawing debug stuff.
-      ;; we might draw even outside of debug mode if cheat-mode is disabled.
-      (let ((debug-txt-buf
-             (-> (if *debug-segment*
-                     (-> disp frames (-> disp on-screen) frame debug-buf)
-                     (-> disp frames (-> disp on-screen) frame global-buf)
-                     )
-                 base
-                 )
-              )
-            )
-
-        ;; debug drawing
-        (when *debug-segment*
-          (#when PC_PORT
-            (if (-> *pc-settings* debug-pad-display)
-              (debug-pad-display (-> *cpad-list* cpads 0))
-              )
-            (when (and (or (= *master-mode* 'game) (= *master-mode* 'pause)) (-> *entity-debug-inspect* entity))
-              (define-extern entity-inspect-draw (function entity-debug-inspect object))
-              (entity-inspect-draw *entity-debug-inspect*)
-              )
-            )
-
-          (debug-draw-buffers) ;; lines/text
-
-          ;; debug dma
-          (with-dma-buffer-add-bucket ((debug-buf (-> disp frames (-> disp on-screen) frame debug-buf))
-                                       (bucket-id debug-no-zbuf))
-            (when *display-profile*
-              (dma-buffer-add-gs-set debug-buf
-                      (alpha-1 (new 'static 'gs-alpha :b 1 :d 1))
-                      (zbuf-1 (new 'static 'gs-zbuf :zbp #x1c0 :psm (gs-psm ct24) :zmsk 1))
-                      (test-1 (new 'static 'gs-test :zte 1 :ztst (gs-ztest always)))
-                      (pabe 0)
-                      (clamp-1 (new 'static 'gs-clamp :wms (gs-tex-wrap-mode clamp) :wmt (gs-tex-wrap-mode clamp)))
-                      (tex1-1 (new 'static 'gs-tex1 :mmag 1 :mmin 1))
-                      (texa (new 'static 'gs-texa :ta1 #x80))
-                      (texclut (new 'static 'gs-texclut :cbw 4))
-                      (fogcol *fog-color*)
+        ;; grab a buffer for drawing debug stuff.
+        ;; we might draw even outside of debug mode if cheat-mode is disabled.
+        (let ((debug-txt-buf
+              (-> (if *debug-segment*
+                      (-> disp frames (-> disp on-screen) frame debug-buf)
+                      (-> disp frames (-> disp on-screen) frame global-buf)
                       )
-
-              ;; draw the profile bars
-              (dotimes (s2-0 2)
-                (let ((s1-0 (-> disp frames (-> disp on-screen) frame profile-bar s2-0)))
-                  (add-end-frame s1-0 'end-draw (static-rgba #x40 #x40 #x40 #x40))
-                  (draw s1-0 debug-buf (* 10 s2-0))
+                  base
                   )
-                0
                 )
-              ) ;; end profiler draw
-
-
-            (when *display-deci-count*
-              (draw-string-xy (string-format "~D" *deci-count*) debug-buf 448 210 (font-color default) (font-flags shadow kerning))
               )
 
-            ;; added
+          ;; debug drawing
+          (when *debug-segment*
             (#when PC_PORT
-              (when (-> *pc-settings* debug?)
-                (draw *pc-settings* debug-buf)
+              (if (-> *pc-settings* debug-pad-display)
+                (debug-pad-display (-> *cpad-list* cpads 0))
                 )
-              (when (-> *pc-settings* display-actor-bank)
-                (draw-string-xy (string-format "Actor Bank: ~,,1m/~,,1m (~D)" (-> *ACTOR-bank* pause-dist) (-> *ACTOR-bank* birth-dist) (-> *ACTOR-bank* birth-max)) debug-buf 512 (- 224 8) (font-color default) (font-flags shadow kerning right))
+              (when (and (or (= *master-mode* 'game) (= *master-mode* 'pause)) (-> *entity-debug-inspect* entity))
+                (define-extern entity-inspect-draw (function entity-debug-inspect object))
+                (entity-inspect-draw *entity-debug-inspect*)
                 )
-              (when (-> *pc-settings* display-bug-report)
-                (format *stdcon* "~0kbug-report ~A~%" *user*)
-                (format *stdcon* "nick ~A continue ~S~%" (-> *load-state* vis-nick) (-> *game-info* current-continue name))
-                (dotimes (i LEVEL_COUNT)
-                  (format *stdcon* "level ~D ~12A ~A~%" i (-> *level* level i name) (-> *level* level i display?))
+              )
+
+            (debug-draw-buffers) ;; lines/text
+
+            ;; debug dma
+            (with-dma-buffer-add-bucket ((debug-buf (-> disp frames (-> disp on-screen) frame debug-buf))
+                                        (bucket-id debug-no-zbuf))
+              (when *display-profile*
+                (dma-buffer-add-gs-set debug-buf
+                        (alpha-1 (new 'static 'gs-alpha :b 1 :d 1))
+                        (zbuf-1 (new 'static 'gs-zbuf :zbp #x1c0 :psm (gs-psm ct24) :zmsk 1))
+                        (test-1 (new 'static 'gs-test :zte 1 :ztst (gs-ztest always)))
+                        (pabe 0)
+                        (clamp-1 (new 'static 'gs-clamp :wms (gs-tex-wrap-mode clamp) :wmt (gs-tex-wrap-mode clamp)))
+                        (tex1-1 (new 'static 'gs-tex1 :mmag 1 :mmin 1))
+                        (texa (new 'static 'gs-texa :ta1 #x80))
+                        (texclut (new 'static 'gs-texclut :cbw 4))
+                        (fogcol *fog-color*)
+                        )
+
+                ;; draw the profile bars
+                (dotimes (s2-0 2)
+                  (let ((s1-0 (-> disp frames (-> disp on-screen) frame profile-bar s2-0)))
+                    (add-end-frame s1-0 'end-draw (static-rgba #x40 #x40 #x40 #x40))
+                    (draw s1-0 debug-buf (* 10 s2-0))
+                    )
+                  0
                   )
-                (format *stdcon* "music ~A (f: ~D/~S)~%" (-> *setting-control* current music) (-> *setting-control* current sound-flava) (enum->string music-flava (-> *setting-control* default sound-flava)))
-                (format *stdcon* "sound ~A ~A~%" *sound-bank-1* *sound-bank-2*)
-                (let ((pos (target-pos 0)))
-                    (format *stdcon* "target ~m ~m ~m~%" (-> pos x) (-> pos y) (-> pos z))
-                    )
-                (let ((pos (camera-pos)))
-                    (format *stdcon* "cam-trans ~m ~m ~m~%" (-> pos x) (-> pos y) (-> pos z))
-                    )
-                (let ((rot (new 'stack 'quaternion)))
-                    (matrix->quaternion rot (-> *math-camera* camera-rot))
-                    (format *stdcon* "cam-rot ~f ~f ~f ~f~%" (-> rot x) (-> rot y) (-> rot z) (-> rot w))
-                    )
-                (format *stdcon* "~1k")
+                ) ;; end profiler draw
+
+
+              (when *display-deci-count*
+                (draw-string-xy (string-format "~D" *deci-count*) debug-buf 448 210 (font-color default) (font-flags shadow kerning))
                 )
-              (when (-> *pc-settings* display-heap-status)
-                (draw-memory-bar-kheap debug-buf global :idx 0 :color (static-rgba 32 32 255 64))
-                (draw-memory-bar-kheap debug-buf debug :idx 1 :color (static-rgba 255 32 32 64))
-                (draw-memory-bar-kheap debug-buf (-> *level* level 0 heap) :name "l0" :idx 2 :color (static-rgba 32 255 255 64))
-                (draw-memory-bar-kheap debug-buf (-> *level* level 1 heap) :name "l1" :idx 3 :color (static-rgba 255 32 255 64))
-                (draw-memory-bar-dead-pool-heap debug-buf *nk-dead-pool* :name "actor" :idx 4 :color (static-rgba 32 255 32 64))
-                (draw-memory-bar-generic debug-buf
-                        :remain (* 16 (dma-buffer-free (-> disp frames (-> disp on-screen) frame global-buf)))
-                        :total  (length (-> disp frames (-> disp on-screen) frame global-buf))
-                        :name "dma-global" :idx 5 :color (static-rgba 32 32 255 64))
-                (draw-memory-bar-generic debug-buf
-                        :remain (* 16 (dma-buffer-free (-> disp frames (-> disp on-screen) frame debug-buf)))
-                        :total  (length (-> disp frames (-> disp on-screen) frame debug-buf))
-                        :name "dma-debug" :idx 6 :color (static-rgba 255 32 32 64))
+
+              ;; added
+              (#when PC_PORT
+                (when (-> *pc-settings* debug?)
+                  (draw *pc-settings* debug-buf)
+                  )
+                (when (-> *pc-settings* display-actor-bank)
+                  (draw-string-xy (string-format "Actor Bank: ~,,1m/~,,1m (~D)" (-> *ACTOR-bank* pause-dist) (-> *ACTOR-bank* birth-dist) (-> *ACTOR-bank* birth-max)) debug-buf 512 (- 224 8) (font-color default) (font-flags shadow kerning right))
+                  )
+                (when (-> *pc-settings* display-bug-report)
+                  (format *stdcon* "~0kbug-report ~A~%" *user*)
+                  (format *stdcon* "nick ~A continue ~S~%" (-> *load-state* vis-nick) (-> *game-info* current-continue name))
+                  (dotimes (i LEVEL_COUNT)
+                    (format *stdcon* "level ~D ~12A ~A~%" i (-> *level* level i name) (-> *level* level i display?))
+                    )
+                  (format *stdcon* "music ~A (f: ~D/~S)~%" (-> *setting-control* current music) (-> *setting-control* current sound-flava) (enum->string music-flava (-> *setting-control* default sound-flava)))
+                  (format *stdcon* "sound ~A ~A~%" *sound-bank-1* *sound-bank-2*)
+                  (let ((pos (target-pos 0)))
+                      (format *stdcon* "target ~m ~m ~m~%" (-> pos x) (-> pos y) (-> pos z))
+                      )
+                  (let ((pos (camera-pos)))
+                      (format *stdcon* "cam-trans ~m ~m ~m~%" (-> pos x) (-> pos y) (-> pos z))
+                      )
+                  (let ((rot (new 'stack 'quaternion)))
+                      (matrix->quaternion rot (-> *math-camera* camera-rot))
+                      (format *stdcon* "cam-rot ~f ~f ~f ~f~%" (-> rot x) (-> rot y) (-> rot z) (-> rot w))
+                      )
+                  (format *stdcon* "~1k")
+                  )
+                (when (-> *pc-settings* display-heap-status)
+                  (draw-memory-bar-kheap debug-buf global :idx 0 :color (static-rgba 32 32 255 64))
+                  (draw-memory-bar-kheap debug-buf debug :idx 1 :color (static-rgba 255 32 32 64))
+                  (draw-memory-bar-kheap debug-buf (-> *level* level 0 heap) :name "l0" :idx 2 :color (static-rgba 32 255 255 64))
+                  (draw-memory-bar-kheap debug-buf (-> *level* level 1 heap) :name "l1" :idx 3 :color (static-rgba 255 32 255 64))
+                  (draw-memory-bar-dead-pool-heap debug-buf *nk-dead-pool* :name "actor" :idx 4 :color (static-rgba 32 255 32 64))
+                  (draw-memory-bar-generic debug-buf
+                          :remain (* 16 (dma-buffer-free (-> disp frames (-> disp on-screen) frame global-buf)))
+                          :total  (length (-> disp frames (-> disp on-screen) frame global-buf))
+                          :name "dma-global" :idx 5 :color (static-rgba 32 32 255 64))
+                  (draw-memory-bar-generic debug-buf
+                          :remain (* 16 (dma-buffer-free (-> disp frames (-> disp on-screen) frame debug-buf)))
+                          :total  (length (-> disp frames (-> disp on-screen) frame debug-buf))
+                          :name "dma-debug" :idx 6 :color (static-rgba 255 32 32 64))
+                  )
                 )
+
+              #|
+              (format *stdcon* "~3Lfree DMA global: ~d debug: ~d~0L~%"
+                      (dma-buffer-free (-> disp frames (-> disp on-screen) frame global-buf))
+                      (dma-buffer-free (-> disp frames (-> disp on-screen) frame debug-buf))
+                      )
+              ;; added, prints some level status.
+              (dotimes (i 2)
+                (let ((level-heap (-> *level* level i heap)))
+                  (format *stdcon* "~17Llevel ~d: ~A ~A ~,,2fK remaining~0L~%"
+                          i
+                          (-> *level* level i name)
+                          (-> *level* level i status)
+                          (* (1/ 1024) (&- (-> level-heap top) (-> level-heap current)))
+                          )
+                  )
+                )
+                |#
+
+              (display-file-info)
+              ) ;; end dma let
+            ) ;; end debug-segment
+
+          ;; draw pause text.
+          (with-dma-buffer-add-bucket ((s3-1 (if *debug-segment*
+                                                (-> disp frames (-> disp on-screen) frame debug-buf)
+                                                (-> disp frames (-> disp on-screen) frame global-buf)
+                                                ))
+                                      (bucket-id debug))
+            (if (and (= *master-mode* 'pause) (!= *cheat-mode* 'camera))
+                (draw-string-xy (lookup-text! *common-text* (game-text-id pause) #f)
+                s3-1 256 160 (font-color orange-red) (font-flags shadow kerning middle large))
+                )
+
+            ;; draw console text on screen
+            (let ((a3-8 (the int (draw-string *stdcon0* s3-1 *font-context*))))
+              (draw-string-xy *stdcon1* s3-1 (the int (-> *font-context* origin x)) a3-8 (font-color default) (font-flags shadow kerning))
               )
 
-            #|
-            (format *stdcon* "~3Lfree DMA global: ~d debug: ~d~0L~%"
-                    (dma-buffer-free (-> disp frames (-> disp on-screen) frame global-buf))
-                    (dma-buffer-free (-> disp frames (-> disp on-screen) frame debug-buf))
-                    )
-            ;; added, prints some level status.
-            (dotimes (i 2)
-              (let ((level-heap (-> *level* level i heap)))
-                (format *stdcon* "~17Llevel ~d: ~A ~A ~,,2fK remaining~0L~%"
-                        i
-                        (-> *level* level i name)
-                        (-> *level* level i status)
-                        (* (1/ 1024) (&- (-> level-heap top) (-> level-heap current)))
-                        )
+            ;; draw misc info
+            (if *display-iop-info*
+                (show-iop-info s3-1)
                 )
-              )
-              |#
-
-            (display-file-info)
-            ) ;; end dma let
-          ) ;; end debug-segment
-
-        ;; draw pause text.
-        (with-dma-buffer-add-bucket ((s3-1 (if *debug-segment*
-                                               (-> disp frames (-> disp on-screen) frame debug-buf)
-                                               (-> disp frames (-> disp on-screen) frame global-buf)
-                                               ))
-                                     (bucket-id debug))
-          (if (and (= *master-mode* 'pause) (!= *cheat-mode* 'camera))
-              (draw-string-xy (lookup-text! *common-text* (game-text-id pause) #f)
-               s3-1 256 160 (font-color orange-red) (font-flags shadow kerning middle large))
-              )
-
-          ;; draw console text on screen
-          (let ((a3-8 (the int (draw-string *stdcon0* s3-1 *font-context*))))
-            (draw-string-xy *stdcon1* s3-1 (the int (-> *font-context* origin x)) a3-8 (font-color default) (font-flags shadow kerning))
+            (if *display-memcard-info*
+                (show-mc-info s3-1)
+                )
             )
 
-          ;; draw misc info
-          (if *display-iop-info*
-              (show-iop-info s3-1)
+          (let ((v1-220 *dma-mem-usage*))
+            (when (nonzero? v1-220)
+              (set! (-> v1-220 length) (max 85 (-> v1-220 length)))
+              (set! (-> v1-220 data 84 name) "debug")
+              (+! (-> v1-220 data 84 count) 1)
+              (+! (-> v1-220 data 84 used)
+                  (&- (-> (if *debug-segment*
+                              (-> disp frames (-> disp on-screen) frame debug-buf)
+                              (-> disp frames (-> disp on-screen) frame global-buf)
+                              )
+                          base
+                          )
+                      (the-as uint debug-txt-buf)
+                      )
+                  )
+              (set! (-> v1-220 data 84 total) (-> v1-220 data 84 used))
               )
-          (if *display-memcard-info*
-              (show-mc-info s3-1)
-              )
-          )
-        (let ((v1-220 *dma-mem-usage*))
-          (when (nonzero? v1-220)
-            (set! (-> v1-220 length) (max 85 (-> v1-220 length)))
-            (set! (-> v1-220 data 84 name) "debug")
-            (+! (-> v1-220 data 84 count) 1)
-            (+! (-> v1-220 data 84 used)
-                (&- (-> (if *debug-segment*
-                            (-> disp frames (-> disp on-screen) frame debug-buf)
-                            (-> disp frames (-> disp on-screen) frame global-buf)
-                            )
-                        base
-                        )
-                    (the-as uint debug-txt-buf)
-                    )
-                )
-            (set! (-> v1-220 data 84 total) (-> v1-220 data 84 used))
             )
           )
+
+        (format 0 " after debug stuff ~D~%" cam-idx)
+
+        ;; console buffers
+        (set! *stdcon* (clear *stdcon0*))
         )
 
-      ;; console buffers
-      (set! *stdcon* (clear *stdcon0*))
-      )
+        ;; WATER111 need to send DMA here (for one cam)
+        (format 0 " swap-display-split ~D~%" cam-idx)
+        (swap-display-split disp cam-idx)
+      ) ;; end of per-camera DMA send
 
       ;; <--------------------------- SWAP DISPLAY!
       ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-      (with-profiler "swap-display" (swap-display disp))
+      ;; WATER111 finalize DMA and send to C++, and vsync
+      ;; (with-profiler "swap-display" (swap-display disp))
+      (format 0 "display-sync-split-post~%")
+      (display-sync-split-post disp *oddeven*)
       ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
       (set! (-> *time-of-day-context* title-updated) #f)

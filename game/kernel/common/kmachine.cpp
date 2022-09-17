@@ -522,6 +522,13 @@ void send_gfx_dma_chain(u32 /*bank*/, u32 chain) {
 }
 
 /*!
+ * Called from game thread to submit rendering DMA chain.
+ */
+void send_gfx_dma_chain_split(u32 /*bank*/, u32 chain, int cam_idx) {
+  Gfx::send_chain_split(g_ee_main_mem, chain, cam_idx);
+}
+
+/*!
  * Called from game thread to upload a texture outside of the main DMA chain.
  */
 void pc_texture_upload_now(u32 page, u32 mode) {

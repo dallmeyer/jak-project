@@ -331,6 +331,12 @@ void send_chain(const void* data, u32 offset) {
   }
 }
 
+void send_chain_split(const void* data, u32 offset, int cam_idx) {
+  if (GetCurrentRenderer()) {
+    GetCurrentRenderer()->send_chain_split(data, offset, cam_idx);
+  }
+}
+
 void texture_upload_now(const u8* tpage, int mode, u32 s7_ptr) {
   if (GetCurrentRenderer()) {
     GetCurrentRenderer()->texture_upload_now(tpage, mode, s7_ptr);

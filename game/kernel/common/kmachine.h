@@ -81,5 +81,6 @@ u32 offset_of_s7();
 void vif_interrupt_callback(int bucket_id);
 u64 pc_get_mips2c(u32 name);
 void send_gfx_dma_chain(u32 /*bank*/, u32 chain);
+void send_gfx_dma_chain_split(u32 /*bank*/, u32 chain, int cam_idx);
 void pc_texture_upload_now(u32 page, u32 mode);
 void pc_texture_relocate(u32 dst, u32 src, u32 format);

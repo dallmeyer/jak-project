@@ -69,6 +69,8 @@ struct GraphicsData {
   std::string imgui_log_filename, imgui_filename;
   GameVersion version;
 
+  int cam_idx = 0;
+
   GraphicsData(GameVersion version)
       : dma_copier(EE_MAIN_MEM_SIZE),
         texture_pool(std::make_shared<TexturePool>(version)),
@@ -500,12 +502,12 @@ void render_game_frame(int game_width,
 
     if constexpr (run_dma_copy) {
       auto& chain = g_gfx_data->dma_copier.get_last_result();
-      g_gfx_data->ogl_renderer.render(DmaFollower(chain.data.data(), chain.start_offset), options);
+      g_gfx_data->ogl_renderer.render(DmaFollower(chain.data.data(), chain.start_offset), options, g_gfx_data->cam_idx);
     } else {
       auto p = scoped_prof("ogl-render");
       g_gfx_data->ogl_renderer.render(DmaFollower(g_gfx_data->dma_copier.get_last_input_data(),
                                                   g_gfx_data->dma_copier.get_last_input_offset()),
-                                      options);
+                                      options, g_gfx_data->cam_idx);
     }
   }
 
@@ -955,7 +957,7 @@ u32 gl_sync_path() {
  * Send DMA to the renderer.
  * Called from the game thread, on a GOAL stack.
  */
-void gl_send_chain(const void* data, u32 offset) {
+void gl_send_chain_split(const void* data, u32 offset, int cam_idx) {
   if (g_gfx_data) {
     std::unique_lock<std::mutex> lock(g_gfx_data->dma_mutex);
     if (g_gfx_data->has_data_to_render) {
@@ -977,12 +979,20 @@ void gl_send_chain(const void* data, u32 offset) {
 
     // The renderers should just operate on DMA chains, so eliminating this step in the future
     // may be easy.
-
+    g_gfx_data->cam_idx = cam_idx;
     g_gfx_data->dma_copier.set_input_data(data, offset, run_dma_copy);
 
     g_gfx_data->has_data_to_render = true;
     g_gfx_data->dma_cv.notify_all();
   }
+}
+
+/*!
+ * Send DMA to the renderer.
+ * Called from the game thread, on a GOAL stack.
+ */
+void gl_send_chain(const void* data, u32 offset) {
+  gl_send_chain_split(data, offset, 0);
 }
 
 /*!
@@ -1029,6 +1039,7 @@ const GfxRendererModule gRendererOpenGL = {
     gl_vsync,               // vsync
     gl_sync_path,           // sync_path
     gl_send_chain,          // send_chain
+    gl_send_chain_split,    // send_chain_split
     gl_texture_upload_now,  // texture_upload_now
     gl_texture_relocate,    // texture_relocate
     gl_poll_events,         // poll_events

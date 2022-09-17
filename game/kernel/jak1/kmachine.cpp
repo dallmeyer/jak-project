@@ -593,6 +593,7 @@ void InitMachine_PCPort() {
   make_function_symbol_from_c("__read-ee-timer", (void*)read_ee_timer);
   make_function_symbol_from_c("__mem-move", (void*)c_memmove);
   make_function_symbol_from_c("__send-gfx-dma-chain", (void*)send_gfx_dma_chain);
+  make_function_symbol_from_c("__send-gfx-dma-chain-split", (void*)send_gfx_dma_chain_split);
   make_function_symbol_from_c("__pc-texture-upload-now", (void*)pc_texture_upload_now);
   make_function_symbol_from_c("__pc-texture-relocate", (void*)pc_texture_relocate);
   make_function_symbol_from_c("__pc-get-mips2c", (void*)pc_get_mips2c);
