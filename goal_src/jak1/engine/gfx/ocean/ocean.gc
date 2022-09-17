@@ -65,6 +65,7 @@
          (f26-0 (+ f24-0 (* 393216.0 (the float s1-0))))
          (vertices (-> (scratchpad-object terrain-context) work background dma-area ocean-vertex))
          )
+    (format 0 "   render-ocean-far 1~%")
     (let ((s2-0 #f))
       0
       (set! (-> vertices 0 col quad) (-> *ocean-map* far-color quad))
@@ -112,6 +113,7 @@
                 )
               (set! sv-32 (logand (+ sv-32 1) 7))
               (set! s2-0 (render-ocean-quad vertices arg0))
+              (format 0 "   render-ocean-far 2~%")
               (cond
                 (s2-0
                   (set! s0-0 #t)
@@ -165,6 +167,7 @@
                 )
               (set! sv-80 (logand (+ sv-80 1) 7))
               (render-ocean-quad vertices arg0)
+              (format 0 "   render-ocean-far 3~%")
               (cond
                 (s2-0
                   (set! s0-1 #t)
@@ -221,6 +224,7 @@
                 )
               (set! sv-128 (logand (+ sv-128 1) 7))
               (render-ocean-quad vertices arg0)
+              (format 0 "   render-ocean-far 4~%")
               (cond
                 (s2-0
                   (set! s1-1 #t)
@@ -272,6 +276,7 @@
                 )
               (set! sv-160 (logand (+ sv-160 1) 7))
               (render-ocean-quad vertices arg0)
+              (format 0 "   render-ocean-far 5~%")
               (cond
                 (s2-0
                   (set! s1-2 #t)
@@ -324,6 +329,7 @@
           )
         )
       (render-ocean-quad vertices arg0)
+      (format 0 "   render-ocean-far 6~%")
       )
     (when (not (or (logtest? arg1 2) (logtest? arg1 8)))
       (let ((f0-81 f26-0))
@@ -357,6 +363,7 @@
           )
         )
       (render-ocean-quad vertices arg0)
+      (format 0 "   render-ocean-far 7~%")
       )
     (when (not (or (logtest? arg1 4) (logtest? arg1 16)))
       (let ((f0-84 (+ -5898240.0 f24-0))
@@ -389,6 +396,7 @@
           )
         )
       (render-ocean-quad vertices arg0)
+      (format 0 "   render-ocean-far 8~%")
       )
     (when (not (or (logtest? arg1 4) (logtest? arg1 8)))
       (let ((f0-86 f26-0)
@@ -422,6 +430,7 @@
           )
         )
       (render-ocean-quad vertices arg0)
+      (format 0 "   render-ocean-far 9~%")
       )
     )
   (none)
@@ -434,7 +443,9 @@
 (set-vector! *swamp-low-ocean-marker* 2621440.0 0.0 -8151040.0 1.0)
 
 (defun draw-ocean-far ((arg0 dma-buffer))
+  (format 0 "  pre-init draw-ocean-far~%")
   (init-ocean-far-regs)
+  (format 0 "  post-init draw-ocean-far~%")
   (if *debug-segment*
       (add-frame
         (-> *display* frames (-> *display* on-screen) frame profile-bar 0)
@@ -467,6 +478,8 @@
       (set! (-> (the-as dma-packet gp-0) vif1) (new 'static 'vif-tag :cmd (vif-cmd direct) :msk #x1 :imm v1-18))
       )
     )
+    
+  (format 0 "  post-render-ocean-far 1~%")
   (if *debug-segment*
       (add-frame
         (-> *display* frames (-> *display* on-screen) frame profile-bar 0)
@@ -649,8 +662,9 @@
           (draw-ocean-texture s5-0 *ocean-verts* #t)
           (ocean-init-buffer s5-0)
           (draw-ocean-far s5-0)
+          (format 0 "  post-far ocean-mid-and-far~%")
           (when (not *ocean-mid-off*)
-            (draw-ocean-mid s5-0)
+            (draw-ocean-mid s5-0)          
             )
           (ocean-end-buffer s5-0)
           (let ((a3-0 (-> s5-0 base)))

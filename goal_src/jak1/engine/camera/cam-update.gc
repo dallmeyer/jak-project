@@ -375,7 +375,7 @@
     )
 
   ;; dummy thing to try diff cameras per screen
-  (+! (-> *math-camera* camera-rot vector 0 x) (* 0.25 cam-idx))
+  ;; (+! (-> *math-camera* camera-rot vector 0 x) (* 0.25 cam-idx))
 
   (update! *camera-smush-control*)
   (cond

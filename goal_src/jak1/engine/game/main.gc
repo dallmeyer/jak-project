@@ -744,7 +744,6 @@
                   )
             )
           (*menu-hook*)
-          (format 0 " after *menu-hook* ~D~%" cam-idx)
           (add-ee-profile-frame 'draw :g #x40)
 
           ;; finally, update hints/text
@@ -756,7 +755,6 @@
           ;; collect perf stats
           (read! (-> *perf-stats* data (perf-stat-bucket all-code)))
           )
-        (format 0 " after menu ~D~%" cam-idx)
 
         (with-profiler "dma-sync"
           (when (nonzero? (sync-path 0 0))
@@ -768,7 +766,6 @@
             )
           (reset! (-> *perf-stats* data (perf-stat-bucket all-code)))
           )
-        (format 0 " after dma-sync ~D~%" cam-idx)
 
         ;; depth cue
         (if (not *progress-process*)
@@ -965,8 +962,6 @@
               )
             )
           )
-
-        (format 0 " after debug stuff ~D~%" cam-idx)
 
         ;; console buffers
         (set! *stdcon* (clear *stdcon0*))

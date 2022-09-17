@@ -14,6 +14,7 @@ struct Cache {
 } cache;
 
 u64 execute(void* ctxt) {
+  fmt::print("ocean.cpp execute\n");
   auto* c = (ExecutionContext*)ctxt;
   c->daddiu(sp, sp, -16);                           // daddiu sp, sp, -16
   c->sd(fp, 8, sp);                                 // sd fp, 8(sp)

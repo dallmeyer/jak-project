@@ -1082,6 +1082,7 @@
   ;   )
   (add-ee-profile-frame 'draw :r #x40 :b #x40 :a #x80)
 
+  (format 0 "  drawing ocean ~%")
   ;;;;;;; OCEAN
   (with-profiler "ocean"
     (update-ocean) ;; ocean map update
@@ -1556,8 +1557,6 @@
         (sync-path 0 0)
         )
     
-    (format 0 "  display-frame-start-split inside 0~%")
-
     ;; reset the global dma buffer.
     (let ((v1-56 (-> new-frame global-buf)))
       (set! (-> v1-56 base) (-> v1-56 data))
@@ -1579,8 +1578,6 @@
       (set! (-> v1-60 end) (&-> v1-60 data-buffer (-> v1-60 allocated-length)))
       )
   
-    (format 0 "  display-frame-start-split inside 1~%")
-
     ;; the default buffer holds a DMA chain to fully reset the GS.
     ;; reinitialize it, just to be safe
     (default-buffer-init *default-regs-buffer*)
@@ -1613,8 +1610,6 @@
     (set! (-> new-frame bucket-group) (dma-buffer-add-buckets (-> new-frame calc-buf) BUCKET_COUNT))
     )
 
-  (format 0 "  display-frame-start-split inside 2~%")
-
   ;; initialize the debug bucket
   (debug-init-buffer (bucket-id debug-no-zbuf)
     (new 'static 'gs-zbuf :zbp #x1c0 :psm (gs-psm ct24) :zmsk #x1)
@@ -1623,7 +1618,6 @@
 
   ;; setup our drawing offset for even/odd offset
   (set-draw-env-offset (-> disp frames new-frame-idx draw) 2048 2048 odd-even)
-  (format 0 "  display-frame-start-split inside 3~%")
 
   ;; now we are ready to run a frame!
   (none)
