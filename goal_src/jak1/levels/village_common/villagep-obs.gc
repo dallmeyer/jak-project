@@ -505,27 +505,28 @@
       ((logtest? (-> *target* control root-prim prim-core action) (collide-action ca-7 ca-8 ca-12 ca-13 ca-14))
        #f
        )
-      ((= v1-2 (game-task training-door))
-       (cond
-         ((and (task-complete? *game-info* (game-task training-door))
-               (task-complete? *game-info* (game-task training-gimmie))
-               (task-complete? *game-info* (game-task training-climb))
-               (task-complete? *game-info* (game-task training-buzzer))
-               )
-          #t
-          )
-         (else
-           (level-hint-spawn
-             (game-text-id training-warp-gate-blocked)
-             "sagevb38"
-             (the-as entity #f)
-             *entity-pool*
-             (game-task none)
-             )
-           #f
-           )
-         )
-       )
+      ;; don't require 4 geyser cells for geyser warp gate
+      ;; ((= v1-2 (game-task training-door))
+      ;;  (cond
+      ;;    ((and (task-complete? *game-info* (game-task training-door))
+      ;;          (task-complete? *game-info* (game-task training-gimmie))
+      ;;          (task-complete? *game-info* (game-task training-climb))
+      ;;          (task-complete? *game-info* (game-task training-buzzer))
+      ;;          )
+      ;;     #t
+      ;;     )
+      ;;    (else
+      ;;      (level-hint-spawn
+      ;;        (game-text-id training-warp-gate-blocked)
+      ;;        "sagevb38"
+      ;;        (the-as entity #f)
+      ;;        *entity-pool*
+      ;;        (game-task none)
+      ;;        )
+      ;;      #f
+      ;;      )
+      ;;    )
+      ;;  )
       (else
         #t
         )
@@ -1149,7 +1150,3 @@
   (go (method-of-object obj idle))
   (none)
   )
-
-
-
-

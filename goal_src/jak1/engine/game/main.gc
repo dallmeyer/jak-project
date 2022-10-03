@@ -8,7 +8,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Letterbox and blackout
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+(define flutflut? #f)
 (defun set-letterbox-frames ((arg0 time-frame))
   "Set the letterbox frame counter for arg0 frames in the future"
   (set! (-> *game-info* letterbox-time) (+ (current-time) arg0))
@@ -98,6 +98,33 @@
   )
 
 (defun movie? ()
+;; (set! flutflut? (aif *target* (case (-> it next-state name) (
+;;                                       (
+;;                                        'target-racing
+;;                                        'target-racing-bounce
+;;                                        'target-racing-death
+;;                                        'target-racing-falling
+;;                                        'target-racing-grab
+;;                                        'target-racing-hit
+;;                                        'target-racing-jump
+;;                                        'target-racing-smack
+;;                                        'target-racing-start
+;;                                        ;; not Racer, but we don't need to force flutflut in these cases
+;;                                        'target-periscope
+;;                                        'target-falling
+;;                                        'target-clone-anim
+;;                                        'target-play-anim
+;;                                        'target-billy-game
+;;                                        'target-look-around
+;;                                        'target-fishing
+;;                                        ;; launcher crap
+;;                                        'target-launch
+;;                                        'target-high-jump
+;;                                        'target-duck-high-jump
+;;                                        'target-duck-high-jump-jump
+;;                                        'target-hit-ground) #t))))
+
+(if (and (not flutflut?) (not (and (logtest? (-> *kernel-context* prevent-from-run) (process-mask movie)) (or (= (-> *target* current-level name) 'jungle)(= (-> *target* current-level name) 'village1) )))) (send-event *target* 'change-mode 'racing #f))
   "Are we in a movie?"
   (logtest? (-> *kernel-context* prevent-from-run) (process-mask movie))
   )
@@ -740,6 +767,11 @@
                  (or (not (-> *pc-settings* use-vis?)) (and (-> *pc-settings* use-vis?) (= (-> *setting-control* current aspect-ratio) 'aspect4x3))))
             (letterbox)
             )
+        )
+
+      ;; pre-activate blue eco platform in geyser
+      (when (process-by-name "plat-eco-62" *active-pool*)
+        (send-event (process-by-name "plat-eco-62" *active-pool*) 'wake)
         )
 
       (case (-> *target* next-state name)

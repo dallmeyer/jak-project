@@ -1,13 +1,5 @@
 
 ("MIS.DGO"
-  ;; ("target-racer-h.o" "target-racer-h")
-  ;; ("racer-part.o" "racer-part")
-  ;; ("racer.o" "racer")
-  ;; ("target-racer.o" "target-racer")
-  ;; ("racer-states.o" "racer-states")
-  ;; ("collide-reaction-racer.o" "collide-reaction-racer")
-  ;; ("eichar-racer+0-ag.go" "eichar-racer+0")
-  ("tpage-1119.go" "tpage-1119")
   ("battlecontroller.o" "battlecontroller")
   ("mistycannon.o" "mistycannon")
   ("babak-with-cannon.o" "babak-with-cannon")
@@ -47,7 +39,6 @@
   ("orb-cache-top-ag.go" "orb-cache-top")
   ("plat-eco-ag.go" "plat-eco")
   ("quicksandlurker-ag.go" "quicksandlurker")
-  ;; ("racer-ag.go" "racer")
   ("ropebridge-36-ag.go" "ropebridge-36")
   ("rounddoor-ag.go" "rounddoor")
   ("sack-ag.go" "sack")

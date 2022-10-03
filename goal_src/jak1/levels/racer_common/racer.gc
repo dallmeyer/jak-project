@@ -455,7 +455,3 @@
   (go (method-of-object obj wait-for-start))
   (none)
   )
-
-
-
-

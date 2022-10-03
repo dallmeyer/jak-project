@@ -1,13 +1,5 @@
 
 ("ROL.DGO"
-  ;; ("target-racer-h.o" "target-racer-h")
-  ;; ("racer-part.o" "racer-part")
-  ;; ("racer.o" "racer")
-  ;; ("target-racer.o" "target-racer")
-  ;; ("racer-states.o" "racer-states")
-  ;; ("collide-reaction-racer.o" "collide-reaction-racer")
-  ;; ("eichar-racer+0-ag.go" "eichar-racer+0")
-  ("tpage-1119.go" "tpage-1119")
   ("blocking-plane.o" "blocking-plane")
   ("rolling-obs.o" "rolling-obs")
   ("rolling-lightning-mole.o" "rolling-lightning-mole")
@@ -26,7 +18,6 @@
   ("lightning-mole-ag.go" "lightning-mole")
   ("pusher-ag.go" "pusher")
   ("race-ring-ag.go" "race-ring")
-  ;; ("racer-ag.go" "racer")
   ("robber-ag.go" "robber")
   ("rolling-start-ag.go" "rolling-start")
   ("rollingcam-ag.go" "rollingcam")
