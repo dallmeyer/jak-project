@@ -240,7 +240,6 @@
 
 (defstate double-lurker-top-on-shoulders (double-lurker-top)
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
-    (format 0 "double-lurker-top-on-shoulders event ~A~%" arg2)
     (case arg2
       (('trigger 'touch 'attack 'ridden)
        (let ((v1-1 (-> self fall-dest))
@@ -519,7 +518,6 @@
 ;; WARN: disable def twice: 120. This may happen when a cond (no else) is nested inside of another conditional, but it should be rare.
 (defbehavior double-lurker-default-event-handler double-lurker ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
   (local-vars (v0-0 object))
-  (format 0 "double-lurker-top-on-shoulders event ~A~%" arg2)
   (case arg2
     (('attack 'touch 'ridden)
      (when (= (-> arg0 type) target)
@@ -532,14 +530,12 @@
               ((and (>= (-> s4-0 y) 8192.0)
                     (>= 14563.556 (fabs (deg- (quaternion-y-angle (-> self collide-info quat)) (atan (-> s4-0 x) (-> s4-0 z)))))
                     )
-               (format 0 "before send-event~%")
                (when (send-event
                        arg0
                        'shove
                        (-> arg3 param 0)
                        (static-attack-info ((shove-up (meters 3)) (shove-back (meters 2))))
                        )
-                 (format 0 "send-event success~%")
                  (increment-success-for-hint (game-text-id sunken-double-lurker-hint))
                  (go double-lurker-buddy-was-hit)
                  (return #f)

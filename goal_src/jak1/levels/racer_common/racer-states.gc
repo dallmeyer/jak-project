@@ -9,6 +9,19 @@
 
 ;; DECOMP BEGINS
 
+(define-extern babak type)
+(define-extern bully type)
+(define-extern puffer type)
+(define-extern double-lurker type)
+(define-extern double-lurker-top type)
+(define-extern kermit type)
+(define-extern mother-spider type)
+(define-extern baby-spider type)
+(define-extern mother-spider-egg type)
+(define-extern swamp-rat type)
+(define-extern ice-cube type)
+(define-extern snow-bunny type)
+(define-extern yeti type)
 (defstate target-racing-start (target)
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
     (cond
@@ -31,13 +44,17 @@
            (when (and 
                   (or (type-type? (-> arg0 type) babak)
                       (type-type? (-> arg0 type) bully)
+                      (type-type? (-> arg0 type) puffer)
                       (type-type? (-> arg0 type) double-lurker)
                       (type-type? (-> arg0 type) double-lurker-top)
                       (type-type? (-> arg0 type) kermit)
                       (type-type? (-> arg0 type) mother-spider)
                       (type-type? (-> arg0 type) baby-spider)
                       (type-type? (-> arg0 type) mother-spider-egg)
-                      (type-type? (-> arg0 type) swamp-rat))
+                      (type-type? (-> arg0 type) swamp-rat)
+                      (type-type? (-> arg0 type) ice-cube)
+                      (type-type? (-> arg0 type) snow-bunny)
+                      (type-type? (-> arg0 type) yeti))
                   (< 40960.0 (-> self control unknown-float01)))
              (let ((f0-5 (lerp-scale 16384.0 32768.0 (-> self control unknown-float01) 40960.0 (-> self racer transv-max))))
                (go target-racing-jump f0-5 f0-5 #f)

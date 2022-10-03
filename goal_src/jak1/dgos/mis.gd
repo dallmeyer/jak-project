@@ -1,5 +1,6 @@
 
 ("MIS.DGO"
+  ("tpage-1119.go" "tpage-1119")
   ("battlecontroller.o" "battlecontroller")
   ("mistycannon.o" "mistycannon")
   ("babak-with-cannon.o" "babak-with-cannon")

@@ -78,7 +78,6 @@
 (defstate basebutton-up-idle (basebutton)
   :virtual #t
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
-    (format 0 "basebutton-up-idle event ~A~%" arg2)
     (case arg2
       (('touch 'attack)
        (TODO-RENAME-29 self (-> self event-going-down) (-> self notify-actor))

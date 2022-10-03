@@ -1050,7 +1050,7 @@
              (not *pause-lock*)
              (zero? (logand (-> self state-flags) (state-flags grabbed first-person-mode)))
              )
-    (if (and (!= (-> self next-state name) 'target-falling) (!= (-> self next-state name) 'target-racing-falling))
+    (if (!= (-> self next-state name) 'target-falling)
         (send-event self 'change-mode 'falling)
         )
     (let ((gp-0 (new-stack-vector0)))

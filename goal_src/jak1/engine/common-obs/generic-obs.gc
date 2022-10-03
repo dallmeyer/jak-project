@@ -1914,9 +1914,10 @@
   :code (the-as (function none :behavior launcher) anim-loop)
   )
 
+(define-extern target-hopping? (function target symbol))
 (defstate launcher-active (launcher)
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
-    (when (and (= arg2 'attack) (-> (the-as target arg0) racer hop?))
+    (when (and (= arg2 'attack) (target-hopping? (the-as target arg0)))
       (set! (-> self state-time) (-> *display* base-frame-counter))
       (send-event arg0 'launch (-> self spring-height) (-> self camera) (-> self dest) (-> self seek-time))
       )

@@ -502,7 +502,6 @@
 
 (defstate square-platform-master-idle (square-platform-master)
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
-    (format 0 "sq-plat-master-idle event ~A~%" arg2)
     (case arg2
       (('trigger 'touch 'attack)
        (when (= (-> arg0 type) square-platform-button)

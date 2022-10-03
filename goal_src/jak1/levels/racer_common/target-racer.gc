@@ -1457,6 +1457,8 @@
   (none)
   )
 
-
+(defun target-hopping? ((obj target))
+  (-> obj racer hop?)
+  )
 
 
