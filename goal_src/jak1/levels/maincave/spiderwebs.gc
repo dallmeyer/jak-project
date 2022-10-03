@@ -80,9 +80,7 @@
        )
      )
     (('attack)
-     (if (and (= (-> arg3 param 1) 'flop)
-              (send-event arg0 'jump (-> self spring-height) (-> self spring-height) *spider-jump-mods*)
-              )
+     (if (send-event arg0 'jump (-> self spring-height) (-> self spring-height) *spider-jump-mods*)
          (go spiderwebs-bounce)
          )
      #f

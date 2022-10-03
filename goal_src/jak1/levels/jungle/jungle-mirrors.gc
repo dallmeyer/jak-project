@@ -1262,7 +1262,7 @@
 (defstate periscope-wait-for-player (periscope)
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
     (case arg2
-      (('touch)
+      (('touch 'attack 'ridden)
        (when (and *target* (not (and (logtest? (-> *target* control unknown-surface00 flags) (surface-flags jump))
                                      (zero? (logand (-> *target* control status) (cshape-moving-flags onsurf)))
                                      )

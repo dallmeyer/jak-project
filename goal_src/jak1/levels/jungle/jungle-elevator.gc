@@ -20,7 +20,7 @@
 
 
 (defmethod can-activate? jungle-elevator ((obj jungle-elevator))
-  (and ((method-of-type plat-button can-activate?) obj) (task-complete? *game-info* (game-task jungle-tower)))
+  ((method-of-type plat-button can-activate?) obj)
   )
 
 (defstate plat-button-move-downward (jungle-elevator)
@@ -80,7 +80,6 @@
     (set! (-> self draw light-index) (the-as uint 255))
     (set! (-> self bottom-height) (-> jungle bottom-height))
     (set! (-> jungle bottom-height) (-> jungleb bottom-height))
-    (set! (-> self grab-player?) (process-grab? *target*))
     (none)
     )
   :exit (behavior ()
@@ -161,7 +160,7 @@
     (set! (-> obj teleport-if-below-y) (-> s5-0 y))
     )
   (set! (-> obj draw light-index) (the-as uint 255))
-  (set! (-> obj bidirectional?) #f)
+  (set! (-> obj bidirectional?) #t)
   (set! (-> obj should-grab-player?) #t)
   (none)
   )

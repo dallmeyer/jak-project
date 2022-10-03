@@ -208,8 +208,9 @@
 
 (defbehavior driller-lurker-default-event-handler driller-lurker ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
   (local-vars (sv-96 collide-shape-prim))
+  (format 0 "driller-lurker handler ~A~%" arg2)
   (cond
-    ((= arg2 'attack)
+    ((or (= arg2 'attack) (= arg2 'touch))
      (cond
        ((= (-> arg0 type) target)
         (let ((v1-3 (-> arg3 param 2)))

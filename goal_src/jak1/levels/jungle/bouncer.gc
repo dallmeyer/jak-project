@@ -49,7 +49,7 @@
            )
        )
       (('attack)
-       (when (and (= (-> arg3 param 1) 'flop) (send-event arg0 'jump (-> self spring-height) (-> self spring-height) #f))
+       (when (send-event arg0 'jump (-> self spring-height) (-> self spring-height) #f)
          (go bouncer-fire)
          #f
          )

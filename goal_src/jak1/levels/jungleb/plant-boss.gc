@@ -974,7 +974,7 @@
 (defstate plant-boss-intro (plant-boss)
   :code (behavior ()
     (set-setting! 'music 'danger 0.0 0)
-    (send-event *target* 'reset-pickup 'eco)
+    ;; (send-event *target* 'reset-pickup 'eco)
     (let ((v1-9 (-> self entity extra perm)))
       (logior! (-> v1-9 status) (entity-perm-status user-set-from-cstage))
       (b! (zero? (-> v1-9 user-int8 2)) cfg-5 :delay (empty-form))

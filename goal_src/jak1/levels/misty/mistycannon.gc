@@ -1457,7 +1457,7 @@
 (defstate mistycannon-waiting-for-player (mistycannon)
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
     (case arg2
-      (('touch)
+      (('touch 'attack 'ridden)
        (when ((method-of-type touching-shapes-entry prims-touching?)
               (the-as touching-shapes-entry (-> arg3 param 0))
               (-> self root-override)

@@ -502,8 +502,9 @@
 
 (defstate square-platform-master-idle (square-platform-master)
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
+    (format 0 "sq-plat-master-idle event ~A~%" arg2)
     (case arg2
-      (('trigger)
+      (('trigger 'touch 'attack)
        (when (= (-> arg0 type) square-platform-button)
          (set! (-> self button-id) (-> (the-as square-platform-button arg0) button-id))
          (logclear! (-> self mask) (process-mask actor-pause))
@@ -671,7 +672,7 @@
   (set! (-> obj root) (new 'process 'trsqv))
   (process-drawable-from-entity! obj arg0)
   (set! (-> obj timeout)
-        (the-as time-frame (the int (* 300.0 (res-lump-float (-> obj entity) 'timeout :default 10.0))))
+        (seconds 30.0)
         )
   (set! (-> obj delay-til-wiggle) (+ (-> obj timeout) (seconds -0.4)))
   (set! (-> obj link) (new 'process 'actor-link-info obj))

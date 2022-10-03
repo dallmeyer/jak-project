@@ -2088,7 +2088,7 @@
     (*target*
       (set! gp-0 #t)
       (dotimes (s5-0 9)
-        (when (-> *hud-parts* parts s5-0)
+        (when (and (-> *hud-parts* parts s5-0)  (!= (-> *hud-parts* parts s5-0) (-> *hud-parts* bike-speed)))
           (if (not (hidden? (-> (the-as (pointer hud) (-> *hud-parts* parts s5-0)) 0)))
               (set! gp-0 #f)
               )

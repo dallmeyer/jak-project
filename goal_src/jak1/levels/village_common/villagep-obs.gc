@@ -106,6 +106,17 @@
     (remove-setting! 'allow-progress)
     (set! (-> self state-time) (-> *display* base-frame-counter))
     (loop
+      (when (and *target* 
+                 (>= 92000.0 (vector-vector-distance (-> self root trans) (-> *target* control trans)))
+                 (zero? (logand (-> *target* control root-prim prim-core action) (collide-action ca-7 ca-8 ca-12 ca-13 ca-14)))
+                 )
+        ;; shrink collision spheres to fit zoomer through sage hut door >_<
+        (let ((prims (the-as collide-shape-prim-group (-> *target* control root-prim))))
+          (dotimes (idx (-> prims num-prims))
+            (set! (-> prims prim idx local-sphere w) 4800.0)
+            )
+          )
+        )
       (when (and (and *target* (>= 20480.0 (vector-vector-distance (-> self root trans) (-> *target* control trans))))
                  (and (>= (-> self level-slot) 0)
                       (not (movie?))
@@ -431,21 +442,7 @@
                                  )
           )
     )
-  (set! (-> self max-slot) (cond
-                             ((task-closed? (game-task village4-button) (task-status need-hint))
-                              4
-                              )
-                             ((task-closed? (game-task village3-button) (task-status need-hint))
-                              3
-                              )
-                             ((task-closed? (game-task village2-levitator) (task-status need-hint))
-                              2
-                              )
-                             (else
-                               1
-                               )
-                             )
-        )
+  (set! (-> self max-slot) 4)
   (go-virtual idle)
   (none)
   )
