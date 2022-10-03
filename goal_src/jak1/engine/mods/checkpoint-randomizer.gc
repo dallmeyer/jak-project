@@ -11,7 +11,7 @@
 (define-extern knuth-rand-next-int (function int))
 
 (define *randomizer-version-string* "Rando 0.12")
-(define *release-version-string* "Release 0.1.28")
+(define *release-version-string* "Release 0.1.29+")
 (define *comment-string* "Option to randomize by level, then by checkpoint")
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
