@@ -1,0 +1,162 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+;; name: localmulti.gc
+;; name in dgo: main
+;; dgos: GAME, ENGINE
+
+;;Spawn a new target process
+(defun start-extra-target ()
+  (process-spawn
+                target
+                :init init-target
+                (-> *game-info* current-continue)
+                :from *target-dead-pool*
+                :to *target-pool*
+                :stack *kernel-dram-stack*
+                )
+  )
+
+
+;;Placeholders
+(define *target2* (the-as target #f))
+(define *target3* (the-as target #f))
+(define *target4* (the-as target #f))
+
+;;These return true if the specified target is currently "alive".
+(defun target2-alive? () (not (or (= (-> *target2* state) #f) (= (-> *target2* state) symbol))))
+(defun target3-alive? () (not (or (= (-> *target3* state) #f) (= (-> *target3* state) symbol))))
+(defun target4-alive? () (not (or (= (-> *target4* state) #f) (= (-> *target4* state) symbol))))
+(defun extra-target-alive? () (or (target2-alive?)(target3-alive?)(target4-alive?)))
+
+;;Command to warp a target to another (normally to warp someone to main target to bring back on camera)
+(defun warp-jakA-to-jakB ((jakA target) (jakB target))
+      (set! (-> (-> jakA root) trans x) (-> (-> jakB root) trans x))
+      (set! (-> (-> jakA root) trans y) (-> (-> jakB root) trans y))
+      (set! (-> (-> jakA root) trans z) (-> (-> jakB root) trans z))
+)
+
+(defun check-multi-jak-dist ((jak target))
+  (define xyz-dist 0.0)
+  (define  xz-dist 0.0)
+  (define   y-dist 0.0)
+  (define j-vec (new 'static 'vector))
+  
+  (set! (-> j-vec x) (-> (-> jak root) trans x))
+  (set! (-> j-vec y) (-> (-> jak root) trans y))
+  (set! (-> j-vec z) (-> (-> jak root) trans z))
+
+  (set! xyz-dist (vector-vector-distance j-vec (target-pos 0)) )
+  (set!  xz-dist (vector-vector-xz-distance j-vec (target-pos 0)) )
+  (set!   y-dist (- (-> (target-pos 0) y) (-> j-vec y)) )
+
+  (> xyz-dist (meters 55.0))
+)
+
+(defun localmulti-run-eachframe()
+(if (extra-target-alive?) (begin
+
+;;If the camera is not focus on the main target (id 1375524), then set the cameras focus to the  main target.
+;;todo this breaks pelican cutscene we can easily fix later.
+(if (!= (-> *camera* drawable-target ) 1375524) (set! (-> *camera* drawable-target) (the handle 1375524)))
+
+;;If the camera is not set to cam-stick and we have more than one jak, then set it to cam-stick
+;;Todo Check if any target is zoomed in, and if so only let that target unzoom
+
+;;Warp side jaks to main Jak
+(if (= (-> (-> (-> (the-as (pointer camera-slave) (-> *camera* child)))state)name) 'cam-string) (begin (send-event *camera* 'change-state cam-stick 0)))
+  (if (and (target2-alive?) (check-multi-jak-dist *target2*))
+    (warp-jakA-to-jakB *target2* *target*)
+  )
+  (if (and (target3-alive?) (check-multi-jak-dist *target3*))
+    (warp-jakA-to-jakB *target3* *target*)
+  )
+  (if (and (target4-alive?) (check-multi-jak-dist *target4*))
+    (warp-jakA-to-jakB *target4* *target*)
+  )
+  (none)
+  )))
+
+
+;; Spawn target2
+(defun localmulti2-start ()
+  (when (not (target2-alive?))
+    (set! *target2* (-> (start-extra-target) 0))
+    (draw-green *target2*)
+    (set! (-> *target2* control unknown-cpad-info00) (-> *cpad-list* cpads 1))
+  )
+  (none)
+)
+;; Spawn target3
+(defun localmulti3-start ()
+  (when (not (target3-alive?))
+    (set! *target3* (-> (start-extra-target) 0))
+    (draw-blue *target3*)
+    (set! (-> *target3* control unknown-cpad-info00) (-> *cpad-list* cpads 2))
+  )
+  (none)
+)
+
+;; Spawn target4
+(defun localmulti4-start ()
+  (when (not (target4-alive?))
+    (set! *target4* (-> (start-extra-target) 0))
+    (draw-pink *target4*)
+    (set! (-> *target4* control unknown-cpad-info00) (-> *cpad-list* cpads 3))
+  )
+  (none)
+)
+
+;; Spawn targets up to and including target x
+(defun localmulti-start ((x int))
+  (if (> x 1) (localmulti2-start))
+  (if (> x 2) (localmulti3-start))
+  (if (> x 3) (localmulti4-start))
+)
+
+;;This code is ran in main.gc in the same function that cheat-mode check is. When a player enters half debug code on a controller that isnt player 1 it will spawn them a jak to play as.
+(defun spawn-extra-targets-code()
+
+  (if (cpad-hold? 1 l3)
+    (format 0 "pad1 L3, cheat-mode is ~A~%" *cheat-mode*)
+  )
+
+  ;;Multiplayer stuff to clean and move
+ (when (and (cpad-hold? 1 l3)
+             (or *cheat-mode* (= *kernel-boot-message* 'play)) ;; not in demo
+             )
+(check-cheat-code (-> *cheat-temp* 1) 1
+        (up up down down left right left right x x square circle square circle)
+          (cpad-clear! 1 r1)
+          ;; toggle!
+        
+          (cheats-sound-play *cheat-mode*)
+          (localmulti2-start)
+        )
+ )
+  (when (and (cpad-hold? 2 l3)
+             (or *cheat-mode* (= *kernel-boot-message* 'play)) ;; not in demo
+             )
+(check-cheat-code (-> *cheat-temp* 2) 2
+        (up up down down left right left right x x square circle square circle)
+          (cpad-clear! 2 r1)
+          ;; toggle!
+        
+          (cheats-sound-play *cheat-mode*)
+          (localmulti3-start)
+        )
+ )
+  (when (and (cpad-hold? 3 l3)
+             (or *cheat-mode* (= *kernel-boot-message* 'play)) ;; not in demo
+             )
+(check-cheat-code (-> *cheat-temp* 3) 3
+        (up up down down left right left right x x square circle square circle)
+          (cpad-clear! 3 r1)
+          ;; toggle!
+        
+          (cheats-sound-play *cheat-mode*)
+          (localmulti4-start)
+        )
+ )
+ ;; back to normal main.gc code.)
+ (none))

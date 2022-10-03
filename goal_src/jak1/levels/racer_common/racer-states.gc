@@ -454,7 +454,7 @@
        )
       )
     (when (!= (-> self racer slide-shift-x) 0.0)
-      (if (rand-vu-percent? 0.5)
+      (if (mod-rand-percent? 0.5)
           (sound-play "zoomer-rev1" :vol 80)
           (sound-play "zoomer-rev2" :vol 80)
           )

@@ -48,13 +48,8 @@
      )
   )
 
-
 (defmacro .addu (result a b)
   `(set! ,result (sext32 (logand (+ (the-as int ,a) (the-as int ,b)) #xffffffff)))
-  )
-
-(defmacro sext32 (in)
-  `(sar (shl ,in 32) 32)
   )
 
 (defmacro .sra (result in sa)
@@ -720,7 +715,7 @@
               (.lvf vf16 (&-> fw size-st1 quad))
               (.lvf vf17 (&-> fw size-st2 quad))
               (.lvf vf18 (&-> fw size-st3 quad))
-              (let ((has-flag-size24 (logand flags 32)))
+              (let ((has-flag-size24 (logand flags (font-flags large))))
                 (b!
                   (nonzero? has-flag-size24)
                   cfg-2

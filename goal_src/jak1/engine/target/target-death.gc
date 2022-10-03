@@ -191,6 +191,11 @@
     (set! *spawn-actors* #t)
     (set! *teleport* #t)
     (set! (-> *ACTOR-bank* birth-max) 1000)
+
+     (if  (-> *randomizer-settings* checkpoint-randomizer?)
+    (auto-save-command 'auto-save 0 0 *default-pool*)
+     )
+
     (set-blackout-frames (seconds 0.1))
     (cond
       ((logtest? (-> arg0 flags) (continue-flags title))
@@ -1336,6 +1341,11 @@
            (sound-play "death-drown")
            )
           )
+        (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-death?))
+          (begin
+            (orchestrateCheckpointWarp 1)
+            )
+          )
         (+! (-> *game-info* death-movie-tick) 1)
         (if (= (death-movie-remap (+ (-> *game-info* death-movie-tick) -1) (-> *death-spool-array* length))
                (death-movie-remap (-> *game-info* death-movie-tick) (-> *death-spool-array* length))
@@ -1348,7 +1358,7 @@
               )
           (set-setting! 'allow-progress #f 0.0 0)
           (target-death-anim gp-18)
-          (when (and (< (rand-vu-int-count (-> *game-info* death-movie-tick)) (* (-> *death-spool-array* length) 2))
+          (when (and (< (mod-rand-int-count (-> *game-info* death-movie-tick)) (* (-> *death-spool-array* length) 2))
                      (zero? (logand (-> self water flags) (water-flags wt09)))
                      (!= (-> self control ground-pat material) 9)
                      (!= (-> self control ground-pat material) 10)
