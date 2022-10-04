@@ -272,12 +272,26 @@
   (none)
   )
 
+(define-extern sculptor type)
 (defbehavior process-taskable-anim-loop process-taskable ()
   (when (!= (ja-group) (get-art-elem self))
     (ja-channel-push! 1 (seconds 0.2))
     (ja :group! (get-art-elem self))
     )
   (loop
+    (format 0 "sculptor? ~A ~A process-taskable-anim-loop ~F~%" (type-type? (-> self type) sculptor) (-> self type) (vector-vector-distance (-> self root trans) (-> *target* control trans)))
+    (when (and  (type-type? (-> self type) sculptor)
+                *target* 
+                (>= 250000.0 (vector-vector-distance (-> self root trans) (-> *target* control trans)))
+                (zero? (logand (-> *target* control root-prim prim-core action) (collide-action ca-7 ca-8 ca-12 ca-13 ca-14)))
+                )
+      ;; shrink collision spheres to fit zoomer through sculptor door >_<
+      (let ((prims (the-as collide-shape-prim-group (-> *target* control root-prim))))
+        (dotimes (idx (-> prims num-prims))
+          (set! (-> prims prim idx local-sphere w) 4800.0)
+          )
+        )
+      )
     (suspend)
     (ja :num! (loop!))
     (if (= (-> self next-state name) 'idle)
@@ -1025,6 +1039,7 @@
   )
 
 (defmethod dummy-40 process-taskable ((obj process-taskable) (arg0 object) (arg1 skeleton-group) (arg2 int) (arg3 int) (arg4 vector) (arg5 int))
+  (format 0 "dummy-40 ~A ~%" (-> obj type))
   (stack-size-set! (-> obj main-thread) 512)
   (initialize-collision obj arg2 arg4)
   (process-drawable-from-entity! obj (the-as entity-actor arg0))
