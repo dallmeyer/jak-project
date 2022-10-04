@@ -689,20 +689,20 @@
 
 (defstate exit-chamber-charger-puzzle-beaten (exit-chamber)
   :code (behavior ()
-    ;; (process-spawn
-    ;;   pov-camera
-    ;;   (-> self root-override trans)
-    ;;   *sunkencam-sg*
-    ;;   "exit-chamber-door-open"
-    ;;   0
-    ;;   #f
-    ;;   '()
-    ;;   :to self
-    ;;   )
-    ;; (set! (-> self state-time) (-> *display* base-frame-counter))
-    ;; (until (>= (- (-> *display* base-frame-counter) (-> self state-time)) (seconds 2.5))
-    ;;   (suspend)
-    ;;   )
+    (process-spawn
+      pov-camera
+      (-> self root-override trans)
+      *sunkencam-sg*
+      "exit-chamber-door-open"
+      0
+      #f
+      '()
+      :to self
+      )
+    (set! (-> self state-time) (-> *display* base-frame-counter))
+    (until (>= (- (-> *display* base-frame-counter) (-> self state-time)) (seconds 2.5))
+      (suspend)
+      )
     (send-event (ppointer->process (-> self door)) 'trigger)
     (go exit-chamber-idle-in-sunken)
     (none)
@@ -1218,7 +1218,7 @@
     (set! (-> obj move-player?) #f)
     (cond
       ((zero? s4-1)
-       (go exit-chamber-charger-puzzle-beaten)
+       (go exit-chamber-charger-puzzle)
        )
       ((= s4-1 1)
        (go exit-chamber-idle-in-sunken)
