@@ -10,6 +10,7 @@
 ;; DECOMP BEGINS
 
 (define-extern babak type)
+(define-extern hopper type)
 (define-extern bully type)
 (define-extern puffer type)
 (define-extern double-lurker type)
@@ -44,6 +45,7 @@
           ;;  (format 0 "type ~A~%" (-> arg0 type))
            (when (and 
                   (or (type-type? (-> arg0 type) babak)
+                      (type-type? (-> arg0 type) hopper)
                       (type-type? (-> arg0 type) bully)
                       (type-type? (-> arg0 type) puffer)
                       (type-type? (-> arg0 type) double-lurker)
