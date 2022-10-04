@@ -1265,6 +1265,22 @@
   (the-as crate obj)
   )
 
+(defun crate-buzzer-shrink ((obj crate-buzzer))
+  (when (and (process-by-name "crate-3124" *active-pool*)
+            (= (process-by-name "crate-3124" *active-pool*) obj)
+            *target*
+            (>= 20000.0 (vector-vector-distance (-> obj root-override trans) (target-pos 0)))
+            (zero? (logand (-> *target* control root-prim prim-core action) (collide-action ca-7 ca-8 ca-12 ca-13 ca-14)))
+            )
+    ;; shrink collision spheres to fit zoomer to hit VC fly >_<
+    (let ((prims (the-as collide-shape-prim-group (-> *target* control root-prim))))
+      (dotimes (idx (-> prims num-prims))
+        (set! (-> prims prim idx local-sphere w) 2400.0)
+        )
+      )
+    )
+  )
+
 (defstate wait (crate-buzzer)
   :virtual #t
   :trans (behavior ()
@@ -1291,13 +1307,15 @@
     (suspend)
     (update-transforms! (-> self root-override))
     (loop
+      (crate-buzzer-shrink self)
       (set! (-> self state-time) (-> *display* base-frame-counter))
       (ja-post)
       (logior! (-> self mask) (process-mask sleep-code))
       (suspend)
       (let ((f30-0 57001.605))
         (sound-play "crate-jump")
-        (while (or (!= (-> self smush amp) 0.0) (!= f30-0 0.0))
+        (while (or (!= (-> self smush amp) 0.0) (!= f30-0 0.0))      
+          (crate-buzzer-shrink self)
           (+! f30-0 (* -245760.0 (-> *display* seconds-per-frame)))
           (+! (-> self root-override trans y) (* f30-0 (-> *display* seconds-per-frame)))
           (when (< (-> self root-override trans y) (-> self base y))
