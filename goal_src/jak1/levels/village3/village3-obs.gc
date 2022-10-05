@@ -143,11 +143,12 @@
       )
     (transform-post)
     (loop
+      ;; shrink collision spheres to fit zoomer into gondola >_<
       (when (and *target* 
-                 (>= 92000.0 (vector-vector-distance (vector<-cspace! (new 'stack-no-clear 'vector) (-> self node-list data 3)) (target-pos 0)))
+                 (>= 64000.0 (vector-vector-distance (vector<-cspace! (new 'stack-no-clear 'vector) (-> self node-list data 3)) (target-pos 0)))
                  (zero? (logand (-> *target* control root-prim prim-core action) (collide-action ca-7 ca-8 ca-12 ca-13 ca-14)))
                  )
-        ;; shrink collision spheres to fit zoomer into gondola >_<
+                  (format 0 "gondola dist ~F~%" (vector-vector-distance (vector<-cspace! (new 'stack-no-clear 'vector) (-> self node-list data 3)) (target-pos 0)))
         (let ((prims (the-as collide-shape-prim-group (-> *target* control root-prim))))
           (dotimes (idx (-> prims num-prims))
             (set! (-> prims prim idx local-sphere w) 5600.0)

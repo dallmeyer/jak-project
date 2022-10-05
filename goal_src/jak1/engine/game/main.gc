@@ -655,9 +655,15 @@
       (when (process-by-name "plat-eco-62" *active-pool*)
         (send-event (process-by-name "plat-eco-62" *active-pool*) 'wake)
         )
+      
       ;; pre-activate blue eco platform in spider cave
       (when (process-by-name "plat-eco-63" *active-pool*)
         (send-event (process-by-name "plat-eco-63" *active-pool*) 'wake)
+        )
+
+      ;; pre-activate log elevator in snowy
+      (when (process-by-name "" *active-pool*)
+        (send-event (process-by-name "snow-log-1" *active-pool*) 'trigger)
         )
         
       ;; reset collision spheres (they are shrunk near warp gates and gondola so zoomer fits)

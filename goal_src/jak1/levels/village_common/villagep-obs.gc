@@ -106,11 +106,12 @@
     (remove-setting! 'allow-progress)
     (set! (-> self state-time) (-> *display* base-frame-counter))
     (loop
-      (when (and *target* 
+      ;; shrink collision spheres to fit zoomer through sage hut door >_<
+      (when (and *target*
+                 (!= (-> (level-get-target-inside *level*) name) 'training) ;; not needed in geyser and makes collision weird
                  (>= 92000.0 (vector-vector-distance (-> self root trans) (-> *target* control trans)))
                  (zero? (logand (-> *target* control root-prim prim-core action) (collide-action ca-7 ca-8 ca-12 ca-13 ca-14)))
                  )
-        ;; shrink collision spheres to fit zoomer through sage hut door >_<
         (let ((prims (the-as collide-shape-prim-group (-> *target* control root-prim))))
           (dotimes (idx (-> prims num-prims))
             (set! (-> prims prim idx local-sphere w) 4800.0)
