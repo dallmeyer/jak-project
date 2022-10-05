@@ -70,7 +70,7 @@
        (go drop-plat-drop)
        )
       (('touch 'attack)
-       (send-event *target* 'no-look-around (seconds 1))
+      ;;  (send-event *target* 'no-look-around (seconds 1))
        (send-event (ppointer->process (-> self parent)) 'player-stepped (-> self color))
        #f
        )

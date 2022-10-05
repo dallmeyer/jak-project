@@ -661,8 +661,13 @@
         (send-event (process-by-name "plat-eco-63" *active-pool*) 'wake)
         )
 
+      ;; remove water blocking dark crystal in dark cave
+      (when (process-by-name "cave-water-3" *active-pool*)
+        (deactivate (process-by-name "cave-water-3" *active-pool*))
+        )
+
       ;; pre-activate log elevator in snowy
-      (when (process-by-name "" *active-pool*)
+      (when (process-by-name "snow-log-1" *active-pool*)
         (send-event (process-by-name "snow-log-1" *active-pool*) 'trigger)
         )
         

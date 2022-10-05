@@ -234,7 +234,6 @@
     (case arg2
       (('touch 'attack 'bonk)
        (when (and (= (-> arg0 type) target)
-                  (logtest? (-> *target* control root-prim prim-core action) (collide-action ca-14))
                   (>= 10649.6 (vector-vector-xz-distance (-> self root-override trans) (target-pos 0)))
                   )
          (close-specific-task! (game-task snow-ball) (task-status need-hint))
