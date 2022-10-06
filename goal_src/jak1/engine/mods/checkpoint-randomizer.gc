@@ -81,8 +81,8 @@
 "robocave-start"
 "robocave-bottom"
 "lavatube-start"
-"lavatube-middle"
-"lavatube-after-ribbon"
+;; "lavatube-middle"
+;; "lavatube-after-ribbon"
 "lavatube-end"
 "citadel-start"
 "citadel-entrance"
@@ -203,8 +203,8 @@
     ;; Lava Tube
     (new 'static 'boxed-array :type string :length 6
       "lavatube-start"
-      "lavatube-middle"
-      "lavatube-after-ribbon"
+      ;; "lavatube-middle"
+      ;; "lavatube-after-ribbon"
       "lavatube-end"
       "citadel-entrance"
       "citadel-warp"
