@@ -1051,11 +1051,18 @@
 ;; method 27 level
 
 ;; method 10 level
-(defmethod is-object-visible? level ((obj level) (arg0 int))
+(define-extern money type)
+(defmethod is-object-visible? level ((obj level) (arg0 int) (actor entity))
   "Is arg0 visible? Note that this will return #f if the visibility data is not loaded."
 
   ;; note : pc port added option to show every actor regardless
-  (with-pc (if (-> *pc-settings* force-actors?) (return #t)))
+  (with-pc 
+    (if (or (-> *pc-settings* force-actors?) 
+            (= (-> (the entity-actor actor) etype) money)  ;; always show orba
+            )
+      (return #t)
+      )
+    )
 
   ;; check the vis bits!
   (let* (;; lwu v1, 388(a0)

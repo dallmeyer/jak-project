@@ -1960,6 +1960,7 @@
  "camera/pov-camera.gc"
  "game/powerups.gc"
  "common-obs/crates.gc"
+ "game/mods.gc"
  "ui/hud.gc"
  "ui/hud-classes.gc"
  "ui/progress/progress-static.gc"
