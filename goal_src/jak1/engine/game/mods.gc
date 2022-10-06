@@ -1,0 +1,78 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(defun move-actor ((actor string) (x float) (y float) (z float))
+  (when (process-by-ename actor)
+    (set-vector! (-> (the process-drawable (process-by-ename actor)) root trans) (meters x) (meters y) (meters z) 1.0)
+
+    (cond
+      ((type-type? (-> (process-by-ename actor) type) fuel-cell)
+       (set! (-> (the fuel-cell (process-by-ename actor)) base y) (meters y))
+       )
+      ((type-type? (-> (process-by-ename actor) type) money)
+       (set! (-> (the money (process-by-ename actor)) base x) (meters x))
+       (set! (-> (the money (process-by-ename actor)) base y) (meters y))
+       (set! (-> (the money (process-by-ename actor)) base z) (meters z))
+       )
+      ((type-type? (-> (process-by-ename actor) type) crate)
+       (set! (-> (the crate (process-by-ename actor)) base y) (meters y))
+       )
+      )
+    )
+  )
+
+(defun hide-orba ()
+  ;; geyser (50)
+  (move-actor "money-4391" -1319.0 8.0 1069.0)    ;; behind warp gate
+  (move-actor "money-4393" -1312.6 8.5 1071.0)    ;; behind warp gate
+  (move-actor "money-4395" -1332.9 -5.0 1062.2)   ;; in water near warp gate
+  (move-actor "money-4396" -1301.5 0.0 942.5)     ;; waterfall
+  (move-actor "money-4397" -1293.0 7.7 1047.5)    ;; behind rock near start
+  (move-actor "money-4399" -1353.2 -4.0 1092.4)   ;; in rocks under water
+  (move-actor "money-4401" -1276.5 14.5 1080.1)   ;; in tree near warp gate
+  (move-actor "money-4402" -1256.3 16.5 1076.4)   ;; in tree near warp gate
+  (move-actor "money-4403" -1230.5 16.8 1069.7)   ;; in tree near warp gate
+  (move-actor "money-4404" -1225.0 15.0 1046.8)   ;; in tree near warp gate
+  (move-actor "money-4405" -1248.0 15.5 1037.5)   ;; in tree near warp gate
+  (move-actor "money-4406" -1248.6 20.0 1025.3)   ;; in tree near warp gate
+  (move-actor "money-4407" -1268.0 16.0 1051.0)   ;; in tree near warp gate
+  (move-actor "money-4345" -1299.8 19.0 1075.7)   ;; in tree near warp gate
+  (move-actor "money-4347" -1292.5 17.5 1074.5)   ;; in tree near warp gate
+  (move-actor "money-4349" -1237.5 16.5 1043.9)   ;; in tree near warp gate
+  (move-actor "money-4330" -1194.0 20.5 982.5)    ;; between scarecrow and lamp
+  (move-actor "money-4331" -1136.5 11.5 1016.7)   ;; ocean wall below scoutfly
+  (move-actor "money-4327" -1093.9 1.0 1057.2)    ;; in pool by the front geyser
+  (move-actor "money-4326" -1144.7 10.0 914.5)    ;; in pool by the back geyser
+  (move-actor "money-4328" -1171.3 15.0 839.6)    ;; corner of upper wall in back  
+  (move-actor "money-4332" -1167.0 17.0 946.5)    ;; between trees/wall/lamp
+  (move-actor "money-4333" -1203.0 17.7 944.0)    ;; behind/below ledge with blue ecos
+  (move-actor "money-4794"  -1248.9 0.0 867.4)    ;; in water below gap en route to eco vent
+  (move-actor "money-4336" -1306.0 35.0 887.7)    ;; around corner near eco vent
+  (move-actor "money-4337" -1249.5 32.0 960.8)    ;; on ledge near inner geyser
+  (move-actor "money-4338" -1222.0 29.0 930.4)    ;; on ledge near inner geyser
+  (move-actor "money-4354" -1241.6 15.0 924.7)    ;; under raft
+  (move-actor "money-4356" -1266.3 18.0 934.5)    ;; between pillar/wall/lamp near rafts
+  (move-actor "money-4358" -1342.3 41.0 969.1)    ;; around corner of outer wall before last cell
+  (move-actor "money-4367" -1337.0 26.5 988.5)    ;; between trees on corner below last cell
+  (move-actor "money-4366" -1308.3 47.5 994.0)    ;; ledge below last cell
+  (move-actor "money-4365" -1330.0 65.0 966.0)    ;; high ledge on way to last cell
+  (move-actor "money-4364" -1300.5 40.3 1000.0)   ;; directly below last cell 
+  (move-actor "money-4363" -1322.6 20.5 1000.5)   ;; below last cell on top of trees/rock
+  (move-actor "money-4369" -1323.8 18.5 1070.8)   ;; above warp gate
+  (move-actor "money-4370" -1281.6 20.0 1099.5)   ;; above/left of warp gate
+  (move-actor "money-4444" -1329.9 16.0 1011.0)   ;; in tree near warp gate
+  (move-actor "money-4443" -1304.6 23.0 1012.0)   ;; in tree near warp gate
+  (move-actor "money-4442" -1297.3 20.0 1016.5)   ;; in tree near warp gate
+  (move-actor "money-4440" -1329.0 20.0 1061.5)   ;; in tree near warp gate
+  (move-actor "money-4439" -1339.5 17.0 1038.5)   ;; in tree near warp gate
+  (move-actor "money-4438" -1355.3 15.0 1009.9)   ;; in tree near warp gate
+  (move-actor "money-4383" -1230.5 28.5 1034.5)   ;; slippery ledges near first beach
+  (move-actor "money-4384" -1189.7 31.0 1052.0)   ;; way out on slippery ledges near first beach
+  (move-actor "money-4381" -1325.3 57.5 946.5)    ;; corner of high ledge on way to last cell
+  (move-actor "money-4791" -1307.5 52.5 952.5)    ;; corner of high ledge on way to last cell
+  (move-actor "money-4382" -1288.9 50.0 909.7)    ;; up high near green eco pill play hint
+  (move-actor "money-4793" -1243.0 36.0 950.0)    ;; floating above inner geyser
+  (move-actor "money-4792" -1286.5 43.0 949.0)    ;; upper waterfall
+  
+  (none)
+  )
