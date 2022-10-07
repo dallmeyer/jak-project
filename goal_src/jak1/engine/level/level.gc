@@ -1052,6 +1052,9 @@
 
 ;; method 10 level
 (define-extern money type)
+(define-extern crate type)
+(define-extern springbox type)
+(define-extern fuel-cell type)
 (defmethod is-object-visible? level ((obj level) (arg0 int) (actor entity))
   "Is arg0 visible? Note that this will return #f if the visibility data is not loaded."
 
@@ -1059,6 +1062,8 @@
   (with-pc 
     (if (or (-> *pc-settings* force-actors?) 
             (= (-> (the entity-actor actor) etype) money)  ;; always show orba
+            (= (-> (the entity-actor actor) etype) crate)  ;; always show crates
+            (= (-> (the entity-actor actor) etype) fuel-cell)  ;; always show cells
             )
       (return #t)
       )

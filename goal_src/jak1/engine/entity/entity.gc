@@ -1810,7 +1810,12 @@
                          )
                        )
                       (else
-                        (when (and (-> sv-32 process) (zero? (logand (-> sv-32 perm status) (entity-perm-status bit-3))) (!= (-> (the entity-actor (-> sv-32 entity)) etype) money))
+                        (when (and (-> sv-32 process)
+                                   (zero? (logand (-> sv-32 perm status) (entity-perm-status bit-3)))
+                                   (!= (-> (the entity-actor (-> sv-32 entity)) etype) money)
+                                   (!= (-> (the entity-actor (-> sv-32 entity)) etype) crate)
+                                   (!= (-> (the entity-actor (-> sv-32 entity)) etype) fuel-cell)
+                                   )
                           (kill! (-> sv-32 entity))
                           (set! sv-24 (+ sv-24 1))
                           )

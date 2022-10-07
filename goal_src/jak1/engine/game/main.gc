@@ -598,6 +598,8 @@
   )
 
 (define-extern hide-orba (function none))
+(define-extern hide-flies (function none))
+(define-extern hide-cells (function none))
 (defbehavior display-loop process ()
   "This is in progress..."
 
@@ -627,6 +629,8 @@
       (profiler-instant-event "display-loop-top")
 
       (hide-orba)
+      (hide-flies)
+      (hide-cells)
 
       ;; drawing effects to be used in foreground drawing.
       (with-profiler "foreground-effects"
