@@ -1,28 +1,22 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
-(define-extern move-actor (function process-tree float float float none))
 (defun move-actor ((actor process-tree) (x float) (y float) (z float))
-  (when (not (and (type-type? (-> actor type) money)
-                  (logtest? (-> (the money actor) flags) (collectable-flags suck))  ;; don't move if being blue-eco-sucked
-                  (logtest? (-> (the money actor) flags) (collectable-flags anim))  ;; don't move if in animation (let flies jump)
-                  )
-             )
-    (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
-
-    (cond
-      ((type-type? (-> actor type) fuel-cell)
-        (set-vector! (-> (the fuel-cell actor) base) (meters x) (meters y) (meters z) 1.0)
-        (set-vector! (-> (the fuel-cell actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
-        )
-      ((type-type? (-> actor type) money)
-        (set-vector! (-> (the money actor) base) (meters x) (meters y) (meters z) 1.0)
-        (set-vector! (-> (the money actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
-        )
-      ((type-type? (-> actor type) crate)
-        (set-vector! (-> (the crate actor) base) (meters x) (meters y) (meters z) 1.0)
-        (set-vector! (-> (the crate actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
-        )
+  (cond
+    ((type-type? (-> actor type) fuel-cell)
+      (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+      (set-vector! (-> (the fuel-cell actor) base) (meters x) (meters y) (meters z) 1.0)
+      (set-vector! (-> (the fuel-cell actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
+      )
+    ((and (type-type? (-> actor type) money) (not (logtest? (-> (the money actor) flags) (collectable-flags suck))))  ;; don't move orbs if being blue-eco-sucked
+      (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+      (set-vector! (-> (the money actor) base) (meters x) (meters y) (meters z) 1.0)
+      (set-vector! (-> (the money actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
+      )
+    ((and (type-type? (-> actor type) crate) (= (-> (the crate actor) smush amp) 0.0)) ;; only move crates if they're not jumping
+      (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+      (set-vector! (-> (the crate actor) base) (meters x) (meters y) (meters z) 1.0)
+      (set-vector! (-> (the crate actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
       )
     )
   (none)
@@ -88,6 +82,49 @@
   (move-actor-str "money-4793" -1188.7 32.7 888.4)    ;; up high near middle spike pits
   (move-actor-str "money-4792" -1286.5 43.0 949.0)    ;; upper waterfall
 
+  ;; sandover
+  (move-actor-str "money-2676" -26.5 22.0 -83.7)      ;; top of farmers hut
+  (move-actor-str "money-2689" -30.3 8.7 -68.4)       ;; tucked under farmers hut roof
+  (move-actor-str "money-2690" 6.5 23.2 -108.3)       ;; tree towards fire canyon
+  (move-actor-str "money-2692" 84.6 28.0 30.0)        ;; ledge above oracle
+  (move-actor-str "money-2688" 79.7 18.0 -41.5)       ;; outer ledge on path to oracle
+  (move-actor-str "money-2691" -25.5 4.7 -66.6)       ;; fireplace in farmers hut
+  (move-actor-str "money-2669" -128.4 47.5 221.0)     ;; in samos hut
+  (move-actor-str "money-2671" -107.9 35.0 219.7)     ;; behind samos hut
+  (move-actor-str "money-2672" -165.2 34.0 207.8)     ;; behind samos hut
+  (move-actor-str "money-2674" -116.9 21.5 207.3)     ;; on pillars supporting samos hut 
+  (move-actor-str "money-2670" -72.2 25.5 141.4)      ;; in tree coming from samos hut
+  (move-actor-str "money-2673" -75.5 1.8 109.7)       ;; in broken boat
+  (move-actor-str "money-2675" -125.0 21.5 42.7)      ;; mayors roof in the back
+  (move-actor-str "money-2677" -58.0 15.69 -34.2)     ;; in cage in bird ladys house
+  (move-actor-str "money-2678" -50.3 11.5 36.9)       ;; by uncles bed
+  (move-actor-str "money-2679" -63.5 16.3 71.5)       ;; in net in fishermans
+  (move-actor-str "money-2680" 13.8 12.2 20.5)        ;; near blue eco spawn
+  (move-actor-str "money-2681" 74.9 6.5 25.0)         ;; below oracle
+  (move-actor-str "money-2682" -141.4 9.8 -13.5)      ;; behind sculptors house
+  (move-actor-str "money-2683" -103.6 1.5 -38.5)      ;; corner by stairs to beach
+  (move-actor-str "money-2684" 117.1 7.8 -51.2)       ;; upper corner ledge in water between yakows/oracle
+  (move-actor-str "money-2685" 73.5 14.5 -169.0)      ;; ledge in crop field
+  (move-actor-str "money-2686" 48.6  20.5 -85.1)      ;; ledge above yakows towards oracle
+  (move-actor-str "money-2687" -21.6 0.0 100.0)       ;; under fishermans boat
+  (move-actor-str "money-3539" -43.7 3.7 25.5)        ;; behind uncle house
+  (move-actor-str "money-3540" -157.0 14.8 -87.8)     ;; high ledge towards beach
+  (move-actor-str "money-3537" -139.4 11.0 -109.0)    ;; high ledge towards beach 2
+  (move-actor-str "money-3541" -126.2 12.5 -96.0)     ;; high ledge towards beach 3
+  (move-actor-str "money-3538" -101.5 11.8 -73.0)     ;; corner ledge towards beach
+  (move-actor-str "money-2693" -121.9 12.5 49.9)      ;; back left room of mayors house
+  (move-actor-str "money-2694" -146.2 35.0 211.5)     ;; near keira
+  (move-actor-str "money-2695" -118.0 46.5 208.0)     ;; in samos hut, left of warp gate
+  (move-actor-str "money-2696" -105.4 16.4 73.25)     ;; in fountain
+  (move-actor-str "money-2697" -122.1 19.0 14.5)      ;; tree by mayor/sculptor
+  (move-actor-str "money-2698" 207.5 12.2 -122.0)     ;; near mirrors
+  ;; 15 in orb-cache-top-4 but think the bottom is built into level so...
+
+  ;; jungle
+  ;; (move-actor-str "money-2693" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2693" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2693" -1286.5 43.0 949.0)    ;; 
+
   (none)
   )
 
@@ -100,6 +137,15 @@
   (move-actor-str "crate-2956" -1180.3 62.5 1025.4)   ;; further4 up top
   (move-actor-str "crate-2955" -1156.5 61.6 1031.7)   ;; further5 up top
   (move-actor-str "crate-2960" -1109.5 -0.2 1060.5)   ;; in pool near front geyser (jump from further 5)
+
+  ;; sandover
+  (move-actor-str "crate-3142" -132.6 11.9 32.3)      ;; behind mayors
+  (move-actor-str "crate-3141" -50.8 10.5 -44.0)      ;; corner ledge by bird ladys house
+  (move-actor-str "crate-3143" -99.0 17.6 -35.2)      ;; ledge near beach/sculptor
+  (move-actor-str "crate-3144" -82.0 21.5 -10.3)      ;; high ledge between bridges
+  (move-actor-str "crate-3147" -131.5 15.2 -20.7)     ;; on sculptor rock
+  (move-actor-str "crate-3146" 32.5 12.5 -132.7)      ;; on tree 
+  (move-actor-str "crate-3145" 153.0 11.0 -99.9)      ;; ledge coming back from FJ
   
   (none)
   )
