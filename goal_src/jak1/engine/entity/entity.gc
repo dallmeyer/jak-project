@@ -743,6 +743,7 @@
   )
 
 (define-extern money type)
+(define-extern orb-cache-top type)
 (define-extern crate type)
 (define-extern crate-buzzer type)
 (define-extern springbox type)
@@ -918,7 +919,7 @@
                      )
                    )
                   ((and (or (= arg0 'full) (-> s0-0 extra process)) 
-                        (or (type-type? (-> s0-0 extra process type) money) (type-type? (-> s0-0 extra process type) fuel-cell) (type-type? (-> s0-0 extra process type) crate) (type-type? (-> s0-0 extra process type) crate-buzzer))
+                        (or (type-type? (-> s0-0 extra process type) money) (type-type? (-> s0-0 extra process type) fuel-cell) (type-type? (-> s0-0 extra process type) crate) (type-type? (-> s0-0 extra process type) crate-buzzer) (type-type? (-> s0-0 extra process type) orb-cache-top))
                         )
                    (add-debug-x #t (bucket-id debug-no-zbuf) s1-0 (the-as rgba (if (-> s0-0 extra process)
                                                                                    (the-as uint #x8080ff80)

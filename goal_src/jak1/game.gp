@@ -1960,7 +1960,6 @@
  "camera/pov-camera.gc"
  "game/powerups.gc"
  "common-obs/crates.gc"
- "game/mods.gc"
  "ui/hud.gc"
  "ui/hud-classes.gc"
  "ui/progress/progress-static.gc"
@@ -2050,6 +2049,13 @@
 (goal-src "pc/util/anim-tester-x.gc" "pckernel" "gstring" "joint" "process-drawable" "art-h" "effect-control")
 (goal-src "pc/hud-classes-pc.gc" "pckernel" "hud" "battlecontroller" "generic-obs")
 
+(goal-src-sequence
+  "engine/"
+   :deps ;; no idea what these depend on, make it depend on the whole engine
+   ("$OUT/obj/ticky.o"
+    "$OUT/obj/jungle-mirrors.o")
+   "game/mods.gc"
+  )
 ;; the debug menu is modified to include PC specific options:
 (goal-src "engine/debug/default-menu.gc" "anim-tester-x" "part-tester")
 

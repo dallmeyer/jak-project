@@ -1,39 +1,59 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
-(defun move-actor ((actor-entity entity) (x float) (y float) (z float))
-  (let ((actor (-> actor-entity extra process)))
-    (cond
-      ((type-type? (-> actor type) fuel-cell)
-        (set-vector! (-> actor-entity extra trans) (meters x) (meters y) (meters z) 1.0)
-        (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
-        (set-vector! (-> (the fuel-cell actor) base) (meters x) (meters y) (meters z) 1.0)
-        (set-vector! (-> (the fuel-cell actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
-        )
-      ((and (type-type? (-> actor type) money) (not (logtest? (-> (the money actor) flags) (collectable-flags suck))))  ;; don't move orbs if being blue-eco-sucked
-        (set-vector! (-> actor-entity extra trans) (meters x) (meters y) (meters z) 1.0)
-        (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
-        (set-vector! (-> (the money actor) base) (meters x) (meters y) (meters z) 1.0)
-        (set-vector! (-> (the money actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
-        )
-      ((and (type-type? (-> actor type) crate) (= (-> (the crate actor) smush amp) 0.0)) ;; only move crates if they're not jumping
-        (set-vector! (-> actor-entity extra trans) (meters x) (meters y) (meters z) 1.0)
-        (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
-        (set-vector! (-> (the crate actor) base) (meters x) (meters y) (meters z) 1.0)
-        (set-vector! (-> (the crate actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
-        )
-      (else
-        (set-vector! (-> actor-entity extra trans) (meters x) (meters y) (meters z) 1.0)
-        ;; (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+(defun move-actor-str ((actor-name string) (x float) (y float) (z float))
+  (when (entity-by-name actor-name)
+    (let* ((actor-entity (entity-by-name actor-name))
+           (actor (-> actor-entity extra process))
+           )
+      (when actor
+        (case (-> actor type)
+          ((fuel-cell)
+            (set-vector! (-> actor-entity trans) (meters x) (meters y) (meters z) 1.0)
+            (set-vector! (-> actor-entity extra trans) (meters x) (meters y) (meters z) 1.0)
+            (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+            (set-vector! (-> (the fuel-cell actor) base) (meters x) (meters y) (meters z) 1.0)
+            (set-vector! (-> (the fuel-cell actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
+            )
+          ((orb-cache-top)
+            (set-vector! (-> actor-entity trans) (meters x) (meters y) (meters z) 1.0)
+            (set-vector! (-> actor-entity extra trans) (meters x) (meters y) (meters z) 1.0)
+            )
+          ((money)
+            (when (not (logtest? (-> (the money actor) flags) (collectable-flags suck)))  ;; don't move orbs if being blue-eco-sucked
+              (set-vector! (-> actor-entity trans) (meters x) (meters y) (meters z) 1.0)
+              (set-vector! (-> actor-entity extra trans) (meters x) (meters y) (meters z) 1.0)
+              (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+              (set-vector! (-> (the money actor) base) (meters x) (meters y) (meters z) 1.0)
+              (set-vector! (-> (the money actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
+              )
+            )
+          ((crate crate-buzzer)
+            (when (= (-> (the crate actor) smush amp) 0.0) ;; only move crates if they're not jumping
+              (set-vector! (-> actor-entity trans) (meters x) (meters y) (meters z) 1.0)
+              (set-vector! (-> actor-entity extra trans) (meters x) (meters y) (meters z) 1.0)
+              (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+              (set-vector! (-> (the crate actor) base) (meters x) (meters y) (meters z) 1.0)
+              (set-vector! (-> (the crate actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
+              )
+            )
+          ;; only halfway works, probably missing *-reflector-trans vectors I'm guessing
+          ;; ((periscope)
+          ;;   (set-vector! (-> actor-entity trans) (meters x) (meters y) (meters z) 1.0)
+          ;;   (set-vector! (-> actor-entity extra trans) (meters x) (meters y) (meters z) 1.0)
+          ;;   (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+          ;;   (set-vector! (-> (the periscope actor) base) (meters x) (meters y) (meters z) 1.0)
+          ;;   (set-vector! (-> (the periscope actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
+          ;;   )
+          (else
+            (format 0 "unexpected actor type ~S ~S ~S~%" actor-name (-> actor-entity type) (-> actor type))
+            (set-vector! (-> actor-entity trans) (meters x) (meters y) (meters z) 1.0)
+            (set-vector! (-> actor-entity extra trans) (meters x) (meters y) (meters z) 1.0)
+            ;; (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+            )
+          )
         )
       )
-    )
-  (none)
-  )
-
-(defun move-actor-str ((actor string) (x float) (y float) (z float))
-  (when (entity-by-name actor)
-    (move-actor (entity-by-name actor) x y z)
     )
   (none)
   )
@@ -130,9 +150,134 @@
   (move-actor-str "orb-cache-top-4" 62.0 12.8 -6.92)  ;; take blue eco towards oracle
 
   ;; jungle
-  ;; (move-actor-str "money-2693" -1286.5 43.0 949.0)    ;; 
-  ;; (move-actor-str "money-2693" -1286.5 43.0 949.0)    ;; 
-  ;; (move-actor-str "money-2693" -1286.5 43.0 949.0)    ;; 
+  (move-actor-str "money-4850" 237.0 -0.5 -169.0)    ;; bottom of entrance waterfall
+  (move-actor-str "money-4849" 279.5 16.3 -126.8)    ;; ocean side cliff near entrance
+  (move-actor-str "money-4851" 380.7 29.5 -123.9)    ;; past scout fly farther along ocean cliff
+  (move-actor-str "money-4852" 364.5 37.0 -137.0)    ;; in tree near scout fly/mirror by entrance
+  (move-actor-str "money-3529" 326.5 36.0 -160.8)    ;; in tree between entrance and right mirrors
+  (move-actor-str "money-3530" 329.5 19.5 -190.8)    ;; behind some roots in upper river
+  (move-actor-str "money-3531" 219.0 18.0 -218.5)    ;; in crack near bigger waterfall/steps by fisherman
+  (move-actor-str "money-3532" 210.2 -4.5 -231.5)    ;; dive in bigger waterfall by fisherman
+  (move-actor-str "money-3533" 295.3 4.0 -226.5)     ;; smaller waterfall by fisherman
+  (move-actor-str "money-3534" 246.0 36.9 -301.1)    ;; behind roots between temple exit and scout fly on pillar
+  (move-actor-str "money-3535" 214.3 37.5 -259.0)    ;; end of cliff behind scout fly on pillar towards waterfall
+  (move-actor-str "money-3536" 238.5 37.3 -247.8)    ;; in tree roots near circuling pillars to scout fly
+  (move-actor-str "money-495" 229.7 56.0 -252.2)     ;; in upper tree near pillar scout fly
+  (move-actor-str "money-494" 313.8 21.2 -242.1)     ;; on ledge near smaller waterfall
+  (move-actor-str "money-215" 258.4 42.6 -317.7)     ;; in tree near temple exit
+  (move-actor-str "money-214" 300.5 12.5 -335.5)     ;; in shrubs on ledge near orb cache
+  (move-actor-str "money-212" 376.8 1.0 -330.8)      ;; in corner on path by lower river
+  (move-actor-str "money-213" 345.5 27.5 -361.5)     ;; cliff behind trees, visible while crossing bridge over orb cache
+  (move-actor-str "money-206" 369.3 21.5 -324.0)     ;; ledge above lower river
+  (move-actor-str "money-207" 366.8 29.5 -356.9)     ;; among tree roots on upper path by blue eco bridge
+  (move-actor-str "money-208" 399.7 42.8 -348.5)     ;; up in tree on upper path by blue eco bridge
+  (move-actor-str "money-209" 473.9 25.0 -303.5)     ;; behind trees on upper path by blue eco bridge
+  ;; (move-actor-str "money-210" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-216" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-217" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-4152" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-4153" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-4154" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-4155" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-4156" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-4157" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-4158" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-4159" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-183" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-184" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-185" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-186" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-3922" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-218" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-219" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-220" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-221" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-187" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-188" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-189" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-190" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-496" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-497" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-498" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-191" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-192" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-193" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-194" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-195" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-196" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-197" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-198" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-199" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-200" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-201" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-202" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-203" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-204" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-205" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-4853" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-4854" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2801" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2802" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2803" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-492" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-493" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-552" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-556" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-555" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-554" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-550" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-551" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-499" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-500" -1286.5 43.0 949.0)    ;; 
+  (move-actor-str "orb-cache-top-7" 292.3 21.7 -200.8)  ;; amongst trees between entrance and temple
+  ;; jungle temple
+  ;; (move-actor-str "money-2814" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2815" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2816" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2817" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2818" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2829" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2830" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2831" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2832" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2839" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-4862" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-4860" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2840" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-4863" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-4861" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2841" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2833" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2834" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2835" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2836" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2837" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2838" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-3760" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-3761" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-3762" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-3763" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-3764" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-3765" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-3766" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-3767" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-3768" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-3769" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-3770" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-3771" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2809" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2810" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2811" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2812" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2813" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2804" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2805" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2806" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2807" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2808" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2843" -1286.5 43.0 949.0)    ;; 
+  ;; (move-actor-str "money-2842" -1286.5 43.0 949.0)    ;; 
+  ;; plant-boss-3 has 5 more
 
   (none)
   )
@@ -156,6 +301,15 @@
   (move-actor-str "crate-3146" 32.5 12.5 -132.7)      ;; on tree 
   (move-actor-str "crate-3145" 153.0 11.0 -99.9)      ;; ledge coming back from FJ
   
+  ;; FJ
+  (move-actor-str "crate-689" 221.2 21.1 -171.7)      ;; near entrance waterfall
+  (move-actor-str "crate-688" 368.9 23.0 -118.8)      ;; farther down ocean cliff
+  (move-actor-str "crate-3" 332.6 26.9 -260.2)        ;; in rocks on side of temple
+  (move-actor-str "crate-47" 205.9 48.5 -223.9)       ;; top of waterfall (jump from pillar scout fly)
+  ;; (move-actor-str "crate-1844" )     ;; 
+  ;; (move-actor-str "crate-58" )      ;; 
+  ;; (move-actor-str "crate-28" )      ;; 
+  
   (none)
   )
 
@@ -166,6 +320,15 @@
   (move-actor-str "fuel-cell-54" -1308.0 37.0 1047.9)   ;; floating above start/end
 
   ;; sandover (0 - no open cells)
+
+  ;; FJ outdoors (3)
+  ;; (move-actor-str "fuel-cell-46" -1264.0 55.0 890.5)    ;; up top on low eco blue door skip route
+  ;; (move-actor-str "fuel-cell-49" -1264.0 55.0 890.5)    ;; up top on low eco blue door skip route
+  ;; (move-actor-str "fuel-cell-1" -1264.0 55.0 890.5)    ;; up top on low eco blue door skip route
+  ;; FJ temple (?)
+  ;; eggtop-6
+  ;; plant-boss-3
+
 
   (none)
   )
