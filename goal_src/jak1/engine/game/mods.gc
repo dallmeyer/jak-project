@@ -1,30 +1,39 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
-(defun move-actor ((actor process-tree) (x float) (y float) (z float))
-  (cond
-    ((type-type? (-> actor type) fuel-cell)
-      (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
-      (set-vector! (-> (the fuel-cell actor) base) (meters x) (meters y) (meters z) 1.0)
-      (set-vector! (-> (the fuel-cell actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
-      )
-    ((and (type-type? (-> actor type) money) (not (logtest? (-> (the money actor) flags) (collectable-flags suck))))  ;; don't move orbs if being blue-eco-sucked
-      (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
-      (set-vector! (-> (the money actor) base) (meters x) (meters y) (meters z) 1.0)
-      (set-vector! (-> (the money actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
-      )
-    ((and (type-type? (-> actor type) crate) (= (-> (the crate actor) smush amp) 0.0)) ;; only move crates if they're not jumping
-      (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
-      (set-vector! (-> (the crate actor) base) (meters x) (meters y) (meters z) 1.0)
-      (set-vector! (-> (the crate actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
+(defun move-actor ((actor-entity entity) (x float) (y float) (z float))
+  (let ((actor (-> actor-entity extra process)))
+    (cond
+      ((type-type? (-> actor type) fuel-cell)
+        (set-vector! (-> actor-entity extra trans) (meters x) (meters y) (meters z) 1.0)
+        (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+        (set-vector! (-> (the fuel-cell actor) base) (meters x) (meters y) (meters z) 1.0)
+        (set-vector! (-> (the fuel-cell actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
+        )
+      ((and (type-type? (-> actor type) money) (not (logtest? (-> (the money actor) flags) (collectable-flags suck))))  ;; don't move orbs if being blue-eco-sucked
+        (set-vector! (-> actor-entity extra trans) (meters x) (meters y) (meters z) 1.0)
+        (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+        (set-vector! (-> (the money actor) base) (meters x) (meters y) (meters z) 1.0)
+        (set-vector! (-> (the money actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
+        )
+      ((and (type-type? (-> actor type) crate) (= (-> (the crate actor) smush amp) 0.0)) ;; only move crates if they're not jumping
+        (set-vector! (-> actor-entity extra trans) (meters x) (meters y) (meters z) 1.0)
+        (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+        (set-vector! (-> (the crate actor) base) (meters x) (meters y) (meters z) 1.0)
+        (set-vector! (-> (the crate actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
+        )
+      (else
+        (set-vector! (-> actor-entity extra trans) (meters x) (meters y) (meters z) 1.0)
+        ;; (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+        )
       )
     )
   (none)
   )
 
 (defun move-actor-str ((actor string) (x float) (y float) (z float))
-  (when (process-by-ename actor)
-    (move-actor (process-by-ename actor) x y z)
+  (when (entity-by-name actor)
+    (move-actor (entity-by-name actor) x y z)
     )
   (none)
   )
@@ -118,7 +127,7 @@
   (move-actor-str "money-2696" -105.4 16.4 73.25)     ;; in fountain
   (move-actor-str "money-2697" -122.1 19.0 14.5)      ;; tree by mayor/sculptor
   (move-actor-str "money-2698" 207.5 12.2 -122.0)     ;; near mirrors
-  ;; 15 in orb-cache-top-4 but think the bottom is built into level so...
+  (move-actor-str "orb-cache-top-4" 62.0 12.8 -6.92)  ;; take blue eco towards oracle
 
   ;; jungle
   ;; (move-actor-str "money-2693" -1286.5 43.0 949.0)    ;; 
@@ -130,13 +139,13 @@
 
 (defun hide-flies ()
   ;; geyser
-  (move-actor-str "crate-2961" -1201.5 37.5 1010.0)   ;; up top beyond cell cutscene skip route
-  (move-actor-str "crate-2959" -1204.9 46.0 1014.5)   ;; further up top
+  (move-actor-str "crate-2960" -1215.0 32.4 1008.4)   ;; up top on cell cutscene skip route
+  (move-actor-str "crate-2961" -1201.5 37.5 1010.0)   ;; up top on cell cutscene skip route
+  (move-actor-str "crate-2959" -1204.9 46.0 1014.5)   ;; further up top from ^
   (move-actor-str "crate-2958" -1206.0 51.0 1020.5)   ;; further2 up top 
   (move-actor-str "crate-2957" -1192.5 60.3 1023.4)   ;; further3 up top
   (move-actor-str "crate-2956" -1180.3 62.5 1025.4)   ;; further4 up top
   (move-actor-str "crate-2955" -1156.5 61.6 1031.7)   ;; further5 up top
-  (move-actor-str "crate-2960" -1109.5 -0.2 1060.5)   ;; in pool near front geyser (jump from further 5)
 
   ;; sandover
   (move-actor-str "crate-3142" -132.6 11.9 32.3)      ;; behind mayors
@@ -152,9 +161,11 @@
 
 (defun hide-cells ()
   ;; geyser (3)
-  (move-actor-str "fuel-cell-55" -1214.9 32.5 1007.6)   ;; up top on cell cutscene skip route
+  (move-actor-str "fuel-cell-55" -1264.0 55.0 890.5)    ;; up top on low eco blue door skip route
   (move-actor-str "fuel-cell-53" -1243.0 36.0 950.0)    ;; floating above inner geyser
   (move-actor-str "fuel-cell-54" -1308.0 37.0 1047.9)   ;; floating above start/end
+
+  ;; sandover (0 - no open cells)
 
   (none)
   )

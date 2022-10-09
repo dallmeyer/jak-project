@@ -2028,7 +2028,22 @@
   (initialize-params self 0 (the-as float 1024.0))
   (logclear! (-> self fact options) (fact-options can-collect))
   (update-transforms! (-> self root-override))
+
   (let ((gp-1 (res-lump-struct (-> self entity) 'movie-pos structure :time (the-as float -1000000000.0))))
+    (case (-> (ppointer->process (-> (ppointer->process (-> self parent)) parent)) name) :comp name=
+      (('crate-2961 'crate-2959 'crate-2958 'crate-2957 'crate-2956 'crate-2955 'crate-2960)
+        ;; geyser -> in back geyser (zoom walk from last fly)
+        (format 0 "geyser override~%")
+        (set-vector! (the-as vector gp-1) (meters -1110.5) (meters 13.0) (meters 1058.0) 1.0)
+        )
+      (("crate-3142" "crate-3141" "crate-3143" "crate-3144" "crate-3147" "crate-3146" "crate-3145")
+        ;; sandover -> on farmers roof
+        (set-vector! (the-as vector gp-1) (meters -9.0) (meters 15.0) (meters -60.5) 1.0)
+        )
+      (else
+        (format 0 "no movie-pos override~%"))
+      )
+
     (cond
       ((and *debug-segment* (< (-> *fuel-cell-tune-pos* w) 1000000000.0))
        (set! (-> self jump-pos quad) (-> *fuel-cell-tune-pos* quad))
