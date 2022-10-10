@@ -1504,7 +1504,9 @@
   (none)
   )
 
+(define-extern mod-override-init-position (function process-drawable entity-actor none))
 (defun process-drawable-from-entity! ((arg0 process-drawable) (arg1 entity-actor))
+  (mod-override-init-position arg0 arg1)
   (logior! (-> arg0 mask) (process-mask actor-pause))
   (set! (-> arg0 root trans quad) (-> arg1 extra trans quad))
   (quaternion-copy! (-> arg0 root quat) (-> arg1 quat))
