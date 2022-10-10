@@ -152,12 +152,12 @@
     (('money-497)       (set-vector-meters! (-> arg0 extra trans) 454.6   17.7    -327.0))    ;; in tree roots near blue eco bridge
     (('money-498)       (set-vector-meters! (-> arg0 extra trans) 396.0   12.5    -293.7))    ;; right under cliff to temple blue eco gate
     (('money-191)       (set-vector-meters! (-> arg0 extra trans) 407.5   23.0    -238.6))    ;; corner above blue eco launcher
-    ;; (('money-192)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-193)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-194)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-195)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-196)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-197)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
+    (('money-192)       (set-vector-meters! (-> arg0 extra trans) 347.5   21.5    -134.1))    ;; tree roots near entrance/ocean scoutfly
+    (('money-193)       (set-vector-meters! (-> arg0 extra trans) 320.8   29.5    -211.6))    ;; tree roots near 3rd normal mirrors
+    (('money-194)       (set-vector-meters! (-> arg0 extra trans) 299.7   37.0    -203.6))    ;; in tree near 3rd normal mirros
+    (('money-195)       (set-vector-meters! (-> arg0 extra trans) 317.1   20.0    -201.2))    ;; in tree roots in upper river near 3rd mirrors
+    (('money-196)       (set-vector-meters! (-> arg0 extra trans) 232.8   40.5    -184.5))    ;; upper cliff between fisherman and entrance
+    (('money-197)       (set-vector-meters! (-> arg0 extra trans) 308.5   37.5    -135.0))    ;; in trees near ocean
     ;; (('money-198)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
     ;; (('money-199)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
     ;; (('money-200)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
