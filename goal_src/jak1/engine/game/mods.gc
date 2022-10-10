@@ -270,6 +270,15 @@
     ;; (('eggtop-6) (none)) 
     ;; (('plant-boss-3) (none))
 
+    (('reflector-mirror-2) (set-vector-meters! (-> arg0 extra trans) 439.3 40.1 -264.6))  ;; on cliff near normal location
+    (('periscope-11) (set-vector-meters! (-> arg0 extra trans) 435.9 25.3 -265.5))  ;; below cliff near normal location
+    (('periscope-12) (set-vector-meters! (-> arg0 extra trans) 417.3 17.3 -294.4))  ;; "on" blue eco bridge
+    (('periscope-13) (set-vector-meters! (-> arg0 extra trans) 359.6 88.5 -258.3)   ;; near top of temple
+      (set! (deref float (res-lump-data (entity-by-name "periscope-13") 'height-info pointer)) 80000.0) ;; lower height
+      )
+    (('periscope-14) (set-vector-meters! (-> arg0 extra trans) 287.4 28.4 -293.0))  ;; on cylinder near temple exit
+    (('periscope-15) (set-vector-meters! (-> arg0 extra trans) 258.6 18.9 -179.0))  ;; in river near entrance
+
     (else
       (when #f
         (format 0 "entity not repositioned: ~S~%" (-> obj name))
