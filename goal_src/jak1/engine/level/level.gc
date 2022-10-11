@@ -1056,6 +1056,7 @@
 (define-extern crate-buzzer type)
 (define-extern orb-cache-top type)
 (define-extern periscope type)
+(define-extern yakow type)
 (define-extern plant-boss type)
 (define-extern fisher type)
 (define-extern springbox type)
@@ -1072,6 +1073,7 @@
             (= (-> (the entity-actor actor) etype) fisher)  ;; always show crates
             (= (-> (the entity-actor actor) etype) fuel-cell)  ;; always show cells
             (= (-> (the entity-actor actor) etype) orb-cache-top)  ;; always show orb caches
+            (= (-> (the entity-actor actor) etype) yakow)  ;; always show yakows
             (= (-> (the entity-actor actor) etype) periscope)  ;; always show periscopes
             (= (-> (the entity-actor actor) etype) plant-boss)  ;; always show plant-boss
             )

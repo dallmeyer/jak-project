@@ -273,7 +273,13 @@
     (('fuel-cell-53) (override-fuel-cell-position arg0 -1243.0 36.0 950.0))    ;; floating above inner geyser
     (('fuel-cell-54) (override-fuel-cell-position arg0 -1308.0 37.0 1047.9))   ;; floating above start/end
 
-    ;; Sandover cells (none)
+    ;; Sandover cells
+    (('farmer-3) (set-vector-meters! (-> arg0 extra trans) -27.0 3.0 -78.0)) ;; sitting in his house
+      (('yakow-8) (set-vector-meters! (-> arg0 extra trans) 91.9 1.8 -152.1)) ;; in crop field
+      (('yakow-9) (set-vector-meters! (-> arg0 extra trans) 52.8 22.7 -69.6)) ;; where upper scout fly normally is
+      (('yakow-10) (set-vector-meters! (-> arg0 extra trans) -19.2 20.2 -97.9)) ;; towards FC
+      (('yakow-11) (set-vector-meters! (-> arg0 extra trans) 62.2 13.9 -33.3))  ;; towards oracle
+      (('yakow-12) (set-vector-meters! (-> arg0 extra trans) -7.4 17.7 -0.4)) ;; blue eco cache
 
     ;; FJ outside cells
     (('reflector-mirror-2) (set-vector-meters! (-> arg0 extra trans) 439.3 40.1 -264.6))  ;; on cliff near normal location
