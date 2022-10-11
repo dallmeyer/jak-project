@@ -146,8 +146,10 @@
     (('money-221)       (set-vector-meters! (-> arg0 extra trans) 439.8   29.5    -220.5))    ;; underneath generator
     (('money-187)       (set-vector-meters! (-> arg0 extra trans) 473.4   25.0    -185.2))    ;; ledge above island cell
     (('money-188)       (set-vector-meters! (-> arg0 extra trans) 406.8   46.7    -174.7))    ;; ledge between generator and ocean
-    (('money-189)       (set-vector-meters! (-> arg0 extra trans) 387.2   45.0    -144.0))    ;; farther down ledge between generator and ocean (over waterfall)
-    (('money-190)       (set-vector-meters! (-> arg0 extra trans) 407.5   47.0    -162.0))    ;; ^ following this path, backtrack from waterfall up towards cell
+    (('money-189)       (set-vector-meters! (-> arg0 extra trans) 393.9   45.5    -150.2))    ;; ^ across waterfall
+    (('money-499)       (set-vector-meters! (-> arg0 extra trans) 404.8   51.8    -150.1))    ;; ^ up towards ocean cliff cell
+    (('money-190)       (set-vector-meters! (-> arg0 extra trans) 407.5   47.0    -162.0))    ;; ^ following this path, above waterfall
+    (('money-500)       (set-vector-meters! (-> arg0 extra trans) 409.5   55.5    -164.8))    ;; ^ last one before cliff cell
     (('money-496)       (set-vector-meters! (-> arg0 extra trans) 403.0   19.5    -175.3))    ;; corner by small waterfall between entrance/generator
     (('money-497)       (set-vector-meters! (-> arg0 extra trans) 454.6   17.7    -327.0))    ;; in tree roots near blue eco bridge
     (('money-498)       (set-vector-meters! (-> arg0 extra trans) 396.0   12.5    -293.7))    ;; right under cliff to temple blue eco gate
@@ -163,24 +165,30 @@
     (('money-200)       (set-vector-meters! (-> arg0 extra trans) 292.4   35.7    -134.3))    ;; in tree near entrance
     (('money-201)       (set-vector-meters! (-> arg0 extra trans) 268.8   21.5    -143.8))    ;; in tree roots near entrance
     (('money-202)       (set-vector-meters! (-> arg0 extra trans) 250.0   16.5    -157.1))    ;; under entrance bridge
-    ;; (('money-203)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-204)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-205)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-4853)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-4854)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-2801)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-2802)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-2803)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-492)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-493)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-552)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-556)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-555)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-554)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-550)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-551)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-499)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-500)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
+    (('money-203)       (set-vector-meters! (-> arg0 extra trans) 234.6   17.5    -181.2))    ;; in corner top of entrance waterfall 
+    (('money-204)       (set-vector-meters! (-> arg0 extra trans) 239.5   20.8    -247.5))    ;; on wall under pillar scout fly
+    (('money-205)       (set-vector-meters! (-> arg0 extra trans) 216.1   23.0    -261.0))    ;; on wall under pillar scout fly
+    (('money-4853)      (set-vector-meters! (-> arg0 extra trans) 274.5   4.0     -261.7))    ;; behind plant near fisherman
+    (('money-4854)      (set-vector-meters! (-> arg0 extra trans) 316.1   13.5    -277.8))    ;; cliff at top of trampoline stairs
+    (('money-2801)      (set-vector-meters! (-> arg0 extra trans) 307.7   11.3    -297.3))    ;; in grass near middle trampoline
+    (('money-2802)      (set-vector-meters! (-> arg0 extra trans) 329.4   16.8    -324.1))    ;; below middle of last bridge
+    (('money-2803)      (set-vector-meters! (-> arg0 extra trans) 377.9   17.7    -281.8))    ;; right side of temple entrancce
+    (('money-492)       (set-vector-meters! (-> arg0 extra trans) 410.0   27.3    -352.1))    ;; tree roots in back near blue eco bridge
+    (('money-493)       (set-vector-meters! (-> arg0 extra trans) 427.9   -0.2    -253.5))    ;; in crate near blue eco launcher
+    (('money-552)       (set-vector-meters! (-> arg0 extra trans) 260.5   28.2    -281.6))    ;; in dark eco crate near temple exit
+    (('money-556)       (set-vector-meters! (-> arg0 extra trans) 227.7 48.8 -247.0))   ;; in crate on scout fly pillar
+      (('crate-26)        (set-vector-meters! (-> arg0 extra trans) 228.1 48.3 -247.9))
+      (('crate-27)        (set-vector-meters! (-> arg0 extra trans) 228.0 50.2 -247.0))
+      (('crate-25)        (set-vector-meters! (-> arg0 extra trans) 228.1 48.3 -246.3))
+    (('money-555)       (set-vector-meters! (-> arg0 extra trans) 229.1 26.8 -207.9))   ;; in center of X crates
+      (('crate-42)        (set-vector-meters! (-> arg0 extra trans) 229.1 26.6 -207.9))
+    (('money-554)       (set-vector-meters! (-> arg0 extra trans) 457.9 29.3 -234.8))   ;; in crates near original mirror start
+      (('crate-48)        (set-vector-meters! (-> arg0 extra trans) 458.9 29.2 -235.8))
+      (('crate-49)        (set-vector-meters! (-> arg0 extra trans) 458.9 29.2 -234.2))
+      (('crate-31)        (set-vector-meters! (-> arg0 extra trans) 456.9 29.2 -234.2))
+      (('crate-32)        (set-vector-meters! (-> arg0 extra trans) 456.9 29.2 -235.8))
+    (('money-550)       (set-vector-meters! (-> arg0 extra trans) 394.4 30.0 -179.9))    ;; in solitary crate by generator
+    (('money-551)       (set-vector-meters! (-> arg0 extra trans) 389.9 68.7 -241.2))    ;; in lowest blue eco tower
     (('orb-cache-top-7) (set-vector-meters! (-> arg0 extra trans) 292.3 21.7 -200.8))  ;; amongst trees between entrance and temple
     ;; jungle temple orbs
     ;; (('money-2814) (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
@@ -277,7 +285,7 @@
     (('periscope-14) (set-vector-meters! (-> arg0 extra trans) 287.4 28.4 -293.0))  ;; on cylinder near temple exit
     (('periscope-15) (set-vector-meters! (-> arg0 extra trans) 258.6 18.9 -179.0))  ;; in river near entrance
     (('fuel-cell-1) (override-fuel-cell-position arg0 383.5 49.1 -264.5))  ;; above blue eco door    
-    (('fuel-cell-49) (override-fuel-cell-position arg0 425.6 67.5 -180.8))    ;; tough climb up cliff between generator and ocean 
+    (('fuel-cell-49) (override-fuel-cell-position arg0 425.6 68.0 -180.8))    ;; tough climb up cliff between generator and ocean 
     (('fuel-cell-46) (override-fuel-cell-position arg0 326.1 46.0 -207.5))    ;; hidden in trees between entrance/temple
     ;; FJ temple cells
     ;; (('eggtop-6) (none)) 
