@@ -287,6 +287,12 @@
     (('fuel-cell-1) (override-fuel-cell-position arg0 383.5 49.1 -264.5))  ;; above blue eco door    
     (('fuel-cell-49) (override-fuel-cell-position arg0 425.6 68.0 -180.8))    ;; tough climb up cliff between generator and ocean 
     (('fuel-cell-46) (override-fuel-cell-position arg0 326.1 46.0 -207.5))    ;; hidden in trees between entrance/temple
+    ;; (('fisher-1) (set-vector-meters! (-> arg0 extra trans) 476.7 2.1 -230.8)
+    ;;   (set-vector-meters! (-> (the fisher obj) paddle-pos) 480.2 2.1 -228.7)
+    ;;   (set-vector-meters! (-> (the fisher obj) paddle-end 0) 479.2 2.1 -231.8)
+    ;;   (set-vector-meters! (-> (the fisher obj) paddle-end 1) 481.2 2.1 -225.6)
+    ;;   (set-vector-meters! *fisher-camera-backup-trans* 480.2 2.1 -230.7)
+    ;;   )
     ;; FJ temple cells
     ;; (('eggtop-6) (none)) 
     ;; (('plant-boss-3) (none))
@@ -306,11 +312,15 @@
   (case (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name) :comp name=
     (('crate-2961 'crate-2959 'crate-2958 'crate-2957 'crate-2956 'crate-2955 'crate-2960)
       ;; geyser -> in back geyser (zoom walk from last fly)
-      (set-vector! dst (meters -1110.5) (meters 13.0) (meters 1058.0) 1.0)
+      (set-vector-meters! dst -1110.5 13.0 1058.0)
       )
     (('crate-3142 'crate-3141 'crate-3143 'crate-3144 'crate-3147 'crate-3146 'crate-3145)
       ;; sandover -> on farmers roof
-      (set-vector! dst (meters -9.0) (meters 15.0) (meters -60.5) 1.0)
+      (set-vector-meters! dst -9.0 15.0 -60.5)
+      )
+    (('crate-689 'crate-688 'crate-3 'crate-47 'crate-1844 'crate-58 'crate-28)
+      ;; FJ -> 
+      (set-vector-meters! dst 362.3 109.0 -275.8)
       )
     (else
       (format 0 "no movie-pos override~%"))

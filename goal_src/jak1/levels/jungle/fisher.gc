@@ -1652,7 +1652,7 @@
   :virtual #t
 
   :enter (behavior ()
-    (set! *fisher-camera-use-backup* #f)
+    (set! *fisher-camera-use-backup* #t)
     ((-> (method-of-type process-taskable play-anim) enter))
     0
     (none))
@@ -2047,7 +2047,8 @@
   :code (behavior ((arg0 handle))
     (let ((v1-1 (handle->process arg0)))
       (when (and v1-1 (type-type? (-> v1-1 type) fisher))
-        (set-vector! (-> self control trans) 1067827.2 9420.8 -955596.8 1.0)
+        ;; (set-vector! (-> self control trans) 1067827.2 9420.8 -955596.8 1.0)
+        (set-vector! (-> self control trans) (meters 480.2) (meters 2.1) (meters -228.7) 1.0)
         (set-yaw-angle-clear-roll-pitch! (-> self control) -20024.889)
         (rot->dir-targ! (-> self control))
         )

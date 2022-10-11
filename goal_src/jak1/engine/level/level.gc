@@ -1057,6 +1057,7 @@
 (define-extern orb-cache-top type)
 (define-extern periscope type)
 (define-extern plant-boss type)
+(define-extern fisher type)
 (define-extern springbox type)
 (define-extern fuel-cell type)
 (defmethod is-object-visible? level ((obj level) (arg0 int) (actor entity))
@@ -1068,6 +1069,7 @@
             (= (-> (the entity-actor actor) etype) money)  ;; always show orba
             (= (-> (the entity-actor actor) etype) crate)  ;; always show crates
             (= (-> (the entity-actor actor) etype) crate-buzzer)  ;; always show crates
+            (= (-> (the entity-actor actor) etype) fisher)  ;; always show crates
             (= (-> (the entity-actor actor) etype) fuel-cell)  ;; always show cells
             (= (-> (the entity-actor actor) etype) orb-cache-top)  ;; always show orb caches
             (= (-> (the entity-actor actor) etype) periscope)  ;; always show periscopes
