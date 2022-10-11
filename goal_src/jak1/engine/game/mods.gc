@@ -158,11 +158,11 @@
     (('money-195)       (set-vector-meters! (-> arg0 extra trans) 317.1   20.0    -201.2))    ;; in tree roots in upper river near 3rd mirrors
     (('money-196)       (set-vector-meters! (-> arg0 extra trans) 232.8   40.5    -184.5))    ;; upper cliff between fisherman and entrance
     (('money-197)       (set-vector-meters! (-> arg0 extra trans) 308.5   37.5    -135.0))    ;; in trees near ocean
-    ;; (('money-198)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-199)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-200)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-201)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
-    ;; (('money-202)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
+    (('money-198)       (set-vector-meters! (-> arg0 extra trans) 286.0   19.5    -163.5))    ;; in tree roots in upper river near entrance
+    (('money-199)       (set-vector-meters! (-> arg0 extra trans) 293.2   23.3    -190.0))    ;; in tree roots near entrance
+    (('money-200)       (set-vector-meters! (-> arg0 extra trans) 292.4   35.7    -134.3))    ;; in tree near entrance
+    (('money-201)       (set-vector-meters! (-> arg0 extra trans) 268.8   21.5    -143.8))    ;; in tree roots near entrance
+    (('money-202)       (set-vector-meters! (-> arg0 extra trans) 250.0   16.5    -157.1))    ;; under entrance bridge
     ;; (('money-203)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
     ;; (('money-204)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
     ;; (('money-205)       (set-vector-meters! (-> arg0 extra trans) -1286.5 43.0 949.0))    ;; 
