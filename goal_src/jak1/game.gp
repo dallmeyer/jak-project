@@ -2053,7 +2053,9 @@
   "engine/"
    :deps ;; no idea what these depend on, make it depend on the whole engine
    ("$OUT/obj/ticky.o"
-    "$OUT/obj/jungle-mirrors.o")
+    "$OUT/obj/jungle-mirrors.o"
+    "$OUT/obj/plant-boss.o"
+    "$OUT/obj/plat-flip.o")
    "game/mods.gc"
   )
 ;; the debug menu is modified to include PC specific options:

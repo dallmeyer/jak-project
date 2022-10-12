@@ -1713,6 +1713,7 @@ nav-enemy-default-event-handler
                                )
   )
 
+(define-extern mod-override-path (function nav-enemy none))
 (defmethod TODO-RENAME-45 nav-enemy ((obj nav-enemy) (arg0 nav-enemy-info))
   (set! (-> obj rand-gen) (new 'process 'random-generator))
   (set! (-> obj rand-gen seed) (the-as uint #x666edd1e))
@@ -1738,6 +1739,7 @@ nav-enemy-default-event-handler
   (set! (-> obj nav gap-event) 'jump)
   (TODO-RENAME-26 (-> obj nav))
   (set! (-> obj path) (new 'process 'path-control obj 'path 0.0))
+  (mod-override-path obj)
   (logior! (-> obj path flags) (path-control-flag display draw-line draw-point draw-text))
   (set! (-> obj enemy-info)
         (new 'process 'fact-info-enemy obj (pickup-type eco-pill-random) (-> *FACT-bank* default-pill-inc))

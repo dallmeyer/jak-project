@@ -597,6 +597,7 @@
       )
   )
 
+(define-extern mod-run-each-frame (function none))
 (defbehavior display-loop process ()
   "This is in progress..."
 
@@ -624,6 +625,8 @@
     (while *run*
       ;; start immediately after all process updates finish.
       (profiler-instant-event "display-loop-top")
+
+      (mod-run-each-frame)
 
       ;; drawing effects to be used in foreground drawing.
       (with-profiler "foreground-effects"

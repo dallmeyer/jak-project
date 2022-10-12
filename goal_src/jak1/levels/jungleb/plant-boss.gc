@@ -644,7 +644,8 @@
 (defbehavior plant-boss-vine-init plant-boss-arm ((arg0 vector) (arg1 vector) (arg2 float) (arg3 int))
   (stack-size-set! (-> self main-thread) 128)
   (set! (-> self root-override) (the-as collide-shape (new 'process 'trsqv)))
-  (set-vector! (-> self root-override scale) arg2 arg2 arg2 1.0)
+  (set-vector! (-> self root-override scale) arg2 arg2 -1.0 1.0)  ;; barg - rotated for new position
+  (set! (-> self root scale z) -1.0) ;; barg - rotated for new position
   (set! (-> self root-override trans quad) (-> arg0 quad))
   (quaternion-zxy! (-> self root-override quat) arg1)
   (set! (-> self side) arg3)
@@ -657,6 +658,8 @@
   (stack-size-set! (-> self main-thread) 128)
   (set! (-> self root-override) (the-as collide-shape (new 'process 'trsqv)))
   (set! (-> self root-override scale quad) (-> arg2 quad))
+  (set! (-> self root-override scale z) -1.0) ;; barg - rotated for new position
+  (set! (-> self root scale z) -1.0) ;; barg - rotated for new position
   (set! (-> self root-override trans quad) (-> arg0 quad))
   (quaternion-zxy! (-> self root-override quat) arg1)
   (set! (-> self side) arg3)
@@ -993,42 +996,42 @@
     (set-mode! (-> self body) (joint-mod-handler-mode world-look-at))
     (b! #t cfg-17 :delay (nop!))
     (label cfg-5)
-    (if (not (handle->process (-> self cam-tracker)))
-        (set! (-> self cam-tracker)
-              (ppointer->handle (process-spawn
-                                  camera-tracker
-                                  :init camera-tracker-init
-                                  (lambda :behavior camera-tracker
-                                    ()
-                                    (while (not (process-grab? *target*))
-                                      (suspend)
-                                      )
-                                    (ambient-hint-spawn "gamcam28" (the-as vector #f) *entity-pool* 'ambient)
-                                    (send-event *camera* 'blend-from-as-fixed)
-                                    (camera-look-at (the-as pair (ppointer->process (-> self parent))) (the-as uint 13))
-                                    (camera-change-to "camera-220" 0 #f)
-                                    (while (not (send-event *camera* 'intro-done?))
-                                      (suspend)
-                                      )
-                                    (camera-change-to "camera-222" 600 #f)
-                                    (let ((gp-0 (-> *display* base-frame-counter)))
-                                      (until (>= (- (-> *display* base-frame-counter) gp-0) (seconds 2))
-                                        (suspend)
-                                        )
-                                      )
-                                    (while (not (process-release? (handle->process (-> self grab-target))))
-                                      (suspend)
-                                      )
-                                    (send-event *camera* 'blend-from-as-fixed)
-                                    (camera-look-at (the-as pair *target*) (the-as uint 0))
-                                    (camera-change-to (the-as string 'base) 150 #f)
-                                    (none)
-                                    )
-                                  :to self
-                                  )
-                                )
-              )
-        )
+    ;; (if (not (handle->process (-> self cam-tracker)))
+    ;;     (set! (-> self cam-tracker)
+    ;;           (ppointer->handle (process-spawn
+    ;;                               camera-tracker
+    ;;                               :init camera-tracker-init
+    ;;                               (lambda :behavior camera-tracker
+    ;;                                 ()
+    ;;                                 (while (not (process-grab? *target*))
+    ;;                                   (suspend)
+    ;;                                   )
+    ;;                                 (ambient-hint-spawn "gamcam28" (the-as vector #f) *entity-pool* 'ambient)
+    ;;                                 (send-event *camera* 'blend-from-as-fixed)
+    ;;                                 (camera-look-at (the-as pair (ppointer->process (-> self parent))) (the-as uint 13))
+    ;;                                 (camera-change-to "camera-220" 0 #f)
+    ;;                                 (while (not (send-event *camera* 'intro-done?))
+    ;;                                   (suspend)
+    ;;                                   )
+    ;;                                 (camera-change-to "camera-222" 600 #f)
+    ;;                                 (let ((gp-0 (-> *display* base-frame-counter)))
+    ;;                                   (until (>= (- (-> *display* base-frame-counter) gp-0) (seconds 2))
+    ;;                                     (suspend)
+    ;;                                     )
+    ;;                                   )
+    ;;                                 (while (not (process-release? (handle->process (-> self grab-target))))
+    ;;                                   (suspend)
+    ;;                                   )
+    ;;                                 (send-event *camera* 'blend-from-as-fixed)
+    ;;                                 (camera-look-at (the-as pair *target*) (the-as uint 0))
+    ;;                                 (camera-change-to (the-as string 'base) 150 #f)
+    ;;                                 (none)
+    ;;                                 )
+    ;;                               :to self
+    ;;                               )
+    ;;                             )
+    ;;           )
+    ;;     )
     (let ((v1-37 (-> self neck)))
       (set! (-> v1-37 blend) 0.0)
       )
@@ -1222,7 +1225,8 @@
          )
        )
       ((>= (- (-> *display* base-frame-counter) (-> self aphid-spawn-time)) (seconds 1.4))
-       (when (process-spawn aphid self (-> self root-override trans) (target-pos 0) :to self)
+       ;; barg - modified aphid spawn point
+       (when (process-spawn aphid self (new 'static 'vector :x (meters 434.6) :y (meters -44.1) :z (meters -254.4) :w 1.0) (target-pos 0) :to self)
          (+! (-> self aphid-count) 1)
          (seekl! (-> self want-aphid-count) 0 1)
          (set! (-> self aphid-spawn-time) (-> *display* base-frame-counter))
@@ -1601,7 +1605,7 @@
         (suspend)
         (if (not (task-complete? *game-info* (-> self entity extra perm task)))
             (birth-pickup-at-point
-              (-> self node-list data 42 bone transform vector 3)
+              (new 'static 'vector :x (meters 362.3) :y (meters 0.0) :z (meters -276.8) :w 1.0) ;; barg - replacing orbs in "north" temple launcher
               (pickup-type fuel-cell)
               (the float (-> self entity extra perm task))
               #f
@@ -1637,7 +1641,7 @@
               (when (not (task-complete? *game-info* (-> self entity extra perm task)))
                 (set! s5-2 #t)
                 (birth-pickup-at-point
-                  (-> self node-list data 42 bone transform vector 3)
+                  (new 'static 'vector :x (meters 362.3) :y (meters 0.0) :z (meters -276.8) :w 1.0) ;; barg - replacing orbs in "north" temple launcher
                   (pickup-type fuel-cell)
                   (the float (-> self entity extra perm task))
                   #f

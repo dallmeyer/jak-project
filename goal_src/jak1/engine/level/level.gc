@@ -1058,6 +1058,16 @@
 (define-extern periscope type)
 (define-extern yakow type)
 (define-extern plant-boss type)
+(define-extern aphid type)
+(define-extern plat-flip type)
+(define-extern plat type)
+(define-extern junglesnake type)
+(define-extern darkvine type)
+(define-extern ecovent type)
+(define-extern eggtop type)
+(define-extern logtrap type)
+(define-extern ventblue type)
+(define-extern part-tracker type)
 (define-extern fisher type)
 (define-extern springbox type)
 (define-extern fuel-cell type)
@@ -1067,15 +1077,26 @@
   ;; note : pc port added option to show every actor regardless
   (with-pc 
     (if (or (-> *pc-settings* force-actors?) 
-            (= (-> (the entity-actor actor) etype) money)  ;; always show orba
-            (= (-> (the entity-actor actor) etype) crate)  ;; always show crates
-            (= (-> (the entity-actor actor) etype) crate-buzzer)  ;; always show crates
-            (= (-> (the entity-actor actor) etype) fisher)  ;; always show crates
-            (= (-> (the entity-actor actor) etype) fuel-cell)  ;; always show cells
-            (= (-> (the entity-actor actor) etype) orb-cache-top)  ;; always show orb caches
-            (= (-> (the entity-actor actor) etype) yakow)  ;; always show yakows
-            (= (-> (the entity-actor actor) etype) periscope)  ;; always show periscopes
-            (= (-> (the entity-actor actor) etype) plant-boss)  ;; always show plant-boss
+            ;; hack to force visibility of stuff we've moved (rather than update visibility data)
+            (= (-> (the entity-actor actor) etype) money)
+            (= (-> (the entity-actor actor) etype) crate)
+            (= (-> (the entity-actor actor) etype) crate-buzzer)
+            (= (-> (the entity-actor actor) etype) fisher)
+            (= (-> (the entity-actor actor) etype) fuel-cell)
+            (= (-> (the entity-actor actor) etype) orb-cache-top)
+            (= (-> (the entity-actor actor) etype) yakow)
+            (= (-> (the entity-actor actor) etype) plat)
+            (= (-> (the entity-actor actor) etype) plat-flip)
+            (= (-> (the entity-actor actor) etype) junglesnake)
+            (= (-> (the entity-actor actor) etype) darkvine)
+            (= (-> (the entity-actor actor) etype) ecovent)
+            (= (-> (the entity-actor actor) etype) eggtop)
+            (= (-> (the entity-actor actor) etype) logtrap)
+            (= (-> (the entity-actor actor) etype) ventblue)
+            (= (-> (the entity-actor actor) etype) part-tracker)
+            (= (-> (the entity-actor actor) etype) periscope)
+            (= (-> (the entity-actor actor) etype) plant-boss)
+            (= (-> (the entity-actor actor) etype) aphid)
             )
       (return #t)
       )
