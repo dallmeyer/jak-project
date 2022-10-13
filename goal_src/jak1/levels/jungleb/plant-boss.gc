@@ -1078,6 +1078,19 @@
       (if (< 409600.0 f30-0)
           (go plant-boss-far-idle)
           )
+      ;; relocate stray aphids
+      (let ((gp-0 (-> self child)))
+        (while gp-0
+          (let ((s5-0 (ppointer->process gp-0)))
+            (set! gp-0 (-> gp-0 0 brother))
+            (when (and (type-type? (-> s5-0 type) aphid)
+                     (< 200000.0 (vector-vector-distance (-> (the aphid s5-0) root trans) (-> self root trans)))
+                     )
+              (set-vector! (-> (the aphid s5-0) root trans) (meters 434.6) (meters -44.1) (meters -254.4) 1.0)
+              )
+            )
+          )
+        )
       (if (and (< f30-0 143360.0)
                (>= (- (-> *display* base-frame-counter) (-> self state-time)) (cond
                                                                                 ((>= (-> self try) 15)
@@ -1361,6 +1374,22 @@
         (plant-boss-default-event-handler arg0 arg1 arg2 arg3)
         )
       )
+    )
+  :trans (behavior ()
+    ;; relocate stray aphids
+    (let ((gp-0 (-> self child)))
+      (while gp-0
+        (let ((s5-0 (ppointer->process gp-0)))
+          (set! gp-0 (-> gp-0 0 brother))
+          (when (and (type-type? (-> s5-0 type) aphid)
+                    (< 200000.0 (vector-vector-distance (-> (the aphid s5-0) root trans) (-> self root trans)))
+                    )
+            (set-vector! (-> (the aphid s5-0) root trans) (meters 434.6) (meters -44.1) (meters -254.4) 1.0)
+            )
+          )
+        )
+      )
+    (none)
     )
   :code (behavior ((arg0 int))
     (local-vars (v1-64 symbol))
@@ -1689,7 +1718,7 @@
 (defstate plant-boss-dead-idle (plant-boss)
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
     (case arg2
-      (('bonk)
+      (('bonk 'touch)
        (go plant-boss-dead-bounce (lerp-scale
                                     (the-as float 0.1)
                                     (the-as float 1.0)
@@ -1727,18 +1756,44 @@
   :trans (the-as (function none :behavior plant-boss) rider-trans)
   :code (behavior ((arg0 float))
     (let ((v1-2 (-> self entity extra perm)))
-      (if (and (< 0.3 arg0) (and (not (handle->process (-> self money))) (< (-> v1-2 user-int8 1) 5)))
-          (set! (-> self money) (ppointer->handle (birth-pickup-at-point
-                                                    (-> self node-list data 42 bone transform vector 3)
-                                                    (pickup-type money)
-                                                    (the-as float 1.0)
-                                                    #t
-                                                    self
-                                                    (the-as fact-info #f)
-                                                    )
-                                                  )
+      (when (and (< 0.3 arg0) (and (not (handle->process (-> self money))) (< (-> v1-2 user-int8 1) 5)))
+        (set! (-> self money) ;; barg - plant boss relocated, randomize money spawn points ^_^
+          (ppointer->handle 
+            (case (knuth-rand-int-range 0 3)
+              ((0)  ;; left vine
+                (birth-pickup-at-point
+                  (new 'static 'vector :x (meters 450.4) :y (meters -34.5) :z (meters -234.8) :w 1.0) 
+                  (pickup-type money)
+                  (the-as float 1.0)
+                  #t
+                  self
+                  (the-as fact-info #f)
+                  )
                 )
+              ((1)  ;; plant butt
+                (birth-pickup-at-point
+                  (new 'static 'vector :x (meters 434.3) :y (meters -34.5) :z (meters -253.0) :w 1.0)
+                  (pickup-type money)
+                  (the-as float 1.0)
+                  #t
+                  self
+                  (the-as fact-info #f)
+                  )
+                )
+              (else  ;; right vine
+                (birth-pickup-at-point
+                  (new 'static 'vector :x (meters 418.3) :y (meters -34.5) :z (meters -234.6) :w 1.0)
+                  (pickup-type money)
+                  (the-as float 1.0)
+                  #t
+                  self
+                  (the-as fact-info #f)
+                  )
+                )
+              )
+            )
           )
+        )
       )
     (ja-channel-set! 2)
     (ja :group! plant-boss-main-bounce-ja :num! min)

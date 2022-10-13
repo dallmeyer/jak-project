@@ -229,7 +229,7 @@
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
     (if (= arg2 'idle)
       (go (method-of-object (the plat self) plat-idle))
-      (the-as (function process int symbol event-message-block object :behavior plat) plat-event)
+      (plat-event arg0 arg1 arg2 arg3)
       )
     )
   :exit (behavior ()

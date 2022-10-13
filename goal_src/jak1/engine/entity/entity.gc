@@ -1228,7 +1228,6 @@
   ;;`(empty)
   )
 
-(define-extern mod-override-post-init (function process-tree none))
 (defun init-entity ((proc process) (ent entity-actor))
   "This function starts up an entity!
   The process should not be activated yet."
@@ -1246,8 +1245,6 @@
   
   ;; run the initializer
   (run-now-in-process proc (method-of-object proc init-from-entity!) proc ent)
-
-  (mod-override-post-init proc)
   (none)
   )
 
