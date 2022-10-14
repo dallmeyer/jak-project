@@ -660,12 +660,35 @@
   )
 
 ;;;;;;;;;;;;;;;;;;;;;
+;; Text
+;;;;;;;;;;;;;;;;;;;;;
+
+(defstep :in "game/assets/jak2/game_text.gp"
+  :tool 'text
+  :out '("$OUT/iso/0COMMON.TXT"
+         "$OUT/iso/1COMMON.TXT"
+         "$OUT/iso/2COMMON.TXT"
+         "$OUT/iso/3COMMON.TXT"
+         "$OUT/iso/4COMMON.TXT"
+         "$OUT/iso/5COMMON.TXT"
+         "$OUT/iso/6COMMON.TXT"
+         "$OUT/iso/7COMMON.TXT")
+  )
+
+;;;;;;;;;;;;;;;;;;;;;
 ;; COMMON CITY STUFF
 ;;;;;;;;;;;;;;;;;;;;;
 
 (copy-gos
   "fort-entry-gate-ag"
   )
+
+;;;;;;;;;;;;;;;;;;;;;
+;; COMMON
+;;;;;;;;;;;;;;;;;;;;;
+
+(copy-gos
+  "daxter-highres-ag")
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; PRISON
@@ -684,7 +707,6 @@
 (copy-textures 1578 1950 1579 2647)
 
 (copy-gos
-  "daxter-highres-ag"
   "prsn-torture-ag"
   "prsn-chair-shackle-ag"
   "prsn-hang-cell-ag"
@@ -816,17 +838,49 @@
 )
 
 ;;;;;;;;;;;;;;;;;;;;;
+;; VILLAGE 1
+;;;;;;;;;;;;;;;;;;;;;
+
+(cgo "VI1.DGO" "vi1.gd")
+(copy-textures 3034 3037 3035 3038 3036 2761 3516)
+
+(copy-gos
+"darkjak-highres-ag"
+"metalkor-torso-ag"
+"rift-ring-ag"
+"vil-break-support-ag"
+"intro-flamer-ag"
+"rift-rider-donut-ag"
+"vil-windmill-sail-ag"
+"vil-windspinner-ag"
+"vil-sagesail-ag"
+"particleman-ag"
+"village1-vis"
+)
+
+;;;;;;;;;;;;;;;;;;;;;
+;; STADIUM D
+;;;;;;;;;;;;;;;;;;;;;
+
+;; TODO
+
+;;;;;;;;;;;;;;;;;;;;;
 ;; ISO Group
 ;;;;;;;;;;;;;;;;;;;;;
 ;; the iso group is a group of files built by the "(mi)" command.
 
 (group-list "iso"
- `(,@(reverse *all-vis*)
+ `("$OUT/iso/0COMMON.TXT"
+   ,@(reverse *all-vis*)
    ,@(reverse *all-str*)
    ,@(reverse *all-sbk*)
    ,@(reverse *all-mus*)
    ,@(reverse *all-vag*)
    ,@(reverse *all-cgos*))
+ )
+
+(group-list "text"
+ `("$OUT/iso/0COMMON.TXT")
  )
 
 ;; used for the type consistency test.
