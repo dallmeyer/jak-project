@@ -1053,6 +1053,7 @@
 ;; method 10 level
 (define-extern money type)
 (define-extern crate type)
+(define-extern eco type)
 (define-extern crate-buzzer type)
 (define-extern orb-cache-top type)
 (define-extern periscope type)
@@ -1080,6 +1081,7 @@
             ;; hack to force visibility of stuff we've moved (rather than update visibility data)
             (= (-> (the entity-actor actor) etype) money)
             (= (-> (the entity-actor actor) etype) crate)
+            (= (-> (the entity-actor actor) etype) eco)
             (= (-> (the entity-actor actor) etype) crate-buzzer)
             (= (-> (the entity-actor actor) etype) fisher)
             (= (-> (the entity-actor actor) etype) fuel-cell)
@@ -1095,6 +1097,7 @@
             (= (-> (the entity-actor actor) etype) ventblue)
             (= (-> (the entity-actor actor) etype) part-tracker)
             (= (-> (the entity-actor actor) etype) periscope)
+            (= (-> (the entity-actor actor) etype) springbox)
             (= (-> (the entity-actor actor) etype) plant-boss)
             (= (-> (the entity-actor actor) etype) aphid)
             )

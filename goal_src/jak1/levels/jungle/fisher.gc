@@ -1536,7 +1536,8 @@
   :enter (behavior ()
     (set-setting! 'ambient-volume 'rel 50.0 0)
     (send-event *target* 'reset-pickup 'eco)
-    (ja-channel-set! 0)
+    (ja-channel-set! 1) ;; added so fisherman shows during fishgame
+    (ja :group! (get-art-elem self)) 
     (clear-collide-with-as (-> self root-override))
     (process-spawn-function
       process
@@ -1606,7 +1607,12 @@
     (set! (-> self ambient-steady) 0)
     (set! (-> self ambient-sagging) 0)
     (set! (-> self ambient-almost) 0)
+    (when (!= (ja-group) (get-art-elem self)) ;; modified to show fisher idle animation during fishgame
+      (ja-channel-push! 1 (seconds 0.2))
+      (ja :group! (get-art-elem self))
+      )
     (loop
+      (ja :num! (loop!))
       (hide-hud-quick)
       (fisher-game-update)
       (if (or (zero? (-> self params timeout))

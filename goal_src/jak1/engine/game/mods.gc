@@ -127,12 +127,16 @@
     (('money-210)       (set-vector-meters! (-> arg0 extra trans) 441.5   31.2    -341.2))    ;; in plants on back wall near blue eco bridge
     (('money-216)       (set-vector-meters! (-> arg0 extra trans) 483.8   29.2    -254.1))    ;; in corner near start of mirrors scout fly
     (('money-217)       (set-vector-meters! (-> arg0 extra trans) 477.9   2.5     -227.5))    ;; replacement for island cell
+      (('crate-55) (set-vector-meters! (-> arg0 extra trans) 476.8 2.0  -226.4))  ;; island
+      (('crate-53) (set-vector-meters! (-> arg0 extra trans) 479.2 2.0  -226.4))  ;; island
+      (('crate-57) (set-vector-meters! (-> arg0 extra trans) 479.2 2.1  -228.8))  ;; island
+      (('crate-59) (set-vector-meters! (-> arg0 extra trans) 476.8 2.0  -228.8))  ;; island
     (('money-4152)      (set-vector-meters! (-> arg0 extra trans) 440.1   13.0    -258.1))    ;; near eco launcher
     (('money-4153)      (set-vector-meters! (-> arg0 extra trans) 395.3   19.4    -253.9))    ;; left of temple blue eco gate
     (('money-4154)      (set-vector-meters! (-> arg0 extra trans) 370.0   28.3    -283.0))    ;; in crack on wrap around temple scout fly
     (('money-4155)      (set-vector-meters! (-> arg0 extra trans) 364.35  21.7    -289.4))    ;; in crack on wrap around temple scout fly
     (('money-4156)      (set-vector-meters! (-> arg0 extra trans) 353.4   50.8    -274.8))    ;; where wrap around temple scout fly normally is
-    (('money-4157)      (set-vector-meters! (-> arg0 extra trans) 372.7   43.5    -272.8))    ;; above awning on wrap around temple scout fly
+    (('money-4157)      (set-vector-meters! (-> arg0 extra trans) 372.5   55.0    -272.7))    ;; above trapmoline on awning on wrap around temple scout fly
     (('money-4158)      (set-vector-meters! (-> arg0 extra trans) 389.8   45.0    -244.8))    ;; above first rising blue eco platform
     (('money-4159)      (set-vector-meters! (-> arg0 extra trans) 332.0   92.5    -246.0))    ;; in crevice in 3rd blue eco tower
     (('money-183)       (set-vector-meters! (-> arg0 extra trans) 332.2   92.5    -236.3))    ;; in crevice in 3rd blue eco tower
@@ -198,7 +202,6 @@
     (('money-2815) (set-vector-meters! (-> arg0 extra trans) 423.6 -43.5 -259.9))    ;; under right ramp in orig eco switch room
     (('money-2837) (set-vector-meters! (-> arg0 extra trans) 445.2 -43.5 -237.1))    ;; under left ramp in orig eco switch room
     (('money-2838) (set-vector-meters! (-> arg0 extra trans) 423.6 -43.5 -237.1))    ;; under right ramp in orig eco switch room
-    (('money-3760) (set-vector-meters! (-> arg0 extra trans) 434.3 -41.5 -248.5))    ;; in center hole in orig eco switch room
     (('money-2816) (set-vector-meters! (-> arg0 extra trans) 410.4 -29.5 -241.4))    ;; above exit door from orig eco switch room
     (('money-2817) (set-vector-meters! (-> arg0 extra trans) 362.1 -36.6 -231.8))    ;; "south" ceiling in elevator room
     (('money-2818) (set-vector-meters! (-> arg0 extra trans) 372.6 -36.6 -240.9))    ;; "east" ceiling in elevator room
@@ -213,8 +216,9 @@
     (('money-2832) (set-vector-meters! (-> arg0 extra trans) 369.7 -41.8 -300.9))    ;; along right wall in first gap towards orig eco switch room
     (('money-3763) (set-vector-meters! (-> arg0 extra trans) 369.7 -41.5 -305.0))    ;; along right wall in first gap towards orig eco switch room
     (('money-3764) (set-vector-meters! (-> arg0 extra trans) 369.7 -41.8 -309.1))    ;; along right wall in first gap towards orig eco switch room
-    (('money-2830) (set-vector-meters! (-> arg0 extra trans) 356.5 -27.0 -344.8))    ;; above platform in corner gap towards orig eco switch room
-    (('money-4860) (set-vector-meters! (-> arg0 extra trans) 376.2 -30.0 -335.6))    ;; up high on inside of corner gap towards orig eco switch room
+    (('money-2830) (set-vector-meters! (-> arg0 extra trans) 357.6 -26.5 -345.6))    ;; above platform in corner gap towards orig eco switch room
+    (('money-3760) (set-vector-meters! (-> arg0 extra trans) 376.2 -30.0 -335.6))    ;; up high on inside of corner gap towards orig eco switch room
+    (('money-4860) (set-vector-meters! (-> arg0 extra trans) 362.3  0.0  -276.8))    ;; one left in "north" launcher :)
     (('money-2839) (set-vector-meters! (-> arg0 extra trans) 398.2 -41.1 -345.6))    ;; along left wall in third gap towards orig eco switch room
     (('money-3765) (set-vector-meters! (-> arg0 extra trans) 402.2 -40.1 -345.6))    ;; along left wall in third gap towards orig eco switch room
     (('money-3766) (set-vector-meters! (-> arg0 extra trans) 406.2 -41.1 -345.6))    ;; along left wall in third gap towards orig eco switch room
@@ -231,14 +235,14 @@
     (('money-2810) (set-vector-meters! (-> arg0 extra trans) 426.7 -40.1 -304.9))    ;; along right wall in final gap towards orig eco switch room
     (('money-2811) (set-vector-meters! (-> arg0 extra trans) 426.7 -41.1 -309.0))    ;; along right wall in final gap towards orig eco switch room
     (('money-2836) (set-vector-meters! (-> arg0 extra trans) 434.4 -24.1 -276.7))    ;; up high above orig eco switch room entrance
-    (('money-2813) (set-vector-meters! (-> arg0 extra trans) 326.2 18.5 -241.1))     ;; one left in "west" launcher :)
+    (('money-2813) (set-vector-meters! (-> arg0 extra trans) 326.2 18.5  -241.1))     ;; one left in "west" launcher :)
     (('money-2804) (set-vector-meters! (-> arg0 extra trans) 297.6 -47.1 -248.3))    ;; along right wall in second gap towards orig plantboss room
     (('money-2805) (set-vector-meters! (-> arg0 extra trans) 291.6 -46.1 -248.3))    ;; along right wall in second gap towards orig plantboss room
     (('money-2806) (set-vector-meters! (-> arg0 extra trans) 285.6 -47.1 -248.3))    ;; along right wall in second gap towards orig plantboss room
     (('money-2807) (set-vector-meters! (-> arg0 extra trans) 262.7 -46.0 -265.6))    ;; along left wall in final gap towards orig plantboss room
     (('money-2808) (set-vector-meters! (-> arg0 extra trans) 277.7 -46.0 -265.6))    ;; along right wall in final gap towards orig plantboss room
-    (('money-2843) (set-vector-meters! (-> arg0 extra trans) 279.4 -40.5 -301.3))    ;; on platform climb in temple escape
-    (('money-2842) (set-vector-meters! (-> arg0 extra trans) 265.4 -37.5 -304.4))    ;; on platform climb in temple escape
+    (('money-2843) (set-vector-meters! (-> arg0 extra trans) 279.4 -39.5 -301.3))    ;; on platform climb in temple escape
+    (('money-2842) (set-vector-meters! (-> arg0 extra trans) 265.4 -36.5 -304.4))    ;; on platform climb in temple escape
     (('money-2812) (set-vector-meters! (-> arg0 extra trans) 269.8 -17.0 -294.7))    ;; top of platform climb in temple escape
     ;; (('plant-boss-3) (none))   ;; has 5 more orbs, see plant-boss-dead-bounce
 
@@ -296,12 +300,15 @@
     (('fuel-cell-1) (override-fuel-cell-position arg0 383.5 49.1 -264.5))  ;; above blue eco door    
     (('fuel-cell-49) (override-fuel-cell-position arg0 425.6 68.0 -180.8))    ;; tough climb up cliff between generator and ocean 
     (('fuel-cell-46) (override-fuel-cell-position arg0 326.1 46.0 -207.5))    ;; hidden in trees between entrance/temple
-    ;; (('fisher-1) (set-vector-meters! (-> arg0 extra trans) 476.7 2.1 -230.8)
-    ;;   (set-vector-meters! (-> (the fisher obj) paddle-pos) 480.2 2.1 -228.7)
-    ;;   (set-vector-meters! (-> (the fisher obj) paddle-end 0) 479.2 2.1 -231.8)
-    ;;   (set-vector-meters! (-> (the fisher obj) paddle-end 1) 481.2 2.1 -225.6)
-    ;;   (set-vector-meters! *fisher-camera-backup-trans* 480.2 2.1 -230.7)
-    ;;   )
+    (('fisher-1) (set-vector-meters! (-> arg0 extra trans) 255.5 0.5 -243.9)
+      (set! (-> (the-as vector (-> arg0 quat)) y) 0.5)
+      (set! (-> (the-as vector (-> arg0 quat)) z) 0.05)
+      (set! (-> (the-as vector (-> arg0 quat)) w) -0.5)
+      ;; (set-vector-meters! (-> (the fisher obj) paddle-pos) 480.2 2.1 -228.7)
+      ;; (set-vector-meters! (-> (the fisher obj) paddle-end 0) 479.2 2.1 -231.8)
+      ;; (set-vector-meters! (-> (the fisher obj) paddle-end 1) 481.2 2.1 -225.6)
+      ;; (set-vector-meters! *fisher-camera-backup-trans* 480.2 2.1 -230.7)
+      )
     ;; FJ temple cells
     (('eggtop-6) (set-vector-meters! (-> arg0 extra trans) 270.5 -45.0 -292.9))
       
@@ -332,6 +339,11 @@
       (set-vector-meters! (-> arg0 extra trans) 362.7 26.0 -178.7)
       (set! (-> (the-as vector (-> arg0 quat)) y) -0.2)
       )
+    (('logtrap-2)  ;; towards pillar scout fly
+      (set-vector-meters! (-> arg0 extra trans) 244.2 44.3 -252.5)
+      (set! (-> (the-as vector (-> arg0 quat)) y) -0.73)
+      (set! (-> (the-as vector (-> arg0 quat)) w) -0.73)
+      )
     (('logtrap-3)  ;; over spike gap, rotated
       (set-vector-meters! (-> arg0 extra trans) 394.9 27.2 -339.0)
       (set! (-> (the-as vector (-> arg0 quat)) y) -0.1)
@@ -357,7 +369,41 @@
     (('darkvine-9) (set-vector-meters! (-> arg0 extra trans) 269.5 31.4 -301.9))  ;; on platforms around temple exit
     (('darkvine-101) (set-vector-meters! (-> arg0 extra trans) 271.6 32.4 -309.4))  ;; on platforms around temple exit
     (('ventblue-2) (set-vector-meters! (-> arg0 extra trans) 396.9 26.6 -324.7))  ;; blue eco vent in vine base near eco bridge
-    
+    (('springbox-6) (set-vector-meters! (-> arg0 extra trans) 366.0 32.5 -264.6))  ;; up ledge near temple entrance
+    (('springbox-4) (set-vector-meters! (-> arg0 extra trans) 372.8 42.6 -272.7))  ;; up higher ledge near temple entrance
+    (('crate-8) (set-vector-meters! (-> arg0 extra trans)  278.3 35.0 -302.2))  ;; on temple exit drum layer 1
+    (('crate-9) (set-vector-meters! (-> arg0 extra trans)  280.5 35.0 -300.2))  ;; on temple exit drum layer 1
+    (('crate-11) (set-vector-meters! (-> arg0 extra trans) 278.3 35.0 -300.2))  ;; on temple exit drum layer 1
+    (('crate-12) (set-vector-meters! (-> arg0 extra trans) 280.5 35.0 -302.2))  ;; on temple exit drum layer 1
+    (('crate-6) (set-vector-meters! (-> arg0 extra trans)  278.3 37.0 -302.2))  ;; on temple exit drum layer 2
+    (('crate-7) (set-vector-meters! (-> arg0 extra trans)  280.5 37.0 -300.2))  ;; on temple exit drum layer 2
+    (('crate-18) (set-vector-meters! (-> arg0 extra trans) 278.3 37.0 -300.2))  ;; on temple exit drum layer 2
+    (('crate-19) (set-vector-meters! (-> arg0 extra trans) 280.5 37.0 -302.2))  ;; on temple exit drum layer 2
+    (('crate-20) (set-vector-meters! (-> arg0 extra trans) 278.3 39.0 -302.2))  ;; on temple exit drum layer 3
+    (('crate-21) (set-vector-meters! (-> arg0 extra trans) 280.5 39.0 -300.2))  ;; on temple exit drum layer 3
+    (('crate-22) (set-vector-meters! (-> arg0 extra trans) 278.3 39.0 -300.2))  ;; on temple exit drum layer 3
+    (('crate-23) (set-vector-meters! (-> arg0 extra trans) 280.5 39.0 -302.2))  ;; on temple exit drum layer 3
+    (('crate-24) (set-vector-meters! (-> arg0 extra trans) 303.3 8.6  -303.8))  ;; on steps between trampolines
+    (('crate-41) (set-vector-meters! (-> arg0 extra trans) 305.8 8.6  -304.2))  ;; on steps between trampolines
+    (('crate-34) (set-vector-meters! (-> arg0 extra trans) 302.2 8.6  -306.0))  ;; on steps between trampolines
+    (('crate-35) (set-vector-meters! (-> arg0 extra trans) 304.7 8.6  -306.4))  ;; on steps between trampolines
+    (('crate-4) (set-vector-meters! (-> arg0 extra trans)  311.7 18.6 -293.2))  ;; on steps between trampolines
+    (('crate-5) (set-vector-meters! (-> arg0 extra trans)  314.2 18.6 -293.6))  ;; on steps between trampolines
+    (('crate-36) (set-vector-meters! (-> arg0 extra trans) 310.6 18.6 -295.4))  ;; on steps between trampolines
+    (('crate-37) (set-vector-meters! (-> arg0 extra trans) 313.1 18.6 -295.8))  ;; on steps between trampolines
+    (('crate-38) (set-vector-meters! (-> arg0 extra trans) 373.3 35.5 -280.7))  ;; on outer template wall towards orig scout fly
+    (('crate-50) (set-vector-meters! (-> arg0 extra trans) 364.4 35.5 -287.0))  ;; on outer template wall towards orig scout fly
+    (('crate-51) (set-vector-meters! (-> arg0 extra trans) 359.4 38.5 -286.1))  ;; on outer template wall towards orig scout fly
+    (('crate-56) (set-vector-meters! (-> arg0 extra trans) 351.4 39.5 -277.9))  ;; on outer template wall towards orig scout fly - blue eco!
+    (('babak-348) (set-vector-meters! (-> arg0 extra trans) 387.6 20.5 -252.0))  ;; 1st floor up temple
+    (('darkvine-12) (set-vector-meters! (-> arg0 extra trans) 381.5 35.6 -237.0))  ;; 2nd floor path up temple
+    (('darkvine-13) (set-vector-meters! (-> arg0 extra trans) 362.4 55.5 -220.8))  ;; 3rd floor path up temple
+    (('darkvine-18) (set-vector-meters! (-> arg0 extra trans) 338.7 80.4 -243.1))  ;; 4th floor path up temple
+    (('crate-2002) (set-vector-meters! (-> arg0 extra trans) 369.6 88.5 -233.4))  ;; blue eco behind final pillar on path to temple
+    (('crate-54) (set-vector-meters! (-> arg0 extra trans) 373.3 32.5 -272.2))  ;; blue eco on ledge up right of temple entrance
+    (('crate-52) (set-vector-meters! (-> arg0 extra trans) 342.3 55.5 -218.6))  ;; blue eco on path up to temple near orig vent
+    (('darkvine-45) (set-vector-meters! (-> arg0 extra trans) 394.9 31.8 -221.2))  ;; on path to locked blue eco door
+    (('darkvine-20) (set-vector-meters! (-> arg0 extra trans) 384.1 34.5 -209.9))  ;; on path to locked blue eco door
 
     (else
       (when #f
@@ -393,7 +439,47 @@
   ;; Sandover
 
   ;; FJ outside
-
+  (when (process-by-ename "ecovent-193")  ;; above fisherman where orig mirrors is
+    (let ((obj (the ecovent (process-by-ename "ecovent-193"))))
+      (set-vector-meters! (-> obj root trans) 261.9 37.2 -258.0)
+      (set-vector-meters! (-> obj root-override trans) 261.9 37.2 -258.0)
+      (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) 261.9 37.2 -258.0)
+      )
+    )
+  (when (process-by-ename "eco-110")  ;; on orig orb cache
+    (let ((obj (the eco-blue (process-by-ename "eco-110"))))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
+        (set-vector-meters! (-> obj base) 318.1 3.5 -326.1)
+        (set-vector-meters! (-> obj root trans) 318.1 3.5 -326.1)
+        (set-vector-meters! (-> obj root-override trans) 318.1 3.5 -326.1)
+        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) 318.1 3.5 -326.1)
+        )
+      )
+    )
+  (when (process-by-ename "eco-111")  ;; lower river
+    (let ((obj (the eco-blue (process-by-ename "eco-111"))))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
+        (set-vector-meters! (-> obj base) 407.6 1.5 -311.1)
+        (set-vector-meters! (-> obj root trans) 407.6 1.5 -311.1)
+        (set-vector-meters! (-> obj root-override trans) 407.6 1.5 -311.1)
+        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) 407.6 1.5 -311.1)
+        )
+      )
+    )
+  (when (process-by-ename "eco-112")  ;; in water tunnel
+    (let ((obj (the eco-blue (process-by-ename "eco-112"))))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
+        (set-vector-meters! (-> obj base) 449.1 2.5 -242.0)
+        (set-vector-meters! (-> obj root trans) 449.1 2.5 -242.0)
+        (set-vector-meters! (-> obj root-override trans) 449.1 2.5 -242.0)
+        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) 449.1 2.5 -242.0)
+        )
+      )
+    )
+  
   ;; FJ Temple
   (when (process-by-ename "plant-boss-3")
     (let ((obj (the plant-boss (process-by-ename "plant-boss-3"))))
@@ -410,14 +496,12 @@
         )
       )
     )
-  
-      ;; (('plat-84) (set-vector-meters! (-> arg0 extra trans) 270.5 -45.0 -292.9)) ;; back and forth  
   (when (process-by-ename "plat-87")  ;; in first corner on way to orig eco switch room
     (let ((obj (the plat (process-by-ename "plat-87"))))
       (send-event obj 'idle)
-      (set-vector-meters! (-> obj root trans) 356.5 -36.0 -344.8)
-      (set-vector-meters! (-> obj root-override trans) 356.5 -36.0 -344.8)
-      (set-vector-meters! (-> obj basetrans) 356.5 -36.0 -344.8)
+      (set-vector-meters! (-> obj root trans) 357.6 -36.0 -345.6)
+      (set-vector-meters! (-> obj root-override trans) 357.6 -36.0 -345.6)
+      (set-vector-meters! (-> obj basetrans) 357.6 -36.0 -345.6)
       )
     )
   (when (process-by-ename "plat-86")  ;; in second corner on way to orig eco switch room
@@ -517,42 +601,48 @@
   )
 
 (defun mod-override-child-fuel-cell-movie-pos ((dst vector) (obj fuel-cell) (maybe-parent entity-actor))
-  (case (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name) :comp name=
-    (('crate-2961 'crate-2959 'crate-2958 'crate-2957 'crate-2956 'crate-2955 'crate-2960)
-      ;; geyser -> in back geyser (zoom walk from last fly)
-      (set-vector-meters! dst -1110.5 13.0 1058.0)
+;; check parent
+  (case (-> (ppointer->process (-> obj parent)) name) :comp name=
+    (('plant-boss-3)
+      ;; plant boss -> in center where eco switch usually is
+      (set-vector-meters! dst 434.3 -41.0 -248.5)
       )
-    (('crate-3142 'crate-3141 'crate-3143 'crate-3144 'crate-3147 'crate-3146 'crate-3145)
-      ;; sandover -> on farmers roof
-      (set-vector-meters! dst -9.0 15.0 -60.5)
-      )
-    (('crate-689 'crate-688 'crate-3 'crate-47 'crate-1844 'crate-58 'crate-28)
-      ;; FJ -> top of tallest blue eco tower
-      (set-vector-meters! dst 362.3 109.0 -275.8)
+    (('eggtop-6)
+      ;; blue-eco switch -> moved to plant boss room
+      (set-vector-meters! dst 270.5 -45.0 -292.9)
       )
     (else
-      (case (-> maybe-parent extra process name) :comp name=
-        (('plant-boss-3)
-          ;; plant boss -> in place of orbs in "north" temple launcher 
-          (set-vector-meters! dst 362.3 0.0 -276.8)
+      ;; check grandparent
+      (case (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name) :comp name=
+        (('crate-2961 'crate-2959 'crate-2958 'crate-2957 'crate-2956 'crate-2955 'crate-2960)
+          ;; geyser -> in back geyser (zoom walk from last fly)
+          (set-vector-meters! dst -1110.5 13.0 1058.0)
           )
-        (('eggtop-6)
-          ;; blue-eco switch -> moved to plant boss room
-          (set-vector-meters! dst 270.5 -45.0 -292.9)
+        (('crate-3142 'crate-3141 'crate-3143 'crate-3144 'crate-3147 'crate-3146 'crate-3145)
+          ;; sandover -> on farmers roof
+          (set-vector-meters! dst -9.0 15.0 -60.5)
+          )
+        (('crate-689 'crate-688 'crate-3 'crate-47 'crate-1844 'crate-58 'crate-28)
+          ;; FJ -> top of tallest blue eco tower
+          (set-vector-meters! dst 362.3 109.0 -275.8)
           )
         (else
-          (when #f
-            (format 0 "no movie-pos override with parent ~A / grandparent ~A / maybe-parent ~%"
-              (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name)
-              (-> (ppointer->process (-> obj parent)) name)
-              (-> maybe-parent extra process name)
-              )          
+          (case (-> maybe-parent extra process name) :comp name=
+            (else
+              (when #f
+                (format 0 "no movie-pos override with parent ~A / grandparent ~A / maybe-parent ~%"
+                  (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name)
+                  (-> (ppointer->process (-> obj parent)) name)
+                  (-> maybe-parent extra process name)
+                  )          
+                )
+              )
             )
           )
         )
       )
     )
-    (none)
+  (none)
   )
 
 ;; more for testing purposes than anything
@@ -622,14 +712,6 @@
               (set! (-> (the crate actor) root-override root-prim world-sphere z) (meters z))
               )
             )
-          ;; only halfway works, probably missing *-reflector-trans vectors I'm guessing
-          ;; ((periscope)
-          ;;   (set-vector! (-> entity-actor trans) (meters x) (meters y) (meters z) 1.0)
-          ;;   (set-vector! (-> entity-actor extra trans) (meters x) (meters y) (meters z) 1.0)
-          ;;   (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
-          ;;   (set-vector! (-> (the periscope actor) base) (meters x) (meters y) (meters z) 1.0)
-          ;;   (set-vector! (-> (the periscope actor) root-override trans) (meters x) (meters y) (meters z) 1.0)
-          ;;   )
           (else
             (format 0 "unexpected actor type ~S ~S ~S~%" actor-name (-> entity-actor type) (-> actor type))
             (set-vector! (-> entity-actor trans) (meters x) (meters y) (meters z) 1.0)

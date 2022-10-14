@@ -1634,7 +1634,7 @@
         (suspend)
         (if (not (task-complete? *game-info* (-> self entity extra perm task)))
             (birth-pickup-at-point
-              (new 'static 'vector :x (meters 362.3) :y (meters 0.0) :z (meters -276.8) :w 1.0) ;; barg - replacing orbs in "north" temple launcher
+              (new 'static 'vector :x (meters 434.3) :y (meters -10.9) :z (meters -250.5) :w 1.0) ;; barg - fall from the ceiling in orig eco switch room
               (pickup-type fuel-cell)
               (the float (-> self entity extra perm task))
               #f
@@ -1670,7 +1670,7 @@
               (when (not (task-complete? *game-info* (-> self entity extra perm task)))
                 (set! s5-2 #t)
                 (birth-pickup-at-point
-                  (new 'static 'vector :x (meters 362.3) :y (meters 0.0) :z (meters -276.8) :w 1.0) ;; barg - replacing orbs in "north" temple launcher
+                  (new 'static 'vector :x (meters 434.3) :y (meters -10.9) :z (meters -250.5) :w 1.0) ;; barg - fall from the ceiling in orig eco switch room
                   (pickup-type fuel-cell)
                   (the float (-> self entity extra perm task))
                   #f
