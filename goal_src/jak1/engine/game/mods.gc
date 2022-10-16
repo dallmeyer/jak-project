@@ -467,7 +467,9 @@
     (('fuel-cell-42) (override-fuel-cell-position arg0 -242.66  56.0 -543.86)) ;; on rocks above orig eco blockers (use launcher-16)
       (('launcher-16) (set-vector-meters! (-> arg0 extra trans) -222.81  19.74 -539.16))
     (('launcher-19) (set-vector-meters! (-> arg0 extra trans) -194.53   0.82 -231.69))  ;; beach near entrance
-    ;; (('pelican-1) (set-vector-meters! (-> arg0 extra trans) )) ;; TBD
+    (('pelican-1) (set-vector-meters! (-> arg0 extra trans) -109.22  18.42 -258.75))  ;; initial spawn for cell below orig flutflutegg
+      ;; pelican cell spit location - leave alone
+
     (('mistycannon-4) (set-vector-meters! (-> arg0 extra trans) -210.49  30.0 -355.35)) ;; second pillar towards cannon tower
     (('flutflutegg-1) (set-vector-meters! (-> arg0 extra trans)  -257.13  27.93 -504.33)) ;; on grottopole-1 (see next line of code)
       (('grottopole-1) (set-vector-meters! (-> arg0 extra trans) -257.13  27.93 -504.33)) ;; on ledge near sentinels where orig scout fly is
@@ -814,7 +816,16 @@
       (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -321.26   9.80 -461.14)
       )
     )
-
+  (when (process-by-ename "pelican-1") 
+    (let ((obj (the pelican (process-by-ename "pelican-1"))))
+      (set-vector-meters! (-> obj state-vector) -56.37  41.85 -290.63) ;; use flutflut nest for pelican nest state
+      (when (name= (-> obj state name) 'pelican-wait-at-nest)
+        (set! (-> obj root rot y) 0.2) ;; rotate to face outwards
+        )
+      )
+    )
+  
+  
   (none)
   )
 

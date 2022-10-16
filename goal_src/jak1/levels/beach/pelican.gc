@@ -210,6 +210,12 @@
     (while (-> self child)
       (deactivate (-> self child 0))
       )
+    ;; barg - shift circling path to new position
+    (dotimes (path-idx (-> self path-circle num-cverts)) 
+      (-! (-> self path-circle cverts path-idx x) -210807.3)
+      (-! (-> self path-circle cverts path-idx y) -100349.4843)
+      (-! (-> self path-circle cverts path-idx z) -316766.4)
+      )
     (set! (-> self state-object) #f)
     (let ((gp-0 (-> self path-vector)))
       (eval-path-curve-div! (-> self path-dive0) gp-0 4.5 'interp)

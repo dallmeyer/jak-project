@@ -552,6 +552,9 @@
        (increment-success-for-hint (game-text-id sidekick-hint-ecorocks))
        (go ecoventrock-break #f)
        )
+      (else
+        (format 0 "ecoventrock-idle event not handled: ~A~%" arg2)
+        )
       )
     )
   :code (behavior ()
