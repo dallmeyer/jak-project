@@ -2008,7 +2008,7 @@
   (none)
   )
 
-(define-extern mod-override-child-fuel-cell-movie-pos (function vector fuel-cell entity-actor none))
+(define-extern mod-override-child-fuel-cell-movie-pos (function vector fuel-cell process none))
 (defbehavior fuel-cell-init-by-other fuel-cell ((arg0 vector) (arg1 vector) (arg2 fact-info) (arg3 entity-actor))
   (let ((s3-0 (-> arg2 pickup-type))
         (f30-0 (-> arg2 pickup-spawn-amount))
@@ -2031,7 +2031,7 @@
   (update-transforms! (-> self root-override))
 
   (let ((gp-1 (res-lump-struct (-> self entity) 'movie-pos structure :time (the-as float -1000000000.0))))
-    (mod-override-child-fuel-cell-movie-pos (the-as vector gp-1) self arg3)
+    (mod-override-child-fuel-cell-movie-pos (the-as vector gp-1) self (-> arg3 extra process))
 
     (cond
       ((and *debug-segment* (< (-> *fuel-cell-tune-pos* w) 1000000000.0))
@@ -2108,6 +2108,7 @@
 
 (defbehavior fuel-cell-init-as-clone fuel-cell ((arg0 handle) (arg1 int))
   (initialize self)
+  (mod-override-child-fuel-cell-movie-pos (-> self root trans) self (handle->process arg0))
   (set! (-> self fact pickup-type) (pickup-type fuel-cell))
   (set! (-> self fact pickup-amount) (the float arg1))
   (initialize-params self 0 (the-as float 1024.0))

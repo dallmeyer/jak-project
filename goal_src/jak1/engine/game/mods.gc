@@ -307,26 +307,27 @@
     (('money-685) (set-vector-meters! (-> arg0 extra trans) -226.5 33.0 -345.1)) ;; between pillar jumps to cannon
     (('money-686) (set-vector-meters! (-> arg0 extra trans) -252.5 42.0 -320.1)) ;; between cannon and pillar
     (('money-687) (set-vector-meters! (-> arg0 extra trans) -93.3 15.3 -201.9)) ;; on ledge in corner near entrance
-    ;; (('money-688) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-689) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-690) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-691) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-692) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-693) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-694) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-695) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-696) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-697) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-698) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-1463) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-1464) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-1465) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-1466) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-1467) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-1468) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-2641) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-2643) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
-    ;; (('money-2644) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
+    (('money-688) (set-vector-meters! (-> arg0 extra trans) -255.8 38.5 -293.6)) ;; plank at top of cannon tower
+    (('money-689) (set-vector-meters! (-> arg0 extra trans) -254.41 38.5 -285.56)) ;; ^
+    (('money-690) (set-vector-meters! (-> arg0 extra trans) -256.27 38.7 -278.13)) ;; ^
+    (('money-691) (set-vector-meters! (-> arg0 extra trans) -268.25 39.3 -266.65)) ;; ^
+    (('money-692) (set-vector-meters! (-> arg0 extra trans) -275.94 39.5 -266.27)) ;; ^
+    (('money-693) (set-vector-meters! (-> arg0 extra trans) -283.00 39.1 -267.55 )) ;; ^
+    (('money-694) (set-vector-meters! (-> arg0 extra trans) -288.75 39.2 -272.94)) ;; ^
+    (('money-695) (set-vector-meters! (-> arg0 extra trans) -291.91 39.5 -279.87)) ;; ^
+    (('money-696) (set-vector-meters! (-> arg0 extra trans) -292.69 39.1 -289.65)) ;; ^
+    (('money-697) (set-vector-meters! (-> arg0 extra trans) -289.44 39.2 -297.26 )) ;; ^
+    (('money-698) (set-vector-meters! (-> arg0 extra trans) -283.19 39.5 -302.35)) ;; ^
+    (('money-1463) (set-vector-meters! (-> arg0 extra trans) -275.61 39.1 -304.98)) ;; ^
+    (('money-1464) (set-vector-meters! (-> arg0 extra trans) -267.86 37.95 -304.68)) ;; ^
+    (('money-1465) (set-vector-meters! (-> arg0 extra trans) -276.11  40.53 -299.4)) ;; top of cannon tower, hint to get inside
+    (('money-1466) (set-vector-meters! (-> arg0 extra trans) -220.80  30.0 -484.31)) ;; above tree near grotto entrance
+      (('grottopole-11) (set-vector-meters! (-> arg0 extra trans) -233.49  19.0 -489.96)) ;; moved towards grotto entrance
+    (('money-1467) (set-vector-meters! (-> arg0 extra trans) -275.49  31.22 -503.35)) ;; rear windmill upper section
+    ;; (('money-1468) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('money-2641) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('money-2643) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('money-2644) (set-vector-meters! (-> arg0 extra trans) ))
     ;; (('money-2645) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
     ;; (('money-2646) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
     ;; (('money-2647) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
@@ -537,8 +538,12 @@
 
     ;; Sentinel misc 
     ;; (('pelican-1) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('mistycannon-4) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('flutflutegg-1) (set-vector-meters! (-> arg0 extra trans) ))
+
+    (('mistycannon-4) (set-vector-meters! (-> arg0 extra trans) -110.0 33.3 -302.3))
+
+    (('flutflutegg-1) (set-vector-meters! (-> arg0 extra trans)  -257.13  27.93 -504.33)) ;; on grottopole-1 (see next line of code)
+      (('grottopole-1) (set-vector-meters! (-> arg0 extra trans) -257.13  27.93 -504.33)) ;; on ledge near sentinels where orig scout fly is
+      (('bird-lady-beach-1) (set-vector-meters! (-> arg0 extra trans) -255.48  -0.98 -488.53)) ;; below ^ in grotto
 
     ;; (('eco-4) (set-vector-meters! (-> arg0 extra trans) ))
     ;; (('eco-6) (set-vector-meters! (-> arg0 extra trans) ))
@@ -770,8 +775,8 @@
   (none)
   )
 
-(defun mod-override-child-fuel-cell-movie-pos ((dst vector) (obj fuel-cell) (maybe-parent entity-actor))
-;; check parent
+(defun mod-override-child-fuel-cell-movie-pos ((dst vector) (obj fuel-cell) (maybe-parent process))
+  ;; check parent
   (case (-> (ppointer->process (-> obj parent)) name) :comp name=
     (('plant-boss-3)
       ;; plant boss -> in center where eco switch usually is
@@ -797,13 +802,19 @@
           (set-vector-meters! dst 362.3 109.0 -275.8)
           )
         (else
-          (case (-> maybe-parent extra process name) :comp name=
+          ;; check maybe-parent
+          (case (-> maybe-parent name) :comp name=
+            (('bird-lady-beach-1)
+              ;; FJ -> top of tallest blue eco tower
+              (vector-copy! dst (-> *target* root trans))
+              (vector-copy! (res-lump-struct (-> obj entity) 'movie-pos vector :time (the-as float -1000000000.0)) (-> *target* root trans))
+              )
             (else
               (when #f
-                (format 0 "no movie-pos override with parent ~A / grandparent ~A / maybe-parent ~%"
+                (format 0 "no movie-pos override with parent ~A / grandparent ~A / maybe-parent ~A ~%"
                   (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name)
                   (-> (ppointer->process (-> obj parent)) name)
-                  (-> maybe-parent extra process name)
+                  (-> maybe-parent name)
                   )          
                 )
               )
