@@ -1073,6 +1073,7 @@
 (define-extern bird-lady-beach type)
 (define-extern grottopole type)
 (define-extern fisher type)
+(define-extern launcher type)
 (define-extern harvester type)
 (define-extern ecoventrock type)
 (define-extern springbox type)
@@ -1084,7 +1085,7 @@
   (with-pc 
     ;; hack to force visibility of stuff moved (rather than update visibility data)
     (case (-> (the entity-actor actor) etype)
-      ((money eco crate-buzzer fisher fuel-cell orb-cache-top yakow plat plat-flip junglesnake darkvine ecovent eggtop logtrap
+      ((money eco crate-buzzer fisher fuel-cell orb-cache-top yakow plat plat-flip junglesnake darkvine ecovent eggtop logtrap launcher
        ventblue harvester flutflutegg grottopole bird-lady-beach ecoventrock part-tracker periscope springbox plant-boss aphid)
         (return #t)
         )
