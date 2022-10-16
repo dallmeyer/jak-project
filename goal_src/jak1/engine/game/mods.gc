@@ -333,7 +333,7 @@
     (('money-2646) (set-vector-meters! (-> arg0 extra trans) -218.62  55.0 -563.39)) ;; near cell above orig blockers (use launcher-16)
     (('money-2647) (set-vector-meters! (-> arg0 extra trans) -242.69  43.78 -536.08)) ;; drop down from ^
     (('money-2648) (set-vector-meters! (-> arg0 extra trans) -232.86  42.2 -544.59)) ;; ^
-    ;; (('money-2649) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
+    (('money-2649) (set-vector-meters! (-> arg0 extra trans) -74.87  45.06 -274.61)) ;; above trees near orig flutflutegg nest
     ;; (('money-2650) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
     ;; (('money-2651) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
     ;; (('money-2664) (set-vector-meters! (-> arg0 extra trans) -93.6 14.9 -202.2))
@@ -819,8 +819,10 @@
   (when (process-by-ename "pelican-1") 
     (let ((obj (the pelican (process-by-ename "pelican-1"))))
       (set-vector-meters! (-> obj state-vector) -56.37  41.85 -290.63) ;; use flutflut nest for pelican nest state
-      (when (name= (-> obj state name) 'pelican-wait-at-nest)
-        (set! (-> obj root rot y) 0.2) ;; rotate to face outwards
+      (when (or (name= (-> obj state name) 'pelican-wait-at-nest)
+                (name= (-> obj state name) 'pelican-spit))
+        (set! (-> obj path-vector x) 0.2) ;; rotate to face outwards
+        (set! (-> obj path-vector z) -0.5) ;; rotate to face outwards
         )
       )
     )
@@ -841,7 +843,16 @@
       (set-vector-meters! dst 270.5 -45.0 -292.9)
       )
     (('harvester-87 'harvester-88 'harvester-89 'harvester-90 'harvester-91 'ecoventrock-3 'ecoventrock-4 'ecoventrock-5 'ecoventrock-6 'ecoventrock-7)
+      ;; spawn cell on cliff with orig scoutfly between beach and orig harvesters
       (set-vector-meters! dst -259.04  36.40 -456.86)
+      )
+    (('pelican-1)
+      (cond
+        ((name= (-> (the pelican (ppointer->process (-> obj parent))) state name) 'pelican-spit)
+          (set-vector-meters! dst -65.06  16.42 -402.91) ;; orig spawn location
+          )
+        ;; else pelican-explode -> spawn at pelican cur location as normal
+        )
       )
     (else
       ;; check grandparent
