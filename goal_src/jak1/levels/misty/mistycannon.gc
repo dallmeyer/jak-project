@@ -1615,11 +1615,11 @@
           (when (zero? s5-0)
             (when v1-45
               (set! gp-0
-                    (seekl gp-0 300 (the-as int (- (-> *display* base-frame-counter) (-> *display* old-base-frame-counter))))
+                    (seekl gp-0 400 (the-as int (- (-> *display* base-frame-counter) (-> *display* old-base-frame-counter))))
                     )
               (sound-play "cannon-charge" :id (-> self sound-id) :pitch (* 0.008 (the float gp-0)))
               )
-            (when (or (= gp-0 300)
+            (when (or (= gp-0 400)
                       (and (zero? (logand (-> *cpad-list* cpads 0 button0-abs 0) (pad-buttons x))) (nonzero? gp-0))
                       )
               (let ((gp-1 (+ 50 (the int (* 0.16666667 (the float gp-0))))))

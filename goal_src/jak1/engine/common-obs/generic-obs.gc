@@ -69,7 +69,7 @@
              (logior! (-> self draw status) (draw-status no-anim))
              )
          )
-       (do-joint-math! self)
+       (do-joint-math! self)  ;; this is what actually moves the MFer I think
        (let ((a0-22 (-> self skel effect)))
          (if a0-22
              (TODO-RENAME-9 a0-22)

@@ -210,12 +210,6 @@
     (while (-> self child)
       (deactivate (-> self child 0))
       )
-    ;; barg - shift circling path to new position
-    (dotimes (path-idx (-> self path-circle num-cverts)) 
-      (-! (-> self path-circle cverts path-idx x) -210807.3)
-      (-! (-> self path-circle cverts path-idx y) -100349.4843)
-      (-! (-> self path-circle cverts path-idx z) -316766.4)
-      )
     (set! (-> self state-object) #f)
     (let ((gp-0 (-> self path-vector)))
       (eval-path-curve-div! (-> self path-dive0) gp-0 4.5 'interp)
@@ -274,7 +268,7 @@
                                   (suspend)
                                   (send-event *camera* 'blend-from-as-fixed)
                                   (camera-look-at (the-as pair (ppointer->process (-> self parent))) (the-as uint 0))
-                                  (camera-change-to "camera-215" 0 #f)
+                                  ;; (camera-change-to "camera-215" 0 #f)
                                   (until (t9-6 a0-6 a1-5)
                                     (suspend)
                                     (set! a1-5 (new 'stack-no-clear 'event-message-block))
@@ -292,7 +286,7 @@
                                   (while (not (process-release? (handle->process (-> self grab-target))))
                                     (suspend)
                                     )
-                                  (send-event *camera* 'blend-from-as-fixed)
+                                  (send-event *camera* 'teleport)
                                   (camera-look-at (the-as pair *target*) (the-as uint 0))
                                   (camera-change-to (the-as string 'base) 150 #f)
                                   (none)
@@ -623,27 +617,26 @@
             (s5-2 (new 'stack-no-clear 'quaternion))
             )
         (quaternion-copy! s5-2 (-> self root-override quat))
-        ;; barg - disable camera / target freeze since it's weird
-        ;; (until v1-21
-        ;;   (suspend)
-        ;;   (set! v1-21 (or (not *target*) (process-grab? *target*)))
-        ;;   )
-        ;; (send-event (-> gp-1 process 0) 'anim-mode 'clone-anim)
-        ;; (ja-play-spooled-anim
-        ;;   (new 'static 'spool-anim
-        ;;     :name "pelican-spit-ext"
-        ;;     :index 11
-        ;;     :parts 2
-        ;;     :command-list '((10 send-event camera 'teleport-to-vector-start-string (static-vectorm -179 16 -421)))
-        ;;     )
-        ;;   (the-as art-joint-anim pelican-sleep-ja)
-        ;;   (the-as art-joint-anim #f)
-        ;;   (the-as (function process-drawable symbol) false-func)
-        ;;   )
-        ;; (until v1-31
-        ;;   (suspend)
-        ;;   (set! v1-31 (or (not *target*) (process-release? *target*)))
-        ;;   )
+        (until v1-21
+          (suspend)
+          (set! v1-21 (or (not *target*) (process-grab? *target*)))
+          )
+        (send-event (-> gp-1 process 0) 'anim-mode 'clone-anim)
+        (ja-play-spooled-anim
+          (new 'static 'spool-anim
+            :name "pelican-spit-ext"
+            :index 11
+            :parts 2
+            :command-list '((10 send-event camera 'teleport-to-vector-start-string (static-vectorm -179 16 -421)))
+            )
+          (the-as art-joint-anim pelican-sleep-ja)
+          (the-as art-joint-anim #f)
+          (the-as (function process-drawable symbol) false-func)
+          )
+        (until v1-31
+          (suspend)
+          (set! v1-31 (or (not *target*) (process-release? *target*)))
+          )
         (if (handle->process gp-1)
             (deactivate (-> gp-1 process 0))
             )
@@ -678,14 +671,17 @@
       (when gp-3
         (send-event gp-3 'release)
         (set! (-> self path-cache) (-> self path-spit0))
-        (let ((s5-3 (new 'stack-no-clear 'vector)))
-          (eval-path-curve-div!
-            (-> self path-cache)
-            s5-3
-            (the float (+ (-> self path-cache curve num-cverts) -1))
-            'interp
-            )
+        (let ((s5-3 (static-vectorm -127.78  19.9 -474.34 1.0))
+              (mov-pos (res-lump-struct (-> self entity) 'movie-pos structure :time (the-as float -1000000000.0)))
+              )
+          ;; (eval-path-curve-div!
+          ;;   (-> self path-cache)
+          ;;   s5-3
+          ;;   (the float (+ (-> self path-cache curve num-cverts) -1))
+          ;;   'interp
+          ;;   )
           (send-event gp-3 'trans s5-3)
+          (vector-copy! mov-pos s5-3)
           )
         (send-event gp-3 'draw #t)
         (send-event
@@ -835,11 +831,11 @@
       (set! (-> gp-2 quad) (-> self root-override trans quad))
       (let ((a0-7 (handle->process (-> self fuel-cell))))
         (when a0-7
-          (set! (-> gp-2 quad) (-> (the-as process-drawable a0-7) root trans quad))
-          (set! (-> gp-2 y) (+ 8192.0 (-> gp-2 y)))
+          ;; (set! (-> gp-2 quad) (-> (the-as process-drawable a0-7) root trans quad))
           (deactivate a0-7)
           )
         )
+      (set! (-> gp-2 y) (+ 8192.0 (-> gp-2 y)))
       (when (not (task-complete? *game-info* (-> self entity extra perm task)))
         (let ((v1-29 (birth-pickup-at-point
                        gp-2
@@ -851,7 +847,7 @@
                        )
                      )
               )
-          (send-event (ppointer->process v1-29) 'movie-pos 1)
+          ;; (send-event (ppointer->process v1-29) 'movie-pos 1) ;; handled in mod-override-child-fuel-cell-movie-pos instead
           )
         )
       )
@@ -863,6 +859,7 @@
   :post (the-as (function none :behavior pelican) ja-post)
   )
 
+(define pelican-first-init? #t)
 (defmethod init-from-entity! pelican ((obj pelican) (arg0 entity-actor))
   (stack-size-set! (-> obj main-thread) 512)
   (let ((s4-0 (new 'process 'collide-shape-moving obj (collide-list-enum usually-hit-by-player))))
@@ -905,6 +902,27 @@
   (set! (-> obj neck ear) (the-as uint 0))
   (set! (-> obj neck max-dist) 61440.0)
   (set! (-> obj neck ignore-angle) 16384.0)
+
+  ;; barg - shift circling path to new position
+  (when pelican-first-init?
+    (dotimes (path-idx (-> obj path-circle num-cverts)) 
+      (-! (-> obj path-circle cverts path-idx x) -210807.3)
+      (-! (-> obj path-circle cverts path-idx y) -100349.4843)
+      (-! (-> obj path-circle cverts path-idx z) -316766.4)
+      )
+    (dotimes (path-idx (-> obj path-dive0 num-cverts)) 
+      (-! (-> obj path-dive0 cverts path-idx x) -202807.3)
+      (-! (-> obj path-dive0 cverts path-idx y) -68349.4843)
+      (-! (-> obj path-dive0 cverts path-idx z) -344766.4)
+      )
+    (dotimes (path-idx (-> obj path-to-nest0 num-cverts)) 
+      (-! (-> obj path-to-nest0 cverts path-idx x) -210807.3)
+      (-! (-> obj path-to-nest0 cverts path-idx y) -100349.4843)
+      (-! (-> obj path-to-nest0 cverts path-idx z) -316766.4)
+      )
+    (set! pelican-first-init? #f)
+    )
+
   (case (-> obj entity extra perm user-int8 0)
     ((10)
      (go pelican-wait-at-end #t)

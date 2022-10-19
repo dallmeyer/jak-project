@@ -1086,7 +1086,7 @@
   (with-pc 
     ;; hack to force visibility of stuff moved (rather than update visibility data)
     (case (-> (the entity-actor actor) etype)
-      ((money eco crate-buzzer fisher fuel-cell orb-cache-top yakow plat plat-flip junglesnake darkvine ecovent eggtop logtrap launcher
+      ((money eco crate crate-buzzer fisher fuel-cell orb-cache-top yakow plat plat-flip junglesnake darkvine ecovent eggtop logtrap launcher
        ventblue harvester flutflutegg grottopole bird-lady-beach ecoventrock part-tracker periscope springbox plant-boss aphid pelican)
         (return #t)
         )

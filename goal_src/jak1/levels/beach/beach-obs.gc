@@ -653,25 +653,25 @@
             (suspend)
             )
           )
-        (let ((gp-1
-                (cond
-                  (arg0
-                    (the-as int #f)
-                    )
-                  (else
-                    (ambient-hint-spawn "gamcam10" (the-as vector #f) *entity-pool* 'camera)
-                    (ppointer->handle
-                      (process-spawn pov-camera (-> self root-override trans) *beachcam-sg* (-> self name) 0 #f '() :to self)
-                      )
-                    )
-                  )
-                )
-              )
+        ;; (let ((gp-1  ;; barg removed cinema powercell cam
+        ;;         (cond
+        ;;           (arg0
+        ;;             (the-as int #f)
+        ;;             )
+        ;;           (else
+        ;;             (ambient-hint-spawn "gamcam10" (the-as vector #f) *entity-pool* 'camera)
+        ;;             (ppointer->handle
+        ;;               (process-spawn pov-camera (-> self root-override trans) *beachcam-sg* (-> self name) 0 #f '() :to self)
+        ;;               )
+        ;;             )
+        ;;           )
+        ;;         )
+        ;;       )
           (process-drawable-birth-fuel-cell (the-as entity #f) (the-as vector #f) #f)
-          (while (handle->process (the-as handle gp-1))
-            (suspend)
-            )
-          )
+          ;; (while (handle->process (the-as handle gp-1))
+          ;;   (suspend)
+          ;;   )
+          ;; )
         (while (-> self child)
           (suspend)
           )
@@ -1250,6 +1250,7 @@
   :post (the-as (function none :behavior flutflutegg) ja-post)
   )
 
+(define-extern set-vector-meters! (function vector float float float vector))
 (defstate flutflutegg-break (flutflutegg)
   :code (behavior ((arg0 symbol))
     (when arg0

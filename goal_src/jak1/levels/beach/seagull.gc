@@ -1352,7 +1352,7 @@
   (set! (-> obj path) (new 'process 'path-control obj 'path 0.0))
   (logior! (-> obj path flags) (path-control-flag display draw-line draw-point draw-text))
   (set! (-> obj link) (new 'process 'actor-link-info obj))
-  (set! (-> obj targetnum) (+ (-> arg0 extra perm user-int8 0) 1))
+  (set! (-> obj targetnum) (max 3 (+ (-> arg0 extra perm user-int8 0) 1)))  ;; barg modified to start on 3rd sentinel
   (eval-path-curve-div! (-> obj path) (-> obj trans) (the float (+ (-> obj targetnum) -1)) 'interp)
   (set! (-> obj target quad) (-> obj trans quad))
   (set! (-> obj max-lift) 20480.0)
