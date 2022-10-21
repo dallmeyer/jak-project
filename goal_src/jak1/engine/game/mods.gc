@@ -882,9 +882,20 @@
       (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -98.41   3.0 -360.76)
       )
     )
-  ;; eco-83 ;; blue - 
-  ;; eco-84 ;; blue - 
-
+  (when (process-by-ename "eco-83")  ;; blue - orig orb cache near orig flutflutegg nest
+    (let ((obj (the ecovent (process-by-ename "eco-83"))))
+      (set-vector-meters! (-> obj root trans) -52.43  42.5 -300.91)
+      (set-vector-meters! (-> obj root-override trans) -52.43  42.5 -300.91)
+      (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -52.43  42.5 -300.91)
+      )
+    )
+  (when (process-by-ename "eco-84")  ;; blue - on beach near grotto entrance
+    (let ((obj (the ecovent (process-by-ename "eco-84"))))
+      (set-vector-meters! (-> obj root trans) -173.30   2.0 -473.25)
+      (set-vector-meters! (-> obj root-override trans) -173.30   2.0 -473.25)
+      (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -173.30   2.0 -473.25)
+      )
+    )
   
   
   (none)
@@ -934,6 +945,10 @@
         (('crate-689 'crate-688 'crate-3 'crate-47 'crate-1844 'crate-58 'crate-28)
           ;; FJ -> top of tallest blue eco tower
           (set-vector-meters! dst 362.3 109.0 -275.8)
+          )
+        (('crate-213 'crate-646 'crate-647 'crate-648 'crate-649 'crate-651 'crate-2467)
+          ;; sentinel -> orig flutflutegg nest
+          (set-vector-meters! dst -56.42  42.7 -290.57)
           )
         (else
           (format #t "fuel movie override, didnt match grandparent ~A ~%" (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name))
