@@ -1081,6 +1081,7 @@
 (define-extern springbox type)
 (define-extern fuel-cell type)
 (define-extern pelican type)
+(define-extern racer type)
 (defmethod is-object-visible? level ((obj level) (arg0 int) (actor entity))
   "Is arg0 visible? Note that this will return #f if the visibility data is not loaded."
 
@@ -1088,7 +1089,7 @@
   (with-pc 
     ;; hack to force visibility of stuff moved (rather than update visibility data)
     (case (-> (the entity-actor actor) etype)
-      ((money eco crate crate-buzzer fisher fuel-cell orb-cache-top yakow plat plat-flip junglesnake darkvine ecovent eggtop logtrap launcher
+      ((money eco crate crate-buzzer fisher fuel-cell orb-cache-top yakow plat plat-flip junglesnake darkvine ecovent eggtop logtrap launcher racer
        ventblue harvester flutflutegg grottopole bird-lady-beach ecoventrock part-tracker periscope springbox plant-boss aphid pelican mistycannon babak-with-cannon)
         (return #t)
         )

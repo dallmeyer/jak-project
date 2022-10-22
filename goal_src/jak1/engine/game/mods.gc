@@ -632,7 +632,7 @@
     (('fuel-cell-11) (override-fuel-cell-position arg0  121.58  25.3 810.02)) ;; on top of rock in water near start (follow orbs)
     (('fuel-cell-12) (override-fuel-cell-position arg0 37.83  27.0 1208.77)) ;; top of rock on dock in orig zoomer area
     (('fuel-cell-50) (override-fuel-cell-position arg0 -244.33  42.94 932.93)) ;; above relocated silosteps after beating ambush
-    ;; (('fuel-cell-51)) ;; zoomer jump
+    (('fuel-cell-51) (override-fuel-cell-position arg0 -142.86  21.0 1150.70)) ;; zoomer jump from near orig orb cache
     (('mistycannon-8) (set-vector-meters! (-> arg0 extra trans) -76.45  52.64 956.43)) ;; on bridge with rolling logs
       (('babak-with-cannon-5) (set-vector-meters! (-> arg0 extra trans) -83.89  52.73 967.76))
     ;; (('muse-2))
@@ -766,7 +766,7 @@
     ;; (('crate-711)) ;; dark eco
     ;; (('crate-746)) ;; dark eco
     ;; (('crate-2322)) ;; dark eco
-    ;; (('racer-1))
+    (('racer-1) (set-vector-meters! (-> arg0 extra trans) 96.15   9.96 1196.07))  ;; on island dock
     (('silostep-10) (set-vector-meters! (-> arg0 extra trans) -243.73  27.67 933.67)) ;; 
     (('silostep-9) (set-vector-meters! (-> arg0 extra trans)  -239.15  27.76 935.18)) ;; 
     (('silostep-8) (set-vector-meters! (-> arg0 extra trans)  -235.70  27.83 937.76)) ;; 
