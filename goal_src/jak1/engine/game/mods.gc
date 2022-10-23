@@ -1127,6 +1127,7 @@
       (vector-copy! (res-lump-struct (-> obj entity) 'movie-pos (vector) :time (the-as float -1000000000.0)) (static-vectorm -99.35  22.83 -307.85 1.0))
       )
     (('mistycannon-8 'babak-with-cannon-5)
+      (format 0 "not set yet~%")
       ;; (set-vector-meters! dst -99.35  22.83 -307.85) ;; near cannon, below orig flutflut nest
       ;; (vector-copy! (res-lump-struct (-> obj entity) 'movie-pos (vector) :time (the-as float -1000000000.0)) (static-vectorm -99.35  22.83 -307.85 1.0))
       )
