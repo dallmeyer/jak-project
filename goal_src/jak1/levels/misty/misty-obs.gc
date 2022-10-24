@@ -1722,6 +1722,9 @@
   (with-pp
     (let ((gp-0 (entity-actor-lookup (-> pp entity) 'alt-actor 0)))
       (when gp-0
+        (when (= (-> gp-0 etype) mistycannon)
+          (set-vector-meters! (-> gp-0 extra trans) -148.14  57.0 976.27) ;; barg - up top near where logs come out
+          )
         (let* ((gp-1
                  (ppointer->handle (process-spawn
                                      pov-camera
@@ -1865,7 +1868,9 @@
     process-drawable-fuel-cell-handler
     )
   :code (behavior ()
+    (set-vector-meters! (-> self root trans) -8.61   2.0 1120.36) ;; barg - modified to front of lurker ship
     (process-drawable-birth-fuel-cell (the-as entity #f) (the-as vector #f) #f)
+    (set-vector-meters! (-> self root trans) -42.71  24.02 1110.79) ;; barg - modified to cell path in front of lurker ship
     (when (and *target* (-> self play-cutscene?))
       (ambient-hint-spawn "gamcam02" (the-as vector #f) *entity-pool* 'camera)
       (let ((gp-1

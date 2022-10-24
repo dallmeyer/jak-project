@@ -1324,27 +1324,20 @@ nav-enemy-default-event-handler
     (process-entity-status! self (entity-perm-status complete) #t)
     (when (not (task-complete? *game-info* (-> self entity extra perm task)))
       (label cfg-1)
-      (let ((cell-vector (if (name= (-> self name) 'babak-with-cannon-1)
-                            (static-vectorm -80.38  23.0 -273.86 1.0) ;; sentinel - below orig flutflutegg
-                            (-> self collide-info trans) ;; original logic
-                            )))
-        (format #t "spawning cell nav-enemy generic from ~A at :~%" (-> self name))
-        (inspect cell-vector)
-        (birth-pickup-at-point
-          cell-vector
-          (pickup-type fuel-cell)
-          (the float (the-as int (-> self entity extra perm task)))
-          #f
-          self
-          (the-as fact-info #f)
-          )
-        (when (not (-> self child))
-          (suspend)
-          (goto cfg-1)
-          )
-        (while (-> self child)
-          (suspend)
-          )
+      (birth-pickup-at-point
+        (-> self collide-info trans)
+        (pickup-type fuel-cell)
+        (the float (the-as int (-> self entity extra perm task)))
+        #f
+        self
+        (the-as fact-info #f)
+        )
+      (when (not (-> self child))
+        (suspend)
+        (goto cfg-1)
+        )
+      (while (-> self child)
+        (suspend)
         )
       )
     (cleanup-for-death self)

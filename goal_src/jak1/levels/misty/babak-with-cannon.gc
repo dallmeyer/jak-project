@@ -374,20 +374,13 @@ nav-enemy-default-event-handler
             )
         )
       (if (not (-> self child))
-        (let ((cell-vector (if (name= (-> self name) 'babak-with-cannon-1)
-                              (static-vectorm -80.38  23.0 -273.86 1.0) ;; sentinel - below orig flutflutegg
-                              (-> self collide-info trans) ;; misty - original logic
-                              )))
-          (format #t "spawning cell from ~A at :~%" (-> self name) )
-          (inspect cell-vector)
-          (birth-pickup-at-point
-            cell-vector
-            (pickup-type fuel-cell)
-            (the float (-> self entity extra perm task))
-            #f
-            self
-            (the-as fact-info #f)
-            )
+        (birth-pickup-at-point
+          (-> self collide-info trans)
+          (pickup-type fuel-cell)
+          (the float (-> self entity extra perm task))
+          #f
+          self
+          (the-as fact-info #f)
           )
         )
       (while (-> self child)

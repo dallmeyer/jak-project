@@ -5,9 +5,16 @@
   (set-vector! dst (meters x) (meters y) (meters z) (-> dst w))
   )
 
+(defmacro static-vector-meters (x y z)
+  `(new 'static 'vector :x (meters ,x) :y (meters ,y) :z (meters ,z) :w 1.0)
+  )
+
 (defun override-fuel-cell-position ((arg0 entity-actor) (x float) (y float) (z float))
-  (set-vector-meters! (-> arg0 extra trans) x y z)
-  (set-vector-meters! (res-lump-struct arg0 'movie-pos vector :time (the-as float -1000000000.0)) x y z)
+  (format 0 "override-fuel-cell-pos for ~P~%" arg0)
+  (when arg0
+    (set-vector-meters! (-> arg0 extra trans) x y z)
+    (set-vector-meters! (res-lump-struct arg0 'movie-pos vector :time (the-as float -1000000000.0)) x y z)
+    )
   )
 
 (defun mod-override-init-position ((obj process-drawable) (arg0 entity-actor))
@@ -498,7 +505,7 @@
     (('crate-431) (set-vector-meters! (-> arg0 extra trans) -148.09  57.03 927.30)) ;; above arena, opposite orig cannon
     (('crate-432) (set-vector-meters! (-> arg0 extra trans) -75.03  44.91 1027.42)) ;; on bridge w/ rolling logs
     (('crate-433) (set-vector-meters! (-> arg0 extra trans) -6.34  36.88 1028.92)) ;; same ^
-    (('orb-cache-top-15) (set-vector-meters! (-> arg0 extra trans) -64.00  16.58 758.14)) ;; orig boosted cell
+    (('orb-cache-top-15) (set-vector-meters! (-> arg0 extra trans) -63.17  16.9 756.16)) ;; orig boosted cell
 
     ;; ~~~~ SCOUT FLIES ~~~~
     ;; Geyser flies
@@ -632,7 +639,12 @@
     (('fuel-cell-11) (override-fuel-cell-position arg0  121.58  25.3 810.02)) ;; on top of rock in water near start (follow orbs)
     (('fuel-cell-12) (override-fuel-cell-position arg0 37.83  27.0 1208.77)) ;; top of rock on dock in orig zoomer area
     (('fuel-cell-50) (override-fuel-cell-position arg0 -244.33  42.94 932.93)) ;; above relocated silosteps after beating ambush
-    (('fuel-cell-51) (override-fuel-cell-position arg0 -142.86  21.0 1150.70)) ;; zoomer jump from near orig orb cache
+      (('silostep-10) (set-vector-meters! (-> arg0 extra trans)  -244.33  27.90 932.93)) ;; other side of arena
+      (('silostep-9) (set-vector-meters! (-> arg0 extra trans)  -240.735  27.83 934.9575)) ;; 
+      (('silostep-8) (set-vector-meters! (-> arg0 extra trans)  -237.14  27.76 936.985)) ;; 
+      (('silostep-7) (set-vector-meters! (-> arg0 extra trans) -233.545  27.67 939.0125)) ;; 
+    (('fuel-cell-51) ;; changing movie-pos for this fucker seems to crash, so we only update trans
+      (set-vector-meters! (-> arg0 extra trans) -235.77  1.0 1152.75)) ;; out in ocean from farside beach (zoomer or maybe TAS fast swimming?)
     (('mistycannon-8) (set-vector-meters! (-> arg0 extra trans) -76.45  52.64 956.43)) ;; on bridge with rolling logs
       (('babak-with-cannon-5) (set-vector-meters! (-> arg0 extra trans) -83.89  52.73 967.76))
     ;; (('muse-2))
@@ -767,10 +779,6 @@
     ;; (('crate-746)) ;; dark eco
     ;; (('crate-2322)) ;; dark eco
     (('racer-1) (set-vector-meters! (-> arg0 extra trans) 96.15   9.96 1196.07))  ;; on island dock
-    (('silostep-10) (set-vector-meters! (-> arg0 extra trans) -243.73  27.67 933.67)) ;; 
-    (('silostep-9) (set-vector-meters! (-> arg0 extra trans)  -239.15  27.76 935.18)) ;; 
-    (('silostep-8) (set-vector-meters! (-> arg0 extra trans)  -235.70  27.83 937.76)) ;; 
-    (('silostep-7) (set-vector-meters! (-> arg0 extra trans)  -232.18  27.90 939.73)) ;; 
 
 
     (else
@@ -1075,18 +1083,73 @@
       )
     )
   (when (process-by-ename "eco-32")  ;; blue - platform to orig boosted cell
-    (let ((obj (the eco (process-by-ename "eco-32"))))
+    (let ((obj (the eco (process-by-ename "eco-32")))
+          (vec (static-vector-meters -29.1 23.0 820.1))
+          )
       (when (not (logtest? (-> obj flags) (collectable-flags suck)))
-        (set-vector-meters! (-> obj root trans)  -29.1 23.0 820.1)
-        (set-vector-meters! (-> obj root-override trans)  -29.1 23.0 820.1)
-        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere)  -29.1 23.0 820.1)
+        (vector-copy! (-> obj root trans) vec)
+        (vector-copy! (-> obj root-override trans) vec)
+        (vector-copy! (-> obj root-override root-prim prim-core world-sphere) vec)
         )
       )
     )
-  ;; eco-33 ;; blue 
-  ;; eco-34 ;; blue 
-  ;; eco-39 ;; blue 
-  ;; eco-40 ;; blue 
+  (when (process-by-ename "eco-33")  ;; blue - zoomer dock to cell after balloon lurkers
+    (let ((obj (the eco (process-by-ename "eco-33")))
+          (vec (static-vector-meters 98.40  10.5 1169.97))
+          )
+      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+        (vector-copy! (-> obj root trans) vec)
+        (vector-copy! (-> obj root-override trans) vec)
+        (vector-copy! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
+  (when (process-by-ename "eco-34")  ;; blue - zoomer dock to cell after balloon lurkers
+    (let ((obj (the eco (process-by-ename "eco-34")))
+          (vec (static-vector-meters 50.09 16.0 1187.07))
+          )
+      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+        (vector-copy! (-> obj root trans) vec)
+        (vector-copy! (-> obj root-override trans) vec)
+        (vector-copy! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
+  (when (process-by-ename "eco-39")  ;; blue - zoomer dock to cell after balloon lurkers
+    (let ((obj (the eco (process-by-ename "eco-39")))
+          (vec (static-vector-meters 17.80  17.54 1215.30))
+          )
+      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+        (vector-copy! (-> obj root trans) vec)
+        (vector-copy! (-> obj root-override trans) vec)
+        (vector-copy! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
+  (when (process-by-ename "eco-40")  ;; blue - leading to zoomer dock to cell after balloon lurkers
+    (let ((obj (the eco (process-by-ename "eco-40")))
+          (vec (static-vector-meters 92.0  2.0 1094.94))
+          )
+      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+        (vector-copy! (-> obj root trans) vec)
+        (vector-copy! (-> obj root-override trans) vec)
+        (vector-copy! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
+  (when (process-by-ename "eco-138")  ;; blue - on orig zoomer pad (leading to zoomer dock to cell after balloon lurkers)
+    (let ((obj (the eco (process-by-ename "eco-138")))
+          (vec (static-vector-meters 62.34   6.5 1029.33))
+          )
+      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+        (vector-copy! (-> obj root trans) vec)
+        (vector-copy! (-> obj root-override trans) vec)
+        (vector-copy! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
+    
+
   ;; eco-138 ;; blue
   ;; eco-139 ;; red
   ;; eco-143 ;; blue
@@ -1124,12 +1187,15 @@
       )
     (('mistycannon-4 'babak-with-cannon-1)
       (set-vector-meters! dst -99.35  22.83 -307.85) ;; near cannon, below orig flutflut nest
-      (vector-copy! (res-lump-struct (-> obj entity) 'movie-pos (vector) :time (the-as float -1000000000.0)) (static-vectorm -99.35  22.83 -307.85 1.0))
+      (set-vector-meters! (res-lump-struct (-> obj entity) 'movie-pos (vector) :time (the-as float -1000000000.0)) -99.35  22.83 -307.85)
       )
     (('mistycannon-8 'babak-with-cannon-5)
-      (format 0 "not set yet~%")
-      ;; (set-vector-meters! dst -99.35  22.83 -307.85) ;; near cannon, below orig flutflut nest
-      ;; (vector-copy! (res-lump-struct (-> obj entity) 'movie-pos (vector) :time (the-as float -1000000000.0)) (static-vectorm -99.35  22.83 -307.85 1.0))
+      (set-vector-meters! dst -138.39  57.04 966.67) ;; up top where logs come out
+      (set-vector-meters! (res-lump-struct (-> obj entity) 'movie-pos (vector) :time (the-as float -1000000000.0)) -138.39  57.04 966.67)
+      )
+    (('boat-fuelcell-1 'balloonlurker-9 'balloonlurker-10 'balloonlurker-11 'balloonlurker-12 'balloonlurker-13 'balloonlurker-14)
+      ;; blue eco jump from zoomer dock / just over the fence -> valid for one free zoomer OOB
+      (set-vector-meters! dst -12.69  9.5 1268.28) 
       )
     (else
       (format #t "fuel movie override, didnt match parent ~A ~%" (-> (ppointer->process (-> obj parent)) name))

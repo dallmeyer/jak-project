@@ -671,7 +671,7 @@
       (when gp-3
         (send-event gp-3 'release)
         (set! (-> self path-cache) (-> self path-spit0))
-        (let ((s5-3 (static-vectorm -127.78  19.9 -474.34 1.0))
+        (let ((s5-3 (new 'static 'vector :x (meters -127.78) :y (meters 19.9) :z (meters -474.34) :w 1.0))
               (mov-pos (res-lump-struct (-> self entity) 'movie-pos structure :time (the-as float -1000000000.0)))
               )
           ;; (eval-path-curve-div!
