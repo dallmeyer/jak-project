@@ -1522,6 +1522,7 @@
     )
   )
 
+(define-extern reset-to-level-start (function none))
 (defstate pickup (fuel-cell)
   :virtual #t
   :enter (behavior ((arg0 object) (arg1 handle))
@@ -1962,6 +1963,10 @@
         )
     (none)
     )
+  :exit (behavior ()
+    (reset-to-level-start)
+    (none)
+    )
   )
 
 (defmethod initialize fuel-cell ((obj fuel-cell))
@@ -2327,6 +2332,7 @@
   (set! (-> obj collect-timeout) (seconds 2))
   (update-transforms! (-> obj root-override))
   (update-trans! (-> obj sound) (-> obj root-override trans))
+  (set-vector! (-> obj draw color-mult) 1.0 0.0 0.0 1.0)  ;; red buzzers for red coins
   (if (and (-> obj entity) (logtest? (-> obj entity extra perm status) (entity-perm-status complete)))
       (go (method-of-object obj wait))
       (go (method-of-object obj pickup) #t (the-as handle #f))
@@ -2355,6 +2361,7 @@
   (update-transforms! (-> self root-override))
   (update-trans! (-> self sound) (-> self root-override trans))
   (set! (-> self event-hook) (-> (method-of-object self wait) event))
+  (set-vector! (-> self draw color-mult) 1.0 0.0 0.0 1.0)  ;; red buzzers for red coins
   (go-virtual wait)
   (none)
   )

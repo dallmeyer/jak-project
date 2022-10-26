@@ -1262,6 +1262,7 @@
                          )
         )
   (set! (-> obj victory-anim) (fuel-cell-pick-anim obj))
+  (set-vector! (-> obj draw color-mult) 1.0 0.0 0.0 1.0)  ;; red buzzers for red coins
   (the-as crate obj)
   )
 

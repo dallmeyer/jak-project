@@ -339,4 +339,5 @@
   ("ropebridge.o" "ropebridge")
   ("ticky.o" "ticky")
   ("hud-classes-pc.o" "hud-classes-pc") ;; added
+  ("mods_sm64.o" "mods_sm64")
   )

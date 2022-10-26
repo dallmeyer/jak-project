@@ -303,5 +303,6 @@
   ("anim-tester-x.o" "anim-tester-x") ;; added
   ("default-menu.o" "default-menu")
   ("subtitle.o" "subtitle") ;; added
+  ("mods_sm64.o" "mods_sm64")
   )
 
