@@ -163,6 +163,7 @@
   (-> obj task-perm-list data arg0)
   )
 
+(define-extern restore-completed-tasks (function none))
 (defmethod initialize! game-info ((obj game-info) (cause symbol) (save-to-load game-save) (continue-point-override string))
   "Initialize the game-info.
     The cause can be 'dead if you die, or 'game to reset everything.
@@ -314,6 +315,7 @@
                                              )
                                            (suspend)
                                            (start arg0 arg2)
+                                           (restore-completed-tasks)
                                            (none)
                                            )
                               (-> obj mode) cause (get-or-create-continue! obj) save-to-load

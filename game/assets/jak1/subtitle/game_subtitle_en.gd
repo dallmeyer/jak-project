@@ -1966,7 +1966,7 @@
 
 ("minershort-reminder-1-orbs"
   (25 "GORDY" "DON'T FORGET OUR DEAL. BRING US 100 ORBS.")
-  (130 :offscreen "WILLARD" "DUH... YOU SAID 90.")
+  (130 :offscreen "WILLARD" "DUH... YOU SAID 0.")
   (200 "GORDY" "WILLARD!")
   (230)
   (240 "GORDY" "FINE. 0 ORBS A POWER CELL.")
