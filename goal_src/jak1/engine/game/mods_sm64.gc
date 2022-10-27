@@ -15,62 +15,115 @@
   #f #f #f #f #f #f #f #f #f #f #f
   #f #f #f #f #f #f #f
  )))
+
 (define *reset-started?* #f)
-(defun reset-to-level-start ()
+(defun reset-to-level-start ((tsk game-task))
   (when (not *reset-started?*)
     (set! *reset-started?* #t)
-    (let ((checkpointName 
-            (case (-> *target* current-level name)
-              (('training)
+    (let ((checkpointName
+            (case tsk
+              (((game-task training-gimmie) (game-task training-door) (game-task training-climb) (game-task training-buzzer))
                 "training-start"
                 )
-              (('village1)
+              (((game-task village1-yakow) (game-task village1-mayor-money) (game-task village1-uncle-money) (game-task village1-oracle-money1) (game-task village1-oracle-money2) (game-task village1-buzzer))
                 "village1-warp"
                 )
-              (('beach)
+              (((game-task beach-ecorocks) (game-task beach-pelican) (game-task beach-flutflut) (game-task beach-seagull) (game-task beach-cannon) (game-task beach-buzzer) (game-task beach-gimmie) (game-task beach-sentinel))
                 "beach-start"
                 )
-              (('jungle 'jungleb)
+              (((game-task jungle-eggtop) (game-task jungle-lurkerm) (game-task jungle-tower) (game-task jungle-fishgame) (game-task jungle-plant) (game-task jungle-buzzer) (game-task jungle-canyon-end) (game-task jungle-temple-door))
                 "jungle-start"
                 )
-              (('misty)
+              (((game-task misty-muse) (game-task misty-boat) (game-task misty-warehouse) (game-task misty-cannon) (game-task misty-bike) (game-task misty-buzzer) (game-task misty-bike-jump) (game-task misty-eco-challenge))
                 "misty-start"
                 )
-              (('firecanyon)
+              (((game-task firecanyon-buzzer) (game-task firecanyon-end))
                 "firecanyon-start"
                 )
-              (('village2)
+              (((game-task village2-gambler-money) (game-task village2-geologist-money) (game-task village2-warrior-money) (game-task village2-oracle-money1) (game-task village2-oracle-money2) (game-task village2-buzzer))
                 "village2-warp"
                 )
-              (('sunken 'sunkenb)
+              (((game-task sunken-platforms) (game-task sunken-pipe) (game-task sunken-slide) (game-task sunken-room) (game-task sunken-sharks) (game-task sunken-buzzer) (game-task sunken-top-of-helix) (game-task sunken-spinning-room))
                 "sunken-start"
                 )
-              (('swamp)
+              (((game-task swamp-billy) (game-task swamp-flutflut) (game-task swamp-battle) (game-task swamp-tether-1) (game-task swamp-tether-2) (game-task swamp-tether-3) (game-task swamp-tether-4) (game-task swamp-buzzer))
                 "swamp-start"
                 )
-              (('rolling)
+              (((game-task rolling-race) (game-task rolling-robbers) (game-task rolling-moles) (game-task rolling-plants) (game-task rolling-lake) (game-task rolling-buzzer) (game-task rolling-ring-chase-1) (game-task rolling-ring-chase-2))
                 "rolling-start"
                 )
-              (('ogre)
+              (((game-task ogre-boss) (game-task ogre-end) (game-task ogre-buzzer) (game-task ogre-secret))
                 "ogre-start"
                 )
-              (('village3)
+              (((game-task village3-miner-money1) (game-task village3-miner-money2) (game-task village3-miner-money3) (game-task village3-miner-money4) (game-task village3-oracle-money1) (game-task village3-oracle-money2) (game-task village3-extra1) (game-task village3-buzzer))
                 "village3-warp"
                 )
-              (('snow)
+              (((game-task snow-eggtop) (game-task snow-ram) (game-task snow-fort) (game-task snow-ball) (game-task snow-bunnies) (game-task snow-buzzer) (game-task snow-bumpers) (game-task snow-cage))
                 "snow-start"
                 )
-              (('darkcave 'maincave 'robocave)
+              (((game-task cave-gnawers) (game-task cave-dark-crystals) (game-task cave-dark-climb) (game-task cave-robot-climb) (game-task cave-swing-poles) (game-task cave-spider-tunnel) (game-task cave-platforms) (game-task cave-buzzer))
                 "maincave-start"
                 )
-              (('lavatube)
+              (((game-task lavatube-end) (game-task lavatube-buzzer))
                 "lavatube-start"
                 )
-              (('citadel)
+              (((game-task citadel-sage-green) (game-task citadel-sage-blue) (game-task citadel-sage-red) (game-task citadel-sage-yellow) (game-task citadel-buzzer))
                 "citadel-start"
                 )
-              (else   ;; should never be hit
-                "training-start"
+              (else ;; reset due to death, use current level
+                (case (-> *target* current-level name)
+                  (('training)
+                    "training-start"
+                    )
+                  (('village1)
+                    "village1-warp"
+                    )
+                  (('beach)
+                    "beach-start"
+                    )
+                  (('jungle 'jungleb)
+                    "jungle-start"
+                    )
+                  (('misty)
+                    "misty-start"
+                    )
+                  (('firecanyon)
+                    "firecanyon-start"
+                    )
+                  (('village2)
+                    "village2-warp"
+                    )
+                  (('sunken 'sunkenb)
+                    "sunken-start"
+                    )
+                  (('swamp)
+                    "swamp-start"
+                    )
+                  (('rolling)
+                    "rolling-start"
+                    )
+                  (('ogre)
+                    "ogre-start"
+                    )
+                  (('village3)
+                    "village3-warp"
+                    )
+                  (('snow)
+                    "snow-start"
+                    )
+                  (('darkcave 'maincave 'robocave)
+                    "maincave-start"
+                    )
+                  (('lavatube)
+                    "lavatube-start"
+                    )
+                  (('citadel)
+                    "citadel-start"
+                    )
+                  (else   ;; should never be hit
+                    "training-start"
+                    )
+                  )
                 )
               )
             )

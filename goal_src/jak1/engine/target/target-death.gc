@@ -1030,7 +1030,8 @@
   0
   (none)
   )
-
+  
+(define-extern reset-to-level-start (function game-task none))
 (defstate target-death (target)
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
     (let ((v1-0 arg2))
@@ -1077,6 +1078,7 @@
     (set! (-> self control pat-ignore-mask) (new 'static 'pat-surface :noentity #x1))
     (set! (-> self control dynam gravity-max) (-> self control unknown-dynamics00 gravity-max))
     (set! (-> self control dynam gravity-length) (-> self control unknown-dynamics00 gravity-length))
+    (reset-to-level-start (game-task none))
     (none)
     )
   :trans (-> target-hit trans)

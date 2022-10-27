@@ -1525,7 +1525,7 @@
     )
   )
 
-(define-extern reset-to-level-start (function none))
+(define-extern reset-to-level-start (function game-task none))
 (defstate pickup (fuel-cell)
   :virtual #t
   :enter (behavior ((arg0 object) (arg1 handle))
@@ -1967,7 +1967,7 @@
     (none)
     )
   :exit (behavior ()
-    (reset-to-level-start)
+    (reset-to-level-start (the game-task (-> self fact pickup-amount)))
     (none)
     )
   )
