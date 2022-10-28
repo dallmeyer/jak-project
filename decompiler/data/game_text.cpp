@@ -192,6 +192,10 @@ std::string write_game_text(
   for (auto& x : text_by_id) {
     result += fmt::format("(#x{:04x}\n  ", x.first);
     for (auto& y : x.second) {
+      y = std::regex_replace(y, std::regex(" 120"), " 0");
+      y = std::regex_replace(y, std::regex(" 90"), " 0");
+      y = std::regex_replace(y, std::regex("TO TRADE 0 ORBS FOR A POWER CELL."),
+                             "FOR FREE POWERCELL!");
       result += fmt::format("\"{}\"\n  ", y);
     }
     result += ")\n\n";

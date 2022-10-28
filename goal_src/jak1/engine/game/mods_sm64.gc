@@ -1,7 +1,22 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
-(define *task-completed-backup* (the-as (array uint32) (new 'static 'array symbol 131)))
+(define *task-completed-backup* (the-as (array uint32) (new 'static 'array uint32 132
+  0 0 0 0 0 0 0 0 0 0 
+  0 0 0 0 0 0 0 0 0 0 
+  0 0 0 0 0 0 0 0 0 0 
+  0 0 0 0 0 0 0 0 0 0 
+  0 0 0 0 0 0 0 0 0 0 
+  0 0 0 0 0 0 0 0 0 0 
+  0 0 0 0 0 0 0 0 0 0 
+  0 0 0 0 0 0 0 0 0 0 
+  0 0 0 0 0 0 0 0 0 0 
+  0 0 0 0 0 0 0 0 0 0 
+  0 0 0 0 0 0 0 0 0 0 
+  0 0 0 0 0 0 0 0 0 0 
+  0 0 0 0 0 0 0 0 0 0
+  0 0
+  )))
 
 (define *reset-started?* #f)
 (defun reset-to-level-start ((tsk game-task))
@@ -129,8 +144,9 @@
           (let* ((idx (the int (game-task jungle-eggtop)))
                 (max (the int (game-task max)))
                 )
-            ;; backup task statuses
+            ;; backup task statuses in bitmask
             (while (> (the-as uint max) (the-as uint idx))
+              (set! (-> *task-completed-backup* idx) 0)
               (if (and (task-exists? (the-as game-task idx) (task-status need-hint)) (task-closed? (the-as game-task idx) (task-status need-hint)))
                 (logior! (-> *task-completed-backup* idx) (ash 1 (task-status need-hint)))
                 )
@@ -164,7 +180,7 @@
 
 (defun restore-completed-tasks ()
   (when *reset-started?*
-    ;; give cells
+    ;; reload task statuses from bitmask
     (let* ((idx (the int (game-task jungle-eggtop)))
           (max (the int (game-task max)))
           )
