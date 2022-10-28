@@ -1078,6 +1078,7 @@
     (set! (-> self control pat-ignore-mask) (new 'static 'pat-surface :noentity #x1))
     (set! (-> self control dynam gravity-max) (-> self control unknown-dynamics00 gravity-max))
     (set! (-> self control dynam gravity-length) (-> self control unknown-dynamics00 gravity-length))
+    (format #t "reset target-death~%")
     (reset-to-level-start (game-task none))
     (none)
     )

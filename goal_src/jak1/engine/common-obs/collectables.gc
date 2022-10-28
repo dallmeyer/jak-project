@@ -1967,6 +1967,7 @@
     (none)
     )
   :exit (behavior ()
+    (format #t "reset after picking up ~S fuel cell~%" (game-task->string (the game-task (-> self fact pickup-amount))))
     (reset-to-level-start (the game-task (-> self fact pickup-amount)))
     (none)
     )
@@ -2051,7 +2052,7 @@
             )
        (cond
         (gp-1
-          (set! (-> self jump-pos quad) (-> *target* root trans quad))
+          (set! (-> self jump-pos quad) (-> (the-as vector gp-1) quad))
           )
         (else
           (set! (-> self jump-pos quad) (-> arg0 quad))

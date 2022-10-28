@@ -304,7 +304,6 @@
        ;; send target a 'reset message.
        (send-event *target* 'reset)
        ;; start a temporary process to restart things
-       (format #t "restarting things in temp process~%")
        (process-spawn-function process (lambda ((arg0 symbol) (arg1 symbol) (arg2 continue-point) (arg3 game-save))
                                            (stop arg0)
                                            (reset-actors arg1)

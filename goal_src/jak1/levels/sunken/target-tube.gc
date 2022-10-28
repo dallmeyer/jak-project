@@ -815,6 +815,7 @@
   :post target-post
   )
 
+(define-extern reset-to-level-start (function game-task none))
 (defstate target-tube-death (target)
   :event (-> target-death event)
   :exit (behavior ()
@@ -823,6 +824,8 @@
     (remove-setting! 'process-mask)
     (apply-settings *setting-control*)
     ((-> target-tube-start exit))
+    (format #t "reset target-tube-death~%")
+    (reset-to-level-start (game-task none))
     (none)
     )
   :code (behavior ((arg0 symbol))

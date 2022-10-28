@@ -876,6 +876,7 @@
   :post target-no-stick-post
   )
 
+(define-extern reset-to-level-start (function game-task none))
 (defstate target-racing-death (target)
   :event (-> target-death event)
   :exit (behavior ()
@@ -888,6 +889,8 @@
     ((-> target-racing-start exit))
     (target-exit)
     (set! (-> self racer stick-off) #f)
+    (format #t "reset target-racing-death~%")
+    (reset-to-level-start (game-task none))
     (none)
     )
   :code (behavior ((arg0 symbol))

@@ -1,22 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
-(define *task-completed-backup* (the-as (array symbol) (new 'static 'array symbol 131
-  #f #f #f #f #f #f #f #f #f #f #f
-  #f #f #f #f #f #f #f #f #f #f #f
-  #f #f #f #f #f #f #f #f #f #f #f
-  #f #f #f #f #f #f #f #f #f #f #f
-  #f #f #f #f #f #f #f #f #f #f #f
-  #f #f #f #f #f #f #f #f #f #f #f
-  #f #f #f #f #f #f #f #f #f #f #f
-  #f #f #f #f #f #f #f #f #f #f #f
-  #f #f #f #f #f #f #f #f #f #f #f
-  #f #f #f #f #f #f #f #f #f #f #f
-  #f #f #f #f #f #f #f #f #f #f #f
-  #f #f #f #f #f #f #f #f #f #f #f
-  #f #f #f #f #f #f #f #f #f #f #f
-  #f 
-  )))
+(define *task-completed-backup* (the-as (array uint32) (new 'static 'array symbol 131)))
 
 (define *reset-started?* #f)
 (defun reset-to-level-start ((tsk game-task))
@@ -31,6 +16,7 @@
         (let ((checkpointName
                 (case tsk
                   (((game-task training-gimmie) (game-task training-door) (game-task training-climb) (game-task training-buzzer))
+                    (format 0 "choosing training-start~%")
                     "training-start"
                     )
                   (((game-task village1-yakow) (game-task village1-mayor-money) (game-task village1-uncle-money) (game-task village1-oracle-money1) (game-task village1-oracle-money2) (game-task village1-buzzer))
@@ -78,7 +64,8 @@
                   (((game-task citadel-sage-green) (game-task citadel-sage-blue) (game-task citadel-sage-red) (game-task citadel-sage-yellow) (game-task citadel-buzzer))
                     "citadel-start"
                     )
-                  (else ;; reset due to death, use current level
+                  (else
+                    (format #t "resetting due to death, based on cur level~%")
                     (case (-> *target* current-level name)
                       (('training)
                         "training-start"
@@ -137,16 +124,30 @@
                 )
               )
             
-          (format 0 "fuel cell anim warp ~A -> ~A~%" (-> *target* current-level name) checkpointName)
+          (format 0 "~S fuel cell anim warp ~A -> ~S~%" (game-task->string tsk) (-> *target* current-level name) checkpointName)
 
           (let* ((idx (the int (game-task jungle-eggtop)))
                 (max (the int (game-task max)))
                 )
-            ;; backup cells collected
+            ;; backup task statuses
             (while (> (the-as uint max) (the-as uint idx))
-              (if (task-closed? (the-as game-task idx) (task-status need-resolution))
-                (set! (-> *task-completed-backup* idx) #t)
-                (set! (-> *task-completed-backup* idx) #f)
+              (if (and (task-exists? (the-as game-task idx) (task-status need-hint)) (task-closed? (the-as game-task idx) (task-status need-hint)))
+                (logior! (-> *task-completed-backup* idx) (ash 1 (task-status need-hint)))
+                )
+              (if (and (task-exists? (the-as game-task idx) (task-status need-introduction)) (task-closed? (the-as game-task idx) (task-status need-introduction)))
+                (logior! (-> *task-completed-backup* idx) (ash 1 (task-status need-introduction)))
+                )
+              (if (and (task-exists? (the-as game-task idx) (task-status need-reminder-a)) (task-closed? (the-as game-task idx) (task-status need-reminder-a)))
+                (logior! (-> *task-completed-backup* idx) (ash 1 (task-status need-reminder-a)))
+                )
+              (if (and (task-exists? (the-as game-task idx) (task-status need-reminder)) (task-closed? (the-as game-task idx) (task-status need-reminder)))
+                (logior! (-> *task-completed-backup* idx) (ash 1 (task-status need-reminder)))
+                )
+              (if (and (task-exists? (the-as game-task idx) (task-status need-reward-speech)) (task-closed? (the-as game-task idx) (task-status need-reward-speech)))
+                (logior! (-> *task-completed-backup* idx) (ash 1 (task-status need-reward-speech)))
+                )
+              (if (and (task-exists? (the-as game-task idx) (task-status need-resolution)) (task-closed? (the-as game-task idx) (task-status need-resolution)))
+                (logior! (-> *task-completed-backup* idx) (ash 1 (task-status need-resolution)))
                 )
               (+! idx 1)
               )
@@ -168,14 +169,29 @@
           (max (the int (game-task max)))
           )
       (while (> (the-as uint max) (the-as uint idx))
-        (when (-> *task-completed-backup* idx)
+        (if (logtest? (-> *task-completed-backup* idx) (ash 1 (task-status need-hint)))
+          (close-specific-task! (the game-task idx) (task-status need-hint))
+          )
+        (if (logtest? (-> *task-completed-backup* idx) (ash 1 (task-status need-introduction)))
+          (close-specific-task! (the game-task idx) (task-status need-introduction))
+          )
+        (if (logtest? (-> *task-completed-backup* idx) (ash 1 (task-status need-reminder-a)))
+          (close-specific-task! (the game-task idx) (task-status need-reminder-a))
+          )
+        (if (logtest? (-> *task-completed-backup* idx) (ash 1 (task-status need-reminder)))
+          (close-specific-task! (the game-task idx) (task-status need-reminder))
+          )
+        (if (logtest? (-> *task-completed-backup* idx) (ash 1 (task-status need-reward-speech)))
+          (close-specific-task! (the game-task idx) (task-status need-reward-speech))
+          )
+        (when (logtest? (-> *task-completed-backup* idx) (ash 1 (task-status need-resolution)))
           (close-specific-task! (the game-task idx) (task-status need-resolution))
           (case (the game-task idx)
             (((game-task firecanyon-assistant) (game-task village2-levitator) (game-task swamp-arm) (game-task village3-button)
             (game-task red-eggtop) (game-task lavatube-balls) (game-task lavatube-start) (game-task intro) (game-task village4-button) 
             (game-task finalboss-movies)  (game-task plunger-lurker-hit) (game-task leaving-misty) (game-task assistant-village3))
               ;; do nothing for non-cell tasks
-              (none) 
+              (none)
               )
             (else       
               ;; cell pickup
@@ -183,8 +199,9 @@
               )
             )
           )
+
         ;; reset task backup
-        (set! (-> *task-completed-backup* idx) #f)
+        (set! (-> *task-completed-backup* idx) 0)
         (+! idx 1)
         )
       )
