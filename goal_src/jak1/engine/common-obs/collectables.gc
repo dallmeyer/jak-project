@@ -2043,14 +2043,20 @@
        (set! (-> self jump-pos y) (+ 4096.0 (-> self jump-pos y)))
        (go-virtual jump)
        )
-      ((and gp-1
-            (zero? (logand (res-lump-value (-> self entity) 'options fact-options :time (the-as float -1000000000.0))
+      ((and (zero? (logand (res-lump-value (-> self entity) 'options fact-options :time (the-as float -1000000000.0))
                            (fact-options skip-jump-anim)
                            )
                    )
             (zero? (logand (-> self fact options) (fact-options skip-jump-anim)))
             )
-       (set! (-> self jump-pos quad) (-> (the-as vector gp-1) quad))
+       (cond
+        (gp-1
+          (set! (-> self jump-pos quad) (-> *target* root trans quad))
+          )
+        (else
+          (set! (-> self jump-pos quad) (-> arg0 quad))
+          )
+        )
        (set! (-> self jump-pos y) (+ 4096.0 (-> self jump-pos y)))
        (go-virtual jump)
        )

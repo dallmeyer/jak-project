@@ -97,7 +97,7 @@
         :disp1 'special
         )
       )
-    :tasks '(92 93 94 95)
+    :tasks '(92 93 94 95 116)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
@@ -212,7 +212,7 @@
         :disp1 #f
         )
       )
-    :tasks '(10 11 12 13 14 75)
+    :tasks '(10 11 12 13 14 75 117)
     :priority #xc8
     :load-commands '()
     :alt-load-commands '(((display village1) (load misty)) ((special village1) (display misty)) ((display village1) (load beach)))
@@ -255,7 +255,7 @@
         :disp1 'display
         )
       )
-    :tasks '(15 16 17 18 19 20 21 22)
+    :tasks '(15 16 17 18 19 20 21 22 118)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
@@ -498,7 +498,7 @@
         :disp1 'special
         )
       )
-    :tasks '(23 24 25 26 27 28 29 30)
+    :tasks '(23 24 25 26 27 28 29 30 120)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
@@ -554,7 +554,7 @@
         :disp1 'display
         )
       )
-    :tasks '(68 69)
+    :tasks '(68 69 121)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
@@ -625,7 +625,7 @@
         :disp1 #f
         )
       )
-    :tasks '(31 32 34 35 76)
+    :tasks '(31 32 34 35 76 122)
     :priority #xc8
     :load-commands '()
     :alt-load-commands '()
@@ -709,7 +709,7 @@
         :disp1 #f
         )
       )
-    :tasks '()
+    :tasks '(44 45 46 47 48 49 50 51 123)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
@@ -933,7 +933,7 @@
         :disp1 'special-vis
         )
       )
-    :tasks '(36 37 38 39 40 41 42 43)
+    :tasks '(36 37 38 39 40 41 42 43 124)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
@@ -975,7 +975,7 @@
         :disp1 'display
         )
       )
-    :tasks '(52 53 54 55 56 57 58 59)
+    :tasks '(52 53 54 55 56 57 58 59 125)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
@@ -1045,7 +1045,7 @@
         :disp1 'display
         )
       )
-    :tasks '(86 87 110 88)
+    :tasks '(86 87 110 88 126)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
@@ -1116,7 +1116,7 @@
         :disp1 #f
         )
       )
-    :tasks '(96 97 98 99 100 101 74 77)
+    :tasks '(96 97 98 99 100 101 74 77 127)
     :priority #xc8
     :load-commands '()
     :alt-load-commands '()
@@ -1271,7 +1271,7 @@
         :disp1 'display
         )
       )
-    :tasks '(60 61 62 63 64 66 67 65)
+    :tasks '(60 61 62 63 64 66 67 65 128)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
@@ -1341,7 +1341,7 @@
         :disp1 #f
         )
       )
-    :tasks '(78 79 80 81 82 83 84 85)
+    :tasks '(78 79 80 81 82 83 84 85 129)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
@@ -1523,7 +1523,7 @@
         :disp1 'display
         )
       )
-    :tasks '(89 90)
+    :tasks '(89 90 130)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
@@ -1692,7 +1692,7 @@
         :disp1 #f
         )
       )
-    :tasks '(70 71 72 73 91)
+    :tasks '(70 71 72 73 91 131)
     :priority 100
     :load-commands '()
     :alt-load-commands '()

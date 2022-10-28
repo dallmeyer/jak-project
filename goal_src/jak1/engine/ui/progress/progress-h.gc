@@ -211,11 +211,11 @@
    (text-group-index  int32            :offset-assert   8)
    (nb-of-tasks       int32            :offset-assert  12)
    (buzzer-task-index int32            :offset-assert  16)
-   (task-info         task-info-data 8 :offset-assert  20)
+   (task-info         task-info-data 9 :offset-assert  20)
    )
   :method-count-assert 9
-  :size-assert         #x34
-  :flag-assert         #x900000034
+  :size-assert         #x38
+  :flag-assert         #x900000038
   )
 
 

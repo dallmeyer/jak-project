@@ -933,41 +933,42 @@
   )
 
 (defmethod initialize-particles progress ((obj progress))
-  (progress-new-particle :part 90 :x 256.0 :y 224.0 :z 16.0) ;; tint
-  (progress-new-particle :part 88 :x -42.0 :y (#if PC_PORT 256.0 254.0) :z 5.0) ;; left
-  (progress-new-particle :part 89 :x 610.0 :y (#if PC_PORT 256.0 254.0) :z 5.0) ;; right
-  (progress-new-particle :part 85 :x -320.0 :y 40.0 :z 14.0) ;; prev
-  (progress-new-particle :part 86 :x -320.0 :y 400.0 :z 14.0) ;; next
-  (progress-new-particle :part 87 :x -320.0 :y 194.0 :z 15.0)
-  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0)
-  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0)
-  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0)
-  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0)
-  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0)
-  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0)
-  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0)
-  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0)
-  (progress-new-particle :part 98 :x -320.0 :y 224.0 :z 14.0)
-  (progress-new-particle :part 99 :x -320.0 :y 224.0 :z 14.0)
-  (progress-new-particle :part 97 :x -320.0 :y 112.0 :z 4.0)
-  (progress-new-particle :part 100 :x -320.0 :y 193.0 :z 4.0)
-  (progress-new-particle :part 101 :x -320.0 :y 40.0 :z 4.0)
-  (progress-new-particle :part 92 :x -320.0 :y 90.0 :z 16.0)
-  (progress-new-particle :part 93 :x -320.0 :y 172.0 :z 16.0)
-  (progress-new-particle :part 94 :x -320.0 :y 254.0 :z 16.0)
-  (progress-new-particle :part 95 :x -320.0 :y 336.0 :z 16.0)
-  (progress-new-particle :part 91 :x -320.0 :y 102.0 :z 13.0)
-  (progress-new-particle :part 91 :x -320.0 :y 184.0 :z 13.0)
-  (progress-new-particle :part 91 :x -320.0 :y 266.0 :z 13.0)
-  (progress-new-particle :part 91 :x -320.0 :y 348.0 :z 13.0)
-  (progress-new-particle :part 570 :x -320.0 :y 338.0 :z 4.0)
-  (progress-new-particle :part 571 :x -320.0 :y 338.0 :z 4.0)
-  (progress-new-particle :part 572 :x -320.0 :y 338.0 :z 4.0)
-  (progress-new-particle :part 573 :x -320.0 :y 338.0 :z 4.0)
-  (progress-new-particle :part 615 :x -320.0 :y 180.0 :z 4.0)
+  (progress-new-particle :part 90 :x 256.0 :y 224.0 :z 16.0) ;; 0 tint
+  (progress-new-particle :part 88 :x -42.0 :y (#if PC_PORT 256.0 254.0) :z 5.0) ;; 1 left
+  (progress-new-particle :part 89 :x 610.0 :y (#if PC_PORT 256.0 254.0) :z 5.0) ;; 2 right
+  (progress-new-particle :part 85 :x -320.0 :y 40.0 :z 14.0) ;; 3 prev
+  (progress-new-particle :part 86 :x -320.0 :y 400.0 :z 14.0) ;; 4 next
+  (progress-new-particle :part 87 :x -320.0 :y 194.0 :z 15.0) ;; 5 progress-hud-selector
+  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0) ;; 6 progress-hud-power-cell-whole
+  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0) ;; 7 ^
+  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0) ;; 8 ^
+  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0) ;; 9 ^
+  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0) ;; 10 ^
+  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0) ;; 11 ^
+  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0) ;; 12 ^
+  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0) ;; 13 ^
+  (progress-new-particle :part 97 :x -320.0 :y 194.0 :z 14.0) ;; 14 ^
+  (progress-new-particle :part 98 :x -320.0 :y 224.0 :z 14.0) ;; 15 progress-buzzer
+  (progress-new-particle :part 99 :x -320.0 :y 224.0 :z 14.0) ;; 16 progress-orb
+  (progress-new-particle :part 97 :x -320.0 :y 112.0 :z 4.0)  ;; 17 progress-hud-power-cell-whole
+  (progress-new-particle :part 100 :x -320.0 :y 193.0 :z 4.0) ;; 18 progress-buzzer-small
+  (progress-new-particle :part 101 :x -320.0 :y 40.0 :z 4.0) ;; 19 progress-orb-small
+  (progress-new-particle :part 92 :x -320.0 :y 90.0 :z 16.0) ;; 20 progress-card-slot-01
+  (progress-new-particle :part 93 :x -320.0 :y 172.0 :z 16.0) ;; 21 progress-card-slot-02
+  (progress-new-particle :part 94 :x -320.0 :y 254.0 :z 16.0) ;; 22 progress-card-slot-03
+  (progress-new-particle :part 95 :x -320.0 :y 336.0 :z 16.0) ;; 23 progress-card-slot-04
+  (progress-new-particle :part 91 :x -320.0 :y 102.0 :z 13.0) ;; 24 progress-card-cell
+  (progress-new-particle :part 91 :x -320.0 :y 184.0 :z 13.0) ;; 25 progress-card-cell
+  (progress-new-particle :part 91 :x -320.0 :y 266.0 :z 13.0) ;; 26 progress-card-cell
+  (progress-new-particle :part 91 :x -320.0 :y 348.0 :z 13.0) ;; 27 progress-card-cell
+  (progress-new-particle :part 570 :x -320.0 :y 338.0 :z 4.0) ;; 28 progress-button-x
+  (progress-new-particle :part 571 :x -320.0 :y 338.0 :z 4.0) ;; 29 progress-button-square
+  (progress-new-particle :part 572 :x -320.0 :y 338.0 :z 4.0) ;; 30 progress-button-triangle
+  (progress-new-particle :part 573 :x -320.0 :y 338.0 :z 4.0) ;; 31 progress-button-circle
+  (progress-new-particle :part 615 :x -320.0 :y 180.0 :z 4.0) ;; 32 progress-save-icon
   (#when PC_PORT
-    (progress-new-particle :part 85 :x -320.0 :y 32.0 :z 14.0) ;; prev
-    (progress-new-particle :part 86 :x -320.0 :y 412.0 :z 14.0) ;; next
+    (progress-new-particle :part 85 :x -320.0 :y 32.0 :z 14.0) ;; 33 prev
+    (progress-new-particle :part 86 :x -320.0 :y 412.0 :z 14.0) ;; 34 next
     )
   0
   (none)
