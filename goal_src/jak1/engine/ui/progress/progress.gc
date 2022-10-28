@@ -682,6 +682,23 @@
 (defmethod relocate game-count-info ((obj game-count-info) (arg0 int))
   "Load in the game-count-info. This is a bit of a hack."
   (set! *game-counts* obj)
+  (set! (-> *game-counts* data 0 money-count) 64)
+  (set! (-> *game-counts* data 1 money-count) 64)
+  (set! (-> *game-counts* data 2 money-count) 164)
+  (set! (-> *game-counts* data 3 money-count) 164)
+  (set! (-> *game-counts* data 4 money-count) 164)
+  (set! (-> *game-counts* data 5 money-count) 64)
+  (set! (-> *game-counts* data 6 money-count) 64)
+  (set! (-> *game-counts* data 7 money-count) 214)
+  (set! (-> *game-counts* data 8 money-count) 214)
+  (set! (-> *game-counts* data 9 money-count) 214)
+  (set! (-> *game-counts* data 10 money-count) 64)
+  (set! (-> *game-counts* data 11 money-count) 64)
+  (set! (-> *game-counts* data 12 money-count) 214)
+  (set! (-> *game-counts* data 13 money-count) 214)
+  (set! (-> *game-counts* data 14 money-count) 64)
+  (set! (-> *game-counts* data 15 money-count) 214)
+  *game-counts*
   )
 
 (defmethod relocate progress ((obj progress) (arg0 int))

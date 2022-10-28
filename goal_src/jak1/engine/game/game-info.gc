@@ -373,8 +373,8 @@
                    (activate-orb-all level-idx)
                    )
                ;; if we have just reached 100+ orbs in the level, and haven't gotten the 100 orb cell yet, birth the cell
-               (when (and (< old-amt 10)
-                          (>= (-> obj money-per-level level-idx) 10)
+               (when (and (< old-amt 100)
+                          (>= (-> obj money-per-level level-idx) 100)
                           (not (task-closed? game-task-100-orbs (task-status need-resolution)))
                           )
                   (let ((fact (new 'static 'fact-info)))
@@ -436,8 +436,16 @@
              ;; valid fly index
 
              ;; increment total if we haven't collected it before
-             (if (zero? (logand buzz-bits (ash 1 buzz-index)))
+             (when (zero? (logand buzz-bits (ash 1 buzz-index)))
                  (set! (-> obj buzzer-total) (+ 1.0 (-> obj buzzer-total)))
+
+                 ;; pickup 2 orbs (SM64 red coins count as 2x coins)
+                 (pickup-collectable!
+                    (-> *target* fact-info-target)
+                    (pickup-type money)
+                    2.0
+                    source
+                    )
                  )
 
              ;; set the updated bits

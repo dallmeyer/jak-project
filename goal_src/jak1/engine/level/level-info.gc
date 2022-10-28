@@ -97,7 +97,7 @@
         :disp1 'special
         )
       )
-    :tasks '(92 93 94 95 116)
+    :tasks '(92 93 94 95) ;; 116)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
@@ -212,7 +212,7 @@
         :disp1 #f
         )
       )
-    :tasks '(10 11 12 13 14 75 117)
+    :tasks '(10 11 12 13 14 75) ;; 117)
     :priority #xc8
     :load-commands '()
     :alt-load-commands '(((display village1) (load misty)) ((special village1) (display misty)) ((display village1) (load beach)))
@@ -554,7 +554,7 @@
         :disp1 'display
         )
       )
-    :tasks '(68 69 121)
+    :tasks '(68 69) ;; 121)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
@@ -625,7 +625,7 @@
         :disp1 #f
         )
       )
-    :tasks '(31 32 34 35 76 122)
+    :tasks '(31 32 34 35 76)  ;; 122)
     :priority #xc8
     :load-commands '()
     :alt-load-commands '()
@@ -1045,7 +1045,7 @@
         :disp1 'display
         )
       )
-    :tasks '(86 87 110 88 126)
+    :tasks '(86 87 110 88)  ;; 126)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
@@ -1116,7 +1116,7 @@
         :disp1 #f
         )
       )
-    :tasks '(96 97 98 99 100 101 74 77 127)
+    :tasks '(96 97 98 99 100 101 74 77) ;; 127)
     :priority #xc8
     :load-commands '()
     :alt-load-commands '()
@@ -1523,7 +1523,7 @@
         :disp1 'display
         )
       )
-    :tasks '(89 90 130)
+    :tasks '(89 90) ;; 130)
     :priority 100
     :load-commands '()
     :alt-load-commands '()
