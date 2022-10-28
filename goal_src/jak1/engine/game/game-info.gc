@@ -358,10 +358,9 @@
            ;; we have task data for this level!
            (when (>= (-> *level-task-data-remap* length) (-> proc entity extra level info index))
              ;; get the level index
-             (let* ((idx (+ (-> proc entity extra level info index) -1))
-                    (level-idx (-> *level-task-data-remap* idx))
+             (let* ((level-idx (-> *level-task-data-remap* (+ (-> proc entity extra level info index) -1)))
                     (old-amt (-> obj money-per-level level-idx))
-                    (game-task-100-orbs (the game-task (+ 116 idx)))  ;; 116 is training-100-orbs, others follow in order
+                    (game-task-100-orbs (the game-task (+ 116 level-idx)))  ;; 116 is training-100-orbs, others follow in order
                    )
                ;; increment the level money count
                (+! (-> obj money-per-level level-idx) (the int amount))
