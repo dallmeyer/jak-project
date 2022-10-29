@@ -22,8 +22,9 @@
 (defun reset-to-level-start ((tsk game-task))
   (when (not *reset-started?*)
     (case tsk
-      (((game-task training-100-orbs) (game-task village1-100-orbs) (game-task beach-100-orbs) (game-task jungle-100-orbs) (game-task misty-100-orbs) (game-task firecanyon-100-orbs) (game-task village2-100-orbs) (game-task sunken-100-orbs) (game-task swamp-100-orbs) (game-task rolling-100-orbs) (game-task ogre-100-orbs) (game-task village3-100-orbs) (game-task snow-100-orbs) (game-task cave-100-orbs) (game-task lavatube-100-orbs) (game-task citadel-100-orbs))
-        ;; dont reset for 100 orb cells
+      (((game-task training-100-orbs) (game-task village1-100-orbs) (game-task beach-100-orbs) (game-task jungle-100-orbs) (game-task misty-100-orbs) (game-task firecanyon-100-orbs) (game-task village2-100-orbs) (game-task sunken-100-orbs) (game-task swamp-100-orbs) (game-task rolling-100-orbs) (game-task ogre-100-orbs) (game-task village3-100-orbs) (game-task snow-100-orbs) (game-task cave-100-orbs) (game-task lavatube-100-orbs) (game-task citadel-100-orbs)
+        (game-task firecanyon-buzzer) (game-task firecanyon-end) (game-task ogre-boss) (game-task ogre-end) (game-task ogre-buzzer) (game-task ogre-secret) (game-task lavatube-end) (game-task lavatube-buzzer))
+        ;; dont reset for 100 orb cells and in connector levels
         (none)
         )
       (else 
@@ -46,9 +47,9 @@
                   (((game-task misty-muse) (game-task misty-boat) (game-task misty-warehouse) (game-task misty-cannon) (game-task misty-bike) (game-task misty-buzzer) (game-task misty-bike-jump) (game-task misty-eco-challenge))
                     "misty-start"
                     )
-                  (((game-task firecanyon-buzzer) (game-task firecanyon-end))
-                    "firecanyon-start"
-                    )
+                  ;; (((game-task firecanyon-buzzer) (game-task firecanyon-end))
+                  ;;   "firecanyon-start"
+                  ;;   )
                   (((game-task village2-gambler-money) (game-task village2-geologist-money) (game-task village2-warrior-money) (game-task village2-oracle-money1) (game-task village2-oracle-money2) (game-task village2-buzzer))
                     "village2-warp"
                     )
@@ -61,9 +62,9 @@
                   (((game-task rolling-race) (game-task rolling-robbers) (game-task rolling-moles) (game-task rolling-plants) (game-task rolling-lake) (game-task rolling-buzzer) (game-task rolling-ring-chase-1) (game-task rolling-ring-chase-2))
                     "rolling-start"
                     )
-                  (((game-task ogre-boss) (game-task ogre-end) (game-task ogre-buzzer) (game-task ogre-secret))
-                    "ogre-start"
-                    )
+                  ;; (((game-task ogre-boss) (game-task ogre-end) (game-task ogre-buzzer) (game-task ogre-secret))
+                  ;;   "ogre-start"
+                  ;;   )
                   (((game-task village3-miner-money1) (game-task village3-miner-money2) (game-task village3-miner-money3) (game-task village3-miner-money4) (game-task village3-oracle-money1) (game-task village3-oracle-money2) (game-task village3-extra1) (game-task village3-buzzer))
                     "village3-warp"
                     )
@@ -73,9 +74,9 @@
                   (((game-task cave-gnawers) (game-task cave-dark-crystals) (game-task cave-dark-climb) (game-task cave-robot-climb) (game-task cave-swing-poles) (game-task cave-spider-tunnel) (game-task cave-platforms) (game-task cave-buzzer))
                     "maincave-start"
                     )
-                  (((game-task lavatube-end) (game-task lavatube-buzzer))
-                    "lavatube-start"
-                    )
+                  ;; (((game-task lavatube-end) (game-task lavatube-buzzer))
+                  ;;   "lavatube-start"
+                  ;;   )
                   (((game-task citadel-sage-green) (game-task citadel-sage-blue) (game-task citadel-sage-red) (game-task citadel-sage-yellow) (game-task citadel-buzzer))
                     "citadel-start"
                     )
@@ -130,7 +131,7 @@
                       (('citadel)
                         "citadel-start"
                         )
-                      (else   ;; should never be hit
+                      (else   ;; don't die in finalboss :)
                         "training-start"
                         )
                       )
