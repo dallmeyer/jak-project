@@ -181,6 +181,7 @@
 (defun-extern task-known? game-task symbol)
 (defun-extern task-control-reset symbol none)
 
+(define-extern task-exists? (function game-task task-status symbol))
 (define-extern task-closed? (function game-task task-status symbol))
 (define-extern get-task-status (function game-task task-status))
 (define-extern get-task-control (function game-task task-control))

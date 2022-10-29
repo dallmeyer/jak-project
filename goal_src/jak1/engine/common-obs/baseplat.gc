@@ -232,6 +232,11 @@ eco-door-event-handler
 (defstate door-opening (eco-door)
   :virtual #t
   :event eco-door-event-handler
+  :enter (behavior ()
+    (when (name= (-> self name) "citb-iris-door-2")
+      (send-event (process-by-name "citb-exit-plat-4" *active-pool*) 'trigger)
+      )
+    )
   :code (behavior ()
     (let ((gp-0
             (and (not (and (-> self entity) (logtest? (-> self entity extra perm status) (entity-perm-status complete))))

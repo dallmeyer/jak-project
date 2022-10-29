@@ -1967,8 +1967,10 @@
     (none)
     )
   :exit (behavior ()
-    (format #t "reset after picking up ~S fuel cell~%" (game-task->string (the game-task (-> self fact pickup-amount))))
-    (reset-to-level-start (the game-task (-> self fact pickup-amount)))
+    (when *target*
+      (format #t "reset after picking up ~S fuel cell~%" (game-task->string (the game-task (-> self fact pickup-amount))))
+      (reset-to-level-start (the game-task (-> self fact pickup-amount)))
+      )
     (none)
     )
   )

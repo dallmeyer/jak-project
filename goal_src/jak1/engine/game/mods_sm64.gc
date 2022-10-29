@@ -20,6 +20,7 @@
 
 (define *reset-started?* #f)
 (defun reset-to-level-start ((tsk game-task))
+  (format #t "reset-to-level-start called~%")
   (when (not *reset-started?*)
     (case tsk
       (((game-task training-100-orbs) (game-task village1-100-orbs) (game-task beach-100-orbs) (game-task jungle-100-orbs) (game-task misty-100-orbs) (game-task firecanyon-100-orbs) (game-task village2-100-orbs) (game-task sunken-100-orbs) (game-task swamp-100-orbs) (game-task rolling-100-orbs) (game-task ogre-100-orbs) (game-task village3-100-orbs) (game-task snow-100-orbs) (game-task cave-100-orbs) (game-task lavatube-100-orbs) (game-task citadel-100-orbs)
@@ -32,7 +33,6 @@
         (let ((checkpointName
                 (case tsk
                   (((game-task training-gimmie) (game-task training-door) (game-task training-climb) (game-task training-buzzer))
-                    (format 0 "choosing training-start~%")
                     "training-start"
                     )
                   (((game-task village1-yakow) (game-task village1-mayor-money) (game-task village1-uncle-money) (game-task village1-oracle-money1) (game-task village1-oracle-money2) (game-task village1-buzzer))
@@ -140,7 +140,7 @@
                 )
               )
             
-          (format 0 "~S fuel cell anim warp ~A -> ~S~%" (game-task->string tsk) (-> *target* current-level name) checkpointName)
+          (format #t "~S fuel cell anim warp ~A -> ~S~%" (game-task->string tsk) (-> *target* current-level name) checkpointName)
 
           (let* ((idx (the int (game-task jungle-eggtop)))
                 (max (the int (game-task max)))
@@ -180,6 +180,7 @@
   )
 
 (defun restore-completed-tasks ()
+  (format #t "restore-completed-tasks called~%")
   (when *reset-started?*
     ;; reload task statuses from bitmask
     (let* ((idx (the int (game-task jungle-eggtop)))
@@ -212,7 +213,8 @@
               )
             (else       
               ;; cell pickup
-              (send-event *target* 'get-pickup 6 (the float idx))
+              (format #t "giving cell ~A~%" (game-task->string (the game-task idx)))
+              (send-event *target* 'get-pickup (pickup-type fuel-cell) (the float idx))
               )
             )
           )

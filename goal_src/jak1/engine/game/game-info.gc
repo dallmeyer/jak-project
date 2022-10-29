@@ -229,7 +229,7 @@
                             )
                           )
                     )
-     (set! (-> obj auto-save-count) 0)
+    ;;  (set! (-> obj auto-save-count) 0)
      (set! (-> *setting-control* default auto-save) #f)
      (set! (-> obj money) 0.0)
      (set! (-> obj fuel) 0.0)
@@ -314,7 +314,9 @@
                                              )
                                            (suspend)
                                            (start arg0 arg2)
-                                           (restore-completed-tasks)
+                                           (if (= cause 'game)
+                                             (restore-completed-tasks)
+                                             )
                                            (none)
                                            )
                               (-> obj mode) cause (get-or-create-continue! obj) save-to-load
@@ -373,6 +375,7 @@
                ;; if we have just reached 100+ orbs in the level, and haven't gotten the 100 orb cell yet, birth the cell
                (when (and (< old-amt 100)
                           (>= (-> obj money-per-level level-idx) 100)
+                          (task-exists? game-task-100-orbs (task-status need-resolution))
                           (not (task-closed? game-task-100-orbs (task-status need-resolution)))
                           )
                   (let ((fact (new 'static 'fact-info)))

@@ -1427,6 +1427,7 @@
   (none)
   )
 
+(define-extern game-task->string (function game-task string))
 (defmethod init-from-entity! citb-generator ((obj citb-generator) (arg0 entity-actor))
   (init! obj)
   (process-drawable-from-entity! obj arg0)
@@ -1435,10 +1436,17 @@
     (if (not v1-4)
         (set! v1-4 (-> obj entity))
         )
-    (if (logtest? (-> v1-4 extra perm status) (entity-perm-status complete))
+    (cond
+      ((logtest? (-> v1-4 extra perm status) (entity-perm-status complete))      
         (go citb-generator-broken)
+        )
+      ((task-closed? (-> v1-4 task) (task-status need-resolution))
+        (go citb-generator-break)
+        )
+      (else
         (go citb-generator-idle)
         )
+      )
     )
   (none)
   )
