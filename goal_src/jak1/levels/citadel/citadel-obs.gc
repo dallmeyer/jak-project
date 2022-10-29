@@ -1436,7 +1436,7 @@
         (set! v1-4 (-> obj entity))
         )
     (cond
-      ((logtest? (-> v1-4 extra perm status) (entity-perm-status complete))      
+      ((logtest? (-> v1-4 extra perm status) (entity-perm-status complete))
         (go citb-generator-broken)
         )
       ((task-closed? (-> v1-4 task) (task-status need-resolution))
