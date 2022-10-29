@@ -1427,7 +1427,6 @@
   (none)
   )
 
-(define-extern game-task->string (function game-task string))
 (defmethod init-from-entity! citb-generator ((obj citb-generator) (arg0 entity-actor))
   (init! obj)
   (process-drawable-from-entity! obj arg0)
