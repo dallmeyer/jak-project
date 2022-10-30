@@ -872,18 +872,35 @@ void extract_merc(const ObjectFileData& ag_data,
 
   // extract them. this does very basic unpacking of data, as done by the VIF/DMA on PS2.
   std::vector<MercCtrl> ctrls;
+  size_t money_idx = -1;
+  size_t buzzer_idx = -1;
+  size_t count = 0;
   for (auto location : ctrl_locations) {
     auto ctrl = extract_merc_ctrl(ag_data.linked_data, dts, location);
     ctrls.push_back(ctrl);
+
+    if (ctrl.name == "money-lod0") {
+      lg::warn("found money-lod0 ctrl");
+      money_idx = count;
+    } else if (ctrl.name == "buzzer-lod0") {
+      lg::warn("found buzzer-lod0 ctrl");
+      buzzer_idx = count;
+    }
+
+    count++;
   }
 
   // extract draws. this does no regrouping yet.
   std::vector<std::vector<ConvertedMercEffect>> all_effects;
   for (size_t ci = 0; ci < ctrls.size(); ci++) {
+    size_t srci = ci;
+    if (ci == buzzer_idx) {
+      srci = money_idx;
+    }
     auto& effects_in_ctrl = all_effects.emplace_back();
-    for (size_t ei = 0; ei < ctrls[ci].effects.size(); ei++) {
-      effects_in_ctrl.push_back(convert_merc_effect(ctrls[ci].effects[ei], ctrls[ci].header, tex_db,
-                                                    map, ctrls[ci].name, ci, ei, dump_level));
+    for (size_t ei = 0; ei < ctrls[srci].effects.size(); ei++) {
+      effects_in_ctrl.push_back(convert_merc_effect(ctrls[srci].effects[ei], ctrls[srci].header,
+                                                    tex_db, map, ctrls[ci].name, ci, ei, dump_level));
     }
   }
 
@@ -897,10 +914,16 @@ void extract_merc(const ObjectFileData& ag_data,
     auto& ctrl = ctrls[ci];
 
     pc_ctrl.name = ctrl.name;
+    size_t srci = ci;
+    if (ci == buzzer_idx) {
+      srci = money_idx;
+      ctrl = ctrls[srci];
+    }
+
     pc_ctrl.max_draws = 0;
     pc_ctrl.max_bones = 0;
 
-    for (size_t ei = 0; ei < ctrls[ci].effects.size(); ei++) {
+    for (size_t ei = 0; ei < ctrls[srci].effects.size(); ei++) {
       indices_temp[ci].emplace_back();
       auto& pc_effect = pc_ctrl.effects.emplace_back();
       auto& effect = all_effects[ci][ei];
@@ -974,7 +997,13 @@ void extract_merc(const ObjectFileData& ag_data,
   // merge indices
   for (size_t ci = 0; ci < ctrls.size(); ci++) {
     auto& pc_ctrl = out.merc_data.models.at(ci + first_model);
-    for (size_t ei = 0; ei < ctrls[ci].effects.size(); ei++) {
+
+    size_t srci = ci;
+    if (ci == buzzer_idx) {
+      srci = money_idx;
+    }
+
+    for (size_t ei = 0; ei < ctrls[srci].effects.size(); ei++) {
       auto& pc_effect = pc_ctrl.effects.at(ei);
       for (size_t di = 0; di < pc_effect.draws.size(); di++) {
         auto& pc_draw = pc_effect.draws.at(di);
