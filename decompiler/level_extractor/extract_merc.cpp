@@ -872,9 +872,23 @@ void extract_merc(const ObjectFileData& ag_data,
 
   // extract them. this does very basic unpacking of data, as done by the VIF/DMA on PS2.
   std::vector<MercCtrl> ctrls;
+  MercCtrl money_lod0_dupe;
   for (auto location : ctrl_locations) {
     auto ctrl = extract_merc_ctrl(ag_data.linked_data, dts, location);
+
+    // dont use real buzzer-lod0
+    if (ctrl.name == "buzzer-lod0") {
+      continue;
+    }
+
     ctrls.push_back(ctrl);
+
+    // duplicate money-lod0 as buzzer-lod0
+    if (ctrl.name == "money-lod0") {
+      money_lod0_dupe = extract_merc_ctrl(ag_data.linked_data, dts, location);
+      money_lod0_dupe.name == "buzzer-lod0";
+      ctrls.push_back(ctrl);
+    }
   }
 
   // extract draws. this does no regrouping yet.
