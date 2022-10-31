@@ -131,6 +131,24 @@
   (set! (-> *autosplit-info-jak1* unk-finalboss-movies) (if (task-closed? (game-task finalboss-movies) (task-status unknown)) 1 0))
   (set! (-> *autosplit-info-jak1* int-jungle-fishgame) (if (task-closed? (game-task jungle-fishgame) (task-status need-introduction)) 1 0))
 
+  ;; SM64
+  ;; (set! (-> *autosplit-info-jak1* res-training-100-orbs) (if (task-closed? (game-task training-100-orbs) (task-status need-resolution)) 1 0))
+  ;; (set! (-> *autosplit-info-jak1* res-village1-100-orbs) (if (task-closed? (game-task village1-100-orbs) (task-status need-resolution)) 1 0))
+  (set! (-> *autosplit-info-jak1* res-beach-100-orbs) (if (task-closed? (game-task beach-100-orbs) (task-status need-resolution)) 1 0))
+  (set! (-> *autosplit-info-jak1* res-jungle-100-orbs) (if (task-closed? (game-task jungle-100-orbs) (task-status need-resolution)) 1 0))
+  (set! (-> *autosplit-info-jak1* res-misty-100-orbs) (if (task-closed? (game-task misty-100-orbs) (task-status need-resolution)) 1 0))
+  ;; (set! (-> *autosplit-info-jak1* res-firecanyon-100-orbs) (if (task-closed? (game-task firecanyon-100-orbs) (task-status need-resolution)) 1 0))
+  ;; (set! (-> *autosplit-info-jak1* res-village2-100-orbs) (if (task-closed? (game-task village2-100-orbs) (task-status need-resolution)) 1 0))
+  (set! (-> *autosplit-info-jak1* res-sunken-100-orbs) (if (task-closed? (game-task sunken-100-orbs) (task-status need-resolution)) 1 0))
+  (set! (-> *autosplit-info-jak1* res-swamp-100-orbs) (if (task-closed? (game-task swamp-100-orbs) (task-status need-resolution)) 1 0))
+  (set! (-> *autosplit-info-jak1* res-rolling-100-orbs) (if (task-closed? (game-task rolling-100-orbs) (task-status need-resolution)) 1 0))
+  ;; (set! (-> *autosplit-info-jak1* res-ogre-100-orbs) (if (task-closed? (game-task ogre-100-orbs) (task-status need-resolution)) 1 0))
+  ;; (set! (-> *autosplit-info-jak1* res-village3-100-orbs) (if (task-closed? (game-task village3-100-orbs) (task-status need-resolution)) 1 0))
+  (set! (-> *autosplit-info-jak1* res-snow-100-orbs) (if (task-closed? (game-task snow-100-orbs) (task-status need-resolution)) 1 0))
+  (set! (-> *autosplit-info-jak1* res-cave-100-orbs) (if (task-closed? (game-task cave-100-orbs) (task-status need-resolution)) 1 0))
+  ;; (set! (-> *autosplit-info-jak1* res-lavatube-100-orbs) (if (task-closed? (game-task lavatube-100-orbs) (task-status need-resolution)) 1 0))
+  (set! (-> *autosplit-info-jak1* res-citadel-100-orbs) (if (task-closed? (game-task citadel-100-orbs) (task-status need-resolution)) 1 0))
+
   ;; end
   (none))
 

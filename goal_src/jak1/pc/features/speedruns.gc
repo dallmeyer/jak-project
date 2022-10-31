@@ -1,9 +1,12 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
+(define-extern *reset-started?* symbol)
 (defun speedrun-mode-update ()
   "A per frame update for speedrunning related stuff"
-  (when (-> *pc-settings* speedrunner-mode?)
+  (when (and (-> *pc-settings* speedrunner-mode?)
+             (not *reset-started?*) ;; don't update split info while resetting
+             )
     ;; Update auto-splitter
     (update-autosplit-info-jak1)
     ;; Draw info to the screen

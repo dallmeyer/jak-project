@@ -127,6 +127,25 @@
    (int-finalboss-movies uint8)
    (unk-finalboss-movies uint8)
    (int-jungle-fishgame uint8)
+
+   ;; added for SM64 mod
+  ;;  (res-training-100-orbs uint8) ;; unused
+  ;;  (res-village1-100-orbs uint8) ;; unused
+   (res-beach-100-orbs uint8)
+   (res-jungle-100-orbs uint8)
+   (res-misty-100-orbs uint8)
+  ;;  (res-firecanyon-100-orbs uint8) ;; unused
+  ;;  (res-village2-100-orbs uint8) ;; unused
+   (res-sunken-100-orbs uint8)
+   (res-swamp-100-orbs uint8)
+   (res-rolling-100-orbs uint8)
+  ;;  (res-ogre-100-orbs uint8) ;; unused
+  ;;  (res-village3-100-orbs uint8) ;; unused
+   (res-snow-100-orbs uint8)
+   (res-cave-100-orbs uint8)
+  ;;  (res-lavatube-100-orbs uint8) ;; unused
+   (res-citadel-100-orbs uint8)
+
    ;; end marker just to make things look nice in a memory view
    (end-marker uint8 4)))
 
