@@ -324,6 +324,7 @@
    (cheats-known pc-cheats)
 
    (flava-hack int64)
+   (finalboss-fix? symbol) ;; enable cutscene skips
 
    ;; TODO - save/restore original settings (language/sound/etc)
    )
@@ -424,6 +425,7 @@
   (set! (-> obj speedrunner-mode?) #f)
   (set! (-> obj cutscene-skips?) #t)
   (set! (-> obj window-lock?) #t)
+  (set! (-> obj finalboss-fix?) #t)
 
   (reset-gfx obj)
   (reset-audio obj)

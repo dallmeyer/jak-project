@@ -394,6 +394,9 @@
         "COLLECT 100 ORBS")
 (#x1511 "COLLECT 100 ORBS"
         "COLLECT 100 ORBS")
+        
+(#x1512 "FINALBOSS RESET FIX"
+        "FINALBOSS RESET FIX")
 
 ;; -----------------
 ;; test (DO NOT TRANSLATE)

@@ -131,6 +131,12 @@
                       (('citadel)
                         "citadel-start"
                         )
+                      (('finalboss)
+                        (if (-> *pc-settings* finalboss-fix?)
+                          "finalboss-start"
+                          "training-start"
+                          )
+                        )
                       (else   ;; don't die in finalboss :)
                         "training-start"
                         )

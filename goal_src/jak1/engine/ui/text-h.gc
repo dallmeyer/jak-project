@@ -777,6 +777,8 @@
   (cave-100-orbs                #x150f)
   (lavatube-100-orbs            #x1510)
   (citadel-100-orbs             #x1511)
+  
+  (finalboss-fix                #x1512)
 ;; GAME-TEXT-ID ENUM ENDS
   )
 
