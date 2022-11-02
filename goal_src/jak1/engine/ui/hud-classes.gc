@@ -560,7 +560,7 @@
               )
             (font-color dark-yellow)
             (font-flags shadow kerning middle large)
-            0.8
+            0.7
             )
           )
         (let ((a3-12 (-> s3-0 base)))
@@ -600,7 +600,7 @@
           )
         )
       )
-    (if (>= (+ (-> *display* base-frame-counter) (seconds -2)) (-> obj start-time))
+    (if (>= (+ (-> *display* base-frame-counter) (seconds -1.5)) (-> obj start-time))
         (set! (-> obj deactivate-when-hidden) #t)
         (tally-value obj (the-as int (-> *display* base-frame-counter)) 0)
         )
@@ -609,11 +609,33 @@
   (none)
   )
 
+(defskelgroup *fuelcell-naked-sg* fuelcell-naked fuelcell-naked-lod0-jg fuelcell-naked-idle-ja
+              ((fuelcell-naked-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 1 0 1.6)
+              :texture-level 2
+              )
+
 (defmethod init-particles! hud-money-all ((obj hud-money-all) (arg0 int))
+  (when (< (-> obj nb-of-particles) (-> obj max-nb-of-particles))
+    (let ((s5-0 (-> obj nb-of-particles)))
+      (set! (-> obj particles s5-0) (new 'static 'hud-particle))
+      (set! (-> obj particles s5-0 part) (create-launch-control (-> *part-group-id-table* 80) obj))
+      (set! (-> obj particles s5-0 init-pos x) 150.0)
+      (set! (-> obj particles s5-0 init-pos y) 320.0)
+      (set! (-> obj particles s5-0 init-pos z) 2.0)
+      (set! (-> obj particles s5-0 part matrix) -1)
+      )
+    (+! (-> obj nb-of-particles) 1)
+    )
+  (dotimes (s5-1 (-> obj nb-of-particles))
+    (if (= (-> obj particles s5-1 part matrix) -1)
+        (set! (-> obj particles s5-1 part matrix) (sprite-allocate-user-hvdf))
+        )
+    )
   (when (< (-> obj nb-of-icons) 6)
     (let ((s4-0 (-> obj nb-of-icons)))
       (set! (-> obj icons s4-0) (new 'static 'hud-icon))
-      (let ((s3-0 (manipy-spawn (new 'static 'vector :w 1.0) #f *fuel-cell-sg* #f :to obj)))
+      (let ((s3-0 (manipy-spawn (new 'static 'vector :w 1.0) #f *fuelcell-naked-sg* #f :to obj)))
         (when s3-0
           (set! (-> (the-as process-drawable (-> s3-0 0)) draw dma-add-func) dma-add-process-drawable-hud)
           (set-vector! (-> (the-as process-drawable (-> s3-0 0)) root trans) 0.0 0.0 0.0 1.0)
@@ -627,7 +649,7 @@
           (logior! (-> s3-0 0 mask) (process-mask pause))
           (logclear! (-> s3-0 0 mask) (process-mask menu progress))
           (set! (-> (the-as process-drawable (-> s3-0 0)) root trans z) 1024.0)
-          (set! (-> obj icons s4-0 icon-x) 150)
+          (set! (-> obj icons s4-0 icon-x) 130)
           (set! (-> obj icons s4-0 icon-y) 0)
           (set! (-> obj icons s4-0 icon-z) 0)
           (set! (-> obj icons s4-0 scale-x) 0.0095)
@@ -701,14 +723,14 @@
 (defmethod set-pos-and-scale hud-money-all ((obj hud-money-all) (arg0 symbol) (arg1 symbol))
   (cond
     (arg0
-      (set! (-> obj x-scale) 0.01107)
-      (set! (-> obj y-scale) -0.01305)
-      (set! (-> obj y-pos) 320)
+      (set! (-> obj x-scale) 0.01476)
+      (set! (-> obj y-scale) -0.0174)
+      (set! (-> obj y-pos) 374)
       )
     (else
-      (set! (-> obj x-scale) 0.0081)
-      (set! (-> obj y-scale) -0.00945)
-      (set! (-> obj y-pos) 310)
+      (set! (-> obj x-scale) 0.0108)
+      (set! (-> obj y-scale) -0.0126)
+      (set! (-> obj y-pos) 361)
       )
     )
   (when arg1
@@ -933,12 +955,6 @@
 (defmethod get-icon-scale-y hud-money ((obj hud-money))
   -0.011
   )
-
-(defskelgroup *fuelcell-naked-sg* fuelcell-naked fuelcell-naked-lod0-jg fuelcell-naked-idle-ja
-              ((fuelcell-naked-lod0-mg (meters 999999)))
-              :bounds (static-spherem 0 1 0 1.6)
-              :texture-level 2
-              )
 
 (defpart 313
   :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x31 :page #x2))
@@ -2138,7 +2154,10 @@
   )
 
 (defun activate-orb-all ((arg0 int))
-  (if (not (-> *hud-parts* money-all))
+  (if (and (not (-> *hud-parts* money-all))
+           (>= *last-collected-task-level-idx* 0)
+           (!= *last-collected-task-text* (game-text-id empty))
+           )
       (set! (-> *hud-parts* money-all) (process-spawn hud-money-all :init hud-init-by-other arg0 :to *target*))
       )
   0

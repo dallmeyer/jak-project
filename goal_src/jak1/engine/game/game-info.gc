@@ -370,9 +370,9 @@
                (+! (-> obj money-total) amount)
                ;; hijacked for showing cell pickup per level
                ;; if we have all the money in our level, display the all orbs graphic 
-              ;;  (if (= (-> obj money-per-level level-idx) (-> (get-game-count level-idx) money-count))
-              ;;     (activate-orb-all level-idx)
-              ;;     )
+               ;;  (if (= (-> obj money-per-level level-idx) (-> (get-game-count level-idx) money-count))
+               ;;     (activate-orb-all level-idx)
+               ;;     )
                ;; if we have just reached 100+ orbs in the level, and haven't gotten the 100 orb cell yet, birth the cell
                (when (and (< old-amt 100)
                           (>= (-> obj money-per-level level-idx) 100)
