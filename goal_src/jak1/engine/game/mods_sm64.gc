@@ -164,7 +164,7 @@
   (when (not *reset-started?*)
     (set! *last-collected-task-text* (-> game-task-text (the-as int tsk)))  ;; this is (game-text-id empty) for (game-task none)
     (set! *last-collected-task-level-idx* -1)
-    (let ((reset? #f)
+    (let ((reset? #t)
           (checkpointName "")
           )
       (case tsk
