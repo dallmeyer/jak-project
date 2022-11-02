@@ -600,7 +600,7 @@
           )
         )
       )
-    (if (>= (+ (-> *display* base-frame-counter) (seconds -1.0)) (-> obj start-time))
+    (if (>= (+ (-> *display* base-frame-counter) (seconds -2.0)) (-> obj start-time))
         (set! (-> obj deactivate-when-hidden) #t)
         (tally-value obj (the-as int (-> *display* base-frame-counter)) 0)
         )

@@ -387,7 +387,7 @@
   :event (-> hud-arriving event)
   :code (behavior ()
     (set! (-> self trigger-time) (-> *display* base-frame-counter))
-    (while (and (< (- (-> *display* base-frame-counter) (-> self trigger-time)) (seconds 2)) (not (movie?)))
+    (while (and (< (- (-> *display* base-frame-counter) (-> self trigger-time)) (seconds 1)) (not (movie?)))
       (set! (-> self offset) 0)
       (draw-icons self)
       (suspend)
