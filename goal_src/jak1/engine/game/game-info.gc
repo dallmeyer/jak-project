@@ -368,10 +368,11 @@
                (+! (-> obj money-per-level level-idx) (the int amount))
                ;; increment our total money in the game (out of the 2000 max orbs)
                (+! (-> obj money-total) amount)
-               ;; if we have all the money in our level, display the all orbs graphic
-               (if (= (-> obj money-per-level level-idx) (-> (get-game-count level-idx) money-count))
-                   (activate-orb-all level-idx)
-                   )
+               ;; hijacked for showing cell pickup per level
+               ;; if we have all the money in our level, display the all orbs graphic 
+              ;;  (if (= (-> obj money-per-level level-idx) (-> (get-game-count level-idx) money-count))
+              ;;     (activate-orb-all level-idx)
+              ;;     )
                ;; if we have just reached 100+ orbs in the level, and haven't gotten the 100 orb cell yet, birth the cell
                (when (and (< old-amt 100)
                           (>= (-> obj money-per-level level-idx) 100)

@@ -479,14 +479,17 @@
   :flag-assert         #x1b00d00138
   )
 
-
+(define-extern *last-collected-task-text* game-text-id)
+(define-extern *last-collected-task-level-idx* int)
 (defmethod draw-hud hud-money-all ((obj hud-money-all))
   (let ((t9-0 (method-of-type hud draw-hud)))
     (t9-0 obj)
     )
   0
   (let ((s5-0 0))
-    (when (>= (-> obj level-index) 0)
+    (when (and (>= *last-collected-task-level-idx* 0)
+               (!= *last-collected-task-text* (game-text-id empty))
+               )
       (let ((s5-1
               (new
                 'stack
@@ -516,8 +519,9 @@
           (set! (-> v1-14 scale) 0.6)
           )
         (set! (-> s5-1 flags) (font-flags shadow kerning middle left large))
+        ;; print last completed task text
         (print-game-text
-          (lookup-text! *common-text* (-> *level-task-data* (-> obj level-index) level-name-id) #f)
+          (lookup-text! *common-text* *last-collected-task-text* #f)
           s5-1
           #f
           128
@@ -525,40 +529,53 @@
           )
         )
       (set! s5-0 13)
-      )
-    (let* ((s1-0 50)
-           (s3-0 (-> *display* frames (-> *display* on-screen) frame global-buf))
-           (s4-1 (-> s3-0 base))
-           )
-      (let ((s2-0 draw-string-xy))
-        (format (clear *temp-string*) "~D/~D" (-> obj total-orbs) (-> obj total-orbs))
-        (s2-0
-          *temp-string*
-          s3-0
-          (+ (-> obj text-x) (* (-> obj x-sgn) (-> obj offset)) s1-0)
-          (+ (/ (* (+ (-> obj text-y) (* (-> obj y-sgn) (-> obj offset)) (-> obj y-offset))
-                   (the int (-> *video-parms* relative-y-scale))
-                   )
-                2
-                )
-             s5-0
-             )
-          (font-color dark-yellow)
-          (font-flags shadow kerning middle large)
+      (let* ((s1-0 50)
+            (s3-0 (-> *display* frames (-> *display* on-screen) frame global-buf))
+            (s4-1 (-> s3-0 base))
+            (completed-task-count 0)
+            )
+        ;; determine number of cells collected in this level
+        (dotimes (task-idx (-> *level-task-data* *last-collected-task-level-idx* nb-of-tasks))
+          (if (= (get-task-status (-> *level-task-data* *last-collected-task-level-idx* task-info task-idx task-id)) (task-status invalid))
+            (+! completed-task-count 1)
+            )
           )
-        )
-      (let ((a3-12 (-> s3-0 base)))
-        (let ((v1-32 (the-as dma-packet (-> s3-0 base))))
-          (set! (-> v1-32 dma) (new 'static 'dma-tag :id (dma-tag-id next)))
-          (set! (-> v1-32 vif0) (new 'static 'vif-tag))
-          (set! (-> v1-32 vif1) (new 'static 'vif-tag))
-          (set! (-> s3-0 base) (&+ (the-as pointer v1-32) 16))
+        (let ((s2-0 draw-string-xy-scaled))
+          ;; print level name & cell counts
+          (format (clear *temp-string*) "~S ~D/~D" 
+            (lookup-text! *common-text* (-> *level-task-data* *last-collected-task-level-idx* level-name-id) #f)
+            completed-task-count
+            (-> *level-task-data* *last-collected-task-level-idx* nb-of-tasks)
+            )
+          (s2-0
+            *temp-string*
+            s3-0
+            (+ (-> obj text-x) (* (-> obj x-sgn) (-> obj offset)) s1-0)
+            (+ (/ (* (+ (-> obj text-y) (* (-> obj y-sgn) (-> obj offset)) (-> obj y-offset))
+                    (the int (-> *video-parms* relative-y-scale))
+                    )
+                  2
+                  )
+              s5-0
+              )
+            (font-color dark-yellow)
+            (font-flags shadow kerning middle large)
+            0.8
+            )
           )
-        (dma-bucket-insert-tag
-          (-> *display* frames (-> *display* on-screen) frame bucket-group)
-          (bucket-id debug)
-          s4-1
-          (the-as (pointer dma-tag) a3-12)
+        (let ((a3-12 (-> s3-0 base)))
+          (let ((v1-32 (the-as dma-packet (-> s3-0 base))))
+            (set! (-> v1-32 dma) (new 'static 'dma-tag :id (dma-tag-id next)))
+            (set! (-> v1-32 vif0) (new 'static 'vif-tag))
+            (set! (-> v1-32 vif1) (new 'static 'vif-tag))
+            (set! (-> s3-0 base) (&+ (the-as pointer v1-32) 16))
+            )
+          (dma-bucket-insert-tag
+            (-> *display* frames (-> *display* on-screen) frame bucket-group)
+            (bucket-id debug)
+            s4-1
+            (the-as (pointer dma-tag) a3-12)
+            )
           )
         )
       )
@@ -596,11 +613,11 @@
   (when (< (-> obj nb-of-icons) 6)
     (let ((s4-0 (-> obj nb-of-icons)))
       (set! (-> obj icons s4-0) (new 'static 'hud-icon))
-      (let ((s3-0 (manipy-spawn (new 'static 'vector :w 1.0) #f *money-sg* #f :to obj)))
+      (let ((s3-0 (manipy-spawn (new 'static 'vector :w 1.0) #f *fuel-cell-sg* #f :to obj)))
         (when s3-0
           (set! (-> (the-as process-drawable (-> s3-0 0)) draw dma-add-func) dma-add-process-drawable-hud)
           (set-vector! (-> (the-as process-drawable (-> s3-0 0)) root trans) 0.0 0.0 0.0 1.0)
-          (set-vector! (-> (the-as process-drawable (-> s3-0 0)) root scale) 0.0095 -0.011 0.0095 1.0)
+          (set-vector! (-> (the-as process-drawable (-> s3-0 0)) root scale) 0.0065 -0.011 0.0065 1.0)
           (if #f
               (send-event (ppointer->process s3-0) 'trans-hook #f)
               )
@@ -613,30 +630,30 @@
           (set! (-> obj icons s4-0 icon-x) 170)
           (set! (-> obj icons s4-0 icon-y) 0)
           (set! (-> obj icons s4-0 icon-z) 0)
-          (set! (-> obj icons s4-0 scale-x) 0.0095)
+          (set! (-> obj icons s4-0 scale-x) 0.0065)
           (set! (-> obj icons s4-0 scale-y) -0.011)
           )
         )
       )
     (+! (-> obj nb-of-icons) 1)
     )
-  (when (< (-> obj nb-of-particles) (-> obj max-nb-of-particles))
-    (let ((s4-1 (-> obj nb-of-particles)))
-      (set! (-> obj particles s4-1) (new 'static 'hud-particle))
-      (set! (-> obj particles s4-1 part) (create-launch-control (-> *part-group-id-table* 705) obj))
-      (set! (-> obj particles s4-1 init-pos x) 172.0)
-      (set! (-> obj particles s4-1 init-pos y) 330.0)
-      (set! (-> obj particles s4-1 init-pos z) 2.0)
-      (set! (-> obj particles s4-1 part matrix) -1)
-      )
-    (+! (-> obj nb-of-particles) 1)
-    )
+  ;; (when (< (-> obj nb-of-particles) (-> obj max-nb-of-particles))
+  ;;   (let ((s4-1 (-> obj nb-of-particles)))
+  ;;     (set! (-> obj particles s4-1) (new 'static 'hud-particle))
+  ;;     (set! (-> obj particles s4-1 part) (create-launch-control (-> *part-group-id-table* 705) obj))
+  ;;     (set! (-> obj particles s4-1 init-pos x) 172.0)
+  ;;     (set! (-> obj particles s4-1 init-pos y) 330.0)
+  ;;     (set! (-> obj particles s4-1 init-pos z) 2.0)
+  ;;     (set! (-> obj particles s4-1 part matrix) -1)
+  ;;     )
+  ;;   (+! (-> obj nb-of-particles) 1)
+  ;;   )
   (set-pos-and-scale obj (= (get-aspect-ratio) 'aspect16x9) (= (get-video-mode) 'pal))
-  (dotimes (s4-3 (-> obj nb-of-particles))
-    (if (= (-> obj particles s4-3 part matrix) -1)
-        (set! (-> obj particles s4-3 part matrix) (sprite-allocate-user-hvdf))
-        )
-    )
+  ;; (dotimes (s4-3 (-> obj nb-of-particles))
+  ;;   (if (= (-> obj particles s4-3 part matrix) -1)
+  ;;       (set! (-> obj particles s4-3 part matrix) (sprite-allocate-user-hvdf))
+  ;;       )
+  ;;   )
   (set! (-> obj text-x) 251)
   (set! (-> obj text-y) 305)
   (set! (-> obj x-sgn) 0)
