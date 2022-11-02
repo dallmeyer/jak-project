@@ -158,6 +158,7 @@
 
 (define *last-collected-task-text* (game-text-id empty))
 (define *last-collected-task-level-idx* -1)
+(define *text-ids-seen-backup* (new 'global 'bit-array 4095))
 (define *reset-started?* #f)
 (defun reset-to-level-start ((tsk game-task))
   (format #t "reset-to-level-start called for task ~A~%" (game-task->string tsk))
@@ -308,10 +309,18 @@
       (when reset?     
         (set! *reset-started?* #t)
 
+        ;; backup hints seen
+        (clear-all! *text-ids-seen-backup*)
+        (dotimes (idx (-> *game-info* text-ids-seen length))
+          (if (get-bit (-> *game-info* text-ids-seen) idx)
+            (set-bit *text-ids-seen-backup* idx)
+            )
+          )
+          
+        ;; backup task statuses in bitmask
         (let* ((idx (the int (game-task jungle-eggtop)))
               (max (the int (game-task max)))
               )
-          ;; backup task statuses in bitmask
           (while (> (the-as uint max) (the-as uint idx))
             (set! (-> *task-completed-backup* idx) 0)
             (if (and (task-exists? (the-as game-task idx) (task-status need-hint)) (task-closed? (the-as game-task idx) (task-status need-hint)))
@@ -351,6 +360,14 @@
 (defun restore-completed-tasks ()
   (format #t "restore-completed-tasks called~%")
   (when *reset-started?*
+    ;; reload hints seen
+    (clear-all! (-> *game-info* text-ids-seen))
+    (dotimes (idx (-> *game-info* text-ids-seen length))
+      (if (get-bit *text-ids-seen-backup* idx)
+        (set-bit (-> *game-info* text-ids-seen) idx)
+        )
+      )
+      
     ;; reload task statuses from bitmask
     (let* ((idx (the int (game-task jungle-eggtop)))
           (max (the int (game-task max)))
