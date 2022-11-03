@@ -508,10 +508,10 @@
 
     ;; Fire canyon orbs
     (('crate-1021) (set-vector-meters! (-> arg0 extra trans) 20.01  30.99 -300.71)) ;; right side behind rock near beginning 
-    ;; (('crate-1034) (set-vector-meters! (-> arg0 extra trans) -81.38  45.68 915.53)) ;; 
-    ;; (('crate-1035) (set-vector-meters! (-> arg0 extra trans) -81.38  45.68 915.53)) ;; 
-    ;; (('crate-1036) (set-vector-meters! (-> arg0 extra trans) -81.38  45.68 915.53)) ;; 
-    ;; (('crate-1037) (set-vector-meters! (-> arg0 extra trans) -81.38  45.68 915.53)) ;; 
+    (('crate-1034) (set-vector-meters! (-> arg0 extra trans) 216.01  31.00 -741.33)) ;; right side behind rock mid/beginning
+    (('crate-1035) (set-vector-meters! (-> arg0 extra trans) 0.47  30.0 -199.44)) ;; around right corner at very start
+    (('crate-1036) (set-vector-meters! (-> arg0 extra trans) 2.02  33.73 -913.59)) ;; on left atop precusor thing 
+    (('crate-1037) (set-vector-meters! (-> arg0 extra trans) 231.52  30.5 -1199.92)) ;; on right of ramp near last orig blue ecovent 
 
     ;; ~~~~ SCOUT FLIES ~~~~
     ;; Geyser flies
@@ -563,12 +563,12 @@
 
     ;; Fire canyon flies
     (('crate-1019)  (set-vector-meters! (-> arg0 extra trans)  -4.16  30.99 -254.85)) ;; behind first rock
-    (('crate-1027) (set-vector-meters! (-> arg0 extra trans) 142.00  31.47 -604.89)) ;; under tree on right after bridge
-    ;;(('crate-1028) (set-vector-meters! (-> arg0 extra trans) -20.88  22.85 886.12)) ;;
-    ;;(('crate-1029) (set-vector-meters! (-> arg0 extra trans) -48.5  33.5 907.8)) ;;
-    ;;(('crate-1030) (set-vector-meters! (-> arg0 extra trans) -160.2  36.6 1089.0)) ;;
-    ;;(('crate-1032) (set-vector-meters! (-> arg0 extra trans) -267.47  14.34 993.52)) ;;
-    ;;(('crate-1033) (set-vector-meters! (-> arg0 extra trans) -195.99  33.33 1065.21)) ;;
+    (('crate-1027) (set-vector-meters! (-> arg0 extra trans) 185.92  31.00 -798.74)) ;; on left in lava across small jump
+    (('crate-1028) (set-vector-meters! (-> arg0 extra trans) 142.18  29.2 -606.51)) ;; under tree on right after bridge
+    (('crate-1029) (set-vector-meters! (-> arg0 extra trans) 196.62	31.0	-878.815)) ;; large lava area on right between darkeco clusters
+    (('crate-1030) (set-vector-meters! (-> arg0 extra trans) -74.55  31.0 -1125.59)) ;; on left after second bridge
+    (('crate-1032) (set-vector-meters! (-> arg0 extra trans) 235.42  31.0 -1295.43)) ;; behind eco crates on left near end
+    (('crate-1033) (set-vector-meters! (-> arg0 extra trans) 342.42  31.0 -1386.02)) ;; on right near end
 
     ;; ~~~~ POWER CELLS ~~~~
     ;; Geyser cells
@@ -803,41 +803,38 @@
     (('crate-1022) (set-vector-meters! (-> arg0 extra trans) -15.01  30.5 -223.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.7  0.0  -0.7)) ;; green - roll jump from start and get lava bounce onto it
     (('racer-7) (set-vector-meters! (-> arg0 extra trans) -15.01  31.01 -247.64)) ;; past green eco crates ^
     (('racer-8) (set-vector-meters! (-> arg0 extra trans) 326.08  33.62 -1448.86)) ;; just up ledge from where normally is (invis walls removed)
-    ;; (('ecovent-195) (set-vector-meters! (-> arg0 extra trans) 110.87  30.9 -427.01)) ;; left side of first ramp
-    ;; (('ecovent-196) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('ecovent-197) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('ecovent-198) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('spike-26) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('spike-27) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('spike-28) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('spike-29) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('spike-30) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('spike-41) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('spike-42) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('spike-43) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('spike-44) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('spike-45) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('spike-46) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('spike-47) (set-vector-meters! (-> arg0 extra trans) ))
+
+    (('spike-26) (set-vector-meters! (-> arg0 extra trans) 162.48  30.9 -650.75)) ;; in middle, two lava patches (this one triggers 27/28/29)
+      (('spike-27) (set-vector-meters! (-> arg0 extra trans) 154.57  30.9 -657.33)) ;; in middle, two lava patches
+    (('spike-28) (set-vector-meters! (-> arg0 extra trans) 189.67  30.9 -700.31)) ;; in middle, two lava patches
+      (('spike-29) (set-vector-meters! (-> arg0 extra trans) 199.23  30.9 -700.01)) ;; in middle, two lava patches
+    (('spike-30) (set-vector-meters! (-> arg0 extra trans) 127.46  30.9 -1151.47)) ;; lava/gaps near end (this one triggers 41/42/43/44/45/46/47)
+      (('spike-46) (set-vector-meters! (-> arg0 extra trans) 130.49  30.9 -1145.39)) ;; lava/gaps near end
+      (('spike-41) (set-vector-meters! (-> arg0 extra trans) 162.11  30.9 -1183.83)) ;; lava/gaps near end
+      (('spike-42) (set-vector-meters! (-> arg0 extra trans) 165.88  30.9 -1178.10)) ;; lava/gaps near end
+    (('spike-45) (set-vector-meters! (-> arg0 extra trans) 98.00  30.9 -1162.23)) ;; lava/gaps near end
+      (('spike-47) (set-vector-meters! (-> arg0 extra trans) 99.83  30.9 -1155.64)) ;; lava/gaps near end
+      (('spike-43) (set-vector-meters! (-> arg0 extra trans) 171.38  30.9 -1165.97)) ;; lava/gaps near end
+      (('spike-44) (set-vector-meters! (-> arg0 extra trans) 176.90  30.9 -1161.74)) ;; lava/gaps near end
     (('spike-48) (set-vector-meters! (-> arg0 extra trans) 121.85  30.9 -408.72))  ;; right side of first ramp (this one triggers 49/50/51)
     (('spike-49) (set-vector-meters! (-> arg0 extra trans) 119.92  30.9 -435.60))  ;; left side of first ramp
-    (('spike-50) (set-vector-meters! (-> arg0 extra trans) 133.34  30.9 -423.01))  ;; right side of first ramp
+    (('spike-50) (set-vector-meters! (-> arg0 extra trans) 135.31  30.9 -428.15))  ;; right side of first ramp
     (('spike-51) (set-vector-meters! (-> arg0 extra trans) 104.23  30.9 -419.29))  ;; left side of first ramp
     (('crate-1557) (set-vector-meters! (-> arg0 extra trans) -2.87  30.99 -312.79)) ;; dark - left side behind rock near beginning
-    ;; (('crate-1561) (set-vector-meters! (-> arg0 extra trans) )) ;; dark
     ;; (('crate-1620) (set-vector-meters! (-> arg0 extra trans) )) ;; dark
-    ;; (('crate-1621) (set-vector-meters! (-> arg0 extra trans) )) ;; dark
-    ;; (('crate-1622) (set-vector-meters! (-> arg0 extra trans) )) ;; dark
-    ;; (('crate-1623) (set-vector-meters! (-> arg0 extra trans) )) ;; dark
     (('crate-darkeco-cluster-2) (set-vector-meters! (-> arg0 extra trans)  5.85  30.99 -298.22)) ;; center between rocks near beginning
-    ;; (('crate-darkeco-cluster-3) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    ;; (('crate-darkeco-cluster-4) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    ;; (('crate-darkeco-cluster-5) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    ;; (('crate-darkeco-cluster-6) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    ;; (('crate-darkeco-cluster-7) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    ;; (('crate-darkeco-cluster-8) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('balloon-1) (set-vector-meters! (-> arg0 extra trans) 113.19  38.00 -430.64)) ;; right side of first ramp
-    ;; (('balloon-7) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('crate-darkeco-cluster-3) (set-vector-meters! (-> arg0 extra trans) 209.51	31.0	-887.2)) ;; large lava area on right with fly in between
+    (('crate-darkeco-cluster-4) (set-vector-meters! (-> arg0 extra trans) 203.065	31.0	-883.0075)) ;; large lava area on right with fly in between
+    (('crate-darkeco-cluster-5) (set-vector-meters! (-> arg0 extra trans) 190.175	31.0	-874.6225)) ;; large lava area on right with fly in between
+    (('crate-darkeco-cluster-6) (set-vector-meters! (-> arg0 extra trans) 183.73	31.0	-870.43)) ;; large lava area on right with fly in between
+    (('crate-1621) (set-vector-meters! (-> arg0 extra trans) 241.14	31.0	-1286.47)) ;; dark -  lava area on left of ramp towards end
+    (('crate-1623) (set-vector-meters! (-> arg0 extra trans) 241.14	33.0	-1286.47)) ;; dark
+    (('crate-darkeco-cluster-7) (set-vector-meters! (-> arg0 extra trans) 236.15	31.0	-1290.69)) ;; lava area on left of ramp towards end
+    (('crate-darkeco-cluster-8) (set-vector-meters! (-> arg0 extra trans) 231.15	31.0	-1294.90)) ;; lava area on left of ramp towards end
+    (('crate-1622) (set-vector-meters! (-> arg0 extra trans) 226.16	31.0	-1299.12)) ;; dark -  lava area on left of ramp towards end
+    (('crate-1561) (set-vector-meters! (-> arg0 extra trans) 226.16	33.0	-1299.12)) ;; dark
+    (('balloon-1) (set-vector-meters! (-> arg0 extra trans) -0.70  35.5 -241.52)) ;; right side near start
+    (('balloon-7) (set-vector-meters! (-> arg0 extra trans) 124.02  39.0 -585.57)) ;; left side of bridge
     ;; (('balloon-8) (set-vector-meters! (-> arg0 extra trans) )) ;;
     ;; (('balloon-9) (set-vector-meters! (-> arg0 extra trans) )) ;;
     ;; (('balloon-10) (set-vector-meters! (-> arg0 extra trans) )) ;;
@@ -845,7 +842,7 @@
     ;; (('balloon-12) (set-vector-meters! (-> arg0 extra trans) )) ;;
     ;; (('balloon-13) (set-vector-meters! (-> arg0 extra trans) )) ;;
     ;; (('balloon-14) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    ;; (('balloon-15) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('balloon-15) (set-vector-meters! (-> arg0 extra trans) 128.11  38.0  -416.86)) ;; right side of first ramp
     ;; (('balloon-16) (set-vector-meters! (-> arg0 extra trans) )) ;;
 
     (else
@@ -1210,6 +1207,20 @@
   ;; eco-143 ;; blue
   ;; eco-144 ;; blue
   ;; eco-145 ;; red
+
+  ;; Fire Canyon
+  (when (process-by-ename "ecovent-195")  ;; blue - left side of first ramp
+    (let ((obj (the ecovent (process-by-ename "ecovent-195")))
+          (vec (static-vector-meters 110.87  30.9 -427.01))
+          )
+      (vector-copy! (-> obj root trans) vec)
+      (vector-copy! (-> obj root-override trans) vec)
+      (vector-copy! (-> obj root-override root-prim prim-core world-sphere) vec)
+      )
+    )
+  ;; (('ecovent-196) (set-vector-meters! (-> arg0 extra trans) ))
+  ;; (('ecovent-197) (set-vector-meters! (-> arg0 extra trans) ))
+  ;; (('ecovent-198) (set-vector-meters! (-> arg0 extra trans) ))
   
   (none)
   )
