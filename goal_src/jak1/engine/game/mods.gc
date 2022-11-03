@@ -38,7 +38,7 @@
     (('money-4345)      (set-vector-meters! (-> arg0 extra trans) -1299.8  19.0    1075.7))   ;; in tree near warp gate
     (('money-4347)      (set-vector-meters! (-> arg0 extra trans) -1292.5  17.5    1074.5))   ;; in tree near warp gate
     (('money-4349)      (set-vector-meters! (-> arg0 extra trans) -1237.5  16.5    1043.9))   ;; in tree near warp gate
-    (('money-4330)      (set-vector-meters! (-> arg0 extra trans) -1194.0  20.5    982.5))    ;; between scarecrow and lamp
+    (('money-4330)      (set-vector-meters! (-> arg0 extra trans) -1318.9  22.0    1075.9))   ;; in geyser above warp gate
     (('money-4331)      (set-vector-meters! (-> arg0 extra trans) -1136.5  11.5    1016.7))   ;; ocean wall below scoutfly
     (('money-4327)      (set-vector-meters! (-> arg0 extra trans) -1093.9  1.0     1057.2))   ;; in pool by the front geyser
     (('money-4326)      (set-vector-meters! (-> arg0 extra trans) -1144.7  10.0    914.5))    ;; in pool by the back geyser
@@ -55,7 +55,7 @@
     (('money-4367)      (set-vector-meters! (-> arg0 extra trans) -1337.0  26.5    988.5))    ;; between trees on corner below last cell
     (('money-4366)      (set-vector-meters! (-> arg0 extra trans) -1308.3  47.5    994.0))    ;; ledge below last cell
     (('money-4365)      (set-vector-meters! (-> arg0 extra trans) -1330.0  65.0    966.0))    ;; high ledge on way to last cell
-    (('money-4364)      (set-vector-meters! (-> arg0 extra trans) -1300.5  40.3    1000.0))   ;; directly below last cell 
+    (('money-4364)      (set-vector-meters! (-> arg0 extra trans) -1326.6  40.3    960.1))    ;; between platform and wall en route to last cell
     (('money-4363)      (set-vector-meters! (-> arg0 extra trans) -1322.6  20.5    1000.5))   ;; below last cell on top of trees/rock
     (('money-4369)      (set-vector-meters! (-> arg0 extra trans) -1323.8  18.5    1070.8))   ;; above warp gate
     (('money-4370)      (set-vector-meters! (-> arg0 extra trans) -1281.6  20.0    1099.5))   ;; above/left of warp gate
@@ -87,7 +87,7 @@
     (('money-2670)      (set-vector-meters! (-> arg0 extra trans) -72.2   25.5    141.4))     ;; in tree coming from samos hut
     (('money-2673)      (set-vector-meters! (-> arg0 extra trans) -75.5   1.8     109.7))     ;; in broken boat
     (('money-2675)      (set-vector-meters! (-> arg0 extra trans) -125.0  21.5    42.7))      ;; mayors roof in the back
-    (('money-2677)      (set-vector-meters! (-> arg0 extra trans) -58.0   15.69   -34.2))     ;; in cage in bird ladys house
+    (('money-2677)      (set-vector-meters! (-> arg0 extra trans) -58.0   15.6    -34.2))     ;; in cage in bird ladys house
     (('money-2678)      (set-vector-meters! (-> arg0 extra trans) -50.3   11.5    36.9))      ;; by uncles bed
     (('money-2679)      (set-vector-meters! (-> arg0 extra trans) -63.5   16.3    71.5))      ;; in net in fishermans
     (('money-2680)      (set-vector-meters! (-> arg0 extra trans) 13.8    12.2    20.5))      ;; near blue eco spawn
@@ -499,13 +499,19 @@
     (('money-3558) (set-vector-meters! (-> arg0 extra trans) 21.1  17.3 910.3)) ;; under skeleton near orig muse chase start
     (('money-3559) (set-vector-meters! (-> arg0 extra trans) -11.64  12.52 770.95)) ;; on skeleton right of start
     (('money-3560) (set-vector-meters! (-> arg0 extra trans) -208.0  18.95 1062.9)) ;; in skeleton mouth above farside beach
-    ;; 24.66   9.83 1212.31 ;; zoomwalk under dock in orig zoomer area
     (('crate-427) (set-vector-meters! (-> arg0 extra trans) -81.38  45.68 915.53)) ;; left side of rocks above "door" in inner wall over orig scoutfly
     (('crate-430) (set-vector-meters! (-> arg0 extra trans) -58.92  46.31 915.50)) ;; right side of ^
     (('crate-431) (set-vector-meters! (-> arg0 extra trans) -148.09  57.03 927.30)) ;; above arena, opposite orig cannon
     (('crate-432) (set-vector-meters! (-> arg0 extra trans) -75.03  44.91 1027.42)) ;; on bridge w/ rolling logs
     (('crate-433) (set-vector-meters! (-> arg0 extra trans) -6.34  36.88 1028.92)) ;; same ^
     (('orb-cache-top-15) (set-vector-meters! (-> arg0 extra trans) -63.17  16.9 756.16)) ;; orig boosted cell
+
+    ;; Fire canyon orbs
+    (('crate-1021) (set-vector-meters! (-> arg0 extra trans) 20.01  30.99 -300.71)) ;; right side behind rock near beginning 
+    ;; (('crate-1034) (set-vector-meters! (-> arg0 extra trans) -81.38  45.68 915.53)) ;; 
+    ;; (('crate-1035) (set-vector-meters! (-> arg0 extra trans) -81.38  45.68 915.53)) ;; 
+    ;; (('crate-1036) (set-vector-meters! (-> arg0 extra trans) -81.38  45.68 915.53)) ;; 
+    ;; (('crate-1037) (set-vector-meters! (-> arg0 extra trans) -81.38  45.68 915.53)) ;; 
 
     ;; ~~~~ SCOUT FLIES ~~~~
     ;; Geyser flies
@@ -554,6 +560,15 @@
     (('crate-747) (set-vector-meters! (-> arg0 extra trans) -160.2  36.6 1089.0)) ;; on skeleton on farside
     (('crate-2560) (set-vector-meters! (-> arg0 extra trans) -267.47  14.34 993.52)) ;; around wall from farside arena entrance
     (('crate-2561) (set-vector-meters! (-> arg0 extra trans) -195.99  33.33 1065.21)) ;; on skeleton on farside
+
+    ;; Fire canyon flies
+    (('crate-1019)  (set-vector-meters! (-> arg0 extra trans)  -4.16  30.99 -254.85)) ;; behind first rock
+    (('crate-1027) (set-vector-meters! (-> arg0 extra trans) 142.00  31.47 -604.89)) ;; under tree on right after bridge
+    ;;(('crate-1028) (set-vector-meters! (-> arg0 extra trans) -20.88  22.85 886.12)) ;;
+    ;;(('crate-1029) (set-vector-meters! (-> arg0 extra trans) -48.5  33.5 907.8)) ;;
+    ;;(('crate-1030) (set-vector-meters! (-> arg0 extra trans) -160.2  36.6 1089.0)) ;;
+    ;;(('crate-1032) (set-vector-meters! (-> arg0 extra trans) -267.47  14.34 993.52)) ;;
+    ;;(('crate-1033) (set-vector-meters! (-> arg0 extra trans) -195.99  33.33 1065.21)) ;;
 
     ;; ~~~~ POWER CELLS ~~~~
     ;; Geyser cells
@@ -649,6 +664,9 @@
       (('babak-with-cannon-5) (set-vector-meters! (-> arg0 extra trans) -83.89  52.73 967.76))
     ;; (('muse-2))
 
+    ;; Fire canyon cells
+    ;; racer-8
+
     ;; ~~~~ MISC ~~~~
     ;; Geyser misc
 
@@ -675,8 +693,8 @@
     (('junglesnake-22) (set-vector-meters! (-> arg0 extra trans) 460.3 0.0 -236.0))  ;; in water tunnel to island cell
     (('junglesnake-21) (set-vector-meters! (-> arg0 extra trans) 236.6 46.6 -243.3))  ;; on pillars towards scout fly
     (('junglesnake-20) (set-vector-meters! (-> arg0 extra trans) 284.0 20.5 -172.0))  ;; over water near entrance
-    (('lurkerm-piston-4) (set-vector! (-> arg0 extra trans) 1679725.7500 123236.1562 -802991.5000 1.0000))  ;; swap generator pistons
-    (('lurkerm-piston-6) (set-vector! (-> arg0 extra trans) 1655901.6250 123236.1562 -833907.5000 1.0000))  ;; swap generator pistons
+    (('lurkerm-piston-4) (set-vector! (-> arg0 extra trans) 1679725.7500 123236.1562 -802991.5000 1.0000))  ;; swap 1st/3rd generator pistons
+    (('lurkerm-piston-6) (set-vector! (-> arg0 extra trans) 1655901.6250 123236.1562 -833907.5000 1.0000))  ;; swap 1st/3rd generator pistons
     (('darkvine-41) (set-vector-meters! (-> arg0 extra trans) 440.9 -1.7 -253.1))  ;; in water tunnel to island cell
     (('darkvine-17) (set-vector-meters! (-> arg0 extra trans) 439.2 -1.7 -250.3))  ;; in water tunnel to island cell
     (('darkvine-15) (set-vector-meters! (-> arg0 extra trans) 437.6 -1.7 -247.7))  ;; in water tunnel to island cell
@@ -772,14 +790,63 @@
     (('crate-230) (set-vector-meters! (-> arg0 extra trans)  -359.3  25.58 -428.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - second layer on top of second sentinel
 
     ;; Misty misc
-    ;; (('crate-674)) ;; dark eco
-    ;; (('crate-676)) ;; dark eco
-    ;; (('crate-701)) ;; dark eco
-    ;; (('crate-711)) ;; dark eco
-    ;; (('crate-746)) ;; dark eco
-    ;; (('crate-2322)) ;; dark eco
     (('racer-1) (set-vector-meters! (-> arg0 extra trans) 96.15   9.96 1196.07))  ;; on island dock
+    (('crate-674) (set-vector-meters! (-> arg0 extra trans) 22.27	1.92	1086.98) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
+    (('crate-676) (set-vector-meters! (-> arg0 extra trans) 19.66	1.96	1089.56) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
+    (('crate-701) (set-vector-meters! (-> arg0 extra trans) 17.05	2.01	1092.14) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
+    (('crate-711) (set-vector-meters! (-> arg0 extra trans) 14.44	2.05	1094.72) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
+    (('crate-746) (set-vector-meters! (-> arg0 extra trans) -35.99  -0.47 948.78)) ;; dark eco - in skeleton in zoomer section
+    (('crate-2322) (set-vector-meters! (-> arg0 extra trans) -29.3  -0.1 949.1)) ;; dark eco - in skeleton in zoomer section
 
+    ;; Fire canyon misc
+    (('crate-1020) (set-vector-meters! (-> arg0 extra trans) -15.01  30.5 -220.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.7  0.0  -0.7)) ;; green - roll jump from start and get lava bounce onto it
+    (('crate-1022) (set-vector-meters! (-> arg0 extra trans) -15.01  30.5 -223.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.7  0.0  -0.7)) ;; green - roll jump from start and get lava bounce onto it
+    (('racer-7) (set-vector-meters! (-> arg0 extra trans) -15.01  31.01 -247.64)) ;; past green eco crates ^
+    (('racer-8) (set-vector-meters! (-> arg0 extra trans) 326.08  33.62 -1448.86)) ;; just up ledge from where normally is (invis walls removed)
+    ;; (('ecovent-195) (set-vector-meters! (-> arg0 extra trans) 110.87  30.9 -427.01)) ;; left side of first ramp
+    ;; (('ecovent-196) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('ecovent-197) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('ecovent-198) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('spike-26) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('spike-27) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('spike-28) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('spike-29) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('spike-30) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('spike-41) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('spike-42) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('spike-43) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('spike-44) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('spike-45) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('spike-46) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('spike-47) (set-vector-meters! (-> arg0 extra trans) ))
+    (('spike-48) (set-vector-meters! (-> arg0 extra trans) 121.85  30.9 -408.72))  ;; right side of first ramp (this one triggers 49/50/51)
+    (('spike-49) (set-vector-meters! (-> arg0 extra trans) 119.92  30.9 -435.60))  ;; left side of first ramp
+    (('spike-50) (set-vector-meters! (-> arg0 extra trans) 133.34  30.9 -423.01))  ;; right side of first ramp
+    (('spike-51) (set-vector-meters! (-> arg0 extra trans) 104.23  30.9 -419.29))  ;; left side of first ramp
+    (('crate-1557) (set-vector-meters! (-> arg0 extra trans) -2.87  30.99 -312.79)) ;; dark - left side behind rock near beginning
+    ;; (('crate-1561) (set-vector-meters! (-> arg0 extra trans) )) ;; dark
+    ;; (('crate-1620) (set-vector-meters! (-> arg0 extra trans) )) ;; dark
+    ;; (('crate-1621) (set-vector-meters! (-> arg0 extra trans) )) ;; dark
+    ;; (('crate-1622) (set-vector-meters! (-> arg0 extra trans) )) ;; dark
+    ;; (('crate-1623) (set-vector-meters! (-> arg0 extra trans) )) ;; dark
+    (('crate-darkeco-cluster-2) (set-vector-meters! (-> arg0 extra trans)  5.85  30.99 -298.22)) ;; center between rocks near beginning
+    ;; (('crate-darkeco-cluster-3) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('crate-darkeco-cluster-4) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('crate-darkeco-cluster-5) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('crate-darkeco-cluster-6) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('crate-darkeco-cluster-7) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('crate-darkeco-cluster-8) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('balloon-1) (set-vector-meters! (-> arg0 extra trans) 113.19  38.00 -430.64)) ;; right side of first ramp
+    ;; (('balloon-7) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('balloon-8) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('balloon-9) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('balloon-10) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('balloon-11) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('balloon-12) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('balloon-13) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('balloon-14) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('balloon-15) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('balloon-16) (set-vector-meters! (-> arg0 extra trans) )) ;;
 
     (else
       (when #f
@@ -1137,19 +1204,6 @@
         )
       )
     )
-  (when (process-by-ename "eco-138")  ;; blue - on orig zoomer pad (leading to zoomer dock to cell after balloon lurkers)
-    (let ((obj (the eco (process-by-ename "eco-138")))
-          (vec (static-vector-meters 62.34   6.5 1029.33))
-          )
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
-        (vector-copy! (-> obj root trans) vec)
-        (vector-copy! (-> obj root-override trans) vec)
-        (vector-copy! (-> obj root-override root-prim prim-core world-sphere) vec)
-        )
-      )
-    )
-    
-
   ;; eco-138 ;; blue
   ;; eco-139 ;; red
   ;; eco-143 ;; blue
@@ -1196,6 +1250,10 @@
     (('boat-fuelcell-1 'balloonlurker-9 'balloonlurker-10 'balloonlurker-11 'balloonlurker-12 'balloonlurker-13 'balloonlurker-14)
       ;; blue eco jump from zoomer dock / just over the fence -> valid for one free zoomer OOB
       (set-vector-meters! dst -12.69  9.5 1268.28) 
+      )
+    (('racer-8)
+      ;; up ledge from where normally is at end of FC
+      (set-vector-meters! dst 326.08  33.62 -1448.86)
       )
     (else
       (format #t "fuel movie override, didnt match parent ~A ~%" (-> (ppointer->process (-> obj parent)) name))

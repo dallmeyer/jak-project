@@ -340,4 +340,13 @@
   ("ropebridge.o" "ropebridge")
   ("ticky.o" "ticky")
   ("hud-classes-pc.o" "hud-classes-pc") ;; added
+  ("target-racer-h.o" "target-racer-h")
+  ("racer-part.o" "racer-part")
+  ("racer.o" "racer")
+  ("target-racer.o" "target-racer")
+  ("racer-states.o" "racer-states")
+  ("collide-reaction-racer.o" "collide-reaction-racer")
+  ("racer-ag.go" "racer")
+  ("eichar-racer+0-ag.go" "eichar-racer+0")
+  ("tpage-1119.go" "tpage-1119")
   )
