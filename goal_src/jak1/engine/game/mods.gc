@@ -8,6 +8,12 @@
 (defmacro static-vector-meters (x y z)
   `(new 'static 'vector :x (meters ,x) :y (meters ,y) :z (meters ,z) :w 1.0)
   )
+  
+(defun vector-copy-no-w! ((dst vector) (src vector))
+  (set! (-> dst x) (-> src x))
+  (set! (-> dst y) (-> src y))
+  (set! (-> dst z) (-> src z))
+  )
 
 (defun override-fuel-cell-position ((arg0 entity-actor) (x float) (y float) (z float))
   (format 0 "override-fuel-cell-pos for ~P~%" arg0)
@@ -511,7 +517,7 @@
     (('crate-1034) (set-vector-meters! (-> arg0 extra trans) 216.01  31.00 -741.33)) ;; right side behind rock mid/beginning
     (('crate-1035) (set-vector-meters! (-> arg0 extra trans) 0.47  30.0 -199.44)) ;; around right corner at very start
     (('crate-1036) (set-vector-meters! (-> arg0 extra trans) 2.02  33.73 -913.59)) ;; on left atop precusor thing 
-    (('crate-1037) (set-vector-meters! (-> arg0 extra trans) 231.52  30.5 -1199.92)) ;; on right of ramp near last orig blue ecovent 
+    (('crate-1037) (set-vector-meters! (-> arg0 extra trans) 231.52  30.0 -1199.92)) ;; on right of ramp near last orig blue ecovent 
 
     ;; ~~~~ SCOUT FLIES ~~~~
     ;; Geyser flies
@@ -564,7 +570,7 @@
     ;; Fire canyon flies
     (('crate-1019)  (set-vector-meters! (-> arg0 extra trans)  -4.16  30.99 -254.85)) ;; behind first rock
     (('crate-1027) (set-vector-meters! (-> arg0 extra trans) 185.92  31.00 -798.74)) ;; on left in lava across small jump
-    (('crate-1028) (set-vector-meters! (-> arg0 extra trans) 142.18  29.2 -606.51)) ;; under tree on right after bridge
+    (('crate-1028) (set-vector-meters! (-> arg0 extra trans) 141.85  29.5 -608.0)) ;; under tree on right after bridge
     (('crate-1029) (set-vector-meters! (-> arg0 extra trans) 196.62	31.0	-878.815)) ;; large lava area on right between darkeco clusters
     (('crate-1030) (set-vector-meters! (-> arg0 extra trans) -74.55  31.0 -1125.59)) ;; on left after second bridge
     (('crate-1032) (set-vector-meters! (-> arg0 extra trans) 235.42  31.0 -1295.43)) ;; behind eco crates on left near end
@@ -821,29 +827,30 @@
     (('spike-50) (set-vector-meters! (-> arg0 extra trans) 135.31  30.9 -428.15))  ;; right side of first ramp
     (('spike-51) (set-vector-meters! (-> arg0 extra trans) 104.23  30.9 -419.29))  ;; left side of first ramp
     (('crate-1557) (set-vector-meters! (-> arg0 extra trans) -2.87  30.99 -312.79)) ;; dark - left side behind rock near beginning
-    ;; (('crate-1620) (set-vector-meters! (-> arg0 extra trans) )) ;; dark
-    (('crate-darkeco-cluster-2) (set-vector-meters! (-> arg0 extra trans)  5.85  30.99 -298.22)) ;; center between rocks near beginning
-    (('crate-darkeco-cluster-3) (set-vector-meters! (-> arg0 extra trans) 209.51	31.0	-887.2)) ;; large lava area on right with fly in between
-    (('crate-darkeco-cluster-4) (set-vector-meters! (-> arg0 extra trans) 203.065	31.0	-883.0075)) ;; large lava area on right with fly in between
-    (('crate-darkeco-cluster-5) (set-vector-meters! (-> arg0 extra trans) 190.175	31.0	-874.6225)) ;; large lava area on right with fly in between
-    (('crate-darkeco-cluster-6) (set-vector-meters! (-> arg0 extra trans) 183.73	31.0	-870.43)) ;; large lava area on right with fly in between
-    (('crate-1621) (set-vector-meters! (-> arg0 extra trans) 241.14	31.0	-1286.47)) ;; dark -  lava area on left of ramp towards end
-    (('crate-1623) (set-vector-meters! (-> arg0 extra trans) 241.14	33.0	-1286.47)) ;; dark
-    (('crate-darkeco-cluster-7) (set-vector-meters! (-> arg0 extra trans) 236.15	31.0	-1290.69)) ;; lava area on left of ramp towards end
-    (('crate-darkeco-cluster-8) (set-vector-meters! (-> arg0 extra trans) 231.15	31.0	-1294.90)) ;; lava area on left of ramp towards end
-    (('crate-1622) (set-vector-meters! (-> arg0 extra trans) 226.16	31.0	-1299.12)) ;; dark -  lava area on left of ramp towards end
-    (('crate-1561) (set-vector-meters! (-> arg0 extra trans) 226.16	33.0	-1299.12)) ;; dark
+    (('crate-1620) (set-vector-meters! (-> arg0 extra trans) 314.46  31.64 -1357.74)) ;; dark - on final bridge at end
+    (('crate-darkeco-cluster-1) (set-vector-meters! (-> arg0 extra trans) 107.98  31.00 -921.86)) ;; on right in middle hiding balloon
+    (('crate-darkeco-cluster-2) (set-vector-meters! (-> arg0 extra trans)  5.85  30.3 -298.22)) ;; center between rocks near beginning
+    (('crate-darkeco-cluster-3) (set-vector-meters! (-> arg0 extra trans) 209.51	30.3	-887.2)) ;; large lava area on right with fly in between
+    (('crate-darkeco-cluster-4) (set-vector-meters! (-> arg0 extra trans) 203.065	30.3	-883.0075)) ;; large lava area on right with fly in between
+    (('crate-darkeco-cluster-5) (set-vector-meters! (-> arg0 extra trans) 190.175	30.3	-874.6225)) ;; large lava area on right with fly in between
+    (('crate-darkeco-cluster-6) (set-vector-meters! (-> arg0 extra trans) 183.73	30.3	-870.43)) ;; large lava area on right with fly in between
+    (('crate-1621) (set-vector-meters! (-> arg0 extra trans) 241.14	30.3	-1286.47)) ;; dark -  lava area on left of ramp towards end
+    (('crate-1623) (set-vector-meters! (-> arg0 extra trans) 241.14	32.3	-1286.47)) ;; dark
+    (('crate-darkeco-cluster-7) (set-vector-meters! (-> arg0 extra trans) 236.15	30.3	-1290.69)) ;; lava area on left of ramp towards end
+    (('crate-darkeco-cluster-8) (set-vector-meters! (-> arg0 extra trans) 231.15	30.3	-1294.90)) ;; lava area on left of ramp towards end
+    (('crate-1622) (set-vector-meters! (-> arg0 extra trans) 226.16	30.3	-1299.12)) ;; dark -  lava area on left of ramp towards end
+    (('crate-1561) (set-vector-meters! (-> arg0 extra trans) 226.16	32.3	-1299.12)) ;; dark
     (('balloon-1) (set-vector-meters! (-> arg0 extra trans) -0.70  35.5 -241.52)) ;; right side near start
     (('balloon-7) (set-vector-meters! (-> arg0 extra trans) 124.02  39.0 -585.57)) ;; left side of bridge
-    ;; (('balloon-8) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    ;; (('balloon-9) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    ;; (('balloon-10) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    ;; (('balloon-11) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    ;; (('balloon-12) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    ;; (('balloon-13) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    ;; (('balloon-14) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('balloon-8) (set-vector-meters! (-> arg0 extra trans) 202.47  35.5 -1222.50)) ;; left side towards end
+    (('balloon-9) (set-vector-meters! (-> arg0 extra trans) 201.48  39.5 -690.25)) ;; jump off right lurker
+    (('balloon-10) (set-vector-meters! (-> arg0 extra trans) 180.35  39.5 -700.99)) ;; jump off left lurker
+    (('balloon-11) (set-vector-meters! (-> arg0 extra trans) 195.12  39.5 -794.64)) ;; jump off lurker, right of fly
+    (('balloon-12) (set-vector-meters! (-> arg0 extra trans) 175.33  35.5 -887.39)) ;; right side after lava with dark eco and fly
+    (('balloon-13) (set-vector-meters! (-> arg0 extra trans) 73.49  35.5 -940.20)) ;; right side out of the way
+    (('balloon-14) (set-vector-meters! (-> arg0 extra trans) -56.48  32.58 -992.87)) ;; small gap on right
     (('balloon-15) (set-vector-meters! (-> arg0 extra trans) 128.11  38.0  -416.86)) ;; right side of first ramp
-    ;; (('balloon-16) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('balloon-16) (set-vector-meters! (-> arg0 extra trans) 112.59  37.71 -1161.06)) ;; jump off lurker near end
 
     (else
       (when #f
@@ -1151,9 +1158,9 @@
           (vec (static-vector-meters -29.1 23.0 820.1))
           )
       (when (not (logtest? (-> obj flags) (collectable-flags suck)))
-        (vector-copy! (-> obj root trans) vec)
-        (vector-copy! (-> obj root-override trans) vec)
-        (vector-copy! (-> obj root-override root-prim prim-core world-sphere) vec)
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
         )
       )
     )
@@ -1162,9 +1169,9 @@
           (vec (static-vector-meters 98.40  10.5 1169.97))
           )
       (when (not (logtest? (-> obj flags) (collectable-flags suck)))
-        (vector-copy! (-> obj root trans) vec)
-        (vector-copy! (-> obj root-override trans) vec)
-        (vector-copy! (-> obj root-override root-prim prim-core world-sphere) vec)
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
         )
       )
     )
@@ -1173,9 +1180,9 @@
           (vec (static-vector-meters 50.09 16.0 1187.07))
           )
       (when (not (logtest? (-> obj flags) (collectable-flags suck)))
-        (vector-copy! (-> obj root trans) vec)
-        (vector-copy! (-> obj root-override trans) vec)
-        (vector-copy! (-> obj root-override root-prim prim-core world-sphere) vec)
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
         )
       )
     )
@@ -1184,9 +1191,9 @@
           (vec (static-vector-meters 17.80  17.54 1215.30))
           )
       (when (not (logtest? (-> obj flags) (collectable-flags suck)))
-        (vector-copy! (-> obj root trans) vec)
-        (vector-copy! (-> obj root-override trans) vec)
-        (vector-copy! (-> obj root-override root-prim prim-core world-sphere) vec)
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
         )
       )
     )
@@ -1195,9 +1202,9 @@
           (vec (static-vector-meters 92.0  2.0 1094.94))
           )
       (when (not (logtest? (-> obj flags) (collectable-flags suck)))
-        (vector-copy! (-> obj root trans) vec)
-        (vector-copy! (-> obj root-override trans) vec)
-        (vector-copy! (-> obj root-override root-prim prim-core world-sphere) vec)
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
         )
       )
     )
@@ -1213,14 +1220,38 @@
     (let ((obj (the ecovent (process-by-ename "ecovent-195")))
           (vec (static-vector-meters 110.87  30.9 -427.01))
           )
-      (vector-copy! (-> obj root trans) vec)
-      (vector-copy! (-> obj root-override trans) vec)
-      (vector-copy! (-> obj root-override root-prim prim-core world-sphere) vec)
+      (vector-copy-no-w! (-> obj root trans) vec)
+      (vector-copy-no-w! (-> obj root-override trans) vec)
+      (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
       )
     )
-  ;; (('ecovent-196) (set-vector-meters! (-> arg0 extra trans) ))
-  ;; (('ecovent-197) (set-vector-meters! (-> arg0 extra trans) ))
-  ;; (('ecovent-198) (set-vector-meters! (-> arg0 extra trans) ))
+  (when (process-by-ename "ecovent-196")  ;; blue - on ramp left of darkeco-clusters and fly
+    (let ((obj (the ecovent (process-by-ename "ecovent-196")))
+          (vec (static-vector-meters 172.75  34.75 -861.44))
+          )
+      (vector-copy-no-w! (-> obj root trans) vec)
+      (vector-copy-no-w! (-> obj root-override trans) vec)
+      (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+      )
+    )
+  (when (process-by-ename "ecovent-197")  ;; blue - beginning of first bridge
+    (let ((obj (the ecovent (process-by-ename "ecovent-197")))
+          (vec (static-vector-meters 138.01  30.99 -574.58))
+          )
+      (vector-copy-no-w! (-> obj root trans) vec)
+      (vector-copy-no-w! (-> obj root-override trans) vec)
+      (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+      )
+    )
+  (when (process-by-ename "ecovent-198")  ;; blue - in middle path towards end
+    (let ((obj (the ecovent (process-by-ename "ecovent-198")))
+          (vec (static-vector-meters 215.83  30.99 -1216.6))
+          )
+      (vector-copy-no-w! (-> obj root trans) vec)
+      (vector-copy-no-w! (-> obj root-override trans) vec)
+      (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+      )
+    )
   
   (none)
   )
@@ -1289,6 +1320,10 @@
         (('crate-659 'crate-672 'crate-673 'crate-684 'crate-747 'crate-2560 'crate-2561)
           ;; misty -> bone near arena entrance
           (set-vector-meters! dst -158.17  22.0 883.41)
+          )
+        (('crate-1019 'crate-1027 'crate-1028 'crate-1029 'crate-1030 'crate-1032 'crate-1033)
+          ;; firecanyon -> wherever target is (zoomer)
+          (vector-copy-no-w! dst (-> *target* root trans))
           )
         (else
           (format #t "fuel movie override, didnt match grandparent ~A ~%" (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name))
