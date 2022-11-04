@@ -519,6 +519,41 @@
     (('crate-1036) (set-vector-meters! (-> arg0 extra trans) 2.02  33.73 -913.59)) ;; on left atop precusor thing 
     (('crate-1037) (set-vector-meters! (-> arg0 extra trans) 231.52  30.0 -1199.92)) ;; on right of ramp near last orig blue ecovent 
 
+    ;; Rock Village orbs
+    ;; 'money-2844
+    ;; 'money-2845
+    ;; 'money-2846
+    ;; 'money-2847
+    ;; 'money-2848
+    ;; 'money-2849
+    ;; 'money-2850
+    ;; 'orb-cache-top-14
+    ;; 'money-2854
+    ;; 'money-2855
+    ;; 'money-2856
+    ;; 'money-2860
+    ;; 'money-2861
+    ;; 'money-2862
+    ;; 'money-2867
+    ;; 'money-2868
+    ;; 'money-2869
+    ;; 'money-2870
+    ;; 'money-2874
+    ;; 'money-4917
+    ;; 'money-4918
+    ;; 'money-4919
+    ;; 'money-4920
+    ;; 'money-4921
+    ;; 'money-4922
+    ;; 'money-4923
+    ;; 'money-4924
+    ;; 'money-4925
+    ;; 'money-4926
+    ;; 'money-4927
+    ;; 'money-4928
+    
+
+
     ;; ~~~~ SCOUT FLIES ~~~~
     ;; Geyser flies
     (('crate-2960) (set-vector-meters! (-> arg0 extra trans) -1215.0 32.4 1008.4))   ;; up top on cell cutscene skip route
@@ -576,6 +611,15 @@
     (('crate-1032) (set-vector-meters! (-> arg0 extra trans) 235.42  31.0 -1295.43)) ;; behind eco crates on left near end
     (('crate-1033) (set-vector-meters! (-> arg0 extra trans) 342.42  31.0 -1386.02)) ;; on right near end
 
+    ;; Rock Village flies
+    ;; 'crate-3127
+    ;; 'crate-3128
+    ;; 'crate-3129
+    ;; 'crate-3130
+    ;; 'crate-3131
+    ;; 'crate-3132
+    ;; 'crate-3133
+
     ;; ~~~~ POWER CELLS ~~~~
     ;; Geyser cells
     (('fuel-cell-55) (override-fuel-cell-position arg0 -1264.0 55.0 890.5))    ;; up top on low eco blue door skip route
@@ -589,6 +633,7 @@
       (('yakow-10) (set-vector-meters! (-> arg0 extra trans) -19.2 20.2 -97.9)) ;; towards FC
       (('yakow-11) (set-vector-meters! (-> arg0 extra trans) 62.2 13.9 -33.3))  ;; towards oracle
       (('yakow-12) (set-vector-meters! (-> arg0 extra trans) -7.4 17.7 -0.4)) ;; blue eco cache
+    ;; (('oracle-1))
 
     ;; FJ outside cells
     (('reflector-mirror-2) (set-vector-meters! (-> arg0 extra trans) 439.3 40.1 -264.6))  ;; on cliff near normal location
@@ -671,7 +716,13 @@
     ;; (('muse-2))
 
     ;; Fire canyon cells
-    ;; racer-8
+    (('racer-8) (set-vector-meters! (-> arg0 extra trans) 326.08  33.62 -1448.86)) ;; just up ledge from where normally is (invis walls removed)
+
+    ;; Rock Village cells
+    ;; 'gambler-1
+    ;; 'geologist-1
+    ;; 'warrior-1
+    ;; 'oracle-2
 
     ;; ~~~~ MISC ~~~~
     ;; Geyser misc
@@ -809,7 +860,6 @@
     (('crate-1020) (set-vector-meters! (-> arg0 extra trans) -15.01  30.5 -220.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.7  0.0  -0.7)) ;; green - roll jump from start and get lava bounce onto it
     (('crate-1022) (set-vector-meters! (-> arg0 extra trans) -15.01  30.5 -223.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.7  0.0  -0.7)) ;; green - roll jump from start and get lava bounce onto it
     (('racer-7) (set-vector-meters! (-> arg0 extra trans) -15.01  31.01 -247.64)) ;; past green eco crates ^
-    (('racer-8) (set-vector-meters! (-> arg0 extra trans) 326.08  33.62 -1448.86)) ;; just up ledge from where normally is (invis walls removed)
 
     (('spike-26) (set-vector-meters! (-> arg0 extra trans) 162.48  30.9 -650.75)) ;; in middle, two lava patches (this one triggers 27/28/29)
       (('spike-27) (set-vector-meters! (-> arg0 extra trans) 154.57  30.9 -657.33)) ;; in middle, two lava patches
@@ -852,6 +902,10 @@
     (('balloon-14) (set-vector-meters! (-> arg0 extra trans) -56.48  32.58 -992.87)) ;; small gap on right
     (('balloon-15) (set-vector-meters! (-> arg0 extra trans) 128.11  38.0  -416.86)) ;; right side of first ramp
     (('balloon-16) (set-vector-meters! (-> arg0 extra trans) 112.59  37.71 -1161.06)) ;; jump off lurker near end
+
+    ;; Rock Village misc
+    ;; 'eco-26 ;; blue - 
+    ;; 'eco-27 ;; blue - 
 
     (else
       (when #f
