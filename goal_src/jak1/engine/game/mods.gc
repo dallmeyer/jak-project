@@ -803,6 +803,7 @@
     (('crate-711) (set-vector-meters! (-> arg0 extra trans) 14.44	2.05	1094.72) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
     (('crate-746) (set-vector-meters! (-> arg0 extra trans) -35.99  -0.47 948.78)) ;; dark eco - in skeleton in zoomer section
     (('crate-2322) (set-vector-meters! (-> arg0 extra trans) -29.3  -0.1 949.1)) ;; dark eco - in skeleton in zoomer section
+    (('crate-745) (set-vector-meters! (-> arg0 extra trans) -191.44  57.09 1018.57)) ;; green - where orig cannon is
 
     ;; Fire canyon misc
     (('crate-1020) (set-vector-meters! (-> arg0 extra trans) -15.01  30.5 -220.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.7  0.0  -0.7)) ;; green - roll jump from start and get lava bounce onto it
@@ -1208,12 +1209,61 @@
         )
       )
     )
-  ;; eco-138 ;; blue
-  ;; eco-139 ;; red
-  ;; eco-143 ;; blue
-  ;; eco-143 ;; blue
-  ;; eco-144 ;; blue
-  ;; eco-145 ;; red
+  (when (process-by-ename "eco-139")  ;; red - in mud near entrance
+    (let ((obj (the eco (process-by-ename "eco-139")))
+          (vec (static-vector-meters 3.55  15.5 843.26))
+          )
+      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
+  (when (process-by-ename "eco-145")  ;; red - in mud near boosted
+    (let ((obj (the eco (process-by-ename "eco-145")))
+          (vec (static-vector-meters -29.77  19.0 802.68))
+          )
+      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
+  (when (process-by-ename "eco-138")  ;; blue - on top of lurker ship
+    (let ((obj (the eco (process-by-ename "eco-138")))
+          (vec (static-vector-meters 34.51  33.00 1069.82))
+          )
+      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
+  (when (process-by-ename "eco-143")  ;; blue - on bridge with rolling logs
+    (let ((obj (the eco (process-by-ename "eco-143")))
+          (vec (static-vector-meters -39.55  43.0 1029.50))
+          )
+      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
+  (when (process-by-ename "eco-144")  ;; blue - on bridge with rolling logs
+    (let ((obj (the eco (process-by-ename "eco-144")))
+          (vec (static-vector-meters -77.03  51.5 991.29))
+          )
+      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
 
   ;; Fire Canyon
   (when (process-by-ename "ecovent-195")  ;; blue - left side of first ramp
