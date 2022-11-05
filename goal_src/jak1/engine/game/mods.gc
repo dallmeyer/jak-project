@@ -552,6 +552,171 @@
     (('money-4828) (set-vector-meters! (-> arg0 extra trans) 303.01  25.50 -1688.06 )) ;; dock rooftop next to gambler
     (('orb-cache-top-14) (set-vector-meters! (-> arg0 extra trans) 385.97  22.09 -1576.64)) ;; deck next to blue sage hut
     
+    ;; LPC (sunken) orbs
+    ;; (('money-1734) (set-vector-meters! (-> arg0 extra trans)  566.27 -144.29 -1623.63)) ;; behind coils on right at start
+    ;; (('money-1735) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1736) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1737) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1738) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1739) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1740) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1741) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1742) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1749) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1750) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1752) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1752) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1753) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1754) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1755) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1756) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1757) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1758) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1759) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1840) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1841) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1842) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1843) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1844) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1845) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1846) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1847) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1848) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1849) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1850) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1851) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1852) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1853) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1854) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1855) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1856) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1857) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1858) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1859) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1860) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1861) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1923) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1924) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1925) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1928) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1929) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1930) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1931) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1932) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1933) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1934) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1935) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1936) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1937) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1938) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1939) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1940) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1941) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-1942) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3803) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3804) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3805) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3806) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3807) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3808) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3809) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3810) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3811) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3812) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3813) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3814) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3815) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3816) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3817) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3818) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3819) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3820) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3821) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3822) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3973) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3974) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3975) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3976) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3977) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3978) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3979) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3980) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3981) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3982) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3983) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3984) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3985) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3986) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3987) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3988) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-3989) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('orb-cache-top-26) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('orb-cache-top-27) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-859) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-860) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-2590) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-3036) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-3044) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-3049) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-3055) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+
+    ;; LPC (sunkenb) orbs
+    ;; (('money-4056) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4058) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4059) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4060) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4061) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4062) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4063) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4064) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4065) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4066) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4067) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4068) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4069) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4070) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4071) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4072) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4073) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4074) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4075) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4076) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4077) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4082) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4083) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4084) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4085) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4086) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4087) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4123) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4124) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4125) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4126) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4127) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4128) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4837) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4838) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4839) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4840) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4841) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4842) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4843) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4844) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4845) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4846) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4847) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('money-4848) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-3064) (set-vector-meters! (-> arg0 extra trans)  )) ;;  ;; orba
+    ;; (('crate-3074) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-2715) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-2718) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-3091) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-3093) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-3095) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-3097) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-3101) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-3109) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('crate-3115) (set-vector-meters! (-> arg0 extra trans)  )) ;;
 
 
     ;; ~~~~ SCOUT FLIES ~~~~
@@ -619,6 +784,15 @@
     (('crate-3131) (set-vector-meters! (-> arg0 extra trans) 438.86   7.55 -1616.22)) ;; on rock near chimes towards LPC
     (('crate-3132) (set-vector-meters! (-> arg0 extra trans) 449.94  17.72 -1653.19)) ;; on rock with trees near chimes towards LPC (orb trail)
     (('crate-3133) (set-vector-meters! (-> arg0 extra trans) 244.92  24.01 -1745.81)) ;; on rocks behind trees under klaww
+
+    ;; LPC (sunken) flies
+    ;; (('crate-925) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    ;; (('crate-926) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    ;; (('crate-917) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    ;; (('crate-923) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    ;; 2 in pipegame
+    ;; LPC (sunkenb) flies
+    ;; (('crate-2705) (set-vector-meters! (-> arg0 extra trans) )) ;;
 
     ;; ~~~~ POWER CELLS ~~~~
     ;; Geyser cells
@@ -723,6 +897,13 @@
     (('geologist-1) (set-vector-meters! (-> arg0 extra trans) 188.13  13.14 -1616.15)) ;; on top of cart near normal position
     (('warrior-1) (set-vector-meters! (-> arg0 extra trans) 322.54   3.7 -1586.12)) ;; sitting on ropes on dock
     ;; 'oracle-2
+
+    ;; LPC (sunken) cells
+    ;; (('fuel-cell-52)  (set-vector-meters! (-> arg0 extra trans)  ))  ;; in center with dark eco
+    ;; (('fuel-cell-24)  (set-vector-meters! (-> arg0 extra trans)  ))  ;; puzzle
+    ;; (('fuel-cell-25)  (set-vector-meters! (-> arg0 extra trans)  ))  ;; top of tube
+    ;; (('fuel-cell-26)  (set-vector-meters! (-> arg0 extra trans)  ))  ;; cross quick platforms
+    ;; LPC (sunkenb) cells
 
     ;; ~~~~ MISC ~~~~
     ;; Geyser misc
@@ -924,6 +1105,150 @@
     (('pontoonfive-16) (set-vector-meters! (-> arg0 extra trans) 426.26	 0.33	-1664.84))  ;; between LPC and boggy
     (('pontoonfive-17) (set-vector-meters! (-> arg0 extra trans) 360.164	0.33	-1620.458))  ;; between LPC and center
     (('pontoonfive-18) (set-vector-meters! (-> arg0 extra trans) 344.48	0.33	-1617.08))  ;; between LPC and center 
+
+    ;; LPC (sunken) misc
+    ;; crate-863   ;; green
+    ;; crate-864
+    ;; crate-865
+    ;; crate-877   
+    ;; crate-878
+    ;; crate-879
+    ;; crate-880
+    ;; crate-881
+    ;; crate-882
+    ;; crate-883
+    ;; crate-918
+    ;; crate-919
+    ;; crate-920
+    ;; crate-921
+    ;; crate-922
+    ;; crate-924
+    ;; crate-3033
+    ;; crate-3034
+    ;; crate-3035
+    ;; crate-3039
+    ;; crate-3043
+    ;; crate-3046
+    ;; crate-3051
+    ;; crate-3054
+
+    ;; crate-2589 ;; dark
+    ;; crate-2591
+    ;; crate-2592
+    ;; crate-2593
+    ;; crate-3030
+    ;; crate-3031
+    ;; crate-3032
+    ;; crate-3037
+    ;; crate-3038
+    ;; crate-3040
+    ;; crate-3041
+    ;; crate-3042
+    ;; crate-3045
+    ;; crate-3047
+    ;; crate-3048
+    ;; crate-3050
+    ;; crate-3052
+    ;; crate-3053
+    ;; crate-3056
+    ;; crate-3057
+    ;; crate-3058
+
+    ;; eco-102 ;; blue
+    ;; eco-109
+    ;; eco-100
+    ;; eco-101
+
+    ;; plat-59 ;; blue circle
+    ;; plat-60
+    ;; plat-61
+    ;; plat-62
+
+    ;; LPC (sunkenb) misc
+    ;; crate-3061  ;; green
+    ;; crate-3066
+    ;; crate-2710
+    ;; crate-2711
+    ;; crate-2712
+    ;; crate-2714
+    ;; crate-3077
+    ;; crate-3081
+    ;; crate-3086
+    ;; crate-3105
+    ;; crate-3106
+
+    ;; crate-2706  ;; dark
+    ;; crate-2707
+    ;; crate-2708
+    ;; crate-2709
+    ;; crate-2713
+    ;; crate-2716
+    ;; crate-2719
+    ;; crate-2720
+    ;; crate-2721
+    ;; crate-2722
+    ;; crate-2723
+    ;; crate-2724
+    ;; crate-2725
+    ;; crate-2726
+    ;; crate-2728
+    ;; crate-2730
+    ;; crate-3059
+    ;; crate-3060
+    ;; crate-3062
+    ;; crate-3063
+    ;; crate-3065
+    ;; crate-3067
+    ;; crate-3068
+    ;; crate-3069
+    ;; crate-3070
+    ;; crate-3071
+    ;; crate-3072
+    ;; crate-3073
+    ;; crate-3075
+    ;; crate-3076
+    ;; crate-3078
+    ;; crate-3079
+    ;; crate-3080
+    ;; crate-3082
+    ;; crate-3083
+    ;; crate-3084
+    ;; crate-3085
+    ;; crate-3087
+    ;; crate-3088
+    ;; crate-3089
+    ;; crate-3090
+    ;; crate-3092
+    ;; crate-3094
+    ;; crate-3096
+    ;; crate-3098
+    ;; crate-3099
+    ;; crate-3100
+    ;; crate-3102
+    ;; crate-3103
+    ;; crate-3104
+    ;; crate-3107
+    ;; crate-3108
+    ;; crate-3110
+    ;; crate-3111
+    ;; crate-3112
+    ;; crate-3113
+    ;; crate-3114
+    ;; crate-3116
+
+
+    ;; blue-eco-charger-6
+    ;; blue-eco-charger-7
+    ;; blue-eco-charger-8
+    ;; blue-eco-charger-9
+    ;; blue-eco-charger-10
+
+    ;; ecovent-238
+    ;; ecovent-239
+    ;; ecovent-240
+    ;; ecovent-241
+    ;; launcher-115
+    ;; launcher-116
 
     (else
       (when #f
