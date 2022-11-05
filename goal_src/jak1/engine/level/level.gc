@@ -1051,50 +1051,18 @@
 ;; method 27 level
 
 ;; method 10 level
-(define-extern money type)
-(define-extern crate type)
-(define-extern eco type)
-(define-extern crate-buzzer type)
-(define-extern orb-cache-top type)
-(define-extern periscope type)
-(define-extern yakow type)
-(define-extern plant-boss type)
-(define-extern aphid type)
-(define-extern plat-flip type)
-(define-extern plat type)
-(define-extern junglesnake type)
-(define-extern darkvine type)
-(define-extern ecovent type)
-(define-extern eggtop type)
-(define-extern logtrap type)
-(define-extern ventblue type)
-(define-extern part-tracker type)
-(define-extern flutflutegg type)
-(define-extern mistycannon type)
-(define-extern babak-with-cannon type)
-(define-extern bird-lady-beach type)
-(define-extern grottopole type)
-(define-extern fisher type)
-(define-extern launcher type)
-(define-extern harvester type)
-(define-extern ecoventrock type)
-(define-extern springbox type)
-(define-extern fuel-cell type)
-(define-extern pelican type)
-(define-extern racer type)
-(define-extern spike type)
-(define-extern balloon type)
-(define-extern crate-darkeco-cluster type)
 (defmethod is-object-visible? level ((obj level) (arg0 int) (actor entity))
   "Is arg0 visible? Note that this will return #f if the visibility data is not loaded."
 
   ;; note : pc port added option to show every actor regardless
   (with-pc 
     ;; hack to force visibility of stuff moved (rather than update visibility data)
-    (case (-> (the entity-actor actor) etype)
-      ((money eco crate crate-buzzer fisher fuel-cell orb-cache-top yakow plat plat-flip junglesnake darkvine ecovent
-       eggtop logtrap launcher racer spike balloon crate-darkeco-cluster aphid pelican mistycannon babak-with-cannon
-       ventblue harvester flutflutegg grottopole bird-lady-beach ecoventrock part-tracker periscope springbox plant-boss
+    (case (-> (the entity-actor actor) etype symbol)
+      (('money 'eco 'crate 'crate-buzzer 'fisher 'fuel-cell 'orb-cache-top 'yakow 'plat 'plat-flip 
+       'eggtop 'logtrap 'launcher 'racer 'spike 'balloon 'crate-darkeco-cluster 'aphid 'pelican 
+       'ventblue 'harvester 'flutflutegg 'grottopole 'bird-lady-beach 'ecoventrock 'part-tracker 
+       'junglesnake 'darkvine 'ecovent 'mistycannon 'babak-with-cannon 'periscope 'springbox 
+       'plant-boss 'warrior 'gambler 'pontoonten 'pontoonfive
        )
         (return #t)
         )

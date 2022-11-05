@@ -528,17 +528,17 @@
     (('money-2849) (set-vector-meters! (-> arg0 extra trans) 293.01   0.66 -1514.76)) ;; in wall of "beach" under waterfall
     (('money-2850) (set-vector-meters! (-> arg0 extra trans) 244.65  21.40 -1527.93)) ;; on top of oracle
     (('money-2854) (set-vector-meters! (-> arg0 extra trans) 182.42  22.50 -1605.73)) ;; rafters above geologist
-    (('money-2855) (set-vector-meters! (-> arg0 extra trans) 176.31  27.61 -1606.74)) ;; further up rocks from ^
+    (('money-2855) (set-vector-meters! (-> arg0 extra trans) 176.31  28.0 -1606.74)) ;; further up rocks from ^
     (('money-2856) (set-vector-meters! (-> arg0 extra trans) 174.84  28.41 -1616.57)) ;; further up rocks from ^
     (('money-2860) (set-vector-meters! (-> arg0 extra trans) 169.22  32.44 -1618.42)) ;; further up rocks from ^
     (('money-2861) (set-vector-meters! (-> arg0 extra trans) 168.61  34.0 -1596.93)) ;; further up rocks from ^
-    (('money-2862) (set-vector-meters! (-> arg0 extra trans) 180.01  21.2 -1615.19)) ;; rafters above geologist
+    (('money-2862) (set-vector-meters! (-> arg0 extra trans) 380.03   8.5 -1759.73)) ;; behind waterfall between klaww and boggy
     (('money-2867) (set-vector-meters! (-> arg0 extra trans) 246.78   7.8 -1581.01)) ;; behind tree against inner rocks near oracle
     (('money-2868) (set-vector-meters! (-> arg0 extra trans) 157.79  13.3 -1680.90)) ;; on right side towards basin against rocks 
     (('money-2869) (set-vector-meters! (-> arg0 extra trans) 257.76  -3.99 -1610.78)) ;; under water against inner rocks by bridge
     (('money-2870) (set-vector-meters! (-> arg0 extra trans) 246.77  20.0 -1650.54)) ;; left side of bridge to center area 
-    (('money-2874) (set-vector-meters! (-> arg0 extra trans) 295.58  20.0 -1648.29)) ;; in lamp/torch in center area
-    (('money-4917) (set-vector-meters! (-> arg0 extra trans) 295.85  23.0 -1631.51)) ;; in center lamp in center area
+    (('money-2874) (set-vector-meters! (-> arg0 extra trans) 296.0   20.2 -1648.29)) ;; in lamp/torch in center area
+    (('money-4917) (set-vector-meters! (-> arg0 extra trans) 228.55   7.5 -1630.94)) ;; under bridge to center
     (('money-4918) (set-vector-meters! (-> arg0 extra trans) 273.32  -7.99 -1584.82 )) ;; dive in corner near dining pier
     (('money-4919) (set-vector-meters! (-> arg0 extra trans) 457.04   5.0 -1658.34)) ;; on rock near chimes towards LPC 
     (('money-4920) (set-vector-meters! (-> arg0 extra trans) 455.03  12.74 -1655.81)) ;; up rock from ^
@@ -548,8 +548,8 @@
     (('money-4924) (set-vector-meters! (-> arg0 extra trans) 206.61   5.68 -1647.35)) ;; in crack near water between geologist and klaww
     (('money-4925) (set-vector-meters! (-> arg0 extra trans) 524.77  17.2 -1609.55)) ;; right bubble LPC entrance
     (('money-4926) (set-vector-meters! (-> arg0 extra trans) 524.96  17.5 -1652.73)) ;; left bubble LPC entrance
-    (('money-4927) (set-vector-meters! (-> arg0 extra trans) 546.69  17.2 -1631.88)) ;; back bubble LPC entrance
-    (('money-4828) (set-vector-meters! (-> arg0 extra trans) 303.01  25.50 -1688.06 )) ;; pointy rooftop next to gambler on dock
+    (('money-4927) (set-vector-meters! (-> arg0 extra trans) 361.11  24.22 -1725.61)) ;; dock rooftop next to levitator
+    (('money-4828) (set-vector-meters! (-> arg0 extra trans) 303.01  25.50 -1688.06 )) ;; dock rooftop next to gambler
     (('orb-cache-top-14) (set-vector-meters! (-> arg0 extra trans) 385.97  22.09 -1576.64)) ;; deck next to blue sage hut
     
 
@@ -721,7 +721,7 @@
     ;; Rock Village cells
     (('gambler-1) (set-vector-meters! (-> arg0 extra trans) 322.51   4.00 -1606.97)) ;; on lower dock next to warrior
     (('geologist-1) (set-vector-meters! (-> arg0 extra trans) 188.13  13.14 -1616.15)) ;; on top of cart near normal position
-    (('warrior-1) (set-vector-meters! (-> arg0 extra trans) 320.53   3.7 -1588.54)) ;; sitting on ropes on dock
+    (('warrior-1) (set-vector-meters! (-> arg0 extra trans) 322.54   3.7 -1586.12)) ;; sitting on ropes on dock
     ;; 'oracle-2
 
     ;; ~~~~ MISC ~~~~
@@ -904,6 +904,26 @@
     (('balloon-16) (set-vector-meters! (-> arg0 extra trans) 112.59  37.71 -1161.06)) ;; jump off lurker near end
 
     ;; Rock Village misc
+    (('pontoonfive-6) (set-vector-meters!  (-> arg0 extra trans) 301.94  0.33 -1727.13))  ;; under klaww near waterfall
+    (('pontoonfive-7) (set-vector-meters!  (-> arg0 extra trans) 269.61	 0.33	-707.80))  ;; between ^ and v
+    (('pontoonfive-8) (set-vector-meters!  (-> arg0 extra trans) 237.28  0.33 -1688.46))  ;; between geologist and klaww
+    (('pontoonten-9) (set-vector-meters! (-> arg0 extra trans) 404.76  0.33 -1742.49))  ;; between levitator and boggy
+    (('pontoonten-10) (set-vector-meters! (-> arg0 extra trans) 279.68  0.33 -1550.79))  ;; water behind oracle
+    (('pontoonten-11) (set-vector-meters! (-> arg0 extra trans) 429.63	 0.33	-1695.71))  ;; between LPC and boggy
+    (('pontoonten-12) (set-vector-meters! (-> arg0 extra trans) 432.99	 0.33	-1726.58))  ;; between LPC and boggy
+
+    (('pontoonten-13) (set-vector-meters!  (-> arg0 extra trans) 483.39	 0.33	-1630.21))  ;; between LPC and boggy
+    (('pontoonten-14) (set-vector-meters!  (-> arg0 extra trans) 468.27	 0.33	-1631.15))  ;; between LPC and boggy
+    (('pontoonten-15) (set-vector-meters!  (-> arg0 extra trans) 453.15	 0.33	-1632.09))  ;; between LPC and boggy
+    (('pontoonten-16) (set-vector-meters!  (-> arg0 extra trans) 407.216	0.33	-1630.592))  ;; between LPC and center
+    (('pontoonten-17) (set-vector-meters!  (-> arg0 extra trans) 391.532	0.33	-1627.214))  ;; between LPC and center
+    (('pontoonfive-12) (set-vector-meters! (-> arg0 extra trans) 438.02	 0.33	-1633.03))  ;; between LPC and boggy
+    (('pontoonfive-13) (set-vector-meters! (-> arg0 extra trans) 422.90	 0.33	-1633.97))  ;; between LPC and boggy
+    (('pontoonfive-14) (set-vector-meters! (-> arg0 extra trans) 375.848	0.33	-1623.836))  ;; between LPC and center
+    (('pontoonfive-15) (set-vector-meters! (-> arg0 extra trans) 424.58	 0.33	-1649.41))  ;; between LPC and boggy
+    (('pontoonfive-16) (set-vector-meters! (-> arg0 extra trans) 426.26	 0.33	-1664.84))  ;; between LPC and boggy
+    (('pontoonfive-17) (set-vector-meters! (-> arg0 extra trans) 360.164	0.33	-1620.458))  ;; between LPC and center
+    (('pontoonfive-18) (set-vector-meters! (-> arg0 extra trans) 344.48	0.33	-1617.08))  ;; between LPC and center 
 
     (else
       (when #f
@@ -1165,7 +1185,8 @@
     )
   (when (process-by-ename "eco-82")  ;; blue - snake pit near entrance
     (let ((obj (the eco (process-by-ename "eco-82"))))
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
         (set-vector-meters! (-> obj root trans) -171.11   3.0 -225.54)
         (set-vector-meters! (-> obj root-override trans) -171.11   3.0 -225.54)
         (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -171.11  3.0 -225.54)
@@ -1174,7 +1195,8 @@
     )
   (when (process-by-ename "eco-6")  ;; blue - snake pit near mid windmill
     (let ((obj (the eco (process-by-ename "eco-6"))))
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
         (set-vector-meters! (-> obj root trans) -98.41   3.0 -360.76)
         (set-vector-meters! (-> obj root-override trans) -98.41   3.0 -360.76)
         (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -98.41   3.0 -360.76)
@@ -1183,7 +1205,8 @@
     )
   (when (process-by-ename "eco-83")  ;; blue - orig orb cache near orig flutflutegg nest
     (let ((obj (the eco (process-by-ename "eco-83"))))
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
         (set-vector-meters! (-> obj root trans) -52.43  42.5 -300.91)
         (set-vector-meters! (-> obj root-override trans) -52.43  42.5 -300.91)
         (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -52.43  42.5 -300.91)
@@ -1192,7 +1215,8 @@
     )
   (when (process-by-ename "eco-84")  ;; blue - on beach near grotto entrance
     (let ((obj (the eco (process-by-ename "eco-84"))))
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
         (set-vector-meters! (-> obj root trans) -173.30   2.0 -473.25)
         (set-vector-meters! (-> obj root-override trans) -173.30   2.0 -473.25)
         (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -173.30   2.0 -473.25)
@@ -1210,7 +1234,8 @@
     (let ((obj (the eco (process-by-ename "eco-32")))
           (vec (static-vector-meters -29.1 23.0 820.1))
           )
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
         (vector-copy-no-w! (-> obj root trans) vec)
         (vector-copy-no-w! (-> obj root-override trans) vec)
         (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
@@ -1221,7 +1246,8 @@
     (let ((obj (the eco (process-by-ename "eco-33")))
           (vec (static-vector-meters 98.40  10.5 1169.97))
           )
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
         (vector-copy-no-w! (-> obj root trans) vec)
         (vector-copy-no-w! (-> obj root-override trans) vec)
         (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
@@ -1232,7 +1258,8 @@
     (let ((obj (the eco (process-by-ename "eco-34")))
           (vec (static-vector-meters 50.09 16.0 1187.07))
           )
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
         (vector-copy-no-w! (-> obj root trans) vec)
         (vector-copy-no-w! (-> obj root-override trans) vec)
         (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
@@ -1243,7 +1270,8 @@
     (let ((obj (the eco (process-by-ename "eco-39")))
           (vec (static-vector-meters 17.80  17.54 1215.30))
           )
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
         (vector-copy-no-w! (-> obj root trans) vec)
         (vector-copy-no-w! (-> obj root-override trans) vec)
         (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
@@ -1254,7 +1282,8 @@
     (let ((obj (the eco (process-by-ename "eco-40")))
           (vec (static-vector-meters 92.0  2.0 1094.94))
           )
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
         (vector-copy-no-w! (-> obj root trans) vec)
         (vector-copy-no-w! (-> obj root-override trans) vec)
         (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
@@ -1265,29 +1294,27 @@
     (let ((obj (the eco (process-by-ename "eco-139")))
           (vec (static-vector-meters 3.55  15.5 843.26))
           )
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
-        (vector-copy-no-w! (-> obj root trans) vec)
-        (vector-copy-no-w! (-> obj root-override trans) vec)
-        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
-        )
+      ;; only move if not being suck-sucked
+      (vector-copy-no-w! (-> obj root trans) vec)
+      (vector-copy-no-w! (-> obj root-override trans) vec)
+      (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
       )
     )
   (when (process-by-ename "eco-145")  ;; red - in mud near boosted
     (let ((obj (the eco (process-by-ename "eco-145")))
           (vec (static-vector-meters -29.77  19.0 802.68))
           )
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
-        (vector-copy-no-w! (-> obj root trans) vec)
-        (vector-copy-no-w! (-> obj root-override trans) vec)
-        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
-        )
+      (vector-copy-no-w! (-> obj root trans) vec)
+      (vector-copy-no-w! (-> obj root-override trans) vec)
+      (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
       )
     )
   (when (process-by-ename "eco-138")  ;; blue - on top of lurker ship
     (let ((obj (the eco (process-by-ename "eco-138")))
           (vec (static-vector-meters 34.51  33.00 1069.82))
           )
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
         (vector-copy-no-w! (-> obj root trans) vec)
         (vector-copy-no-w! (-> obj root-override trans) vec)
         (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
@@ -1298,7 +1325,8 @@
     (let ((obj (the eco (process-by-ename "eco-143")))
           (vec (static-vector-meters -39.55  43.0 1029.50))
           )
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
         (vector-copy-no-w! (-> obj root trans) vec)
         (vector-copy-no-w! (-> obj root-override trans) vec)
         (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
@@ -1309,7 +1337,8 @@
     (let ((obj (the eco (process-by-ename "eco-144")))
           (vec (static-vector-meters -77.03  51.5 991.29))
           )
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
         (vector-copy-no-w! (-> obj root trans) vec)
         (vector-copy-no-w! (-> obj root-override trans) vec)
         (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
@@ -1360,7 +1389,8 @@
     (let ((obj (the eco (process-by-ename "eco-26")))
           (vec (static-vector-meters 305.53  18.0 -1518.91))
           )
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
         (vector-copy-no-w! (-> obj root trans) vec)
         (vector-copy-no-w! (-> obj root-override trans) vec)
         (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
@@ -1371,7 +1401,8 @@
     (let ((obj (the eco (process-by-ename "eco-27")))
           (vec (static-vector-meters 219.98  16.0 -1494.33))
           )
-      (when (not (logtest? (-> obj flags) (collectable-flags suck)))
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
         (vector-copy-no-w! (-> obj root trans) vec)
         (vector-copy-no-w! (-> obj root-override trans) vec)
         (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
@@ -1451,6 +1482,12 @@
           ;; firecanyon -> wherever target is (zoomer)
           (vector-copy-no-w! dst (-> *target* root trans))
           )
+        (('crate-3127 'crate-3128 'crate-3129 'crate-3130 'crate-3131 'crate-3132 'crate-3133)
+          ;; rock village - in center, above hanging fire
+          (set-vector-meters! dst 295.85  23.0 -1631.51)
+          )
+
+          
         (else
           (format #t "fuel movie override, didnt match grandparent ~A ~%" (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name))
           ;; check maybe-parent
