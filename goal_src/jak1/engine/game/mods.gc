@@ -666,59 +666,70 @@
     (('money-4058) (set-vector-meters! (-> arg0 extra trans)  584.23 -225.64 -1779.33)) ;; up high in room before slide 2
     (('money-4059) (set-vector-meters! (-> arg0 extra trans)  570.1 -248.1 -1792.4)) ;; in coils in room before slide 2
     (('money-4060) (set-vector-meters! (-> arg0 extra trans)  569.07 -247.5 -1642.79)) ;; in right corner from entrance of elevator room
-    (('money-4061) (set-vector-meters! (-> arg0 extra trans)  576.52 -235.29 -1728.04)) ;; archway exiting elevator room
-    (('money-4062) (set-vector-meters! (-> arg0 extra trans)  511.98 -247.18 -1788.40)) ;; jump slide 2
-    (('money-4063) (set-vector-meters! (-> arg0 extra trans)  504.91 -258.69 -1825.05)) ;; jump slide 2
-    (('money-4064) (set-vector-meters! (-> arg0 extra trans)  530.24 -268.36 -1851.60)) ;; jump slide 2
-    (('money-4065) (set-vector-meters! (-> arg0 extra trans)  569.04 -275.71 -1853.06)) ;; jump slide 2
-    (('money-4066) (set-vector-meters! (-> arg0 extra trans)  605.53 -289.60 -1835.90)) ;; jump slide 2
-    (('money-4067) (set-vector-meters! (-> arg0 extra trans)  641.30 -305.74 -1834.57)) ;; jump slide 2
-    (('money-4068) (set-vector-meters! (-> arg0 extra trans)  669.13 -317.92 -1866.78)) ;; jump slide 2
-    (('money-4069) (set-vector-meters! (-> arg0 extra trans)  653.09 -326.95 -1907.58)) ;; jump slide 2
-    (('money-4070) (set-vector-meters! (-> arg0 extra trans)  612.70 -337.45 -1892.71)) ;; jump slide 2
-    (('money-4071) (set-vector-meters! (-> arg0 extra trans)  619.50 -344.54 -1848.12)) ;; jump slide 2
-    (('money-4072) (set-vector-meters! (-> arg0 extra trans)  645.85 -350.53 -1817.88)) ;; jump slide 2
-    (('money-4073) (set-vector-meters! (-> arg0 extra trans)  685.07 -370.71 -1834.58)) ;; jump slide 2
-    (('money-4074) (set-vector-meters! (-> arg0 extra trans)  726.31 -386.30 -1851.34)) ;; jump slide 2
-    (('money-4075) (set-vector-meters! (-> arg0 extra trans)  754.03 -400.43 -1826.96)) ;; jump slide 2
-    (('money-4076) (set-vector-meters! (-> arg0 extra trans)  725.73 -413.63 -1795.40)) ;; jump slide 2
-    (('money-4077) (set-vector-meters! (-> arg0 extra trans)  689.83 -421.27 -1800.06)) ;; jump slide 2
-    (('money-4082) (set-vector-meters! (-> arg0 extra trans)  661.97 -431.00 -1772.54)) ;; jump slide 2
-    (('money-4083) (set-vector-meters! (-> arg0 extra trans)  628.81 -438.49 -1771.25)) ;; jump slide 2
-    ;; (('money-4084) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4085) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4086) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4087) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4123) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4124) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4125) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4126) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4127) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4128) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4837) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4838) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4839) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4840) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4841) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4842) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4843) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4844) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4845) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4846) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4847) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4848) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('crate-3064) (set-vector-meters! (-> arg0 extra trans)  )) ;;  ;; orba
-    ;; (('crate-3074) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('crate-2715) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('crate-2718) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('crate-3091) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('crate-3093) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('crate-3095) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('crate-3097) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('crate-3101) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('crate-3109) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('crate-3115) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-
+    (('money-4061) (set-vector-meters! (-> arg0 extra trans)  576.52 -236.29 -1728.04)) ;; archway exiting elevator room
+    (('money-4062) (set-vector-meters! (-> arg0 extra trans)  511.98 -249.74 -1788.40)) ;; jump slide 2
+    (('money-4063) (set-vector-meters! (-> arg0 extra trans)  504.91 -260.37 -1825.05)) ;; jump slide 2
+    (('money-4064) (set-vector-meters! (-> arg0 extra trans)  530.24 -270.73 -1851.60)) ;; jump slide 2
+    (('money-4065) (set-vector-meters! (-> arg0 extra trans)  569.04 -278.67 -1853.06)) ;; jump slide 2
+    (('money-4066) (set-vector-meters! (-> arg0 extra trans)  605.53 -290.73 -1835.90)) ;; jump slide 2
+    (('money-4067) (set-vector-meters! (-> arg0 extra trans)  641.30 -308.57 -1834.57)) ;; jump slide 2
+    (('money-4068) (set-vector-meters! (-> arg0 extra trans)  669.13 -320.82 -1866.78)) ;; jump slide 2
+    (('money-4069) (set-vector-meters! (-> arg0 extra trans)  653.09 -329.74 -1907.58)) ;; jump slide 2
+    (('money-4070) (set-vector-meters! (-> arg0 extra trans)  612.70 -340.36 -1892.71)) ;; jump slide 2
+    (('money-4071) (set-vector-meters! (-> arg0 extra trans)  619.50 -345.33 -1848.12)) ;; jump slide 2
+    (('money-4072) (set-vector-meters! (-> arg0 extra trans)  645.85 -353.35 -1817.88)) ;; jump slide 2
+    (('money-4073) (set-vector-meters! (-> arg0 extra trans)  685.07 -373.37 -1834.58)) ;; jump slide 2
+    (('money-4074) (set-vector-meters! (-> arg0 extra trans)  726.31 -388.35 -1851.34)) ;; jump slide 2
+    (('money-4075) (set-vector-meters! (-> arg0 extra trans)  754.03 -400.92 -1826.96)) ;; jump slide 2
+    (('money-4076) (set-vector-meters! (-> arg0 extra trans)  725.73 -415.96 -1795.40)) ;; jump slide 2
+    (('money-4077) (set-vector-meters! (-> arg0 extra trans)  689.83 -424.0  -1800.06)) ;; jump slide 2
+    (('money-4082) (set-vector-meters! (-> arg0 extra trans)  661.97 -432.73 -1772.54)) ;; jump slide 2
+    (('money-4083) (set-vector-meters! (-> arg0 extra trans)  628.81 -441.28 -1771.25)) ;; jump slide 2
+    (('money-4057) (set-vector-meters! (-> arg0 extra trans)  586.80	-409.00	-1780.40)) ;; counterclockwise spiral in helix
+    (('money-4084) (set-vector-meters! (-> arg0 extra trans)  591.75	-404.37	-1785.35)) ;; counterclockwise spiral in helix
+    (('money-4085) (set-vector-meters! (-> arg0 extra trans)  593.80	-399.75	-1787.40)) ;; counterclockwise spiral in helix
+    (('money-4086) (set-vector-meters! (-> arg0 extra trans)  591.75	-395.12	-1792.35)) ;; counterclockwise spiral in helix
+    (('money-4087) (set-vector-meters! (-> arg0 extra trans)  586.80	-390.50	-1794.40)) ;; counterclockwise spiral in helix
+    (('money-4123) (set-vector-meters! (-> arg0 extra trans)  581.85	-385.87	-1792.35)) ;; counterclockwise spiral in helix
+    (('money-4124) (set-vector-meters! (-> arg0 extra trans)  579.80	-381.24	-1787.40)) ;; counterclockwise spiral in helix
+    (('money-4125) (set-vector-meters! (-> arg0 extra trans)  581.85	-376.62	-1785.35)) ;; counterclockwise spiral in helix
+    (('money-4126) (set-vector-meters! (-> arg0 extra trans)  586.80	-371.99	-1780.40)) ;; counterclockwise spiral in helix
+    (('money-4127) (set-vector-meters! (-> arg0 extra trans)  591.75	-367.37	-1785.35)) ;; counterclockwise spiral in helix
+    (('money-4128) (set-vector-meters! (-> arg0 extra trans)  593.80	-362.74	-1787.40)) ;; counterclockwise spiral in helix
+    (('money-4837) (set-vector-meters! (-> arg0 extra trans)  591.75	-358.12	-1792.35)) ;; counterclockwise spiral in helix
+    (('money-4838) (set-vector-meters! (-> arg0 extra trans)  586.80	-353.49	-1794.40)) ;; counterclockwise spiral in helix
+    (('money-4839) (set-vector-meters! (-> arg0 extra trans)  581.85	-348.86	-1792.35)) ;; counterclockwise spiral in helix
+    (('money-4840) (set-vector-meters! (-> arg0 extra trans)  579.80	-344.24	-1787.40)) ;; counterclockwise spiral in helix
+    (('money-4841) (set-vector-meters! (-> arg0 extra trans)  581.85	-339.61	-1785.35)) ;; counterclockwise spiral in helix
+    (('money-4842) (set-vector-meters! (-> arg0 extra trans)  586.80	-334.99	-1780.40)) ;; counterclockwise spiral in helix
+    (('money-4843) (set-vector-meters! (-> arg0 extra trans)  591.75	-330.36	-1785.35)) ;; counterclockwise spiral in helix
+    (('money-4844) (set-vector-meters! (-> arg0 extra trans)  593.80	-325.73	-1787.40)) ;; counterclockwise spiral in helix
+    (('money-4845) (set-vector-meters! (-> arg0 extra trans)  591.75	-321.11	-1792.35)) ;; counterclockwise spiral in helix
+    (('money-4846) (set-vector-meters! (-> arg0 extra trans)  586.80	-316.48	-1794.40)) ;; counterclockwise spiral in helix
+    (('money-4847) (set-vector-meters! (-> arg0 extra trans)  581.85	-311.86	-1792.35)) ;; counterclockwise spiral in helix
+    (('money-4848) (set-vector-meters! (-> arg0 extra trans)  579.80	-307.23	-1787.40)) ;; counterclockwise spiral in helix
+    (('crate-3064) (set-vector-meters! (-> arg0 extra trans)  562.52	-238.99	-1692.68) ;; up top in elevator room
+       (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; level out (on slide originally)
+    (('crate-3074) (set-vector-meters! (-> arg0 extra trans)  557.37	-238.99	-1698.27) ;; up top in elevator room
+       (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; level out (on slide originally)
+    (('crate-2715) (set-vector-meters! (-> arg0 extra trans)  552.22	-238.99	-1703.86) ;; up top in elevator room
+       (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; level out (on slide originally)
+    (('crate-2718) (set-vector-meters! (-> arg0 extra trans)  588.87	-238.99	-1666.01) ;; up top in elevator room
+       (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; level out (on slide originally)
+    (('crate-3091) (set-vector-meters! (-> arg0 extra trans)  594.25	-238.99	-1660.31) ;; up top in elevator room
+       (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; level out (on slide originally)
+    (('crate-3093) (set-vector-meters! (-> arg0 extra trans)  599.62	-238.99	-1654.61) ;; up top in elevator room
+       (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; level out (on slide originally)
+    (('crate-3095) (set-vector-meters! (-> arg0 extra trans)  558.49  -249.54 -1665.34) ;; elevator room
+       (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; level out (on slide originally)
+    (('crate-3097) (set-vector-meters! (-> arg0 extra trans)  587.73  -249.58 -1663.40) ;; elevator room
+       (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; level out (on slide originally)
+    (('crate-3101) (set-vector-meters! (-> arg0 extra trans)  597.00  -249.56 -1677.34) ;; elevator room
+       (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; level out (on slide originally)
+    (('crate-3109) (set-vector-meters! (-> arg0 extra trans)  563.26  -249.58 -1695.86) ;; elevator room
+       (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; level out (on slide originally)
+    (('crate-3115) (set-vector-meters! (-> arg0 extra trans)  578.58  -249.61 -1701.12) ;; elevator room
+       (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; level out (on slide originally)
 
     ;; ~~~~ SCOUT FLIES ~~~~
     ;; Geyser flies
@@ -1161,9 +1172,11 @@
     ;; plat-62
 
     ;; LPC (sunkenb) misc
+    (('bully-16) (set-vector-meters! (-> arg0 extra trans) 572.99 -238.99 -1698.60)) ;; moved to other side of elevator top ledge (so can hit orb crates)
+    (('bully-17) (set-vector-meters! (-> arg0 extra trans) 575.97 -238.99 -1660.87)) ;; moved to other side of elevator top ledge (so can hit orb crates)
     (('crate-2732) (set-vector-meters! (-> arg0 extra trans)  539.86 -242.99 -1677.05))  ;; orig eco charger 
     (('crate-2733) (set-vector-meters! (-> arg0 extra trans)  611.15 -242.99 -1680.80))  ;; orig eco charger
-    (('crate-2734) (set-vector-meters! (-> arg0 extra trans)  562.29 -238.99 -1693.77))  ;; orig eco charger
+    (('crate-2734) (set-vector-meters! (-> arg0 extra trans)  561.36 -244.99 -1712.01))  ;; steps in elevator room
     ;; crate-3061  ;; green
     ;; crate-3066
     ;; crate-2710
