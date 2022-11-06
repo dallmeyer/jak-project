@@ -562,9 +562,9 @@
     (('money-1740) (set-vector-meters! (-> arg0 extra trans)  753.37 -141.0 -1599.78)) ;; corner on floor of connecting room with circling platforms
     (('money-1741) (set-vector-meters! (-> arg0 extra trans)  853.86 -148.0 -1584.67)) ;; under shocky water near geyser platform in pipegame room
     (('money-1742) (set-vector-meters! (-> arg0 extra trans)  906.0 -122.7 -1675.23)) ;; in mouth of side fly pipe exit
-    (('money-1749) (set-vector-meters! (-> arg0 extra trans)  877.2 -131.50 -1694.20)) ;; behind side fly pipe
-    (('money-1750) (set-vector-meters! (-> arg0 extra trans)  869.74 -131.50 -1694.35)) ;; behind middle fly pipe
-    (('money-1751) (set-vector-meters! (-> arg0 extra trans)  862.62 -131.50 -1694.10)) ;; behind cell pipe
+    (('money-1749) (set-vector-meters! (-> arg0 extra trans)  877.2 -130.0 -1694.20)) ;; behind side fly pipe
+    (('money-1750) (set-vector-meters! (-> arg0 extra trans)  869.74 -130.0 -1694.35)) ;; behind middle fly pipe
+    (('money-1751) (set-vector-meters! (-> arg0 extra trans)  862.62 -130.0 -1694.10)) ;; behind cell pipe
     (('money-1752) (set-vector-meters! (-> arg0 extra trans)  850.42 -122.70 -1651.88)) ;; in mouth of center fly pipe exit
     (('money-1753) (set-vector-meters! (-> arg0 extra trans)  849.72 -116.7 -1690.86)) ;; on top of pipe on wall in pipegame room
     (('money-1754) (set-vector-meters! (-> arg0 extra trans)  830.22 -117.0 -1678.74)) ;; on top of pipe on wall in pipegame room
@@ -572,7 +572,6 @@
     (('money-1756) (set-vector-meters! (-> arg0 extra trans)  820.16 -112.0 -1612.26)) ;; above entrance door pipegame room
     (('money-1757) (set-vector-meters! (-> arg0 extra trans)  919.40 -136.06 -1791.49)) ;; window in puzzle locked room
     (('money-1758) (set-vector-meters! (-> arg0 extra trans)  811.27 -144.46 -1764.20)) ;; side of initial ledge in puzzle rooom
-    (('money-1759) (set-vector-meters! (-> arg0 extra trans)  741.31 -143.90 -1714.44)) ;; center whirpool
     (('money-1840) (set-vector-meters! (-> arg0 extra trans)  667.74 -126.38 -1720.21)) ;; entrance archway in piggyback room
     (('money-1841) (set-vector-meters! (-> arg0 extra trans)  590.13 -146.35 -1715.44)) ;; shocky water in piggyback room
     (('money-1842) (set-vector-meters! (-> arg0 extra trans)  633.84 -125.68 -1759.57)) ;; corner up high near piggyback skip
@@ -608,83 +607,84 @@
     (('money-1934) (set-vector-meters! (-> arg0 extra trans)  891.16 -135.0 -1785.23)) ;; puzzle platform
     (('money-1935) (set-vector-meters! (-> arg0 extra trans)  558.44 -113.97 -1798.00)) ;; right side of window near cell top of tube
     (('money-1936) (set-vector-meters! (-> arg0 extra trans)  558.50 -113.97 -1779.09)) ;; left side of window near cell top of tube
-    (('money-1937) (set-vector-meters! (-> arg0 extra trans)  740.78 -128.5 -1697.74)) ;; jump off crate (TBD) in whirlpool room to ledge up top
-    (('money-1938) (set-vector-meters! (-> arg0 extra trans)  727.48 -128.5 -1724.98)) ;; jump off crate (TBD) in whirlpool room to ledge up top
-    (('money-1939) (set-vector-meters! (-> arg0 extra trans)  749.86 -128.5 -1729.87 )) ;; jump off crate (TBD) in whirlpool room to ledge up top
-    (('money-1940) (set-vector-meters! (-> arg0 extra trans)  759.01 -128.5 -1711.57)) ;; jump off crate (TBD) in whirlpool room to ledge up top
+    (('money-1937) (set-vector-meters! (-> arg0 extra trans)  740.78 -128.0 -1697.74)) ;; jump off crate in whirlpool room to ledge up top
+    (('money-1938) (set-vector-meters! (-> arg0 extra trans)  727.48 -128.0 -1724.98)) ;; jump off crate in whirlpool room to ledge up top
+    (('money-1939) (set-vector-meters! (-> arg0 extra trans)  749.86 -128.0 -1729.87)) ;; jump off crate in whirlpool room to ledge up top
+    (('money-1940) (set-vector-meters! (-> arg0 extra trans)  759.01 -128.0 -1711.57)) ;; jump off crate in whirlpool room to ledge up top
     (('money-1941) (set-vector-meters! (-> arg0 extra trans)  678.33 -139.85 -1773.41)) ;; jump in slide 1
-    (('money-1942) (set-vector-meters! (-> arg0 extra trans)  730.90 -160.9 -1733.06 )) ;; jump in slide 1
+    (('money-1942) (set-vector-meters! (-> arg0 extra trans)  730.90 -160.9 -1733.06)) ;; jump in slide 1
     (('money-3803) (set-vector-meters! (-> arg0 extra trans)  652.51 -201.8 -1636.93)) ;; jump in slide 1
-    (('money-3804) (set-vector-meters! (-> arg0 extra trans)  565.39 -223.00 -1614.96)) ;; jump in slide 1
+    (('money-3804) (set-vector-meters! (-> arg0 extra trans)  565.39 -221.50 -1614.96)) ;; jump in slide 1
     (('money-3805) (set-vector-meters! (-> arg0 extra trans)  529.01 -234.34 -1635.53)) ;; jump in slide 1
-    ;; (('money-3806) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3807) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3808) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3809) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3810) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3811) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3812) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3813) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3814) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3815) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3816) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3817) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3818) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3819) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3820) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3821) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3822) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3973) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3974) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3975) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3976) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3977) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3978) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3979) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3980) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3981) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3982) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3983) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3984) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3985) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3986) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3987) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3988) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-3989) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('orb-cache-top-26) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('orb-cache-top-27) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    (('money-3806) (set-vector-meters! (-> arg0 extra trans)  843.90 -100.0 -1588.13)) ;; in window - boosted from top in pipegame room
+    (('money-1759) (set-vector-meters! (-> arg0 extra trans)  817.51	-136.00	-1764.89)) ;; left side of moving platform in puzzle room 
+    (('money-3807) (set-vector-meters! (-> arg0 extra trans)  820.81	-136.00	-1766.45)) ;; left side of moving platform in puzzle room
+    (('money-3808) (set-vector-meters! (-> arg0 extra trans)  824.10	-136.00	-1768.01)) ;; left side of moving platform in puzzle room
+    (('money-3809) (set-vector-meters! (-> arg0 extra trans)  827.40	-136.00	-1769.58)) ;; left side of moving platform in puzzle room
+    (('money-3810) (set-vector-meters! (-> arg0 extra trans)  830.70	-136.00	-1771.14)) ;; left side of moving platform in puzzle room
+    (('money-3811) (set-vector-meters! (-> arg0 extra trans)  833.99	-136.00	-1772.70)) ;; left side of moving platform in puzzle room
+    (('money-3812) (set-vector-meters! (-> arg0 extra trans)  837.29	-136.00	-1774.26)) ;; left side of moving platform in puzzle room
+    (('money-3813) (set-vector-meters! (-> arg0 extra trans)  846.48	-136.00	-1752.26)) ;; right side of moving platform in puzzle room
+    (('money-3814) (set-vector-meters! (-> arg0 extra trans)  843.14	-136.00	-1750.75)) ;; right side of moving platform in puzzle room
+    (('money-3815) (set-vector-meters! (-> arg0 extra trans)  839.80	-136.00	-1749.24)) ;; right side of moving platform in puzzle room
+    (('money-3816) (set-vector-meters! (-> arg0 extra trans)  836.47	-136.00	-1747.73)) ;; right side of moving platform in puzzle room
+    (('money-3817) (set-vector-meters! (-> arg0 extra trans)  833.13	-136.00	-1746.22)) ;; right side of moving platform in puzzle room
+    (('money-3818) (set-vector-meters! (-> arg0 extra trans)  829.79	-136.00	-1744.71)) ;; right side of moving platform in puzzle room
+    (('money-3819) (set-vector-meters! (-> arg0 extra trans)  826.45	-136.00	-1743.2)) ;; right side of moving platform in puzzle room
+    (('money-3820) (set-vector-meters! (-> arg0 extra trans)  682.5 -149.0 -1635.19)) ;; in center pipes first room
+    (('money-3821) (set-vector-meters! (-> arg0 extra trans)  686.5 -143.5 -1610.51)) ;; pipes under first room exit
+    (('money-3822) (set-vector-meters! (-> arg0 extra trans)  641.5 -126.5 -1592.32)) ;; window in first room from twin circling platforms 
+    (('money-3974) (set-vector-meters! (-> arg0 extra trans)  703.72 -134.0 -1617.13)) ;; in corner of shocky water in first room exit hallway 
+    (('money-3975) (set-vector-meters! (-> arg0 extra trans)  700.0 -134.0 -1608.0)) ;; in corner of shocky water in first room exit hallway 
+    (('money-3976) (set-vector-meters! (-> arg0 extra trans)  898.60 -125.0 -1656.0)) ;; in pipes by side fly exit pipe
+    (('money-3977) (set-vector-meters! (-> arg0 extra trans)  873.49 -119.28 -1624.02)) ;; in pipes near larry
+    (('money-3978) (set-vector-meters! (-> arg0 extra trans)  891.26 -137.06 -1614.60)) ;; shocky water by larry
+    (('money-3979) (set-vector-meters! (-> arg0 extra trans)  891.60 -137.06 -1587.07)) ;; shocky water by larry
+    (('money-3980) (set-vector-meters! (-> arg0 extra trans)  852.73 -135.25 -1654.15)) ;; inside coils in center pipegame room
+    (('money-3981) (set-vector-meters! (-> arg0 extra trans)  847.2 -134.7 -1653.93)) ;; inside coils in center pipegame room
+    (('money-3982) (set-vector-meters! (-> arg0 extra trans)  847.9 -135.25 -1649.6)) ;; inside coils in center pipegame rooms
+    (('money-3973) (set-vector-meters! (-> arg0 extra trans)  853.00 -135.25 -1649.07)) ;; inside coils in center pipegame rooms
+    (('money-3983) (set-vector-meters! (-> arg0 extra trans)  762.99 -120.2 -1603.96)) ;; window in hallway with circling platforms
+    (('money-3984) (set-vector-meters! (-> arg0 extra trans)  749.88 -120.2 -1571.58 )) ;; window in hallway with circling platforms
+    (('money-3985) (set-vector-meters! (-> arg0 extra trans)  803.06 -134.28 -1599.83)) ;; shocky water in hallway before pipegame room
+    (('money-3986) (set-vector-meters! (-> arg0 extra trans)  810.68 -134.28 -1613.58)) ;; shocky water in hallway before pipegame room
+    (('money-3987) (set-vector-meters! (-> arg0 extra trans)  791.79 -134.28 -1604.18)) ;; shocky water in hallway before pipegame room
+    (('money-3988) (set-vector-meters! (-> arg0 extra trans)  787.94 -134.28 -1592.16)) ;; shocky water in hallway before pipegame room
+    (('money-3989) (set-vector-meters! (-> arg0 extra trans)  771.52 -142.22 -1731.13)) ;; in first of 3 whirlpools towards puzzle room
+    (('orb-cache-top-26) (set-vector-meters! (-> arg0 extra trans) 618.27 -132.68 -1758.49)) ;; on right ledge in piggyback room
+    (('orb-cache-top-27) (set-vector-meters! (-> arg0 extra trans)  741.31 -143.90 -1714.44)) ;; center whirlpool
     (('crate-859) (set-vector-meters! (-> arg0 extra trans)  742.45 -164.32 -1737.54)) ;; left slide 1
     (('crate-860) (set-vector-meters! (-> arg0 extra trans)  708.93 -174.10 -1712.50)) ;; right slide 1
     (('crate-2590) (set-vector-meters! (-> arg0 extra trans)  669.53 -204.08 -1637.18)) ;; left slide 1
     (('crate-3036) (set-vector-meters! (-> arg0 extra trans)  560.99 -228.52 -1621.50)) ;; right slide 1
-    ;; (('crate-3044) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('crate-3049) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('crate-3055) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    (('crate-3044) (set-vector-meters! (-> arg0 extra trans)  539.83 -234.68 -1627.94)) ;; right end of slide 1
+    (('crate-3049) (set-vector-meters! (-> arg0 extra trans)  705.83 -189.99 -1671.66)) ;; right slide 1
+    (('crate-3055) (set-vector-meters! (-> arg0 extra trans)  693.55 -148.68 -1768.27)) ;; right start of slide 1
 
     ;; LPC (sunkenb) orbs
-    ;; (('money-4056) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4058) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4059) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4060) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4061) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4062) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4063) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4064) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4065) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4066) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4067) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4068) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4069) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4070) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4071) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4072) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4073) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4074) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4075) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4076) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4077) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4082) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-    ;; (('money-4083) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    (('money-4056) (set-vector-meters! (-> arg0 extra trans)  580.25 -251.53 -1794.56)) ;; shocky water before slide 2
+    (('money-4058) (set-vector-meters! (-> arg0 extra trans)  584.23 -225.64 -1779.33)) ;; up high in room before slide 2
+    (('money-4059) (set-vector-meters! (-> arg0 extra trans)  570.1 -248.1 -1792.4)) ;; in coils in room before slide 2
+    (('money-4060) (set-vector-meters! (-> arg0 extra trans)  569.07 -247.5 -1642.79)) ;; in right corner from entrance of elevator room
+    (('money-4061) (set-vector-meters! (-> arg0 extra trans)  576.52 -235.29 -1728.04)) ;; archway exiting elevator room
+    (('money-4062) (set-vector-meters! (-> arg0 extra trans)  511.98 -247.18 -1788.40)) ;; jump slide 2
+    (('money-4063) (set-vector-meters! (-> arg0 extra trans)  504.91 -258.69 -1825.05)) ;; jump slide 2
+    (('money-4064) (set-vector-meters! (-> arg0 extra trans)  530.24 -268.36 -1851.60)) ;; jump slide 2
+    (('money-4065) (set-vector-meters! (-> arg0 extra trans)  569.04 -275.71 -1853.06)) ;; jump slide 2
+    (('money-4066) (set-vector-meters! (-> arg0 extra trans)  605.53 -289.60 -1835.90)) ;; jump slide 2
+    (('money-4067) (set-vector-meters! (-> arg0 extra trans)  641.30 -305.74 -1834.57)) ;; jump slide 2
+    (('money-4068) (set-vector-meters! (-> arg0 extra trans)  669.13 -317.92 -1866.78)) ;; jump slide 2
+    (('money-4069) (set-vector-meters! (-> arg0 extra trans)  653.09 -326.95 -1907.58)) ;; jump slide 2
+    (('money-4070) (set-vector-meters! (-> arg0 extra trans)  612.70 -337.45 -1892.71)) ;; jump slide 2
+    (('money-4071) (set-vector-meters! (-> arg0 extra trans)  619.50 -344.54 -1848.12)) ;; jump slide 2
+    (('money-4072) (set-vector-meters! (-> arg0 extra trans)  645.85 -350.53 -1817.88)) ;; jump slide 2
+    (('money-4073) (set-vector-meters! (-> arg0 extra trans)  685.07 -370.71 -1834.58)) ;; jump slide 2
+    (('money-4074) (set-vector-meters! (-> arg0 extra trans)  726.31 -386.30 -1851.34)) ;; jump slide 2
+    (('money-4075) (set-vector-meters! (-> arg0 extra trans)  754.03 -400.43 -1826.96)) ;; jump slide 2
+    (('money-4076) (set-vector-meters! (-> arg0 extra trans)  725.73 -413.63 -1795.40)) ;; jump slide 2
+    (('money-4077) (set-vector-meters! (-> arg0 extra trans)  689.83 -421.27 -1800.06)) ;; jump slide 2
+    (('money-4082) (set-vector-meters! (-> arg0 extra trans)  661.97 -431.00 -1772.54)) ;; jump slide 2
+    (('money-4083) (set-vector-meters! (-> arg0 extra trans)  628.81 -438.49 -1771.25)) ;; jump slide 2
     ;; (('money-4084) (set-vector-meters! (-> arg0 extra trans)  )) ;;
     ;; (('money-4085) (set-vector-meters! (-> arg0 extra trans)  )) ;;
     ;; (('money-4086) (set-vector-meters! (-> arg0 extra trans)  )) ;;
@@ -789,11 +789,11 @@
     ;; LPC (sunken) flies
     (('crate-925) (set-vector-meters! (-> arg0 extra trans)  890.15 -130.99 -1637.77)) ;; top ledge in back in pipegame room (orig blue eco)
     (('crate-926) (set-vector-meters! (-> arg0 extra trans)  911.85 -144.50 -1789.18)) ;; puzzle locked room 
-    (('crate-917) (set-vector-meters! (-> arg0 extra trans)  693.55 -148.68 -1768.27)) ;; right side of slide 1
+    (('crate-917) (set-vector-meters! (-> arg0 extra trans)  596.58 -131.99 -1705.89)) ;; right side of slide 1
     (('crate-923) (set-vector-meters! (-> arg0 extra trans)  777.82 -139.07 -1669.86)) ;; center of dark eco circling platform room 
     ;; 2 in pipegame
     ;; LPC (sunkenb) flies
-    ;; (('crate-2705) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('crate-2705) (set-vector-meters! (-> arg0 extra trans) 604.62 -448.95 -1793.87)) ;; bottom of the city
 
     ;; ~~~~ POWER CELLS ~~~~
     ;; Geyser cells
@@ -1133,15 +1133,15 @@
     ;; (('crate-3051) (set-vector-meters! (-> arg0 extra trans)  )) ;;  green - 
     ;; (('crate-3054) (set-vector-meters! (-> arg0 extra trans)  )) ;;  green - 
 
-    ;; crate-2589 ;; dark
+    (('crate-2589) (set-vector-meters! (-> arg0 extra trans) 712.34 -190.95 -1669.87)) ;; dark - jump over mid slide 1
     ;; crate-2591
     ;; crate-2592
     ;; crate-2593
     ;; crate-3030
     ;; crate-3031
     ;; crate-3032
-    ;; crate-3037
-    ;; crate-3038
+    ;; crate-3037 ;; left alone
+    ;; crate-3038 ;; left alone
     ;; crate-3040
     ;; crate-3041
     ;; crate-3042
@@ -1155,17 +1155,15 @@
     ;; crate-3057
     ;; crate-3058
 
-    ;; eco-102 891.21 -130.04 -1600.56  ;; blue - where orb cache normally is by larry
-    ;; eco-109
-    ;; eco-100
-    ;; eco-101
-
     ;; plat-59 ;; blue circle
     ;; plat-60
     ;; plat-61
     ;; plat-62
 
     ;; LPC (sunkenb) misc
+    (('crate-2732) (set-vector-meters! (-> arg0 extra trans)  539.86 -242.99 -1677.05))  ;; orig eco charger 
+    (('crate-2733) (set-vector-meters! (-> arg0 extra trans)  611.15 -242.99 -1680.80))  ;; orig eco charger
+    (('crate-2734) (set-vector-meters! (-> arg0 extra trans)  562.29 -238.99 -1693.77))  ;; orig eco charger
     ;; crate-3061  ;; green
     ;; crate-3066
     ;; crate-2710
@@ -1237,12 +1235,11 @@
     ;; crate-3114
     ;; crate-3116
 
-
-    ;; blue-eco-charger-6
-    ;; blue-eco-charger-7
-    ;; blue-eco-charger-8
-    ;; blue-eco-charger-9
-    ;; blue-eco-charger-10
+    (('blue-eco-charger-6) (set-vector-meters! (-> arg0 extra trans)  560.97 -238.99 -1668.11)) ;; up top near elevator
+    (('blue-eco-charger-8) (set-vector-meters! (-> arg0 extra trans)  589.28 -238.99 -1692.55)) ;; up top near elevator
+    (('blue-eco-charger-7) (set-vector-meters! (-> arg0 extra trans) 577.27 -255.74 -1742.28)) ;; in shocky water between elevator and slide 2
+    (('blue-eco-charger-9) (set-vector-meters! (-> arg0 extra trans) 586.13 -251.76 -1770.56)) ;; in shocky water in room before slide 2
+    (('blue-eco-charger-10) (set-vector-meters! (-> arg0 extra trans) 573.24 -238.99 -1791.49)) ;; orig scout fly in room before slide 2
 
     ;; ecovent-238
     ;; ecovent-239
@@ -1735,6 +1732,58 @@
         )
       )
     )
+
+  ;; LPC (sunken)
+  (when (process-by-ename "eco-102")  ;; blue - where orb cache normally is by larry
+    (let ((obj (the eco (process-by-ename "eco-102")))
+          (vec (static-vector-meters 891.21 -130.04 -1600.56))
+          )
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
+  (when (process-by-ename "eco-109")  ;; blue - next to buttonskip
+    (let ((obj (the eco (process-by-ename "eco-109")))
+          (vec (static-vector-meters 595.23 -131.99 -1706.87))
+          )
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
+  (when (process-by-ename "eco-100")  ;; blue - near triple whirlpool / puzzle room
+    (let ((obj (the eco (process-by-ename "eco-100")))
+          (vec (static-vector-meters 802.34 -137.5 -1744.19))
+          )
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
+  (when (process-by-ename "eco-100")  ;; blue - orig orb cache in first room
+    (let ((obj (the eco (process-by-ename "eco-100")))
+          (vec (static-vector-meters 693.21 -159.0 -1664.09))
+          )
+      ;; only move if not being suck-sucked
+      (when (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue)))
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
+
+  ;; eco-101
   
   (none)
   )
