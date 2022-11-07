@@ -2057,7 +2057,8 @@
     "$OUT/obj/plant-boss.o"
     "$OUT/obj/plat-flip.o"
     "$OUT/obj/pelican.o"
-    "$OUT/obj/mistycannon.o")
+    "$OUT/obj/mistycannon.o"
+    "$OUT/obj/sun-exit-chamber.o")
    "game/mods.gc"
   )
 ;; the debug menu is modified to include PC specific options:
