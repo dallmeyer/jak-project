@@ -731,19 +731,23 @@
        (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; level out (on slide originally)
 
     ;; Boggy orbs
-    ;; (('money-1670) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1671) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1672) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1673) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1674) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1684) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1685) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1686) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1687) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1688) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1689) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1690) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1691) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    (('money-1670) (set-vector-meters! (-> arg0 extra trans)  460.26   7.5 -1790.21))  ;; corner on right in entrance
+    (('money-1671) (set-vector-meters! (-> arg0 extra trans)  437.40  21.5 -1824.90))  ;; up top near entrance (climb crates)
+      (('crate-2821)  (set-vector-meters! (-> arg0 extra trans) 433.8   6.26 -1813.2))  ;; beeg green
+      (('crate-2822)  (set-vector-meters! (-> arg0 extra trans) 433.78   4.41 -1812.15))  ;; green
+      (('crate-2827)  (set-vector-meters! (-> arg0 extra trans) 434.52   4.10 -1814.57))  ;; green
+      (('crate-2828)  (set-vector-meters! (-> arg0 extra trans) 432.69   4.16 -1813.55))  ;; green
+    (('money-1672) (set-vector-meters! (-> arg0 extra trans)  439.13  24.84 -1792.56))  ;; boosted from edge of ^ back towards rock village
+    (('money-1673) (set-vector-meters! (-> arg0 extra trans)  448.95  23.80 -1806.06))  ;; boosted back from ^
+    (('money-1674) (set-vector-meters! (-> arg0 extra trans)  402.72  13.00 -1850.81))  ;; up in crack in rocks left after entering
+    (('money-1684) (set-vector-meters! (-> arg0 extra trans)  394.7   1.5 -1888.7))  ;; behind tree near beginning 
+    (('money-1685) (set-vector-meters! (-> arg0 extra trans)  396.58   1.7 -1895.14))  ;; other side of tree ^
+    (('money-1686) (set-vector-meters! (-> arg0 extra trans)  337.82   2.5 -1910.86))  ;; between spikes and trees on left
+    (('money-1687) (set-vector-meters! (-> arg0 extra trans)  366.30   4.0 -1958.10))  ;; between spikes and trees on right 
+    (('money-1688) (set-vector-meters! (-> arg0 extra trans)  355.73   1.4 -1983.35))  ;; between spikes and trees on right before first tether
+    (('money-1689) (set-vector-meters! (-> arg0 extra trans)  334.99  1.3 -2066.42))  ;; corner to right after first cave 
+    (('money-1690) (set-vector-meters! (-> arg0 extra trans)  348.16   2.7 -2067.01))  ;; on inside in pole section
+    (('money-1691) (set-vector-meters! (-> arg0 extra trans)  392.42  1.3 -2067.63))  ;; among spikes below deck after poles
     ;; (('money-1692) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('money-1693) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('money-1694) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
@@ -809,11 +813,11 @@
     ;; (('money-4866) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('money-4865) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('money-4864) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('crate-756) (set-vector-meters! (-> arg0 extra trans)  )) ;;  
-    ;; (('crate-757) (set-vector-meters! (-> arg0 extra trans)  )) ;;  
-    ;; (('crate-758) (set-vector-meters! (-> arg0 extra trans)  )) ;;  
-    ;; (('crate-759) (set-vector-meters! (-> arg0 extra trans)  )) ;;  
-    ;; (('crate-760) (set-vector-meters! (-> arg0 extra trans)  )) ;;  
+    (('crate-756) (set-vector-meters! (-> arg0 extra trans)  310.59   0.77 -2143.49)) ;; on inside by spikes in pole section  
+    (('crate-757) (set-vector-meters! (-> arg0 extra trans)  321.26   0.82 -2140.70)) ;; ^  
+    (('crate-758) (set-vector-meters! (-> arg0 extra trans)  332.48   1.53 -2129.92)) ;; ^
+    (('crate-759) (set-vector-meters! (-> arg0 extra trans)  341.85   1.00 -2113.81)) ;; ^ 
+    (('crate-760) (set-vector-meters! (-> arg0 extra trans)  346.17   0.78 -2095.50)) ;; ^ 
     ;; (('crate-763) (set-vector-meters! (-> arg0 extra trans)  )) ;;  
     ;; (('crate-764) (set-vector-meters! (-> arg0 extra trans)  )) ;;  
     ;; (('crate-765) (set-vector-meters! (-> arg0 extra trans)  )) ;;  
@@ -928,7 +932,7 @@
     (('crate-2705) (set-vector-meters! (-> arg0 extra trans) 604.62 -448.95 -1793.87)) ;; bottom of the city
 
     ;; Boggy flies
-    ;; (('crate-748) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    (('crate-748) (set-vector-meters! (-> arg0 extra trans)  349.66   0.81 -2079.96))  ;; on inside by spikes in pole section
     ;; (('crate-762) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('crate-786) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('crate-787) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
@@ -1436,10 +1440,6 @@
     ;; (('crate-854) ) ;; 
     ;; (('crate-855) ) ;; 
     ;; (('crate-2748) )  ;; 
-    ;; (('crate-2821) )  ;;   ;; beeg
-    ;; (('crate-2822) )  ;; 
-    ;; (('crate-2827) )  ;; 
-    ;; (('crate-2828) )  ;; 
     ;; (('crate-2829) )  ;; 
     ;; (('crate-2830) )  ;; 
     ;; (('crate-2861) )  ;; 
