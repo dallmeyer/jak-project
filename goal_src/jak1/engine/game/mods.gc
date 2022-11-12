@@ -650,7 +650,7 @@
     (('money-3986) (set-vector-meters! (-> arg0 extra trans)  810.68 -134.28 -1613.58)) ;; shocky water in hallway before pipegame room
     (('money-3987) (set-vector-meters! (-> arg0 extra trans)  791.79 -134.28 -1604.18)) ;; shocky water in hallway before pipegame room
     (('money-3988) (set-vector-meters! (-> arg0 extra trans)  787.94 -134.28 -1592.16)) ;; shocky water in hallway before pipegame room
-    (('money-3989) (set-vector-meters! (-> arg0 extra trans)  771.52 -142.22 -1731.13)) ;; in first of 3 whirlpools towards puzzle room
+    (('money-3989) (set-vector-meters! (-> arg0 extra trans)  695.08 -142.0  -1717.28)) ;; in shocky water under platform towards piggyback room
     (('orb-cache-top-26) (set-vector-meters! (-> arg0 extra trans) 618.27 -132.68 -1758.49)) ;; on right ledge in piggyback room
     (('orb-cache-top-27) (set-vector-meters! (-> arg0 extra trans)  741.31 -143.90 -1714.44)) ;; center whirlpool
     (('crate-859) (set-vector-meters! (-> arg0 extra trans)  742.45 -164.32 -1737.54)) ;; left slide 1
@@ -743,22 +743,22 @@
     (('money-1684) (set-vector-meters! (-> arg0 extra trans)  394.7   1.5 -1888.7))  ;; behind tree near beginning 
     (('money-1685) (set-vector-meters! (-> arg0 extra trans)  396.58   1.7 -1895.14))  ;; other side of tree ^
     (('money-1686) (set-vector-meters! (-> arg0 extra trans)  337.82   2.5 -1910.86))  ;; between spikes and trees on left
-    (('money-1687) (set-vector-meters! (-> arg0 extra trans)  366.30   4.0 -1958.10))  ;; between spikes and trees on right 
+    (('money-1687) (set-vector-meters! (-> arg0 extra trans)  366.30   3.0 -1958.10))  ;; between spikes and trees on right 
     (('money-1688) (set-vector-meters! (-> arg0 extra trans)  355.73   1.4 -1983.35))  ;; between spikes and trees on right before first tether
     (('money-1689) (set-vector-meters! (-> arg0 extra trans)  334.99  1.3 -2066.42))  ;; corner to right after first cave 
     (('money-1690) (set-vector-meters! (-> arg0 extra trans)  348.16   2.7 -2067.01))  ;; on inside in pole section
     (('money-1691) (set-vector-meters! (-> arg0 extra trans)  392.42  1.3 -2067.63))  ;; among spikes below deck after poles
-    ;; (('money-1692) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1693) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1694) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1695) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1696) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1697) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1698) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1699) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1700) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1701) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-1702) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    (('money-1692) (set-vector-meters! (-> arg0 extra trans)  436.31  19.80 -1939.87))  ;; above first tether
+    (('money-1693) (set-vector-meters! (-> arg0 extra trans)  442.13   4.0 -1920.6))  ;; behind tree behind first tether
+    (('money-1694) (set-vector-meters! (-> arg0 extra trans)  406.3   1.1 -2079.0))  ;; in bushes left of second bats
+    (('money-1695) (set-vector-meters! (-> arg0 extra trans)  392.20   1.1 -2118.54))  ;; in bushes on right past spikes after second bats
+    (('money-1696) (set-vector-meters! (-> arg0 extra trans)  519.07   1.8 -2065.80))  ;; under wooden platform near ambush launcher (crouch walk/fall)
+    (('money-1697) (set-vector-meters! (-> arg0 extra trans)  681.71   2.5 -2147.6))  ;; behind rats nest in flutflut section
+    (('money-1698) (set-vector-meters! (-> arg0 extra trans)  677.36   2.4 -2154.43))  ;; behind rats nest in flutflut section
+    (('money-1699) (set-vector-meters! (-> arg0 extra trans)  588.81   8.01 -2031.44))  ;; chimney behind boggy billy's "house" 
+    (('money-1700) (set-vector-meters! (-> arg0 extra trans)   597.65  15.75 -2027.32))  ;; top of boggy billy's "house"
+    (('money-1701) (set-vector-meters! (-> arg0 extra trans)  581.82   1.8 -1987.50))  ;; under wood platform after boggy billy
+    (('money-1702) (set-vector-meters! (-> arg0 extra trans)  588.5   1.5 -2016.0))  ;; among trees by boggy billy
     ;; (('money-1703) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('money-1704) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('money-1705) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
@@ -818,15 +818,15 @@
     (('crate-758) (set-vector-meters! (-> arg0 extra trans)  332.48   1.53 -2129.92)) ;; ^
     (('crate-759) (set-vector-meters! (-> arg0 extra trans)  341.85   1.00 -2113.81)) ;; ^ 
     (('crate-760) (set-vector-meters! (-> arg0 extra trans)  346.17   0.78 -2095.50)) ;; ^ 
-    ;; (('crate-763) (set-vector-meters! (-> arg0 extra trans)  )) ;;  
-    ;; (('crate-764) (set-vector-meters! (-> arg0 extra trans)  )) ;;  
-    ;; (('crate-765) (set-vector-meters! (-> arg0 extra trans)  )) ;;  
-    ;; (('crate-842) (set-vector-meters! (-> arg0 extra trans)  )) ;;  
-    ;; (('crate-2735) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('crate-2737) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('crate-2741) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('crate-2742) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('crate-2743) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    (('crate-763) (set-vector-meters! (-> arg0 extra trans)  561.66   0.40 -2089.27)) ;; under wood platform in flutflut area
+    (('crate-764) (set-vector-meters! (-> arg0 extra trans)  644.74   0.50 -2101.81)) ;; ^
+    (('crate-765) (set-vector-meters! (-> arg0 extra trans)  568.60   0.71 -2057.64)) ;; ^ 
+    (('crate-842) (set-vector-meters! (-> arg0 extra trans)  658.29   0.68 -2100.07 )) ;; behind trees near rat nests in flutflut area  
+    (('crate-2735) (set-vector-meters! (-> arg0 extra trans)  592.73   2.17 -2025.56))  ;; deck of boggy billys "house"
+    (('crate-2737) (set-vector-meters! (-> arg0 extra trans)  611.33   0.58 -2113.92))  ;; by trees in flutflut area
+    (('crate-2741) (set-vector-meters! (-> arg0 extra trans)  634.21   0.55 -2114.43))  ;; ^
+    (('crate-2742) (set-vector-meters! (-> arg0 extra trans)  711.99  -2.75 -2057.74 ))  ;; shore of first "beach"
+    (('crate-2743) (set-vector-meters! (-> arg0 extra trans)  697.86  -2.52 -2030.33))  ;; ^
     ;; (('crate-2744) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('crate-2789) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('crate-2790) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
@@ -923,7 +923,7 @@
     (('crate-3133) (set-vector-meters! (-> arg0 extra trans) 244.92  24.01 -1745.81)) ;; on rocks behind trees under klaww
 
     ;; LPC (sunken) flies
-    (('crate-925) (set-vector-meters! (-> arg0 extra trans)  890.15 -130.99 -1637.77)) ;; top ledge in back in pipegame room (orig blue eco)
+    (('crate-925) (set-vector-meters! (-> arg0 extra trans)  890.27 -130.99 -1627.19)) ;; top ledge in back in pipegame room (orig blue eco)
     (('crate-926) (set-vector-meters! (-> arg0 extra trans)  911.85 -144.50 -1789.18)) ;; puzzle locked room 
     (('crate-917) (set-vector-meters! (-> arg0 extra trans)  607.51 -131.99 -1693.11)) ;; left of buttonskip
     (('crate-923) (set-vector-meters! (-> arg0 extra trans)  777.82 -139.07 -1669.86)) ;; center of dark eco circling platform room 
@@ -933,10 +933,10 @@
 
     ;; Boggy flies
     (('crate-748) (set-vector-meters! (-> arg0 extra trans)  349.66   0.81 -2079.96))  ;; on inside by spikes in pole section
-    ;; (('crate-762) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('crate-786) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('crate-787) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('crate-843) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    (('crate-762) (set-vector-meters! (-> arg0 extra trans)  347.20  -1.69 -1973.45))  ;; in first patch of muck on right side
+    (('crate-786) (set-vector-meters! (-> arg0 extra trans)  389.87  21.03 -2055.87))  ;; up on high ledge near second tether
+    (('crate-787) (set-vector-meters! (-> arg0 extra trans)  527.35  18.00 -2086.53))  ;; up on high ledge between flutflut and launcher to third tether 
+    (('crate-843) (set-vector-meters! (-> arg0 extra trans)  557.11   0.53 -2078.40))  ;; little path among trees in flutflut section
     ;; (('crate-849) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('crate-2936) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
 
@@ -1056,7 +1056,7 @@
     ;; (('swamp-tetherrock-14) (set-vector-meters! ))  ;; 
     ;; (('swamp-tetherrock-15) (set-vector-meters! ))  ;; 
     ;; (('swamp-tetherrock-16) (set-vector-meters! ))  ;; 
-    ;; (('fuel-cell-15) (override-fuel-cell-position arg0 )) ;; 
+    (('fuel-cell-15) (override-fuel-cell-position arg0 591.43  18.99 -2127.10)) ;; flutflut ground pound tree climb
     ;; (('billy-2) (set-vector-meters! ))  ;; 
 
     ;; ~~~~ MISC ~~~~
@@ -1550,7 +1550,7 @@
     ;; (('tar-plat-27) ) ;; 
     ;; (('tar-plat-33) ) ;; 
     ;; (('tar-plat-34) ) ;; 
-    ;; (('tar-plat-36) ) ;; 
+    (('tar-plat-36) 334.07  0.305 -1952.99) ;; center of first patch of muck
     ;; (('tar-plat-37) ) ;; 
     ;; (('tar-plat-58) ) ;; 
     ;; (('tar-plat-59) ) ;; 
@@ -1606,8 +1606,8 @@
       ;; (('balance-plat-2) )  ;; 
     ;; (('balance-plat-6) )  ;; 
       ;; (('balance-plat-12) ) ;; 
-    ;; (('balance-plat-10) ) ;; 
-      ;; (('balance-plat-11) ) ;; 
+    (('balance-plat-10) 430.21  -5.9 -1951.74) ;; side of first tether 
+      (('balance-plat-11) 436.52  -5.9 -1943.74) ;; side of first tether
 
     (else
       (when #f
@@ -1987,6 +1987,12 @@
   )
 
 (defun mod-override-child-fuel-cell-movie-pos ((dst vector) (obj fuel-cell) (maybe-parent process))
+  (format #t "checking for override with parent ~A / grandparent ~A / maybe-parent ~A ~%"
+    (-> (ppointer->process (-> obj parent)) name)
+    (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name)
+    (-> maybe-parent name)
+    )          
+
   ;; check parent
   (case (-> (ppointer->process (-> obj parent)) name) :comp name=
     (('plant-boss-3)
@@ -2062,8 +2068,14 @@
           ;; rock village - in center, above hanging fire
           (set-vector-meters! dst 295.85  23.0 -1631.51)
           )
-
-          
+        (('crate-925 'crate-926 'crate-917 'crate-923)
+          ;; LPC (sunken) - floating above steps in piggyback room
+          (set-vector-meters! dst 614.96 -128.94 -1726.03)
+          )
+        (('crate-2705)
+          ;; LPC (sunkenb) - floating in center of helix
+          (set-vector-meters! dst 586.27 -410.48 -1787.47)
+          )
         (else
           (format #t "fuel movie override, didnt match grandparent ~A ~%" (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name))
           ;; check maybe-parent
@@ -2076,8 +2088,8 @@
             (else
               (when #t
                 (format #t "no movie-pos override with parent ~A / grandparent ~A / maybe-parent ~A ~%"
-                  (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name)
                   (-> (ppointer->process (-> obj parent)) name)
+                  (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name)
                   (-> maybe-parent name)
                   )          
                 )
