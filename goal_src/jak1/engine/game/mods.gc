@@ -2029,7 +2029,7 @@
     (mod-move-eco (the eco (process-by-ename "eco-80")) (static-vector-meters 521.30  12.7 -2109.07))
     )
   (when (process-by-ename "eco-160")  ;; blue - orig yellow ecovent near second bats
-    (mod-move-eco (the eco (process-by-ename "eco-160")) (static-vector-meters 434.97   1.2 -2099.55))
+    (mod-move-eco (the eco (process-by-ename "eco-160")) (static-vector-meters 434.97   1.2 -2099.2))
     )
   (when (process-by-ename "eco-85")  ;; yellow - side of first cave
     (mod-move-eco (the eco (process-by-ename "eco-85")) (static-vector-meters 325.56   1.2 -2032.87))

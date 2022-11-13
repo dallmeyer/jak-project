@@ -1062,7 +1062,8 @@
        'eggtop 'logtrap 'launcher 'racer 'spike 'balloon 'crate-darkeco-cluster 'aphid 'pelican 
        'ventblue 'harvester 'flutflutegg 'grottopole 'bird-lady-beach 'ecoventrock 'part-tracker 
        'junglesnake 'darkvine 'ecovent 'mistycannon 'babak-with-cannon 'periscope 'springbox 
-       'plant-boss 'warrior 'gambler 'pontoonten 'pontoonfive 'blue-eco-charger
+       'plant-boss 'warrior 'gambler 'pontoonten 'pontoonfive 'blue-eco-charger 'swamp-spike 
+       'swamp-tetherrock 'swamp-rat-nest 'swamp-rock 'flutflut 'tar-plat 'balance-plat
        )
         (return #t)
         )
