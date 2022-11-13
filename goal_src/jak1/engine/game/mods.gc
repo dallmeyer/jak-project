@@ -1056,7 +1056,7 @@
     ;; (('swamp-tetherrock-14) (set-vector-meters! ))  ;; 
     ;; (('swamp-tetherrock-15) (set-vector-meters! ))  ;; 
     ;; (('swamp-tetherrock-16) (set-vector-meters! ))  ;; 
-    (('fuel-cell-15) (override-fuel-cell-position arg0 591.43  18.99 -2127.10)) ;; flutflut ground pound tree climb
+    (('fuel-cell-15) (override-fuel-cell-position arg0 591.43  25.0 -2127.10)) ;; flutflut ground pound tree climb
     ;; (('billy-2) (set-vector-meters! ))  ;; 
 
     ;; ~~~~ MISC ~~~~
