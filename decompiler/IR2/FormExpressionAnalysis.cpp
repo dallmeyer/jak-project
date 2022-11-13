@@ -753,7 +753,8 @@ void SimpleExpressionElement::update_from_stack_identity(const Env& env,
       }
     }
 
-  } else if (arg.is_sym_ptr() || arg.is_sym_val() || arg.is_int() || arg.is_empty_list()) {
+  } else if (arg.is_sym_ptr() || arg.is_sym_val() || arg.is_int() || arg.is_empty_list() ||
+             arg.is_sym_val_ptr()) {
     result->push_back(this);
     return;
   } else {
@@ -1091,7 +1092,9 @@ void SimpleExpressionElement::update_from_stack_add_i(const Env& env,
           result->push_back(pool.alloc_element<DerefElement>(args.at(1), out.addr_of, tokens));
           return;
         } else {
-          throw std::runtime_error("Failed to match for stride 1 address access with add.");
+          throw std::runtime_error(
+              fmt::format("Failed to match for stride 1 address access with add: {}",
+                          args.at(0)->to_string(env)));
         }
       }
     } else if (arg0_type.kind == TP_Type::Kind::INTEGER_CONSTANT_PLUS_VAR_MULT) {
@@ -3702,8 +3705,10 @@ ConstantTokenElement* DerefElement::try_as_art_const(const Env& env, FormPool& p
     if (elt_name) {
       return pool.alloc_element<ConstantTokenElement>(*elt_name);
     } else {
-      lg::error("function {}: did not find art element {} in {}", env.func->name(),
-                mr.maps.ints.at(0), env.art_group());
+      if (env.version != GameVersion::Jak2) {
+        lg::error("function {}: did not find art element {} in {}", env.func->name(),
+                  mr.maps.ints.at(0), env.art_group());
+      }
     }
   }
 
@@ -4434,6 +4439,28 @@ std::vector<Form*> cast_to_64_bit(const std::vector<Form*>& forms,
   return result;
 }
 
+std::vector<Form*> cast_for_64bit_equality_check(const std::vector<Form*>& forms,
+                                                 const std::vector<TypeSpec>& types,
+                                                 FormPool& pool,
+                                                 const Env& env) {
+  if (env.version == GameVersion::Jak1) {
+    return cast_to_64_bit(forms, types, pool, env);
+  }
+  std::vector<Form*> result;
+  for (size_t i = 0; i < forms.size(); i++) {
+    if (env.dts->ts.tc(TypeSpec("uint128"), types.at(i))) {
+      result.push_back(cast_form(forms[i], TypeSpec("uint"), pool, env));
+    } else if (env.dts->ts.tc(TypeSpec("int128"), types.at(i))) {
+      result.push_back(cast_form(forms[i], TypeSpec("int"), pool, env));
+    } else if (env.dts->ts.tc(TypeSpec("float"), types.at(i))) {
+      result.push_back(cast_form(forms[i], TypeSpec("int"), pool, env));
+    } else {
+      result.push_back(forms[i]);
+    }
+  }
+  return result;
+}
+
 FormElement* try_make_nonzero_logtest(Form* in, FormPool& pool) {
   /*
  (defmacro logtest? (a b)
@@ -4656,7 +4683,7 @@ FormElement* ConditionElement::make_equal_check_generic(const Env& env,
       }
       return pool.alloc_element<GenericElement>(
           GenericOperator::make_fixed(FixedOperatorKind::EQ),
-          cast_to_64_bit(source_forms, source_types, pool, env));
+          cast_for_64bit_equality_check(source_forms, source_types, pool, env));
     }
   }
 }
@@ -4687,7 +4714,7 @@ FormElement* ConditionElement::make_not_equal_check_generic(
     } else {
       return pool.alloc_element<GenericElement>(
           GenericOperator::make_fixed(FixedOperatorKind::NEQ),
-          cast_to_64_bit(source_forms, source_types, pool, env));
+          cast_for_64bit_equality_check(source_forms, source_types, pool, env));
     }
   }
 }
@@ -6114,6 +6141,15 @@ void ResLumpMacroElement::update_from_stack(const Env&,
                                             FormStack&,
                                             std::vector<FormElement*>* result,
                                             bool) {
+  mark_popped();
+  result->push_back(this);
+}
+
+void WithDmaBufferAddBucketElement::update_from_stack(const Env&,
+                                                      FormPool&,
+                                                      FormStack&,
+                                                      std::vector<FormElement*>* result,
+                                                      bool) {
   mark_popped();
   result->push_back(this);
 }

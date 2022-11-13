@@ -5,7 +5,10 @@
     "CGO/COMMON.CGO",
     "CGO/GAME.CGO",
     "DGO/CWI.DGO",
-    "DGO/STD.DGO"
+    "DGO/STD.DGO",
+    "DGO/PALOUT.DGO",
+    "DGO/CTA.DGO",
+    "DGO/FOR.DGO"
   ],
 
   "skip_compile_files": [],
@@ -161,12 +164,49 @@
 
     "(method 21 load-state)",
 
+    // debug-part
+    "sparticle-track-root-money", // references a non-existance jak1 symbol "hud-money"
+
     "(method 16 level)", "unpack-comp-lzo", // asm mods
     "update-time-of-day",
 
-    "i-hopefully-will-never-exist-dont-add-anything-after-me-please"
+    "close-sky-buffer", // asm
+    "(method 29 level)", "(method 9 level)", "level-update-after-load", "(method 25 level)", "(method 9 level)",
+    "(method 12 level)", "(method 10 level)",
+
+    // collide asm
+    "(method 11 collide-mesh)", "(method 9 collide-mesh-cache)", "(method 13 collide-mesh)", "(method 10 collide-mesh)",
+
+    "(method 3 game-save)",
+
+    // unused test/debug functions in ocean
+    "test-seq-read",
+    "test-worst-read",
+    "test-seq-write",
+    "test-worst-write",
+    "test-to-spr",
+    "test-from-spr",
+    "test-to-from-spr",
+    "(method 18 ocean)",
+    "check-normals", // ocean-texture
+
+    // collide-shape
+    "(method 18 collide-shape-prim-group)",
+    "(method 19 collide-shape-prim)",
+    "(method 36 collide-shape)",
+    "(method 12 collide-shape-prim-group)",
+    "(method 13 collide-shape-prim)",
+    "collide-shape-draw-debug-marks",
+
+    "(method 11 grid-hash)",
+    "(method 15 sphere-hash)",
+
+    // process-drawable - return from thread
+    "(method 19 process-drawable)",
+    "(method 10 joint-control)"
   ],
 
   "skip_compile_states": {
+    "(idle process-taskable)": ["event"]
   }
 }

@@ -181,7 +181,7 @@
         )
     (set! (-> a0-6 radius) (-> obj radius))
     (set! (-> a0-6 collide-with) (-> obj collide-with))
-    (set! (-> a0-6 ignore-process0) (the-as process v1-2))
+    (set! (-> a0-6 ignore-process0) v1-2)
     (set! (-> a0-6 ignore-process1) #f)
     (set! (-> a0-6 ignore-pat) arg2)
     (set! (-> a0-6 action-mask) (collide-action solid))
@@ -259,13 +259,12 @@
   )
 
 ;; definition for method 13 of type combo-tracker
-;; WARN: Return type mismatch basic vs none.
 (defmethod combo-tracker-method-13 combo-tracker ((obj combo-tracker) (arg0 handle) (arg1 vector) (arg2 float) (arg3 vector) (arg4 float))
   (cond
     ((send-event (handle->process arg0) 'combo)
      (let ((gp-1 (handle->process arg0)))
        (if (type? gp-1 process-focusable)
-           (empty)
+           gp-1
            )
        )
      )
@@ -280,7 +279,7 @@
                   )
             )
         (sphere<-vector+r! s1-0 arg1 arg2)
-        (set! (-> s2-1 length) (spatial-hash-method-36
+        (set! (-> s2-1 length) (fill-actor-list-for-sphere
                                  *actor-hash*
                                  s1-0
                                  (the-as (pointer collide-shape) (-> s2-1 data))
@@ -303,13 +302,12 @@
                     )
               )
           (if (type? gp-2 process-focusable)
-              (empty)
+              gp-2
               )
           )
         )
       )
     )
-  (none)
   )
 
 ;; definition for method 12 of type combo-tracker
@@ -346,7 +344,15 @@
           (when s4-1
             (let ((a2-3 ((method-of-type nav-control nav-control-method-11) (the-as nav-control s4-1) arg1)))
               (if a2-3
-                  ((method-of-type nav-control nav-control-method-20) (the-as nav-control s4-1) arg1 a2-3 arg0 #x45000000 #f #f)
+                  ((method-of-type nav-control nav-control-method-20)
+                   (the-as nav-control s4-1)
+                   arg1
+                   (the-as nav-poly a2-3)
+                   arg0
+                   2048.0
+                   #f
+                   #f
+                   )
                   (set! (-> arg0 quad) (the-as uint128 0))
                   )
               )

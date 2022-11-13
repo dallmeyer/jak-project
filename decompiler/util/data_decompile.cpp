@@ -290,6 +290,12 @@ goos::Object decompile_value_array(const TypeSpec& elt_type,
     for (int j = start; j < end; j++) {
       auto& word = obj_words.at(j / 4);
       if (word.kind() != LinkedWord::PLAIN_DATA) {
+        if (word.kind() == LinkedWord::TYPE_PTR) {
+          throw std::runtime_error(
+              fmt::format("Got bad word in kind in array of values: expecting array of {}'s, got a "
+                          "type pointer {}\n",
+                          elt_type.print(), word.symbol_name()));
+        }
         throw std::runtime_error(fmt::format(
             "Got bad word in kind in array of values: expecting array of {}'s, got a {}\n",
             elt_type.print(), (int)word.kind()));
@@ -424,6 +430,11 @@ goos::Object decomp_ref_to_integer_array_guess_size(
       default:
         ASSERT(false);
     }
+  }
+
+  // if we end exactly on a type_ptr, take off an element.
+  if (all_words.at(my_seg).at((end_offset - 1) / 4).kind() == LinkedWord::TYPE_PTR) {
+    size_elts--;
   }
 
   return decompile_value_array(array_elt_type, elt_type_info, size_elts, stride, start_label.offset,
@@ -725,10 +736,76 @@ const std::unordered_map<
            {{"turbo-pad-array", ArrayFieldDecompMeta(TypeSpec("race-turbo-pad"), 32)},
             {"racer-array", ArrayFieldDecompMeta(TypeSpec("race-racer-info"), 16)},
             {"decision-point-array", ArrayFieldDecompMeta(TypeSpec("race-decision-point"), 16)}}},
+          {"actor-hash-bucket",
+           {{"data", ArrayFieldDecompMeta(TypeSpec("actor-cshape-ptr"),
+                                          16,
+                                          ArrayFieldDecompMeta::Kind::REF_TO_INLINE_ARR)}}},
           {"xz-height-map",
            {{"data", ArrayFieldDecompMeta(TypeSpec("int8"),
                                           1,
                                           ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)}}},
+          // kinda want to add regex support now...
+          {"bigmap-compressed-layers",
+           {{"layer0", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                            4,
+                                            ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer1", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                            4,
+                                            ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer2", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                            4,
+                                            ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer3", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                            4,
+                                            ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer4", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                            4,
+                                            ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer5", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                            4,
+                                            ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer6", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                            4,
+                                            ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer7", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                            4,
+                                            ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer8", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                            4,
+                                            ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer9", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                            4,
+                                            ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer10", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                             4,
+                                             ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer11", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                             4,
+                                             ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer12", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                             4,
+                                             ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer13", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                             4,
+                                             ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer14", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                             4,
+                                             ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer15", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                             4,
+                                             ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer16", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                             4,
+                                             ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer17", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                             4,
+                                             ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer18", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                             4,
+                                             ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"layer19", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                             4,
+                                             ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)}}},
           {"lightning-probe-vars", {{"probe-dirs", ArrayFieldDecompMeta(TypeSpec("vector"), 16)}}},
           {"nav-mesh",
            {{"poly-array", ArrayFieldDecompMeta(TypeSpec("nav-poly"), 64)},
@@ -996,7 +1073,20 @@ goos::Object decompile_structure(const TypeSpec& type,
             for (int byte_idx = field_start; byte_idx < field_end; byte_idx++) {
               bytes_out.push_back(obj_words.at(byte_idx / 4).get_byte(byte_idx % 4));
             }
-            field_defs_out.emplace_back(field.name(), decompile_value(field.type(), bytes_out, ts));
+
+            // use more specific types for gif tags.
+            bool is_gif_type =
+                type.base_type() == "dma-gif-packet" || type.base_type() == "dma-gif";
+            if (is_gif_type && field.name() == "gif0") {
+              field_defs_out.emplace_back(field.name(),
+                                          decompile_value(TypeSpec("gif-tag64"), bytes_out, ts));
+            } else if (is_gif_type && field.name() == "gif1") {
+              field_defs_out.emplace_back(field.name(),
+                                          decompile_value(TypeSpec("gif-tag-regs"), bytes_out, ts));
+            } else {
+              field_defs_out.emplace_back(field.name(),
+                                          decompile_value(field.type(), bytes_out, ts));
+            }
           }
         }
       }
@@ -1643,6 +1733,7 @@ std::optional<std::vector<BitFieldConstantDef>> try_decompile_bitfield_from_int(
       def.value = bitfield_value;
       def.field_name = field.name();
       def.is_signed = is_signed;
+      def.is_float = field.type().base_type() == "float";
       auto enum_info = ts.try_enum_lookup(field.type());
       if (enum_info && !enum_info->is_bitfield()) {
         auto name = decompile_int_enum_from_int(field.type(), ts, bitfield_value);
