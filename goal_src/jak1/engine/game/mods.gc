@@ -88,7 +88,7 @@
     (('money-2691)      (set-vector-meters! (-> arg0 extra trans) -25.5   4.7     -66.6))     ;; fireplace in farmers hut
     (('money-2669)      (set-vector-meters! (-> arg0 extra trans) 88.18   17.97   18.87))     ;; behind oracle mouth
     (('money-2671)      (set-vector-meters! (-> arg0 extra trans) -107.9  35.0    219.7))     ;; behind samos hut
-    (('money-2672)      (set-vector-meters! (-> arg0 extra trans) -165.2  34.0    207.8))     ;; behind samos hut
+    (('money-2672)      (set-vector-meters! (-> arg0 extra trans) -182.85 32.9   213.01))     ;; on rocks/ferns near samos hut, need to come from behind
     (('money-2674)      (set-vector-meters! (-> arg0 extra trans) -116.9  21.5    207.3))     ;; on pillars supporting samos hut 
     (('money-2670)      (set-vector-meters! (-> arg0 extra trans) -72.2   25.5    141.4))     ;; in tree coming from samos hut
     (('money-2673)      (set-vector-meters! (-> arg0 extra trans) -75.5   1.8     109.7))     ;; in broken boat
@@ -762,7 +762,7 @@
     (('money-1703) (set-vector-meters! (-> arg0 extra trans)  678.36   5.44 -1964.99))  ;; rock on wall on second "beach"
     (('money-1704) (set-vector-meters! (-> arg0 extra trans)  681.40  17.0 -1965.11))  ;; up from ^
     (('money-1705) (set-vector-meters! (-> arg0 extra trans)  662.85  18.5 -1959.60))  ;; up from ^
-    (('money-1706) (set-vector-meters! (-> arg0 extra trans)  640.05  20.38 -1955.48))  ;; further along from ^
+    (('money-1706) (set-vector-meters! (-> arg0 extra trans)  640.05  20.6 -1955.48))  ;; further along from ^
     (('money-1708) (set-vector-meters! (-> arg0 extra trans)  657.38  28.5 -1958.55))  ;; up from ^^
     (('money-1707) (set-vector-meters! (-> arg0 extra trans)  617.4   0.8 -1864.7))  ;; in corner of trees on second "beach"
     (('money-1711) (set-vector-meters! (-> arg0 extra trans)  584.5   1.30 -1878.0))  ;; among trees in muck after second "beach"
@@ -795,13 +795,18 @@
     (('money-4150) (set-vector-meters! (-> arg0 extra trans)  520.2  1.8 -1894.2))  ;; ^
     (('money-4151) (set-vector-meters! (-> arg0 extra trans)  503.11   1.8 -1907.99))  ;; trees by fourth tether
     (('money-4298) (set-vector-meters! (-> arg0 extra trans)  483.40  18.28 -1927.14))  ;; boosted from orig fourth tether towards cave
-    (('money-4299) (set-vector-meters! (-> arg0 extra trans)  515.58  23.82 -1961.20))  ;; boosted from orig fourth tether
+    (('money-4299) (set-vector-meters! (-> arg0 extra trans)  516.3  23.3 -1960.20))  ;; boosted from orig fourth tether
     (('money-4300) (set-vector-meters! (-> arg0 extra trans)  485.5 4.2 -1908.2))  ;; corner trees near fourth tether
     (('money-4301) (set-vector-meters! (-> arg0 extra trans)  460.13   9.48 -1849.79))  ;; crack near start/fourth cave exit
     (('money-4302) (set-vector-meters! (-> arg0 extra trans)  449.19  28.1 -1859.28))  ;; ledge above fourth cave exit/start
     (('money-4303) (set-vector-meters! (-> arg0 extra trans)  456.31  32.1 -1867.02))  ;; up from ^
     (('money-4304) (set-vector-meters! (-> arg0 extra trans)  455.34  32.7 -1861.01))  ;; ^
     (('money-4322) (set-vector-meters! (-> arg0 extra trans)  456.61  31.8 -1854.11))  ;; ^
+    (('money-4311) (set-vector-meters! (-> arg0 extra trans)  626.68  -0.2 -1888.05))  ;; in dark eco crate at second "beach"
+    (('money-4312) (set-vector-meters! (-> arg0 extra trans)  388.53   0.9 -1914.37))  ;; gap in thorns before first bats
+    (('money-4313) (set-vector-meters! (-> arg0 extra trans)  277.35  23.17 -2044.19))  ;; quad jump up from first rats nest
+    (('money-4314) (set-vector-meters! (-> arg0 extra trans)  325.48   2.60 -2019.09))  ;; behind pole over spikes after first cave
+    (('money-4315) (set-vector-meters! (-> arg0 extra trans)  477.0  3.1 -2071.7))  ;; behind tree in corner near second tether
     (('money-4323) (set-vector-meters! (-> arg0 extra trans)  452.67   5.7 -1910.65))  ;; fourth cave, inside dark eco crate
     (('money-4324) (set-vector-meters! (-> arg0 extra trans)  656.8   1.5 -2088.5))  ;; trees first "beach" / flutflut section
     (('money-4833) (set-vector-meters! (-> arg0 extra trans)  561.25  8.0 -1889.14))  ;; above platform in muck before fourth tether
@@ -1410,30 +1415,30 @@
     ;; yellow
     (('crate-3186) (set-vector-meters! (-> arg0 extra trans) 399.06  -0.49 -1978.32))  ;; near first tether
     (('crate-3187) (set-vector-meters! (-> arg0 extra trans) 452.01  11.90 -1862.44))  ;; fourth cave exit
-    ;; (('crate-3188) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-3199) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-3189) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('crate-3188) (set-vector-meters! (-> arg0 extra trans) 307.58  -0.49 -2011.89))  ;; near first rats nest
+    (('crate-3198) (set-vector-meters! (-> arg0 extra trans) 350.86   0.98 -2120.95))  ;; mid long poles section
+    (('crate-3199) (set-vector-meters! (-> arg0 extra trans) 365.33   0.95 -2086.52))  ;; end of long poles section
 
     ;; green
-    ;; (('crate-750) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-751) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-753) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-754) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-755) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-826) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-827) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-828) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-832) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-833) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-834) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-835) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-836) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-837) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    (('crate-750) (set-vector-meters! (-> arg0 extra trans) 608.95	1.84	-1956.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-751) (set-vector-meters! (-> arg0 extra trans) 608.95	1.84	-1960.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-846) (set-vector-meters! (-> arg0 extra trans) 608.95	1.84	-1958.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-754) (set-vector-meters! (-> arg0 extra trans) 610.95	1.84	-1958.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-755) (set-vector-meters! (-> arg0 extra trans) 612.95	1.84	-1956.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-826) (set-vector-meters! (-> arg0 extra trans) 612.95	1.84	-1960.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-2923) (set-vector-meters! (-> arg0 extra trans) 612.95	1.84	-1958.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-828) (set-vector-meters! (-> arg0 extra trans) 615.83	1.68	-1956.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-832) (set-vector-meters! (-> arg0 extra trans) 619.83	1.68	-1956.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-841) (set-vector-meters! (-> arg0 extra trans) 617.83	1.68	-1956.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-834) (set-vector-meters! (-> arg0 extra trans) 617.83	1.68	-1958.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-835) (set-vector-meters! (-> arg0 extra trans) 617.83	1.68	-1960.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-2830) (set-vector-meters! (-> arg0 extra trans) 615.83	1.68	-1960.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-837) (set-vector-meters! (-> arg0 extra trans) 619.83	1.68	-1960.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
     ;; (('crate-838) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-841) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-833) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('crate-844) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('crate-845) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-846) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-753) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('crate-847) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     (('crate-848) (set-vector-meters! (-> arg0 extra trans) 367.45  -0.49 -2151.06))  ;; past second bats, just moved behind spikes
     ;; (('crate-850) (set-vector-meters! (-> arg0 extra trans) )) ;; 
@@ -1443,7 +1448,7 @@
     ;; (('crate-854) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('crate-855) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('crate-2829) )  ;; 
-    ;; (('crate-2830) )  ;; 
+    ;; (('crate-836) )  ;; 
     ;; (('crate-2861) )  ;; 
     ;; (('crate-2862) )  ;;   ;; beeg
     ;; (('crate-2897) )  ;; 
@@ -1453,8 +1458,8 @@
     ;; (('crate-2920) )  ;; 
     ;; (('crate-2921) )  ;; 
     ;; (('crate-2922) )  ;; 
-    ;; (('crate-2923) )  ;; 
-    ;; (('crate-2932) )  ;; 
+    ;; (('crate-827) )  ;; 
+    (('crate-2932) (set-vector-meters! (-> arg0 extra trans) 551.35  11.98 -2156.75))  ;; on platform in flutflut section
     ;; (('crate-2939) )  ;; 
     ;; (('crate-2940) )  ;; 
     (('crate-2941) (set-vector-meters! (-> arg0 extra trans) 453.60  12.76 -1852.87))  ;; fourth cave exit
@@ -1467,16 +1472,16 @@
     (('crate-2785) (set-vector-meters! (-> arg0 extra trans) 647.23   2.47 -2082.11))  ;; ^
     (('crate-2786) (set-vector-meters! (-> arg0 extra trans) 647.23   4.47 -2082.11))  ;; ^
     (('crate-2787) (set-vector-meters! (-> arg0 extra trans) 452.67   5.35 -1910.65))  ;; fourth cave hiding orb
-    ;; (('crate-2788) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-2808) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-2809) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-2810) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-2811) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-2820) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-2823) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-2825) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-2826) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-2836) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('crate-2788) (set-vector-meters! (-> arg0 extra trans) 362.93   0.46 -2038.16))  ;; between spikes in first cave
+    ;; (('crate-2808) (set-vector-meters! (-> arg0 extra trans) ))  ;; leave on platform in second cave
+    ;; (('crate-2809) (set-vector-meters! (-> arg0 extra trans) ))  ;; leave on platform in second cave
+    ;; (('crate-2810) (set-vector-meters! (-> arg0 extra trans) ))  ;; leave on platform in second cave
+    ;; (('crate-2811) (set-vector-meters! (-> arg0 extra trans) ))  ;; leave on platform in second cave
+    (('crate-2820) (set-vector-meters! (-> arg0 extra trans) 596.15   5.85 -1992.83))  ;; platform in third cave
+    (('crate-2823) (set-vector-meters! (-> arg0 extra trans) 593.12   5.85 -1991.89))  ;; platform in third cave
+    (('crate-2825) (set-vector-meters! (-> arg0 extra trans) 589.92   5.85 -1990.62))  ;; platform in third cave
+    (('crate-2826) (set-vector-meters! (-> arg0 extra trans) 586.82   5.85 -1990.22))  ;; platform in third cave
+    (('crate-2836) (set-vector-meters! (-> arg0 extra trans) 706.73   0.97 -2033.17))  ;; dock on first "beach"
     ;; (('crate-2863) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('crate-2864) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('crate-2868) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
@@ -1488,7 +1493,7 @@
     ;; (('crate-2877) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('crate-2879) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('crate-2881) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-2883) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2883) (set-vector-meters! (-> arg0 extra trans) ))  ;;  leave, second "beach" with orb inside
     ;; (('crate-2908) (set-vector-meters! (-> arg0 extra trans) ))  ;;  leave, fourth cave
     ;; (('crate-2909) (set-vector-meters! (-> arg0 extra trans) ))  ;;  leave, fourth cave
     ;; (('crate-2911) (set-vector-meters! (-> arg0 extra trans) ))  ;;  leave, fourth cave
@@ -2031,23 +2036,30 @@
   (when (process-by-ename "eco-165")  ;; blue - platform in muck towards first "beach"
     (mod-move-eco (the eco (process-by-ename "eco-165")) (static-vector-meters 673.35  3.0 -2116.70))
     )
-
-
-   
+  (when (process-by-ename "eco-86")  ;; yellow - near second launcher
+    (mod-move-eco (the eco (process-by-ename "eco-86")) (static-vector-meters 310.78   3.02 -2084.80))
+    )
+  (when (process-by-ename "eco-152")  ;; blue - start of long poles section
+    (mod-move-eco (the eco (process-by-ename "eco-152")) (static-vector-meters 286.41   2.0 -2137.03))
+    )
+  (when (process-by-ename "eco-153")  ;; yellow - early in long poles section
+    (mod-move-eco (the eco (process-by-ename "eco-153")) (static-vector-meters 316.85   2.0 -2165.77))
+    )
+  (when (process-by-ename "eco-174")  ;; yellow - muck before fourth tether
+    (mod-move-eco (the eco (process-by-ename "eco-174")) (static-vector-meters 575.02   2.3 -1924.81))
+    )
+  (when (process-by-ename "eco-175")  ;; yellow - muck before fourth tether
+    (mod-move-eco (the eco (process-by-ename "eco-175")) (static-vector-meters 560.83   2.3 -1922.35))
+    )
+  
     ;; yellow
     ;; (('eco-81 ) ) ;; leave, by boggy billy
     ;; (('eco-85 ) ) ;; 
-    ;; (('eco-86 ) ) ;; 
     ;; (('eco-104 ) )  ;; 
     ;; (('eco-105 ) )  ;; leave in second launcher area
     ;; (('eco-106 ) )  ;; ^
-    ;; (('eco-153 ) )  ;; 
-    ;; (('eco-174 ) )  ;; 
-    ;; (('eco-175 ) )  ;;
-    
     ;; blue
     ;; (('eco-140 ) )  ;; 
-    ;; (('eco-152 ) )  ;; 
     ;; (('eco-160 ) )  ;; 
     ;; (('eco-165 ) )  ;; 
 
