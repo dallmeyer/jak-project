@@ -942,9 +942,9 @@
                         :task-id (game-task rolling-buzzer)
                         :task-name
                         (new 'static 'array game-text-id 4
-                             (game-text-id generic-buzzer)
-                             (game-text-id generic-buzzer)
-                             (game-text-id generic-buzzer)
+                             (game-text-id rolling-buzzer)
+                             (game-text-id rolling-buzzer)
+                             (game-text-id rolling-buzzer)
                              (game-text-id zero)
                              )
                         )

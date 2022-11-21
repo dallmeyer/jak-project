@@ -761,6 +761,8 @@
   (speedrunner-mode             #x1500)
   (cutscene-skips               #x1501)
 
+  (rolling-buzzer               #x1600)
+
 ;; GAME-TEXT-ID ENUM ENDS
   )
 
