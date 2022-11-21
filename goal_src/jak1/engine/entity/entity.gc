@@ -920,12 +920,14 @@
                      )
                    )
                   ((and (or (= arg0 'full) (-> s0-0 extra process)) 
-                        (or (cpad-hold? 0 l2)
-                            (type-type? (-> s0-0 extra process type) money) 
-                            (type-type? (-> s0-0 extra process type) fuel-cell) 
-                            (type-type? (-> s0-0 extra process type) crate-buzzer) 
-                            (type-type? (-> s0-0 extra process type) orb-cache-top) 
-                            (type-type? (-> s0-0 extra process type) periscope))
+                        (or *actor-view-toggle* ;; L2 to show all actor names
+                            (<=   ;; close to jak so show actor name
+                              (vector-vector-distance 
+                                (target-pos 0) 
+                                (-> (the process-drawable (-> s0-0 extra process)) root trans)) 
+                              (meters 20.0)
+                              )
+                            )
                         )
                    (add-debug-x #t (bucket-id debug-no-zbuf) s1-0 (the-as rgba (if (-> s0-0 extra process)
                                                                                    (the-as uint #x8080ff80)

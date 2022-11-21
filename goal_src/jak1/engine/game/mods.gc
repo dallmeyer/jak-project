@@ -861,6 +861,107 @@
     (('crate-2927) (set-vector-meters! (-> arg0 extra trans)  595.56   2.17 -2031.52))  ;; deck of boggy billys "house"
     (('crate-2946) (set-vector-meters! (-> arg0 extra trans)  635.87   0.41 -2130.31))  ;; by trees in flutflut section
 
+    ;; Basin orbs
+    ;; (('money-3348) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3349) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3350) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3351) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3352) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3353) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3354) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3355) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3342) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3343) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3344) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3345) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3346) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3347) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3356) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3357) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3358) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3359) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3360) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3361) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3362) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3363) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3364) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3365) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3366) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3367) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3368) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3369) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3370) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3371) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3372) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3373) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3374) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3375) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3376) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3377) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3378) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3379) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3380) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3381) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3406) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3407) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3408) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3409) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3410) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3411) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3412) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3413) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3414) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3415) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3416) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3417) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3418) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3419) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3420) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3421) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3422) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3423) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3424) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3425) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3426) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3427) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3428) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3429) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3430) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3431) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3432) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3433) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3434) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3435) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3436) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-3437) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-4868) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-4869) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-4870) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-4871) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-4872) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-4873) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-4874) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-4875) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-4876) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('money-4877) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    ;; (('crate-2177) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-2179) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-2180) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-2181) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2183) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-2186) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-2207) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-3213) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-3216) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-3218) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-3219) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-3221) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-3222) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-3223) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-3226) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-3229) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    ;; (('crate-3233) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+
     ;; ~~~~ SCOUT FLIES ~~~~
     ;; Geyser flies
     (('crate-2960) (set-vector-meters! (-> arg0 extra trans) -1215.0 32.4 1008.4))   ;; up top on cell cutscene skip route
@@ -944,6 +1045,15 @@
     (('crate-843) (set-vector-meters! (-> arg0 extra trans)  557.11   0.53 -2078.40))  ;; little path among trees in flutflut section
     (('crate-849) (set-vector-meters! (-> arg0 extra trans)  560.35   6.1 -2013.31))  ;; inside rock, orig third tether
     (('crate-2936) (set-vector-meters! (-> arg0 extra trans)  653.30   0.57 -2083.97)) ;; among trees in flutflut section
+
+    ;; Basin flies
+    ;; (('crate-2176) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2187) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2188) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2194) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2199) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2209) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2289) (set-vector-meters! (-> arg0 extra trans) )) ;; 
 
     ;; ~~~~ POWER CELLS ~~~~
     ;; Geyser cells
@@ -1069,6 +1179,63 @@
       (('flutflut-3) (set-vector-meters! (-> arg0 extra trans) 564.82  12.1 -2096.02)) ;; orig flutflut power cell
     ;; (('billy-2) (set-vector-meters! ))  ;; 
 
+    ;; Basin cells
+    ;; (('fuel-cell-45) (set-vector-meters! (-> arg0 extra trans) )) ;; over lake
+    ;; purple rings in order
+    ;; (('race-ring-9) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('race-ring-1) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('race-ring-25) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-12) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-13) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-14) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-15) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-16) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-17) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-18) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-19) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-20) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-21) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-22) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-2) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('race-ring-26) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-4) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('race-ring-5) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('race-ring-6) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('race-ring-7) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('race-ring-8) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('race-ring-10) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-11) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-3) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('race-ring-23) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-24) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; blue rings in order
+    ;; (('race-ring-36) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-37) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-38) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-27) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-28) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-29) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-30) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-31) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-32) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-33) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-34) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-35) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-39) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-40) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-41) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-42) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-43) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-44) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-45) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-46) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-47) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-48) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-49) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-50) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-51) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-52) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('race-ring-53) (set-vector-meters! (-> arg0 extra trans) )) ;; 
 
     ;; ~~~~ MISC ~~~~
     ;; Geyser misc
@@ -1418,7 +1585,6 @@
     (('crate-3188) (set-vector-meters! (-> arg0 extra trans) 307.58  -0.49 -2011.89))  ;; near first rats nest
     (('crate-3198) (set-vector-meters! (-> arg0 extra trans) 350.86   0.98 -2120.95))  ;; mid long poles section
     (('crate-3199) (set-vector-meters! (-> arg0 extra trans) 365.33   0.95 -2086.52))  ;; end of long poles section
-
     ;; green
     (('crate-750) (set-vector-meters! (-> arg0 extra trans) 608.95	1.84	-1956.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
     (('crate-751) (set-vector-meters! (-> arg0 extra trans) 608.95	1.84	-1960.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
@@ -1462,12 +1628,10 @@
     (('crate-2922) (set-vector-meters! (-> arg0 extra trans) 567.31  -0.49 -1986.80))  ;; in OOB area :P
     (('crate-2939) (set-vector-meters! (-> arg0 extra trans) 572.07  -0.49 -1978.79))  ;; in OOB area :P
     (('crate-2940) (set-vector-meters! (-> arg0 extra trans) 535.67  -0.49 -1991.94))  ;; in OOB area :P
-
     (('crate-2941) (set-vector-meters! (-> arg0 extra trans) 453.60  12.76 -1852.87))  ;; fourth cave exit
     ;; (('crate-3200) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     (('crate-3201) (set-vector-meters! (-> arg0 extra trans) 319.57   0.94 -1912.76))  ;; near first bats, jump off to reach high ledge
     (('crate-3202) (set-vector-meters! (-> arg0 extra trans) 319.57   3.0 -1912.76 ))  ;; ^
-
     ;; dark
     (('crate-2784) (set-vector-meters! (-> arg0 extra trans) 647.23   0.47 -2082.11))  ;; hiding scout fly in trees in flutflut section
     (('crate-2785) (set-vector-meters! (-> arg0 extra trans) 647.23   2.47 -2082.11))  ;; ^
@@ -1508,7 +1672,6 @@
     ;; (('crate-2938) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('crate-2942) (set-vector-meters! (-> arg0 extra trans) ))  ;; leave, fourth cave
     ;; (('crate-2944) (set-vector-meters! (-> arg0 extra trans) ))  ;; leave, fourth cave
-    
     (('tar-plat-19) (set-vector-meters! (-> arg0 extra trans) 589.74  -0.2 -1909.86)) ;; moved around in muck before fourth tether
     (('tar-plat-20) (set-vector-meters! (-> arg0 extra trans) 581.06  -0.2 -1887.23)) ;; ^
     (('tar-plat-21) (set-vector-meters! (-> arg0 extra trans) 573.0   -0.2 -1902.7)) ;; ^
@@ -1579,6 +1742,116 @@
       (('balance-plat-12) (set-vector-meters! (-> arg0 extra trans) 507.40  -5.8813 -1922.35))  ;; moved around fourth tether
     (('balance-plat-10) (set-vector-meters! (-> arg0 extra trans)  430.21  -5.9 -1951.74)) ;; side of first tether 
       (('balance-plat-11) (set-vector-meters! (-> arg0 extra trans)  436.52  -5.9 -1943.74)) ;; side of first tether
+
+    ;; Basin misc
+    ;; green
+    ;; (('crate-2182) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    ;; (('crate-2184) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2185) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2189) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2191) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2192) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2193) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2195) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2196) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2197) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2198) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2200) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2201) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2202) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2203) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2204) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2205) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2208) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2266) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2267) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2268) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2269) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2270) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2271) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2272) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2273) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2281) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2282) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2283) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2284) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2285) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2286) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2287) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2288) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+
+    ;; dark
+    ;; (('crate-2178) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2190) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2206) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2210) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2211) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2212) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2213) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2214) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2215) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2216) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2217) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2218) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2219) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2220) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2221) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2222) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2223) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2224) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2225) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2226) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2227) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2228) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2229) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2230) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2231) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2232) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2233) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2234) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2235) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2236) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2237) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2238) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2239) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2240) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2241) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2242) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2243) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2244) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2245) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2246) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2247) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2248) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2249) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2250) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2251) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2252) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2253) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2254) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2255) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2256) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2257) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2274) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2275) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2276) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2277) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2278) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2279) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2280) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3214) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3215) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3217) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3220) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3224) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3225) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3227) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3228) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3230) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3231) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3232) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3234) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+
 
     (else
       (when #f
@@ -1991,7 +2264,6 @@
       (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
       )
     )
-    
   (when (process-by-ename "eco-74")  ;; yellow - platforms to orig flutflut cell
     (mod-move-eco (the eco (process-by-ename "eco-74")) (static-vector-meters 598.11  12.7 -2060.35))
   )
@@ -2052,25 +2324,32 @@
   (when (process-by-ename "eco-175")  ;; yellow - muck before fourth tether
     (mod-move-eco (the eco (process-by-ename "eco-175")) (static-vector-meters 560.83   2.3 -1922.35))
     )
-  
-    ;; yellow
-    ;; (('eco-81 ) ) ;; leave, by boggy billy
-    ;; (('eco-85 ) ) ;; 
-    ;; (('eco-104 ) )  ;; 
-    ;; (('eco-105 ) )  ;; leave in second launcher area
-    ;; (('eco-106 ) )  ;; ^
-    ;; blue
-    ;; (('eco-140 ) )  ;; 
-    ;; (('eco-160 ) )  ;; 
-    ;; (('eco-165 ) )  ;; 
+  ;; yellow
+  ;; (('eco-81 ) ) ;; leave, by boggy billy
+  ;; (('eco-85 ) ) ;; 
+  ;; (('eco-104 ) )  ;; 
+  ;; (('eco-105 ) )  ;; leave in second launcher area
+  ;; (('eco-106 ) )  ;; ^
+  ;; blue
+  ;; (('eco-140 ) )  ;; 
+  ;; (('eco-160 ) )  ;; 
+  ;; (('eco-165 ) )  ;; 
+  ;; (('ecovent-81) )  ;; blue - left in second launcher area
+  ;; (('ecovent-82) )  ;; blue
+  ;; (('ecovent-141) )  ;; blue
+  ;; (('ecovent-85) )  ;; yellow
+  ;; (('ecovent-87) )  ;; yellow
+  ;; (('ecovent-93) )  ;; yellow
+  ;; (('ecovent-243) )  ;; yellow
 
-    ;; (('ecovent-81) )  ;; blue - left in second launcher area
-    ;; (('ecovent-82) )  ;; blue
-    ;; (('ecovent-141) )  ;; blue
-    ;; (('ecovent-85) )  ;; yellow
-    ;; (('ecovent-87) )  ;; yellow
-    ;; (('ecovent-93) )  ;; yellow
-    ;; (('ecovent-243) )  ;; yellow
+  ;; Basin
+  ;; eco-132 ;; blue
+  ;; eco-133 ;; blue
+  ;; eco-134 ;; blue
+  ;; eco-135 ;; blue
+  ;; eco-136 ;; blue
+  ;; eco-137 ;; blue
+  ;; ecovent-242 ;; green
 
   (none)
   )
