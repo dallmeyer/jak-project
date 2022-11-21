@@ -862,43 +862,43 @@
     (('crate-2946) (set-vector-meters! (-> arg0 extra trans)  635.87   0.41 -2130.31))  ;; by trees in flutflut section
 
     ;; Basin orbs
-    ;; (('money-3348) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3349) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3350) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3351) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3352) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3353) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3354) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3355) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3342) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3343) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3344) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3345) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3346) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3347) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3356) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3357) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3358) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3359) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3360) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3361) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3362) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3363) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3364) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3365) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3366) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3367) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3368) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3369) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3370) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3371) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3372) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3373) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3374) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3375) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3376) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3377) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('money-3378) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
+    (('money-3348) (set-vector-meters! (-> arg0 extra trans)  50.82  34.7 -1619.20))  ;; left side up high near start (on foot)
+    (('money-3349) (set-vector-meters! (-> arg0 extra trans)  71.35  41.1 -1610.62))  ;; towards RV from ^
+    (('money-3350) (set-vector-meters! (-> arg0 extra trans)  84.17  48.2 -1600.00))  ;; towards RV from ^
+    (('money-3351) (set-vector-meters! (-> arg0 extra trans)  104.65  39.3 -1599.28))  ;; towards RV from ^
+    (('money-3352) (set-vector-meters! (-> arg0 extra trans)  88.52  22.8 -1612.90))  ;; in tree below ^
+    (('money-3353) (set-vector-meters! (-> arg0 extra trans)  99.6  22.4 -1670.8))  ;; right side at entrance (on foot)
+    (('money-3354) (set-vector-meters! (-> arg0 extra trans)  84.98  19.4 -1670.83))  ;; into basin from ^ 
+    (('money-3355) (set-vector-meters! (-> arg0 extra trans)  67.23  27.8 -1669.21))  ;; up high, boosted from right side of basin start
+    (('money-3342) (set-vector-meters! (-> arg0 extra trans)  45.22  37.6 -1666.52))  ;; extended from ^
+    (('money-3343) (set-vector-meters! (-> arg0 extra trans)  51.67  48.99 -1616.24))  ;; up from money-3348 ^^^
+    (('money-3344) (set-vector-meters! (-> arg0 extra trans)  32.54  44.1 -1613.99))  ;; extended around from ^ (or from bridge within basin)
+    (('money-3345) (set-vector-meters! (-> arg0 extra trans)  33.72  56.7 -1610.73))  ;; up from ^
+    (('money-3346) (set-vector-meters! (-> arg0 extra trans)  2.63  61.9 -1597.44))  ;; up from ^ (slippery precursor thing)
+    (('money-3347) (set-vector-meters! (-> arg0 extra trans)  4.16  41.7 -1604.65))  ;; in corner near bridge at entrance
+    (('money-3356) (set-vector-meters! (-> arg0 extra trans)  2.96  61.6 -1552.01))  ;; up high below tree around corner from start
+    (('money-3357) (set-vector-meters! (-> arg0 extra trans)  2.72  60.6 -1574.19))  ;; back towards entrance from ^
+    (('money-3358) (set-vector-meters! (-> arg0 extra trans)  5.82  64.5 -1536.71))  ;; below tree to right of money-3356 ^^
+    (('money-3359) (set-vector-meters! (-> arg0 extra trans)  7.74  63.1 -1525.43))  ;; right of ^
+    (('money-3360) (set-vector-meters! (-> arg0 extra trans)  11.68  60.5 -1506.09))  ;; right of ^, behind tree (need to stay back to avoid invis wall)
+    (('money-3361) (set-vector-meters! (-> arg0 extra trans)  14.16  56.1 -1482.73))  ;; right of ^, behind tree (need to stay back to avoid invis wall)
+    (('money-3362) (set-vector-meters! (-> arg0 extra trans)  12.66  46.6 -1455.51))  ;; jump up starting from corner past moles
+    (('money-3363) (set-vector-meters! (-> arg0 extra trans)  4.18  48.9 -1442.65))  ;; right from ^
+    (('money-3364) (set-vector-meters! (-> arg0 extra trans)  -67.4  40.8 -1434.0))  ;; jump up starting from corner past moles
+    (('money-3365) (set-vector-meters! (-> arg0 extra trans)  15.97  53.6 -1470.11))  ;; right from money-3361 ^^^^
+    (('money-3366) (set-vector-meters! (-> arg0 extra trans)  -7.2  33.8 -1622.9))  ;; under bridge at start
+    (('money-3367) (set-vector-meters! (-> arg0 extra trans)  28.2  47.8 -1672.7))  ;; jump towards RV from orig fly near entrance bridge
+    (('money-3368) (set-vector-meters! (-> arg0 extra trans)  35.75  56.4 -1670.51))  ;; up from ^ by tree, towards RV
+    (('money-3369) (set-vector-meters! (-> arg0 extra trans)  17.75  64.9 -1682.25))  ;; up from money 3367 ^^, into basin
+    (('money-3370) (set-vector-meters! (-> arg0 extra trans)  16.43  57.3 -1699.47))  ;; farther along from ^
+    (('money-3371) (set-vector-meters! (-> arg0 extra trans)  -6.86  59.9 -1708.24))  ;; farther along from ^, on slippery rock
+    (('money-3372) (set-vector-meters! (-> arg0 extra trans)  -37.23  59.9 -1702.99 ))  ;; farther along from ^
+    (('money-3373) (set-vector-meters! (-> arg0 extra trans)  -96.02  37.1 -1692.22))  ;; climb up from in front of DMG start
+    (('money-3374) (set-vector-meters! (-> arg0 extra trans)  -90.88  47.12 -1695.40))  ;; up from ^
+    (('money-3375) (set-vector-meters! (-> arg0 extra trans)  -100.94  55.0 -1700.98))  ;; up from ^
+    (('money-3376) (set-vector-meters! (-> arg0 extra trans)  -101.94  56.9 -1711.28))  ;; up from ^ (tucked in corner)
+    (('money-3377) (set-vector-meters! (-> arg0 extra trans)  -124.35  45.9 -1698.97))  ;; boosted/extended over DMG entrance from ^^
+    (('money-3378) (set-vector-meters! (-> arg0 extra trans)  -147.94  50.2 -1696.68))  ;; farther along from ^
     ;; (('money-3379) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('money-3380) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('money-3381) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
@@ -944,7 +944,8 @@
     ;; (('money-4875) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('money-4876) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
     ;; (('money-4877) (set-vector-meters! (-> arg0 extra trans)  ))  ;; 
-    ;; (('crate-2177) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+
+    (('crate-2177) (set-vector-meters! (-> arg0 extra trans) 16.66  45.17 -1610.85)) ;; up high left near entrance - jump from bridge
     ;; (('crate-2179) (set-vector-meters! (-> arg0 extra trans) )) ;;  
     ;; (('crate-2180) (set-vector-meters! (-> arg0 extra trans) )) ;;  
     ;; (('crate-2181) (set-vector-meters! (-> arg0 extra trans) )) ;; 
@@ -1047,13 +1048,13 @@
     (('crate-2936) (set-vector-meters! (-> arg0 extra trans)  653.30   0.57 -2083.97)) ;; among trees in flutflut section
 
     ;; Basin flies
-    ;; (('crate-2176) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2187) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2188) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2194) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2199) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2209) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2289) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    (('crate-2176) (set-vector-meters! (-> arg0 extra trans) -51.79  63.2 -1695.97)) ;; up on high ledge, follow from money-3372
+    (('crate-2187) (set-vector-meters! (-> arg0 extra trans) -63.57  57.24 -1692.16)) ;; farther along from ^
+    (('crate-2188) (set-vector-meters! (-> arg0 extra trans) -78.57  61.19 -1694.22)) ;; farther along from ^
+    (('crate-2194) (set-vector-meters! (-> arg0 extra trans) -85.57  66.85 -1694.95)) ;; farther along from ^
+    (('crate-2209) (set-vector-meters! (-> arg0 extra trans) -99.85  62.75 -1706.21)) ;; up from ^
+    (('crate-2199) (set-vector-meters! (-> arg0 extra trans) -318.31  49.18 -1766.63)) ;; up high nestled in precursor lights above dark plants
+    (('crate-2289) (set-vector-meters! (-> arg0 extra trans) -199.98  66.19 -1704.30)) ;; 
 
     ;; ~~~~ POWER CELLS ~~~~
     ;; Geyser cells
