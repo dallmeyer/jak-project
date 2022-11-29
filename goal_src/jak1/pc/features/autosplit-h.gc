@@ -13,12 +13,12 @@
    (num-scout-flies uint32)
    (padding-stats uint8 200) ;; padding for future growth
    ;; loading/cutscene/control related info
-   (game-hash uint32)
-   (in-cutscene? symbol)
-   (is-loading? symbol)
+   (game-hash uint32) ;; +212?
+   (in-cutscene? symbol)  ;;216
+   (is-loading? symbol)   ;;220
    (padding-controls uint8 200) ;; padding for future growth
    ;; need-resolution tasks
-   (res-training-gimmie uint8)
+   (res-training-gimmie uint8)  ;; 424 bytes
    (res-training-door uint8)
    (res-training-climb uint8)
    (res-training-buzzer uint8)
