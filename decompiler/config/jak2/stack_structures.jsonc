@@ -397,7 +397,7 @@
   "cam-debug-draw-tris": [[16, "vector4w"]],
   "draw-string-xy": [[16, "font-context"]],
   "(code die gun)": [
-    [16, "matrix"],
+    [16, "projectile-init-by-other-params"],
     [112, "vector"],
     [128, "vector"],
     [144, "vector"]
@@ -410,7 +410,7 @@
   "gun-post": [
     [16, "vector"],
     [32, "vector"],
-    [48, "matrix"],
+    [48, "projectile-init-by-other-params"],
     [144, "vector"],
     [160, "vector"],
     [176, "vector"]
@@ -725,7 +725,7 @@
     [32, "vector"],
     [48, "vector"]
   ],
-  "(method 13 editable-plane)": [[128, "transform"]],
+  "(method 13 editable-plane)": [[64, ["inline-array", "vector", 4]]],
   "execute-select": [[16, "vector"]],
   "(method 9 editable-array)": [[16, "vector"]],
   "execute-mouse-move": [
@@ -743,7 +743,7 @@
   ],
   "insert-box": [
     [16, "vector"],
-    [32, "transform"]
+    [32, ["array", "int32", 8]]
   ],
   "(method 11 editable-region)": [[16, "vector2h"]],
   "(method 29 editable-face)": [
@@ -1053,7 +1053,6 @@
   "(method 26 gun-red-shot)": [[16, "vector"]],
   "(method 28 gun-red-shot)": [[16, "collide-query"]],
   "(method 24 gun-red-shot)": [[16, "collide-query"]],
-  "target-gun-fire-dark": [[16, "collide-query"]],
   "(method 52 nav-state)": [
     [16, "nav-avoid-spheres-params"],
     [112, "nav-ray"]
@@ -1189,5 +1188,19 @@
   "check-shell-level1": [[16, "vector"]],
   "check-shell-level2": [[16, "vector"]],
   "birth-func-target-orient": [[48, "vector"]],
-  "birth-func-vector-orient": [[32, "vector"]]
+  "birth-func-vector-orient": [[32, "vector"]],
+  "(enter cam-launcher-longfall)": [[16, "vector"]],
+  "explosion-init-by-other": [[16, "traffic-danger-info"]],
+  "process-drawable-shock-skel-effect": [
+    [176, "matrix"],
+    [256, "vector"],
+    [272, "vector"],
+    [288, "vector"],
+    [304, "quaternion"],
+    [384, "vector"]
+  ],
+  "(method 20 collide-cache)": [[16, "matrix"]],
+  "col-rend-draw": [
+    [16, "matrix"]
+  ]
 }
