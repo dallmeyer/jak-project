@@ -1212,33 +1212,34 @@
     (('race-ring-23) (set-vector-meters! (-> arg0 extra trans) -263.73  26.52 -1536.48)) 
     (('race-ring-24) (set-vector-meters! (-> arg0 extra trans) -307.32  46.11 -1599.50))
     ;; blue rings in order
-    ;; (('race-ring-36) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-37) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-38) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-27) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-28) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-29) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-30) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-31) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-32) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-33) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-34) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-35) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-39) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-40) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-41) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-42) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-43) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-44) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-45) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-46) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-47) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-48) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-49) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-50) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-51) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-52) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('race-ring-53) (set-vector-meters! (-> arg0 extra trans) -321.24  59.94 -1403.75)) ;; 
+    (('race-ring-36) (set-vector-meters! (-> arg0 extra trans) -59.44  33.40 -1563.22)) ;; mole hole jump backwards into DMG
+    (('race-ring-37) (set-vector-meters! (-> arg0 extra trans) -14.65  35.94 -1538.22)) ;; 
+    (('race-ring-38) (set-vector-meters! (-> arg0 extra trans)  42.34  35.92 -1524.08)) ;; 
+    (('babak-318) (set-vector-meters! (-> arg0 extra trans)  50.29  30.10 -1484.53))  ;; use as ramp
+    (('race-ring-27) (set-vector-meters! (-> arg0 extra trans)  75.29  40.49 -1420.12)) ;; 
+    (('race-ring-28) (set-vector-meters! (-> arg0 extra trans) -38.14  39.91 -1349.68)) ;; 
+    (('race-ring-29) (set-vector-meters! (-> arg0 extra trans) -66.04  44.00 -1379.66)) ;; 
+    (('race-ring-30) (set-vector-meters! (-> arg0 extra trans)  12.20  45.89 -1402.06)) ;; 
+    (('race-ring-31) (set-vector-meters! (-> arg0 extra trans)  62.17  41.08 -1497.35)) ;; 
+    (('race-ring-32) (set-vector-meters! (-> arg0 extra trans) -23.68  35.99 -1537.53)) ;; 
+    (('race-ring-33) (set-vector-meters! (-> arg0 extra trans) -88.96  43.31 -1562.32)) ;; 
+    (('race-ring-34) (set-vector-meters! (-> arg0 extra trans) -115.26  36.91 -1652.78)) ;;
+    (('race-ring-35) (set-vector-meters! (-> arg0 extra trans)  39.18  30.80 -1637.61)) ;; 
+    (('race-ring-39) (set-vector-meters! (-> arg0 extra trans)  88.27  10.26 -1632.52)) ;; 
+    (('race-ring-40) (set-vector-meters! (-> arg0 extra trans) 147.22  17.18 -1645.64)) ;; 
+    (('race-ring-41) (set-vector-meters! (-> arg0 extra trans)  84.42  15.5  -1666.00)) ;; 
+    (('race-ring-42) (set-vector-meters! (-> arg0 extra trans)  41.57  30.72 -1652.54)) ;; 
+    (('race-ring-43) (set-vector-meters! (-> arg0 extra trans) -165.32  27.13 -1667.98)) ;; 
+    (('race-ring-44) (set-vector-meters! (-> arg0 extra trans) -288.27  45.89 -1597.66)) ;; 
+    (('race-ring-45) (set-vector-meters! (-> arg0 extra trans) -361.98  33.28 -1501.86)) ;; 
+    (('race-ring-46) (set-vector-meters! (-> arg0 extra trans) -381.48  31.67 -1630.13)) ;; 
+    (('race-ring-47) (set-vector-meters! (-> arg0 extra trans) -350.60  24.00 -1725.62)) ;; 
+    (('race-ring-48) (set-vector-meters! (-> arg0 extra trans) -237.46  38.0  -1646.08)) ;; 
+    (('race-ring-49) (set-vector-meters! (-> arg0 extra trans) -328.89  48.46 -1586.75)) ;; 
+    (('race-ring-50) (set-vector-meters! (-> arg0 extra trans) -317.45  45.50 -1472.39)) ;; 
+    (('race-ring-51) (set-vector-meters! (-> arg0 extra trans) -400.52  60.80 -1477.34)) ;; 
+    (('race-ring-52) (set-vector-meters! (-> arg0 extra trans) -340.64  70.53 -1431.65)) ;; 
+    (('race-ring-53) (set-vector-meters! (-> arg0 extra trans) -302.67  60.56 -1458.97)) ;; 
 
     ;; ~~~~ MISC ~~~~
     ;; Geyser misc
@@ -1895,33 +1896,33 @@
     (('race-ring-23) (set! (-> obj rot-y) 17000.0))
     (('race-ring-24) (set! (-> obj rot-y) 6000.0))
     ;; blue rings in order
-    (('race-ring-36) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-37) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-38) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-27) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-28) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-29) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-30) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-31) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-32) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-33) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-34) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-35) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-39) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-40) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-41) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-42) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-43) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-44) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-45) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-46) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-47) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-48) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-49) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-50) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-51) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-52) (set! (-> obj rot-y) *tmprotoffset*))
-    (('race-ring-53) (set! (-> obj rot-y) *tmprotoffset*))
+    (('race-ring-36) (set! (-> obj rot-y) 26000.0))
+    (('race-ring-37) (set! (-> obj rot-y) 32000.0))
+    (('race-ring-38) (set! (-> obj rot-y) 18000.0))
+    (('race-ring-27) (set! (-> obj rot-y) 6000.0))
+    (('race-ring-28) (set! (-> obj rot-y) 30000.0))
+    (('race-ring-29) (set! (-> obj rot-y) 0.0))
+    (('race-ring-30) (set! (-> obj rot-y) 3000.0))
+    (('race-ring-31) (set! (-> obj rot-y) 19000.0))
+    (('race-ring-32) (set! (-> obj rot-y) 30000.0))
+    (('race-ring-33) (set! (-> obj rot-y) 21000.0))
+    (('race-ring-34) (set! (-> obj rot-y) 3000.0))
+    (('race-ring-35) (set! (-> obj rot-y) 32000.0))
+    (('race-ring-39) (set! (-> obj rot-y) 0.0))
+    (('race-ring-40) (set! (-> obj rot-y) 17000.0))
+    (('race-ring-41) (set! (-> obj rot-y) 0.0))
+    (('race-ring-42) (set! (-> obj rot-y) 0.0))
+    (('race-ring-43) (set! (-> obj rot-y) 0.0))
+    (('race-ring-44) (set! (-> obj rot-y) 12000.0))
+    (('race-ring-45) (set! (-> obj rot-y) 20000.0))
+    (('race-ring-46) (set! (-> obj rot-y) 17000.0))
+    (('race-ring-47) (set! (-> obj rot-y) 28000.0))
+    (('race-ring-48) (set! (-> obj rot-y) 12000.0))
+    (('race-ring-49) (set! (-> obj rot-y) 9000.0))
+    (('race-ring-50) (set! (-> obj rot-y) 9000.0))
+    (('race-ring-51) (set! (-> obj rot-y) 19000.0))
+    (('race-ring-52) (set! (-> obj rot-y) 2000.0))
+    (('race-ring-53) (set! (-> obj rot-y) 15000.0))
     )
   (none)
   )
@@ -2484,10 +2485,10 @@
       (vector-copy! dst (static-vector-meters -327.0  24.04 -1578.35))
       (set-vector-meters! (res-lump-struct (-> obj entity) 'movie-pos (vector) :time (the-as float -1000000000.0)) -327.0  24.04 -1578.35)
       )
-    ;; (('race-ring-53) ;; blue rings
-    ;;   (vector-copy! dst (static-vector-meters -327.0  24.04 -1578.35))
-    ;;   (set-vector-meters! (res-lump-struct (-> obj entity) 'movie-pos (vector) :time (the-as float -1000000000.0)) -327.0  24.04 -1578.35)
-    ;;   )
+    (('race-ring-53) ;; blue rings
+      (vector-copy! dst (static-vector-meters -283.21  21.30 -1516.39))
+      (set-vector-meters! (res-lump-struct (-> obj entity) 'movie-pos (vector) :time (the-as float -1000000000.0)) -283.21  21.30 -1516.39)
+      )
     (else
       (format #t "fuel movie override, didnt match parent ~A ~%" (-> (ppointer->process (-> obj parent)) name))
       ;; check grandparent
