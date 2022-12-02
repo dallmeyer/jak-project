@@ -2058,6 +2058,7 @@
     "$OUT/obj/plat-flip.o"
     "$OUT/obj/pelican.o"
     "$OUT/obj/mistycannon.o"
+    "$OUT/obj/rolling-race-ring.o"
     "$OUT/obj/sun-exit-chamber.o")
    "game/mods.gc"
   )

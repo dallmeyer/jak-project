@@ -948,6 +948,7 @@
     )
   )
 
+(define-extern mod-rotate-race-ring (function race-ring none))
 (defmethod init-from-entity! race-ring ((obj race-ring) (arg0 entity-actor))
   (let ((a0-1 arg0))
     (if (not (entity-actor-lookup a0-1 'next-actor 0))
@@ -1001,6 +1002,7 @@
       )
     )
   (+! (-> obj rot-y) (res-lump-float arg0 'rotoffset))
+  (mod-rotate-race-ring obj)
   (set-vector! (-> obj cyl axis) (cos (-> obj rot-y)) 0.0 (- (sin (-> obj rot-y))) 1.0)
   (vector+float*! (the-as vector (-> obj cyl)) (-> obj root trans) (-> obj cyl axis) -2048.0)
   (set! (-> obj cyl radius) 24576.0)
@@ -1018,18 +1020,28 @@
      )
     ((and (last-ring? obj) (= (get-task-status (-> obj entity extra perm task)) (task-status need-resolution)))
      (let ((s5-2 (new 'stack-no-clear 'vector)))
-       (logclear! (-> obj draw status) (draw-status hidden))
-       (ja-post)
-       (vector<-cspace! s5-2 (-> obj node-list data 5))
-       (logior! (-> obj draw status) (draw-status hidden))
-       (birth-pickup-at-point
-         s5-2
-         (pickup-type fuel-cell)
-         (the float (-> obj entity extra perm task))
-         #f
-         obj
-         (the-as fact-info #f)
-         )
+      (logclear! (-> obj draw status) (draw-status hidden))
+      (ja-post)
+      (case (-> obj name) :comp name=
+        (('race-ring-24)  ;; purple rings
+          (set-vector! s5-2 -327.0  24.04 -1578.35 1.0)
+          )
+        ;; (('race-ring-53)  ;; blue rings
+        ;;   (set-vector! s5-2 -329.93  24.89 -1575.64 1.0)
+        ;;   )
+        (else ;; shouldn't happen?
+          (vector<-cspace! s5-2 (-> obj node-list data 5))
+          )
+        )
+      (logior! (-> obj draw status) (draw-status hidden))
+      (birth-pickup-at-point
+        s5-2
+        (pickup-type fuel-cell)
+        (the float (-> obj entity extra perm task))
+        #f
+        obj
+        (the-as fact-info #f)
+        )
        )
      )
     ((and (last-ring? obj) (!= (get-task-status (-> obj entity extra perm task)) (task-status invalid)))
