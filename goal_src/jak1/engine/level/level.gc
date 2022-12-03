@@ -1064,7 +1064,7 @@
        'junglesnake 'darkvine 'ecovent 'mistycannon 'babak-with-cannon 'periscope 'springbox 
        'plant-boss 'warrior 'gambler 'pontoonten 'pontoonfive 'blue-eco-charger 'swamp-spike 
        'swamp-tetherrock 'swamp-rat-nest 'swamp-rock 'flutflut 'tar-plat 'balance-plat 'race-ring
-       'babak
+       'babak 'shortcut-boulder 'tntbarrel
        )
         (return #t)
         )
