@@ -973,6 +973,14 @@
     (('crate-3229) (set-vector-meters! (-> arg0 extra trans) -364.11  65.7 -1417.32)) ;; upper corner wall from jumps to orig lake cell 
     (('crate-3233) (set-vector-meters! (-> arg0 extra trans) -397.71  41.72 -1532.0)) ;; on upper wall from jumps to orig lake cell
 
+    ;; Mountain Pass orbs
+    ;; 186.17  34.45 -1885.66
+    ;; 174.42  34.37 -1873.34  
+    ;; 226.28  33.97 -1842.27  
+    ;; 243.30  35.69 -1871.53  
+    ;; 223.49  36.85 -1980.26  
+    ;; 191.53  36.59 -1990.15  
+
     ;; ~~~~ SCOUT FLIES ~~~~
     ;; Geyser flies
     (('crate-2960) (set-vector-meters! (-> arg0 extra trans) -1215.0 32.4 1008.4))   ;; up top on cell cutscene skip route
