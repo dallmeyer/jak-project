@@ -956,7 +956,7 @@
     (('crate-2207) (set-vector-meters! (-> arg0 extra trans) 33.3  42.5 -1356.4)  ;; after 180 in DMG, in pocket on right wall
       (quaternion-axis-angle! (-> arg0 quat) 1.0 0.0 0.0 (degrees 270))
       )  
-    (('crate-3213) (set-vector-meters! (-> arg0 extra trans) -49.64  43.30 -1396.2)) ;; after 180 in DMG, on left wall
+    (('crate-3213) (set-vector-meters! (-> arg0 extra trans) -49.64  43.0 -1396.2)) ;; after 180 in DMG, on left wall
     (('crate-3216) (set-vector-meters! (-> arg0 extra trans) 19.5  38.8 -1408.5)
       (quaternion-axis-angle! (-> arg0 quat) 1.0 0.0 0.0 (degrees 0))
       )
