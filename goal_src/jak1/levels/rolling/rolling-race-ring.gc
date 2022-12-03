@@ -770,7 +770,6 @@
            *entity-pool*
            (game-task none)
            )
-         (format 0 "losing race from timeout~%")
          (ambient-hint-spawn "st-lose" (the-as vector #f) *entity-pool* 'stinger)
          (let ((a1-2 (new 'stack-no-clear 'event-message-block)))
            (set! (-> a1-2 from) self)

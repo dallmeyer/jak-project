@@ -948,22 +948,30 @@
     (('money-3372) (set-vector-meters! (-> arg0 extra trans)  -135.04  50.5 -1789.34)) ;; extended/boosted from ^
 
     (('crate-2177) (set-vector-meters! (-> arg0 extra trans) 16.66  45.17 -1610.85)) ;; up high left near entrance - jump from bridge
-    ;; (('crate-2179) (set-vector-meters! (-> arg0 extra trans) )) ;;  
-    ;; (('crate-2180) (set-vector-meters! (-> arg0 extra trans) )) ;;  
-    ;; (('crate-2181) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2183) (set-vector-meters! (-> arg0 extra trans) )) ;;  
-    ;; (('crate-2186) (set-vector-meters! (-> arg0 extra trans) )) ;;  
-    ;; (('crate-2207) (set-vector-meters! (-> arg0 extra trans) )) ;;  
-    ;; (('crate-3213) (set-vector-meters! (-> arg0 extra trans) )) ;;  
-    ;; (('crate-3216) (set-vector-meters! (-> arg0 extra trans) )) ;;  
-    ;; (('crate-3218) (set-vector-meters! (-> arg0 extra trans) )) ;;  
-    ;; (('crate-3219) (set-vector-meters! (-> arg0 extra trans) )) ;;  
-    ;; (('crate-3221) (set-vector-meters! (-> arg0 extra trans) )) ;;  
-    ;; (('crate-3222) (set-vector-meters! (-> arg0 extra trans) )) ;;  
-    ;; (('crate-3223) (set-vector-meters! (-> arg0 extra trans) )) ;;  
-    ;; (('crate-3226) (set-vector-meters! (-> arg0 extra trans) )) ;;  
-    ;; (('crate-3229) (set-vector-meters! (-> arg0 extra trans) )) ;;  
-    ;; (('crate-3233) (set-vector-meters! (-> arg0 extra trans) )) ;;  
+    (('crate-2179) (set-vector-meters! (-> arg0 extra trans) -137.60  28.78 -1763.04)) ;; up ledge in early DMG 
+    (('crate-2180) (set-vector-meters! (-> arg0 extra trans) -164.16  48.0 -1655.0)) ;; side of 1st bridge in DMG (turn around and ramp right before bridge)
+    (('crate-2181) (set-vector-meters! (-> arg0 extra trans) -160.99  48.3 -1485.0)) ;; corner of 2nd bridge in DMG (either ramp off lurker or right before bridge forward)
+    (('crate-2183) (set-vector-meters! (-> arg0 extra trans) -173.02  47.0 -1407.5)) ;; on wall in 180 during DMG
+    (('crate-2186) (set-vector-meters! (-> arg0 extra trans) 74.0  29.50 -1471.31)) ;; in corner before pushers at end of DMG 
+    (('crate-2207) (set-vector-meters! (-> arg0 extra trans) 33.3  42.5 -1356.4)  ;; after 180 in DMG, in pocket on right wall
+      (quaternion-axis-angle! (-> arg0 quat) 1.0 0.0 0.0 (degrees 270))
+      )  
+    (('crate-3213) (set-vector-meters! (-> arg0 extra trans) -49.64  43.30 -1396.2)) ;; after 180 in DMG, on left wall
+    (('crate-3216) (set-vector-meters! (-> arg0 extra trans) 19.5  38.8 -1408.5)
+      (quaternion-axis-angle! (-> arg0 quat) 1.0 0.0 0.0 (degrees 0))
+      )
+    (('crate-3218) (set-vector-meters! (-> arg0 extra trans)  99.16   4.00 -1605.38)) ;; left of start  
+    (('crate-3219) (set-vector-meters! (-> arg0 extra trans) -401.8  26.4 -1738.85) ;; on wall behind dark plants
+      (quaternion-axis-angle! (-> arg0 quat) 1.0 0.0 0.0 (degrees 270))
+      )
+    (('crate-3221) (set-vector-meters! (-> arg0 extra trans) -397.6  28.8 -1648.50)) ;; on wall near green eco
+    (('crate-3222) (set-vector-meters! (-> arg0 extra trans) -249.8  24.8 -1564.3)) ;; in corner by lake
+    (('crate-3223) (set-vector-meters! (-> arg0 extra trans) -267.1  40.73 -1411.46)  ;; on wall near jumps to orig lake cell
+      (quaternion-axis-angle! (-> arg0 quat) 1.0 0.0 0.0 (degrees 300))
+      )
+    (('crate-3226) (set-vector-meters! (-> arg0 extra trans) -317.76  42.53 -1439.66)) ;; mid section of platform in jumps to orig lake cell
+    (('crate-3229) (set-vector-meters! (-> arg0 extra trans) -364.11  65.7 -1417.32)) ;; upper corner wall from jumps to orig lake cell 
+    (('crate-3233) (set-vector-meters! (-> arg0 extra trans) -397.71  41.72 -1532.0)) ;; on upper wall from jumps to orig lake cell
 
     ;; ~~~~ SCOUT FLIES ~~~~
     ;; Geyser flies
