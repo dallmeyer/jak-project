@@ -15,6 +15,24 @@
     (when (process-by-ename "money-4882") ;; in cave in MP, between stalag/stalac
       (set! (-> (the money (process-by-ename "money-4882")) bob-amount) 0.0)
       )
+      
+    ;; eco-255 ;; blue
+    ;; eco-270
+    ;; eco-271
+    ;; eco-298
+    ;; eco-299
+    ;; eco-300
+    ;; eco-301
+    ;; eco-302
+    ;; eco-303
+
+    ;; ecovent-263 ;; yellow
+
+    ;; ecovent-258 ;; blue
+    ;; ecovent-259
+    ;; ecovent-260
+    ;; ecovent-261
+    ;; ecovent-264
     )
   )
   
@@ -84,25 +102,6 @@
     (('shortcut-boulder-1) (set-vector-meters! (-> arg0 extra trans) 441.75  34.86 -3243.89)) ;; blocking path at start of tunnel (can jump around)
     (('racer-14) (set-vector-meters! (-> arg0 extra trans) 171.53  37.33 -2187.81)) ;; in place of ecovent early into MP
     (('plunger-lurker-3) (set-vector-meters! (-> arg0 extra trans) 339.90  34.73 -3184.80)) ;; in place of backwards cell
-    
-    ;; eco-255 ;; blue
-    ;; eco-270
-    ;; eco-271
-    ;; eco-298
-    ;; eco-299
-    ;; eco-300
-    ;; eco-301
-    ;; eco-302
-    ;; eco-303
-
-    ;; ecovent-263 ;; yellow
-
-    ;; ecovent-258 ;; blue
-    ;; ecovent-259
-    ;; ecovent-260
-    ;; ecovent-261
-    ;; ecovent-264
-
 
     ;; (('tntbarrel-220) (set-vector-meters! (-> arg0 extra trans) 94.21  34.8 -2419.80))  ;; 
     ;; (('tntbarrel-221) (set-vector-meters! (-> arg0 extra trans) 94.21  34.8 -2409.80))  ;; 

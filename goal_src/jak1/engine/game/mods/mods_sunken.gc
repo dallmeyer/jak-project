@@ -29,6 +29,10 @@
           )
         )
       )
+    ;; ecovent-238
+    ;; ecovent-239
+    ;; ecovent-240
+    ;; ecovent-241
     )
   )
 
@@ -363,10 +367,6 @@
     (('blue-eco-charger-7) (set-vector-meters! (-> arg0 extra trans) 577.27 -255.74 -1742.28)) ;; in shocky water between elevator and slide 2
     (('blue-eco-charger-9) (set-vector-meters! (-> arg0 extra trans) 586.13 -251.76 -1770.56)) ;; in shocky water in room before slide 2
     (('blue-eco-charger-10) (set-vector-meters! (-> arg0 extra trans) 573.24 -238.99 -1791.49)) ;; orig scout fly in room before slide 2
-    ;; ecovent-238
-    ;; ecovent-239
-    ;; ecovent-240
-    ;; ecovent-241
     ;; launcher-115
     ;; launcher-116
     
