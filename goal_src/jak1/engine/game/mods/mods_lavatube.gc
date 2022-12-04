@@ -1,0 +1,24 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(defmacro mod-lavatube-run-each-frame ()
+  `(begin
+
+    )
+  )
+  
+(defmacro mod-lavatube-override-init-position (obj arg0)
+  `(case (-> obj name) :comp name=
+    ;; ORBS
+    
+
+    ;; FLIES
+    
+    
+    ;; CELLS
+    
+    
+    ;; MISC
+    
+    )
+  )

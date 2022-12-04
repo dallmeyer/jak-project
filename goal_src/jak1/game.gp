@@ -2060,7 +2060,23 @@
     "$OUT/obj/mistycannon.o"
     "$OUT/obj/rolling-race-ring.o"
     "$OUT/obj/sun-exit-chamber.o")
-   "game/mods.gc"
+   "game/mods/mods_training.gc"
+   "game/mods/mods_village1.gc"
+   "game/mods/mods_jungle.gc"
+   "game/mods/mods_beach.gc"
+   "game/mods/mods_misty.gc"
+   "game/mods/mods_firecanyon.gc"
+   "game/mods/mods_village2.gc"
+   "game/mods/mods_sunken.gc"
+   "game/mods/mods_swamp.gc"
+   "game/mods/mods_rolling.gc"
+   "game/mods/mods_ogre.gc"
+   "game/mods/mods_village3.gc"
+   "game/mods/mods_snowy.gc"
+   "game/mods/mods_cave.gc"
+   "game/mods/mods_lavatube.gc"
+   "game/mods/mods_citadel.gc"
+   "game/mods/mods.gc"
   )
 ;; the debug menu is modified to include PC specific options:
 (goal-src "engine/debug/default-menu.gc" "anim-tester-x" "part-tester")

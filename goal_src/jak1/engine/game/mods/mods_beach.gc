@@ -1,0 +1,292 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(defmacro mod-beach-run-each-frame ()
+  `(begin 
+    (when (process-by-ename "ecovent-200")  ;; near pelican nest (needs blue eco switch)
+      (let ((obj (the ecovent (process-by-ename "ecovent-200"))))
+        (set-vector-meters! (-> obj root trans) -159.30  11.55 -413.73)
+        (set-vector-meters! (-> obj root-override trans) -159.30  11.55 -413.73)
+        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -159.30  11.55 -413.73)
+        )
+      )
+    (when (process-by-ename "ecovent-48")  ;; on first pillar to cannon tower (doesn't need blue eco switch)
+      (let ((obj (the ecovent (process-by-ename "ecovent-48"))))
+        (set-vector-meters! (-> obj root trans) -236.30  28.84 -384.32)
+        (set-vector-meters! (-> obj root-override trans) -236.30  28.84 -384.32)
+        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -236.30  28.84 -384.32)
+        )
+      )
+    (when (process-by-ename "ecovent-54")  ;; green eco vent - 
+      (let ((obj (the ecovent (process-by-ename "ecovent-54"))))
+        (set-vector-meters! (-> obj root trans) -432.66   0.32 -505.24)
+        (set-vector-meters! (-> obj root-override trans) -432.66   0.32 -505.24)
+        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -432.66   0.32 -505.24)
+        )
+      )
+    (when (process-by-ename "ecovent-50")  ;; green eco vent - 
+      (let ((obj (the ecovent (process-by-ename "ecovent-50"))))
+        (set-vector-meters! (-> obj root trans) -272.97  43.48 -285.84)
+        (set-vector-meters! (-> obj root-override trans) -272.97  43.48 -285.84)
+        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -272.97  43.48 -285.84)
+        )
+      )
+    (when (process-by-ename "ecovent-53")  ;; green eco vent - 
+      (let ((obj (the ecovent (process-by-ename "ecovent-53"))))
+        (set-vector-meters! (-> obj root trans) -58.11   4.39 -353.60)
+        (set-vector-meters! (-> obj root-override trans) -58.11   4.39 -353.60)
+        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -58.11   4.39 -353.60)
+        )
+      )
+    (when (process-by-ename "ecovent-51")  ;; green eco vent - 
+      (let ((obj (the ecovent (process-by-ename "ecovent-51"))))
+        (set-vector-meters! (-> obj root trans) -244.20  30.72 -332.46)
+        (set-vector-meters! (-> obj root-override trans) -244.20  30.72 -332.46)
+        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -244.20  30.72 -332.46)
+        )
+      )
+    (when (process-by-ename "ecovent-52")  ;; green eco vent - 
+      (let ((obj (the ecovent (process-by-ename "ecovent-52"))))
+        (set-vector-meters! (-> obj root trans) -293.98   6.13 -413.64)
+        (set-vector-meters! (-> obj root-override trans) -293.98   6.13 -413.64)
+        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -293.98   6.13 -413.64)
+        )
+      )
+    (when (process-by-ename "pelican-1") 
+      (let ((obj (the pelican (process-by-ename "pelican-1"))))
+        (set-vector-meters! (-> obj state-vector) -256.17  28.28 -465.54)  ;; "nesting" on high plateau above grotto
+        (when (and (name= (-> obj state name) 'pelican-wait-at-nest)
+                  (vector= (-> obj root-override trans) (-> obj state-vector)))
+            (set! (-> obj root rot x) 0.01) ;; level out
+            (set! (-> obj root rot z) -0.01) ;; level out
+          )
+        )
+      )
+    (when (process-by-ename "mistycannon-4")
+      (let ((obj (the mistycannon (process-by-ename "mistycannon-4"))))
+        (set! (-> obj rotate min) 40000.0) ;; aim at beach
+        (set! (-> obj rotate range) 0.0)  ;; allow 360 spin 
+        )
+      )
+    (when (process-by-ename "eco-82")  ;; blue - snake pit near entrance
+      (mod-move-eco (the eco (process-by-ename "eco-82")) (static-vector-meters -171.11   3.0 -225.54))
+      )
+    (when (process-by-ename "eco-6")  ;; blue - snake pit near mid windmill
+      (mod-move-eco (the eco (process-by-ename "eco-6")) (static-vector-meters -98.41   3.0 -360.76))
+      )
+    (when (process-by-ename "eco-83")  ;; blue - orig orb cache near orig flutflutegg nest
+      (mod-move-eco (the eco (process-by-ename "eco-83")) (static-vector-meters -52.43  42.5 -300.91))
+      )
+    (when (process-by-ename "eco-84")  ;; blue - on beach near grotto entrance
+      (mod-move-eco (the eco (process-by-ename "eco-84")) (static-vector-meters -173.30   2.0 -473.25))
+      )
+    )
+  )
+
+(defmacro mod-beach-override-init-position (obj arg0)
+  `(case (-> obj name) :comp name=
+    ;; ORBS
+    (('money-627) (set-vector-meters! (-> arg0 extra trans) -136.2 9.5 -148.1)) ;; outside of arch rock near entrance
+    (('money-628) (set-vector-meters! (-> arg0 extra trans) -79.7 14.7 -176.0)) ;; pocket in rock on inner wall near entrance
+    (('money-629) (set-vector-meters! (-> arg0 extra trans) -244.5 3.8 -289.4)) ;; base of cannon tower
+    (('money-630) (set-vector-meters! (-> arg0 extra trans) -262.0 12.7 -262.6)) ;; side of mid cannon tower
+    (('money-631) (set-vector-meters! (-> arg0 extra trans) -287.3 13.0 -304.3)) ;; side of mid cannon tower
+    (('money-632) (set-vector-meters! (-> arg0 extra trans) -291.0 30.5 -272.2)) ;; back of mid cannon tower
+    (('money-633) (set-vector-meters! (-> arg0 extra trans) -260.6 24.7 -299.0)) ;; slightly inside center window cannon tower
+    (('money-634) (set-vector-meters! (-> arg0 extra trans) -286.2 25.7 -299.5)) ;; slightly inside side window cannon tower
+    (('money-635) (set-vector-meters! (-> arg0 extra trans) -262.5 27.0 -270.6)) ;; slightly inside side window cannon tower
+    (('money-636) (set-vector-meters! (-> arg0 extra trans) -265.1 40.0 -297.8)) ;; just under top of cannon tower floor
+    (('money-637) (set-vector-meters! (-> arg0 extra trans) -261.2 39.2 -270.1)) ;; side of top cannon tower
+    (('money-638) (set-vector-meters! (-> arg0 extra trans) -289.6 47.8 -281.9)) ;; behind steering wheel(?) at top of cannon tower
+    (('money-639) (set-vector-meters! (-> arg0 extra trans) -275.2 20.5 -285.0)) ;; actually inside cannon tower
+    (('money-640) (set-vector-meters! (-> arg0 extra trans) -327.7 -2.5 -368.6)) ;; in water behind first sentinel
+    (('money-641) (set-vector-meters! (-> arg0 extra trans) -305.4 1.2 -382.5)) ;; in crack behind first sentinel
+    (('money-642) (set-vector-meters! (-> arg0 extra trans) -309.5 14.5 -388.2)) ;; ceiling behind first sentinel
+    (('money-643) (set-vector-meters! (-> arg0 extra trans) -300.8 34.5 -387.6)) ;; very top of first sentinel
+    (('money-644) (set-vector-meters! (-> arg0 extra trans) -329.8 21.7 -395.5)) ;; above tree near first sentinel
+    (('money-645) (set-vector-meters! (-> arg0 extra trans) -352.5 37.5 -435.3)) ;; very top of second sentinel
+    (('money-646) (set-vector-meters! (-> arg0 extra trans) -363.6 10.4 -431.7)) ;; behind second sentinel
+    (('money-647) (set-vector-meters! (-> arg0 extra trans) -358.2 10.4 -423.9)) ;; behind second sentinel
+    (('money-648) (set-vector-meters! (-> arg0 extra trans) -355.1 2.0 -455.1)) ;; behind tree near second sentinel
+    (('money-649) (set-vector-meters! (-> arg0 extra trans) -320.6 5.0 -474.0)) ;; gap between second sentinel and circular stone
+    (('money-650) (set-vector-meters! (-> arg0 extra trans) -419.5 37.4 -475.7)) ;; very top of third sentinel
+    (('money-651) (set-vector-meters! (-> arg0 extra trans) -426.1 14.5 -469.7)) ;; behind third sentinel
+    (('money-652) (set-vector-meters! (-> arg0 extra trans) -396.7 16.5 -464.2)) ;; tree near third sentinel
+    (('money-653) (set-vector-meters! (-> arg0 extra trans) -325.6 2.5 -542.2)) ;; in shrubs near back wall, third sentinel
+    (('money-654) (set-vector-meters! (-> arg0 extra trans) -298.0 3.5 -519.5)) ;; bottom left of back cog lift
+    (('money-655) (set-vector-meters! (-> arg0 extra trans) -429.7 4.5 -545.8)) ;; in crack in rocks past third sentinel
+    (('money-656) (set-vector-meters! (-> arg0 extra trans) -380.8 19.0 -544.0)) ;; on ledge in back rock wall near third sentinel
+    (('money-657) (set-vector-meters! (-> arg0 extra trans) -459.9 -3.0 -547.5)) ;; end of rocks under water, very end of beach
+    (('money-658) (set-vector-meters! (-> arg0 extra trans) -449.8 8.3 -564.5)) ;; swim around corner of rocks, very end of the beach
+    (('money-660) (set-vector-meters! (-> arg0 extra trans) -262.1 18.0 -452.3)) ;; back of mesa with orig scout fly
+    (('money-661) (set-vector-meters! (-> arg0 extra trans) -280.9 18.0 -492.8)) ;; between trees near rear windmill
+    (('money-662) (set-vector-meters! (-> arg0 extra trans) -273.1 27.5 -498.9)) ;; roof of rear windmill
+    (('money-663) (set-vector-meters! (-> arg0 extra trans) -211.6 21.6 -574.9)) ;; in wall behind orig eco blockers 
+    (('money-664) (set-vector-meters! (-> arg0 extra trans) -239.7 -3.8 -400.2)) ;; in water next to lowest launcher
+    (('money-665) (set-vector-meters! (-> arg0 extra trans) -220.1 8.3 -494.1)) ;; in shrubs in crack near front of grotto
+    (('money-666) (set-vector-meters! (-> arg0 extra trans) -251.9 10.5 -478.0)) ;; in ceiling in grotto
+    (('money-667) (set-vector-meters! (-> arg0 extra trans) -129.6 7.0 -493.0)) ;; on ledge in waterfall
+    (('money-668) (set-vector-meters! (-> arg0 extra trans) -142.8 7.5 -473.0)) ;; on ledge under bridge near waterfall
+    (('money-669) (set-vector-meters! (-> arg0 extra trans) -99.4 12.0 -422.8)) ;; in/behind mid cog lift
+    (('money-670) (set-vector-meters! (-> arg0 extra trans) -55.9 32.0 -260.4)) ;; on ledge past flutflut egg
+    (('money-671) (set-vector-meters! (-> arg0 extra trans) -109.4 17.0 -308.1)) ;; ledge near scout fly below flutflut
+    (('money-672) (set-vector-meters! (-> arg0 extra trans) -76.6 16.7 -282.4)) ;; behind trees below flutflut
+    (('money-673) (set-vector-meters! (-> arg0 extra trans) -44.2 5.4 -359.3)) ;; in gap between cliffs where orig cell is
+    (('money-674) (set-vector-meters! (-> arg0 extra trans) -81.5 2.8 -379.4)) ;; near bottom of steps with all the orbs on them
+    (('money-675) (set-vector-meters! (-> arg0 extra trans) -155.1 21.0 -256.6)) ;; rocks on top near front windmill beachside
+    (('money-676) (set-vector-meters! (-> arg0 extra trans) -125.0 23.5 -233.5)) ;; front windmill roof
+    (('money-677) (set-vector-meters! (-> arg0 extra trans) -121.6 26.0 -236.0)) ;; front windmill roof
+    (('money-678) (set-vector-meters! (-> arg0 extra trans) -112.4 26.0 -233.0)) ;; front windmill roof
+    (('money-679) (set-vector-meters! (-> arg0 extra trans) -104.0 16.5 -222.7)) ;; rocks on top near front windmill cliffside
+    (('money-680) (set-vector-meters! (-> arg0 extra trans) -286.7 -2.5 -255.9)) ;; back of cannon tower in water
+    (('money-681) (set-vector-meters! (-> arg0 extra trans) -303.1 2.5 -282.9)) ;; back of cannon tower on rocks
+    (('money-682) (set-vector-meters! (-> arg0 extra trans) -151.0 5.0 -410.8)) ;; side of pelican island
+    (('money-683) (set-vector-meters! (-> arg0 extra trans) -82.8 29.5 -425.2)) ;; top of middle windmill
+    (('money-684) (set-vector-meters! (-> arg0 extra trans) -224.5 33.0 -371.8)) ;; between pillar jumps to cannon
+    (('money-685) (set-vector-meters! (-> arg0 extra trans) -226.5 33.0 -345.1)) ;; between pillar jumps to cannon
+    (('money-686) (set-vector-meters! (-> arg0 extra trans) -252.5 42.0 -320.1)) ;; between cannon and pillar
+    (('money-687) (set-vector-meters! (-> arg0 extra trans) -93.3 15.3 -201.9)) ;; on ledge in corner near entrance
+    (('money-688) (set-vector-meters! (-> arg0 extra trans) -255.8 38.5 -293.6)) ;; plank at top of cannon tower
+    (('money-689) (set-vector-meters! (-> arg0 extra trans) -254.41 38.5 -285.56)) ;; ^
+    (('money-690) (set-vector-meters! (-> arg0 extra trans) -256.27 38.7 -278.13)) ;; ^
+    (('money-691) (set-vector-meters! (-> arg0 extra trans) -268.25 39.3 -266.65)) ;; ^
+    (('money-692) (set-vector-meters! (-> arg0 extra trans) -275.94 39.5 -266.27)) ;; ^
+    (('money-693) (set-vector-meters! (-> arg0 extra trans) -283.00 39.1 -267.55 )) ;; ^
+    (('money-694) (set-vector-meters! (-> arg0 extra trans) -288.75 39.2 -272.94)) ;; ^
+    (('money-695) (set-vector-meters! (-> arg0 extra trans) -291.91 39.5 -279.87)) ;; ^
+    (('money-696) (set-vector-meters! (-> arg0 extra trans) -292.69 39.1 -289.65)) ;; ^
+    (('money-697) (set-vector-meters! (-> arg0 extra trans) -289.44 39.2 -297.26 )) ;; ^
+    (('money-698) (set-vector-meters! (-> arg0 extra trans) -283.19 39.5 -302.35)) ;; ^
+    (('money-1463) (set-vector-meters! (-> arg0 extra trans) -275.61 39.1 -304.98)) ;; ^
+    (('money-1464) (set-vector-meters! (-> arg0 extra trans) -267.86 37.95 -304.68)) ;; ^
+    (('money-1465) (set-vector-meters! (-> arg0 extra trans) -276.11  40.53 -299.4)) ;; top of cannon tower, hint to get inside
+    (('money-1466) (set-vector-meters! (-> arg0 extra trans) -220.80  30.0 -482.18 )) ;; above tree near grotto entrance
+      (('grottopole-11) (set-vector-meters! (-> arg0 extra trans) -233.49  19.0 -489.96)) ;; moved towards grotto entrance
+    (('money-1467) (set-vector-meters! (-> arg0 extra trans) -275.49  31.22 -503.35)) ;; rear windmill upper section
+    (('money-1468) (set-vector-meters! (-> arg0 extra trans) -117.30  91.47 -494.47)) ;; top of waterfall (use launcher-18)
+    (('money-2641) (set-vector-meters! (-> arg0 extra trans) -117.30  74.47 -494.47)) ;; top of waterfall (use launcher-18)
+    (('money-2643) (set-vector-meters! (-> arg0 extra trans) -117.30  57.47 -494.47)) ;; top of waterfall (use launcher-18)
+    (('money-2644) (set-vector-meters! (-> arg0 extra trans) -117.30  40.47 -494.47)) ;; top of waterfall (use launcher-18)
+      (('launcher-18) (set-vector-meters! (-> arg0 extra trans) -117.30  28.76 -494.47))  ;; behind waterfall, can use to climb
+    (('money-2645) (set-vector-meters! (-> arg0 extra trans) -233.61  54.0 -550.49)) ;; near cell above orig blockers (use launcher-16)
+    (('money-2646) (set-vector-meters! (-> arg0 extra trans) -218.62  55.0 -563.39)) ;; near cell above orig blockers (use launcher-16)
+    (('money-2647) (set-vector-meters! (-> arg0 extra trans) -242.69  43.78 -536.08)) ;; drop down from ^
+    (('money-2648) (set-vector-meters! (-> arg0 extra trans) -232.86  42.2 -544.59)) ;; ^
+    (('money-2649) (set-vector-meters! (-> arg0 extra trans) -75.56  44.55 -275.70)) ;; above trees near orig flutflutegg nest
+    (('money-2651) (set-vector-meters! (-> arg0 extra trans) -162.36 20.55 -423.55)) ;; above pelican nest hinting launcher/cell
+    (('money-2664) (set-vector-meters! (-> arg0 extra trans) -162.36 40.55 -423.55)) ;; above pelican nest hinting launcher/cell
+    (('money-2665) (set-vector-meters! (-> arg0 extra trans) -162.36 60.55 -423.55)) ;; above pelican nest hinting launcher/cell
+    (('money-2666) (set-vector-meters! (-> arg0 extra trans) -162.36 80.55 -423.55)) ;; above pelican nest hinting launcher/cell
+    (('money-2667) (set-vector-meters! (-> arg0 extra trans) -162.36 100.55 -423.55)) ;; above pelican nest hinting launcher/cell
+    (('money-2668) (set-vector-meters! (-> arg0 extra trans) -222.61  30.72 -539.01)) ;; above orig blocker hinting launcher/cell
+    (('money-3823) (set-vector-meters! (-> arg0 extra trans) -222.61  50.72 -539.01)) ;; above orig blocker hinting launcher/cell
+    (('money-3824) (set-vector-meters! (-> arg0 extra trans) -222.61  70.72 -539.01)) ;; above orig blocker hinting launcher/cell
+    (('money-3825) (set-vector-meters! (-> arg0 extra trans) -222.61  90.72 -539.01)) ;; above orig blocker hinting launcher/cell
+    (('money-3826) (set-vector-meters! (-> arg0 extra trans) -222.61  110.72 -539.01)) ;; above orig blocker hinting launcher/cell
+    (('money-3827) (set-vector-meters! (-> arg0 extra trans) -195.69  20.0 -232.32)) ;; above launcher in snake pit near entrance
+    (('money-4050) (set-vector-meters! (-> arg0 extra trans) -195.69  40.0 -232.32)) ;; above launcher in snake pit near entrance
+    (('money-4051) (set-vector-meters! (-> arg0 extra trans) -195.69  60.0 -232.32)) ;; above launcher in snake pit near entrance
+    (('money-4052) (set-vector-meters! (-> arg0 extra trans) -195.69  80.0 -232.32)) ;; above launcher in snake pit near entrance
+    (('money-2650) (set-vector-meters! (-> arg0 extra trans) -195.69  100.0 -232.32)) ;; above launcher in snake pit near entrance
+    (('money-4053) (set-vector-meters! (-> arg0 extra trans) -319.3  10.3 -457.0)) ;; in 69 crates
+    (('money-4054) (set-vector-meters! (-> arg0 extra trans) -323.6  10.3 -464.7)) ;; in 69 crates
+    (('money-4055) (set-vector-meters! (-> arg0 extra trans) -359.68  23.7 -429.36)) ;; in crates atop second sentinel
+    (('crate-2315) (set-vector-meters! (-> arg0 extra trans) -144.14  15.38 -251.77)) ;; orbs - rocks front windmill
+    (('crate-2316) (set-vector-meters! (-> arg0 extra trans) -81.93   8.79 -366.18)) ;; orbs - on steps near mid windmill (behind tree from cannon POV)
+    (('crate-2318) (set-vector-meters! (-> arg0 extra trans) -78.33  42.88 -479.50)) ;; orbs - up on waterfall cliff among scout flies
+    (('crate-2319) (set-vector-meters! (-> arg0 extra trans) -189.78  17.33 -503.49)) ;; orbs - near orig blockers
+    (('crate-2320) (set-vector-meters! (-> arg0 extra trans) -170.95   5.04 -411.53)) ;; orbs - steps to pelican island
+    (('crate-2321) (set-vector-meters! (-> arg0 extra trans) -207.52  29.86 -349.75)) ;; orbs - on mid pillar to cannon tower
+    (('crate-3211) (set-vector-meters! (-> arg0 extra trans) -252.65  16.38 -292.67)) ;; orbs - cannon tower, left of center window
+    (('crate-3212) (set-vector-meters! (-> arg0 extra trans) -262.45  16.43 -305.34)) ;; orbs - cannon tower, right of center window
+    (('orb-cache-top-24) (set-vector-meters! (-> arg0 extra trans) -194.13  -1.02 -377.14))  ;; underwater "bridge"
+    (('orb-cache-top-25) ;; on ledge against wall above grotto where orig scout fly
+      (set-vector-meters! (-> arg0 extra trans) -253.65  27.51 -526.48)
+      (set! (-> (the-as vector (-> arg0 quat)) x) 0.0)  ;; (orig tilted slightly on pelican island)
+      (set! (-> (the-as vector (-> arg0 quat)) z) 0.0)
+      )
+    
+    ;; FLIES
+    (('crate-213) (set-vector-meters! (-> arg0 extra trans) -86.3 41.4 -481.2)) ;; climb up precursor wall
+    (('crate-646) (set-vector-meters! (-> arg0 extra trans) -69.7 36.1 -468.4)) ;; climb up precursor wall
+    (('crate-647) (set-vector-meters! (-> arg0 extra trans) -72.0 42.0 -478.0)) ;; climb up precursor wall
+    (('crate-648) (set-vector-meters! (-> arg0 extra trans) -116.1 25.2 -489.8)) ;; behind waterfall
+    (('crate-649) (set-vector-meters! (-> arg0 extra trans) -143.2 37.9 -517.4)) ;; climb up precursor wall, closer to blockers
+      (('crate-205) (set-vector-meters! (-> arg0 extra trans) -139.3 27.5 -513.4)) ;; green eco to assist with climb
+      (('crate-206) (set-vector-meters! (-> arg0 extra trans) -139.3 29.5 -513.4)) ;; green eco to assist with climb
+    (('crate-651) (set-vector-meters! (-> arg0 extra trans) -74.2 32.0 -469.7)) ;; in crack on precursor wall
+    (('crate-2467) (set-vector-meters! (-> arg0 extra trans) -61.1 34.3 -461.7)) ;; climb up precursor wall
+    
+    ;; CELLS
+    (('fuel-cell-40) (override-fuel-cell-position arg0 -162.36 110.55 -423.55)) ;; way above pelican nest
+      (('launcher-17) (set-vector-meters! (-> arg0 extra trans) -162.37  11.66 -423.56))
+    (('fuel-cell-42) (override-fuel-cell-position arg0 -242.66  56.0 -543.86)) ;; on rocks above orig eco blockers (use launcher-16)
+      (('launcher-16) (set-vector-meters! (-> arg0 extra trans) -222.81  19.74 -539.16))
+    (('launcher-19) (set-vector-meters! (-> arg0 extra trans) -194.53   0.82 -231.69))  ;; beach near entrance
+    (('pelican-1) (set-vector-meters! (-> arg0 extra trans) -109.22  18.42 -258.75))  ;; initial spawn for cell below orig flutflutegg
+      ;; pelican cell spit location - baked into animation? fuck it
+    (('mistycannon-4) (set-vector-meters! (-> arg0 extra trans) -108.83  23.17 -301.30)) ;; where orig scout fly below flutflutegg
+      (('babak-with-cannon-1) (set-vector-meters! (-> arg0 extra trans) -94.06  20.04 -289.38))
+    (('flutflutegg-1) (set-vector-meters! (-> arg0 extra trans)  -257.13  27.93 -504.33)) ;; on grottopole-1 (see next line of code)
+      (('grottopole-1) (set-vector-meters! (-> arg0 extra trans) -257.13  27.93 -504.33)) ;; on ledge near sentinels where orig scout fly is
+      (('bird-lady-beach-1) (set-vector-meters! (-> arg0 extra trans) -255.48  -0.98 -488.53)) ;; below ^ in grotto
+    (('seagullflock-1) (set! (-> arg0 extra perm user-int8 0) 2)) ;; start on 3rd sentinel
+    (('harvester-90) (set-vector-meters! (-> arg0 extra trans) -432.66   0.32 -505.24)) ;; ecovent-54 - past third sentinel on beach
+      (('ecoventrock-7) (set-vector-meters! (-> arg0 extra trans) -432.66   0.32 -505.24))
+    (('harvester-91) (set-vector-meters! (-> arg0 extra trans) -272.97  43.48 -285.84)) ;; ecovent-50 - cannon tower
+      (('ecoventrock-3) (set-vector-meters! (-> arg0 extra trans) -272.97  43.48 -285.84))
+    (('harvester-89) (set-vector-meters! (-> arg0 extra trans) -58.11   4.39 -353.60))  ;; ecovent-53 - in gap where orig cell is
+      (('ecoventrock-6) (set-vector-meters! (-> arg0 extra trans) -58.11   4.39 -353.60))
+    (('harvester-87) (set-vector-meters! (-> arg0 extra trans) -244.20  30.72 -332.46)) ;; ecovent-51 - third pillar towards cannon tower
+      (('ecoventrock-4) (set-vector-meters! (-> arg0 extra trans) -244.20  30.72 -332.46))
+    (('harvester-88) (set-vector-meters! (-> arg0 extra trans) -293.98   6.13 -413.64)) ;; ecovent-52 - first sentinel
+      (('ecoventrock-5) (set-vector-meters! (-> arg0 extra trans) -293.98   6.13 -413.64))
+    
+    ;; MISC
+    (('crate-212) (set-vector-meters! (-> arg0 extra trans) -212.35  29.96 -361.29)) ;; blue eco - mid pillar toward cannon tower
+    (('crate-2463) (set-vector-meters! (-> arg0 extra trans)  -286.00  31.52 -301.73)) ;; blue eco - cannon tower, top of right window
+    (('crate-2471) (set-vector-meters! (-> arg0 extra trans) -260.38  32.27 -270.48)) ;; blue eco - cannon tower, top of left window
+    ;; 3 cols x 10 rows for crate writings
+    (('crate-2317) (set-vector-meters! (-> arg0 extra trans) -321.6  9.8  -469.2) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel (skipped 1 row before this)
+    (('crate-2457) (set-vector-meters! (-> arg0 extra trans) -322.7  9.8  -468.2) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
+    (('crate-2458) (set-vector-meters! (-> arg0 extra trans) -323.8  9.8  -467.3) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
+    (('crate-2459) (set-vector-meters! (-> arg0 extra trans) -324.9  9.8  -466.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
+    (('crate-2460) (set-vector-meters! (-> arg0 extra trans) -326.1  9.8  -465.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
+    (('crate-2461) (set-vector-meters! (-> arg0 extra trans) -327.2  9.8  -464.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
+    (('crate-2462) (set-vector-meters! (-> arg0 extra trans) -328.3  9.8  -463.6) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
+    (('crate-2464) (set-vector-meters! (-> arg0 extra trans) -329.4  9.8  -462.6) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel (skip 1 row after this)
+    (('crate-2465) (set-vector-meters! (-> arg0 extra trans) -319.2  9.8  -468.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col2 on second sentinel (skip 3 rows after this)
+    (('crate-2466) (set-vector-meters! (-> arg0 extra trans) -323.6  9.8  -464.7) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col2 on second sentinel (skip 4 rows after this)
+    (('crate-2468) (set-vector-meters! (-> arg0 extra trans) -329.1  9.8  -460.0) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col2 on second sentinel
+    (('crate-2469) (set-vector-meters! (-> arg0 extra trans) -317.8  9.8  -466.8) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel (skip 4 rows after this)
+    (('crate-2470) (set-vector-meters! (-> arg0 extra trans) -323.3  9.8  -462.1) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel 
+    (('crate-200) (set-vector-meters! (-> arg0 extra trans)  -324.4  9.8  -461.1) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel 
+    (('crate-201) (set-vector-meters! (-> arg0 extra trans)  -325.6  9.8  -460.2) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel 
+    (('crate-202) (set-vector-meters! (-> arg0 extra trans)  -326.7  9.8  -459.2) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel (skip 1 row after this)
+    (('crate-203) (set-vector-meters! (-> arg0 extra trans)  -316.2  9.8  -462.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1 (skipped 1 row before this)
+    (('crate-204) (set-vector-meters! (-> arg0 extra trans)  -317.3  9.8  -461.6) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1
+    (('crate-207) (set-vector-meters! (-> arg0 extra trans)  -318.4  9.8  -460.6) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1
+    (('crate-208) (set-vector-meters! (-> arg0 extra trans)  -319.5  9.8  -459.6) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1 (skip 4 rows after this)
+    (('crate-209) (set-vector-meters! (-> arg0 extra trans)  -325.0  9.8  -454.8) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1
+    (('crate-210) (set-vector-meters! (-> arg0 extra trans)  -313.8  9.8  -461.9) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col2 (skip 4 rows after this)
+    (('crate-211) (set-vector-meters! (-> arg0 extra trans)  -319.3  9.8  -457.0) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col2 (skip 3 rows after this)
+    (('crate-214) (set-vector-meters! (-> arg0 extra trans)  -323.7  9.8  -453.1) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col2
+    (('crate-215) (set-vector-meters! (-> arg0 extra trans)  -313.5  9.8  -459.2) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3 (skipped 1 row before this)
+    (('crate-216) (set-vector-meters! (-> arg0 extra trans)  -314.6  9.8  -458.2) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
+    (('crate-217) (set-vector-meters! (-> arg0 extra trans)  -315.7  9.8  -457.3) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
+    (('crate-218) (set-vector-meters! (-> arg0 extra trans)  -316.8  9.8  -456.3) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
+    (('crate-219) (set-vector-meters! (-> arg0 extra trans)  -317.9  9.8  -455.3) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
+    (('crate-220) (set-vector-meters! (-> arg0 extra trans)  -319.0  9.8  -454.3) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
+    (('crate-221) (set-vector-meters! (-> arg0 extra trans)  -320.1  9.8  -453.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
+    (('crate-222) (set-vector-meters! (-> arg0 extra trans)  -321.2  9.8  -452.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3 (skip 1 row after this)  
+    (('crate-223) (set-vector-meters! (-> arg0 extra trans)  -360.3  23.58 -430.0) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - top of second sentinel
+    (('crate-224) (set-vector-meters! (-> arg0 extra trans)  -357.9  23.58 -429.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - top of second sentinel
+    (('crate-225) (set-vector-meters! (-> arg0 extra trans)  -359.0  23.58 -431.1) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - top of second sentinel
+    (('crate-226) (set-vector-meters! (-> arg0 extra trans)  -359.3  23.58 -428.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - top of second sentinel
+    (('crate-227) (set-vector-meters! (-> arg0 extra trans)  -360.3  25.58 -430.0) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - second layer on top of second sentinel
+    (('crate-228) (set-vector-meters! (-> arg0 extra trans)  -357.9  25.58 -429.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - second layer on top of second sentinel
+    (('crate-229) (set-vector-meters! (-> arg0 extra trans)  -359.0  25.58 -431.1) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - second layer on top of second sentinel
+    (('crate-230) (set-vector-meters! (-> arg0 extra trans)  -359.3  25.58 -428.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - second layer on top of second sentinel
+    
+    )
+  )

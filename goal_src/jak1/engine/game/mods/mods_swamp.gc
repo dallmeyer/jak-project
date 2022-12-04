@@ -1,0 +1,443 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(defmacro mod-swamp-run-each-frame ()
+  `(begin
+    (when (process-by-ename "ecovent-95")  ;; yellow - island in muck (orig blue eco)
+      (let ((obj (the ecovent (process-by-ename "ecovent-95")))
+            (vec (static-vector-meters 422.09   0.86 -2131.65))
+            )
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    (when (process-by-ename "ecovent-85")  ;; yellow - orig fourth tether
+      (let ((obj (the ecovent (process-by-ename "ecovent-85")))
+            (vec (static-vector-meters 515.92  14.82 -1937.29))
+            )
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    (when (process-by-ename "ecovent-89")  ;; yellow - orig flutflut
+      (let ((obj (the ecovent (process-by-ename "ecovent-89")))
+            (vec (static-vector-meters 559.31   2.00 -2130.70))
+            )
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    (when (process-by-ename "ecovent-93") ;; yellow - orig first tether
+      (let ((obj (the ecovent (process-by-ename "ecovent-93")))
+            (vec (static-vector-meters 429.31   7.89 -1932.98))
+            )
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    (when (process-by-ename "eco-74")  ;; yellow - platforms to orig flutflut cell
+      (mod-move-eco (the eco (process-by-ename "eco-74")) (static-vector-meters 598.11  12.7 -2060.35))
+    )
+    (when (process-by-ename "eco-77")  ;; yellow - platforms to orig flutflut cell
+      (mod-move-eco (the eco (process-by-ename "eco-77")) (static-vector-meters 633.95  12.7 -2082.82))
+      )
+    (when (process-by-ename "eco-78")  ;; yellow - platforms to orig flutflut cell
+      (mod-move-eco (the eco (process-by-ename "eco-78")) (static-vector-meters 601.99  12.7 -2149.63))
+      )
+    (when (process-by-ename "eco-80")  ;; yellow - platforms to orig flutflut cell
+      (mod-move-eco (the eco (process-by-ename "eco-80")) (static-vector-meters 521.30  12.7 -2109.07))
+      )
+    (when (process-by-ename "eco-160")  ;; blue - orig yellow ecovent near second bats
+      (mod-move-eco (the eco (process-by-ename "eco-160")) (static-vector-meters 434.97   1.7 -2099.4))
+      )
+    (when (process-by-ename "eco-85")  ;; yellow - side of first cave
+      (mod-move-eco (the eco (process-by-ename "eco-85")) (static-vector-meters 325.56   1.7 -2032.87))
+      )
+    (when (process-by-ename "eco-107")  ;; yellow - third cave
+      (mod-move-eco (the eco (process-by-ename "eco-107")) (static-vector-meters 647.48   1.7 -1967.22))
+      )
+    (when (process-by-ename "eco-108")  ;; yellow - third cave
+      (mod-move-eco (the eco (process-by-ename "eco-108")) (static-vector-meters 643.21   1.8 -1989.16))
+      )
+    (when (process-by-ename "eco-168")  ;; blue - third cave
+      (mod-move-eco (the eco (process-by-ename "eco-168")) (static-vector-meters 626.62   1.7 -1985.40))
+      )
+    (when (process-by-ename "eco-169")  ;; yellow - third cave
+      (mod-move-eco (the eco (process-by-ename "eco-169")) (static-vector-meters 604.12   1.7 -1981.20))
+      )
+    (when (process-by-ename "eco-176")  ;; blue - orig yellow eco near fourth tether
+      (mod-move-eco (the eco (process-by-ename "eco-176")) (static-vector-meters 564.39   1.4 -1960.28))
+      )
+    (when (process-by-ename "eco-103")  ;; yellow - above first rats nest
+      (mod-move-eco (the eco (process-by-ename "eco-103")) (static-vector-meters 284.43  13.86 -2043.60))
+      )
+    (when (process-by-ename "eco-104")  ;; yellow - near first bats, used for quad jump to high ledge
+      (mod-move-eco (the eco (process-by-ename "eco-104")) (static-vector-meters 299.22   9.66 -1955.23))
+      )
+    (when (process-by-ename "eco-164")  ;; blue - orig yellow eco vent in flutflut section
+      (mod-move-eco (the eco (process-by-ename "eco-164")) (static-vector-meters 612.20   1.3 -2150.87))
+      )
+    (when (process-by-ename "eco-165")  ;; blue - platform in muck towards first "beach"
+      (mod-move-eco (the eco (process-by-ename "eco-165")) (static-vector-meters 673.35  3.0 -2116.70))
+      )
+    (when (process-by-ename "eco-86")  ;; yellow - near second launcher
+      (mod-move-eco (the eco (process-by-ename "eco-86")) (static-vector-meters 310.78   3.02 -2084.80))
+      )
+    (when (process-by-ename "eco-152")  ;; blue - start of long poles section
+      (mod-move-eco (the eco (process-by-ename "eco-152")) (static-vector-meters 286.41   2.0 -2137.03))
+      )
+    (when (process-by-ename "eco-153")  ;; yellow - early in long poles section
+      (mod-move-eco (the eco (process-by-ename "eco-153")) (static-vector-meters 316.85   2.0 -2165.77))
+      )
+    (when (process-by-ename "eco-174")  ;; yellow - muck before fourth tether
+      (mod-move-eco (the eco (process-by-ename "eco-174")) (static-vector-meters 575.02   2.3 -1924.81))
+      )
+    (when (process-by-ename "eco-175")  ;; yellow - muck before fourth tether
+      (mod-move-eco (the eco (process-by-ename "eco-175")) (static-vector-meters 560.83   2.3 -1922.35))
+      )
+    ;; yellow
+    ;; (('eco-81 ) ) ;; leave, by boggy billy
+    ;; (('eco-85 ) ) ;; 
+    ;; (('eco-104 ) )  ;; 
+    ;; (('eco-105 ) )  ;; leave in second launcher area
+    ;; (('eco-106 ) )  ;; ^
+    ;; blue
+    ;; (('eco-140 ) )  ;; 
+    ;; (('eco-160 ) )  ;; 
+    ;; (('eco-165 ) )  ;; 
+    ;; (('ecovent-81) )  ;; blue - left in second launcher area
+    ;; (('ecovent-82) )  ;; blue
+    ;; (('ecovent-141) )  ;; blue
+    ;; (('ecovent-85) )  ;; yellow
+    ;; (('ecovent-87) )  ;; yellow
+    ;; (('ecovent-93) )  ;; yellow
+    ;; (('ecovent-243) )  ;; yellow
+    )
+  )
+  
+(defmacro mod-swamp-override-init-position (obj arg0)
+  `(case (-> obj name) :comp name=
+    ;; ORBS
+    (('money-1670) (set-vector-meters! (-> arg0 extra trans)  363.7   2.21 -2158.6))  ;; corner behind spikes after second bats
+    (('money-1671) (set-vector-meters! (-> arg0 extra trans)  437.40  21.5 -1824.90))  ;; up top near entrance (climb crates)
+      (('crate-2821)  (set-vector-meters! (-> arg0 extra trans) 433.8   6.26 -1813.2))  ;; beeg green
+      (('crate-2822)  (set-vector-meters! (-> arg0 extra trans) 433.78   4.41 -1812.15))  ;; green
+      (('crate-2827)  (set-vector-meters! (-> arg0 extra trans) 434.52   4.10 -1814.57))  ;; green
+      (('crate-2828)  (set-vector-meters! (-> arg0 extra trans) 432.69   4.16 -1813.55))  ;; green
+    (('money-1672) (set-vector-meters! (-> arg0 extra trans)  439.13  24.84 -1792.56))  ;; boosted from edge of ^ back towards rock village
+    (('money-1673) (set-vector-meters! (-> arg0 extra trans)  448.95  23.80 -1806.06))  ;; boosted back from ^
+    (('money-1674) (set-vector-meters! (-> arg0 extra trans)  402.72  13.00 -1850.81))  ;; up in crack in rocks left after entering
+    (('money-1684) (set-vector-meters! (-> arg0 extra trans)  394.7   1.5 -1888.7))  ;; behind tree near beginning 
+    (('money-1685) (set-vector-meters! (-> arg0 extra trans)  396.58   1.7 -1895.14))  ;; other side of tree ^
+    (('money-1686) (set-vector-meters! (-> arg0 extra trans)  337.82   2.5 -1910.86))  ;; between spikes and trees on left
+    (('money-1687) (set-vector-meters! (-> arg0 extra trans)  366.30   3.0 -1958.10))  ;; between spikes and trees on right 
+    (('money-1688) (set-vector-meters! (-> arg0 extra trans)  355.73   1.4 -1983.35))  ;; between spikes and trees on right before first tether
+    (('money-1689) (set-vector-meters! (-> arg0 extra trans)  334.99  1.3 -2066.42))  ;; corner to right after first cave 
+    (('money-1690) (set-vector-meters! (-> arg0 extra trans)  504.42   1.0 -1990.09))  ;; in corner in ambush area 
+    (('money-1691) (set-vector-meters! (-> arg0 extra trans)  392.42  1.3 -2067.63))  ;; among spikes below deck after poles
+    (('money-1692) (set-vector-meters! (-> arg0 extra trans)  436.31  19.80 -1939.87))  ;; above first tether
+    (('money-1693) (set-vector-meters! (-> arg0 extra trans)  442.13   4.0 -1920.6))  ;; behind tree behind first tether
+    (('money-1694) (set-vector-meters! (-> arg0 extra trans)  406.3   1.1 -2079.0))  ;; in bushes left of second bats
+    (('money-1695) (set-vector-meters! (-> arg0 extra trans)  392.20   1.1 -2118.54))  ;; in bushes on right past spikes after second bats
+    (('money-1696) (set-vector-meters! (-> arg0 extra trans)  519.07   1.8 -2065.80))  ;; under wooden platform near ambush launcher (crouch walk/fall)
+    (('money-1697) (set-vector-meters! (-> arg0 extra trans)  681.71   2.5 -2147.6))  ;; behind rats nest in flutflut section
+    (('money-1698) (set-vector-meters! (-> arg0 extra trans)  677.36   2.4 -2154.43))  ;; behind rats nest in flutflut section
+    (('money-1699) (set-vector-meters! (-> arg0 extra trans)  588.51   8.01 -2031.6))  ;; chimney behind boggy billy's "house" 
+    (('money-1700) (set-vector-meters! (-> arg0 extra trans)  597.65  15.75 -2027.32))  ;; top of boggy billy's "house"
+    (('money-1701) (set-vector-meters! (-> arg0 extra trans)  581.82   1.8 -1987.50))  ;; under wood platform after boggy billy
+    (('money-1702) (set-vector-meters! (-> arg0 extra trans)  588.5   1.5 -2016.0))  ;; among trees by boggy billy
+    (('money-1703) (set-vector-meters! (-> arg0 extra trans)  678.36   5.44 -1964.99))  ;; rock on wall on second "beach"
+    (('money-1704) (set-vector-meters! (-> arg0 extra trans)  681.40  17.0 -1965.11))  ;; up from ^
+    (('money-1705) (set-vector-meters! (-> arg0 extra trans)  662.85  18.5 -1959.60))  ;; up from ^
+    (('money-1706) (set-vector-meters! (-> arg0 extra trans)  640.05  20.6 -1955.48))  ;; further along from ^
+    (('money-1708) (set-vector-meters! (-> arg0 extra trans)  657.38  28.5 -1958.55))  ;; up from ^^
+    (('money-1707) (set-vector-meters! (-> arg0 extra trans)  617.4   0.8 -1864.7))  ;; in corner of trees on second "beach"
+    (('money-1711) (set-vector-meters! (-> arg0 extra trans)  584.5   1.30 -1878.0))  ;; among trees in muck after second "beach"
+    (('money-1710) (set-vector-meters! (-> arg0 extra trans)  596.22   1.20 -1887.0))  ;; ^
+    (('money-1712) (set-vector-meters! (-> arg0 extra trans)  593.46   1.6 -1926.76))  ;; ^
+    (('money-1713) (set-vector-meters! (-> arg0 extra trans)  611.18   0.9 -1921.20))  ;; ^
+    (('money-1714) (set-vector-meters! (-> arg0 extra trans)  586.82   0.9 -1942.81))  ;; ^
+    (('money-1721) (set-vector-meters! (-> arg0 extra trans)  584.30   1.0 -1962.84))  ;; ^
+    (('money-1722) (set-vector-meters! (-> arg0 extra trans)  593.55   1.6 -1926.80))  ;; ^
+    (('money-1723) (set-vector-meters! (-> arg0 extra trans)  448.96   6.2 -1925.32))  ;; in cave between start and fourth tether
+    (('money-1724) (set-vector-meters! (-> arg0 extra trans)  565.05  0.1 -2017.44))  ;; in bushes, orig third tether
+    (('money-4132) (set-vector-meters! (-> arg0 extra trans)  501.74  0.1 -2130.32))  ;; in bushes near flutflut
+    (('money-4133) (set-vector-meters! (-> arg0 extra trans)  519.85  22.23 -2147.88))  ;; up by flutflut oob
+    (('money-4134) (set-vector-meters! (-> arg0 extra trans)  568.4   1.2  -2075.8))  ;; in trees in flutflut section
+    (('money-4135) (set-vector-meters! (-> arg0 extra trans)  609.0   1.2 -2115.8))  ;; ^
+    (('money-4136) (set-vector-meters! (-> arg0 extra trans)  656.24   1.1 -2072.14))  ;; between trees and thorns by first "beach"
+    (('money-4137) (set-vector-meters! (-> arg0 extra trans)  692.82   2.7 -2019.34))  ;; rocks on first "beach"
+    (('money-4138) (set-vector-meters! (-> arg0 extra trans)  714.84  -7.89 -2029.28))  ;; dive from dock on first "beach"
+    (('money-4139) (set-vector-meters! (-> arg0 extra trans)  650.8   1.0  -2072.2))  ;; in trees by flutflut section
+    (('money-4140) (set-vector-meters! (-> arg0 extra trans)  679.64  -7.89 -1859.88))  ;; dive from dock on second "beach"
+    (('money-4141) (set-vector-meters! (-> arg0 extra trans)  576.7   1.2  -1873.0))  ;; in trees between second "beach" and fourth tether
+    (('money-4142) (set-vector-meters! (-> arg0 extra trans)  544.6   1.5 -1870.4))  ;; ^ 
+    (('money-4143) (set-vector-meters! (-> arg0 extra trans)  523.49  1.2 -1881.12))  ;; ^
+    (('money-4144) (set-vector-meters! (-> arg0 extra trans)  500.17  25.82 -1947.03))  ;; up high, jump from orig fourth tether
+    (('money-4145) (set-vector-meters! (-> arg0 extra trans)  591.2   1.2 -2014.1))  ;; behind barrels near boggy billys "house"
+    (('money-4146) (set-vector-meters! (-> arg0 extra trans)  292.0   7.5 -1936.5))  ;; in pit from first launcher
+    (('money-4147) (set-vector-meters! (-> arg0 extra trans)  578.0   2.5 -2007.0))  ;; trees/thorns in corner by boggy billys "house"
+    (('money-4148) (set-vector-meters! (-> arg0 extra trans)  630.6   1.5 -1920.0))  ;; trees on second "beach"
+    (('money-4149) (set-vector-meters! (-> arg0 extra trans)  605.8   1.6 -1892.9))  ;; trees in muck before fourth tether
+    (('money-4150) (set-vector-meters! (-> arg0 extra trans)  520.2  1.8 -1894.2))  ;; ^
+    (('money-4151) (set-vector-meters! (-> arg0 extra trans)  503.11   1.8 -1907.99))  ;; trees by fourth tether
+    (('money-4298) (set-vector-meters! (-> arg0 extra trans)  483.40  18.28 -1927.14))  ;; boosted from orig fourth tether towards cave
+    (('money-4299) (set-vector-meters! (-> arg0 extra trans)  516.3  23.3 -1960.20))  ;; boosted from orig fourth tether
+    (('money-4300) (set-vector-meters! (-> arg0 extra trans)  485.5 4.2 -1908.2))  ;; corner trees near fourth tether
+    (('money-4301) (set-vector-meters! (-> arg0 extra trans)  460.13   9.48 -1849.79))  ;; crack near start/fourth cave exit
+    (('money-4302) (set-vector-meters! (-> arg0 extra trans)  449.19  28.1 -1859.28))  ;; ledge above fourth cave exit/start
+    (('money-4303) (set-vector-meters! (-> arg0 extra trans)  456.31  32.1 -1867.02))  ;; up from ^
+    (('money-4304) (set-vector-meters! (-> arg0 extra trans)  455.34  32.7 -1861.01))  ;; ^
+    (('money-4322) (set-vector-meters! (-> arg0 extra trans)  456.61  31.8 -1854.11))  ;; ^
+    (('money-4311) (set-vector-meters! (-> arg0 extra trans)  626.68  -0.2 -1888.05))  ;; in dark eco crate at second "beach"
+    (('money-4312) (set-vector-meters! (-> arg0 extra trans)  388.53   0.9 -1914.37))  ;; gap in thorns before first bats
+    (('money-4313) (set-vector-meters! (-> arg0 extra trans)  277.35  22.1 -2044.19))  ;; quad jump up from first rats nest
+    (('money-4314) (set-vector-meters! (-> arg0 extra trans)  325.48   2.60 -2019.09))  ;; behind pole over spikes after first cave
+    (('money-4315) (set-vector-meters! (-> arg0 extra trans)  477.0  3.1 -2071.7))  ;; behind tree in corner near second tether
+    (('money-4323) (set-vector-meters! (-> arg0 extra trans)  452.67   5.7 -1910.65))  ;; fourth cave, inside dark eco crate
+    (('money-4324) (set-vector-meters! (-> arg0 extra trans)  656.8   1.5 -2088.5))  ;; trees first "beach" / flutflut section
+    (('money-4833) (set-vector-meters! (-> arg0 extra trans)  561.25  8.0 -1889.14))  ;; above platform in muck before fourth tether
+    (('money-4834) (set-vector-meters! (-> arg0 extra trans)  589.74  8.0 -1909.86))  ;; ^
+    (('money-4835) (set-vector-meters! (-> arg0 extra trans)  573.0   8.0 -1902.7 ))  ;; ^
+    (('money-4836) (set-vector-meters! (-> arg0 extra trans)  300.30  17.0 -1955.32))  ;; high ledge near first bats (quad jump into ceiling jumps)
+    (('money-4837) (set-vector-meters! (-> arg0 extra trans)  321.22  17.0 -1912.45))  ;; high ledge near first bats (jump off crate)
+    (('money-4867) (set-vector-meters! (-> arg0 extra trans)  400.60  1.5  -1925.75))  ;; in thorns before first bats
+    (('money-4866) (set-vector-meters! (-> arg0 extra trans)  387.07  1.0  -1905.57))  ;; ^
+    (('money-4865) (set-vector-meters! (-> arg0 extra trans)  311.56  1.0  -2000.70))  ;; in thorns after first rats nest
+    (('money-4864) (set-vector-meters! (-> arg0 extra trans)  323.82  1.4  -2113.92))  ;; in thorns after first cave
+    (('crate-756) (set-vector-meters! (-> arg0 extra trans)  310.59   0.77 -2143.49)) ;; on inside by spikes in pole section  
+    (('crate-757) (set-vector-meters! (-> arg0 extra trans)  321.26   0.82 -2140.70)) ;; ^  
+    (('crate-758) (set-vector-meters! (-> arg0 extra trans)  332.48   1.53 -2129.92)) ;; ^
+    (('crate-759) (set-vector-meters! (-> arg0 extra trans)  341.85   1.00 -2113.81)) ;; ^ 
+    (('crate-760) (set-vector-meters! (-> arg0 extra trans)  346.17   0.78 -2095.50)) ;; ^ 
+    (('crate-763) (set-vector-meters! (-> arg0 extra trans)  561.66   0.40 -2089.27)) ;; under wood platform in flutflut area
+    (('crate-764) (set-vector-meters! (-> arg0 extra trans)  644.74   0.50 -2101.81)) ;; ^
+    (('crate-765) (set-vector-meters! (-> arg0 extra trans)  568.60   0.71 -2057.64)) ;; ^ 
+    (('crate-842) (set-vector-meters! (-> arg0 extra trans)  658.29   0.68 -2100.07 )) ;; behind trees near rat nests in flutflut area  
+    (('crate-2735) (set-vector-meters! (-> arg0 extra trans)  592.73   2.17 -2025.56))  ;; deck of boggy billys "house"
+    (('crate-2737) (set-vector-meters! (-> arg0 extra trans)  617.34   0.43 -2110.22))  ;; by trees in flutflut area
+    (('crate-2741) (set-vector-meters! (-> arg0 extra trans)  634.21   0.55 -2114.43))  ;; ^
+    (('crate-2742) (set-vector-meters! (-> arg0 extra trans)  711.99  -2.75 -2057.74 ))  ;; shore of first "beach"
+    (('crate-2743) (set-vector-meters! (-> arg0 extra trans)  697.86  -2.52 -2030.33))  ;; ^
+    (('crate-2744) (set-vector-meters! (-> arg0 extra trans)   411.61   0.89 -2124.24))  ;; next to muck by second bats
+    (('crate-2789) (set-vector-meters! (-> arg0 extra trans)  420.27   0.86 -2120.09))  ;; next to ^
+    (('crate-2790) (set-vector-meters! (-> arg0 extra trans)  528.72   -0.49 -2149.87))  ;; under steps near flutflut
+    (('crate-2791) (set-vector-meters! (-> arg0 extra trans)  593.62  11.97 -2091.98))  ;; on platforms to orig flutflut cell
+    (('crate-2792) (set-vector-meters! (-> arg0 extra trans)  633.88  11.97 -2061.84))  ;; ^
+    (('crate-2796) (set-vector-meters! (-> arg0 extra trans)  636.81  12.19 -2103.22))  ;; ^
+    (('crate-2797) (set-vector-meters! (-> arg0 extra trans)  641.85  12.19 -2117.58))  ;; ^
+    (('crate-2798) (set-vector-meters! (-> arg0 extra trans)  641.97  12.19 -2134.35))  ;; ^
+    (('crate-2799) (set-vector-meters! (-> arg0 extra trans)  641.98  12.19 -2148.37))  ;; ^
+    (('crate-2800) (set-vector-meters! (-> arg0 extra trans)  571.99  12.01 -2148.06))  ;; ^
+    (('crate-2801) (set-vector-meters! (-> arg0 extra trans)  528.93  11.96 -2133.20))  ;; ^
+    (('crate-2812) (set-vector-meters! (-> arg0 extra trans)  686.96   0.97 -1874.23))  ;; on dock at second "beach"
+    (('crate-2813) (set-vector-meters! (-> arg0 extra trans)  646.30  -1.72 -1861.22))  ;; on shore of second "beach"
+    (('crate-2814) (set-vector-meters! (-> arg0 extra trans)  691.80  -3.20 -1924.04))  ;; ^
+    (('crate-2815) (set-vector-meters! (-> arg0 extra trans)  611.61   0.15 -1885.48))  ;; among trees on second "beach"
+    (('crate-2816) (set-vector-meters! (-> arg0 extra trans)  546.30   0.64 -1929.64))  ;; near orig fourth tether
+    (('crate-2817) (set-vector-meters! (-> arg0 extra trans)  538.70   0.45 -1920.01))  ;; ^ 
+    (('crate-2818) (set-vector-meters! (-> arg0 extra trans)  511.26   1.20 -1908.94))  ;; ^
+    (('crate-2893) (set-vector-meters! (-> arg0 extra trans)  348.16   2.7 -2067.01))  ;; along inside of poles section
+    (('crate-2894) (set-vector-meters! (-> arg0 extra trans)  570.21  -0.49 -1999.01))  ;; in bushes at orig third tether
+    (('crate-2895) (set-vector-meters! (-> arg0 extra trans)  525.10  -0.49 -2147.77))  ;; under steps near flutflut
+    (('crate-2896) (set-vector-meters! (-> arg0 extra trans)  522.96  -0.49 -2151.05))  ;; under steps near flutflut
+    (('crate-2910) (set-vector-meters! (-> arg0 extra trans)  526.29  -0.49 -2152.66))  ;; under steps near flutflut
+    (('crate-2924) (set-vector-meters! (-> arg0 extra trans)  287.48  -0.49 -2087.99))  ;; second launcher area
+    (('crate-2925) (set-vector-meters! (-> arg0 extra trans)  286.53  -0.49 -2083.11))  ;; ^ 
+    (('crate-2926) (set-vector-meters! (-> arg0 extra trans)  712.39   0.97 -2030.32))  ;; dock by first "beach"
+    (('crate-2927) (set-vector-meters! (-> arg0 extra trans)  595.56   2.17 -2031.52))  ;; deck of boggy billys "house"
+    (('crate-2946) (set-vector-meters! (-> arg0 extra trans)  635.87   0.41 -2130.31))  ;; by trees in flutflut section
+    
+    ;; FLIES
+    (('crate-748) (set-vector-meters! (-> arg0 extra trans)  349.66   0.81 -2079.96))  ;; on inside by spikes in pole section
+    (('crate-762) (set-vector-meters! (-> arg0 extra trans)  347.20  -1.69 -1973.45))  ;; in first patch of muck on right side
+    (('crate-786) (set-vector-meters! (-> arg0 extra trans)  390.4   21.03 -2056.4))  ;; up on high ledge near second tether
+    (('crate-787) (set-vector-meters! (-> arg0 extra trans)  527.35  18.00 -2086.53))  ;; up on high ledge between flutflut and launcher to third tether 
+    (('crate-843) (set-vector-meters! (-> arg0 extra trans)  557.11   0.53 -2078.40))  ;; little path among trees in flutflut section
+    (('crate-849) (set-vector-meters! (-> arg0 extra trans)  560.35   6.1 -2013.31))  ;; inside rock, orig third tether
+    (('crate-2936) (set-vector-meters! (-> arg0 extra trans)  653.30   0.57 -2083.97)) ;; among trees in flutflut section 
+    
+    ;; CELLS
+    (('swamp-tetherrock-13) (set-vector-meters! (-> arg0 extra trans) 390.12  12.00 -2065.66))  ;; up platforms from orig second tether
+      (('crate-3189) (set-vector-meters! (-> arg0 extra trans) 432.99   5.98 -2062.61))  ;; yellow - orig second tether
+      (('crate-2747) (set-vector-meters! (-> arg0 extra trans) 430.39   5.98 -2062.61))  ;; yellow - ^
+      (('crate-3190) (set-vector-meters! (-> arg0 extra trans) 431.69   5.98 -2061.31))  ;; big green - ^
+      (('crate-2748) (set-vector-meters! (-> arg0 extra trans) 431.69   5.98 -2063.91))  ;; green - ^
+    (('swamp-tetherrock-14) (set-vector-meters! (-> arg0 extra trans) 634.70  28.91 -1956.83))  ;; follow orb trail up on wall at second "beach"
+    (('swamp-tetherrock-15) (set-vector-meters! (-> arg0 extra trans)  524.87  10.68 -1909.68))  ;; in trees behind orig fourth tether
+    (('swamp-tetherrock-16) (set-vector-meters! (-> arg0 extra trans)  369.65  10.0 -1963.15))  ;; in trees near orig first tether
+    (('fuel-cell-15) (override-fuel-cell-position arg0 591.43  25.0 -2127.10)) ;; flutflut ground pound tree climb
+      (('flutflut-3) (set-vector-meters! (-> arg0 extra trans) 564.82  12.1 -2096.02)) ;; orig flutflut power cell
+    ;; (('billy-2) (set-vector-meters! ))  ;;
+    
+    ;; MISC
+    ;; yellow
+    (('crate-3186) (set-vector-meters! (-> arg0 extra trans) 399.06  -0.49 -1978.32))  ;; near first tether
+    (('crate-3187) (set-vector-meters! (-> arg0 extra trans) 452.01  11.90 -1862.44))  ;; fourth cave exit
+    (('crate-3188) (set-vector-meters! (-> arg0 extra trans) 307.58  -0.49 -2011.89))  ;; near first rats nest
+    (('crate-3198) (set-vector-meters! (-> arg0 extra trans) 350.86   0.98 -2120.95))  ;; mid long poles section
+    (('crate-3199) (set-vector-meters! (-> arg0 extra trans) 365.33   0.95 -2086.52))  ;; end of long poles section
+    ;; green
+    (('crate-750) (set-vector-meters! (-> arg0 extra trans) 608.95	1.84	-1956.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-751) (set-vector-meters! (-> arg0 extra trans) 608.95	1.84	-1960.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-846) (set-vector-meters! (-> arg0 extra trans) 608.95	1.84	-1958.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-754) (set-vector-meters! (-> arg0 extra trans) 610.95	1.84	-1958.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-755) (set-vector-meters! (-> arg0 extra trans) 612.95	1.84	-1956.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-826) (set-vector-meters! (-> arg0 extra trans) 612.95	1.84	-1960.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-2923) (set-vector-meters! (-> arg0 extra trans) 612.95	1.84	-1958.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-828) (set-vector-meters! (-> arg0 extra trans) 615.83	1.68	-1956.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-832) (set-vector-meters! (-> arg0 extra trans) 619.83	1.68	-1956.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-841) (set-vector-meters! (-> arg0 extra trans) 617.83	1.68	-1956.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-834) (set-vector-meters! (-> arg0 extra trans) 617.83	1.68	-1958.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-835) (set-vector-meters! (-> arg0 extra trans) 617.83	1.68	-1960.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-2830) (set-vector-meters! (-> arg0 extra trans) 615.83	1.68	-1960.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    (('crate-837) (set-vector-meters! (-> arg0 extra trans) 619.83	1.68	-1960.86) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.0  0.0  0.0)) ;; OOB "HI"
+    ;; (('crate-838) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-833) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-844) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-845) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-847) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    (('crate-848) (set-vector-meters! (-> arg0 extra trans) 367.45  -0.49 -2151.06))  ;; past second bats, just moved behind spikes
+    ;; (('crate-850) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-851) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-852) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-853) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-854) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-855) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-836) )  ;; 
+    ;; (('crate-2862) )  ;;   ;; beeg
+    ;; (('crate-2897) )  ;; 
+    (('crate-2914) (set-vector-meters! (-> arg0 extra trans) 453.60  14.76 -1852.87))  ;; fourth cave exit
+    (('crate-2932) (set-vector-meters! (-> arg0 extra trans) 551.35  11.98 -2156.75))  ;; on platform in flutflut section
+    ;; (('crate-2918) )  ;;   ;; beeg
+    ;; (('crate-2919) )  ;; 
+    ;; (('crate-827) )  ;; 
+    (('crate-753) (set-vector-meters!  (-> arg0 extra trans) 525.81  -0.49 -2007.24))  ;; in OOB area :P
+    (('crate-2829) (set-vector-meters! (-> arg0 extra trans) 527.68  -0.49 -2001.96))  ;; in OOB area :P
+    (('crate-2861) (set-vector-meters! (-> arg0 extra trans) 523.26  -0.49 -2004.03))  ;; in OOB area :P
+    (('crate-2920) (set-vector-meters! (-> arg0 extra trans) 506.96  -0.49 -1985.11))  ;; in OOB area :P
+    (('crate-2921) (set-vector-meters! (-> arg0 extra trans) 514.64  -0.49 -1993.10))  ;; in OOB area :P
+    (('crate-2922) (set-vector-meters! (-> arg0 extra trans) 567.31  -0.49 -1986.80))  ;; in OOB area :P
+    (('crate-2939) (set-vector-meters! (-> arg0 extra trans) 572.07  -0.49 -1978.79))  ;; in OOB area :P
+    (('crate-2940) (set-vector-meters! (-> arg0 extra trans) 535.67  -0.49 -1991.94))  ;; in OOB area :P
+    (('crate-2941) (set-vector-meters! (-> arg0 extra trans) 453.60  12.76 -1852.87))  ;; fourth cave exit
+    ;; (('crate-3200) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('crate-3201) (set-vector-meters! (-> arg0 extra trans) 319.57   0.94 -1912.76))  ;; near first bats, jump off to reach high ledge
+    (('crate-3202) (set-vector-meters! (-> arg0 extra trans) 319.57   3.0 -1912.76 ))  ;; ^
+    ;; dark
+    (('crate-2784) (set-vector-meters! (-> arg0 extra trans) 647.23   0.47 -2082.11))  ;; hiding scout fly in trees in flutflut section
+    (('crate-2785) (set-vector-meters! (-> arg0 extra trans) 647.23   2.47 -2082.11))  ;; ^
+    (('crate-2786) (set-vector-meters! (-> arg0 extra trans) 647.23   4.47 -2082.11))  ;; ^
+    (('crate-2787) (set-vector-meters! (-> arg0 extra trans) 452.67   5.35 -1910.65))  ;; fourth cave hiding orb
+    (('crate-2788) (set-vector-meters! (-> arg0 extra trans) 362.93   0.46 -2038.16))  ;; between spikes in first cave
+    ;; (('crate-2808) (set-vector-meters! (-> arg0 extra trans) ))  ;; leave on platform in second cave
+    ;; (('crate-2809) (set-vector-meters! (-> arg0 extra trans) ))  ;; leave on platform in second cave
+    ;; (('crate-2810) (set-vector-meters! (-> arg0 extra trans) ))  ;; leave on platform in second cave
+    ;; (('crate-2811) (set-vector-meters! (-> arg0 extra trans) ))  ;; leave on platform in second cave
+    (('crate-2820) (set-vector-meters! (-> arg0 extra trans) 596.15   5.85 -1992.83))  ;; platform in third cave
+    (('crate-2823) (set-vector-meters! (-> arg0 extra trans) 593.12   5.85 -1991.89))  ;; platform in third cave
+    (('crate-2825) (set-vector-meters! (-> arg0 extra trans) 589.92   5.85 -1990.62))  ;; platform in third cave
+    (('crate-2826) (set-vector-meters! (-> arg0 extra trans) 586.82   5.85 -1990.22))  ;; platform in third cave
+    (('crate-2836) (set-vector-meters! (-> arg0 extra trans) 706.73   0.97 -2033.17))  ;; dock on first "beach"
+    ;; (('crate-2863) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2864) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2868) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2869) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2871) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2872) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2873) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2876) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2877) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2879) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2881) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2883) (set-vector-meters! (-> arg0 extra trans) ))  ;;  leave, second "beach" with orb inside
+    ;; (('crate-2908) (set-vector-meters! (-> arg0 extra trans) ))  ;;  leave, fourth cave
+    ;; (('crate-2909) (set-vector-meters! (-> arg0 extra trans) ))  ;;  leave, fourth cave
+    ;; (('crate-2911) (set-vector-meters! (-> arg0 extra trans) ))  ;;  leave, fourth cave
+    ;; (('crate-2912) (set-vector-meters! (-> arg0 extra trans) ))  ;;  leave, fourth cave
+    ;; (('crate-2913) (set-vector-meters! (-> arg0 extra trans) ))  ;;  leave, fourth cave
+    ;; (('crate-2917) (set-vector-meters! (-> arg0 extra trans) ))  ;;  leave, fourth cave
+    ;; (('crate-2928) (set-vector-meters! (-> arg0 extra trans) ))  ;; leave, muck after second "beach"
+    ;; (('crate-2929) (set-vector-meters! (-> arg0 extra trans) ))  ;; leave, muck after second "beach"
+    (('crate-2930) (set-vector-meters! (-> arg0 extra trans) 470.02   7.17 -1893.29))  ;; fourth cave
+    (('crate-2931) (set-vector-meters! (-> arg0 extra trans) 470.61   8.21 -1881.55))  ;; fourth cave
+    ;; (('crate-2938) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2942) (set-vector-meters! (-> arg0 extra trans) ))  ;; leave, fourth cave
+    ;; (('crate-2944) (set-vector-meters! (-> arg0 extra trans) ))  ;; leave, fourth cave
+    (('tar-plat-19) (set-vector-meters! (-> arg0 extra trans) 589.74  -0.2 -1909.86)) ;; moved around in muck before fourth tether
+    (('tar-plat-20) (set-vector-meters! (-> arg0 extra trans) 581.06  -0.2 -1887.23)) ;; ^
+    (('tar-plat-21) (set-vector-meters! (-> arg0 extra trans) 573.0   -0.2 -1902.7)) ;; ^
+    (('tar-plat-22) (set-vector-meters! (-> arg0 extra trans) 561.25  -0.2 -1889.14)) ;; ^
+    (('tar-plat-25) (set-vector-meters! (-> arg0 extra trans) 537.40  -0.2 -1943.56)) ;; moved to muck at fourth tether
+    (('tar-plat-26) (set-vector-meters! (-> arg0 extra trans) 673.35  -0.2 -2116.70)) ;; slightly moved, near rats nests in flutflut section
+    (('tar-plat-27) (set-vector-meters! (-> arg0 extra trans) 645.38  -0.2 -2131.74)) ;; ^
+    ;; (('tar-plat-33) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('tar-plat-34) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    (('tar-plat-36) (set-vector-meters! (-> arg0 extra trans)  334.07  0.36 -1952.99)) ;; center of first patch of muck
+    ;; (('tar-plat-37) ) ;; 
+    ;; (('tar-plat-58) ) ;; 
+    ;; (('tar-plat-59) ) ;; 
+    ;; (('swamp-bat-15) )  ;; 
+    ;; (('swamp-bat-16) )  ;; 
+    ;; (('swamp-rat-nest-1) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('swamp-rat-nest-2) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('swamp-rat-nest-3) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('swamp-rat-nest-4) (set-vector-meters! (-> arg0 extra trans) 651.50  -0.49 -1952.41))  ;; orig 4 yellow ecos by second "beach"
+    ;; (('swamp-rat-nest-5) (set-vector-meters! (-> arg0 extra trans) )) ;; drops blue eco?
+    (('swamp-rat-nest-6) (set-vector-meters! (-> arg0 extra trans) 401.03   0.53 -1965.73))  ;; orig yellow ecovent, first tether
+    (('swamp-rat-nest-7) (set-vector-meters! (-> arg0 extra trans) 454.78  -0.49 -2111.97)) ;; near second bats
+    (('swamp-rat-nest-8) (set-vector-meters! (-> arg0 extra trans) 319.74   0.69 -2078.20))  ;; on top of launcher after first cave
+    ;; (('swamp-rat-nest-9) )  ;; 
+    ;; (('swamp-rat-nest-10) ) ;; 
+    (('swamp-rock-14) (set-vector-meters! (-> arg0 extra trans) 429.31   7.89 -1932.98)) ;; orig first tether
+    (('swamp-rock-18) (set-vector-meters! (-> arg0 extra trans) 560.35   5.98 -2013.31)) ;; hiding scout fly, orig third tether
+    (('swamp-spike-34) (set-vector-meters! (-> arg0 extra trans) 375.85  -1.5 -2154.92))  ;; corner past second bats, blocks in scout fly cell
+      (('swamp-spike-35) (set-vector-meters! (-> arg0 extra trans) 371.64	-1.5	-2151.73))  ;; 
+      (('swamp-spike-36) (set-vector-meters! (-> arg0 extra trans) 367.43  -1.5 -2148.54))  ;; 
+    (('swamp-spike-37) (set-vector-meters! (-> arg0 extra trans) 433.4  -1.5  -2117.6))  ;; blocking path to yellow vent by second bats
+      (('swamp-spike-38) (set-vector-meters! (-> arg0 extra trans) 436.50  -1.5 -2122.1))  ;; ^
+      (('swamp-spike-39) (set-vector-meters! (-> arg0 extra trans) 440.0  -1.5  -2126.1))  ;; ^
+    (('swamp-spike-40) (set-vector-meters! (-> arg0 extra trans) 618.90  -1.5 -2054.14))  ;; rat game hard mode :)
+      (('swamp-spike-41) (set-vector-meters! (-> arg0 extra trans) 612.08  -1.5 -2051.26))  ;; ^
+      (('swamp-spike-42) (set-vector-meters! (-> arg0 extra trans) 625.42  -1.5 -2059.04))  ;; ^ 
+    ;; (('swamp-spike-43) )  ;; 
+      ;; (('swamp-spike-44) )  ;; 
+      ;; (('swamp-spike-45) )  ;; 
+    ;; (('swamp-spike-46) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;;   (('swamp-spike-47) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;;   (('swamp-spike-48) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('swamp-spike-49) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;;   (('swamp-spike-50) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;;   (('swamp-spike-51) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('swamp-spike-52) )  ;; 
+      ;; (('swamp-spike-53) )  ;; 
+      ;; (('swamp-spike-56) )  ;; 
+      ;; (('swamp-spike-57) )  ;; 
+    (('swamp-spike-58) (set-vector-meters! (-> arg0 extra trans)   421.27  -1.5 -1942.13))  ;; in front of orig first tether
+      (('swamp-spike-59) (set-vector-meters! (-> arg0 extra trans) 424.34  -1.5 -1947.31))  ;; ^
+      (('swamp-spike-60) (set-vector-meters! (-> arg0 extra trans) 427.41	-1.5	-1952.49))  ;; ^
+    (('swamp-barrel-1) (set-vector-meters! (-> arg0 extra trans) 593.83   0.26 -2012.54))  ;; hiding orb near boggy billys "house"
+    (('swamp-barrel-2) (set-vector-meters! (-> arg0 extra trans) 594.20   0.45 -2014.84))  ;; hiding orb near boggy billys "house"
+    ;; (('swamp-barrel-3) )  ;; 
+    ;; (('swamp-barrel-4) )  ;; 
+    ;; (('swamp-barrel-5) )  ;; 
+    ;; (('swamp-barrel-6) )  ;; 
+    (('swamp-barrel-7) (set-vector-meters! (-> arg0 extra trans) 594.99   0.57 -2016.99))  ;; hiding orb near boggy billys "house"
+    (('swamp-barrel-8) (set-vector-meters! (-> arg0 extra trans) 595.52   0.12 -2013.08))  ;; ^
+    (('swamp-barrel-9) (set-vector-meters! (-> arg0 extra trans) 596.05   0.36 -2015.47))  ;; ^
+    (('swamp-barrel-10) (set-vector-meters! (-> arg0 extra trans) 593.20  2.30 -2012.92)) ;; ^
+    (('swamp-barrel-11) (set-vector-meters!(-> arg0 extra trans) 594.85   2.50 -2013.6)) ;; ^
+    (('swamp-barrel-12) (set-vector-meters!(-> arg0 extra trans) 594.77   2.60 -2015.70)) ;; ^
+    (('balance-plat-1) (set-vector-meters! (-> arg0 extra trans) 526.83  0.616 -1928.45))  ;; moved around fourth tether
+      (('balance-plat-2) (set-vector-meters! (-> arg0 extra trans)  518.95  -5.9 -1922.94))  ;; moved around fourth tether
+    (('balance-plat-6) (set-vector-meters! (-> arg0 extra trans) 498.55  -5.8813 -1921.03)) ;; moved around fourth tether
+      (('balance-plat-12) (set-vector-meters! (-> arg0 extra trans) 507.40  -5.8813 -1922.35))  ;; moved around fourth tether
+    (('balance-plat-10) (set-vector-meters! (-> arg0 extra trans)  430.21  -5.9 -1951.74)) ;; side of first tether 
+      (('balance-plat-11) (set-vector-meters! (-> arg0 extra trans)  436.52  -5.9 -1943.74)) ;; side of first tether
+    
+    )
+  )

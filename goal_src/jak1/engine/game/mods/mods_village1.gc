@@ -1,0 +1,73 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(defmacro mod-village1-run-each-frame ()
+  `(begin
+    (when (process-by-ename "eco-11") ;; on ledge below orig position
+      (mod-move-eco (the eco (process-by-ename "eco-11")) (static-vector-meters -20.66  11.70   2.65))
+      )
+    )
+  )
+  
+(defmacro mod-village1-override-init-position (obj arg0)
+  `(case (-> obj name) :comp name=
+    ;; ORBS
+    (('money-2676)      (set-vector-meters! (-> arg0 extra trans) -26.5   22.0    -83.7))     ;; top of farmers hut
+    (('money-2689)      (set-vector-meters! (-> arg0 extra trans) -30.3   8.7     -68.4))     ;; tucked under farmers hut roof
+    (('money-2690)      (set-vector-meters! (-> arg0 extra trans) 6.5     23.2    -108.3))    ;; tree towards fire canyon
+    (('money-2692)      (set-vector-meters! (-> arg0 extra trans) 84.6    28.0    30.0))      ;; ledge above oracle
+    (('money-2688)      (set-vector-meters! (-> arg0 extra trans) 79.7    18.0    -41.5))     ;; outer ledge on path to oracle
+    (('money-2691)      (set-vector-meters! (-> arg0 extra trans) -25.5   4.7     -66.6))     ;; fireplace in farmers hut
+    (('money-2669)      (set-vector-meters! (-> arg0 extra trans) 88.18   18.57   18.87))     ;; behind oracle mouth
+    (('money-2671)      (set-vector-meters! (-> arg0 extra trans) -107.9  35.0    219.7))     ;; behind samos hut
+    (('money-2672)      (set-vector-meters! (-> arg0 extra trans) -182.85 32.9   213.01))     ;; on rocks/ferns near samos hut, need to come from behind
+    (('money-2674)      (set-vector-meters! (-> arg0 extra trans) -116.9  21.5    207.3))     ;; on pillars supporting samos hut 
+    (('money-2670)      (set-vector-meters! (-> arg0 extra trans) -72.2   25.5    141.4))     ;; in tree coming from samos hut
+    (('money-2673)      (set-vector-meters! (-> arg0 extra trans) -75.5   1.8     109.7))     ;; in broken boat
+    (('money-2675)      (set-vector-meters! (-> arg0 extra trans) -125.0  21.5    42.7))      ;; mayors roof in the back
+    (('money-2677)      (set-vector-meters! (-> arg0 extra trans) -58.0   15.6    -34.2))     ;; in cage in bird ladys house
+    (('money-2678)      (set-vector-meters! (-> arg0 extra trans) -50.3   11.5    36.9))      ;; by uncles bed
+    (('money-2679)      (set-vector-meters! (-> arg0 extra trans) -63.5   16.3    71.5))      ;; in net in fishermans
+    (('money-2680)      (set-vector-meters! (-> arg0 extra trans) 13.8    12.2    20.5))      ;; near blue eco spawn
+    (('money-2681)      (set-vector-meters! (-> arg0 extra trans) 74.9    6.5     25.0))      ;; below oracle
+    (('money-2682)      (set-vector-meters! (-> arg0 extra trans) -141.4  9.8     -13.5))     ;; behind sculptors house
+    (('money-2683)      (set-vector-meters! (-> arg0 extra trans) -103.6  1.5     -38.5))     ;; corner by stairs to beach
+    (('money-2684)      (set-vector-meters! (-> arg0 extra trans) 117.1   7.8     -51.2))     ;; upper corner ledge in water between yakows/oracle
+    (('money-2685)      (set-vector-meters! (-> arg0 extra trans) 73.5    14.5    -169.0))    ;; ledge in crop field
+    (('money-2686)      (set-vector-meters! (-> arg0 extra trans) 48.6    20.5    -85.1))     ;; ledge above yakows towards oracle
+    (('money-2687)      (set-vector-meters! (-> arg0 extra trans) -21.6   0.0     100.0))     ;; under fishermans boat
+    (('money-3539)      (set-vector-meters! (-> arg0 extra trans) -43.7   3.7     25.5))      ;; behind uncle house
+    (('money-3540)      (set-vector-meters! (-> arg0 extra trans) -157.0  14.8    -87.8))     ;; high ledge towards beach
+    (('money-3537)      (set-vector-meters! (-> arg0 extra trans) -139.4  11.0    -109.0))    ;; high ledge towards beach 2
+    (('money-3541)      (set-vector-meters! (-> arg0 extra trans) -126.2  12.5    -96.0))     ;; high ledge towards beach 3
+    (('money-3538)      (set-vector-meters! (-> arg0 extra trans) -101.5  11.8    -73.0))     ;; corner ledge towards beach
+    (('money-2693)      (set-vector-meters! (-> arg0 extra trans) -121.9  12.5    49.9))      ;; back left room of mayors house
+    (('money-2694)      (set-vector-meters! (-> arg0 extra trans) -146.2  35.0    211.5))     ;; near keira
+    (('money-2695)      (set-vector-meters! (-> arg0 extra trans) -118.0  46.5    208.0))     ;; in samos hut, left of warp gate
+    (('money-2696)      (set-vector-meters! (-> arg0 extra trans) -105.4  16.4    73.25))     ;; in fountain
+    (('money-2697)      (set-vector-meters! (-> arg0 extra trans) -122.1  19.0    14.5))      ;; tree by mayor/sculptor
+    (('money-2698)      (set-vector-meters! (-> arg0 extra trans) 207.5   12.2    -122.0))    ;; near mirrors
+    (('orb-cache-top-4) (set-vector-meters! (-> arg0 extra trans) 62.0    12.8    -6.92))     ;; take blue eco towards oracle
+    
+    ;; FLIES
+    (('crate-3142) (set-vector-meters! (-> arg0 extra trans) -132.6 11.9 32.3))      ;; behind mayors
+    (('crate-3141) (set-vector-meters! (-> arg0 extra trans) -50.8 10.5 -44.0))      ;; corner ledge by bird ladys house
+    (('crate-3143) (set-vector-meters! (-> arg0 extra trans) -99.0 17.6 -35.2))      ;; ledge near beach/sculptor
+    (('crate-3144) (set-vector-meters! (-> arg0 extra trans) -82.0 21.5 -10.3))      ;; high ledge between bridges
+    (('crate-3147) (set-vector-meters! (-> arg0 extra trans) -131.5 15.2 -20.7))     ;; on sculptor rock
+    (('crate-3146) (set-vector-meters! (-> arg0 extra trans) 32.5 12.5 -132.7))      ;; on tree 
+    (('crate-3145) (set-vector-meters! (-> arg0 extra trans) 153.0 11.0 -99.9))      ;; ledge coming back from FJ
+    
+    ;; CELLS
+    (('farmer-3) (set-vector-meters! (-> arg0 extra trans) -27.0 3.0 -78.0)) ;; sitting in his house
+      (('yakow-8) (set-vector-meters! (-> arg0 extra trans) 91.9 1.8 -152.1)) ;; in crop field
+      (('yakow-9) (set-vector-meters! (-> arg0 extra trans) 52.8 22.7 -69.6)) ;; where upper scout fly normally is
+      (('yakow-10) (set-vector-meters! (-> arg0 extra trans) -19.2 20.2 -97.9)) ;; towards FC
+      (('yakow-11) (set-vector-meters! (-> arg0 extra trans) 62.2 13.9 -33.3))  ;; towards oracle
+      (('yakow-12) (set-vector-meters! (-> arg0 extra trans) -7.4 17.7 -0.4)) ;; blue eco cache
+    ;; (('oracle-1))
+    
+    ;; MISC
+    
+    )
+  )

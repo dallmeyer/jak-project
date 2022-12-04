@@ -1,0 +1,81 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(defmacro mod-training-run-each-frame ()
+  `(begin
+
+    )
+  )
+  
+(defmacro mod-training-override-init-position (obj arg0)
+  `(case (-> obj name) :comp name=
+    ;; ORBS
+    (('money-4391)      (set-vector-meters! (-> arg0 extra trans) -1319.0  8.0     1069.0))   ;; behind warp gate
+    (('money-4393)      (set-vector-meters! (-> arg0 extra trans) -1312.6  8.5     1071.0))   ;; behind warp gate
+    (('money-4395)      (set-vector-meters! (-> arg0 extra trans) -1332.9  -5.0    1062.2))   ;; in water near warp gate
+    (('money-4396)      (set-vector-meters! (-> arg0 extra trans) -1301.5  0.0     942.5))    ;; waterfall
+    (('money-4397)      (set-vector-meters! (-> arg0 extra trans) -1293.0  7.7     1047.5))   ;; behind rock near start
+    (('money-4399)      (set-vector-meters! (-> arg0 extra trans) -1353.2  -4.0    1092.4))   ;; in rocks under water
+    (('money-4401)      (set-vector-meters! (-> arg0 extra trans) -1276.5  14.5    1080.1))   ;; in tree near warp gate
+    (('money-4402)      (set-vector-meters! (-> arg0 extra trans) -1256.3  16.5    1076.4))   ;; in tree near warp gate
+    (('money-4403)      (set-vector-meters! (-> arg0 extra trans) -1230.5  16.8    1069.7))   ;; in tree near warp gate
+    (('money-4404)      (set-vector-meters! (-> arg0 extra trans) -1225.0  15.0    1046.8))   ;; in tree near warp gate
+    (('money-4405)      (set-vector-meters! (-> arg0 extra trans) -1248.0  15.5    1037.5))   ;; in tree near warp gate
+    (('money-4406)      (set-vector-meters! (-> arg0 extra trans) -1248.6  20.0    1025.3))   ;; in tree near warp gate
+    (('money-4407)      (set-vector-meters! (-> arg0 extra trans) -1268.0  16.0    1051.0))   ;; in tree near warp gate
+    (('money-4345)      (set-vector-meters! (-> arg0 extra trans) -1299.8  19.0    1075.7))   ;; in tree near warp gate
+    (('money-4347)      (set-vector-meters! (-> arg0 extra trans) -1292.5  17.5    1074.5))   ;; in tree near warp gate
+    (('money-4349)      (set-vector-meters! (-> arg0 extra trans) -1237.5  16.5    1043.9))   ;; in tree near warp gate
+    (('money-4330)      (set-vector-meters! (-> arg0 extra trans) -1318.9  22.0    1075.9))   ;; in geyser above warp gate
+    (('money-4331)      (set-vector-meters! (-> arg0 extra trans) -1136.5  11.5    1016.7))   ;; ocean wall below scoutfly
+    (('money-4327)      (set-vector-meters! (-> arg0 extra trans) -1093.9  1.0     1057.2))   ;; in pool by the front geyser
+    (('money-4326)      (set-vector-meters! (-> arg0 extra trans) -1144.7  10.0    914.5))    ;; in pool by the back geyser
+    (('money-4328)      (set-vector-meters! (-> arg0 extra trans) -1171.3  15.0    839.6))    ;; corner of upper wall in back  
+    (('money-4332)      (set-vector-meters! (-> arg0 extra trans) -1167.0  17.0    946.5))    ;; between trees/wall/lamp
+    (('money-4333)      (set-vector-meters! (-> arg0 extra trans) -1203.0  17.7    944.0))    ;; behind/below ledge with blue ecos
+    (('money-4794)      (set-vector-meters! (-> arg0 extra trans) -1248.9  0.0     867.4))    ;; in water below gap en route to eco vent
+    (('money-4336)      (set-vector-meters! (-> arg0 extra trans) -1306.0  35.0    887.7))    ;; around corner near eco vent
+    (('money-4337)      (set-vector-meters! (-> arg0 extra trans) -1249.5  32.0    960.8))    ;; on ledge near inner geyser
+    (('money-4338)      (set-vector-meters! (-> arg0 extra trans) -1222.0  29.0    930.4))    ;; on ledge near inner geyser
+    (('money-4354)      (set-vector-meters! (-> arg0 extra trans) -1241.6  15.0    924.7))    ;; under raft
+    (('money-4356)      (set-vector-meters! (-> arg0 extra trans) -1266.3  18.0    934.5))    ;; between pillar/wall/lamp near rafts
+    (('money-4358)      (set-vector-meters! (-> arg0 extra trans) -1342.3  41.0    969.1))    ;; around corner of outer wall before last cell
+    (('money-4367)      (set-vector-meters! (-> arg0 extra trans) -1337.0  26.5    988.5))    ;; between trees on corner below last cell
+    (('money-4366)      (set-vector-meters! (-> arg0 extra trans) -1308.3  47.5    994.0))    ;; ledge below last cell
+    (('money-4365)      (set-vector-meters! (-> arg0 extra trans) -1330.0  65.0    966.0))    ;; high ledge on way to last cell
+    (('money-4364)      (set-vector-meters! (-> arg0 extra trans) -1326.6  40.3    960.1))    ;; between platform and wall en route to last cell
+    (('money-4363)      (set-vector-meters! (-> arg0 extra trans) -1322.6  20.5    1000.5))   ;; below last cell on top of trees/rock
+    (('money-4369)      (set-vector-meters! (-> arg0 extra trans) -1323.8  18.5    1070.8))   ;; above warp gate
+    (('money-4370)      (set-vector-meters! (-> arg0 extra trans) -1281.6  20.0    1099.5))   ;; above/left of warp gate
+    (('money-4444)      (set-vector-meters! (-> arg0 extra trans) -1329.9  16.0    1011.0))   ;; in tree near warp gate
+    (('money-4443)      (set-vector-meters! (-> arg0 extra trans) -1304.6  23.0    1012.0))   ;; in tree near warp gate
+    (('money-4442)      (set-vector-meters! (-> arg0 extra trans) -1297.3  20.0    1016.5))   ;; in tree near warp gate
+    (('money-4440)      (set-vector-meters! (-> arg0 extra trans) -1329.0  20.0    1061.5))   ;; in tree near warp gate
+    (('money-4439)      (set-vector-meters! (-> arg0 extra trans) -1339.5  17.0    1038.5))   ;; in tree near warp gate
+    (('money-4438)      (set-vector-meters! (-> arg0 extra trans) -1355.3  15.0    1009.9))   ;; in tree near warp gate
+    (('money-4383)      (set-vector-meters! (-> arg0 extra trans) -1230.5  28.5    1034.5))   ;; slippery ledges near first beach
+    (('money-4384)      (set-vector-meters! (-> arg0 extra trans) -1189.7  31.0    1052.0))   ;; way out on slippery ledges near first beach
+    (('money-4381)      (set-vector-meters! (-> arg0 extra trans) -1325.3  57.5    946.5))    ;; corner of high ledge on way to last cell
+    (('money-4791)      (set-vector-meters! (-> arg0 extra trans) -1307.5  52.5    952.5))    ;; corner of high ledge on way to last cell
+    (('money-4382)      (set-vector-meters! (-> arg0 extra trans) -1288.9  50.0    909.7))    ;; up high near green eco pill play hint
+    (('money-4793)      (set-vector-meters! (-> arg0 extra trans) -1188.7  32.7    888.4))    ;; up high near middle spike pits
+    (('money-4792)      (set-vector-meters! (-> arg0 extra trans) -1286.5  43.0    949.0))    ;; upper waterfall
+    
+    ;; FLIES
+    (('crate-2960) (set-vector-meters! (-> arg0 extra trans) -1215.0 32.4 1008.4))   ;; up top on cell cutscene skip route
+    (('crate-2961) (set-vector-meters! (-> arg0 extra trans) -1201.5 37.5 1010.0))   ;; up top on cell cutscene skip route
+    (('crate-2959) (set-vector-meters! (-> arg0 extra trans) -1204.9 46.0 1014.5))   ;; further up top from ^
+    (('crate-2958) (set-vector-meters! (-> arg0 extra trans) -1206.0 51.0 1020.5))   ;; further2 up top 
+    (('crate-2957) (set-vector-meters! (-> arg0 extra trans) -1192.5 60.3 1023.4))   ;; further3 up top
+    (('crate-2956) (set-vector-meters! (-> arg0 extra trans) -1180.3 62.5 1025.4))   ;; further4 up top
+    (('crate-2955) (set-vector-meters! (-> arg0 extra trans) -1156.5 61.6 1031.7))   ;; further5 up top
+    
+    ;; CELLS
+    (('fuel-cell-55) (override-fuel-cell-position arg0 -1264.0 55.0 890.5))    ;; up top on low eco blue door skip route
+    (('fuel-cell-53) (override-fuel-cell-position arg0 -1243.0 36.0 950.0))    ;; floating above inner geyser
+    (('fuel-cell-54) (override-fuel-cell-position arg0 -1308.0 37.0 1047.9))   ;; floating above start/end
+    
+    ;; MISC
+    ;; scarecrows?
+    )
+  )

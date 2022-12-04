@@ -1,0 +1,24 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(defmacro mod-village3-run-each-frame ()
+  `(begin
+
+    )
+  )
+  
+(defmacro mod-village3-override-init-position (obj arg0)
+  `(case (-> obj name) :comp name=
+    ;; ORBS
+    
+
+    ;; FLIES
+    
+    
+    ;; CELLS
+    
+    
+    ;; MISC
+    
+    )
+  )

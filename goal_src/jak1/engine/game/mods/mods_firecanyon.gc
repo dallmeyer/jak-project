@@ -1,0 +1,113 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(defmacro mod-firecanyon-run-each-frame ()
+  `(begin
+    (when (process-by-ename "ecovent-195")  ;; blue - left side of first ramp
+      (let ((obj (the ecovent (process-by-ename "ecovent-195")))
+            (vec (static-vector-meters 110.87  30.9 -427.01))
+            )
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    (when (process-by-ename "ecovent-196")  ;; blue - on ramp left of darkeco-clusters and fly
+      (let ((obj (the ecovent (process-by-ename "ecovent-196")))
+            (vec (static-vector-meters 172.75  34.75 -861.44))
+            )
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    (when (process-by-ename "ecovent-197")  ;; blue - beginning of first bridge
+      (let ((obj (the ecovent (process-by-ename "ecovent-197")))
+            (vec (static-vector-meters 138.01  30.99 -574.58))
+            )
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    (when (process-by-ename "ecovent-198")  ;; blue - in middle path towards end
+      (let ((obj (the ecovent (process-by-ename "ecovent-198")))
+            (vec (static-vector-meters 215.83  30.99 -1216.6))
+            )
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
+    )
+  )
+
+(defmacro mod-firecanyon-override-init-position (obj arg0)
+  `(case (-> obj name) :comp name=
+    ;; ORBS
+    (('crate-1021) (set-vector-meters! (-> arg0 extra trans) 20.01  30.99 -300.71)) ;; right side behind rock near beginning 
+    (('crate-1034) (set-vector-meters! (-> arg0 extra trans) 216.01  31.00 -741.33)) ;; right side behind rock mid/beginning
+    (('crate-1035) (set-vector-meters! (-> arg0 extra trans) 0.47  30.0 -199.44)) ;; around right corner at very start
+    (('crate-1036) (set-vector-meters! (-> arg0 extra trans) 2.02  33.73 -913.59)) ;; on left atop precusor thing 
+    (('crate-1037) (set-vector-meters! (-> arg0 extra trans) 231.52  30.0 -1199.92)) ;; on right of ramp near last orig blue ecovent 
+    
+    ;; FLIES
+    (('crate-1019)  (set-vector-meters! (-> arg0 extra trans)  -4.16  30.99 -254.85)) ;; behind first rock
+    (('crate-1027) (set-vector-meters! (-> arg0 extra trans) 185.92  31.00 -798.74)) ;; on left in lava across small jump
+    (('crate-1028) (set-vector-meters! (-> arg0 extra trans) 141.85  29.5 -608.0)) ;; under tree on right after bridge
+    (('crate-1029) (set-vector-meters! (-> arg0 extra trans) 196.62	31.0	-878.815)) ;; large lava area on right between darkeco clusters
+    (('crate-1030) (set-vector-meters! (-> arg0 extra trans) -74.55  31.0 -1125.59)) ;; on left after second bridge
+    (('crate-1032) (set-vector-meters! (-> arg0 extra trans) 235.42  31.0 -1295.43)) ;; behind eco crates on left near end
+    (('crate-1033) (set-vector-meters! (-> arg0 extra trans) 342.42  31.0 -1386.02)) ;; on right near end
+    
+    ;; CELLS
+    (('racer-8) (set-vector-meters! (-> arg0 extra trans) 326.08  33.62 -1448.86)) ;; just up ledge from where normally is (invis walls removed)
+    
+    ;; MISC    
+    (('crate-1020) (set-vector-meters! (-> arg0 extra trans) -15.01  30.5 -220.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.7  0.0  -0.7)) ;; green - roll jump from start and get lava bounce onto it
+    (('crate-1022) (set-vector-meters! (-> arg0 extra trans) -15.01  30.5 -223.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.7  0.0  -0.7)) ;; green - roll jump from start and get lava bounce onto it
+    (('racer-7) (set-vector-meters! (-> arg0 extra trans) -15.01  31.01 -247.64)) ;; past green eco crates ^
+    (('spike-26) (set-vector-meters! (-> arg0 extra trans) 162.48  30.9 -650.75)) ;; in middle, two lava patches (this one triggers 27/28/29)
+      (('spike-27) (set-vector-meters! (-> arg0 extra trans) 154.57  30.9 -657.33)) ;; in middle, two lava patches
+    (('spike-28) (set-vector-meters! (-> arg0 extra trans) 189.67  30.9 -700.31)) ;; in middle, two lava patches
+      (('spike-29) (set-vector-meters! (-> arg0 extra trans) 199.23  30.9 -700.01)) ;; in middle, two lava patches
+    (('spike-30) (set-vector-meters! (-> arg0 extra trans) 127.46  30.9 -1151.47)) ;; lava/gaps near end (this one triggers 41/42/43/44/45/46/47)
+      (('spike-46) (set-vector-meters! (-> arg0 extra trans) 130.49  30.9 -1145.39)) ;; lava/gaps near end
+      (('spike-41) (set-vector-meters! (-> arg0 extra trans) 162.11  30.9 -1183.83)) ;; lava/gaps near end
+      (('spike-42) (set-vector-meters! (-> arg0 extra trans) 165.88  30.9 -1178.10)) ;; lava/gaps near end
+    (('spike-45) (set-vector-meters! (-> arg0 extra trans) 98.00  30.9 -1162.23)) ;; lava/gaps near end
+      (('spike-47) (set-vector-meters! (-> arg0 extra trans) 99.83  30.9 -1155.64)) ;; lava/gaps near end
+      (('spike-43) (set-vector-meters! (-> arg0 extra trans) 171.38  30.9 -1165.97)) ;; lava/gaps near end
+      (('spike-44) (set-vector-meters! (-> arg0 extra trans) 176.90  30.9 -1161.74)) ;; lava/gaps near end
+    (('spike-48) (set-vector-meters! (-> arg0 extra trans) 121.85  30.9 -408.72))  ;; right side of first ramp (this one triggers 49/50/51)
+    (('spike-49) (set-vector-meters! (-> arg0 extra trans) 119.92  30.9 -435.60))  ;; left side of first ramp
+    (('spike-50) (set-vector-meters! (-> arg0 extra trans) 135.31  30.9 -428.15))  ;; right side of first ramp
+    (('spike-51) (set-vector-meters! (-> arg0 extra trans) 104.23  30.9 -419.29))  ;; left side of first ramp
+    (('crate-1557) (set-vector-meters! (-> arg0 extra trans) -2.87  30.99 -312.79)) ;; dark - left side behind rock near beginning
+    (('crate-1620) (set-vector-meters! (-> arg0 extra trans) 314.46  31.64 -1357.74)) ;; dark - on final bridge at end
+    (('crate-darkeco-cluster-1) (set-vector-meters! (-> arg0 extra trans) 107.98  31.00 -921.86)) ;; on right in middle hiding balloon
+    (('crate-darkeco-cluster-2) (set-vector-meters! (-> arg0 extra trans)  5.85  30.3 -298.22)) ;; center between rocks near beginning
+    (('crate-darkeco-cluster-3) (set-vector-meters! (-> arg0 extra trans) 209.51	30.3	-887.2)) ;; large lava area on right with fly in between
+    (('crate-darkeco-cluster-4) (set-vector-meters! (-> arg0 extra trans) 203.065	30.3	-883.0075)) ;; large lava area on right with fly in between
+    (('crate-darkeco-cluster-5) (set-vector-meters! (-> arg0 extra trans) 190.175	30.3	-874.6225)) ;; large lava area on right with fly in between
+    (('crate-darkeco-cluster-6) (set-vector-meters! (-> arg0 extra trans) 183.73	30.3	-870.43)) ;; large lava area on right with fly in between
+    (('crate-1621) (set-vector-meters! (-> arg0 extra trans) 241.14	30.3	-1286.47)) ;; dark -  lava area on left of ramp towards end
+    (('crate-1623) (set-vector-meters! (-> arg0 extra trans) 241.14	32.3	-1286.47)) ;; dark
+    (('crate-darkeco-cluster-7) (set-vector-meters! (-> arg0 extra trans) 236.15	30.3	-1290.69)) ;; lava area on left of ramp towards end
+    (('crate-darkeco-cluster-8) (set-vector-meters! (-> arg0 extra trans) 231.15	30.3	-1294.90)) ;; lava area on left of ramp towards end
+    (('crate-1622) (set-vector-meters! (-> arg0 extra trans) 226.16	30.3	-1299.12)) ;; dark -  lava area on left of ramp towards end
+    (('crate-1561) (set-vector-meters! (-> arg0 extra trans) 226.16	32.3	-1299.12)) ;; dark
+    (('balloon-1) (set-vector-meters! (-> arg0 extra trans) -0.70  35.5 -241.52)) ;; right side near start
+    (('balloon-7) (set-vector-meters! (-> arg0 extra trans) 124.02  39.0 -585.57)) ;; left side of bridge
+    (('balloon-8) (set-vector-meters! (-> arg0 extra trans) 202.47  35.5 -1222.50)) ;; left side towards end
+    (('balloon-9) (set-vector-meters! (-> arg0 extra trans) 201.48  39.5 -690.25)) ;; jump off right lurker
+    (('balloon-10) (set-vector-meters! (-> arg0 extra trans) 180.35  39.5 -700.99)) ;; jump off left lurker
+    (('balloon-11) (set-vector-meters! (-> arg0 extra trans) 195.12  39.5 -794.64)) ;; jump off lurker, right of fly
+    (('balloon-12) (set-vector-meters! (-> arg0 extra trans) 175.33  35.5 -887.39)) ;; right side after lava with dark eco and fly
+    (('balloon-13) (set-vector-meters! (-> arg0 extra trans) 73.49  35.5 -940.20)) ;; right side out of the way
+    (('balloon-14) (set-vector-meters! (-> arg0 extra trans) -56.48  32.58 -992.87)) ;; small gap on right
+    (('balloon-15) (set-vector-meters! (-> arg0 extra trans) 128.11  38.0  -416.86)) ;; right side of first ramp
+    (('balloon-16) (set-vector-meters! (-> arg0 extra trans) 112.59  37.71 -1161.06)) ;; jump off lurker near end
+    
+    )
+  )

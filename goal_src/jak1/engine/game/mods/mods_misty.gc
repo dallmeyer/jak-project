@@ -1,0 +1,210 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(defmacro mod-misty-run-each-frame ()
+  `(begin
+    (when (process-by-ename "mistycannon-8")
+      (let ((obj (the mistycannon (process-by-ename "mistycannon-8"))))
+        ;; (set! (-> obj rotate min) 40000.0) ;; aim at bridge
+        (set! (-> obj rotate range) 0.0)  ;; allow 360 spin 
+        )
+      )
+    (when (process-by-ename "eco-32")  ;; blue - platform to orig boosted cell
+      (mod-move-eco (the eco (process-by-ename "eco-32")) (static-vector-meters -29.1 23.0 820.1))
+      )
+    (when (process-by-ename "eco-33")  ;; blue - zoomer dock to cell after balloon lurkers
+      (mod-move-eco (the eco (process-by-ename "eco-33")) (static-vector-meters 98.40  10.5 1169.97))
+      )
+    (when (process-by-ename "eco-34")  ;; blue - zoomer dock to cell after balloon lurkers
+      (mod-move-eco (the eco (process-by-ename "eco-34")) (static-vector-meters 50.09 16.0 1187.07))
+      )
+    (when (process-by-ename "eco-39")  ;; blue - zoomer dock to cell after balloon lurkers
+      (mod-move-eco (the eco (process-by-ename "eco-39")) (static-vector-meters 17.80  17.54 1215.30))
+      )
+    (when (process-by-ename "eco-40")  ;; blue - leading to zoomer dock to cell after balloon lurkers
+      (mod-move-eco (the eco (process-by-ename "eco-40")) (static-vector-meters 92.0  2.0 1094.94))
+      )
+    (when (process-by-ename "eco-139")  ;; red - in mud near entrance
+      (mod-move-eco (the eco (process-by-ename "eco-139")) (static-vector-meters 3.55  15.5 843.26))
+      )
+    (when (process-by-ename "eco-145")  ;; red - in mud near boosted
+      (mod-move-eco (the eco (process-by-ename "eco-145")) (static-vector-meters -29.77  19.0 802.68))
+      )
+    (when (process-by-ename "eco-138")  ;; blue - on top of lurker ship
+      (mod-move-eco (the eco (process-by-ename "eco-138")) (static-vector-meters 34.51  33.00 1069.82))
+      )
+    (when (process-by-ename "eco-143")  ;; blue - on bridge with rolling logs
+      (mod-move-eco (the eco (process-by-ename "eco-143")) (static-vector-meters -39.55  43.0 1029.50))
+      )
+    (when (process-by-ename "eco-144")  ;; blue - on bridge with rolling logs
+      (mod-move-eco (the eco (process-by-ename "eco-144")) (static-vector-meters -77.03  51.5 991.29))
+      )
+    )
+  )
+  
+(defmacro mod-misty-override-init-position (obj arg0)
+  `(case (-> obj name) :comp name=
+    ;; ORBS
+    (('money-1025) (set-vector-meters! (-> arg0 extra trans) 90.61  -3.27 823.55)) ;; shallow water behind smaller rock near start
+    (('money-1026) (set-vector-meters! (-> arg0 extra trans) 134.61   5.7 806.1)) ;; on ocean side of large rock in water near start
+    (('money-1027) (set-vector-meters! (-> arg0 extra trans) 127.2  8.2 797.07)) ;; further around/up rock from ^
+    (('money-1369) (set-vector-meters! (-> arg0 extra trans) 123.96  10.6 799.56)) ;; further around/up rock from ^
+    (('money-1370) (set-vector-meters! (-> arg0 extra trans) 120.74  19.67 802.7)) ;; further around/up rock from ^
+    (('money-1371) (set-vector-meters! (-> arg0 extra trans) 153.95   8.00 873.10)) ;; around second large rock near ^
+    (('money-1372) (set-vector-meters! (-> arg0 extra trans) 162.07  10.3 875.0)) ;; further around/up second rock ^
+    (('money-1380) (set-vector-meters! (-> arg0 extra trans) 169.9  13.80 868.6)) ;; further around/up second rock ^
+    (('money-1381) (set-vector-meters! (-> arg0 extra trans) 168.97  13.5 860.45)) ;; further around/up second rock ^
+    (('money-1382) (set-vector-meters! (-> arg0 extra trans) 165.36  18.0 852.54)) ;; further around/up second rock ^
+    (('money-1383) (set-vector-meters! (-> arg0 extra trans) 159.19  16.03 851.16)) ;; further around/up second rock ^
+    (('money-1384) (set-vector-meters! (-> arg0 extra trans) 85.56   4.6 977.81)) ;; in corner near water between start/orig zoomer
+    (('money-1385) (set-vector-meters! (-> arg0 extra trans) 89.64  16.01 920.02)) ;; oceanside wall below orig ring of orbs  
+    (('money-1386) (set-vector-meters! (-> arg0 extra trans) 90.76  17.33 966.89)) ;; further towards orig zoomer from ^
+    (('money-1387) (set-vector-meters! (-> arg0 extra trans) 73.62   5.29 869.94)) ;; among rocks on beach near start
+    (('money-1388) (set-vector-meters! (-> arg0 extra trans) -10.6   3.5 813.1)) ;; behind rock on path from beach to boosted 
+    (('money-1389) (set-vector-meters! (-> arg0 extra trans) -12.93  27.18 783.55)) ;; atop rock near boosted 
+    (('money-1390) (set-vector-meters! (-> arg0 extra trans) -26.11   5.76 783.04)) ;; in rocks under skeleton near boosted
+    (('money-1391) (set-vector-meters! (-> arg0 extra trans) 12.9  18.2 812.3)) ;; tree roots near start
+    (('money-1392) (set-vector-meters! (-> arg0 extra trans) 16.53  21.52 877.54)) ;; rocks near orig muse start 
+    (('money-1393) (set-vector-meters! (-> arg0 extra trans) 17.98  28.84 875.35)) ;; above ^
+    (('money-1394) (set-vector-meters! (-> arg0 extra trans) 16.67  13.89 889.39)) ;; in mud near orig muse start
+    (('money-1395) (set-vector-meters! (-> arg0 extra trans) 31.68  35.2 854.20)) ;; on wall above start near orig scout fly
+    (('money-1396) (set-vector-meters! (-> arg0 extra trans) 8.52  45.16 909.49)) ;; boosted from between skeleton bridges, above orig muse
+    (('money-1397) (set-vector-meters! (-> arg0 extra trans) -5.18  45.34 908.18)) ;; same wall as ^ 
+    (('money-1398) (set-vector-meters! (-> arg0 extra trans) 41.60  24.0 894.26)) ;; behind bones/torch near orig muse
+    (('money-1399) (set-vector-meters! (-> arg0 extra trans) 50.03  39.6 897.67)) ;; above rock near muse/orig scoutfly
+    (('money-1400) (set-vector-meters! (-> arg0 extra trans) 74.43  43.5 883.80)) ;; above rocks near ^
+    (('money-1401) (set-vector-meters! (-> arg0 extra trans) 90.03  39.3 913.61)) ;; farther along rocks ^ towards zoomer
+    (('money-1402) (set-vector-meters! (-> arg0 extra trans) 44.09  18.5 948.22)) ;; behind bones on inner wall almost at orig zoomer
+    (('money-1403) (set-vector-meters! (-> arg0 extra trans) 57.76  18.57 986.33)) ;; inner wall behind tree almost at orig zoomer
+    (('money-1404) (set-vector-meters! (-> arg0 extra trans) 57.01  25.0 990.28)) ;; inner wall above ^
+    (('money-1405) (set-vector-meters! (-> arg0 extra trans) 59.44  24.69 1007.13)) ;; farther along wall from ^
+    (('money-1406) (set-vector-meters! (-> arg0 extra trans) 48.58  26.5 996.69)) ;; farther along wall from ^
+    (('money-1407) (set-vector-meters! (-> arg0 extra trans) 38.10  24.76 993.92)) ;; farther along wall from ^
+    (('money-1408) (set-vector-meters! (-> arg0 extra trans) 29.98  27.63 986.54)) ;; farther along wall from ^
+    (('money-1409) (set-vector-meters! (-> arg0 extra trans) 38.49  35.4 985.92)) ;; up wall from ^
+    (('money-1410) (set-vector-meters! (-> arg0 extra trans) 21.2  24.45 976.9)) ;; farther along wall from ^
+    (('money-1411) (set-vector-meters! (-> arg0 extra trans) 21.65  23.0 959.66)) ;; farther along wall from ^
+    (('money-1412) (set-vector-meters! (-> arg0 extra trans) 8.56  15.82 952.57)) ;; farther along wall from ^
+    (('money-1413) (set-vector-meters! (-> arg0 extra trans) -8.86  13.1 938.3)) ;; farther along wall from ^, above bones
+    (('money-1419) (set-vector-meters! (-> arg0 extra trans) -36.62  27.7 914.95)) ;; farther along wall from ^ 
+    (('money-1414) (set-vector-meters! (-> arg0 extra trans) -72.41  19.3 946.24)) ;; on bones near orig zoomer
+    (('money-1415) (set-vector-meters! (-> arg0 extra trans) -59.13  12.96 947.27)) ;; in crack in bones near ^
+    (('money-1416) (set-vector-meters! (-> arg0 extra trans) -42.88  19.5 944.48)) ;; top end of spine near orig zoomer
+    (('money-1417) (set-vector-meters! (-> arg0 extra trans) -23.50  17.94 949.68)) ;; mid spine near orig zoomer
+    (('money-1418) (set-vector-meters! (-> arg0 extra trans) -5.88  18.40 967.43)) ;; bottom end of spine near orig zoomer
+    (('money-1420) (set-vector-meters! (-> arg0 extra trans) -51.73   1.07 933.58)) ;; water below skeleton^
+    (('money-1421) (set-vector-meters! (-> arg0 extra trans) -113.75   2.77 950.78)) ;; further along inner wall near water from skeleton^
+    (('money-1422) (set-vector-meters! (-> arg0 extra trans) -37.35  14.00 854.67)) ;; in crack between orig muse and toppling bone
+    (('money-1423) (set-vector-meters! (-> arg0 extra trans) -95.62  16.7 901.11)) ;; rock below orig scoutfly near arena
+    (('money-1424) (set-vector-meters! (-> arg0 extra trans) -112.64  26.84 906.52)) ;; below collapsing bridge between orig scoutflies
+    (('money-1425) (set-vector-meters! (-> arg0 extra trans) -147.02  33.89 905.20)) ;; below orig scoutfly near arena
+    (('money-1429) (set-vector-meters! (-> arg0 extra trans) -116.40  10.11 852.35)) ;; in fog among rocks towards arena
+    (('money-1430) (set-vector-meters! (-> arg0 extra trans) -51.18  20.6 803.84)) ;; on rocks near boosted
+    (('money-1431) (set-vector-meters! (-> arg0 extra trans) -41.17  28.5 798.81)) ;; on rocks near boosted
+    (('money-1432) (set-vector-meters! (-> arg0 extra trans) -185.41   3.92 890.48)) ;; below entrance to arena 
+    (('money-1433) (set-vector-meters! (-> arg0 extra trans) -156.10  37.8 919.04)) ;; on edge of arena near entrance/orig scoutfly
+    (('money-1434) (set-vector-meters! (-> arg0 extra trans) -137.37  52.37 925.99)) ;; in machine near arena/orig scoutfly
+    (('money-1435) (set-vector-meters! (-> arg0 extra trans) -152.65  50.27 924.96)) ;; in machine near arena/orig scoutfly
+    (('money-1436) (set-vector-meters! (-> arg0 extra trans) -135.58  72.71 940.55)) ;; above fan atop arena
+    (('money-1438) (set-vector-meters! (-> arg0 extra trans) -132.21  57.3 950.75)) ;; under bridge where logs come out
+    (('money-1439) (set-vector-meters! (-> arg0 extra trans) -165.27  57.08 1020.34)) ;; between rocks/pole near orig cannon
+    (('money-1440) (set-vector-meters! (-> arg0 extra trans) -155.43  62.61 1026.57)) ;; on wall between cannon and orig scoutfly
+    (('money-1441) (set-vector-meters! (-> arg0 extra trans) -154.37  62.8 1038.09)) ;; further along wall from ^
+    (('money-1442) (set-vector-meters! (-> arg0 extra trans) -146.38  46.5 1045.77)) ;; further along wall from ^
+    (('money-1551) (set-vector-meters! (-> arg0 extra trans) -141.7  44.7 955.45)) ;; on light/machine near dark eco pool
+    (('money-1552) (set-vector-meters! (-> arg0 extra trans) -144.5  48.5 1017.2)) ;; on shortcut from dark eco pool to orig scoutfly
+    (('money-1553) (set-vector-meters! (-> arg0 extra trans) -120.81  48.5 965.3)) ;; on opposite side re: ^
+    (('money-1561) (set-vector-meters! (-> arg0 extra trans) -129.59  50.20 936.71)) ;; on roof near ^
+    (('money-1562) (set-vector-meters! (-> arg0 extra trans) -109.66  21.46 1087.81)) ;; upper rocks behind skeleton, boosted from orig scoutfly
+    (('money-1563) (set-vector-meters! (-> arg0 extra trans) -111.61  36.32 1092.20)) ;; above ^ (even better boosted from orig scoutfly)
+    (('money-1564) (set-vector-meters! (-> arg0 extra trans) -117.63  39.1 1106.89)) ;; around corner from ^
+    (('money-1565) (set-vector-meters! (-> arg0 extra trans) -92.83  33.5 1116.86)) ;; on tip from ^
+    (('money-1566) (set-vector-meters! (-> arg0 extra trans) -35.10   0.74 1121.52)) ;; below bridge from lurker ship to far side
+    (('money-1567) (set-vector-meters! (-> arg0 extra trans) 21.91  13.5 1104.39)) ;; under awning on lurker ship near orig scoutfly
+    (('money-1568) (set-vector-meters! (-> arg0 extra trans) 28.18  13.5 1088.11)) ;; behind barrels on lurker ship
+    (('money-1569) (set-vector-meters! (-> arg0 extra trans) 32.25  13.5 1065.72)) ;; near door on lurker ship
+    (('money-1570) (set-vector-meters! (-> arg0 extra trans) 42.51  13.5 1081.68)) ;; ocean side of lurker ship
+    (('money-1571) (set-vector-meters! (-> arg0 extra trans) -71.54  15.3 1103.99)) ;; rocks leading up from lurker ship towards arena
+    (('money-1572) (set-vector-meters! (-> arg0 extra trans) -77.32  20.36 1112.89)) ;; above tree, farther from ^
+    (('money-1573) (set-vector-meters! (-> arg0 extra trans) -91.06   1.59 1157.65)) ;; corner above water near fence/zoomer/orig orb cache
+    (('money-1574) (set-vector-meters! (-> arg0 extra trans) -101.68   9.6 1156.05)) ;; behind tree, above ^
+    (('money-1575) (set-vector-meters! (-> arg0 extra trans) -148.65  27.0 1122.74)) ;; on wall above mud between zoomer/arena
+    (('money-1576) (set-vector-meters! (-> arg0 extra trans) -159.14  28.23 1110.61)) ;; farther along wall from ^
+    (('money-1577) (set-vector-meters! (-> arg0 extra trans) -168.58  33.19 1046.86)) ;; inner wall towards back arena entrance
+    (('money-1578) (set-vector-meters! (-> arg0 extra trans) -148.05  39.56 1078.38)) ;; wall above seesaw on farside
+    (('money-1579) (set-vector-meters! (-> arg0 extra trans) -142.48  42.0 1087.21)) ;; farther along wall from ^ 
+    (('money-1580) (set-vector-meters! (-> arg0 extra trans) -151.25   0.8 1126.97)) ;; crevice in rocks along edge of beach on farside
+    (('money-1581) (set-vector-meters! (-> arg0 extra trans) -255.11   5.0 998.15)) ;; near water drop down from farside arena entrance
+    (('money-1582) (set-vector-meters! (-> arg0 extra trans) -242.96  17.92 994.11)) ;; above ^
+    (('money-1583) (set-vector-meters! (-> arg0 extra trans) -282.56  -1.94 992.91)) ;; underwater farther around from ^
+    (('money-1660) (set-vector-meters! (-> arg0 extra trans) -229.5  21.0 1043.9)) ;; behind rock in front of farside arena entrance
+    (('money-1661) (set-vector-meters! (-> arg0 extra trans) -205.25  27.76 1055.17)) ;; in skeleton mouth near farside arena entrance 
+    (('money-1662) (set-vector-meters! (-> arg0 extra trans) -205.25  27.76 1055.17)) ;; above rocks/near skeleton/seesaw farside
+    (('money-1663) (set-vector-meters! (-> arg0 extra trans) -218.20   4.0 1051.63)) ;; among rocks on farside beach
+    (('money-1664) (set-vector-meters! (-> arg0 extra trans) -190.80  27.5 1053.77)) ;; above rocks/skeleton/seesaw farside
+    (('money-1665) (set-vector-meters! (-> arg0 extra trans) 80.0  -4.7  851.5)) ;; water pool near start
+    (('money-1666) (set-vector-meters! (-> arg0 extra trans) 39.92  16.5 999.21)) ;; lower rocks from lurker ship/orig zoomer to inner wall
+    (('money-1667) (set-vector-meters! (-> arg0 extra trans) -25.3  20.3 921.5)) ;; in rocks on inner wall between money-1413 and -1419
+    (('money-1668) (set-vector-meters! (-> arg0 extra trans) -33.26  21.2 919.0)) ;; next to ^
+    (('money-1669) (set-vector-meters! (-> arg0 extra trans) -44.22  25.85 916.50)) ;; farther along from ^ towards scoutfly
+    (('money-3542) (set-vector-meters! (-> arg0 extra trans) -49.48  30.9 913.6)) ;; above ^
+    (('money-3543) (set-vector-meters! (-> arg0 extra trans) -79.17  23.38 959.18)) ;; in support pillars jump off end of skeleton in zoomer
+    (('money-3544) (set-vector-meters! (-> arg0 extra trans) -172.60  40.41 1006.48)) ;; by machine on right side dark eco pool
+    (('money-3545) (set-vector-meters! (-> arg0 extra trans) -183.2  40.4 1012.3)) ;; farther along machine from ^
+    (('money-3546) (set-vector-meters! (-> arg0 extra trans) -137.20  57.5 984.43)) ;; pipes in roof above dark eco pool
+    (('money-3547) (set-vector-meters! (-> arg0 extra trans) -162.5  54.2 1007.4)) ;; upper corner in machine right of dark eco pool
+    (('money-3548) (set-vector-meters! (-> arg0 extra trans) -75.21  14.50 1094.98)) ;; on rocks in zoomer section near orig orb cache
+    (('money-3549) (set-vector-meters! (-> arg0 extra trans) -89.85  13.11 1098.33)) ;; wrap around inner rocks further from ^
+    (('money-3550) (set-vector-meters! (-> arg0 extra trans) -137.87  19.46 1099.94)) ;; near mud with 2 purple lurkers and blue eco
+    (('money-3551) (set-vector-meters! (-> arg0 extra trans) 4.8  30.23 1100.3)) ;; above fan/windmill on lurker ship
+    (('money-3552) (set-vector-meters! (-> arg0 extra trans) 41.6  33.5 878.6)) ;; behind rock near upper seesaw to orig scoutfly near start
+    (('money-3553) (set-vector-meters! (-> arg0 extra trans) 46.5  36.5 858.0)) ;; ocean side of cliff with orig scout fly near start
+    (('money-3554) (set-vector-meters! (-> arg0 extra trans) 95.0  15.5 868.2)) ;; on skeleton left of start
+    (('money-3555) (set-vector-meters! (-> arg0 extra trans) 77.5  20.6 957.9)) ;; behind rocks/bones under bone bridge in orig muse area
+    (('money-3556) (set-vector-meters! (-> arg0 extra trans) 36.74  45.30 969.72)) ;; above tree in upper part of orig muse area
+    (('money-3557) (set-vector-meters! (-> arg0 extra trans) 18.04  44.7 915.06)) ;; boosted from upper platforms to inner cliff over orig muse area
+    (('money-3558) (set-vector-meters! (-> arg0 extra trans) 21.1  17.3 910.3)) ;; under skeleton near orig muse chase start
+    (('money-3559) (set-vector-meters! (-> arg0 extra trans) -11.64  12.52 770.95)) ;; on skeleton right of start
+    (('money-3560) (set-vector-meters! (-> arg0 extra trans) -208.0  18.95 1062.9)) ;; in skeleton mouth above farside beach
+    (('crate-427) (set-vector-meters! (-> arg0 extra trans) -81.38  45.68 915.53)) ;; left side of rocks above "door" in inner wall over orig scoutfly
+    (('crate-430) (set-vector-meters! (-> arg0 extra trans) -58.92  46.31 915.50)) ;; right side of ^
+    (('crate-431) (set-vector-meters! (-> arg0 extra trans) -148.09  57.03 927.30)) ;; above arena, opposite orig cannon
+    (('crate-432) (set-vector-meters! (-> arg0 extra trans) -75.03  44.91 1027.42)) ;; on bridge w/ rolling logs
+    (('crate-433) (set-vector-meters! (-> arg0 extra trans) -6.34  36.88 1028.92)) ;; same ^
+    (('orb-cache-top-15) (set-vector-meters! (-> arg0 extra trans) -63.17  16.9 756.16)) ;; orig boosted cell
+    
+    ;; FLIES
+    (('crate-659)  (set-vector-meters! (-> arg0 extra trans)  153.37  22.81 853.86)) ;; top of second rock in water near start (follow orbs)
+    (('crate-672) (set-vector-meters! (-> arg0 extra trans) 77.63  27.34 842.06)) ;; atop skeleton near start
+    (('crate-673) (set-vector-meters! (-> arg0 extra trans) -20.88  22.85 886.12)) ;; on skeleton near orig muse start
+    (('crate-684) (set-vector-meters! (-> arg0 extra trans) -48.5  33.5 907.8)) ;; inner wall above skeleton near orig zoomer
+    (('crate-747) (set-vector-meters! (-> arg0 extra trans) -160.2  36.6 1089.0)) ;; on skeleton on farside
+    (('crate-2560) (set-vector-meters! (-> arg0 extra trans) -267.47  14.34 993.52)) ;; around wall from farside arena entrance
+    (('crate-2561) (set-vector-meters! (-> arg0 extra trans) -195.99  33.33 1065.21)) ;; on skeleton on farside
+    
+    ;; CELLS
+    (('fuel-cell-11) (override-fuel-cell-position arg0  121.58  25.3 810.02)) ;; on top of rock in water near start (follow orbs)
+    (('fuel-cell-12) (override-fuel-cell-position arg0 37.83  27.0 1208.77)) ;; top of rock on dock in orig zoomer area
+    (('fuel-cell-50) (override-fuel-cell-position arg0 -244.33  42.94 932.93)) ;; above relocated silosteps after beating ambush
+      (('silostep-10) (set-vector-meters! (-> arg0 extra trans)  -244.33  27.90 932.93)) ;; other side of arena
+      (('silostep-9) (set-vector-meters! (-> arg0 extra trans)  -240.735  27.83 934.9575)) ;; 
+      (('silostep-8) (set-vector-meters! (-> arg0 extra trans)  -237.14  27.76 936.985)) ;; 
+      (('silostep-7) (set-vector-meters! (-> arg0 extra trans) -233.545  27.67 939.0125)) ;; 
+    (('fuel-cell-51) ;; changing movie-pos for this fucker seems to crash, so we only update trans
+      (set-vector-meters! (-> arg0 extra trans) -235.77  1.0 1152.75)) ;; out in ocean from farside beach (zoomer or maybe TAS fast swimming?)
+    (('mistycannon-8) (set-vector-meters! (-> arg0 extra trans) -76.45  52.64 956.43)) ;; on bridge with rolling logs
+      (('babak-with-cannon-5) (set-vector-meters! (-> arg0 extra trans) -83.89  52.73 967.76))
+    ;; (('muse-2))
+    
+    ;; MISC
+    (('racer-1) (set-vector-meters! (-> arg0 extra trans) 96.15   9.96 1196.07))  ;; on island dock
+    (('crate-674) (set-vector-meters! (-> arg0 extra trans) 22.27	1.92	1086.98) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
+    (('crate-676) (set-vector-meters! (-> arg0 extra trans) 19.66	1.96	1089.56) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
+    (('crate-701) (set-vector-meters! (-> arg0 extra trans) 17.05	2.01	1092.14) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
+    (('crate-711) (set-vector-meters! (-> arg0 extra trans) 14.44	2.05	1094.72) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
+    (('crate-746) (set-vector-meters! (-> arg0 extra trans) -35.99  -0.47 948.78)) ;; dark eco - in skeleton in zoomer section
+    (('crate-2322) (set-vector-meters! (-> arg0 extra trans) -29.3  -0.1 949.1)) ;; dark eco - in skeleton in zoomer section
+    (('crate-745) (set-vector-meters! (-> arg0 extra trans) -191.44  57.09 1018.57)) ;; green - where orig cannon is
+    
+    )
+  )

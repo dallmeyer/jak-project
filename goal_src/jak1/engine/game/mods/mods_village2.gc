@@ -1,0 +1,87 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(defmacro mod-village2-run-each-frame ()
+  `(begin
+    (when (process-by-ename "eco-26")  ;; blue - 2nd highest step near blue sage hut
+      (mod-move-eco (the eco (process-by-ename "eco-26")) (static-vector-meters 305.53  18.0 -1518.91))
+      )
+    (when (process-by-ename "eco-27")  ;; blue - on rock past bottom of steps
+      (mod-move-eco (the eco (process-by-ename "eco-27")) (static-vector-meters 219.98  16.0 -1494.33))
+      )
+    )
+  )
+
+(defmacro mod-village2-override-init-position (obj arg0)
+  `(case (-> obj name) :comp name=
+    ;; ORBS
+    (('money-2844) (set-vector-meters! (-> arg0 extra trans) 363.86   7.2 -1540.52)) ;; in waterfall under blue sage hut
+    (('money-2845) (set-vector-meters! (-> arg0 extra trans) 368.07  11.75 -1531.10)) ;; under bridge to blue sage hut
+    (('money-2846) (set-vector-meters! (-> arg0 extra trans) 366.70   6.63 -1555.34)) ;; in waterfall under blue sage hut
+    (('money-2847) (set-vector-meters! (-> arg0 extra trans) 376.27   8.54 -1566.49)) ;; in crack of rocks under blue sage hut
+    (('money-2848) (set-vector-meters! (-> arg0 extra trans) 403.81  10.5 -1557.56)) ;; in rocks under blue sage hut
+    (('money-2849) (set-vector-meters! (-> arg0 extra trans) 293.01   0.66 -1514.76)) ;; in wall of "beach" under waterfall
+    (('money-2850) (set-vector-meters! (-> arg0 extra trans) 244.65  21.40 -1527.93)) ;; on top of oracle
+    (('money-2854) (set-vector-meters! (-> arg0 extra trans) 182.42  22.50 -1605.73)) ;; rafters above geologist
+    (('money-2855) (set-vector-meters! (-> arg0 extra trans) 176.31  28.0 -1606.74)) ;; further up rocks from ^
+    (('money-2856) (set-vector-meters! (-> arg0 extra trans) 174.84  28.41 -1616.57)) ;; further up rocks from ^
+    (('money-2860) (set-vector-meters! (-> arg0 extra trans) 169.22  32.44 -1618.42)) ;; further up rocks from ^
+    (('money-2861) (set-vector-meters! (-> arg0 extra trans) 168.61  34.0 -1596.93)) ;; further up rocks from ^
+    (('money-2862) (set-vector-meters! (-> arg0 extra trans) 380.03   8.5 -1759.73)) ;; behind waterfall between klaww and boggy
+    (('money-2867) (set-vector-meters! (-> arg0 extra trans) 246.78   7.8 -1581.01)) ;; behind tree against inner rocks near oracle
+    (('money-2868) (set-vector-meters! (-> arg0 extra trans) 157.79  13.3 -1680.90)) ;; on right side towards basin against rocks 
+    (('money-2869) (set-vector-meters! (-> arg0 extra trans) 257.76  -3.99 -1610.78)) ;; under water against inner rocks by bridge
+    (('money-2870) (set-vector-meters! (-> arg0 extra trans) 246.77  20.0 -1650.54)) ;; left side of bridge to center area 
+    (('money-2874) (set-vector-meters! (-> arg0 extra trans) 296.0   20.2 -1648.29)) ;; in lamp/torch in center area
+    (('money-4917) (set-vector-meters! (-> arg0 extra trans) 228.55   7.5 -1630.94)) ;; under bridge to center
+    (('money-4918) (set-vector-meters! (-> arg0 extra trans) 273.32  -7.99 -1584.82 )) ;; dive in corner near dining pier
+    (('money-4919) (set-vector-meters! (-> arg0 extra trans) 457.04   5.0 -1658.34)) ;; on rock near chimes towards LPC 
+    (('money-4920) (set-vector-meters! (-> arg0 extra trans) 455.03  12.74 -1655.81)) ;; up rock from ^
+    (('money-4921) (set-vector-meters! (-> arg0 extra trans) 498.28   2.5 -1710.99)) ;; random rock between LPC and Boggy 
+    (('money-4922) (set-vector-meters! (-> arg0 extra trans) 285.02  22.0 -1749.03)) ;; boulder skip
+    (('money-4923) (set-vector-meters! (-> arg0 extra trans) 215.12   7.0 -1737.93)) ;; crack in rocks below klaww towards basin
+    (('money-4924) (set-vector-meters! (-> arg0 extra trans) 206.61   5.68 -1647.35)) ;; in crack near water between geologist and klaww
+    (('money-4925) (set-vector-meters! (-> arg0 extra trans) 524.77  17.2 -1609.55)) ;; right bubble LPC entrance
+    (('money-4926) (set-vector-meters! (-> arg0 extra trans) 524.96  17.5 -1652.73)) ;; left bubble LPC entrance
+    (('money-4927) (set-vector-meters! (-> arg0 extra trans) 361.11  24.22 -1725.61)) ;; dock rooftop next to levitator
+    (('money-4828) (set-vector-meters! (-> arg0 extra trans) 303.01  25.50 -1688.06 )) ;; dock rooftop next to gambler
+    (('orb-cache-top-14) (set-vector-meters! (-> arg0 extra trans) 385.97  22.09 -1576.64)) ;; deck next to blue sage hut
+    
+    ;; FLIES
+    (('crate-3127) (set-vector-meters! (-> arg0 extra trans) 296.98  18.65 -1496.31))  ;; on wall next to steps under waterfall
+    (('crate-3128) (set-vector-meters! (-> arg0 extra trans) 251.50   9.94 -1522.94))  ;; behind oracle
+    (('crate-3129) (set-vector-meters! (-> arg0 extra trans) 169.04  37.61 -1609.57))  ;; follow orb trails above geologist roof/rocks 
+    (('crate-3130) (set-vector-meters! (-> arg0 extra trans) 250.46   9.47 -1660.31)) ;; on rocks between trees, left of bridge to center
+    (('crate-3131) (set-vector-meters! (-> arg0 extra trans) 438.86   7.55 -1616.22)) ;; on rock near chimes towards LPC
+    (('crate-3132) (set-vector-meters! (-> arg0 extra trans) 449.94  17.72 -1653.19)) ;; on rock with trees near chimes towards LPC (orb trail)
+    (('crate-3133) (set-vector-meters! (-> arg0 extra trans) 244.92  24.01 -1745.81)) ;; on rocks behind trees under klaww    
+    
+    ;; CELLS
+    (('gambler-1) (set-vector-meters! (-> arg0 extra trans) 322.51   4.00 -1606.97)) ;; on lower dock next to warrior
+    (('geologist-1) (set-vector-meters! (-> arg0 extra trans) 188.13  13.14 -1616.15)) ;; on top of cart near normal position
+    (('warrior-1) (set-vector-meters! (-> arg0 extra trans) 322.54   3.7 -1586.12)) ;; sitting on ropes on dock
+    ;; 'oracle-2
+    
+    ;; MISC
+    (('pontoonfive-6) (set-vector-meters!  (-> arg0 extra trans) 301.94  0.33 -1727.13))  ;; under klaww near waterfall
+    (('pontoonfive-7) (set-vector-meters!  (-> arg0 extra trans) 269.61	 0.33	-707.80))  ;; between ^ and v
+    (('pontoonfive-8) (set-vector-meters!  (-> arg0 extra trans) 237.28  0.33 -1688.46))  ;; between geologist and klaww
+    (('pontoonten-9) (set-vector-meters! (-> arg0 extra trans) 404.76  0.33 -1742.49))  ;; between levitator and boggy
+    (('pontoonten-10) (set-vector-meters! (-> arg0 extra trans) 279.68  0.33 -1550.79))  ;; water behind oracle
+    (('pontoonten-11) (set-vector-meters! (-> arg0 extra trans) 429.63	 0.33	-1695.71))  ;; between LPC and boggy
+    (('pontoonten-12) (set-vector-meters! (-> arg0 extra trans) 432.99	 0.33	-1726.58))  ;; between LPC and boggy
+    (('pontoonten-13) (set-vector-meters!  (-> arg0 extra trans) 483.39	 0.33	-1630.21))  ;; between LPC and boggy
+    (('pontoonten-14) (set-vector-meters!  (-> arg0 extra trans) 468.27	 0.33	-1631.15))  ;; between LPC and boggy
+    (('pontoonten-15) (set-vector-meters!  (-> arg0 extra trans) 453.15	 0.33	-1632.09))  ;; between LPC and boggy
+    (('pontoonten-16) (set-vector-meters!  (-> arg0 extra trans) 407.216	0.33	-1630.592))  ;; between LPC and center
+    (('pontoonten-17) (set-vector-meters!  (-> arg0 extra trans) 391.532	0.33	-1627.214))  ;; between LPC and center
+    (('pontoonfive-12) (set-vector-meters! (-> arg0 extra trans) 438.02	 0.33	-1633.03))  ;; between LPC and boggy
+    (('pontoonfive-13) (set-vector-meters! (-> arg0 extra trans) 422.90	 0.33	-1633.97))  ;; between LPC and boggy
+    (('pontoonfive-14) (set-vector-meters! (-> arg0 extra trans) 375.848	0.33	-1623.836))  ;; between LPC and center
+    (('pontoonfive-15) (set-vector-meters! (-> arg0 extra trans) 424.58	 0.33	-1649.41))  ;; between LPC and boggy
+    (('pontoonfive-16) (set-vector-meters! (-> arg0 extra trans) 426.26	 0.33	-1664.84))  ;; between LPC and boggy
+    (('pontoonfive-17) (set-vector-meters! (-> arg0 extra trans) 360.164	0.33	-1620.458))  ;; between LPC and center
+    (('pontoonfive-18) (set-vector-meters! (-> arg0 extra trans) 344.48	0.33	-1617.08))  ;; between LPC and center 
+    
+    )
+  )
