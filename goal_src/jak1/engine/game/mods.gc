@@ -990,18 +990,18 @@
     (('money-3662) (set-vector-meters! (-> arg0 extra trans) 172.2  57.6 -2368.5))  ;; on rock left side of first shortcut
     (('money-3663) (set-vector-meters! (-> arg0 extra trans) 148.76  38.2 -2600.95))  ;; behind tree behind pillar after first shortcut
     (('money-3664) (set-vector-meters! (-> arg0 extra trans) 124.0  31.9 -2745.53))  ;; behind tree between 3rd and 4th ramps
-    ;; (('money-3665) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    (('money-3665) (set-vector-meters! (-> arg0 extra trans) 89.78  35.6 -3000.5))  ;; behind tree on right, right before big jump
     (('money-3666) (set-vector-meters! (-> arg0 extra trans) 320.9  33.0 -3135.52))  ;; between trees near orig boulder
     (('money-3667) (set-vector-meters! (-> arg0 extra trans) 436.79  16.4 -3193.9))  ;; between stalagmites on right, before you reach secret cell exit
-    ;; (('money-3668) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3669) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3670) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3671) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3672) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3673) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3674) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3675) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3676) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    (('money-3668) (set-vector-meters! (-> arg0 extra trans) 461.2 40.9 -3281.5))  ;; between stalagmites/crystals on left near cave start
+    (('money-3669) (set-vector-meters! (-> arg0 extra trans) 467.50  36.89 -3229.44))  ;; among crystals over gap (can live and grab with tight boosted)
+    (('money-3670) (set-vector-meters! (-> arg0 extra trans) 492.05  21.5 -3195.36))  ;; among crystals/mushrooms on far side of gap
+    (('money-3671) (set-vector-meters! (-> arg0 extra trans) 363.0  17.0 -3227.5))  ;; near stalgmite hops spot, among crystal/stalactite (behind tnt?)
+    (('money-3672) (set-vector-meters! (-> arg0 extra trans) 564.26  19.0 -3347.52))  ;; behind stalagmite in middle of path
+    (('money-3673) (set-vector-meters! (-> arg0 extra trans) 624.0  31.8 -3437.5))  ;; crystals/mushrooms on left before cave jump
+    (('money-3674) (set-vector-meters! (-> arg0 extra trans) 840.5  46.0 -3429.0))  ;; up higher on stalagmite on left towards end
+    (('money-3675) (set-vector-meters! (-> arg0 extra trans) 771.6  42.5 -3415.6))  ;; between stalagmites, left wall towards end
+    (('money-3676) (set-vector-meters! (-> arg0 extra trans) 921.2  37.3 -3437.0))  ;; among scaffolding on left
     ;; (('money-3677) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     ;; (('money-3678) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     ;; (('money-4882) (set-vector-meters! (-> arg0 extra trans) ))  ;;
@@ -1010,10 +1010,10 @@
     ;; (('money-4885) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     (('crate-3235) (set-vector-meters! (-> arg0 extra trans) 240.54  25.50 -3101.12))  ;; among trees, big jump landing
     (('crate-3236) (set-vector-meters! (-> arg0 extra trans) 373.57  35.79 -3094.74))  ;; trees on right, before cave entrance
-    ;; (('crate-3237) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('crate-3238) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('crate-3239) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('crate-3240) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    (('crate-3237) (set-vector-meters! (-> arg0 extra trans) 659.24  34.08 -3405.12))  ;; corner on right before cave jump
+    (('crate-3238) (set-vector-meters! (-> arg0 extra trans) 894.14  36.83 -3439.48))  ;; below scaffolding left side
+    (('crate-3239) (set-vector-meters! (-> arg0 extra trans) 963.37  35.31 -3388.30))  ;; right corner before VC (hint on backup to dock zoomer)
+    (('crate-3240) (set-vector-meters! (-> arg0 extra trans) 969.99  36.72 -3412.30))  ;; orig transpad at end
 
     ;; ~~~~ SCOUT FLIES ~~~~
     ;; Geyser flies
@@ -1114,8 +1114,8 @@
     (('crate-2990) (set-vector-meters! (-> arg0 extra trans) 129.28  38.96 -3021.60)) ;; next to big jump, on the reverse path
     (('crate-2991) (set-vector-meters! (-> arg0 extra trans) 281.50  27.24 -3105.24)) ;; behind trees near orig boulder to secret area
     (('crate-2992) (set-vector-meters! (-> arg0 extra trans) 348.65  17.79 -3193.11)) ;; where you jump up for backwards cell
-    (('crate-2993) (set-vector-meters! (-> arg0 extra trans) 451.9  37.90 -3186.6)) ;;
-    ;; (('crate-2994) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    (('crate-2993) (set-vector-meters! (-> arg0 extra trans) 451.9  37.90 -3186.6)) ;; behind stalagmite early cave
+    (('crate-2994) (set-vector-meters! (-> arg0 extra trans) 479.9  38.0 -3280.7)) ;; between stalagmites/crystals mid cave
 
     ;; ~~~~ POWER CELLS ~~~~
     ;; Geyser cells
