@@ -1002,18 +1002,22 @@
     (('money-3674) (set-vector-meters! (-> arg0 extra trans) 840.5  46.0 -3429.0))  ;; up higher on stalagmite on left towards end
     (('money-3675) (set-vector-meters! (-> arg0 extra trans) 771.6  42.5 -3415.6))  ;; between stalagmites, left wall towards end
     (('money-3676) (set-vector-meters! (-> arg0 extra trans) 921.2  37.3 -3437.0))  ;; among scaffolding on left
-    ;; (('money-3677) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3678) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-4882) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-4883) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-4884) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-4885) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    (('money-3677) (set-vector-meters! (-> arg0 extra trans) 885.2 48.1 -3439.35))  ;; up high on scaffolding on left
+    (('money-3678) (set-vector-meters! (-> arg0 extra trans) 818.47  38.0 -3383.43))  ;; on right in corner before scaffolding
+      (('tntbarrel-239) (set-vector-meters! (-> arg0 extra trans) 817.87  37.33 -3388.37))  ;; hiding money-3678 ^
+    (('money-4882) (set-vector-meters! (-> arg0 extra trans) 733.2  42.9  -3380.6))  ;; between stalag/stalac on right after jump, bob-amount set to 0 elsewhere
+    (('money-4883) (set-vector-meters! (-> arg0 extra trans) 658.00  48.0 -3444.0))  ;; up high on wall at cave jump, boosted going backwards
+    (('money-4884) (set-vector-meters! (-> arg0 extra trans) 988.8  41.2 -3378.1))  ;; behind rock next to zoomer dock
+    (('money-4885) (set-vector-meters! (-> arg0 extra trans) 166.92  44.6 -2571.74))  ;; among some trees after first shortcut
     (('crate-3235) (set-vector-meters! (-> arg0 extra trans) 240.54  25.50 -3101.12))  ;; among trees, big jump landing
     (('crate-3236) (set-vector-meters! (-> arg0 extra trans) 373.57  35.79 -3094.74))  ;; trees on right, before cave entrance
     (('crate-3237) (set-vector-meters! (-> arg0 extra trans) 659.24  34.08 -3405.12))  ;; corner on right before cave jump
     (('crate-3238) (set-vector-meters! (-> arg0 extra trans) 894.14  36.83 -3439.48))  ;; below scaffolding left side
     (('crate-3239) (set-vector-meters! (-> arg0 extra trans) 963.37  35.31 -3388.30))  ;; right corner before VC (hint on backup to dock zoomer)
     (('crate-3240) (set-vector-meters! (-> arg0 extra trans) 969.99  36.72 -3412.30))  ;; orig transpad at end
+
+    ;; Volcanic Crater orbs
+
 
     ;; ~~~~ SCOUT FLIES ~~~~
     ;; Geyser flies
@@ -1242,7 +1246,7 @@
     ;; (('billy-2) (set-vector-meters! ))  ;; 
 
     ;; Basin cells
-    (('fuel-cell-45) (override-fuel-cell-position arg0 -166.27  83.85 -1392.59)) ;; up high above 180 drop down in DMG - zoom walk extended from money-
+    (('fuel-cell-45) (set-vector-meters! (-> arg0 extra trans) -166.27  83.85 -1392.59)) ;; up high above 180 drop down in DMG - zoom walk extended from money-
     ;; purple rings in order
     (('race-ring-9) (set-vector-meters! (-> arg0 extra trans) -108.86  30.0 -1701.72))  ;; DMG start
     (('race-ring-1) (set-vector-meters! (-> arg0 extra trans) -139.79  29.0 -1783.10))
@@ -1955,7 +1959,6 @@
     ;; tntbarrel-235
     ;; tntbarrel-237
     ;; tntbarrel-238
-    ;; tntbarrel-239
     ;; tntbarrel-240
     ;; tntbarrel-241
     ;; tntbarrel-242
@@ -1964,52 +1967,52 @@
     ;; tntbarrel-245
     ;; tntbarrel-246
     ;; tntbarrel-247
-    ;; tntbarrel-248
     ;; tntbarrel-249
-    ;; tntbarrel-250
-    ;; tntbarrel-251
+    (('tntbarrel-250) (set-vector-meters! (-> arg0 extra trans)  98.46  36.88 -3037.06))  ;; jump over before big jump
+    ;; (('tntbarrel-251) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     ;; tntbarrel-252
     ;; tntbarrel-253
     ;; tntbarrel-254
-    ;; tntbarrel-255
-    ;; tntbarrel-256
-    ;; tntbarrel-257
+    (('tntbarrel-255) (set-vector-meters! (-> arg0 extra trans) 161.33  41.04 -2133.20))  ;; right of first jump
+    (('tntbarrel-256) (set-vector-meters! (-> arg0 extra trans) 130.12  42.30 -2152.35))  ;; left of first jump
+    (('tntbarrel-257) (set-vector-meters! (-> arg0 extra trans) 169.82  37.55 -2171.55))  ;; after first ramp, before zoomer
     ;; tntbarrel-258
     ;; tntbarrel-259
     ;; tntbarrel-260
     ;; tntbarrel-261
-    ;; tntbarrel-262
+    (('tntbarrel-262) (set-vector-meters! (-> arg0 extra trans) 535.10  42.38 -3255.24))  ;; tight path in cave between wall/gap where orig orbs
+    (('tntbarrel-248) (set-vector-meters! (-> arg0 extra trans) 469.53  35.76 -3271.82))  ;; before tight path w/ tntbarrel-262^
     ;; tntbarrel-263
     ;; tntbarrel-264
     ;; tntbarrel-265
-    ;; tntbarrel-266
+    (('tntbarrel-266) (set-vector-meters! (-> arg0 extra trans) 126.67  30.96 -2825.96))  ;; after 4th jump
     ;; tntbarrel-267
     ;; tntbarrel-268
 
-    ;; crate-darkeco-cluster-9
+    (('crate-darkeco-cluster-9) (set-vector-meters! (-> arg0 extra trans) 144.26  47.75 -2139.67))  ;; first jump
 
     ;; dark
-    ;; crate-3263
-    ;; crate-3264
-    ;; crate-3265
-    ;; crate-3266
-    ;; crate-3267
+    (('crate-3263) (set-vector-meters! (-> arg0 extra trans) 236.05  23.95 -3068.88))  ;; big jump where orig scout fly
+    (('crate-3264) (set-vector-meters! (-> arg0 extra trans) 238.33  24.43 -3066.97))  ;; big jump where orig scout fly
+    (('crate-3265) (set-vector-meters! (-> arg0 extra trans) 236.05  23.95 -3066.97))  ;; big jump where orig scout fly
+    (('crate-3266) (set-vector-meters! (-> arg0 extra trans) 238.33  24.43 -3068.88))  ;; big jump where orig scout fly
+    (('crate-3267) (set-vector-meters! (-> arg0 extra trans) 239.85  24.37 -3068.76))  ;; big jump where orig scout fly
 
     ;; green
-    ;; crate-2396
-    ;; crate-2397
-    ;; crate-2398
-    ;; crate-2399
-    ;; crate-2400
-    ;; crate-2401
-    ;; crate-2402
-    ;; crate-2407
-    ;; crate-2408
-    ;; crate-2409
-    ;; crate-2410
-    ;; crate-2421
-    ;; crate-2423
-    ;; crate-2424
+    ;; (('crate-2396) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    ;; (('crate-2397) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    ;; (('crate-2398) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    (('crate-2399) (set-vector-meters! (-> arg0 extra trans) 680.99  27.38 -3420.40))  ;; cave jump landing, where orig dark eco crates
+    (('crate-2400) (set-vector-meters! (-> arg0 extra trans) 680.80  27.51 -3417.73))  ;; cave jump landing, where orig dark eco crates
+    (('crate-2401) (set-vector-meters! (-> arg0 extra trans) 683.75  27.67 -3417.93))  ;; cave jump landing, where orig dark eco crates
+    (('crate-2402) (set-vector-meters! (-> arg0 extra trans) 683.91  27.49 -3420.75))  ;; cave jump landing, where orig dark eco crates
+    (('crate-2407) (set-vector-meters! (-> arg0 extra trans) 313.88  37.21 -3185.73))  ;; on rocky edges in orig secret cell area
+    (('crate-2408) (set-vector-meters! (-> arg0 extra trans) 318.27  37.68 -3187.71))  ;; on rocky edges in orig secret cell area
+    (('crate-2409) (set-vector-meters! (-> arg0 extra trans) 344.03  35.70 -3163.77))  ;; on rocky edges in orig secret cell area
+    (('crate-2410) (set-vector-meters! (-> arg0 extra trans) 347.59  36.15 -3166.26))  ;; on rocky edges in orig secret cell area
+    ;; (('crate-2421) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    ;; (('crate-2423) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    ;; (('crate-2424) (set-vector-meters! (-> arg0 extra trans) ))  ;;
 
     (else
       (when #f
@@ -2580,6 +2583,9 @@
       (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
       )
     )
+  (when (process-by-ename "money-4882") ;; in cave in MP, between stalag/stalac
+    (set! (-> (the money (process-by-ename "money-4882")) bob-amount) 0.0)
+    )
   
 
   (none)
@@ -2710,6 +2716,10 @@
         (('crate-2176 'crate-2188 'crate-2187 'crate-2194 'crate-2209 'crate-2199 'crate-2289)
           ;; Basin - boosted from raised platform with hole in it 
           (set-vector-meters! dst -388.48  44.80 -1569.73)
+          )
+        (('crate-2430 'crate-2989 'crate-2990 'crate-2991 'crate-2992 'crate-2993 'crate-2994)
+          ;; Mountain Pass - up on "OOB" ledge with trees before big jump
+          (set-vector-meters! dst 30.2  46.03 -2974.5)
           )
         (else
           (format #t "fuel movie override, didnt match grandparent ~A ~%" (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name))

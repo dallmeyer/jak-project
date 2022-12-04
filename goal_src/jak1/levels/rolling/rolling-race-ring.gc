@@ -1048,7 +1048,7 @@
      )
     )
   (set! (-> obj event-hook) (-> race-ring-idle event))
-  (go race-ring-active)
+  (go race-ring-idle)
   (none)
   )
 
