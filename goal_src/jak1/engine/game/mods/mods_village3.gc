@@ -13,29 +13,29 @@
     (('money-4799) (set-vector-meters! (-> arg0 extra trans) 1116.2  59.99 -3495.1)) ;; redsage hut, bookcase above samos
     (('money-4800) (set-vector-meters! (-> arg0 extra trans) 1117.0  65.5 -3485.0)) ;; warpgate rocket
     (('money-4801) (set-vector-meters! (-> arg0 extra trans) 1111.4  54.6 -3497.6)) ;; in window of redsage hut
-    (('money-4802) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4813) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4814) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4815) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4816) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4817) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4818) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4819) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4820) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4821) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4822) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4823) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4824) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4825) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4826) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4827) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4886) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4887) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4888) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4889) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4890) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4891) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('money-4892) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4802) (set-vector-meters! (-> arg0 extra trans) 1038.2  56.8 -3519.6)) ;; in crack in rocks by entrance to miners
+    (('money-4813) (set-vector-meters! (-> arg0 extra trans) 1039.97  65.0  -3519.66)) ;; path up by lamp at miner entrance
+    (('money-4814) (set-vector-meters! (-> arg0 extra trans) 1041.10  72.6 -3514.21)) ;; up from ^ on slippery rock
+    (('money-4815) (set-vector-meters! (-> arg0 extra trans) 1039.16  81.1 -3514.28)) ;; up from ^ on scaffolding
+    (('money-4816) (set-vector-meters! (-> arg0 extra trans) 1029.07  74.4 -3499.73)) ;; down from ^ on scaffolding
+    (('money-4817) (set-vector-meters! (-> arg0 extra trans) 1097.15  41.0 -3415.23)) ;; where orig scout fly after MP
+    (('money-4818) (set-vector-meters! (-> arg0 extra trans) 1185.09  57.1 -3435.48)) ;; on pillar from mid minecart track
+    (('money-4819) (set-vector-meters! (-> arg0 extra trans) 1193.89  59.5 -3462.13)) ;; on slippery pillar from mid minecart track (key to getting over invis wall)
+    (('money-4824) (set-vector-meters! (-> arg0 extra trans) 1203.55  50.1 -3459.22)) ;; over invis wall and down from money-4819^
+    (('money-4820) (set-vector-meters! (-> arg0 extra trans) 1204.07  50.4 -3458.41)) ;; up from ^
+    (('money-4821) (set-vector-meters! (-> arg0 extra trans) 1205.24  58.25 -3454.66)) ;; towards spider cave from ^
+    (('money-4822) (set-vector-meters! (-> arg0 extra trans) 1203.87  63.3 -3442.83)) ;; towards spider cave from ^
+    (('money-4823) (set-vector-meters! (-> arg0 extra trans) 1195.03  57.3 -3429.14)) ;; towards spider cave from ^
+    (('money-4825) (set-vector-meters! (-> arg0 extra trans) 1230.25  60.9 -3524.84)) ;; newer rocket for LTS
+    (('money-4826) (set-vector-meters! (-> arg0 extra trans) 1243.09  58.2 -3538.38)) ;; keep going for LTS from ^^
+    (('money-4827) (set-vector-meters! (-> arg0 extra trans) 1241.19  56.0 -3544.16)) ;; ^
+    (('money-4886) (set-vector-meters! (-> arg0 extra trans) 1245.13  58.2 -3549.34)) ;; ^
+    (('money-4887) (set-vector-meters! (-> arg0 extra trans) 1221.65  59.6 -3572.18)) ;; old LTS rocket, but other side of 
+    (('money-4888) (set-vector-meters! (-> arg0 extra trans) 1053.16  65.7 -3538.13)) ;; right side of miner entrance by lamps
+    (('money-4889) (set-vector-meters! (-> arg0 extra trans) 1053.19  74.7  -3536.2)) ;; up from ^
+    (('money-4890) (set-vector-meters! (-> arg0 extra trans) 1019.5  65.0 -3542.0)) ;; left wall in miner cave
+    (('money-4891) (set-vector-meters! (-> arg0 extra trans) 1042.36  60.5 -3564.43)) ;; right wall in miner cave
+    (('money-4892) (set-vector-meters! (-> arg0 extra trans) 1036.98  58.3 -3582.91)) ;; on pillar in miner cave (key to other orbs)
     (('money-4893) (set-vector-meters! (-> arg0 extra trans) )) ;;
     (('money-4894) (set-vector-meters! (-> arg0 extra trans) )) ;;
     (('money-4895) (set-vector-meters! (-> arg0 extra trans) )) ;;
@@ -62,12 +62,12 @@
     (('money-4916) (set-vector-meters! (-> arg0 extra trans) )) ;;
 
     ;; FLIES
-    (('crate-3121) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('crate-3122) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('crate-3123) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('crate-3124) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('crate-3125) (set-vector-meters! (-> arg0 extra trans) )) ;;
-    (('crate-3126) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('crate-3121) (set-vector-meters! (-> arg0 extra trans) 1048.89  55.46 -3539.21)) ;; behind rocks at miner entrance
+    (('crate-3122) (set-vector-meters! (-> arg0 extra trans) 1041.33  82.90 -3530.87)) ;; up from money-4815 above miner entrance
+    (('crate-3123) (set-vector-meters! (-> arg0 extra trans) 1196.65  51.45 -3434.14)) ;; towards spider cave from money-4822
+    (('crate-3124) (set-vector-meters! (-> arg0 extra trans) 1227.34  57.87 -3521.18)) ;; near new rocket for LTS, from money-4825
+    (('crate-3125) (set-vector-meters! (-> arg0 extra trans) 1215.29  57.19 -3570.47)) ;; near old rocket for LTS, from money-4887
+    (('crate-3126) (set-vector-meters! (-> arg0 extra trans) 1014.60  55.89 -3553.5)) ;; in crevice in wall of miner cave
     (('crate-3148) (set-vector-meters! (-> arg0 extra trans) )) ;;
     
     ;; CELLS
