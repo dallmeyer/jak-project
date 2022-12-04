@@ -978,21 +978,21 @@
     (('money-3650) (set-vector-meters! (-> arg0 extra trans) 174.42  34.37 -1873.34))  ;; in klaww area on precursor stuff in lava
     (('money-3651) (set-vector-meters! (-> arg0 extra trans) 226.28  33.97 -1842.27))  ;; in klaww area on precursor stuff in lava
     (('money-3652) (set-vector-meters! (-> arg0 extra trans) 243.30  35.69 -1871.53))  ;; in klaww area on precursor stuff in lava
-    (('money-3653) (set-vector-meters! (-> arg0 extra trans) 223.49  36.85 -1980.26))  ;; in klaww area on precursor stuff in lava
-    (('money-3654) (set-vector-meters! (-> arg0 extra trans) 191.53  36.59 -1990.15))  ;; in klaww area on precursor stuff in lava
-    ;; (('money-3655) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3656) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3657) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3658) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3659) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3660) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3661) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3662) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3663) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3664) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    (('money-3653) (set-vector-meters! (-> arg0 extra trans) 223.10  36.20 -1979.26))  ;; after klaww before 
+    (('money-3654) (set-vector-meters! (-> arg0 extra trans) 191.53  36.59 -1990.15))  ;; after klaww before 
+    (('money-3655) (set-vector-meters! (-> arg0 extra trans) 176.80  33.92 -1856.51))  ;; in klaww area on precursor stuff in lava (quad jump)
+    (('money-3656) (set-vector-meters! (-> arg0 extra trans) 164.75  36.76 -2043.33))  ;; behind left tree near start of zoomer section
+    (('money-3657) (set-vector-meters! (-> arg0 extra trans) 309.0  34.3 -3176.3))  ;; on left wall in orig secret cell
+    (('money-3658) (set-vector-meters! (-> arg0 extra trans) 340.7  35.2 -3160.0))  ;; on right wall in orig secret cell
+    (('money-3659) (set-vector-meters! (-> arg0 extra trans) 126.0  41.3 -2082.6))  ;; left, behind rocks/trees before first ramp 
+    (('money-3660) (set-vector-meters! (-> arg0 extra trans) 163.8  47.27 -2094.6))  ;; upper right ledge, before first ramp
+    (('money-3661) (set-vector-meters! (-> arg0 extra trans) 153.0  44.0 -2144.2))  ;; behind first ramp
+    (('money-3662) (set-vector-meters! (-> arg0 extra trans) 172.2  57.6 -2368.5))  ;; on rock left side of first shortcut
+    (('money-3663) (set-vector-meters! (-> arg0 extra trans) 148.76  38.2 -2600.95))  ;; behind tree behind pillar after first shortcut
+    (('money-3664) (set-vector-meters! (-> arg0 extra trans) 124.0  31.9 -2745.53))  ;; behind tree between 3rd and 4th ramps
     ;; (('money-3665) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3666) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('money-3667) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    (('money-3666) (set-vector-meters! (-> arg0 extra trans) 320.9  33.0 -3135.52))  ;; between trees near orig boulder
+    (('money-3667) (set-vector-meters! (-> arg0 extra trans) 436.79  16.4 -3193.9))  ;; between stalagmites on right, before you reach secret cell exit
     ;; (('money-3668) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     ;; (('money-3669) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     ;; (('money-3670) (set-vector-meters! (-> arg0 extra trans) ))  ;;
@@ -1008,8 +1008,8 @@
     ;; (('money-4883) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     ;; (('money-4884) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     ;; (('money-4885) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('crate-3235) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('crate-3236) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    (('crate-3235) (set-vector-meters! (-> arg0 extra trans) 240.54  25.50 -3101.12))  ;; among trees, big jump landing
+    (('crate-3236) (set-vector-meters! (-> arg0 extra trans) 373.57  35.79 -3094.74))  ;; trees on right, before cave entrance
     ;; (('crate-3237) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     ;; (('crate-3238) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     ;; (('crate-3239) (set-vector-meters! (-> arg0 extra trans) ))  ;;
@@ -1108,13 +1108,13 @@
     (('crate-2199) (set-vector-meters! (-> arg0 extra trans) -206.67  91.02 -1410.36)) ;; up high on slippery precursor, after money-3431
     (('crate-2289) (set-vector-meters! (-> arg0 extra trans) -199.98  66.19 -1704.30)) ;; TODO: where did I put this
 
-    ;; Montain Pass flies
-    ;; crate-2430
-    ;; crate-2989
-    ;; crate-2990
-    ;; crate-2991
-    ;; crate-2992
-    ;; crate-2993
+    ;; Mountain Pass flies
+    (('crate-2430) (set-vector-meters! (-> arg0 extra trans) 134.70  48.92 -2473.64)) ;; behind tree at end of first shortcut
+    (('crate-2989) (set-vector-meters! (-> arg0 extra trans)  89.07  35.15 -2907.49)) ;; behind tree on right, after 4th jump
+    (('crate-2990) (set-vector-meters! (-> arg0 extra trans) 129.28  38.96 -3021.60)) ;; next to big jump, on the reverse path
+    (('crate-2991) (set-vector-meters! (-> arg0 extra trans) 281.50  27.24 -3105.24)) ;; behind trees near orig boulder to secret area
+    (('crate-2992) (set-vector-meters! (-> arg0 extra trans) 348.65  17.79 -3193.11)) ;; where you jump up for backwards cell
+    (('crate-2993) (set-vector-meters! (-> arg0 extra trans) 451.9  37.90 -3186.6)) ;;
     ;; (('crate-2994) (set-vector-meters! (-> arg0 extra trans) )) ;; 
 
     ;; ~~~~ POWER CELLS ~~~~
@@ -1242,7 +1242,7 @@
     ;; (('billy-2) (set-vector-meters! ))  ;; 
 
     ;; Basin cells
-    (('fuel-cell-45) (set-vector-meters! (-> arg0 extra trans)  -166.27  83.85 -1392.59)) ;; up high above 180 drop down in DMG - zoom walk extended from money-
+    (('fuel-cell-45) (override-fuel-cell-position arg0 -166.27  83.85 -1392.59)) ;; up high above 180 drop down in DMG - zoom walk extended from money-
     ;; purple rings in order
     (('race-ring-9) (set-vector-meters! (-> arg0 extra trans) -108.86  30.0 -1701.72))  ;; DMG start
     (('race-ring-1) (set-vector-meters! (-> arg0 extra trans) -139.79  29.0 -1783.10))
@@ -1302,7 +1302,11 @@
 
     ;; Mountain Pass cells
     (('racer-15) (set-vector-meters! (-> arg0 extra trans) 985.71  40.47 -3403.63)) ;; up ledge from end of MP  
-    ;; fuel-cell-62
+    (('fuel-cell-62) (override-fuel-cell-position arg0  89.21  34.8 -2414.80))  ;; on road less traveled (on foot, dont take first shortcut)
+      (('tntbarrel-218) (set-vector-meters! (-> arg0 extra trans) 93.21  31.7 -2414.80))  ;; surrounding fuel-cell-62
+      (('tntbarrel-223) (set-vector-meters! (-> arg0 extra trans) 89.21  33.0 -2418.80))  ;; surrounding fuel-cell-62
+      (('tntbarrel-228) (set-vector-meters! (-> arg0 extra trans) 89.21  32.5 -2410.80))  ;; surrounding fuel-cell-62
+      (('tntbarrel-229) (set-vector-meters! (-> arg0 extra trans) 85.21  34.6 -2414.80))  ;; surrounding fuel-cell-62
 
     ;; ~~~~ MISC ~~~~
     ;; Geyser misc
@@ -1922,6 +1926,7 @@
     ;; Mountain Pass misc
     (('shortcut-boulder-1) (set-vector-meters! (-> arg0 extra trans) 441.75  34.86 -3243.89)) ;; blocking path at start of tunnel (can jump around)
     (('racer-14) (set-vector-meters! (-> arg0 extra trans) 171.53  37.33 -2187.81)) ;; in place of ecovent early into MP
+    (('plunger-lurker-3) (set-vector-meters! (-> arg0 extra trans) 339.90  34.73 -3184.80)) ;; in place of backwards cell
     
     ;; eco-255 ;; blue
     ;; eco-270
@@ -1941,14 +1946,11 @@
     ;; ecovent-261
     ;; ecovent-264
 
-    ;; tntbarrel-218
-    ;; tntbarrel-220
-    ;; tntbarrel-221
-    ;; tntbarrel-223
-    ;; tntbarrel-228
-    ;; tntbarrel-229
-    ;; tntbarrel-231
-    ;; tntbarrel-233
+
+    ;; (('tntbarrel-220) (set-vector-meters! (-> arg0 extra trans) 94.21  34.8 -2419.80))  ;; 
+    ;; (('tntbarrel-221) (set-vector-meters! (-> arg0 extra trans) 94.21  34.8 -2409.80))  ;; 
+    ;; (('tntbarrel-231) (set-vector-meters! (-> arg0 extra trans) 84.21  34.8 -2419.80))  ;; 
+    ;; (('tntbarrel-233) (set-vector-meters! (-> arg0 extra trans) 84.21  34.8 -2409.80))  ;; 
     ;; tntbarrel-234
     ;; tntbarrel-235
     ;; tntbarrel-237
@@ -2656,6 +2658,10 @@
     (('racer-15)
       ;; up ledge from where normally is at end of MP
       (set-vector-meters! dst 985.71  40.47 -3403.63)
+      )
+    (('ogreboss-1)
+      ;; hot rock near normal spawn
+      (set-vector-meters! dst 209.98  31.1 -1897.90)
       )
     (else
       (format #t "fuel movie override, didnt match parent ~A ~%" (-> (ppointer->process (-> obj parent)) name))

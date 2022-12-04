@@ -1992,7 +1992,7 @@
           )
         (label cfg-6)
         (birth-pickup-at-point
-          gp-1
+          (static-vector-meters 209.98  32.4 -1897.90)
           (pickup-type fuel-cell)
           (the float (-> self entity extra perm task))
           #f
