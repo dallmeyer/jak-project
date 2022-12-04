@@ -10,13 +10,69 @@
 (defmacro mod-village3-override-init-position (obj arg0)
   `(case (-> obj name) :comp name=
     ;; ORBS
-    
+    (('money-4799) (set-vector-meters! (-> arg0 extra trans) 1116.2  59.99 -3495.1)) ;; redsage hut, bookcase above samos
+    (('money-4800) (set-vector-meters! (-> arg0 extra trans) 1117.0  65.5 -3485.0)) ;; warpgate rocket
+    (('money-4801) (set-vector-meters! (-> arg0 extra trans) 1111.4  54.6 -3497.6)) ;; in window of redsage hut
+    (('money-4802) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4813) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4814) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4815) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4816) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4817) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4818) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4819) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4820) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4821) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4822) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4823) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4824) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4825) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4826) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4827) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4886) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4887) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4888) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4889) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4890) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4891) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4892) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4893) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4894) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4895) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4896) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4897) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4898) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4899) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4900) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4901) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4902) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4903) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4904) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4905) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4906) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4907) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4908) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4909) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4910) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4911) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4912) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4913) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4914) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4915) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('money-4916) (set-vector-meters! (-> arg0 extra trans) )) ;;
 
     ;; FLIES
-    
+    (('crate-3121) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('crate-3122) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('crate-3123) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('crate-3124) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('crate-3125) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('crate-3126) (set-vector-meters! (-> arg0 extra trans) )) ;;
+    (('crate-3148) (set-vector-meters! (-> arg0 extra trans) )) ;;
     
     ;; CELLS
-    
+    (('crate-2987) (set-vector-meters! (-> arg0 extra trans) )) ;; secret cell
+    ;; oracle-3
     
     ;; MISC
     
