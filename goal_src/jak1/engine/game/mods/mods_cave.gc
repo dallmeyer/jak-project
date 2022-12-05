@@ -3,7 +3,15 @@
 
 (defmacro mod-cave-run-each-frame ()
   `(begin
-
+    (when (process-by-ename "ecovent-253")  ;; yellow - moved to center island in entrance
+      (let ((obj (the ecovent (process-by-ename "ecovent-253")))
+            (vec (static-vector-meters 1080.19  25.94 -3269.64))
+            )
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
     )
   )
   
