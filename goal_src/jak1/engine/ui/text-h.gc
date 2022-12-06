@@ -762,6 +762,7 @@
   (cutscene-skips               #x1501)
 
   (rolling-buzzer               #x1600)
+  (baby-mode                    #x1601)  
 
 ;; GAME-TEXT-ID ENUM ENDS
   )

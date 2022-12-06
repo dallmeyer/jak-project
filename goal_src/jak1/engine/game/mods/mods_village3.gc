@@ -12,7 +12,6 @@
     ;; ORBS
     (('money-4799) (set-vector-meters! (-> arg0 extra trans) 1116.2  59.99 -3495.1)) ;; redsage hut, bookcase above samos
     (('money-4800) (set-vector-meters! (-> arg0 extra trans) 1117.0  65.5 -3485.0)) ;; warpgate rocket
-    (('money-4801) (set-vector-meters! (-> arg0 extra trans) 1111.4  54.6 -3497.6)) ;; in window of redsage hut
     (('money-4802) (set-vector-meters! (-> arg0 extra trans) 1038.2  56.8 -3519.6)) ;; in crack in rocks by entrance to miners
     (('money-4813) (set-vector-meters! (-> arg0 extra trans) 1039.97  65.0  -3519.66)) ;; path up by lamp at miner entrance
     (('money-4814) (set-vector-meters! (-> arg0 extra trans) 1041.10  72.6 -3514.21)) ;; up from ^ on slippery rock
@@ -22,10 +21,11 @@
     (('money-4818) (set-vector-meters! (-> arg0 extra trans) 1185.09  57.1 -3435.48)) ;; on pillar from mid minecart track
     (('money-4819) (set-vector-meters! (-> arg0 extra trans) 1193.89  59.5 -3462.13)) ;; on slippery pillar from mid minecart track (key to getting over invis wall)
     (('money-4824) (set-vector-meters! (-> arg0 extra trans) 1203.55  50.1 -3459.22)) ;; over invis wall and down from money-4819^
-    (('money-4820) (set-vector-meters! (-> arg0 extra trans) 1204.07  50.4 -3458.41)) ;; up from ^
     (('money-4821) (set-vector-meters! (-> arg0 extra trans) 1205.24  58.25 -3454.66)) ;; towards spider cave from ^
     (('money-4822) (set-vector-meters! (-> arg0 extra trans) 1203.87  63.3 -3442.83)) ;; towards spider cave from ^
+    (('money-4820) (set-vector-meters! (-> arg0 extra trans) 1198.50  59.99 -3439.36)) ;; towards spider cave from ^
     (('money-4823) (set-vector-meters! (-> arg0 extra trans) 1195.03  57.3 -3429.14)) ;; towards spider cave from ^
+    (('money-4801) (set-vector-meters! (-> arg0 extra trans) 1188.49  58.55 -3424.63)) ;; towards spider cave from ^
     (('money-4825) (set-vector-meters! (-> arg0 extra trans) 1230.25  60.9 -3524.84)) ;; newer rocket for LTS
     (('money-4826) (set-vector-meters! (-> arg0 extra trans) 1243.09  58.2 -3538.38)) ;; keep going for LTS from ^^
     (('money-4827) (set-vector-meters! (-> arg0 extra trans) 1241.19  56.0 -3544.16)) ;; ^

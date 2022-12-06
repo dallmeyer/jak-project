@@ -325,6 +325,7 @@
 
    (flava-hack int64)
 
+   (baby-mode? symbol)  ;; allows custom checkpoints/respawn like practice mod if enabled
    ;; TODO - save/restore original settings (language/sound/etc)
    )
 
@@ -421,7 +422,7 @@
   (set! (-> obj aspect-custom-x) 4)
   (set! (-> obj aspect-custom-y) 3)
   (set! (-> obj discord-rpc?) #t)
-  (set! (-> obj speedrunner-mode?) #f)
+  (set! (-> obj speedrunner-mode?) #t)
   (set! (-> obj cutscene-skips?) #t)
   (set! (-> obj window-lock?) #t)
 
@@ -506,6 +507,7 @@
   (reset-original-camera obj)
   (set! (-> obj money-starburst?) #f)
   (set! (-> obj extra-hud?) #f)
+  (set! (-> obj baby-mode?) #f)
   (none))
 
 (defmethod reset-original-camera pc-settings ((obj pc-settings))

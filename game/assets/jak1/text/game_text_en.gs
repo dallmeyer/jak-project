@@ -362,6 +362,9 @@
 (#x1501 "CUTSCENE SKIPS"
         "CUTSCENE SKIPS")
 
+(#x1601 "BABY MODE"
+        "BABY MODE")
+
 ;; custom task names
 ;; Geyser
 (#x091b "GETTING OVER IT PART 1: LOW ECO ROUTE"
