@@ -921,11 +921,15 @@
                    )
                   ((and (or (= arg0 'full) (-> s0-0 extra process)) 
                         (or *actor-view-toggle* ;; L2 to show all actor names
-                            (<=   ;; close to jak so show actor name
-                              (vector-vector-distance 
-                                (target-pos 0) 
-                                (-> (the process-drawable (-> s0-0 extra process)) root trans)) 
-                              (meters 20.0)
+                            (and
+                              ;; some process-drawable thats close to jak -> show actor name
+                              (type-type? (-> s0-0 extra process type) process-drawable)
+                              (<=   
+                                (vector-vector-distance 
+                                  (target-pos 0) 
+                                  (-> (the process-drawable (-> s0-0 extra process)) root trans)) 
+                                (meters 20.0)
+                                )
                               )
                             )
                         )

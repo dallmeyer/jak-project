@@ -3,22 +3,319 @@
 
 (defmacro mod-snowy-run-each-frame ()
   `(begin
+    ;; eco-321 ;; blue
 
+    ;; ecovent-201 ;; red
+    ;; ecovent-202 ;; red
+    ;; ecovent-203 ;; red
+    ;; ecovent-205 ;; red
+    ;; ecovent-278 ;; yellow, blocked
+    
+    (when (process-by-ename "money-2319") ;; DJ spin from near snowball start 
+      (set! (-> (the money (process-by-ename "money-2319")) bob-amount) 0.0)
+      )
+    (when (process-by-ename "money-2320") ;; up from ^ buried in snow
+      (set! (-> (the money (process-by-ename "money-2320")) bob-amount) 0.0)
+      )
     )
   )
   
 (defmacro mod-snowy-override-init-position (obj arg0)
   `(case (-> obj name) :comp name=
-    ;; ORBS
-    
+    ;; ORBS 
+    ;; (('money-2034) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2035) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2036) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2307) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2038) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2039) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2040) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2041) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2042) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2043) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2044) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2045) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2046) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2047) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2048) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2049) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2050) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2051) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2052) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2053) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2054) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2055) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2056) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2057) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2058) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2059) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2060) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2061) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2062) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2063) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2064) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2065) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2066) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2067) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2068) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2069) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2070) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2071) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2072) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2073) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2074) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2075) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2224) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2225) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2226) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2227) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2228) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2229) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2230) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2231) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2232) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2233) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2234) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2235) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2236) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2237) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2238) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2239) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2240) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2241) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2242) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2243) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2244) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2245) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2246) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2247) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2248) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2249) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2250) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2251) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2252) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2253) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2254) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2255) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2256) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2257) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2258) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2259) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2260) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2261) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2262) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2263) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2264) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2265) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2266) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2267) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2268) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2269) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2270) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2271) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2273) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2274) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2275) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2280) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2281) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2282) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2283) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2284) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2285) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2286) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2297) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2298) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2299) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2306) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2307) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2308) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2309) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2310) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2311) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2312) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2313) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2314) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2315) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2316) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2317) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2318) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('money-2319) (set-vector-meters! (-> arg0 extra trans) 942.02 265.4 -3341.28)) ;; DJ spin from near snowball start
+    (('money-2320) (set-vector-meters! (-> arg0 extra trans) 934.36 270.7 -3338.87)) ;; up from ^ buried in snow
+    ;; (('money-2321) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2322) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2323) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2324) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2325) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2326) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2327) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2328) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2329) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2330) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2331) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2332) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2333) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2334) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2335) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-2336) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-3731) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-3732) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-3733) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-3734) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4129) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4798) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-5008) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-5009) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-5010) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-5011) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-5012) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-5013) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-5014) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+
+    ;; orb-cache-top-28  ;;  15
+    ;; orb-cache-top-29  ;;  15
+    ;; orb-cache-top-30  ;;  15
+
+    ;; crate-1130
+    ;; crate-1131
 
     ;; FLIES
-    
+    ;; crate-975
+    ;; crate-976
+    ;; crate-980
+    ;; crate-1132
+    ;; crate-1133
+    ;; crate-1138
+    ;; crate-3134
     
     ;; CELLS
+    ;; snow-switch-1
+
+    ;; snow-eggtop-4
+
+    ;; crate-2986
     
+    ;; snow-bumper-69
+    ;; snow-bumper-70
+    ;; snow-bumper-71
+    ;; snow-bumper-72
+    ;; snow-bumper-73
+    ;; snow-bumper-74
+    ;; snow-bumper-75
+    ;; snow-bumper-76
+    ;; snow-bumper-77
+    ;; snow-bumper-78
+    ;; snow-bumper-79
+    ;; snow-bumper-80
+    ;; snow-bumper-81
+
+    ;; ram-7 ;; unoccupied
+    ;; ram-8 ;; unoccupied
+    ;; ram-13
+    ;; ram-14
+    ;; ram-15
+
+    ;; fuel-cell-28
+    ;; fuel-cell-30
     
     ;; MISC
+
+    ;; snow-log-button-1
+    ;; snow-log-1
+
+    ;; dark
+    ;; crate-2325
+    ;; crate-2326
+    ;; crate-2327
+    ;; crate-2328
+    ;; crate-2329
+    ;; crate-2330
+    ;; crate-2331
+    ;; crate-2332
+    ;; crate-2333
+    ;; crate-2334
     
+    ;; green
+    ;; crate-962
+    ;; crate-963
+    ;; crate-964
+    ;; crate-965
+    ;; crate-966
+    ;; crate-967
+    ;; crate-968
+    ;; crate-969
+    ;; crate-970
+    ;; crate-971
+    ;; crate-972
+    ;; crate-973
+    ;; crate-974
+    ;; crate-977
+    ;; crate-978
+    ;; crate-979
+    ;; crate-981
+    ;; crate-982
+    ;; crate-983
+    ;; crate-984
+    ;; crate-985
+    ;; crate-1123
+    ;; crate-1124
+    ;; crate-1125
+    ;; crate-1126
+    ;; crate-1127
+    ;; crate-1128
+    ;; crate-1129
+    ;; crate-1134
+    ;; crate-1135
+    ;; crate-1136
+    ;; crate-1137
+    ;; crate-1139
+    ;; crate-1140
+    ;; crate-1141
+    ;; crate-1142
+    ;; crate-1143
+    ;; crate-1146
+    ;; crate-1147
+    ;; crate-1148
+    ;; crate-1149
+    ;; crate-1150
+    ;; crate-1151
+    ;; crate-1152
+    ;; crate-1153
+    ;; crate-1154
+    ;; crate-1155
+    ;; crate-1156
+    ;; crate-1157
+    ;; crate-2335
+    ;; crate-2336
+    ;; crate-2337
+    ;; crate-2338
+    ;; crate-2339
+    ;; crate-2341
+    ;; crate-2342
+    ;; crate-2343
+    ;; crate-2344
+
+    ;; flutflut-7
+    ;; snow-button-2 ;; start of flutflut
+    ;;   flutflut-plat-med-2
+    ;;   flutflut-plat-large-2
+    ;;   flutflut-plat-med-3
+    ;;   flutflut-plat-small-2
+    ;;   flutflut-plat-large-3
+    ;; snow-button-3 ;; mid flutflut
+    ;;   flutflut-plat-large-4
+    ;;   flutflut-plat-med-5
+    ;;   flutflut-plat-med-6
+    ;;   flutflut-plat-small-3
+    ;;   flutflut-plat-large-5
+    ;; snow-button-4 ;; mid-mid flutflut
+    ;;   flutflut-plat-med-7
+    ;;   flutflut-plat-med-11
+    ;;   flutflut-plat-med-12
+    ;;   flutflut-plat-med-8
+    ;;   flutflut-plat-med-9
+    ;;   flutflut-plat-med-10
+    ;;   flutflut-plat-med-13
+    ;; flutflut-8
+
     )
   )

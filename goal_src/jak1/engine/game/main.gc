@@ -597,7 +597,7 @@
       )
   )
 
-(define *actor-view-toggle* #f)
+(define *actor-view-toggle* #t)
 (define-extern mod-run-each-frame (function none))
 (defbehavior display-loop process ()
   "This is in progress..."

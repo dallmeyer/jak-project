@@ -70,7 +70,7 @@
     (('crate-3148) (set-vector-meters! (-> arg0 extra trans) 1135.15  66.52 -3321.89)) ;; outside spider cave entrance, follow from money 4913
     
     ;; CELLS
-    (('crate-2987) (set-vector-meters! (-> arg0 extra trans) 1104.75  60.98 -3476.88)) ;; secret cell - moved to window of redsage hut (spidercave yellow eco is closer, or flutflut works)
+    (('crate-2987) (set-vector-meters! (-> arg0 extra trans) 1104.6  60.98 -3475.0)) ;; secret cell - moved to window of redsage hut (spidercave yellow eco is closer, or flutflut works)
     ;; oracle-3
     
     ;; MISC
