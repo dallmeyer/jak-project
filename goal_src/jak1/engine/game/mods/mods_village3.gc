@@ -36,17 +36,14 @@
     (('money-4890) (set-vector-meters! (-> arg0 extra trans) 1019.5  65.0 -3542.0)) ;; left wall in miner cave
     (('money-4891) (set-vector-meters! (-> arg0 extra trans) 1042.36  60.5 -3564.43)) ;; right wall in miner cave
     (('money-4892) (set-vector-meters! (-> arg0 extra trans) 1036.98  58.3 -3582.91)) ;; on pillar in miner cave (key to other orbs)
-    (('money-4893) (set-vector-meters! (-> arg0 extra trans) 1053.45  78.4 -3541.37)) ;; between crate-3122 and -3148
     (('money-4894) (set-vector-meters! (-> arg0 extra trans) 1025.83  62.3 -3583.33)) ;; from money-4892
     (('money-4895) (set-vector-meters! (-> arg0 extra trans) 1053.17  64.4 -3573.06)) ;; (edge boosted) from money-4892
     (('money-4896) (set-vector-meters! (-> arg0 extra trans) 1045.40  60.0 -3600.17)) ;; boosted from money-4892 or closer pillar
     (('money-4897) (set-vector-meters! (-> arg0 extra trans) 1075.41  53.5 -3608.92)) ;; left cave wall before miners/gem
     (('money-4898) (set-vector-meters! (-> arg0 extra trans) 1085.30  53.0 -3607.91)) ;; left cave wall by miners/gem (hint to get over invis wall)
     (('money-4899) (set-vector-meters! (-> arg0 extra trans) 1092.58  47.5 -3598.08)) ;; in bucket by gem
-    (('money-4900) (set-vector-meters! (-> arg0 extra trans) 1089.1  47.7 -3588.4)) ;; bench by gem
     (('money-4901) (set-vector-meters! (-> arg0 extra trans) 1088.26  55.7 -3590.45)) ;; right scaffolding above gem
     (('money-4902) (set-vector-meters! (-> arg0 extra trans) 1091.5  56.5 -3599.2)) ;; left scaffolding above gem
-    (('money-4903) (set-vector-meters! (-> arg0 extra trans) 1109.03  55.9 -3532.13)) ;; top of gondola machine
     (('money-4904) (set-vector-meters! (-> arg0 extra trans) 1116.04  57.2 -3532.01)) ;; top of gondola machine
     (('money-4905) (set-vector-meters! (-> arg0 extra trans) 1017.49  42.35 -3508.3)) ;; under oracle mouth
     (('money-4906) (set-vector-meters! (-> arg0 extra trans) 1141.62  59.7 -3387.61)) ;; rocket from island before spider cave entrance
@@ -57,12 +54,14 @@
     (('money-4911) (set-vector-meters! (-> arg0 extra trans) 1145.45  59.2 -3359.57)) ;; follow ^, landing after jump
     (('money-4912) (set-vector-meters! (-> arg0 extra trans) 1141.67  61.3 -3346.27)) ;; follow ^
     (('money-4913) (set-vector-meters! (-> arg0 extra trans) 1143.51  61.8 -3333.77)) ;; follow ^
-    (('money-4914) (set-vector-meters! (-> arg0 extra trans) 1141.64  57.4 -3332.09)) ;; follow ^
     (('money-4915) (set-vector-meters! (-> arg0 extra trans) 1055.66  79.8 -3542.87)) ;; jump to from scout fly above miners entrance
-    (('money-4916) (set-vector-meters! (-> arg0 extra trans) 1034.90  82.7 -3507.50)) ;; scaffolding outside miners
-
+    (('money-4916) (set-vector-meters! (-> arg0 extra trans) 1198.84  55.4 -3539.49)) ;; rocket from other minecart island close to lava tube
+    (('money-4900) (set-vector-meters! (-> arg0 extra trans) 1201.83  56.1 -3532.26)) ;; follow from ^
+    (('money-4893) (set-vector-meters! (-> arg0 extra trans) 1209.39  57.1 -3527.87))  ;; follow from ^
+    (('money-4903) (set-vector-meters! (-> arg0 extra trans) 1218.77  57.53 -3533.43)) ;; follow from ^
+    (('money-4914) (set-vector-meters! (-> arg0 extra trans) 1219.93  49.82 -3542.29)) ;; down and around towards LT from ^
     ;; FLIES
-    (('crate-3121) (set-vector-meters! (-> arg0 extra trans) 1141.80  61.06 -3378.80)) ;; along orb path from rocket before spider cave entrance
+    (('crate-3121) (set-vector-meters! (-> arg0 extra trans) 1141.73  59.10 -3387.81)) ;; along orb path from rocket before spider cave entrance
     (('crate-3122) (set-vector-meters! (-> arg0 extra trans) 1041.33  82.90 -3530.87)) ;; up from money-4815 above miner entrance
     (('crate-3123) (set-vector-meters! (-> arg0 extra trans) 1196.65  51.45 -3434.14)) ;; towards spider cave from money-4822
     (('crate-3124) (set-vector-meters! (-> arg0 extra trans) 1227.34  57.87 -3521.18)) ;; near new rocket for LTS, from money-4825
