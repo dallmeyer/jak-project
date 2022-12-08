@@ -60,18 +60,6 @@
         (format #t "player triggered temp checkpoint combo~%")
         (speedrun-practice-store-temp-checkpoint)
         )
-      
-      ;; Check for flutflut
-      (when (cpad-pressed? 0 left)
-        (format #t "player triggered flutflut combo~%")
-        (get-on-flutflut)
-        )
-      
-      ;; Check for zoomer
-      (when (cpad-pressed? 0 right)
-        (format #t "player triggered zoomer combo~%")
-        (get-on-zoomer)
-        )
       )
     )
 

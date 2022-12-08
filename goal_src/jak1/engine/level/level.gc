@@ -1064,7 +1064,8 @@
        'junglesnake 'darkvine 'ecovent 'mistycannon 'babak-with-cannon 'periscope 'springbox 
        'plant-boss 'warrior 'gambler 'pontoonten 'pontoonfive 'blue-eco-charger 'swamp-spike 
        'swamp-tetherrock 'swamp-rat-nest 'swamp-rock 'flutflut 'tar-plat 'balance-plat 'race-ring
-       'babak 'shortcut-boulder 'tntbarrel 'plunger-lurker
+       'babak 'shortcut-boulder 'tntbarrel 'plunger-lurker 'snow-bumper 'ram 'snow-log-button 'snow-log
+       'snow-eggtop 'snow-switch 'snow-button 'flutflut-plat-med 'flutflut-plat-large 'flutflut-plat-small
        )
         (return #t)
         )

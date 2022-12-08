@@ -64,8 +64,8 @@
                   (-> obj first-init)
                   )
               )
-      (when (not (-> *pc-settings* baby-mode?))
-        ;; modified for pc port
+      ;; modified for pc port
+      (if (not (-> *pc-settings* baby-mode?))
         (cond
           ((cpad-hold? 0 up)
             (set! *hud-collectable-view* (hud-collectable-view game-totals))
@@ -77,6 +77,8 @@
             (set! *hud-collectable-view* (hud-collectable-view original))
             )
           )
+        ;; in baby mode, reset to normal
+        (set! *hud-collectable-view* (hud-collectable-view original))
         )
       (cond
         ((and (-> obj increment-on-event)

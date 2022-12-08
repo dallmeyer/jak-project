@@ -1,6 +1,14 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
+(defmacro mod-no-money-bob (moneyname)
+  `(begin
+    (when (process-by-ename ,moneyname)
+      (set! (-> (the money (process-by-ename ,moneyname)) bob-amount) 0.0)
+      )
+    )
+  )
+
 (defmacro mod-snowy-run-each-frame ()
   `(begin
     ;; eco-321 ;; blue
@@ -11,46 +19,52 @@
     ;; ecovent-205 ;; red
     ;; ecovent-278 ;; yellow, blocked
     
-    (when (process-by-ename "money-2319") ;; DJ spin from near snowball start 
-      (set! (-> (the money (process-by-ename "money-2319")) bob-amount) 0.0)
-      )
-    (when (process-by-ename "money-2320") ;; up from ^ buried in snow
-      (set! (-> (the money (process-by-ename "money-2320")) bob-amount) 0.0)
-      )
+    (mod-no-money-bob "money-2319")
+    (mod-no-money-bob "money-2320")
+    (mod-no-money-bob "money-2039")
+    (mod-no-money-bob "money-2041")
+    (mod-no-money-bob "money-2044")
+    (mod-no-money-bob "money-2045")
+    (mod-no-money-bob "money-2046")
+    (mod-no-money-bob "money-2049")
+    (mod-no-money-bob "money-2051")
+    (mod-no-money-bob "money-2059")
+    (mod-no-money-bob "money-2060")
+    (mod-no-money-bob "money-2061")
     )
   )
   
 (defmacro mod-snowy-override-init-position (obj arg0)
   `(case (-> obj name) :comp name=
     ;; ORBS 
-    ;; (('money-2034) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2035) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2036) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2307) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2038) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2039) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2040) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2041) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2042) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2043) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2044) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2045) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2046) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2047) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2048) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2049) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2050) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2051) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2052) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2053) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2054) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2055) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2056) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2057) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2058) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2059) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2060) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2061) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('money-2034) (set-vector-meters! (-> arg0 extra trans) 1033.58 235.9 -3442.79))  ;; over edge towards VC
+    (('money-2035) (set-vector-meters! (-> arg0 extra trans) 1038.16 232.30 -3505.87))  ;; over edge towards VC other side
+    (('money-2036) (set-vector-meters! (-> arg0 extra trans) 992.1 241.4 -3443.6))  ;; corner behind rock before first jump
+    (('money-2307) (set-vector-meters! (-> arg0 extra trans) 1032.46 255.04 -3435.43))  ;; up rock -> wall near start
+    (('money-2038) (set-vector-meters! (-> arg0 extra trans) 959.1 223.6 -3486.65))  ;; over edge from lower part of first jump
+    (('money-2039) (set-vector-meters! (-> arg0 extra trans) 978.1 253.0 -3449.9))  ;; in snow above ledge crossing first jump
+    (('money-2040) (set-vector-meters! (-> arg0 extra trans) 985.7 252.4 -3446.8))  ;; wall climb above first jump
+    (('money-2041) (set-vector-meters! (-> arg0 extra trans) 984.45 261.3 -3447.5))  ;; high jump spin from ^
+    (('money-2042) (set-vector-meters! (-> arg0 extra trans) 907.88 231.6 -3493.79))  ;; over edge where snowballs end
+    (('money-2043) (set-vector-meters! (-> arg0 extra trans) 898.05 248.6 -3506.07))  ;; jump around trees near snowballs end
+    (('money-2044) (set-vector-meters! (-> arg0 extra trans) 888.45 248.9 -3490.88))  ;; in snow next to trees near snowballs end
+    (('money-2045) (set-vector-meters! (-> arg0 extra trans) 906.0 254.1 -3430.2))  ;; in snow up by trees towards snowballs
+    (('money-2046) (set-vector-meters! (-> arg0 extra trans) 983.2 267.3 -3305.7))  ;; in snow up near snowball start
+    (('money-2047) (set-vector-meters! (-> arg0 extra trans) 993.92 252.4 -3272.21))  ;; careful boosted off edge near orig snowball side drilling lurker
+    (('money-2048) (set-vector-meters! (-> arg0 extra trans) 1003.76 245.9 -3287.81))  ;; over edge above entrance to bunny cave
+    (('money-2049) (set-vector-meters! (-> arg0 extra trans) 1036.1 250.9 -3338.7))  ;; in the ice by orig snowball side drilling lurker 
+    (('money-2050) (set-vector-meters! (-> arg0 extra trans) 1030.30 267.5 -3330.85))  ;; above orig snowball side drilling lurker
+    (('money-2051) (set-vector-meters! (-> arg0 extra trans) 1040.5 268.05 -3335.6))  ;; right from ^
+    (('money-2052) (set-vector-meters! (-> arg0 extra trans) 1034.95 213.6 -3297.20))  ;; over ledge by bunny cave entrance
+    (('money-2053) (set-vector-meters! (-> arg0 extra trans) 956.84 232.30 -3184.98))  ;; in snow between fort and bunny cave, on oob into fort route
+    (('money-2054) (set-vector-meters! (-> arg0 extra trans) 965.18 220.6 -3173.97))  ;; boosted from ^ over invis wall on oob route
+    (('money-2055) (set-vector-meters! (-> arg0 extra trans) 957.95 223.9 -3169.43))  ;; follow oob route from ^
+    (('money-2056) (set-vector-meters! (-> arg0 extra trans) 947.25 221.4 -3163.85))  ;; follow oob route from ^
+    (('money-2057) (set-vector-meters! (-> arg0 extra trans) 919.94 198.7 -3292.40))  ;; standpoint towards bunny cave from lower section with orig redeco vent
+    (('money-2058) (set-vector-meters! (-> arg0 extra trans) 932.27 201.4 -3281.69))  ;; follow from ^
+    (('money-2059) (set-vector-meters! (-> arg0 extra trans) 941.4 202.99 -3318.70))  ;; behind rocks in lower section with orig redeco vent 
+    (('money-2060) (set-vector-meters! (-> arg0 extra trans) 868.02 213.5 -3358.58))  ;; in snow in middle section, jump around from another platform
+    (('money-2061) (set-vector-meters! (-> arg0 extra trans) 746.6 204.3 -3306.0))  ;; in ice by orig drilling lurker after fort button
     ;; (('money-2062) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('money-2063) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('money-2064) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
@@ -194,19 +208,19 @@
 
     ;; crate-2986
     
-    ;; snow-bumper-69
-    ;; snow-bumper-70
-    ;; snow-bumper-71
-    ;; snow-bumper-72
-    ;; snow-bumper-73
-    ;; snow-bumper-74
-    ;; snow-bumper-75
-    ;; snow-bumper-76
-    ;; snow-bumper-77
-    ;; snow-bumper-78
-    ;; snow-bumper-79
-    ;; snow-bumper-80
-    ;; snow-bumper-81
+    (('snow-bumper-69) (set-vector-meters! (-> arg0 extra trans) 972.46 228.46 -3492.64))  ;; lower part of first jump
+    (('snow-bumper-70) (set-vector-meters! (-> arg0 extra trans) 1046.89 271.32 -3333.52))  ;; follow from money-2051, near orig snowball side drilling lurker
+    ;; (('snow-bumper-71) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('snow-bumper-72) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('snow-bumper-73) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('snow-bumper-74) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('snow-bumper-75) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('snow-bumper-76) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('snow-bumper-77) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('snow-bumper-78) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('snow-bumper-79) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('snow-bumper-80) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('snow-bumper-81) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
 
     ;; ram-7 ;; unoccupied
     ;; ram-8 ;; unoccupied
