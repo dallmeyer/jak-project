@@ -1118,10 +1118,13 @@
   :virtual #t
   :code (behavior ()
     (loop
-      (quaternion-rotate-y!
-        (-> self root-override quat)
-        (-> self root-override quat)
-        (* 40049.777 (-> *display* seconds-per-frame))
+      (if (> (-> self bob-amount) 0.0)
+        ;; don't spin if "frozen"
+        (quaternion-rotate-y!
+          (-> self root-override quat)
+          (-> self root-override quat)
+          (* 40049.777 (-> *display* seconds-per-frame))
+          )
         )
       (let ((f30-0 (-> self bob-amount)))
         (when (< 0.0 f30-0)
