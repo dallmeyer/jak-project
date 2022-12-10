@@ -16,7 +16,15 @@
     ;; ecovent-201 ;; red
     ;; ecovent-202 ;; red
     ;; ecovent-203 ;; red
-    ;; ecovent-205 ;; red
+    (when (process-by-ename "ecovent-205")  ;; red - corner outside of fort
+      (let ((obj (the ecovent (process-by-ename "ecovent-205")))
+            (vec (static-vector-meters 892.48 224.57 -3251.30))
+            )
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
     ;; ecovent-278 ;; yellow, blocked
     
     (mod-no-money-bob "money-2319")
@@ -33,6 +41,7 @@
     (mod-no-money-bob "money-2059")
     (mod-no-money-bob "money-2060")
     (mod-no-money-bob "money-2061")
+    (mod-no-money-bob "money-2063")
     )
   )
   
@@ -67,18 +76,18 @@
     (('money-2059) (set-vector-meters! (-> arg0 extra trans) 941.4 202.99 -3318.70))  ;; behind rocks in lower section with orig redeco vent 
     (('money-2060) (set-vector-meters! (-> arg0 extra trans) 868.02 213.5 -3358.58))  ;; in snow in middle section, jump around from another platform
     (('money-2061) (set-vector-meters! (-> arg0 extra trans) 746.6 204.3 -3306.0))  ;; in ice by orig drilling lurker after fort button
-    ;; (('money-2062) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2063) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2064) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2065) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2066) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2067) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2068) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2069) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2070) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2071) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2072) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2073) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('money-2062) (set-vector-meters! (-> arg0 extra trans) 803.5 229.0 -3405.5))  ;; behind sheet of snow off ledge next to icy ramp
+    (('money-2063) (set-vector-meters! (-> arg0 extra trans) 1012.53 222.1 -3395.85))  ;; in snow in crack in orig bunny room 
+    (('money-2064) (set-vector-meters! (-> arg0 extra trans) 970.1 215.5 -3373.9))  ;; behind crystals in orig bunny room (jump over small invis wall)
+    (('money-2065) (set-vector-meters! (-> arg0 extra trans) 740.34 222.5 -3242.48))  ;; around right side of fort almost OOB
+    (('money-2066) (set-vector-meters! (-> arg0 extra trans) 662.8 236.6 -3310.5))  ;; in crack on steps down from flutflut towards fort
+    (('money-2067) (set-vector-meters! (-> arg0 extra trans)  765.2 239.3 -3331.0))  ;; in snow under tree, above entrance to orig yellow eco switch
+    (('money-2068) (set-vector-meters! (-> arg0 extra trans) 725.7 220.5 -3336.7))  ;; in corner behind first pusher to orig yellow eco switch
+    (('money-2069) (set-vector-meters! (-> arg0 extra trans) 679.65 230.5 -3325.6))  ;; atop second pusher to orig yellow eco switch
+    (('money-2070) (set-vector-meters! (-> arg0 extra trans) 682.0 232.5 -3383.3))  ;; corner left of last pusher to orig yellow eco switch
+    (('money-2071) (set-vector-meters! (-> arg0 extra trans) 756.5 227.5 -3356.9))  ;; corner near icy slide to orig yellow eco switch
+    (('money-2072) (set-vector-meters! (-> arg0 extra trans) 857.50 248.8 -3178.09))  ;; left side of high part of inner fortress 
+    (('money-2073) (set-vector-meters! (-> arg0 extra trans) 815.01 248.99 -3178.91))  ;; right side of high part of inner fortress
     ;; (('money-2074) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('money-2075) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('money-2224) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
@@ -195,26 +204,26 @@
     ;; crate-1131
 
     ;; FLIES
-    ;; crate-975
-    ;; crate-976
-    ;; crate-980
-    ;; crate-1132
-    ;; crate-1133
-    ;; crate-1138
-    ;; crate-3134
+    (('crate-975) (set-vector-meters! (-> arg0 extra trans) 697.23 229.10 -3384.97)) ;; corner right of last pusher to orig yellow eco switch
+    ;; (('crate-976) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-980) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-1132) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1133) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1138) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-3134) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     
     ;; CELLS
     ;; snow-switch-1
 
-    ;; snow-eggtop-4
+    (('snow-eggtop-4) (set-vector-meters! (-> arg0 extra trans) 836.59 256.0 -3243.90))  ;; top of tower inside fort
 
-    ;; crate-2986
+    ;; crate-2986 ;; secret cell
     
     (('snow-bumper-69) (set-vector-meters! (-> arg0 extra trans) 972.46 228.46 -3492.64))  ;; lower part of first jump
     (('snow-bumper-70) (set-vector-meters! (-> arg0 extra trans) 1046.89 271.32 -3333.52))  ;; follow from money-2051, near orig snowball side drilling lurker
-    ;; (('snow-bumper-71) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    ;; (('snow-bumper-72) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    ;; (('snow-bumper-73) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (('snow-bumper-71) (set-vector-meters! (-> arg0 extra trans) 941.19 236.08 -3355.11))  ;; backwards entrance to orig bunny room
+    (('snow-bumper-72) (set-vector-meters! (-> arg0 extra trans) 969.10 214.55 -3397.08))  ;; floor in orig bunny room
+    (('snow-bumper-73) (set-vector-meters! (-> arg0 extra trans) 1012.20 218.53 -3366.90))  ;; in orig bunny room, replacing red ecovent
     ;; (('snow-bumper-74) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
     ;; (('snow-bumper-75) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
     ;; (('snow-bumper-76) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
