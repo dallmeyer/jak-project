@@ -42,6 +42,14 @@
     (mod-no-money-bob "money-2060")
     (mod-no-money-bob "money-2061")
     (mod-no-money-bob "money-2063")
+    (mod-no-money-bob "money-2067")
+    (mod-no-money-bob "money-2074")
+    (mod-no-money-bob "money-2075")
+    (mod-no-money-bob "money-2224")
+    (mod-no-money-bob "money-2225")
+    (mod-no-money-bob "money-2226")
+    (mod-no-money-bob "money-2229")
+    (mod-no-money-bob "money-2232")
     )
   )
   
@@ -88,22 +96,22 @@
     (('money-2071) (set-vector-meters! (-> arg0 extra trans) 756.5 227.5 -3356.9))  ;; corner near icy slide to orig yellow eco switch
     (('money-2072) (set-vector-meters! (-> arg0 extra trans) 857.50 248.8 -3178.09))  ;; left side of high part of inner fortress 
     (('money-2073) (set-vector-meters! (-> arg0 extra trans) 815.01 248.99 -3178.91))  ;; right side of high part of inner fortress
-    ;; (('money-2074) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2075) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2224) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2225) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2226) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2227) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2228) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2229) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2230) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2231) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2232) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2233) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2234) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2235) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2236) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2237) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('money-2074) (set-vector-meters! (-> arg0 extra trans) 836.35 256.1 -3199.45))  ;; in upper center porthole inner fort
+    (('money-2075) (set-vector-meters! (-> arg0 extra trans) 808.8 225.9 -3207.2))  ;; in lower right porthole inner fort
+    (('money-2224) (set-vector-meters! (-> arg0 extra trans) 856.9 243.1 -3202.5))  ;; in mid left porthole inner fort
+    (('money-2225) (set-vector-meters! (-> arg0 extra trans) 714.65 252.9 -3409.94))  ;; above orig yellow eco switch (jump from snow-log-1)
+    (('money-2226) (set-vector-meters! (-> arg0 extra trans) 731.05 250.0 -3405.43))  ;; icicle above orig yellow eco switch 
+    (('money-2227) (set-vector-meters! (-> arg0 extra trans) 740.65 247.5 -3440.63))  ;; behind crystals on spamjump "wall" in orig yellow eco switch room
+    (('money-2228) (set-vector-meters! (-> arg0 extra trans) 750.1 271.9 -3327.5))  ;; under snow from rocks up above orig yellow eco switch entrance
+    (('money-2229) (set-vector-meters! (-> arg0 extra trans) 697.8 270.9 -3339.8))  ;; above orig drilling lurker near orig flutflut
+    (('money-2230) (set-vector-meters! (-> arg0 extra trans) 690.78 278.9 -3348.3))  ;; up from ^
+    (('money-2231) (set-vector-meters! (-> arg0 extra trans) 685.2 271.4 -3354.5))  ;; around from ^
+    (('money-2232) (set-vector-meters! (-> arg0 extra trans) 695.7 267.7 -3414.4))  ;; up near trees in top icy section
+    (('money-2233) (set-vector-meters! (-> arg0 extra trans) 736.99 256.99 -3461.99))  ;; between platforms before orig secret cell from top icy section
+    (('money-2234) (set-vector-meters! (-> arg0 extra trans) 764.9 256.3 -3494.9))  ;; behind rocks before orig secret cell from top icy section
+    (('money-2235) (set-vector-meters! (-> arg0 extra trans) 761.21 265.2 -3502.26))  ;; jump up/out from ^
+    (('money-2236) (set-vector-meters! (-> arg0 extra trans) 748.1 263.5 -3511.6))  ;; jump out from ^
+    (('money-2237) (set-vector-meters! (-> arg0 extra trans) 869.9 252.5 -3457.5))  ;; in pocket towards front end of cave with orig secret cell
     ;; (('money-2238) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('money-2239) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('money-2240) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
@@ -224,10 +232,10 @@
     (('snow-bumper-71) (set-vector-meters! (-> arg0 extra trans) 941.19 236.08 -3355.11))  ;; backwards entrance to orig bunny room
     (('snow-bumper-72) (set-vector-meters! (-> arg0 extra trans) 969.10 214.55 -3397.08))  ;; floor in orig bunny room
     (('snow-bumper-73) (set-vector-meters! (-> arg0 extra trans) 1012.20 218.53 -3366.90))  ;; in orig bunny room, replacing red ecovent
-    ;; (('snow-bumper-74) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    ;; (('snow-bumper-75) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    ;; (('snow-bumper-76) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    ;; (('snow-bumper-77) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (('snow-bumper-74) (set-vector-meters! (-> arg0 extra trans) 852.71 247.12 -3444.78))  ;; platform in cave with orig secret cell
+    (('snow-bumper-75) (set-vector-meters! (-> arg0 extra trans) 794.57 256.55 -3471.23  ))  ;; ^
+    (('snow-bumper-76) (set-vector-meters! (-> arg0 extra trans) 737.02 263.08 -3443.31  ))  ;; platform between top icy section and secret cell
+    (('snow-bumper-77) (set-vector-meters! (-> arg0 extra trans) 713.76 245.68 -3302.96  ))  ;; steps from flutflut to fort 
     ;; (('snow-bumper-78) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
     ;; (('snow-bumper-79) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
     ;; (('snow-bumper-80) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
@@ -244,8 +252,8 @@
     
     ;; MISC
 
-    ;; snow-log-button-1
-    ;; snow-log-1
+    (('snow-log-button-1) (set-vector-meters! (-> arg0 extra trans) 737.9 234.35 -3408.1)) ;; orig yellow eco switch 
+    (('snow-log-1) (set-vector-meters! (-> arg0 extra trans) 713.04 232.21 -3404.32))  ;; near orig yellow eco switch (can use to jump up thru ice)
 
     ;; dark
     ;; crate-2325
