@@ -50,6 +50,10 @@
     (mod-no-money-bob "money-2226")
     (mod-no-money-bob "money-2229")
     (mod-no-money-bob "money-2232")
+    (mod-no-money-bob "money-2234")
+    (mod-no-money-bob "money-2239")
+    (mod-no-money-bob "money-2240")
+    (mod-no-money-bob "money-2246")
     )
   )
   
@@ -112,30 +116,30 @@
     (('money-2235) (set-vector-meters! (-> arg0 extra trans) 761.21 265.2 -3502.26))  ;; jump up/out from ^
     (('money-2236) (set-vector-meters! (-> arg0 extra trans) 748.1 263.5 -3511.6))  ;; jump out from ^
     (('money-2237) (set-vector-meters! (-> arg0 extra trans) 869.9 252.5 -3457.5))  ;; in pocket towards front end of cave with orig secret cell
-    ;; (('money-2238) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2239) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2240) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2241) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2242) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2243) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2244) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2245) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2246) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2247) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2248) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2249) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2250) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2251) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2252) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2253) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2254) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2255) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2256) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2257) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2258) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2259) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2260) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2261) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('money-2238) (set-vector-meters! (-> arg0 extra trans) 1012.3 241.1 -3488.4))  ;; behind rocks in front of you right at start
+    (('money-2239) (set-vector-meters! (-> arg0 extra trans) 769.5 275.3 -3460.80))  ;; climb green eco crates outside orig secret cell cave, icy lake side
+    (('money-2240) (set-vector-meters! (-> arg0 extra trans) 768.99 274.6 -3447.95))  ;; ^
+    (('money-2241) (set-vector-meters! (-> arg0 extra trans) 766.23 275.2 -3432.61))  ;; slide down from ^
+    (('money-2242) (set-vector-meters! (-> arg0 extra trans) 763.47 275.0 -3419.66))  ;; slide from ^
+    (('money-2243) (set-vector-meters! (-> arg0 extra trans) 763.65 273.9 -3408.87))  ;; jump spin from ^
+    (('money-2244) (set-vector-meters! (-> arg0 extra trans) 558.06 252.9 -3416.02))  ;; slippery rocks on left side, start of orig flutflut
+    (('money-2245) (set-vector-meters! (-> arg0 extra trans) 686.97 254.5 -3425.05))  ;; behind rocks/trees near icy lake/orig flutflut (think you need to use flutflut to get back)
+    (('money-2246) (set-vector-meters! (-> arg0 extra trans) 747.6 273.5 -3378.0))  ;; up high near tree above icy slide (need flutflut)
+    (('money-2247) (set-vector-meters! (-> arg0 extra trans) 639.24 256.99 -3405.5))  ;; tiny ledge left before orig flutflut
+    (('money-2248) (set-vector-meters! (-> arg0 extra trans) 586.23 257.0 -3378.05))  ;; ledge around right before orig flutflut
+    (('money-2249) (set-vector-meters! (-> arg0 extra trans) 568.73 256.9 -3377.76  ))  ;; follow from ^ on flutflut
+    (('money-2250) (set-vector-meters! (-> arg0 extra trans) 562.92 249.7 -3370.66))  ;; follow from ^ on flutflut
+    (('money-2251) (set-vector-meters! (-> arg0 extra trans) 609.40 224.6 -3545.86))  ;; on right ledge below in mid orig flutflut section
+    (('money-2252) (set-vector-meters! (-> arg0 extra trans) 574.5 225.2 -3578.8))  ;; on left ledge below in mid orig flutflut section
+    (('money-2253) (set-vector-meters! (-> arg0 extra trans) 586.9 232.59 -3598.6))  ;; behind rocks mid orig flutflut section (GP on flutflut)
+    (('money-2254) (set-vector-meters! (-> arg0 extra trans) 606.83 234.4 -3606.26))  ;; slippery ledge on left, mid orig flutflut section
+    (('money-2255) (set-vector-meters! (-> arg0 extra trans) 724.05 230.7 -3537.07))  ;; slippery ledge on right, mid orig flutflut section
+    (('money-2256) (set-vector-meters! (-> arg0 extra trans) 832.7 195.2 -3537.6))  ;; on ledge below in crystals, later in orig flutflut section
+    (('money-2257) (set-vector-meters! (-> arg0 extra trans) 800.94 181.8 -3398.15))  ;; slippery ledge on right, later orig flutflut section
+    (('money-2258) (set-vector-meters! (-> arg0 extra trans) 796.35 183.7 -3371.45))  ;; along from ^
+    (('money-2259) (set-vector-meters! (-> arg0 extra trans) 857.42 178.1 -3375.21))  ;; slippery ledge on left, later orig flutflut section
+    (('money-2260) (set-vector-meters! (-> arg0 extra trans) 861.92 219.1 -3368.30))  ;; up from money-2060 (might need flutflut to get here)
+    (('money-2261) (set-vector-meters! (-> arg0 extra trans) 873.94 235.1 -3367.68))  ;; up from ^ (def need flutflut)
     ;; (('money-2262) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('money-2263) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('money-2264) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
@@ -213,9 +217,9 @@
 
     ;; FLIES
     (('crate-975) (set-vector-meters! (-> arg0 extra trans) 697.23 229.10 -3384.97)) ;; corner right of last pusher to orig yellow eco switch
-    ;; (('crate-976) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-980) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-1132) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('crate-976) (set-vector-meters! (-> arg0 extra trans) 730.12 264.30 -3509.57)) ;; outside orig secret cell cave, follow from money-2236
+    (('crate-980) (set-vector-meters! (-> arg0 extra trans) 1035.0 263.8 -3434.8)) ;; up from money-2307, left from start
+    (('crate-1132) (set-vector-meters! (-> arg0 extra trans) 784.00 275.64 -3464.7))  ;; around corner from money-2239, zoomwalk into jump 
     ;; (('crate-1133) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('crate-1138) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('crate-3134) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
@@ -234,7 +238,7 @@
     (('snow-bumper-73) (set-vector-meters! (-> arg0 extra trans) 1012.20 218.53 -3366.90))  ;; in orig bunny room, replacing red ecovent
     (('snow-bumper-74) (set-vector-meters! (-> arg0 extra trans) 852.71 247.12 -3444.78))  ;; platform in cave with orig secret cell
     (('snow-bumper-75) (set-vector-meters! (-> arg0 extra trans) 794.57 256.55 -3471.23  ))  ;; ^
-    (('snow-bumper-76) (set-vector-meters! (-> arg0 extra trans) 737.02 263.08 -3443.31  ))  ;; platform between top icy section and secret cell
+    (('snow-bumper-76) (set-vector-meters! (-> arg0 extra trans) 737.02 263.08 -3443.8  ))  ;; platform between top icy section and secret cell
     (('snow-bumper-77) (set-vector-meters! (-> arg0 extra trans) 713.76 245.68 -3302.96  ))  ;; steps from flutflut to fort 
     ;; (('snow-bumper-78) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
     ;; (('snow-bumper-79) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
@@ -268,64 +272,64 @@
     ;; crate-2334
     
     ;; green
-    ;; crate-962
-    ;; crate-963
-    ;; crate-964
-    ;; crate-965
-    ;; crate-966
-    ;; crate-967
-    ;; crate-968
-    ;; crate-969
-    ;; crate-970
-    ;; crate-971
-    ;; crate-972
-    ;; crate-973
-    ;; crate-974
-    ;; crate-977
-    ;; crate-978
-    ;; crate-979
-    ;; crate-981
-    ;; crate-982
-    ;; crate-983
-    ;; crate-984
-    ;; crate-985
-    ;; crate-1123
-    ;; crate-1124
-    ;; crate-1125
-    ;; crate-1126
-    ;; crate-1127
-    ;; crate-1128
-    ;; crate-1129
-    ;; crate-1134
-    ;; crate-1135
-    ;; crate-1136
-    ;; crate-1137
-    ;; crate-1139
-    ;; crate-1140
-    ;; crate-1141
-    ;; crate-1142
-    ;; crate-1143
-    ;; crate-1146
-    ;; crate-1147
-    ;; crate-1148
-    ;; crate-1149
-    ;; crate-1150
-    ;; crate-1151
-    ;; crate-1152
-    ;; crate-1153
-    ;; crate-1154
-    ;; crate-1155
-    ;; crate-1156
-    ;; crate-1157
-    ;; crate-2335
-    ;; crate-2336
-    ;; crate-2337
-    ;; crate-2338
-    ;; crate-2339
-    ;; crate-2341
-    ;; crate-2342
-    ;; crate-2343
-    ;; crate-2344
+    ;; (('crate-962) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-963) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-964) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-965) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-966) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-967) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-968) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-969) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-970) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-971) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-972) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-973) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-974) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-977) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-978) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-979) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-981) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-982) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-983) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-984) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-985) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-1123) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1124) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1125) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1126) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('crate-1127) (set-vector-meters! (-> arg0 extra trans) 764.58 260.89 -3455.91))  ;; outside orig secret cell cave icy lake side, use to get high trifectoposter
+    (('crate-1128) (set-vector-meters! (-> arg0 extra trans) 764.58 262.89 -3455.91))  ;; ^
+    (('crate-1129) (set-vector-meters! (-> arg0 extra trans) 764.58 264.89 -3455.91))  ;; ^
+    (('crate-2339) (set-vector-meters! (-> arg0 extra trans) 764.58 266.89 -3455.91))  ;; ^
+    ;; (('crate-1134) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1135) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1136) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1137) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1139) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1140) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1141) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1142) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1143) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1146) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1147) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1148) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1149) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1150) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1151) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1152) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1153) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1154) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1155) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1156) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-1157) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2335) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2336) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2337) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2338) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2341) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2342) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2343) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2344) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
 
     ;; flutflut-7
     ;; snow-button-2 ;; start of flutflut
