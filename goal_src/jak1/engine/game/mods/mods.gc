@@ -1,8 +1,6 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
-(define *tmprotoffset* 0.0)
-
 (defun set-vector-meters! ((dst vector) (x float) (y float) (z float))
   (set-vector! dst (meters x) (meters y) (meters z) (-> dst w))
   )
@@ -187,6 +185,10 @@
       ;; yellow-eco switch -> moved to tower in fort
       (set-vector-meters! dst 836.59 255.4 -3243.90)
       )
+    (('snow-switch-1)
+      ;; inside fort opposite orig cell, use flutflut + blue eco to jump in
+      (set-vector-meters! dst  802.36 240.65 -3275.89)
+      )
     (else
       (format #t "fuel movie override, didnt match parent ~A ~%" (-> (ppointer->process (-> obj parent)) name))
       ;; check grandparent
@@ -343,4 +345,12 @@
       )
     )
   (none)
+  )
+
+(defmacro process-drawable-pos-m (procname)
+  `(let* ((obj (the process-drawable (process-by-ename ,procname)))
+          (vec (-> obj root trans)))
+    (format 0 "~F ~F ~F~%" (/ (-> vec x) 4096.0) (/ (-> vec y) 4096.0) (/ (-> vec z) 4096.0))
+    (none)
+    )
   )

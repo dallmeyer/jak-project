@@ -11,11 +11,13 @@
 
 (defmacro mod-snowy-run-each-frame ()
   `(begin
-    ;; eco-321 ;; blue
+    (when (process-by-ename "eco-321")  ;; blue - next to ram for jump into fort w flutflut
+      (mod-move-eco (the eco (process-by-ename "eco-321")) (static-vector-meters 723.29 253.8 -3293.90))
+      )
 
-    ;; ecovent-201 ;; red
-    ;; ecovent-202 ;; red
-    ;; ecovent-203 ;; red
+    ;; ecovent-201 ;; red - orig flutflut 605.99 251.16 -3419.57  
+    ;; ecovent-202 ;; red - orig fortress gate switch 841.94 181.21 -3286.65  
+    ;; ecovent-203 ;; red - orig yellow vent 833.31 252.36 -3443.68  
     (when (process-by-ename "ecovent-205")  ;; red - corner outside of fort
       (let ((obj (the ecovent (process-by-ename "ecovent-205")))
             (vec (static-vector-meters 892.48 224.57 -3251.30))
@@ -25,7 +27,15 @@
         (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
         )
       )
-    ;; ecovent-278 ;; yellow, blocked
+    (when (process-by-ename "ecovent-278")  ;; yellow, blocked
+      (let ((obj (the ecovent (process-by-ename "ecovent-278")))
+            (vec (static-vector-meters 875.4151     205.0002   -3325.2941))
+            )
+        (vector-copy-no-w! (-> obj root trans) vec)
+        (vector-copy-no-w! (-> obj root-override trans) vec)
+        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+        )
+      )
     
     (mod-no-money-bob "money-2319")
     (mod-no-money-bob "money-2320")
@@ -54,6 +64,7 @@
     (mod-no-money-bob "money-2239")
     (mod-no-money-bob "money-2240")
     (mod-no-money-bob "money-2246")
+    (mod-no-money-bob "money-2267")
     )
   )
   
@@ -140,12 +151,12 @@
     (('money-2259) (set-vector-meters! (-> arg0 extra trans) 857.42 178.1 -3375.21))  ;; slippery ledge on left, later orig flutflut section
     (('money-2260) (set-vector-meters! (-> arg0 extra trans) 861.92 219.1 -3368.30))  ;; up from money-2060 (might need flutflut to get here)
     (('money-2261) (set-vector-meters! (-> arg0 extra trans) 873.94 235.1 -3367.68))  ;; up from ^ (def need flutflut)
-    ;; (('money-2262) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2263) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2264) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2265) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2266) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2267) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('money-2262) (set-vector-meters! (-> arg0 extra trans) 731.0 231.5 -3337.6))  ;; in crystals above first pusher to orig yellow eco switch (need flutflut I think?)
+    (('money-2263) (set-vector-meters! (-> arg0 extra trans) 697.2 233.34 -3331.2))  ;; crystals up before second pusher to orig yellow eco switch (boosted or flutflut)
+    (('money-2264) (set-vector-meters! (-> arg0 extra trans) 666.3 222.82 -3340.34))  ;; crystals below along path to orig yellow eco switch (easy w flutflut)
+    (('money-2265) (set-vector-meters! (-> arg0 extra trans) 663.5 225.2 -3353.4))  ;; ^
+    (('money-2266) (set-vector-meters! (-> arg0 extra trans) 746.5 221.12 -3365.5))  ;; ^
+    (('money-2267) (set-vector-meters! (-> arg0 extra trans) 779.2 261.0 -3281.2))  ;; top of fortress spike wall - hint for where to jump with flutflut from high
     ;; (('money-2268) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('money-2269) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('money-2270) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
@@ -208,9 +219,9 @@
     ;; (('money-5013) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('money-5014) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
 
-    ;; orb-cache-top-28  ;;  15
-    ;; orb-cache-top-29  ;;  15
-    ;; orb-cache-top-30  ;;  15
+    (('orb-cache-top-28) (set-vector-meters! (-> arg0 extra trans) 692.92 245.19 -3311.50))  ;;  15 - steps down near blue eco
+    (('orb-cache-top-29) (set-vector-meters! (-> arg0 extra trans) 701.78 232.08 -3301.91))  ;;  15 - ^
+    (('orb-cache-top-30) (set-vector-meters! (-> arg0 extra trans) 744.77 225.12 -3302.77))  ;;  15 - ^
 
     ;; crate-1130
     ;; crate-1131
@@ -220,12 +231,13 @@
     (('crate-976) (set-vector-meters! (-> arg0 extra trans) 730.12 264.30 -3509.57)) ;; outside orig secret cell cave, follow from money-2236
     (('crate-980) (set-vector-meters! (-> arg0 extra trans) 1035.0 263.8 -3434.8)) ;; up from money-2307, left from start
     (('crate-1132) (set-vector-meters! (-> arg0 extra trans) 784.00 275.64 -3464.7))  ;; around corner from money-2239, zoomwalk into jump 
-    ;; (('crate-1133) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('crate-1133) (set-vector-meters! (-> arg0 extra trans) 734.3 226.04 -3367.2))  ;; in lower crystals towards orig yellow eco switch
     ;; (('crate-1138) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('crate-3134) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     
     ;; CELLS
-    ;; snow-switch-1
+    (('snow-switch-1) (set-vector-meters! (-> arg0 extra trans) 802.36 240.57 -3275.89))  ;; opposite side of fort from orig cell (need to jump in with flutflut + blue eco)
+      (('babak-267) (set-vector-meters! (-> arg0 extra trans) 824.20 243.23 -3258.78))  ;; towards center of fort structure a bit, make room for ^
 
     (('snow-eggtop-4) (set-vector-meters! (-> arg0 extra trans) 836.59 256.0 -3243.90))  ;; top of tower inside fort
 
@@ -240,12 +252,13 @@
     (('snow-bumper-75) (set-vector-meters! (-> arg0 extra trans) 794.57 256.55 -3471.23  ))  ;; ^
     (('snow-bumper-76) (set-vector-meters! (-> arg0 extra trans) 737.02 263.08 -3443.8  ))  ;; platform between top icy section and secret cell
     (('snow-bumper-77) (set-vector-meters! (-> arg0 extra trans) 713.76 245.68 -3302.96  ))  ;; steps from flutflut to fort 
-    ;; (('snow-bumper-78) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    ;; (('snow-bumper-79) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (('snow-bumper-78) (set-vector-meters! (-> arg0 extra trans) 891.21 210.62 -3338.51  ))  ;;  mid platform between bunny cave exit and fort
+    (('snow-bumper-79) (set-vector-meters! (-> arg0 extra trans) 910.77 224.37 -3388.61  ))  ;; steps from entrance towards fort/bunny cave exit 
     ;; (('snow-bumper-80) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
     ;; (('snow-bumper-81) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
 
-    ;; ram-7 ;; unoccupied
+    (('ram-7) (set-vector-meters! (-> arg0 extra trans)  734.34 256.14  -3301.30) ;; unoccupied - use to jump into fortress on flutflut
+      (set-vector! (the-as vector (-> arg0 quat)) 0.0  -0.9686  0.0  0.2485)) 
     ;; ram-8 ;; unoccupied
     ;; ram-13
     ;; ram-14
@@ -331,7 +344,7 @@
     ;; (('crate-2343) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('crate-2344) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
 
-    ;; flutflut-7
+    (('flutflut-7) (set-vector-meters! (-> arg0 extra trans) 730.46 256.08 -3404.97)) ;; snow in center of upper ice lake
     ;; snow-button-2 ;; start of flutflut
     ;;   flutflut-plat-med-2
     ;;   flutflut-plat-large-2
