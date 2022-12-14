@@ -3,102 +3,31 @@
 
 (defmacro mod-swamp-run-each-frame ()
   `(begin
-    (when (process-by-ename "ecovent-95")  ;; yellow - island in muck (orig blue eco)
-      (let ((obj (the ecovent (process-by-ename "ecovent-95")))
-            (vec (static-vector-meters 422.09   0.86 -2131.65))
-            )
-        (vector-copy-no-w! (-> obj root trans) vec)
-        (vector-copy-no-w! (-> obj root-override trans) vec)
-        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
-        )
-      )
-    (when (process-by-ename "ecovent-85")  ;; yellow - orig fourth tether
-      (let ((obj (the ecovent (process-by-ename "ecovent-85")))
-            (vec (static-vector-meters 515.92  14.82 -1937.29))
-            )
-        (vector-copy-no-w! (-> obj root trans) vec)
-        (vector-copy-no-w! (-> obj root-override trans) vec)
-        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
-        )
-      )
-    (when (process-by-ename "ecovent-89")  ;; yellow - orig flutflut
-      (let ((obj (the ecovent (process-by-ename "ecovent-89")))
-            (vec (static-vector-meters 559.31   2.00 -2130.70))
-            )
-        (vector-copy-no-w! (-> obj root trans) vec)
-        (vector-copy-no-w! (-> obj root-override trans) vec)
-        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
-        )
-      )
-    (when (process-by-ename "ecovent-93") ;; yellow - orig first tether
-      (let ((obj (the ecovent (process-by-ename "ecovent-93")))
-            (vec (static-vector-meters 429.31   7.89 -1932.98))
-            )
-        (vector-copy-no-w! (-> obj root trans) vec)
-        (vector-copy-no-w! (-> obj root-override trans) vec)
-        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
-        )
-      )
-    (when (process-by-ename "eco-74")  ;; yellow - platforms to orig flutflut cell
-      (mod-move-eco (the eco (process-by-ename "eco-74")) (static-vector-meters 598.11  12.7 -2060.35))
-    )
-    (when (process-by-ename "eco-77")  ;; yellow - platforms to orig flutflut cell
-      (mod-move-eco (the eco (process-by-ename "eco-77")) (static-vector-meters 633.95  12.7 -2082.82))
-      )
-    (when (process-by-ename "eco-78")  ;; yellow - platforms to orig flutflut cell
-      (mod-move-eco (the eco (process-by-ename "eco-78")) (static-vector-meters 601.99  12.7 -2149.63))
-      )
-    (when (process-by-ename "eco-80")  ;; yellow - platforms to orig flutflut cell
-      (mod-move-eco (the eco (process-by-ename "eco-80")) (static-vector-meters 521.30  12.7 -2109.07))
-      )
-    (when (process-by-ename "eco-160")  ;; blue - orig yellow ecovent near second bats
-      (mod-move-eco (the eco (process-by-ename "eco-160")) (static-vector-meters 434.97   1.7 -2099.4))
-      )
-    (when (process-by-ename "eco-85")  ;; yellow - side of first cave
-      (mod-move-eco (the eco (process-by-ename "eco-85")) (static-vector-meters 325.56   1.7 -2032.87))
-      )
-    (when (process-by-ename "eco-107")  ;; yellow - third cave
-      (mod-move-eco (the eco (process-by-ename "eco-107")) (static-vector-meters 647.48   1.7 -1967.22))
-      )
-    (when (process-by-ename "eco-108")  ;; yellow - third cave
-      (mod-move-eco (the eco (process-by-ename "eco-108")) (static-vector-meters 643.21   1.8 -1989.16))
-      )
-    (when (process-by-ename "eco-168")  ;; blue - third cave
-      (mod-move-eco (the eco (process-by-ename "eco-168")) (static-vector-meters 626.62   1.7 -1985.40))
-      )
-    (when (process-by-ename "eco-169")  ;; yellow - third cave
-      (mod-move-eco (the eco (process-by-ename "eco-169")) (static-vector-meters 604.12   1.7 -1981.20))
-      )
-    (when (process-by-ename "eco-176")  ;; blue - orig yellow eco near fourth tether
-      (mod-move-eco (the eco (process-by-ename "eco-176")) (static-vector-meters 564.39   1.4 -1960.28))
-      )
-    (when (process-by-ename "eco-103")  ;; yellow - above first rats nest
-      (mod-move-eco (the eco (process-by-ename "eco-103")) (static-vector-meters 284.43  13.86 -2043.60))
-      )
-    (when (process-by-ename "eco-104")  ;; yellow - near first bats, used for quad jump to high ledge
-      (mod-move-eco (the eco (process-by-ename "eco-104")) (static-vector-meters 299.22   9.66 -1955.23))
-      )
-    (when (process-by-ename "eco-164")  ;; blue - orig yellow eco vent in flutflut section
-      (mod-move-eco (the eco (process-by-ename "eco-164")) (static-vector-meters 612.20   1.3 -2150.87))
-      )
-    (when (process-by-ename "eco-165")  ;; blue - platform in muck towards first "beach"
-      (mod-move-eco (the eco (process-by-ename "eco-165")) (static-vector-meters 673.35  3.0 -2116.70))
-      )
-    (when (process-by-ename "eco-86")  ;; yellow - near second launcher
-      (mod-move-eco (the eco (process-by-ename "eco-86")) (static-vector-meters 310.78   3.02 -2084.80))
-      )
-    (when (process-by-ename "eco-152")  ;; blue - start of long poles section
-      (mod-move-eco (the eco (process-by-ename "eco-152")) (static-vector-meters 286.41   2.0 -2137.03))
-      )
-    (when (process-by-ename "eco-153")  ;; yellow - early in long poles section
-      (mod-move-eco (the eco (process-by-ename "eco-153")) (static-vector-meters 316.85   2.0 -2165.77))
-      )
-    (when (process-by-ename "eco-174")  ;; yellow - muck before fourth tether
-      (mod-move-eco (the eco (process-by-ename "eco-174")) (static-vector-meters 575.02   2.3 -1924.81))
-      )
-    (when (process-by-ename "eco-175")  ;; yellow - muck before fourth tether
-      (mod-move-eco (the eco (process-by-ename "eco-175")) (static-vector-meters 560.83   2.3 -1922.35))
-      )
+    (mod-move-ecovent "ecovent-95" (static-vector-meters 422.09   0.86 -2131.65)) ;; yellow - island in muck (orig blue eco)
+    (mod-move-ecovent "ecovent-85" (static-vector-meters 515.92  14.82 -1937.29)) ;; yellow - orig fourth tether
+    (mod-move-ecovent "ecovent-89" (static-vector-meters 559.31   2.00 -2130.70)) ;; yellow - orig flutflut
+    (mod-move-ecovent "ecovent-93" (static-vector-meters 429.31   7.89 -1932.98)) ;; yellow - orig first tether
+
+    (mod-move-eco "eco-74" (static-vector-meters 598.11  12.7 -2060.35)) ;; yellow - platforms to orig flutflut cell
+    (mod-move-eco "eco-77" (static-vector-meters 633.95  12.7 -2082.82)) ;; yellow - platforms to orig flutflut cell
+    (mod-move-eco "eco-78" (static-vector-meters 601.99  12.7 -2149.63)) ;; yellow - platforms to orig flutflut cell
+    (mod-move-eco "eco-80" (static-vector-meters 521.30  12.7 -2109.07)) ;; yellow - platforms to orig flutflut cell
+    (mod-move-eco "eco-160" (static-vector-meters 434.97   1.7 -2099.4)) ;; blue - orig yellow ecovent near second bats
+    (mod-move-eco "eco-85" (static-vector-meters 325.56   1.7 -2032.87)) ;; yellow - side of first cave
+    (mod-move-eco "eco-107" (static-vector-meters 647.48   1.7 -1967.22)) ;; yellow - third cave
+    (mod-move-eco "eco-108" (static-vector-meters 643.21   1.8 -1989.16)) ;; yellow - third cave
+    (mod-move-eco "eco-168" (static-vector-meters 626.62   1.7 -1985.40)) ;; blue - third cave
+    (mod-move-eco "eco-169" (static-vector-meters 604.12   1.7 -1981.20)) ;; yellow - third cave
+    (mod-move-eco "eco-176" (static-vector-meters 564.39   1.4 -1960.28)) ;; blue - orig yellow eco near fourth tether
+    (mod-move-eco "eco-103" (static-vector-meters 284.43  13.86 -2043.60)) ;; yellow - above first rats nest
+    (mod-move-eco "eco-104" (static-vector-meters 299.22   9.66 -1955.23)) ;; yellow - near first bats, used for quad jump to high ledge
+    (mod-move-eco "eco-164" (static-vector-meters 612.20   1.3 -2150.87)) ;; blue - orig yellow eco vent in flutflut section
+    (mod-move-eco "eco-165" (static-vector-meters 673.35  3.0 -2116.70)) ;; blue - platform in muck towards first "beach"
+    (mod-move-eco "eco-86" (static-vector-meters 310.78   3.02 -2084.80)) ;; yellow - near second launcher
+    (mod-move-eco "eco-152" (static-vector-meters 286.41   2.0 -2137.03)) ;; blue - start of long poles section
+    (mod-move-eco "eco-153" (static-vector-meters 316.85   2.0 -2165.77)) ;; yellow - early in long poles section
+    (mod-move-eco "eco-174" (static-vector-meters 575.02   2.3 -1924.81)) ;; yellow - muck before fourth tether
+    (mod-move-eco "eco-175" (static-vector-meters 560.83   2.3 -1922.35)) ;; yellow - muck before fourth tether
     ;; yellow
     ;; (('eco-81 ) ) ;; leave, by boggy billy
     ;; (('eco-85 ) ) ;; 

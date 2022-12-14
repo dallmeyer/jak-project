@@ -3,12 +3,8 @@
 
 (defmacro mod-village2-run-each-frame ()
   `(begin
-    (when (process-by-ename "eco-26")  ;; blue - 2nd highest step near blue sage hut
-      (mod-move-eco (the eco (process-by-ename "eco-26")) (static-vector-meters 305.53  18.0 -1518.91))
-      )
-    (when (process-by-ename "eco-27")  ;; blue - on rock past bottom of steps
-      (mod-move-eco (the eco (process-by-ename "eco-27")) (static-vector-meters 219.98  16.0 -1494.33))
-      )
+    (mod-move-eco "eco-26" (static-vector-meters 305.53  18.0 -1518.91)) ;; blue - 2nd highest step near blue sage hu
+    (mod-move-eco "eco-27" (static-vector-meters 219.98  16.0 -1494.33)) ;; blue - on rock past bottom of steps
     )
   )
 

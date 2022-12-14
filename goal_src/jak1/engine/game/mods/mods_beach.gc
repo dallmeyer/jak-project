@@ -3,55 +3,14 @@
 
 (defmacro mod-beach-run-each-frame ()
   `(begin 
-    (when (process-by-ename "ecovent-200")  ;; near pelican nest (needs blue eco switch)
-      (let ((obj (the ecovent (process-by-ename "ecovent-200"))))
-        (set-vector-meters! (-> obj root trans) -159.30  11.55 -413.73)
-        (set-vector-meters! (-> obj root-override trans) -159.30  11.55 -413.73)
-        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -159.30  11.55 -413.73)
-        )
-      )
-    (when (process-by-ename "ecovent-48")  ;; on first pillar to cannon tower (doesn't need blue eco switch)
-      (let ((obj (the ecovent (process-by-ename "ecovent-48"))))
-        (set-vector-meters! (-> obj root trans) -236.30  28.84 -384.32)
-        (set-vector-meters! (-> obj root-override trans) -236.30  28.84 -384.32)
-        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -236.30  28.84 -384.32)
-        )
-      )
-    (when (process-by-ename "ecovent-54")  ;; green eco vent - 
-      (let ((obj (the ecovent (process-by-ename "ecovent-54"))))
-        (set-vector-meters! (-> obj root trans) -432.66   0.32 -505.24)
-        (set-vector-meters! (-> obj root-override trans) -432.66   0.32 -505.24)
-        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -432.66   0.32 -505.24)
-        )
-      )
-    (when (process-by-ename "ecovent-50")  ;; green eco vent - 
-      (let ((obj (the ecovent (process-by-ename "ecovent-50"))))
-        (set-vector-meters! (-> obj root trans) -272.97  43.48 -285.84)
-        (set-vector-meters! (-> obj root-override trans) -272.97  43.48 -285.84)
-        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -272.97  43.48 -285.84)
-        )
-      )
-    (when (process-by-ename "ecovent-53")  ;; green eco vent - 
-      (let ((obj (the ecovent (process-by-ename "ecovent-53"))))
-        (set-vector-meters! (-> obj root trans) -58.11   4.39 -353.60)
-        (set-vector-meters! (-> obj root-override trans) -58.11   4.39 -353.60)
-        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -58.11   4.39 -353.60)
-        )
-      )
-    (when (process-by-ename "ecovent-51")  ;; green eco vent - 
-      (let ((obj (the ecovent (process-by-ename "ecovent-51"))))
-        (set-vector-meters! (-> obj root trans) -244.20  30.72 -332.46)
-        (set-vector-meters! (-> obj root-override trans) -244.20  30.72 -332.46)
-        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -244.20  30.72 -332.46)
-        )
-      )
-    (when (process-by-ename "ecovent-52")  ;; green eco vent - 
-      (let ((obj (the ecovent (process-by-ename "ecovent-52"))))
-        (set-vector-meters! (-> obj root trans) -293.98   6.13 -413.64)
-        (set-vector-meters! (-> obj root-override trans) -293.98   6.13 -413.64)
-        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) -293.98   6.13 -413.64)
-        )
-      )
+    (mod-move-ecovent "ecovent-200" (static-vector-meters  -159.30  11.55 -413.73))  ;; near pelican nest (blocked unless blue eco switch pressed)
+    (mod-move-ecovent "ecovent-48" (static-vector-meters  -236.30  28.84 -384.32))  ;; on first pillar to cannon tower (not blocked)
+    (mod-move-ecovent "ecovent-54" (static-vector-meters  -432.66   0.32 -505.24))  ;; green eco vent - 
+    (mod-move-ecovent "ecovent-50" (static-vector-meters  -272.97  43.48 -285.84))  ;; green eco vent - 
+    (mod-move-ecovent "ecovent-53" (static-vector-meters  -58.11   4.39 -353.60))  ;; green eco vent - 
+    (mod-move-ecovent "ecovent-51" (static-vector-meters  -244.20  30.72 -332.46))  ;; green eco vent - 
+    (mod-move-ecovent "ecovent-52" (static-vector-meters  -293.98   6.13 -413.64))  ;; green eco vent - 
+
     (when (process-by-ename "pelican-1") 
       (let ((obj (the pelican (process-by-ename "pelican-1"))))
         (set-vector-meters! (-> obj state-vector) -256.17  28.28 -465.54)  ;; "nesting" on high plateau above grotto
@@ -68,18 +27,11 @@
         (set! (-> obj rotate range) 0.0)  ;; allow 360 spin 
         )
       )
-    (when (process-by-ename "eco-82")  ;; blue - snake pit near entrance
-      (mod-move-eco (the eco (process-by-ename "eco-82")) (static-vector-meters -171.11   3.0 -225.54))
-      )
-    (when (process-by-ename "eco-6")  ;; blue - snake pit near mid windmill
-      (mod-move-eco (the eco (process-by-ename "eco-6")) (static-vector-meters -98.41   3.0 -360.76))
-      )
-    (when (process-by-ename "eco-83")  ;; blue - orig orb cache near orig flutflutegg nest
-      (mod-move-eco (the eco (process-by-ename "eco-83")) (static-vector-meters -52.43  42.5 -300.91))
-      )
-    (when (process-by-ename "eco-84")  ;; blue - on beach near grotto entrance
-      (mod-move-eco (the eco (process-by-ename "eco-84")) (static-vector-meters -173.30   2.0 -473.25))
-      )
+
+    (mod-move-eco "eco-82" (static-vector-meters -171.11   3.0 -225.54)) ;; blue - snake pit near entrance
+    (mod-move-eco "eco-6" (static-vector-meters -98.41   3.0 -360.76)) ;; blue - snake pit near mid windmill
+    (mod-move-eco "eco-83" (static-vector-meters -52.43  42.5 -300.91)) ;; blue - orig orb cache near orig flutflutegg nest
+    (mod-move-eco "eco-84" (static-vector-meters -173.30   2.0 -473.25)) ;; blue - on beach near grotto entrance
     )
   )
 

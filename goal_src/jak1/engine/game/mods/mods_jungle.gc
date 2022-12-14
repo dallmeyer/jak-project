@@ -4,22 +4,11 @@
 (defmacro mod-jungle-run-each-frame ()
   `(begin
     ;; FJ outside
-    (when (process-by-ename "ecovent-193")  ;; above fisherman where orig mirrors is
-      (let ((obj (the ecovent (process-by-ename "ecovent-193"))))
-        (set-vector-meters! (-> obj root trans) 261.9 37.2 -258.0)
-        (set-vector-meters! (-> obj root-override trans) 261.9 37.2 -258.0)
-        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) 261.9 37.2 -258.0)
-        )
-      )
-    (when (process-by-ename "eco-110")  ;; on orig orb cache
-      (mod-move-eco (the eco-blue (process-by-ename "eco-110")) (static-vector-meters 318.1 3.5 -326.1))
-      )
-    (when (process-by-ename "eco-111")  ;; lower river
-      (mod-move-eco (the eco-blue (process-by-ename "eco-111")) (static-vector-meters 407.6 1.5 -311.1))
-      )
-    (when (process-by-ename "eco-112")  ;; in water tunnel
-      (mod-move-eco (the eco-blue (process-by-ename "eco-112")) (static-vector-meters 449.1 2.5 -242.0))
-      )
+    (mod-move-ecovent "ecovent-193" (static-vector-meters 261.9 37.2 -258.0))  ;; above fisherman where orig mirrors is
+
+    (mod-move-eco "eco-110" (static-vector-meters 318.1 3.5 -326.1))  ;; on orig orb cache
+    (mod-move-eco "eco-111" (static-vector-meters 407.6 1.5 -311.1))  ;; lower river
+    (mod-move-eco "eco-112" (static-vector-meters 449.1 2.5 -242.0))  ;; in water tunnel
     ;; FJ Temple
     (when (process-by-ename "plant-boss-3")
       (let ((obj (the plant-boss (process-by-ename "plant-boss-3"))))

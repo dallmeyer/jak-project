@@ -9,36 +9,16 @@
         (set! (-> obj rotate range) 0.0)  ;; allow 360 spin 
         )
       )
-    (when (process-by-ename "eco-32")  ;; blue - platform to orig boosted cell
-      (mod-move-eco (the eco (process-by-ename "eco-32")) (static-vector-meters -29.1 23.0 820.1))
-      )
-    (when (process-by-ename "eco-33")  ;; blue - zoomer dock to cell after balloon lurkers
-      (mod-move-eco (the eco (process-by-ename "eco-33")) (static-vector-meters 98.40  10.5 1169.97))
-      )
-    (when (process-by-ename "eco-34")  ;; blue - zoomer dock to cell after balloon lurkers
-      (mod-move-eco (the eco (process-by-ename "eco-34")) (static-vector-meters 50.09 16.0 1187.07))
-      )
-    (when (process-by-ename "eco-39")  ;; blue - zoomer dock to cell after balloon lurkers
-      (mod-move-eco (the eco (process-by-ename "eco-39")) (static-vector-meters 17.80  17.54 1215.30))
-      )
-    (when (process-by-ename "eco-40")  ;; blue - leading to zoomer dock to cell after balloon lurkers
-      (mod-move-eco (the eco (process-by-ename "eco-40")) (static-vector-meters 92.0  2.0 1094.94))
-      )
-    (when (process-by-ename "eco-139")  ;; red - in mud near entrance
-      (mod-move-eco (the eco (process-by-ename "eco-139")) (static-vector-meters 3.55  15.5 843.26))
-      )
-    (when (process-by-ename "eco-145")  ;; red - in mud near boosted
-      (mod-move-eco (the eco (process-by-ename "eco-145")) (static-vector-meters -29.77  19.0 802.68))
-      )
-    (when (process-by-ename "eco-138")  ;; blue - on top of lurker ship
-      (mod-move-eco (the eco (process-by-ename "eco-138")) (static-vector-meters 34.51  33.00 1069.82))
-      )
-    (when (process-by-ename "eco-143")  ;; blue - on bridge with rolling logs
-      (mod-move-eco (the eco (process-by-ename "eco-143")) (static-vector-meters -39.55  43.0 1029.50))
-      )
-    (when (process-by-ename "eco-144")  ;; blue - on bridge with rolling logs
-      (mod-move-eco (the eco (process-by-ename "eco-144")) (static-vector-meters -77.03  51.5 991.29))
-      )
+    (mod-move-eco "eco-32" (static-vector-meters -29.1 23.0 820.1)) ;; blue - platform to orig boosted cell
+    (mod-move-eco "eco-33" (static-vector-meters 98.40  10.5 1169.97)) ;; blue - zoomer dock to cell after balloon lurkers
+    (mod-move-eco "eco-34" (static-vector-meters 50.09 16.0 1187.07)) ;; blue - zoomer dock to cell after balloon lurkers
+    (mod-move-eco "eco-39" (static-vector-meters 17.80  17.54 1215.30)) ;; blue - zoomer dock to cell after balloon lurkers
+    (mod-move-eco "eco-40" (static-vector-meters 92.0  2.0 1094.94)) ;; blue - leading to zoomer dock to cell after balloon lurkers
+    (mod-move-eco "eco-139" (static-vector-meters 3.55  15.5 843.26)) ;; red - in mud near entrance
+    (mod-move-eco "eco-145" (static-vector-meters -29.77  19.0 802.68)) ;; red - in mud near boosted
+    (mod-move-eco "eco-138" (static-vector-meters 34.51  33.00 1069.82)) ;; blue - on top of lurker ship
+    (mod-move-eco "eco-143" (static-vector-meters -39.55  43.0 1029.50)) ;; blue - on bridge with rolling logs
+    (mod-move-eco "eco-144" (static-vector-meters -77.03  51.5 991.29)) ;; blue - on bridge with rolling logs
     )
   )
   

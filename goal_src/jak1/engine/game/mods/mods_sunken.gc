@@ -4,18 +4,11 @@
 (defmacro mod-sunken-run-each-frame ()
   `(begin
     ;; LPC (sunken)
-    (when (process-by-ename "eco-102")  ;; blue - where orb cache normally is by larry
-      (mod-move-eco (the eco (process-by-ename "eco-102")) (static-vector-meters 891.21 -130.04 -1600.56))
-      )
-    (when (process-by-ename "eco-109")  ;; blue - next to buttonskip
-      (mod-move-eco (the eco (process-by-ename "eco-109")) (static-vector-meters 595.23 -130.7 -1706.87))
-      )
-    (when (process-by-ename "eco-100")  ;; blue - near triple whirlpool / puzzle room
-      (mod-move-eco (the eco (process-by-ename "eco-100")) (static-vector-meters 802.34 -137.5 -1744.19))
-      )
-    (when (process-by-ename "eco-101")  ;; blue - orig orb cache in first room
-      (mod-move-eco (the eco (process-by-ename "eco-101")) (static-vector-meters 693.21 -159.0 -1664.09))
-      )
+    (mod-move-eco "eco-102" (static-vector-meters 891.21 -130.04 -1600.56)) ;; blue - where orb cache normally is by larry
+    (mod-move-eco "eco-109" (static-vector-meters 595.23 -130.7 -1706.87))  ;; blue - next to buttonskip
+    (mod-move-eco "eco-100" (static-vector-meters 802.34 -137.5 -1744.19)) ;; blue - near triple whirlpool / puzzle room
+    (mod-move-eco "eco-101" (static-vector-meters 693.21 -159.0 -1664.09)) ;; blue - orig orb cache in first room
+
     ;; LPC (sunkenb)
     (when (process-by-ename "exit-chamber-1")
       (let ((obj (the exit-chamber (process-by-ename "exit-chamber-1")))
