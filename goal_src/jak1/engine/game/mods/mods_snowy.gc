@@ -56,9 +56,36 @@
     (mod-no-money-bob "money-2282")
     (mod-no-money-bob "money-2307")
     (mod-no-money-bob "money-2308")
-
+    (mod-no-money-bob "money-2312")
+    (mod-no-money-bob "money-2313")
+    (mod-no-money-bob "money-2317")
+    (mod-no-money-bob "money-2318")
     (mod-no-money-bob "money-2319")
     (mod-no-money-bob "money-2320")
+    (mod-no-money-bob "money-2321")
+    (mod-no-money-bob "money-2322")
+    (mod-no-money-bob "money-2323")
+    (mod-no-money-bob "money-2324")
+    (mod-no-money-bob "money-2325")
+    (mod-no-money-bob "money-2326")
+    (mod-no-money-bob "money-2327")
+    (mod-no-money-bob "money-2328")
+    (mod-no-money-bob "money-2330")
+    (mod-no-money-bob "money-2332")
+    (mod-no-money-bob "money-2333")
+    (mod-no-money-bob "money-2334")
+    (mod-no-money-bob "money-2335")
+    (mod-no-money-bob "money-2336")
+    (mod-no-money-bob "money-3731")
+    (mod-no-money-bob "money-3732")
+    (mod-no-money-bob "money-3733")
+    (mod-no-money-bob "money-3734")
+    (mod-no-money-bob "money-4129")
+    (mod-no-money-bob "money-4798")
+    (mod-no-money-bob "money-5008")
+    (mod-no-money-bob "money-5009")
+    (mod-no-money-bob "money-5011")
+    (mod-no-money-bob "money-5012")
     )
   )
   
@@ -174,44 +201,45 @@
     (('money-2309) (set-vector-meters! (-> arg0 extra trans) 880.0 259.5 -3416.0))  ;; right of ^^
     (('money-2310) (set-vector-meters! (-> arg0 extra trans) 881.5 261.0 -3429.5))  ;; right of ^
     (('money-2311) (set-vector-meters! (-> arg0 extra trans) 902.6 250.7 -3371.3))  ;; left of money-2308
-    ;; (('money-2312) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2313) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2314) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2315) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2316) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2317) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2318) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('money-2312) (set-vector-meters! (-> arg0 extra trans) 946.0 245.5 -3431.8))  ;; in snow behind rocks towards mid/end of snowball path
+    (('money-2313) (set-vector-meters! (-> arg0 extra trans) 977.4 261.8 -3343.0))  ;; up in snow towards start of snowball path
+    (('money-2314) (set-vector-meters! (-> arg0 extra trans) 1051.34 272.0 -3334.63))  ;; up from money-2051 
+    (('money-2315) (set-vector-meters! (-> arg0 extra trans) 1050.7 250.8 -3327.9))  ;; behind rock at edge of drilling lurker by snowballs
+    (('money-2316) (set-vector-meters! (-> arg0 extra trans) 1000.9 252.05 -3293.7))  ;; ^ but other edge
+    (('money-2317) (set-vector-meters! (-> arg0 extra trans) 1044.6 259.26 -3331.1))  ;; in torch by drilling lurker by snowballs
+    (('money-2318) (set-vector-meters! (-> arg0 extra trans) 996.1 267.1 -3295.6))  ;; above money-2316 (use flutflut)
     (('money-2319) (set-vector-meters! (-> arg0 extra trans) 942.02 265.4 -3341.28)) ;; DJ spin from near snowball start
     (('money-2320) (set-vector-meters! (-> arg0 extra trans) 934.36 270.7 -3338.87)) ;; up from ^ buried in snow
-    ;; (('money-2321) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2322) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2323) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2324) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2325) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2326) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2327) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2328) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2329) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2330) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2331) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2332) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2333) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2334) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2335) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-2336) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-3731) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-3732) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-3733) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-3734) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4129) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4798) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-5008) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-5009) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-5010) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-5011) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-5012) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-5013) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-5014) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('money-2321) (set-vector-meters! (-> arg0 extra trans) 755.00 253.80 -3387.70))  ;; in icy slide
+    (('money-2322) (set-vector-meters! (-> arg0 extra trans) 759.39 248.99 -3387.78))  ;; in icy slide
+    (('money-2323) (set-vector-meters! (-> arg0 extra trans) 762.95 244.66 -3388.03))  ;; in icy slide
+    (('money-2324) (set-vector-meters! (-> arg0 extra trans) 766.76 240.33 -3388.28))  ;; in icy slide
+    (('money-2325) (set-vector-meters! (-> arg0 extra trans) 770.57 235.99 -3388.54))  ;; in icy slide
+    (('money-2326) (set-vector-meters! (-> arg0 extra trans) 774.38 231.66 -3388.79))  ;; in icy slide
+    (('money-2327) (set-vector-meters! (-> arg0 extra trans) 778.19 227.33 -3389.04))  ;; in icy slide
+    (('money-2328) (set-vector-meters! (-> arg0 extra trans) 782.00 223.00 -3389.29))  ;; in icy slide
+    (('money-2329) (set-vector-meters! (-> arg0 extra trans) 826.8 250.5 -3440.8))  ;; in corner by ecovent in orig secret cell path
+    (('money-2330) (set-vector-meters! (-> arg0 extra trans) 847.92 266.4 -3455.53))  ;; high icicle in orig secret cell path, tough flutflut GP from blocker->wall
+    (('money-2331) (set-vector-meters! (-> arg0 extra trans) 901.5 242.75 -3495.2))  ;; behind rocks near edge at end of snowball path
+    (('money-2332) (set-vector-meters! (-> arg0 extra trans) 799.6 226.79 -3393.35))  ;; in torch at bottom of icy slide
+    (('money-2333) (set-vector-meters! (-> arg0 extra trans) 695.9 260.5 -3345.5))  ;; in drilling lurker ice by orig flutflut
+    (('money-2334) (set-vector-meters! (-> arg0 extra trans) 765.5 218.0 -3284.5))  ;; under ice outside fort (flutflut GP)
+    (('money-2335) (set-vector-meters! (-> arg0 extra trans) 763.80 217.5 -3258.4))  ;; ^
+    (('money-2336) (set-vector-meters! (-> arg0 extra trans) 813.3 218.2 -3306.9))  ;; ^
+    (('money-3731) (set-vector-meters! (-> arg0 extra trans) 842.0 218.2  -3306.2))  ;; ^
+    (('money-3732) (set-vector-meters! (-> arg0 extra trans) 884.5 218.2 -3298.15))  ;; ^
+    (('money-3733) (set-vector-meters! (-> arg0 extra trans) 899.99 218.25 -3277.1))  ;; ^
+    (('money-3734) (set-vector-meters! (-> arg0 extra trans) 920.8 218.2 -3267.2))  ;; ^
+    (('money-4129) (set-vector-meters! (-> arg0 extra trans) 940.8 218.0 -3233.0))  ;; ^
+    (('money-4798) (set-vector-meters! (-> arg0 extra trans) 945.0 217.6 -3210.0))  ;; ^
+    (('money-5008) (set-vector-meters! (-> arg0 extra trans) 960.5 257.0 -3304.8))  ;; under ice at snowball start
+    (('money-5009) (set-vector-meters! (-> arg0 extra trans) 972.0 260.9 -3302.1))  ;; ^
+    (('money-5010) (set-vector-meters! (-> arg0 extra trans) 695.23 275.9 -3375.58))  ;; up and around from money-2231
+    (('money-5011) (set-vector-meters! (-> arg0 extra trans) 1027.4 218.5 -3232.2))  ;; under ice on island to orig bunny cave
+    (('money-5012) (set-vector-meters! (-> arg0 extra trans) 980.8184     227.4   -3399.079))  ;; in dark eco crate in orig bunny cave
+    (('money-5013) (set-vector-meters! (-> arg0 extra trans) 981.7102     214.1   -3376.8334))  ;; ^
+    (('money-5014) (set-vector-meters! (-> arg0 extra trans) 962.45 227.3 -3391.28))  ;; ^
+      (('crate-2332) (set-vector-meters! (-> arg0 extra trans) 962.45 227.74 -3391.28)) ;; hiding ^
 
     (('orb-cache-top-28) (set-vector-meters! (-> arg0 extra trans) 692.92 245.19 -3311.50))  ;;  15 - steps down near blue eco
     (('orb-cache-top-29) (set-vector-meters! (-> arg0 extra trans) 701.78 232.08 -3301.91))  ;;  15 - ^
@@ -264,19 +292,19 @@
     ;; MISC
 
     (('snow-log-button-1) (set-vector-meters! (-> arg0 extra trans) 737.9 234.35 -3408.1)) ;; orig yellow eco switch 
-    (('snow-log-1) (set-vector-meters! (-> arg0 extra trans) 713.04 232.21 -3404.32))  ;; near orig yellow eco switch (can use to jump up thru ice)
+    (('snow-log-1) (set-vector-meters! (-> arg0 extra trans) 713.04 232.4 -3404.32))  ;; near orig yellow eco switch (can use to jump up thru ice)
 
     ;; dark
     ;; crate-2325
     ;; crate-2326
-    ;; crate-2327
+    ;; crate-2327 ;; USED - see money-5013
     ;; crate-2328
     ;; crate-2329
     ;; crate-2330
     ;; crate-2331
-    ;; crate-2332
+    ;; crate-2332 ;; USED - see money-5014
     ;; crate-2333
-    ;; crate-2334
+    ;; crate-2334 ;; USED - see money-5012
     
     ;; green
     ;; (('crate-962) (set-vector-meters! (-> arg0 extra trans) )) ;; 
