@@ -1,6 +1,17 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
+(defmacro mod-copy-mesh-and-path (dst-name src-name)
+  `(let ((dst (the nav-enemy (process-by-ename ,dst-name)))
+         (src (the nav-enemy (process-by-ename ,src-name)))
+         )
+    (when (and src dst)
+      (set! (-> dst nav mesh) (-> src nav mesh))
+      (set! (-> dst path) (-> src path))
+      )
+    )
+  )
+
 (defmacro mod-no-money-bob (moneyname)
   `(begin
     (when (process-by-ename ,moneyname)
@@ -86,6 +97,69 @@
     (mod-no-money-bob "money-5009")
     (mod-no-money-bob "money-5011")
     (mod-no-money-bob "money-5012")
+
+    ;; make all the bunnies on icy island share nav-mesh and path
+    (mod-copy-mesh-and-path "snow-bunny-14" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-54" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-55" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-56" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-57" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-58" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-59" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-63" "snow-bunny-74")
+    ;; (mod-copy-mesh-and-path "snow-bunny-64" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-65" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-68" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-69" "snow-bunny-74")
+    ;; (mod-copy-mesh-and-path "snow-bunny-71" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-72" "snow-bunny-74")
+    ;; (mod-copy-mesh-and-path "snow-bunny-73" "snow-bunny-74")
+    ;; (mod-copy-mesh-and-path "snow-bunny-74" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-75" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-76" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-77" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-78" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-79" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-80" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-81" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-82" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-83" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-84" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-85" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-86" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-87" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-88" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-89" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-90" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-91" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-92" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-93" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-94" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-95" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-96" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-97" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-98" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-99" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-100" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-101" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-102" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-103" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-104" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-105" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-106" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-107" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-108" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-109" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-110" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-111" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-112" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-113" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-114" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-115" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-116" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-117" "snow-bunny-74")
+    (mod-copy-mesh-and-path "snow-bunny-128" "snow-bunny-74")
+
     )
   )
   
@@ -352,9 +426,9 @@
     ;; (('crate-1150) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('crate-1151) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('crate-1152) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-1153) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-1154) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-1155) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('crate-1153) (set-vector-meters! (-> arg0 extra trans) 965.14 228.48 -3494.32))  ;; around blocker near start
+    (('crate-1154) (set-vector-meters! (-> arg0 extra trans) 979.30 228.25 -3495.48))  ;; ^
+    (('crate-1155) (set-vector-meters! (-> arg0 extra trans) 975.19 228.53 -3484.57))  ;; ^
     ;; (('crate-1156) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('crate-1157) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('crate-2335) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
@@ -388,6 +462,69 @@
     ;;   flutflut-plat-med-10
     ;;   flutflut-plat-med-13
     ;; flutflut-8
+
+
+    (('snow-bunny-14) (set-vector-meters! (-> arg0 extra trans)  1042.16	220.08	-3237.78)) ;; moved to icy island
+    (('snow-bunny-54) (set-vector-meters! (-> arg0 extra trans)  1041.01	220.08	-3238.53)) ;; moved to icy island
+    (('snow-bunny-55) (set-vector-meters! (-> arg0 extra trans)  1039.86	220.08	-3239.27)) ;; moved to icy island
+    (('snow-bunny-56) (set-vector-meters! (-> arg0 extra trans)  1038.71	220.08	-3240.02)) ;; moved to icy island
+    (('snow-bunny-57) (set-vector-meters! (-> arg0 extra trans)  1037.56	220.08	-3240.76)) ;; moved to icy island
+    (('snow-bunny-58) (set-vector-meters! (-> arg0 extra trans)  1036.41	220.08	-3241.51)) ;; moved to icy island
+    (('snow-bunny-59) (set-vector-meters! (-> arg0 extra trans)  1035.26	220.08	-3242.25)) ;; moved to icy island
+    (('snow-bunny-63) (set-vector-meters! (-> arg0 extra trans)  1034.11	220.08	-3243.00)) ;; moved to icy island
+    ;; (('snow-bunny-64) (set-vector-meters! (-> arg0 extra trans)  1032.96	220.08	-3243.74)) ;; moved to icy island - ram
+    (('snow-bunny-65) (set-vector-meters! (-> arg0 extra trans)  1031.81	220.08	-3244.49)) ;; moved to icy island
+    (('snow-bunny-68) (set-vector-meters! (-> arg0 extra trans)  1030.66	220.08	-3245.23)) ;; moved to icy island
+    (('snow-bunny-69) (set-vector-meters! (-> arg0 extra trans)  1029.51	220.08	-3245.98)) ;; moved to icy island
+    ;; (('snow-bunny-71) (set-vector-meters! (-> arg0 extra trans)  1028.36	220.08	-3246.72)) ;; moved to icy island - ram
+    (('snow-bunny-72) (set-vector-meters! (-> arg0 extra trans)  1027.21	220.08	-3247.47)) ;; moved to icy island
+    ;; (('snow-bunny-73) (set-vector-meters! (-> arg0 extra trans)  1026.06	220.08	-3248.21)) ;; moved to icy island - ram
+    (('snow-bunny-74) (set-vector-meters! (-> arg0 extra trans)  1032.72	220.08	-3230.96)) ;; moved to icy island
+    (('snow-bunny-75) (set-vector-meters! (-> arg0 extra trans)  1031.73	220.08	-3231.95)) ;; moved to icy island
+    (('snow-bunny-76) (set-vector-meters! (-> arg0 extra trans)  1030.75	220.08	-3232.94)) ;; moved to icy island
+    (('snow-bunny-77) (set-vector-meters! (-> arg0 extra trans)  1029.76	220.08	-3233.92)) ;; moved to icy island
+    (('snow-bunny-78) (set-vector-meters! (-> arg0 extra trans)  1028.78	220.08	-3234.91)) ;; moved to icy island
+    (('snow-bunny-79) (set-vector-meters! (-> arg0 extra trans)  1027.79	220.08	-3235.90)) ;; moved to icy island
+    (('snow-bunny-80) (set-vector-meters! (-> arg0 extra trans)  1026.80	220.08	-3236.89)) ;; moved to icy island
+    (('snow-bunny-81) (set-vector-meters! (-> arg0 extra trans)  1025.82	220.08	-3237.87)) ;; moved to icy island
+    (('snow-bunny-82) (set-vector-meters! (-> arg0 extra trans)  1024.83	220.08	-3238.86)) ;; moved to icy island
+    (('snow-bunny-83) (set-vector-meters! (-> arg0 extra trans)  1023.85	220.08	-3239.85)) ;; moved to icy island
+    (('snow-bunny-84) (set-vector-meters! (-> arg0 extra trans)  1022.86	220.08	-3240.83)) ;; moved to icy island
+    (('snow-bunny-85) (set-vector-meters! (-> arg0 extra trans)  1021.87	220.08	-3241.82)) ;; moved to icy island
+    (('snow-bunny-86) (set-vector-meters! (-> arg0 extra trans)  1020.89	220.08	-3242.81)) ;; moved to icy island
+    (('snow-bunny-87) (set-vector-meters! (-> arg0 extra trans)  1019.90	220.08	-3243.80)) ;; moved to icy island
+    (('snow-bunny-88) (set-vector-meters! (-> arg0 extra trans)  1018.92	220.08	-3244.78)) ;; moved to icy island
+    (('snow-bunny-89) (set-vector-meters! (-> arg0 extra trans)  1023.28	220.08	-3224.15)) ;; moved to icy island
+    (('snow-bunny-90) (set-vector-meters! (-> arg0 extra trans)  1022.46	220.08	-3225.38)) ;; moved to icy island
+    (('snow-bunny-91) (set-vector-meters! (-> arg0 extra trans)  1021.64	220.08	-3226.61)) ;; moved to icy island
+    (('snow-bunny-92) (set-vector-meters! (-> arg0 extra trans)  1020.81	220.08	-3227.83)) ;; moved to icy island
+    (('snow-bunny-93) (set-vector-meters! (-> arg0 extra trans)  1019.99	220.08	-3229.06)) ;; moved to icy island
+    (('snow-bunny-94) (set-vector-meters! (-> arg0 extra trans)  1019.17	220.08	-3230.29)) ;; moved to icy island
+    (('snow-bunny-95) (set-vector-meters! (-> arg0 extra trans)  1018.35	220.08	-3231.52)) ;; moved to icy island
+    (('snow-bunny-96) (set-vector-meters! (-> arg0 extra trans)  1017.53	220.08	-3232.75)) ;; moved to icy island
+    (('snow-bunny-97) (set-vector-meters! (-> arg0 extra trans)  1016.70	220.08	-3233.98)) ;; moved to icy island
+    (('snow-bunny-98) (set-vector-meters! (-> arg0 extra trans)  1015.88	220.08	-3235.21)) ;; moved to icy island
+    (('snow-bunny-99) (set-vector-meters! (-> arg0 extra trans)  1015.06	220.08	-3236.44)) ;; moved to icy island
+    (('snow-bunny-100) (set-vector-meters! (-> arg0 extra trans) 1014.24	220.08	-3237.67)) ;; moved to icy island
+    (('snow-bunny-101) (set-vector-meters! (-> arg0 extra trans) 1013.42	220.08	-3238.90)) ;; moved to icy island
+    (('snow-bunny-102) (set-vector-meters! (-> arg0 extra trans) 1012.60	220.08	-3240.13)) ;; moved to icy island
+    (('snow-bunny-103) (set-vector-meters! (-> arg0 extra trans) 1011.77	220.08	-3241.36)) ;; moved to icy island
+    (('snow-bunny-104) (set-vector-meters! (-> arg0 extra trans) 1013.84	220.08	-3217.33)) ;; moved to icy island
+    (('snow-bunny-105) (set-vector-meters! (-> arg0 extra trans) 1013.18	220.08	-3218.80)) ;; moved to icy island
+    (('snow-bunny-106) (set-vector-meters! (-> arg0 extra trans) 1012.52	220.08	-3220.27)) ;; moved to icy island
+    (('snow-bunny-107) (set-vector-meters! (-> arg0 extra trans) 1011.87	220.08	-3221.74)) ;; moved to icy island
+    (('snow-bunny-108) (set-vector-meters! (-> arg0 extra trans) 1011.21	220.08	-3223.22)) ;; moved to icy island
+    (('snow-bunny-109) (set-vector-meters! (-> arg0 extra trans) 1010.55	220.08	-3224.69)) ;; moved to icy island
+    (('snow-bunny-110) (set-vector-meters! (-> arg0 extra trans) 1009.89	220.08	-3226.16)) ;; moved to icy island
+    (('snow-bunny-111) (set-vector-meters! (-> arg0 extra trans) 1009.24	220.08	-3227.63)) ;; moved to icy island
+    (('snow-bunny-112) (set-vector-meters! (-> arg0 extra trans) 1008.58	220.08	-3229.10)) ;; moved to icy island
+    (('snow-bunny-113) (set-vector-meters! (-> arg0 extra trans) 1007.92	220.08	-3230.57)) ;; moved to icy island
+    (('snow-bunny-114) (set-vector-meters! (-> arg0 extra trans) 1007.26	220.08	-3232.04)) ;; moved to icy island
+    (('snow-bunny-115) (set-vector-meters! (-> arg0 extra trans) 1006.60	220.08	-3233.52)) ;; moved to icy island
+    (('snow-bunny-116) (set-vector-meters! (-> arg0 extra trans) 1005.95	220.08	-3234.99)) ;; moved to icy island
+    (('snow-bunny-117) (set-vector-meters! (-> arg0 extra trans) 1005.29	220.08	-3236.46)) ;; moved to icy island
+    (('snow-bunny-128) (set-vector-meters! (-> arg0 extra trans) 1004.63	220.08	-3237.93)) ;; moved to icy island
+    ;; (('snow-bunny-129) (set-vector-meters! (-> arg0 extra trans) )) ;; moved to icy island
 
     )
   )
