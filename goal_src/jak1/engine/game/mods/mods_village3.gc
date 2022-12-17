@@ -3,7 +3,7 @@
 
 (defmacro mod-village3-run-each-frame ()
   `(begin
-
+     (mod-no-money-bob "money-4899")
     )
   )
   

@@ -15,6 +15,28 @@
   (set! (-> dst z) (-> src z))
   )
 
+(defmacro mod-copy-mesh-and-path (dst-name src-name)
+  `(let ((dst (the nav-enemy (process-by-ename ,dst-name)))
+         (src (the nav-enemy (process-by-ename ,src-name)))
+         )
+    (when (and src dst)
+      (set! (-> dst nav mesh) (-> src nav mesh))
+      (set! (-> dst path flags) (-> src path flags))
+      (curve-copy! (-> dst path curve) (-> src path curve))
+      (set! (-> dst path num-cverts) (-> src path num-cverts))
+      (set! (-> dst path cverts) (-> src path cverts))
+      )
+    )
+  )
+
+(defmacro mod-no-money-bob (moneyname)
+  `(begin
+    (when (process-by-ename ,moneyname)
+      (set! (-> (the money (process-by-ename ,moneyname)) bob-amount) 0.0)
+      )
+    )
+  )
+
 (defun override-fuel-cell-position ((arg0 entity-actor) (x float) (y float) (z float))
   (format 0 "override-fuel-cell-pos for ~P~%" arg0)
   (when arg0
@@ -367,7 +389,7 @@
   (none)
   )
 
-(defmacro process-drawable-pos-m (procname)
+(defmacro pd-pos-m (procname)
   `(let* ((obj (the process-drawable (process-by-ename ,procname)))
           (vec (-> obj root trans)))
     (format 0 "~F ~F ~F~%" (/ (-> vec x) 4096.0) (/ (-> vec y) 4096.0) (/ (-> vec z) 4096.0))
