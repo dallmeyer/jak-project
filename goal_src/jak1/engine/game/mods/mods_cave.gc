@@ -3,7 +3,31 @@
 
 (defmacro mod-cave-run-each-frame ()
   `(begin
+    ;; maincave
+    ;; ecovent-252 ;; yellow - 
     (mod-move-ecovent "ecovent-253" (static-vector-meters 1080.19  25.94 -3269.64)) ;; yellow - moved to center island in entrance so you can reach secret cell in sage hut
+    ;; ecovent-254 ;; yellow - 
+
+    ;; robocave
+    ;; ecovent-255 ;; yellow (blocked I think?)
+    ;; eco-192 ;; blue
+    ;; eco-193 ;; blue
+    ;; eco-194 ;; blue
+    ;; eco-195 ;; blue
+    ;; eco-199 ;; blue
+    ;; eco-200 ;; blue
+
+    ;; eco-146 ;; yellow
+    ;; eco-147 ;; yellow
+    ;; eco-148 ;; yellow
+    ;; eco-149 ;; yellow
+    ;; eco-150 ;; yellow
+    ;; eco-177 ;; yellow
+    ;; eco-178 ;; yellow
+
+    ;; darkcave
+
+
     )
   )
 
@@ -11,15 +35,329 @@
 (defmacro mod-cave-override-init-position (obj arg0)
   `(case (-> obj name) :comp name=
     ;; ORBS
-    
+    ;; maincave
+    ;; money-3488
+    ;; money-3489
+    ;; money-3490
+    ;; money-3491
+    ;; money-3492
+    ;; money-3493
+    ;; money-3494
+    ;; money-3495
+    ;; money-3496
+    ;; money-3497
+    ;; money-3498
+    ;; money-3499
+    ;; money-3500
+    ;; money-3506
+    ;; money-3507
+    ;; money-3508
+    ;; money-3509
+    ;; money-3510
+    ;; money-3511
+    ;; money-3512
+    ;; money-3513
+    ;; money-3514
+    ;; money-3515
+    ;; money-3516
+    ;; money-3517
+    ;; money-3518
+    ;; money-3519
+    ;; money-3520
+    ;; money-3521
+    ;; money-3522
+    ;; money-3523
+    ;; money-3524
+    ;; money-3525
+    ;; money-3526
+    ;; money-2527
+    ;; money-3528
+    ;; crate-3207
+    ;; crate-3208
+    ;; crate-3209
+    ;; crate-3210
+
+    ;; robocave
+    ;; money-4243
+    ;; money-4244
+    ;; money-4245
+    ;; money-4246
+    ;; money-4247
+    ;; money-4248
+    ;; money-4249
+    ;; money-4250
+    ;; money-4251
+    ;; money-4252
+    ;; money-4253
+    ;; money-4254
+    ;; money-4255
+    ;; money-4256
+    ;; money-4257
+    ;; money-4258
+    ;; money-4259
+    ;; money-4260
+    ;; money-4261
+    ;; money-4262
+    ;; money-4263
+    ;; money-4264
+    ;; money-4269
+    ;; money-4270
+    ;; money-4271
+    ;; money-4272
+    ;; money-4273
+    ;; money-4274
+    ;; money-4275
+    ;; money-4276
+    ;; money-4277
+    ;; money-4278
+    ;; money-4279
+    ;; money-4280
+    ;; money-4281
+    ;; money-4282
+    ;; money-4283
+    ;; money-4284
+    ;; money-4285
+    ;; money-4286
+    ;; money-4287
+    ;; money-4288
+    ;; money-4289
+    ;; money-4290
+    ;; money-4291
+    ;; money-4292
+    ;; money-4293
+    ;; money-4294
+    ;; money-4295
+    ;; money-4296
+    ;; money-4297
+    ;; money-4408
+    ;; money-4409
+    ;; money-4410
+    ;; money-4411
+    ;; money-4412
+    ;; money-4413
+    ;; money-4414
+    ;; money-4415
+    ;; money-4416
+    ;; money-4417
+    ;; money-4418
+    ;; money-4419
+    ;; money-4410
+    ;; money-4411
+    ;; money-4412
+    ;; money-4413
+    ;; money-4414
+    ;; money-4415
+    ;; money-4416
+    ;; money-4417
+    ;; money-4418
+    ;; money-4419
+    ;; money-4420
+    ;; money-4421
+    ;; money-4422
+    ;; money-4423
+    ;; money-4424
+    ;; money-4425
+    ;; money-4426
+    ;; money-4427
+    ;; money-4428
+    ;; money-4429
+    ;; money-4430
+    ;; money-4431
+    ;; money-4432
+    ;; money-4433
+    ;; money-4434
+    ;; money-4435
+    ;; money-4436
+    ;; crate-2770
+    ;; crate-2771
+    ;; crate-2772
+    ;; crate-2773
+    ;; crate-2774
+    ;; crate-2775
+    ;; crate-2776
+    ;; crate-2780
+    ;; crate-2781
+    ;; crate-2782
+    ;; crate-2783
+    ;; crate-3203
+    ;; crate-3204
+
+    ;; ;; darkcave
+    ;; money-4855
+    ;; money-4856
+    ;; money-4857
+    ;; money-4858
+    ;; money-4859
 
     ;; FLIES
-    
+    ;; ;; maincave
+    ;; crate-2685
+    ;; crate-2689
+    ;; crate-2697
+    ;; crate-3018
+
+    ;; ;; robocave
+    ;; crate-2779
+    ;; crate-2985
+
+    ;; darkcave
+    ;; crate-3022
     
     ;; CELLS
-    
+    ;; maincave
+    ;; fuel-cell-60
+    ;; gnawer-11
+    ;; gnawer-12
+    ;; gnawer-13
+    ;; gnawer-14
+    ;; gnawer-15
+    ;; gnawer-16
+    ;; gnawer-17
+    ;; gnawer-18
+    ;; gnawer-19
+    ;; dark-crystal-1
+    ;; dark-crystal-3
+    ;; dark-crystal-4
+    ;; dark-crystal-5
+
+    ;; robocave
+    ;; fuel-cell-56
+    ;; fuel-cell-57
+    ;; fuel-cell-58
+
+    ;; darkcave
+    ;; fuel-cell-59
+    ;; dark-crystal-2
     
     ;; MISC
+    ;; maincave
+    ;; crate-2686  ;; green - 
+    ;; crate-2687
+    ;; crate-2688
+    ;; crate-2690
+    ;; crate-2691
+    ;; crate-2692
+    ;; crate-2693 
+    ;; crate-2698
+    ;; crate-2699
+    ;; crate-2700
+    ;; crate-2701
+    ;; crate-2702
+    ;; crate-2703
+    ;; crate-2704
+    ;; crate-2704
+    ;; crate-3003
+    ;; crate-3004
+    ;; crate-3005
+    ;; crate-3006
+    ;; crate-3007
+    ;; crate-3008
+    ;; crate-3009
+    ;; crate-3010
+    ;; crate-3011
+    ;; crate-3012
+    ;; crate-3013
+    ;; crate-3014
+    ;; crate-3015
+    ;; crate-3016
+    ;; crate-3017
+    ;; crate-3119
+    ;; crate-3120
+    ;; crate-3179
+    ;; crate-3180
+
+
+    ;; plat-92 ;; turn left and go up in beginning
+    ;; plat-93
+    ;; plat-94
+    ;; plat-95
+    ;; plat-114 ;; dark eco pool towards dark cave
+    ;; plat-115
+    ;; plat-116
+    ;; plat-117
+
+    ;; robocave
+    ;; crate-2752
+    ;; crate-2753
+    ;; crate-2754
+    ;; crate-2755
+    ;; crate-2759
+    ;; crate-2758
+    ;; crate-2760
+    ;; crate-2761
+    ;; crate-2762
+    ;; crate-2763
+    ;; crate-2764
+    ;; crate-2765
+    ;; crate-2766
+    ;; crate-2767
+    ;; crate-2768
+    ;; crate-2769
+    ;; crate-2777
+    ;; crate-2778
+    ;; crate-2947
+    ;; crate-2948
+    ;; crate-2949
+    ;; crate-2995
+    ;; crate-3154
+    ;; crate-3155
+    ;; crate-3156
+    ;; crate-3157
+    ;; crate-3158
+    ;; crate-3159
+    ;; crate-3160
+    ;; crate-3161
+    ;; crate-3162
+    ;; crate-3163
+    ;; crate-3164
+    ;; crate-3165
+    ;; crate-3166
+    ;; crate-3167
+    ;; crate-3168
+    ;; crate-3205  ;; green
+    ;; crate-3206  ;; big green
+
+    ;; spider-egg-1
+    ;; spider-egg-2
+    ;; spider-egg-3
+    ;; spider-egg-4
+    ;; spider-egg-5
+    ;; spider-egg-6
+    ;; spider-egg-7
+    ;; spider-egg-8
+    ;; spider-egg-9
+    ;; spider-egg-10
+    ;; spider-egg-11
+    ;; spider-egg-12
+    ;; spider-egg-13
+    ;; spider-egg-14
+    ;; spider-egg-15
+    ;; spider-egg-16
+    ;; spider-egg-17
+    ;; spider-egg-18
+    ;; spider-egg-19
+    ;; spider-egg-20
+    ;; spider-egg-21
+    ;; spider-egg-22
+    ;; spider-egg-23
+    ;; spider-egg-24
+    ;; spider-egg-25
+
+    ;; plat-eco-63
+    ;; plat-eco-64
+
+    ;; darkcave
+    ;; crate-3019  ;; green 
+    ;; crate-3021  ;; green 
+    ;; crate-3023  ;; green 
+
+    ;; cavecrystal-1
+    ;; cavecrystal-2
+    ;; cavecrystal-3
+    ;; cavecrystal-4
+    ;; cavecrystal-5
+    ;; cavecrystal-6
+    ;; cavecrystal-7
     
     )
   )

@@ -46,7 +46,7 @@
     (('money-4902) (set-vector-meters! (-> arg0 extra trans) 1091.5  56.5 -3599.2)) ;; left scaffolding above gem
     (('money-4904) (set-vector-meters! (-> arg0 extra trans) 1116.04  57.2 -3532.01)) ;; top of gondola machine
     (('money-4905) (set-vector-meters! (-> arg0 extra trans) 1017.49  42.35 -3508.3)) ;; under oracle mouth
-    (('money-4906) (set-vector-meters! (-> arg0 extra trans) 1141.62  59.7 -3387.61)) ;; rocket from island before spider cave entrance
+    (('money-4906) (set-vector-meters! (-> arg0 extra trans) 1157.85  51.99 -3400.38)) ;; rocket from island before spider cave entrance to fly crate, this is nearby
     (('money-4907) (set-vector-meters! (-> arg0 extra trans) 1151.88  60.9 -3392.55)) ;; follow ^
     (('money-4908) (set-vector-meters! (-> arg0 extra trans) 1162.03  59.9 -3403.87)) ;; follow ^
     (('money-4909) (set-vector-meters! (-> arg0 extra trans) 1143.67  65.5 -3378.36)) ;; follow ^
