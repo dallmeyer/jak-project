@@ -4,9 +4,13 @@
 (defmacro mod-cave-run-each-frame ()
   `(begin
     ;; maincave
-    ;; ecovent-252 ;; yellow - 
-    (mod-move-ecovent "ecovent-253" (static-vector-meters 1080.19  25.94 -3269.64)) ;; yellow - moved to center island in entrance so you can reach secret cell in sage hut
-    ;; ecovent-254 ;; yellow - 
+    (mod-no-money-bob "money-3491")
+    (mod-no-money-bob "money-3498")
+    (mod-no-money-bob "money-3509")
+    (mod-no-money-bob "money-3510")
+    (mod-move-ecovent "ecovent-252" (static-vector-meters 1080.19  25.94 -3269.64)) ;; yellow - moved to center island in entrance so you can reach secret cell in sage hut
+    (mod-move-ecovent "ecovent-253" (static-vector-meters  1101.6214      48.3155   -3093.8352)) ;; yellow - in flames atop wooden structure
+    (mod-move-ecovent "ecovent-254" (static-vector-meters 1024.48  55.66 -3115.22)) ;; yellow - top of steps on wall down to path to darkcave
 
     ;; robocave
     ;; ecovent-255 ;; yellow (blocked I think?)
@@ -36,46 +40,46 @@
   `(case (-> obj name) :comp name=
     ;; ORBS
     ;; maincave
-    ;; money-3488
-    ;; money-3489
-    ;; money-3490
-    ;; money-3491
-    ;; money-3492
-    ;; money-3493
-    ;; money-3494
-    ;; money-3495
-    ;; money-3496
-    ;; money-3497
-    ;; money-3498
-    ;; money-3499
-    ;; money-3500
-    ;; money-3506
-    ;; money-3507
-    ;; money-3508
-    ;; money-3509
-    ;; money-3510
-    ;; money-3511
-    ;; money-3512
-    ;; money-3513
-    ;; money-3514
-    ;; money-3515
-    ;; money-3516
-    ;; money-3517
-    ;; money-3518
-    ;; money-3519
-    ;; money-3520
-    ;; money-3521
-    ;; money-3522
-    ;; money-3523
-    ;; money-3524
-    ;; money-3525
-    ;; money-3526
-    ;; money-2527
-    ;; money-3528
-    ;; crate-3207
-    ;; crate-3208
-    ;; crate-3209
-    ;; crate-3210
+    (('money-3488) (set-vector-meters! (-> arg0 extra trans)  1071.8  14.7 -3223.7))  ;; behind crystals near entrance
+    (('money-3489) (set-vector-meters! (-> arg0 extra trans) 1079.3  18.0 -3261.4))  ;; below steps in entrance (slippery jump or just uppercut)
+    (('money-3490) (set-vector-meters! (-> arg0 extra trans) 1060.95  10.7 -3181.05))  ;; among shrooms, turn right from entrance
+    (('money-3491) (set-vector-meters! (-> arg0 extra trans) 1100.28  18.7 -3172.1))  ;; on stalagmite on left from entrance
+    (('money-3492) (set-vector-meters! (-> arg0 extra trans) 1039.25  17.0 -3167.0))  ;; on rock jutting out in dark eco chasm, right from entrance
+    (('money-3493) (set-vector-meters! (-> arg0 extra trans) 1039.59  13.4 -3084.44))  ;; phallic rock islands in dark eco, back corner
+    (('money-3494) (set-vector-meters! (-> arg0 extra trans) 1044.49  18.1 -3079.59))  ;; ^
+    (('money-3495) (set-vector-meters! (-> arg0 extra trans) 1051.49  13.7 -3077.41))  ;; ^
+    (('money-3496) (set-vector-meters! (-> arg0 extra trans) 1055.90  14.5 -3079.85))  ;; ^
+    (('money-3497) (set-vector-meters! (-> arg0 extra trans) 1053.35  29.0 -3107.37))  ;; high jump spin from phallic rock on land
+    (('money-3498) (set-vector-meters! (-> arg0 extra trans) 1147.09  32.6 -3112.15))  ;; stalactite @ orig scoutfly towards robocave
+    (('money-3499) (set-vector-meters! (-> arg0 extra trans) 1089.8  34.7 -3087.5))  ;; corner on mid wooden platform with gnawer
+    (('money-3500) (set-vector-meters! (-> arg0 extra trans) 1089.0  43.8 -3088.8))  ;; under highest wooden platform with gnawer - high jump spin from below
+    (('money-3506) (set-vector-meters! (-> arg0 extra trans) 1133.6  49.5 -3122.5))  ;; up high on slippery rock, GP from plat-97 ez
+    (('money-3507) (set-vector-meters! (-> arg0 extra trans) 1155.4  43.5 -3144.1))  ;; slippery rock, jump from crystal where fly crate-2689 is, or by gnawer
+    (('money-3508) (set-vector-meters! (-> arg0 extra trans) 1084.08  43.5 -3074.73))  ;; under highest wooden platform with gnawer, tricky jump between plats
+    (('money-3509) (set-vector-meters! (-> arg0 extra trans) 1143.85  49.6 -3189.18))  ;; stalactite left of fly crate on crystal, boosted from ledge
+    (('money-3510) (set-vector-meters! (-> arg0 extra trans) 1159.0  26.5 -3166.4))  ;; stalactite by plats, left from entrance
+    (('money-3511) (set-vector-meters! (-> arg0 extra trans) 1040.93  53.83 -3067.43))  ;; crystal rocket before path to dark cave
+    (('money-3512) (set-vector-meters! (-> arg0 extra trans) 1029.96  58.2 -3073.95))  ;; on crystals, boosted into ceiling jump from money-3511 rocket^
+    (('money-3513) (set-vector-meters! (-> arg0 extra trans) 1024.0  44.5 -3019.8))  ;; stalactite over dark eco on path to dark cave
+    (('money-3514) (set-vector-meters! (-> arg0 extra trans) 948.76 20.2 -3049.89))  ;; @ orig underwater dark-crystal-5
+    (('money-3515) (set-vector-meters! (-> arg0 extra trans) 920.5  19.0 -3026.0))  ;; @ orig underwater dark-crystal-5
+    (('money-3516) (set-vector-meters! (-> arg0 extra trans)  924.7  35.7 -3042.1))  ;; floating in water behind stalactite @ ^
+    (('money-3517) (set-vector-meters! (-> arg0 extra trans) 1019.6  55.0 -2979.5))  ;; behind stalac @ orig dark-cystal-4 on path to dark cave
+    (('money-3518) (set-vector-meters! (-> arg0 extra trans) 1065.11  63.0 -3069.3))  ;; boosted towards dark cave around stalag from orig dark-crystal-1 on wooden plats
+    (('money-3519) (set-vector-meters! (-> arg0 extra trans) 1129.2  47.2 -3096.35))  ;; stalactite, boosted from highest wooden plat towards robocave
+    (('money-3520) (set-vector-meters! (-> arg0 extra trans) 967.2  45.5 -2988.5))  ;; behind stalac at end of dark eco pool towards darkcave
+    (('money-3521) (set-vector-meters! (-> arg0 extra trans) 1136.2  22.5 -3045.2))  ;; in crevice up high on right wall, jump off small rock
+    (('money-3522) (set-vector-meters! (-> arg0 extra trans) 1158.33   9.6 -3008.18))  ;; on small rock in first dark eco pool towards robocave
+    (('money-3523) (set-vector-meters! (-> arg0 extra trans) 1179.1  11.05 -3012.2))  ;; behind shrooms in first room on path to robocave
+    (('money-3524) (set-vector-meters! (-> arg0 extra trans) 1146.99  11.86 -2990.7))  ;; behind shrooms @ orig dark-crystal-3(?) on path to robocave
+    (('money-3525) (set-vector-meters! (-> arg0 extra trans) 1183.70  12.4 -2992.15))  ;; on stalag in dark eco pool on path to robocave
+    (('money-3526) (set-vector-meters! (-> arg0 extra trans) 1188.37  16.6 -2992.81))  ;; ^
+    (('money-3527) (set-vector-meters! (-> arg0 extra trans) 1197.77  17.99 -2998.12))  ;; ^
+    (('money-3528) (set-vector-meters! (-> arg0 extra trans) 1204.0   9.5 -2979.3  ))  ;; on small rock in eco pool on path to robocave
+    (('crate-3207) (set-vector-meters! (-> arg0 extra trans) 1011.74  22.65 -3116.58))  ;; lower/middle level of rocks, back of "alley" 
+    (('crate-3208) (set-vector-meters! (-> arg0 extra trans) 1146.25  25.65 -3121.35))  ;; @ orig scoutfly towards robocave
+    (('crate-3209) (set-vector-meters! (-> arg0 extra trans) 1112.9  29.24 -3148.5))  ;; on crystals on wall above entrance spiderwebs
+    (('crate-3210) (set-vector-meters! (-> arg0 extra trans) 1060.89  56.87 -3102.38))  ;; @ orig dark crystal on wooden platform
 
     ;; robocave
     ;; money-4243
@@ -191,21 +195,21 @@
 
     ;; FLIES
     ;; ;; maincave
-    ;; crate-2685
-    ;; crate-2689
-    ;; crate-2697
-    ;; crate-3018
+    (('crate-2685) (set-vector-meters! (-> arg0 extra trans) 1068.0  11.5 -3192.5))  ;; slightly "oob" near entrance, need to use yellow eco
+    (('crate-2689) (set-vector-meters! (-> arg0 extra trans) 1164.5  43.42 -3166.3))  ;; boosted to random crystal thats coded as ground, above plats left from entrance
+    (('crate-2697) (set-vector-meters! (-> arg0 extra trans) 1082.93  55.88 -3143.14))  ;; @ orig quad jump
+    (('crate-3018) (set-vector-meters! (-> arg0 extra trans) 934.75  18.62 -3034.77))  ;; @ orig underwater dark-crystal-5, use yellow eco
 
     ;; ;; robocave
-    ;; crate-2779
-    ;; crate-2985
+    ;; (('crate-2779) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-2985) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
 
     ;; darkcave
-    ;; crate-3022
+    ;; (('crate-3022) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     
     ;; CELLS
     ;; maincave
-    ;; fuel-cell-60
+    (('fuel-cell-60) (set-vector-meters! (-> arg0 extra trans) 1075.8  41.7 -3206.5)) ;; above entrance, boosted from bridge with orig fly crate
     ;; gnawer-11
     ;; gnawer-12
     ;; gnawer-13
@@ -215,10 +219,10 @@
     ;; gnawer-17
     ;; gnawer-18
     ;; gnawer-19
-    ;; dark-crystal-1
-    ;; dark-crystal-3
-    ;; dark-crystal-4
-    ;; dark-crystal-5
+    (('dark-crystal-1) (set-vector-meters! (-> arg0 extra trans) 1063.2  59.0 -3188.7))  ;; up high in wall opposite wooden structure, use yellow eco
+    (('dark-crystal-3) (set-vector-meters! (-> arg0 extra trans) 1167.48   7.00 -2973.9))  ;; in dark eco pool on path to robocave
+    (('dark-crystal-4) (set-vector-meters! (-> arg0 extra trans) 1068.5  19.0 -3075.8))  ;; midway up wall between wooden structure and path to darkcave
+    (('dark-crystal-5) (set-vector-meters! (-> arg0 extra trans) 944.20  35.31 -3003.86))  ;; in dark eco on right at end of pool towards darkcave, use yellow eco
 
     ;; robocave
     ;; fuel-cell-56
@@ -265,7 +269,6 @@
     ;; crate-3120
     ;; crate-3179
     ;; crate-3180
-
 
     ;; plat-92 ;; turn left and go up in beginning
     ;; plat-93
