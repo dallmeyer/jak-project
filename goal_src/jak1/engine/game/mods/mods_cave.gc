@@ -13,6 +13,8 @@
     (mod-move-ecovent "ecovent-254" (static-vector-meters 1024.48  55.66 -3115.22)) ;; yellow - top of steps on wall down to path to darkcave
 
     ;; robocave
+    (mod-no-money-bob "money-4246")
+    (mod-no-money-bob "money-4247")
     ;; ecovent-255 ;; yellow (blocked I think?)
     ;; eco-192 ;; blue
     ;; eco-193 ;; blue
@@ -82,116 +84,118 @@
     (('crate-3210) (set-vector-meters! (-> arg0 extra trans) 1060.89  56.87 -3102.38))  ;; @ orig dark crystal on wooden platform
 
     ;; robocave
-    ;; money-4243
-    ;; money-4244
-    ;; money-4245
-    ;; money-4246
-    ;; money-4247
-    ;; money-4248
-    ;; money-4249
-    ;; money-4250
-    ;; money-4251
-    ;; money-4252
-    ;; money-4253
-    ;; money-4254
-    ;; money-4255
-    ;; money-4256
-    ;; money-4257
-    ;; money-4258
-    ;; money-4259
-    ;; money-4260
-    ;; money-4261
-    ;; money-4262
-    ;; money-4263
-    ;; money-4264
-    ;; money-4269
-    ;; money-4270
-    ;; money-4271
-    ;; money-4272
-    ;; money-4273
-    ;; money-4274
-    ;; money-4275
-    ;; money-4276
-    ;; money-4277
-    ;; money-4278
-    ;; money-4279
-    ;; money-4280
-    ;; money-4281
-    ;; money-4282
-    ;; money-4283
-    ;; money-4284
-    ;; money-4285
-    ;; money-4286
-    ;; money-4287
-    ;; money-4288
-    ;; money-4289
-    ;; money-4290
-    ;; money-4291
-    ;; money-4292
-    ;; money-4293
-    ;; money-4294
-    ;; money-4295
-    ;; money-4296
-    ;; money-4297
-    ;; money-4408
-    ;; money-4409
-    ;; money-4410
-    ;; money-4411
-    ;; money-4412
-    ;; money-4413
-    ;; money-4414
-    ;; money-4415
-    ;; money-4416
-    ;; money-4417
-    ;; money-4418
-    ;; money-4419
-    ;; money-4410
-    ;; money-4411
-    ;; money-4412
-    ;; money-4413
-    ;; money-4414
-    ;; money-4415
-    ;; money-4416
-    ;; money-4417
-    ;; money-4418
-    ;; money-4419
-    ;; money-4420
-    ;; money-4421
-    ;; money-4422
-    ;; money-4423
-    ;; money-4424
-    ;; money-4425
-    ;; money-4426
-    ;; money-4427
-    ;; money-4428
-    ;; money-4429
-    ;; money-4430
-    ;; money-4431
-    ;; money-4432
-    ;; money-4433
-    ;; money-4434
-    ;; money-4435
-    ;; money-4436
-    ;; crate-2770
-    ;; crate-2771
-    ;; crate-2772
-    ;; crate-2773
-    ;; crate-2774
-    ;; crate-2775
-    ;; crate-2776
-    ;; crate-2780
-    ;; crate-2781
-    ;; crate-2782
-    ;; crate-2783
-    ;; crate-3203
-    ;; crate-3204
+    (('money-4243) (set-vector-meters! (-> arg0 extra trans) 1269.5  12.1 -2883.4)) ;; on rocks under bridge coming into robocave
+    (('money-4244) (set-vector-meters! (-> arg0 extra trans) 1243.1  8.8 -2857.6)) ;; robocave entrance/above spider tunnel, under rocks at end of dark eco pool
+    (('money-4245) (set-vector-meters! (-> arg0 extra trans) 1249.98  23.9 -2859.51)) ;; top of shroom/phallic rock above spider tunnel
+      (('crate-2752) (set-vector-meters! (-> arg0 extra trans) 1244.63  13.18 -2864.73))  ;; jump off to get to ^
+      (('crate-2753) (set-vector-meters! (-> arg0 extra trans) 1244.63  15.18 -2864.73))  ;; jump off to get to ^
+    (('money-4246) (set-vector-meters! (-> arg0 extra trans) 1253.17 26.1 -2838.82)) ;; hanging from stalac, zoomwalk / extended from money-4245 
+    (('money-4247) (set-vector-meters! (-> arg0 extra trans) 1252.58  29.5 -2869.61)) ;; hanging from stalac, jump from money-4245
+    (('money-4248) (set-vector-meters! (-> arg0 extra trans) 1286.5   8.1 -2873.2)) ;; under bridge coming into robocave
+    (('money-4249) (set-vector-meters! (-> arg0 extra trans) 1257.3 -28.17 -2841.5)) ;; left of spider tunnel entrance, at edge before dark eco
+    (('money-4250) (set-vector-meters! (-> arg0 extra trans) 1252.3 -23.9 -2833.5)) ;; left of spider tunnel entrance, among crystals/shrooms
+    (('money-4251) (set-vector-meters! (-> arg0 extra trans) 1357.38  -9.2 -2850.81)) ;; robocave entrance end of steps - atop slippery wall
+    (('money-4252) (set-vector-meters! (-> arg0 extra trans) 1365.05 -9.7 -2836.15)) ;; further along from ^
+    ;; (('money-4253) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4254) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4255) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4256) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4257) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4258) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4259) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4260) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4261) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4262) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4263) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4264) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4269) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4270) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4271) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4272) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4273) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4274) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4275) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4276) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4277) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4278) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4279) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4280) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4281) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4282) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4283) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4284) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4285) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4286) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4287) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4288) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4289) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4290) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4291) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4292) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4293) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4294) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4295) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4296) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4297) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4408) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4409) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4410) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4411) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4412) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4413) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4414) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4415) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4416) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4417) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4418) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4419) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4410) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4411) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4412) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4413) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4414) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4415) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4416) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4417) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4418) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4419) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4420) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4421) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4422) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4423) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4424) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4425) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4426) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4427) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4428) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4429) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4430) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4431) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4432) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4433) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4434) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4435) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4436) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2770) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2771) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2772) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2773) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2774) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2775) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2776) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2780) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2781) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2782) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-2783) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3203) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3204) (set-vector-meters! (-> arg0 extra trans) )) ;; 
 
     ;; ;; darkcave
-    ;; money-4855
-    ;; money-4856
-    ;; money-4857
-    ;; money-4858
-    ;; money-4859
+    ;; (('money-4855) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4856) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4857) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4858) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-4859) (set-vector-meters! (-> arg0 extra trans) )) ;; 
 
     ;; FLIES
     ;; ;; maincave

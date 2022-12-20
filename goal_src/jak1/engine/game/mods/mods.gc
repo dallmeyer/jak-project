@@ -231,26 +231,26 @@
       ;; platform in open center area
       (set-vector-meters! dst 887.71 210.80 -3354.91)
       )
-    ;; (('dark-crystal-1)
-    ;;   ;; 
-    ;;   (set-vector-meters! dst 750.08 256.3 -3392.46)
-    ;;   )
+    (('dark-crystal-1)
+      ;; nearby orig yellow ecovent
+      (set-vector-meters! dst 1025.73  36.4 -3152.19)
+      )
     ;; (('dark-crystal-2)
     ;;   ;; 
     ;;   (set-vector-meters! dst 750.08 256.3 -3392.46)
     ;;   )
-    ;; (('dark-crystal-3)
-    ;;   ;; 
-    ;;   (set-vector-meters! dst 750.08 256.3 -3392.46)
-    ;;   )
-    ;; (('dark-crystal-4)
-    ;;   ;; 
-    ;;   (set-vector-meters! dst 750.08 256.3 -3392.46)
-    ;;   )
-    ;; (('dark-crystal-5)
-    ;;   ;; 
-    ;;   (set-vector-meters! dst 750.08 256.3 -3392.46)
-    ;;   )
+    (('dark-crystal-3)
+      ;; top of stalag nearby
+      (set-vector-meters! dst 1167.64  16.5 -2980.29)
+      )
+    (('dark-crystal-4)
+      ;; on spiderweb nearby in eco at bottom 
+      (set-vector-meters! dst 1064.83  10.49 -3108.11)
+      )
+    (('dark-crystal-5)
+      ;; on path towards dark cave
+      (set-vector-meters! dst 981.13  38.05 -2984.19)
+      )
     (else
       (format #t "fuel movie override, didnt match parent ~A ~%" (-> (ppointer->process (-> obj parent)) name))
       ;; check grandparent
