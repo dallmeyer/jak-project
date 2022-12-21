@@ -15,15 +15,17 @@
     ;; robocave
     (mod-no-money-bob "money-4246")
     (mod-no-money-bob "money-4247")
+    (mod-no-money-bob "money-4273")
+    (mod-no-money-bob "money-4274")
     (mod-move-ecovent "ecovent-255" (static-vector-meters 1354.3367  -7.2291   -2799.3066)) ;; yellow (blocked) - in fire at beginning of robot scaffolding
-    ;; eco-192 ;; blue
-    ;; eco-193 ;; blue
-    ;; eco-194 ;; blue
-    ;; eco-195 ;; blue
-    ;; eco-199 ;; blue
-    ;; eco-200 ;; blue
+    (mod-move-eco "eco-192" (static-vector-meters 1361.50  34.31 -2779.51)) ;; blue - above final poles to top of robot
+    (mod-move-eco "eco-193" (static-vector-meters 1324.34  36.53 -2775.87)) ;; blue - poles before final poles to top of robot
+    (mod-move-eco "eco-194" (static-vector-meters 1327.52  30.80 -2753.71  )) ;; blue - poles before final poles to top of robot
+    ;; (mod-move-eco "eco-195" (static-vector-meters )) ;; blue
+    ;; (mod-move-eco "eco-199" (static-vector-meters )) ;; blue
+    ;; (mod-move-eco "eco-200" (static-vector-meters )) ;; blue
 
-    (mod-move-eco "eco-146" (static-vector-meters 1422.79 -22.1 -2777.10)) ;; yellow - bottom stone support  
+    (mod-move-eco "eco-146" (static-vector-meters 1422.79 -21.7 -2777.10)) ;; yellow - bottom stone support  
     (mod-move-eco "eco-147" (static-vector-meters 1407.10  -8.37 -2775.94)) ;; yellow - middle layer of stone support
     ;; (mod-move-eco "eco-148" (static-vector-meters )) ;; yellow
     ;; (mod-move-eco "eco-149" (static-vector-meters )) ;; yellow
@@ -111,18 +113,18 @@
     (('money-4269) (set-vector-meters! (-> arg0 extra trans) 1417.58 -20.7 -2778.69)) ;; behind stalac on bottom stone support
     (('money-4270) (set-vector-meters! (-> arg0 extra trans) 1411.2 -18.5 -2765.05)) ;; behind stalac on bottom stone support
     (('money-4271) (set-vector-meters! (-> arg0 extra trans) 1412.30 -11.3 -2779.51)) ;; crevice in middle layer of stone support
-    ;; (('money-4272) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4273) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4274) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4275) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4276) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4277) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4278) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4279) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4280) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4281) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4282) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4283) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    (('money-4272) (set-vector-meters! (-> arg0 extra trans) 1367.91  22.0 -2828.65)) ;; on shroom(?) left/above orig poles cell
+    (('money-4273) (set-vector-meters! (-> arg0 extra trans) 1354.0  26.7 -2831.0)) ;; hanging from stalac, uppercut from ^
+    (('money-4274) (set-vector-meters! (-> arg0 extra trans) 1399.57 6.45  -2759.22)) ;; in torch by mid level circling plats
+    (('money-4275) (set-vector-meters! (-> arg0 extra trans) 1373.0   1.6 -2769.9)) ;; in gap next to robot's left arm
+    (('money-4276) (set-vector-meters! (-> arg0 extra trans) 1436.88 -27.21 -2732.38)) ;; far back corner on bottom, drop and hang
+    (('money-4277) (set-vector-meters! (-> arg0 extra trans) 1351.9   8.5 -2776.8)) ;; mosquito
+    (('money-4278) (set-vector-meters! (-> arg0 extra trans) 1374.0 -12.0 -2764.3)) ;; robot left hand from bottom
+    (('money-4279) (set-vector-meters! (-> arg0 extra trans) 1379.4 -27.7 -2740.5)) ;; on slippery death rock in back, do extended from the side
+    (('money-4280) (set-vector-meters! (-> arg0 extra trans) 1355.5 -22.2 -2779.35)) ;; behind shrooms bottom center of robot room
+    (('money-4281) (set-vector-meters! (-> arg0 extra trans) 1369.8  20.6 -2778.2)) ;; behind robot head
+    (('money-4282) (set-vector-meters! (-> arg0 extra trans) 1352.64 -28.76 -2736.15)) ;; on stalag in void in back (extended)
+    (('money-4283) (set-vector-meters! (-> arg0 extra trans) 1412.46 -28.0 -2733.68)) ;; on stalag in void in back (extended)
     ;; (('money-4284) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('money-4285) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('money-4286) (set-vector-meters! (-> arg0 extra trans) )) ;; 
@@ -184,7 +186,7 @@
     (('crate-2775) (set-vector-meters! (-> arg0 extra trans) 1328.85 -24.07 -2801.94)) ;; under ramp at start of robot scaffolding
     (('crate-2776) (set-vector-meters! (-> arg0 extra trans) 1454.49 -23.95 -2753.28)) ;; against wall in back corner
     (('crate-2780) (set-vector-meters! (-> arg0 extra trans) 1401.38  -7.65 -2791.84)) ;; on rock on middle layer of stone support
-    ;; (('crate-2781) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    (('crate-2781) (set-vector-meters! (-> arg0 extra trans) 1316.22   7.5 -2793.7)) ;; on shroom(?) on wall near scaffolding corner by entrance
     ;; (('crate-2782) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('crate-2783) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('crate-3203) (set-vector-meters! (-> arg0 extra trans) )) ;; 
@@ -229,9 +231,9 @@
     (('dark-crystal-5) (set-vector-meters! (-> arg0 extra trans) 944.20  35.31 -3003.86))  ;; in dark eco on right at end of pool towards darkcave, use yellow eco
 
     ;; robocave
-    ;; fuel-cell-56
-    ;; fuel-cell-57
-    ;; fuel-cell-58
+    ;; fuel-cell-56 ;; maybe move plat-eco into big gap and then cell up in stalacs above?
+    (('fuel-cell-57) (override-fuel-cell-position arg0 1350.4 28.0 -2812.6))  ;; blue eco boosted before final poles to top of robot (or maybe top of robot?)
+    (('fuel-cell-58) (override-fuel-cell-position arg0 1297.36   4.7 -2801.27)) ;; zoomwalk / extended from crate-2781
 
     ;; darkcave
     ;; fuel-cell-59
