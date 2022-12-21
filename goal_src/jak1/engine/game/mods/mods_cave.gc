@@ -15,7 +15,7 @@
     ;; robocave
     (mod-no-money-bob "money-4246")
     (mod-no-money-bob "money-4247")
-    ;; ecovent-255 ;; yellow (blocked I think?)
+    (mod-move-ecovent "ecovent-255" (static-vector-meters 1354.3367  -7.2291   -2799.3066)) ;; yellow (blocked) - in fire at beginning of robot scaffolding
     ;; eco-192 ;; blue
     ;; eco-193 ;; blue
     ;; eco-194 ;; blue
@@ -23,13 +23,13 @@
     ;; eco-199 ;; blue
     ;; eco-200 ;; blue
 
-    ;; eco-146 ;; yellow
-    ;; eco-147 ;; yellow
-    ;; eco-148 ;; yellow
-    ;; eco-149 ;; yellow
-    ;; eco-150 ;; yellow
-    ;; eco-177 ;; yellow
-    ;; eco-178 ;; yellow
+    (mod-move-eco "eco-146" (static-vector-meters 1422.79 -22.1 -2777.10)) ;; yellow - bottom stone support  
+    (mod-move-eco "eco-147" (static-vector-meters 1407.10  -8.37 -2775.94)) ;; yellow - middle layer of stone support
+    ;; (mod-move-eco "eco-148" (static-vector-meters )) ;; yellow
+    ;; (mod-move-eco "eco-149" (static-vector-meters )) ;; yellow
+    ;; (mod-move-eco "eco-150" (static-vector-meters )) ;; yellow
+    ;; (mod-move-eco "eco-177" (static-vector-meters )) ;; yellow
+    ;; (mod-move-eco "eco-178" (static-vector-meters )) ;; yellow
 
     ;; darkcave
 
@@ -96,21 +96,21 @@
     (('money-4250) (set-vector-meters! (-> arg0 extra trans) 1252.3 -23.9 -2833.5)) ;; left of spider tunnel entrance, among crystals/shrooms
     (('money-4251) (set-vector-meters! (-> arg0 extra trans) 1357.38  -9.2 -2850.81)) ;; robocave entrance end of steps - atop slippery wall
     (('money-4252) (set-vector-meters! (-> arg0 extra trans) 1365.05 -9.7 -2836.15)) ;; further along from ^
-    ;; (('money-4253) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4254) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4255) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4256) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4257) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4258) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4259) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4260) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4261) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4262) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4263) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4264) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4269) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4270) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4271) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    (('money-4253) (set-vector-meters! (-> arg0 extra trans) 1251.48 -25.8 -2894.08)) ;; first spidervent
+    (('money-4254) (set-vector-meters! (-> arg0 extra trans) 1235.5 -13.0 -2875.7)) ;; behind stalac, jump off left crystal at start 
+    (('money-4255) (set-vector-meters! (-> arg0 extra trans) 1254.20 -13.0 -2887.92)) ;; behind stalc, jump off right crystal at start
+    (('money-4256) (set-vector-meters! (-> arg0 extra trans) 1221.55 -25.2 -2900.23)) ;; second spidervent
+    (('money-4257) (set-vector-meters! (-> arg0 extra trans) 1212.5 -25.1 -2926.5)) ;; third spidervent
+    (('money-4258) (set-vector-meters! (-> arg0 extra trans) 1229.26 -24.9 -2944.7)) ;; fourth spidervent
+    (('money-4259) (set-vector-meters! (-> arg0 extra trans) 1232.8 -13.5 -2923.5)) ;; up on crystals mid spidertunnel, jump off crate
+    (('money-4260) (set-vector-meters! (-> arg0 extra trans) 1217.5 -25.1 -2955.7)) ;; fifth spidervent
+    (('money-4261) (set-vector-meters! (-> arg0 extra trans) 1215.81 -24.5 -2971.8)) ;; right spidervent at end of tunnel
+    (('money-4262) (set-vector-meters! (-> arg0 extra trans) 1196.7 -25.4 -2988.61)) ;; middle spidervent at end of tunnel
+    (('money-4263) (set-vector-meters! (-> arg0 extra trans) 1184.9 -25.04 -2970.25)) ;; left spidervent at end of tunnel
+    (('money-4264) (set-vector-meters! (-> arg0 extra trans) 1398.1 -23.5 -2777.42)) ;; between stone and wood support at bottom
+    (('money-4269) (set-vector-meters! (-> arg0 extra trans) 1417.58 -20.7 -2778.69)) ;; behind stalac on bottom stone support
+    (('money-4270) (set-vector-meters! (-> arg0 extra trans) 1411.2 -18.5 -2765.05)) ;; behind stalac on bottom stone support
+    (('money-4271) (set-vector-meters! (-> arg0 extra trans) 1412.30 -11.3 -2779.51)) ;; crevice in middle layer of stone support
     ;; (('money-4272) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('money-4273) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('money-4274) (set-vector-meters! (-> arg0 extra trans) )) ;; 
@@ -176,14 +176,14 @@
     ;; (('money-4434) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('money-4435) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('money-4436) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2770) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2771) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2772) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2773) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2774) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2775) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2776) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2780) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    (('crate-2770) (set-vector-meters! (-> arg0 extra trans) 1326.22 -26.0 -2862.5)) ;; left corner, end of entrance wooden platform 
+    (('crate-2771) (set-vector-meters! (-> arg0 extra trans) 1359.9 -25.49 -2838.07)) ;; under end of entrance wooden platform
+    (('crate-2772) (set-vector-meters! (-> arg0 extra trans) 1283.0 -30.6 -2864.3)) ;; in dark eco by spiderwebs, use blue eco for pickup
+    (('crate-2773) (set-vector-meters! (-> arg0 extra trans) 1302.92 -30.6 -2814.5)) ;; in dark eco before spiderwebs, use blue eco for pickup
+    (('crate-2774) (set-vector-meters! (-> arg0 extra trans) 1190.86 -24.05 -2981.27)) ;; in place of cell at end of spidertunnel
+    (('crate-2775) (set-vector-meters! (-> arg0 extra trans) 1328.85 -24.07 -2801.94)) ;; under ramp at start of robot scaffolding
+    (('crate-2776) (set-vector-meters! (-> arg0 extra trans) 1454.49 -23.95 -2753.28)) ;; against wall in back corner
+    (('crate-2780) (set-vector-meters! (-> arg0 extra trans) 1401.38  -7.65 -2791.84)) ;; on rock on middle layer of stone support
     ;; (('crate-2781) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('crate-2782) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('crate-2783) (set-vector-meters! (-> arg0 extra trans) )) ;; 
@@ -205,8 +205,8 @@
     (('crate-3018) (set-vector-meters! (-> arg0 extra trans) 934.75  18.62 -3034.77))  ;; @ orig underwater dark-crystal-5, use yellow eco
 
     ;; ;; robocave
-    ;; (('crate-2779) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-2985) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('crate-2779) (set-vector-meters! (-> arg0 extra trans) 1213.5 -13.5 -2964.91))  ;; behind stalac end of spidertunnel, uppercut off crystal
+    (('crate-2985) (set-vector-meters! (-> arg0 extra trans) 1417.33 -22.19 -2771.68))  ;; in low baby cave in stone support, use blue or yellow eco
 
     ;; darkcave
     ;; (('crate-3022) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
