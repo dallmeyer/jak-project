@@ -10,7 +10,7 @@
     (mod-no-money-bob "money-3510")
     (mod-move-ecovent "ecovent-252" (static-vector-meters 1080.19  25.94 -3269.64)) ;; yellow - moved to center island in entrance so you can reach secret cell in sage hut
     (mod-move-ecovent "ecovent-253" (static-vector-meters  1101.6214      48.3155   -3093.8352)) ;; yellow - in flames atop wooden structure
-    (mod-move-ecovent "ecovent-254" (static-vector-meters 1024.48  55.66 -3115.22)) ;; yellow - top of steps on wall down to path to darkcave
+    (mod-move-ecovent "ecovent-254" (static-vector-meters 1009.97  44.65 -2979.19)) ;; yellow - orig dark crystal on path to darkcave
 
     ;; robocave
     (mod-no-money-bob "money-4246")
@@ -187,11 +187,12 @@
     (('crate-3204) (set-vector-meters! (-> arg0 extra trans) 1414.42  -0.11 -2731.69)) ;; on mid-level scaffolding between flamepots
 
     ;; ;; darkcave
-    ;; (('money-4855) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4856) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4857) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4858) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4859) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    (('money-4855) (set-vector-meters! (-> arg0 extra trans) 924.30  99.0 -2932.58)) ;; atop tall rock at top of dark cave (jump off crate)
+      (('crate-3019) (set-vector-meters! (-> arg0 extra trans) 919.37  88.68 -2943.28))  ;; green - top of dark cave, use to get to ^
+    (('money-4856) (set-vector-meters! (-> arg0 extra trans) 894.78  90.9 -2930.36)) ;; jump out from ^ onto central tall rocks
+    (('money-4857) (set-vector-meters! (-> arg0 extra trans) 854.0  52.5 -2829.5)) ;; behind stalac in water section
+    (('money-4858) (set-vector-meters! (-> arg0 extra trans) 874.70  48.0 -2855.76)) ;; in left corner before water section
+    (('money-4859) (set-vector-meters! (-> arg0 extra trans) 920.2  44.0 -2907.6)) ;; top of slippery stalag near second crystal
 
     ;; FLIES
     ;; ;; maincave
@@ -205,7 +206,7 @@
     (('crate-2985) (set-vector-meters! (-> arg0 extra trans) 1417.33 -22.19 -2771.68))  ;; in low baby cave in stone support, use blue or yellow eco
 
     ;; darkcave
-    ;; (('crate-3022) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('crate-3022) (set-vector-meters! (-> arg0 extra trans) 860.35  23.78 -2840.46))  ;; @ orig underwater dark crystal, bring yellow eco from maincave
     
     ;; CELLS
     ;; maincave
@@ -222,7 +223,7 @@
     (('dark-crystal-1) (set-vector-meters! (-> arg0 extra trans) 1063.2  59.0 -3188.7))  ;; up high in wall opposite wooden structure, use yellow eco
     (('dark-crystal-3) (set-vector-meters! (-> arg0 extra trans) 1167.48   7.00 -2973.9))  ;; in dark eco pool on path to robocave
     (('dark-crystal-4) (set-vector-meters! (-> arg0 extra trans) 1068.5  19.0 -3075.8))  ;; midway up wall between wooden structure and path to darkcave
-    (('dark-crystal-5) (set-vector-meters! (-> arg0 extra trans) 944.20  35.31 -3003.86))  ;; in dark eco on right at end of pool towards darkcave, use yellow eco
+    (('dark-crystal-5) (set-vector-meters! (-> arg0 extra trans) 959.0  36.42 -3013.9))  ;; in dark eco on right at end of pool towards darkcave, use yellow eco
 
     ;; robocave
     (('fuel-cell-56) (override-fuel-cell-position arg0 1412.4  41.2 -2775.9)) ;; above circling plats, use blue eco launcher
@@ -231,8 +232,8 @@
     (('fuel-cell-58) (override-fuel-cell-position arg0 1297.36   4.7 -2801.27)) ;; zoomwalk / extended from crate-2781
 
     ;; darkcave
-    ;; fuel-cell-59
-    ;; dark-crystal-2
+    (('fuel-cell-59) (override-fuel-cell-position arg0 919.8 105.0 -2957.78)) ;; very top of second elevator, extended from tall rock opposite
+    (('dark-crystal-2) (set-vector-meters! (-> arg0 extra trans) 864.91  84.0 -2940.96)) ;; very top of first elevator, yellow eco or boosted from upper circling plat 
     
     ;; MISC
     ;; maincave
@@ -351,17 +352,20 @@
     ;; plat-eco-64
 
     ;; darkcave
-    ;; crate-3019  ;; green 
     ;; crate-3021  ;; green 
     ;; crate-3023  ;; green 
 
-    ;; cavecrystal-1
-    ;; cavecrystal-2
-    ;; cavecrystal-3
-    ;; cavecrystal-4
-    ;; cavecrystal-5
-    ;; cavecrystal-6
-    ;; cavecrystal-7
+
+    (('mother-spider-7) (set-vector-meters! (-> arg0 extra trans) 933.73  34.57 -2911.99)) ;; pulled forwards slightly before cave-crystal-2
+
+    ;; (('cavecrystal-1) (set-vector-meters! (-> arg0 extra trans) )) ;; left alone since it has extra collision baked into level >_<
+    (('cavecrystal-2) (set-vector-meters! (-> arg0 extra trans) 939.01  34.57 -2908.01)) ;; moved back slightly so spider can drop first >:)
+    (('cavecrystal-3) (set-vector-meters! (-> arg0 extra trans) 928.48  35.3 -2869.6)) ;; blocking normal route jumping between plats
+    (('cavecrystal-4) (set-vector-meters! (-> arg0 extra trans) 854.9  54.11 -2868.0)) ;; on rock on wall near water cave
+    (('cavecrystal-5) (set-vector-meters! (-> arg0 extra trans) 846.0  49.5 -2904.9)) ;; down on lower rock, can extended from/to circling plat
+    (('cavecrystal-6) (set-vector-meters! (-> arg0 extra trans) 848.06  74.0 -2972.86)
+      (set! (-> (the-as vector (-> arg0 quat)) z) -0.5)) ;; 
+    (('cavecrystal-7) (set-vector-meters! (-> arg0 extra trans) 897.9  78.0 -2978.5)) ;; moved to shroomrock near orig position
     
     )
   )

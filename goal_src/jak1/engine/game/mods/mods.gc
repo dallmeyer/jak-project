@@ -235,10 +235,10 @@
       ;; nearby orig yellow ecovent
       (set-vector-meters! dst 1025.73  36.4 -3152.19)
       )
-    ;; (('dark-crystal-2)
-    ;;   ;; 
-    ;;   (set-vector-meters! dst 750.08 256.3 -3392.46)
-    ;;   )
+    (('dark-crystal-2)
+      ;; dark cave - platform with spiders before topmost
+      (set-vector-meters! dst 905.56  81.4 -2956.08)
+      )
     (('dark-crystal-3)
       ;; top of stalag nearby
       (set-vector-meters! dst 1167.64  16.5 -2980.29)
@@ -302,6 +302,22 @@
         (('crate-2430 'crate-2989 'crate-2990 'crate-2991 'crate-2992 'crate-2993 'crate-2994)
           ;; Mountain Pass - up on "OOB" ledge with trees before big jump
           (set-vector-meters! dst 30.2  46.03 -2974.5)
+          )
+        (('crate-2685 'crate-2689 'crate-2697 'crate-3018)
+          ;; maincave - on wooden structure with gnawers, mid level
+          (set-vector-meters! dst 1071.87  34.9 -3103.22)
+          )
+        (('crate-2799)
+          ;; robocave - end of spidertunnel, launcher plat
+          (set-vector-meters! dst 1199.41 -24.5 -2971.85)
+          )
+        (('crate-2985)
+          ;; robocave - under stone support
+          (set-vector-meters! dst 1422.86 -22.0 -2776.55)
+          )
+        (('crate-3022)
+          ;; darkcave - outside of water section
+          (set-vector-meters! dst 865.07  48.5 -2854.20)
           )
         (else
           (format #t "fuel movie override, didnt match grandparent ~A ~%" (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name))
