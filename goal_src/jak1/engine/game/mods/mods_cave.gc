@@ -16,22 +16,26 @@
     (mod-no-money-bob "money-4246")
     (mod-no-money-bob "money-4247")
     (mod-no-money-bob "money-4273")
-    (mod-no-money-bob "money-4274")
-    (mod-move-ecovent "ecovent-255" (static-vector-meters 1354.3367  -7.2291   -2799.3066)) ;; yellow (blocked) - in fire at beginning of robot scaffolding
+    (mod-no-money-bob "money-4285")
+    (mod-no-money-bob "money-4287")
+    (mod-no-money-bob "money-4289")
+    (mod-no-money-bob "money-4291")
+    (mod-no-money-bob "money-4294")
+    (mod-move-ecovent "ecovent-255" (static-vector-meters 1378.59 -23.95 -2813.06)) ;; yellow (blocked) - in rock below orig poles cell
     (mod-move-eco "eco-192" (static-vector-meters 1361.50  34.31 -2779.51)) ;; blue - above final poles to top of robot
-    (mod-move-eco "eco-193" (static-vector-meters 1324.34  36.53 -2775.87)) ;; blue - poles before final poles to top of robot
-    (mod-move-eco "eco-194" (static-vector-meters 1327.52  30.80 -2753.71  )) ;; blue - poles before final poles to top of robot
-    ;; (mod-move-eco "eco-195" (static-vector-meters )) ;; blue
-    ;; (mod-move-eco "eco-199" (static-vector-meters )) ;; blue
-    ;; (mod-move-eco "eco-200" (static-vector-meters )) ;; blue
+    (mod-move-eco "eco-193" (static-vector-meters 1324.52  36.53 -2775.87)) ;; blue - poles before final poles to top of robot
+    (mod-move-eco "eco-194" (static-vector-meters 1324.52  30.80 -2753.71)) ;; blue - poles before final poles to top of robot
+    (mod-move-eco "eco-195" (static-vector-meters 1393.39  12.9 -2781.63)) ;; blue - near circling plats, for launcher on top of stone support
+    (mod-move-eco "eco-199" (static-vector-meters 1269.56 -24.79 -2857.69)) ;; blue - middle spiderweb to spidertunnel
+    (mod-move-eco "eco-200" (static-vector-meters 1377.44  20.9 -2817.04  )) ;; blue - ecoplat down from orig poles cell
 
-    (mod-move-eco "eco-146" (static-vector-meters 1422.79 -21.7 -2777.10)) ;; yellow - bottom stone support  
-    (mod-move-eco "eco-147" (static-vector-meters 1407.10  -8.37 -2775.94)) ;; yellow - middle layer of stone support
-    ;; (mod-move-eco "eco-148" (static-vector-meters )) ;; yellow
-    ;; (mod-move-eco "eco-149" (static-vector-meters )) ;; yellow
-    ;; (mod-move-eco "eco-150" (static-vector-meters )) ;; yellow
-    ;; (mod-move-eco "eco-177" (static-vector-meters )) ;; yellow
-    ;; (mod-move-eco "eco-178" (static-vector-meters )) ;; yellow
+    (mod-move-eco "eco-146" (static-vector-meters 1412.29 -21.8 -2785.63)) ;; yellow - bottom stone support  
+    (mod-move-eco "eco-147" (static-vector-meters 1413.03 -8.37 -2774.22  )) ;; yellow - middle layer of stone support
+    (mod-move-eco "eco-148" (static-vector-meters 1400.87  0.8 -2757.35  )) ;; yellow - middle scaffolding near circling plat
+    (mod-move-eco "eco-149" (static-vector-meters 1275.69 -28.36 -2838.37)) ;; yellow - on strip of land in dark eco before spidertunnel
+    (mod-move-eco "eco-150" (static-vector-meters 1365.69  14.5 -2801.72)) ;; yellow - scaffolding trapdoors between orig cells
+    (mod-move-eco "eco-178" (static-vector-meters 1373.70  14.5 -2801.72)) ;; yellow - scaffolding trapdoors between orig cells
+    (mod-move-eco "eco-177" (static-vector-meters 1415.38   2.5 -2788.55)) ;; yellow - on rock overlooking poles
 
     ;; darkcave
 
@@ -115,7 +119,6 @@
     (('money-4271) (set-vector-meters! (-> arg0 extra trans) 1412.30 -11.3 -2779.51)) ;; crevice in middle layer of stone support
     (('money-4272) (set-vector-meters! (-> arg0 extra trans) 1367.91  22.0 -2828.65)) ;; on shroom(?) left/above orig poles cell
     (('money-4273) (set-vector-meters! (-> arg0 extra trans) 1354.0  26.7 -2831.0)) ;; hanging from stalac, uppercut from ^
-    (('money-4274) (set-vector-meters! (-> arg0 extra trans) 1399.57 6.45  -2759.22)) ;; in torch by mid level circling plats
     (('money-4275) (set-vector-meters! (-> arg0 extra trans) 1373.0   1.6 -2769.9)) ;; in gap next to robot's left arm
     (('money-4276) (set-vector-meters! (-> arg0 extra trans) 1436.88 -27.21 -2732.38)) ;; far back corner on bottom, drop and hang
     (('money-4277) (set-vector-meters! (-> arg0 extra trans) 1351.9   8.5 -2776.8)) ;; mosquito
@@ -125,59 +128,50 @@
     (('money-4281) (set-vector-meters! (-> arg0 extra trans) 1369.8  20.6 -2778.2)) ;; behind robot head
     (('money-4282) (set-vector-meters! (-> arg0 extra trans) 1352.64 -28.76 -2736.15)) ;; on stalag in void in back (extended)
     (('money-4283) (set-vector-meters! (-> arg0 extra trans) 1412.46 -28.0 -2733.68)) ;; on stalag in void in back (extended)
-    ;; (('money-4284) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4285) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4286) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4287) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4288) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4289) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4290) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4291) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4292) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4293) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4294) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4295) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4296) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4297) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4408) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4409) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4410) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4411) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4412) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4413) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4414) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4415) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4416) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4417) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4418) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4419) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4410) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4411) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4412) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4413) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4414) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4415) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4416) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4417) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4418) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4419) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4420) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4421) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4422) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4423) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4424) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4425) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4426) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4427) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4428) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4429) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4430) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4431) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4432) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4433) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4434) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4435) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-4436) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    (('money-4285) (set-vector-meters! (-> arg0 extra trans) 1263.36  34.45 -2845.58)) ;; hanging from stalac, zoomwalk/extended from money-4245
+    (('money-4287) (set-vector-meters! (-> arg0 extra trans) 1367.15  -4.9 -2831.99)) ;; hanging from stalac, zoomwalk/jump from money-4252
+    (('money-4288) (set-vector-meters! (-> arg0 extra trans) 1370.4 -23.5 -2797.2)) ;; below right robot arm
+    (('money-4289) (set-vector-meters! (-> arg0 extra trans) 1415.5 -38.5 -2813.82)) ;; on stalag near launcher below poles
+    (('money-4290) (set-vector-meters! (-> arg0 extra trans) 1438.8 -34.5 -2821.0)) ;; on slippery rock next to launcher below poles
+    (('money-4291) (set-vector-meters! (-> arg0 extra trans) 1311.6  19.8 -2794.93)) ;; hanging from stalac, jump from top scaffolding towards spidertunnel
+    (('money-4293) (set-vector-meters! (-> arg0 extra trans) 1316.5  6.0 -2857.5)) ;; shroomrock near entrance, where wooden steps go down 
+    (('money-4294) (set-vector-meters! (-> arg0 extra trans) 1259.05  31.9 -2923.74)) ;; hanging from stalac on entrance bridge, above flame (jump from top of pole)
+    (('money-4274) (set-vector-meters! (-> arg0 extra trans) 1405.261525	13.0728   -2819.4477)) ;; 6 - poles
+    (('money-4286) (set-vector-meters! (-> arg0 extra trans) 1407.33245	13.0728   -2819.4477)) ;; 6 - poles
+    (('money-4284) (set-vector-meters! (-> arg0 extra trans) 1409.403375	13.0728   -2819.4477)) ;; 6 - poles
+    (('money-4292) (set-vector-meters! (-> arg0 extra trans) 1403.1906	11.004575   -2819.4477)) ;; 6 - poles
+    (('money-4295) (set-vector-meters! (-> arg0 extra trans) 1403.1906	8.93635   -2819.4477)) ;; 6 - poles
+    (('money-4296) (set-vector-meters! (-> arg0 extra trans) 1403.1906	6.868125    -2819.4477)) ;; 6 - poles
+    (('money-4297) (set-vector-meters! (-> arg0 extra trans) 1405.261525	4.7999    -2819.4477)) ;; 6 - poles
+    (('money-4408) (set-vector-meters! (-> arg0 extra trans) 1407.33245	4.7999    -2819.4477)) ;; 6 - poles
+    (('money-4409) (set-vector-meters! (-> arg0 extra trans) 1409.403375	4.7999    -2819.4477)) ;; 6 - poles
+    (('money-4410) (set-vector-meters! (-> arg0 extra trans) 1403.1906	2.685175    -2819.4477)) ;; 6 - poles
+    (('money-4411) (set-vector-meters! (-> arg0 extra trans) 1403.1906	0.61695   -2819.4477)) ;; 6 - poles
+    (('money-4412) (set-vector-meters! (-> arg0 extra trans) 1403.1906	-1.451275   -2819.4477)) ;; 6 - poles
+    (('money-4413) (set-vector-meters! (-> arg0 extra trans) 1411.4743	2.685175    -2819.4477)) ;; 6 - poles
+    (('money-4414) (set-vector-meters! (-> arg0 extra trans) 1411.4743	0.61695   -2819.4477)) ;; 6 - poles
+    (('money-4415) (set-vector-meters! (-> arg0 extra trans) 1411.4743	-1.451275   -2819.4477)) ;; 6 - poles
+    (('money-4416) (set-vector-meters! (-> arg0 extra trans) 1405.261525	-3.5195   -2819.4477)) ;; 6 - poles
+    (('money-4417) (set-vector-meters! (-> arg0 extra trans) 1407.33245	-3.5195   -2819.4477)) ;; 6 - poles
+    (('money-4418) (set-vector-meters! (-> arg0 extra trans) 1409.403375	-3.5195   -2819.4477)) ;; 6 - poles
+    (('money-4419) (set-vector-meters! (-> arg0 extra trans) 1421.7584	13.0728   -2819.4477)) ;; 9 - poles
+    (('money-4420) (set-vector-meters! (-> arg0 extra trans) 1423.755	13.0728   -2819.4477)) ;; 9 - poles
+    (('money-4421) (set-vector-meters! (-> arg0 extra trans) 1425.7516	13.0728   -2819.4477)) ;; 9 - poles
+    (('money-4422) (set-vector-meters! (-> arg0 extra trans) 1419.7618	11.004575   -2819.4477)) ;; 9 - poles
+    (('money-4423) (set-vector-meters! (-> arg0 extra trans) 1419.7618	8.93635   -2819.4477)) ;; 9 - poles
+    (('money-4424) (set-vector-meters! (-> arg0 extra trans) 1419.7618	6.868125    -2819.4477)) ;; 9 - poles
+    (('money-4425) (set-vector-meters! (-> arg0 extra trans) 1427.7482	11.004575   -2819.4477)) ;; 9 - poles
+    (('money-4426) (set-vector-meters! (-> arg0 extra trans) 1427.7482	8.93635   -2819.4477)) ;; 9 - poles
+    (('money-4427) (set-vector-meters! (-> arg0 extra trans) 1427.7482	6.868125    -2819.4477)) ;; 9 - poles
+    (('money-4428) (set-vector-meters! (-> arg0 extra trans) 1421.7584	4.7999    -2819.4477)) ;; 9 - poles
+    (('money-4429) (set-vector-meters! (-> arg0 extra trans) 1423.755	4.7999    -2819.4477)) ;; 9 - poles
+    (('money-4430) (set-vector-meters! (-> arg0 extra trans) 1425.7516	4.7999    -2819.4477)) ;; 9 - poles
+    (('money-4431) (set-vector-meters! (-> arg0 extra trans) 1427.7482	2.685175    -2819.4477)) ;; 9 - poles
+    (('money-4432) (set-vector-meters! (-> arg0 extra trans) 1427.7482	0.61695   -2819.4477)) ;; 9 - poles
+    (('money-4433) (set-vector-meters! (-> arg0 extra trans) 1427.7482	-1.451275   -2819.4477)) ;; 9 - poles
+    (('money-4434) (set-vector-meters! (-> arg0 extra trans) 1421.7584	-3.5195   -2819.4477)) ;; 9 - poles
+    (('money-4435) (set-vector-meters! (-> arg0 extra trans) 1423.755	-3.5195   -2819.4477)) ;; 9 - poles
+    (('money-4436) (set-vector-meters! (-> arg0 extra trans) 1425.7516	-3.5195   -2819.4477)) ;; 9 - poles
     (('crate-2770) (set-vector-meters! (-> arg0 extra trans) 1326.22 -26.0 -2862.5)) ;; left corner, end of entrance wooden platform 
     (('crate-2771) (set-vector-meters! (-> arg0 extra trans) 1359.9 -25.49 -2838.07)) ;; under end of entrance wooden platform
     (('crate-2772) (set-vector-meters! (-> arg0 extra trans) 1283.0 -30.6 -2864.3)) ;; in dark eco by spiderwebs, use blue eco for pickup
@@ -187,10 +181,10 @@
     (('crate-2776) (set-vector-meters! (-> arg0 extra trans) 1454.49 -23.95 -2753.28)) ;; against wall in back corner
     (('crate-2780) (set-vector-meters! (-> arg0 extra trans) 1401.38  -7.65 -2791.84)) ;; on rock on middle layer of stone support
     (('crate-2781) (set-vector-meters! (-> arg0 extra trans) 1316.22   7.5 -2793.7)) ;; on shroom(?) on wall near scaffolding corner by entrance
-    ;; (('crate-2782) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-2783) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-3203) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-3204) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    (('crate-2782) (set-vector-meters! (-> arg0 extra trans) 1383.61  20.38 -2819.50)) ;; @ orig poles cell plat
+    (('crate-2783) (set-vector-meters! (-> arg0 extra trans) 1393.77  12.03 -2758.27)) ;; on top-level scaffolding near circling plats
+    (('crate-3203) (set-vector-meters! (-> arg0 extra trans) 1330.12 -24.00 -2733.89)) ;; on bottom-most scaffolding in corner
+    (('crate-3204) (set-vector-meters! (-> arg0 extra trans) 1414.42  -0.11 -2731.69)) ;; on mid-level scaffolding between flamepots
 
     ;; ;; darkcave
     ;; (('money-4855) (set-vector-meters! (-> arg0 extra trans) )) ;; 
@@ -231,7 +225,8 @@
     (('dark-crystal-5) (set-vector-meters! (-> arg0 extra trans) 944.20  35.31 -3003.86))  ;; in dark eco on right at end of pool towards darkcave, use yellow eco
 
     ;; robocave
-    ;; fuel-cell-56 ;; maybe move plat-eco into big gap and then cell up in stalacs above?
+    (('fuel-cell-56) (override-fuel-cell-position arg0 1412.4  41.2 -2775.9)) ;; above circling plats, use blue eco launcher
+      (('launcher-117) (set-vector-meters! (-> arg0 extra trans) 1412.16  -0.25 -2776.13))  ;; under 4 crates top of stone support (need for fuel-cell-56)
     (('fuel-cell-57) (override-fuel-cell-position arg0 1350.4 28.0 -2812.6))  ;; blue eco boosted before final poles to top of robot (or maybe top of robot?)
     (('fuel-cell-58) (override-fuel-cell-position arg0 1297.36   4.7 -2801.27)) ;; zoomwalk / extended from crate-2781
 
@@ -302,8 +297,6 @@
     ;; crate-2767
     ;; crate-2768
     ;; crate-2769
-    ;; crate-2777
-    ;; crate-2778
     ;; crate-2947
     ;; crate-2948
     ;; crate-2949
@@ -311,8 +304,10 @@
     ;; crate-3154
     ;; crate-3155
     ;; crate-3156
-    ;; crate-3157
-    ;; crate-3158
+    (('crate-2777) (set-vector-meters! (-> arg0 extra trans) 1340.51 -12.4 -2782.48)) ;; mid scaffolding next to initial ramp
+    (('crate-2778) (set-vector-meters! (-> arg0 extra trans) 1342.51 -12.4 -2782.48)) ;; mid scaffolding next to initial ramp
+    (('crate-3157) (set-vector-meters! (-> arg0 extra trans) 1344.51 -12.4 -2782.48)) ;; mid scaffolding next to initial ramp
+    (('crate-3158) (set-vector-meters! (-> arg0 extra trans) 1338.51 -12.4 -2782.48)) ;; mid scaffolding next to initial ramp
     ;; crate-3159
     ;; crate-3160
     ;; crate-3161
@@ -324,7 +319,7 @@
     ;; crate-3167
     ;; crate-3168
     ;; crate-3205  ;; green
-    ;; crate-3206  ;; big green
+    (('crate-3206) (set-vector-meters! (-> arg0 extra trans) 1378.64  25.53 -2779.24))  ;; big green - @ orig robot cell
 
     ;; spider-egg-1
     ;; spider-egg-2
