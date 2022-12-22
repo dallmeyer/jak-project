@@ -3,22 +3,141 @@
 
 (defmacro mod-lavatube-run-each-frame ()
   `(begin
-
+    ;; eco-267 ;; random small green - 
+    ;; eco-268 ;; random small green - 
+    ;; eco-240 ;; blue - 
+    ;; eco-241 ;; blue - 
+    ;; eco-247 ;; yellow - 
+    ;; eco-248 ;; yellow - 
+    ;; eco-249 ;; yellow - 
+    ;; eco-250 ;; yellow - 
+    ;; eco-251 ;; yellow - 
+    ;; eco-252 ;; yellow - 
+    ;; eco-253 ;; yellow - 
+    ;; eco-254 ;; yellow - 
+    ;; eco-294 ;; yellow - 
+    ;; eco-295 ;; yellow - 
+    ;; eco-296 ;; yellow - 
+    ;; eco-297 ;; yellow - 
+    ;; eco-307 ;; yellow - 
+    ;; eco-310 ;; yellow - 
+    ;; ecovent-276 ;; yellow - 
+    ;; ecovent-277 ;; yellow - 
+    ;; ecovent-281 ;; yellow - 
+    ;; ecovent-282 ;; yellow - 
+    ;; ecovent-292 ;; yellow - 
     )
   )
   
 (defmacro mod-lavatube-override-init-position (obj arg0)
   `(case (-> obj name) :comp name=
     ;; ORBS
-    
+    ;; (('money-3881) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3882) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3883) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3884) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3885) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3886) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3887) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3888) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3889) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3890) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3891) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3892) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3898) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3899) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3900) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3901) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3902) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3903) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3904) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3905) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3906) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3907) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3908) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3909) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3910) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3911) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3912) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3913) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3917) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3918) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3919) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3920) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('money-3921) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3242) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3243) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3244) (set-vector-meters! (-> arg0 extra trans) )) ;; 
 
     ;; FLIES
-    
+    ;; (('crate-3025) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3026) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3027) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3028) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3029) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3117) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('crate-3118) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     
     ;; CELLS
-    
+    ;; (('racer-36))
     
     ;; MISC
-    
+    ;; (('racer-9))
+
+    ;; (('chainmine-1) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-3) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-7) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-9) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-10) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-11) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-12) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-13) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-14) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-15) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-16) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-17) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-18) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-19) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-20) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-21) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-22) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-23) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-24) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-25) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-26) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-29) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-30) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('chainmine-34) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+
+    ;; (('lavaballoon-1) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    ;; (('lavaballoon-39) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-48) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-50) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-51) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-56) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-57) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-58) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-59) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-60) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-61) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-62) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-63) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-64) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-65) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-66) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-67) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-68) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-69) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-70) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-71) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-72) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-73) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+
+    ;; (('lavaballoon-96) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-97) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-98) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-99) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('lavaballoon-100) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+
     )
   )
