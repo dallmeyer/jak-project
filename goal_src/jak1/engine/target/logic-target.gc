@@ -400,7 +400,7 @@
   ;;     )
     (let ((v1-74 (-> arg0 control trans)))
       (format arg1 "pos: ~6,,2m ~6,,2m ~6,,2m  " (-> v1-74 x) (-> v1-74 y) (-> v1-74 z))
-      (when (cpad-pressed? 0 l2)
+      (when (cpad-hold? 0 l2)
         (format 0 "~6,,2m ~6,,2m ~6,,2m  ~%" (-> v1-74 x) (-> v1-74 y) (-> v1-74 z))
         )
       )

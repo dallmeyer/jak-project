@@ -5,8 +5,8 @@
   `(begin
     ;; eco-267 ;; random small green - 
     ;; eco-268 ;; random small green - 
-    ;; eco-240 ;; blue - 
-    ;; eco-241 ;; blue - 
+    (mod-move-eco "eco-240" (static-vector-meters 2320.45  71.8 -4032.74)) ;; blue - on bridge before lavatube-after-ribbon, use for speed to get to crate-3028
+    (mod-move-eco "eco-241" (static-vector-meters 2339.78 -25.91 -3445.82)) ;; blue - in oranges room for jump over door
     ;; eco-247 ;; yellow - 
     ;; eco-248 ;; yellow - 
     ;; eco-249 ;; yellow - 
@@ -21,68 +21,69 @@
     ;; eco-297 ;; yellow - 
     ;; eco-307 ;; yellow - 
     ;; eco-310 ;; yellow - 
-    ;; ecovent-276 ;; yellow - 
-    ;; ecovent-277 ;; yellow - 
-    ;; ecovent-281 ;; yellow - 
-    ;; ecovent-282 ;; yellow - 
-    ;; ecovent-292 ;; yellow - 
+    (mod-move-ecovent "ecovent-276" (static-vector-meters 1346.16  34.31 -3558.65)) ;; yellow - at orig start transpad
+    ;; (mod-move-ecovent "ecovent-277" (static-vector-meters )) ;; yellow - 
+    ;; (mod-move-ecovent "ecovent-281" (static-vector-meters )) ;; yellow - 
+    ;; (mod-move-ecovent "ecovent-282" (static-vector-meters )) ;; yellow - 
+    ;; (mod-move-ecovent "ecovent-292" (static-vector-meters )) ;; yellow - 
     )
   )
   
 (defmacro mod-lavatube-override-init-position (obj arg0)
   `(case (-> obj name) :comp name=
     ;; ORBS
-    ;; (('money-3881) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3882) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3883) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3884) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3885) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3886) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3887) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3888) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3889) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3890) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3891) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3892) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3898) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3899) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3900) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3901) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3902) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3903) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3904) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3905) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3906) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3907) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3908) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3909) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3910) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3911) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3912) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3913) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3917) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3918) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3919) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3920) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('money-3921) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-3242) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-3243) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-3244) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    (('money-3881) (set-vector-meters! (-> arg0 extra trans) 1316.5  34.1 -3539.2)) ;; lower corner at start
+    (('money-3882) (set-vector-meters! (-> arg0 extra trans) 1379.4 39.5 -3561.3)) ;; on left above cold spot
+    (('money-3883) (set-vector-meters! (-> arg0 extra trans) 1493.5  41.83 -3395.4)) ;; atop overhanging rock near first pits
+    (('money-3884) (set-vector-meters! (-> arg0 extra trans) 1469.5  30.47 -3441.5)) ;; hang on left ledge first pits in LTS
+    (('money-3885) (set-vector-meters! (-> arg0 extra trans) 1535.99  37.5  -3405.43)) ;; up high at end of first pits, extended from cold edge
+    (('money-3886) (set-vector-meters! (-> arg0 extra trans) 1589.0  28.5 -3412.7)) ;; above cold spot on left before pillars/orig SFB
+    (('money-3887) (set-vector-meters! (-> arg0 extra trans) 1643.6  36.5 -3425.7)) ;; behind pillar on left before orig SFB
+    (('money-3888) (set-vector-meters! (-> arg0 extra trans) 1998.9  10.83 -3345.1)) ;; jump on right before lavatube-middle (parallel with shortcut exit lavafall)
+    (('money-3889) (set-vector-meters! (-> arg0 extra trans) 2390.33  15.91 -3534.6)) ;; above oranges exit door, use blue eco-241
+    (('money-3890) (set-vector-meters! (-> arg0 extra trans) 1905.3  20.11 -3490.77)) ;; jump between paths after not taking lavafall shortcut
+    (('money-3891) (set-vector-meters! (-> arg0 extra trans) 2528.99  16.8 -4182.99)) ;; on left pipes in downhill section
+    (('money-3892) (set-vector-meters! (-> arg0 extra trans) 2781.6 -40.4 -4492.2)) ;; under pipe near citadel door, extended through
+    (('money-3898) (set-vector-meters! (-> arg0 extra trans) 2786.4 -18.9 -4438.9)) ;; yellow sage hut roof, portal rocket > zoom > extended
+    (('money-3899) (set-vector-meters! (-> arg0 extra trans) 2807.7 -32.9 -4489.3)) ;; top of rock arch near citadel door
+    (('money-3900) (set-vector-meters! (-> arg0 extra trans) 2617.07  0.8 -4478.09)) ;; on corner of final bridge
+    (('money-3901) (set-vector-meters! (-> arg0 extra trans) 2657.9  73.5 -4234.9)) ;; right pipes in downhill section
+    (('money-3902) (set-vector-meters! (-> arg0 extra trans) 2632.9  66.6 -4245.6)) ;; right pipes in downhill section
+    (('money-3903) (set-vector-meters! (-> arg0 extra trans) 1479.03	29.05	-3413.11)) ;; boosted 1 on LTS route
+    (('money-3904) (set-vector-meters! (-> arg0 extra trans) 1484.29	29.32	-3411.60)) ;; boosted 1 on LTS route
+    (('money-3905) (set-vector-meters! (-> arg0 extra trans) 1488.36	32.38	-3410.43)) ;; boosted 1 on LTS route
+    (('money-3906) (set-vector-meters! (-> arg0 extra trans) 1491.51	34.13	-3409.56)) ;; boosted 1 on LTS route
+    (('money-3907) (set-vector-meters! (-> arg0 extra trans) 1493.95	36.61	-3408.95)) ;; boosted 1 on LTS route
+    (('money-3908) (set-vector-meters! (-> arg0 extra trans) 1496.01	35.77	-3407.83)) ;; boosted 1 on LTS route
+    (('money-3909) (set-vector-meters! (-> arg0 extra trans) 1501.71	23.45	-3395.48)) ;; boosted 2 on LTS route
+    (('money-3910) (set-vector-meters! (-> arg0 extra trans) 1506.49	27.82	-3393.77)) ;; boosted 2 on LTS route
+    (('money-3911) (set-vector-meters! (-> arg0 extra trans) 1510.32	31.01	-3392.43)) ;; boosted 2 on LTS route
+    (('money-3912) (set-vector-meters! (-> arg0 extra trans) 1513.38	36.0	-3391.31)) ;; boosted 2 on LTS route
+    (('money-3913) (set-vector-meters! (-> arg0 extra trans) 1515.8	  38.2	-3390.35)) ;; boosted 2 on LTS route
+    (('money-3917) (set-vector-meters! (-> arg0 extra trans) 1517.73	38.99	-3389.53)) ;; boosted 2 on LTS route
+    (('money-3918) (set-vector-meters! (-> arg0 extra trans) 1519.25	38.18	-3388.82)) ;; boosted 2 on LTS route
+    (('money-3919) (set-vector-meters! (-> arg0 extra trans) 1520.45	35.59	-3388.19)) ;; boosted 2 on LTS route
+    (('money-3920) (set-vector-meters! (-> arg0 extra trans) 1521.46	31.7	-3387.70)) ;; boosted 2 on LTS route
+    (('money-3921) (set-vector-meters! (-> arg0 extra trans) 1522.72	29.8	-3386.99)) ;; boosted 2 on LTS route
+    (('crate-3242) (set-vector-meters! (-> arg0 extra trans) 1829.07  10.87 -3401.57)) ;; lower ramp near lavafall
+    (('crate-3243) (set-vector-meters! (-> arg0 extra trans) 2424.20  93.99 -4040.22)) ;; lavatube-after-ribbon checkpoint
+    (('crate-3244) (set-vector-meters! (-> arg0 extra trans) 2809.45 -38.27 -4462.12)) ;; orig transpad end of LT
 
     ;; FLIES
-    ;; (('crate-3025) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-3026) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-3027) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-3028) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-3029) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-3117) (set-vector-meters! (-> arg0 extra trans) )) ;; 
-    ;; (('crate-3118) (set-vector-meters! (-> arg0 extra trans) )) ;; 
+    (('crate-3025) (set-vector-meters! (-> arg0 extra trans) 1714.8  31.5 -3426.9)  ;; on side of pillar near orig SFB
+      (set-vector! (-> arg0 quat) 0.4 -0.6 -0.6 -0.3))
+    (('crate-3026) (set-vector-meters! (-> arg0 extra trans) 2209.75  -0.96 -3433.86)) ;; lavatube-middle checkpoint
+    (('crate-3027) (set-vector-meters! (-> arg0 extra trans) 2386.9628     -36.5   -3446.1018)) ;; center lava by oranges
+    (('crate-3028) (set-vector-meters! (-> arg0 extra trans) 2477.54  76.2 -4091.5)) ;; on pipes on left, after lavatube-after-ribbon checkpoint (prob need blue eco-240 or yellow)
+    (('crate-3029) (set-vector-meters! (-> arg0 extra trans) 2321.3  42.7 -3882.5)) ;; way up in back pipes, looking back at the looping track section (yellow eco)
+    (('crate-3117) (set-vector-meters! (-> arg0 extra trans) 2606.3  1.7 -4516.3)) ;; up high in pipes in last section (yellow eco)
+    (('crate-3118) (set-vector-meters! (-> arg0 extra trans) 2801.35 -23.22 -4442.0)) ;; above portal, rocket > zoom > GP
     
     ;; CELLS
-    ;; (('racer-36))
-    
+    (('racer-36) (set-vector-meters! (-> arg0 extra trans) 2568.04 -11.94 -4525.38))  ;; before final bridge to end of LT
+  
     ;; MISC
-    ;; (('racer-9))
+    (('racer-9) (set-vector-meters! (-> arg0 extra trans) 1354.76  33.07 -3578.05)) ;; cold spots near start
 
     ;; (('chainmine-1) (set-vector-meters! (-> arg0 extra trans) )) ;; 
     ;; (('chainmine-3) (set-vector-meters! (-> arg0 extra trans) )) ;; 
