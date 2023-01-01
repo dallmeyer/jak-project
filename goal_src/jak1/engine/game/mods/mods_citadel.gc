@@ -3,22 +3,244 @@
 
 (defmacro mod-citadel-run-each-frame ()
   `(begin
+    ;; (mod-move-ecovent "ecovent-248" (static-vector-meters ))  ;; yellow - 
+    ;; (mod-move-ecovent "ecovent-249" (static-vector-meters ))  ;; red - 
+    ;; (mod-move-ecovent "ecovent-250" (static-vector-meters ))  ;; blue - 
+    ;; (mod-move-ecovent "ecovent-283" (static-vector-meters ))  ;; blue - 
 
+    ;; (mod-move-eco "eco-269" (static-vector-meters ))  ;; blue - 
+    ;; (mod-move-eco "eco-270" (static-vector-meters ))  ;; blue - 
+    ;; (mod-move-eco "eco-271" (static-vector-meters ))  ;; blue - 
+    ;; (mod-move-eco "eco-287" (static-vector-meters ))  ;; blue - 
+    ;; (mod-move-eco "eco-288" (static-vector-meters ))  ;; blue - 
+    ;; (mod-move-eco "eco-289" (static-vector-meters ))  ;; blue - 
+    ;; (mod-move-eco "eco-290" (static-vector-meters ))  ;; blue - 
+    ;; (mod-move-eco "eco-291" (static-vector-meters ))  ;; blue - 
+    ;; (mod-move-eco "eco-292" (static-vector-meters ))  ;; blue - 
+    ;; (mod-move-eco "eco-293" (static-vector-meters ))  ;; blue - 
+    ;; (mod-move-eco "eco-322" (static-vector-meters ))  ;; blue - 
     )
   )
   
 (defmacro mod-citadel-override-init-position (obj arg0)
   `(case (-> obj name) :comp name=
     ;; ORBS
-    
+    ;; (('money-4929) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4930) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4931) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4932) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4933) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4934) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4935) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4936) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4937) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4938) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4939) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4940) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4941) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4942) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4943) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4944) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4945) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4946) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4947) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4948) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4949) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4950) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4951) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4952) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4953) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4954) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4955) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4956) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4957) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4958) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4959) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4960) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4961) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4962) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4963) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4964) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4965) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4966) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4967) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4968) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4969) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4970) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4971) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4972) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4973) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4974) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4975) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4976) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4977) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4978) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4979) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4980) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4981) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4982) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4983) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4984) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4985) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4986) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4987) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4988) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4989) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4990) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4991) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4992) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4993) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4994) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4995) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4996) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4997) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4998) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-4999) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-5000) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('money-5001) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+
+    ;; (('crate-3245) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-3246) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-3247) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-3248) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('crate-3249) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+
+    ;; (('orb-cache-top-31) (set-vector-meters! (-> arg0 extra trans) ))  ;; 30 - 
+    ;; (('orb-cache-top-32) (set-vector-meters! (-> arg0 extra trans) ))  ;; 30 - 
+    ;; (('orb-cache-top-33) (set-vector-meters! (-> arg0 extra trans) ))  ;; 30 - 
 
     ;; FLIES
-    
+    ;; (('crate-2996) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    ;; (('crate-2997) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    ;; (('crate-2998) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    ;; (('crate-2999) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    ;; (('crate-3000) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    ;; (('crate-3001) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    ;; (('crate-3002) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     
     ;; CELLS
+    ;; (('citb-generator-2) (set-vector-meters! (-> arg0 extra trans) ))  ;; yellow sage
+    ;; (('yellow-sagecage-1) (set-vector-meters! (-> arg0 extra trans) ))  ;; yellow sage
+
+    ;; (('citb-generator-3) (set-vector-meters! (-> arg0 extra trans) ))  ;; blue sage
+    ;; (('blue-sagecage-1) (set-vector-meters! (-> arg0 extra trans) ))  ;; blue sage
     
+    ;; (('citb-generator-4) (set-vector-meters! (-> arg0 extra trans) ))  ;; red sage
+    ;; (('red-sagecage-1) (set-vector-meters! (-> arg0 extra trans) ))  ;; red sage
     
     ;; MISC
+    ;; (('citb-generator-5) (set-vector-meters! (-> arg0 extra trans) ))  ;; bunny ambush - 
+      ;; (('citb-coil-8) (set-vector-meters! (-> arg0 extra trans) ))  ;; bunny ambush - 
+    ;; (('citb-generator-6) (set-vector-meters! (-> arg0 extra trans) ))  ;; bunny ambush - 
+      ;; (('citb-coil-9) (set-vector-meters! (-> arg0 extra trans) ))  ;; bunny ambush - 
+    ;; (('citb-generator-7) (set-vector-meters! (-> arg0 extra trans) ))  ;; bunny ambush - 
+      ;; (('citb-coil-7) (set-vector-meters! (-> arg0 extra trans) ))  ;; bunny ambush - 
+
+    ;; (('citb-plat-15) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
+    ;; (('citb-plat-16) (set-vector-meters! (-> arg0 extra trans) ))  ;; up and down -
+    ;; (('citb-plat-17) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
+    ;; (('citb-plat-18) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
+
+    ;; (('citb-stair-plat-1) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('citb-stair-plat-2) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('citb-stair-plat-3) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('citb-stair-plat-4) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('citb-stair-plat-5) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('citb-stair-plat-6) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+
+    ;; (('citb-launcher-1) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('citb-launcher-2) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('citb-launcher-3) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('citb-launcher-4) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
+    ;; (('citb-launcher-5) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
+    ;; (('citb-launcher-6) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
+    ;; (('citb-launcher-7) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
+    ;; (('citb-launcher-8) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
+    ;; (('citb-launcher-9) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
+    ;; (('citb-launcher-10) (set-vector-meters! (-> arg0 extra trans) ))  ;; circling - 
+    ;; (('citb-launcher-12) (set-vector-meters! (-> arg0 extra trans) ))  ;; circling - 
+    ;; (('citb-launcher-11) (set-vector-meters! (-> arg0 extra trans) ))  ;; circling - 
+    ;; (('citb-launcher-13) (set-vector-meters! (-> arg0 extra trans) ))  ;; circling - 
+
+    ;; (('citb-plat-eco-1) (set-vector-meters! (-> arg0 extra trans) ))  ;; up and down - 
+    ;; (('citb-plat-eco-2) (set-vector-meters! (-> arg0 extra trans) ))  ;; up and down - 
+    ;; (('citb-plat-eco-3) (set-vector-meters! (-> arg0 extra trans) ))  ;; up and down angled - 
+
+    ;; (('citb-chain-plat-11) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('citb-chain-plat-12) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('citb-chain-plat-13) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('citb-chain-plat-14) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('citb-chain-plat-15) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+
+    ;; (('citb-rotatebox-1) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('citb-rotatebox-2) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+
+    ;; (('citb-stopbox-?) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
     
+    ;; (('citb-firehose-1) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('citb-firehose-2) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    ;; (('citb-firehose-3) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+
+    ;; (('citb-donut-1) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+
+    ;; (('citb-disc-a-10) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/4 pie - 
+    ;; (('citb-disc-a-11) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/4 pie - 
+    ;; (('citb-disc-a-12) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/4 pie - 
+    ;; (('citb-disc-a-13) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/4 pie - 
+    ;; (('citb-disc-a-14) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/4 pie - 
+    ;; (('citb-disc-a-15) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/4 pie - 
+    ;; (('citb-disc-a-16) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/4 pie - 
+    
+    ;; (('citb-disc-b-12) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
+    ;; (('citb-disc-b-13) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
+    ;; (('citb-disc-b-14) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
+    ;; (('citb-disc-b-16) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
+    ;; (('citb-disc-b-17) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
+    ;; (('citb-disc-b-18) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
+    ;; (('citb-disc-b-19) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
+    ;; (('citb-disc-b-20) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
+    ;; (('citb-disc-b-21) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
+    ;; (('citb-disc-b-22) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
+
+    ;; (('citb-disc-c-4) (set-vector-meters! (-> arg0 extra trans) ))  ;; 3/4 pie - 
+    ;; (('citb-disc-c-5) (set-vector-meters! (-> arg0 extra trans) ))  ;; 3/4 pie - 
+    ;; (('citb-disc-c-6) (set-vector-meters! (-> arg0 extra trans) ))  ;; 3/4 pie - 
+    ;; (('citb-disc-c-10) (set-vector-meters! (-> arg0 extra trans) ))  ;; 3/4 pie - 
+
+    ;; (('citb-disc-d-2) (set-vector-meters! (-> arg0 extra trans) ))  ;; full pie - 
+    
+    ;; (('citb-button-30) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('citb-drop-plat-294) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('citb-button-31) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    
+    ;; (('citb-button-28) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('citb-drop-plat-365) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('citb-button-32) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+
+    ;; (('citb-button-33) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('citb-drop-plat-367) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('citb-button-34) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+
+    ;; (('citb-button-35) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('citb-drop-plat-376) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+
+    ;; (('citb-button-36) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('citb-drop-plat-242) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('citb-button-41) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+
+    ;; (('citb-button-38) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('citb-drop-plat-335) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+
+    ;; (('citb-button-39) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('citb-drop-plat-366) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('citb-button-40) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    
+    ;; (('babak-391) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('babak-392) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('babak-393) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('babak-394) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    ;; (('babak-396) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+
+
     )
   )
