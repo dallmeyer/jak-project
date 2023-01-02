@@ -263,6 +263,7 @@
   *plat-eco-lit-sg*
   )
 
+(define-extern mod-override-plat-path (function plat entity-actor none))
 (defmethod init-from-entity! plat-eco ((obj plat-eco) (arg0 entity-actor))
   (set! (-> obj mask) (logior (process-mask platform) (-> obj mask)))
   (set! (-> obj notice-dist) (res-lump-float arg0 'notice-dist :default -1.0))
@@ -280,6 +281,7 @@
   (update-transforms! (-> obj root-override))
   (set! (-> obj part) (create-launch-control (-> *part-group-id-table* 107) obj))
   (set! (-> obj path) (new 'process 'curve-control obj 'path -1000000000.0))
+  (mod-override-plat-path obj arg0)
   (logior! (-> obj path flags) (path-control-flag display draw-line draw-point draw-text))
   (set! (-> obj fact)
         (new 'process 'fact-info obj (pickup-type eco-pill-random) (-> *FACT-bank* default-pill-inc))

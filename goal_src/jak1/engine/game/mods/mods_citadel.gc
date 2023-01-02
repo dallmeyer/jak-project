@@ -3,22 +3,22 @@
 
 (defmacro mod-citadel-run-each-frame ()
   `(begin
-    ;; (mod-move-ecovent "ecovent-248" (static-vector-meters ))  ;; yellow - 
-    ;; (mod-move-ecovent "ecovent-249" (static-vector-meters ))  ;; red - 
-    ;; (mod-move-ecovent "ecovent-250" (static-vector-meters ))  ;; blue - 
-    (mod-move-ecovent "ecovent-283" (static-vector-meters 2595.96 -23.0 -4638.16))  ;; blue - on awning in launcher room
+    (mod-move-ecovent "ecovent-248" (static-vector-meters 2850.51  24.94 -4795.30))  ;; yellow - box after pizzas on path to top of citadel
+    (mod-move-ecovent "ecovent-249" (static-vector-meters 2951.6157 -8.6212 -4665.8764))  ;; red - ambush tunnel, @ orig yellow vent
+    (mod-move-ecovent "ecovent-250" (static-vector-meters 2708.3908 -23.0000 -4907.8979))  ;; blue - middle of donut in firehose room
+    (mod-move-ecovent "ecovent-283" (static-vector-meters 2649.97  8.12 -4624.71))  ;; blue - on awning in launcher room
 
-    ;; (mod-move-eco "eco-269" (static-vector-meters ))  ;; blue - 
-    ;; (mod-move-eco "eco-270" (static-vector-meters ))  ;; blue - 
-    ;; (mod-move-eco "eco-271" (static-vector-meters ))  ;; blue - 
-    (mod-move-eco "eco-287" (static-vector-meters 2595.96 -20.5 -4638.16))  ;; blue - first launcher
+    (mod-move-eco "eco-269" (static-vector-meters 2641.98 -22.0 -4715.56))  ;; blue - far side of shortcut
+    (mod-move-eco "eco-270" (static-vector-meters 2676.04 -19.0 -4779.85))  ;; blue - exit side of launcher room
+    (mod-move-eco "eco-271" (static-vector-meters 2678.98  11.8 -4770.05))  ;; blue - awning above exit in launcher room
+    (mod-move-eco "eco-287" (static-vector-meters 2594.30 -22.0 -4628.22))  ;; blue - first launcher
     (mod-move-eco "eco-288" (static-vector-meters 2620.81  -22.0 -4676.64))  ;; blue - first shortcut launcher
-    ;; (mod-move-eco "eco-289" (static-vector-meters ))  ;; blue - 
-    ;; (mod-move-eco "eco-290" (static-vector-meters ))  ;; blue - 
-    ;; (mod-move-eco "eco-291" (static-vector-meters ))  ;; blue - 
-    ;; (mod-move-eco "eco-292" (static-vector-meters ))  ;; blue - 
-    ;; (mod-move-eco "eco-293" (static-vector-meters ))  ;; blue - 
-    ;; (mod-move-eco "eco-322" (static-vector-meters ))  ;; blue - 
+    (mod-move-eco "eco-289" (static-vector-meters 2529.84 -22.0 -4602.28))  ;; blue - path along left/back
+    (mod-move-eco "eco-290" (static-vector-meters 2551.71 -22.0 -4676.85))  ;; blue - central path
+    (mod-move-eco "eco-291" (static-vector-meters 2498.31 -22.0 -4659.16))  ;; blue - back path
+    (mod-move-eco "eco-292" (static-vector-meters 2536.95 -22.0 -4745.47))  ;; blue - central path
+    (mod-move-eco "eco-293" (static-vector-meters 2578.13 -22.0 -4787.19))  ;; blue - central path
+    (mod-move-eco "eco-322" (static-vector-meters 2700.08  -2.0 -4869.73))  ;; blue - on wooden plat in firehose room
     )
   )
   
@@ -40,33 +40,33 @@
     (('money-4941) (set-vector-meters! (-> arg0 extra trans) 2773.8 17.9 -4891.5))  ;; up/around to right from ^
     (('money-4942) (set-vector-meters! (-> arg0 extra trans) 2745.33  24.2 -4908.56))  ;; up from ^ / crate-2996
     (('money-4943) (set-vector-meters! (-> arg0 extra trans) 2764.31  22.2 -4908.32))  ;; around from ^
-    ;; (('money-4944) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4945) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4946) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4947) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4948) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4949) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4950) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4951) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4952) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4953) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4954) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4955) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4956) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4957) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4958) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4959) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4960) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4961) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4962) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4963) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4964) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4965) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4966) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4967) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4968) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4969) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4970) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('money-4944) (set-vector-meters! (-> arg0 extra trans) 2635.0  25.9 -4698.2))  ;; launcher room, on spike/bone along shortcut
+    (('money-4945) (set-vector-meters! (-> arg0 extra trans) 2546.9  13.9 -4604.6))  ;; launcher room, on spike/bone along back path
+    (('money-4946) (set-vector-meters! (-> arg0 extra trans) 2870.86  31.9 -4779.8))  ;; top of balls above redsage, boosted into ceiling jump from plats up to top of citadel
+    (('money-4947) (set-vector-meters! (-> arg0 extra trans) 2677.46 -11.2 -4637.0))  ;; up on lamp in tunnel to launcher room
+    (('money-4948) (set-vector-meters! (-> arg0 extra trans) 2685.2  -8.7 -4639.5))  ;; up in curled ceiling in tunnel to launcher room
+    (('money-4949) (set-vector-meters! (-> arg0 extra trans) 2759.0  -2.5 -4768.0))  ;; in blue sage cage
+    (('money-4950) (set-vector-meters! (-> arg0 extra trans) 2717.39  13.1 -4753.03))  ;; on blue ball above yellow sage cage (drop from above)
+    (('money-4951) (set-vector-meters! (-> arg0 extra trans) 2688.38  11.90 -4764.91))  ;; on awning above yellow sage cage (RJ spin or extended from ^)
+    (('money-4952) (set-vector-meters! (-> arg0 extra trans) 2717.86 -18.5 -4753.8))  ;; in yellow sage cage
+    (('money-4953) (set-vector-meters! (-> arg0 extra trans) 2732.1655 -13.7 -4730.4677))  ;; on eco plat outside yellow sage cage
+    (('money-4954) (set-vector-meters! (-> arg0 extra trans) 2700.71 -23.0 -4774.5))  ;; ceiling jump under wooden plat near yellow sage cage
+    (('money-4955) (set-vector-meters! (-> arg0 extra trans) 2844.4  30.0 -4805.7))  ;; corner of box at top of pizzas on path to top of citadel
+    (('money-4956) (set-vector-meters! (-> arg0 extra trans) 2871.52  -4.0 -4746.3))  ;; in red sage cage
+    (('money-4957) (set-vector-meters! (-> arg0 extra trans) 2857.36  15.2 -4746.64))  ;; on arm to blue ball above red sage cage (citadel skip v2)
+    (('money-4958) (set-vector-meters! (-> arg0 extra trans) 2953.17  10.4 -4787.29))  ;; in curled ceiling above orig red eco vent in ambush
+    (('money-4959) (set-vector-meters! (-> arg0 extra trans) 2949.18   7.7 -4755.0))  ;; ambush tunnel, on exposed lamp
+    (('money-4960) (set-vector-meters! (-> arg0 extra trans) 2954.2   11.1  -4750.1))  ;; ambush tunnel, in wires in ceiling
+    (('money-4961) (set-vector-meters! (-> arg0 extra trans) 2947.1   4.5 -4673.1))  ;; ambush tunnel, on exposed lamp
+    (('money-4962) (set-vector-meters! (-> arg0 extra trans) 2949.8   8.3 -4682.5))  ;; ambush tunnel, in wires in ceiling
+    (('money-4963) (set-vector-meters! (-> arg0 extra trans) 2951.6   6.3 -4702.0))  ;; ambush tunnel, in curled ceiling (zoom > extended from ^)
+    (('money-4964) (set-vector-meters! (-> arg0 extra trans) 2812.58  57.6 -4685.95))  ;; begin generator for green sage cage
+    (('money-4965) (set-vector-meters! (-> arg0 extra trans) 2797.93  15.1 -4640.77))  ;; on arm to blue ball above green sage cage (fake citadel skip v2)
+    (('money-4966) (set-vector-meters! (-> arg0 extra trans) 2794.15  13.0 -4626.02))  ;; blue ball above green sage cage
+    (('money-4967) (set-vector-meters! (-> arg0 extra trans) 2793.9   3.0 -4597.0))  ;; awning above entrance, jump from ^
+    (('money-4968) (set-vector-meters! (-> arg0 extra trans) 2844.77  -4.2 -4760.23))  ;; stray blue eco plat outside red sage cage
+    (('money-4969) (set-vector-meters! (-> arg0 extra trans) 2875.3  13.9 -4717.15))  ;; on spike/bone near red sage cage
+    (('money-4970) (set-vector-meters! (-> arg0 extra trans) 2897.9  24.6 -4767.8))  ;; awning above red sage cage (jump from balls above, crate-2999)
     ;; (('money-4971) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('money-4972) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('money-4973) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
@@ -99,23 +99,23 @@
     ;; (('money-5000) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('money-5001) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
 
-    ;; (('crate-3245) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-3246) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-3247) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-3248) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('crate-3249) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('crate-3245) (set-vector-meters! (-> arg0 extra trans) 2770.88  -3.03 -4785.00))  ;; behind generator for blue sage cage (yelloweco/jump from top)
+    (('crate-3246) (set-vector-meters! (-> arg0 extra trans) 2875.64 -30.13 -4700.52))  ;; plat with babak in before pizzas to red sage cage (yelloweco/jump from top)
+    (('crate-3247) (set-vector-meters! (-> arg0 extra trans) 2770.03 -34.99 -4630.90))  ;; near entrance (yelloweco/jump from top - ledge grab ftw)
+    (('crate-3248) (set-vector-meters! (-> arg0 extra trans) 2826.53  57.10 -4725.94))  ;; top of citadel (yellow eco)
+    (('crate-3249) (set-vector-meters! (-> arg0 extra trans) 2808.62 -34.86 -4602.76))  ;; near entrance (yelloweco/jump from top/greensagecage blueball)
 
     (('orb-cache-top-31) (set-vector-meters! (-> arg0 extra trans) 2758.9  12.86 -4767.4))  ;; 30 - blue ball on top of blue sage cage
-    ;; (('orb-cache-top-32) (set-vector-meters! (-> arg0 extra trans) ))  ;; 30 - 
-    ;; (('orb-cache-top-33) (set-vector-meters! (-> arg0 extra trans) ))  ;; 30 - 
+    (('orb-cache-top-32) (set-vector-meters! (-> arg0 extra trans) 2677.72  54.5 -4770.0))  ;; 30 - top top above exit in launcher room (use citb-launcher-3)
+    (('orb-cache-top-33) (set-vector-meters! (-> arg0 extra trans) 2696.00 -14.39 -4679.93))  ;; 30 - orig scout fly around corner from yellow sage cage, outside launcher room
 
     ;; FLIES
     (('crate-2996) (set-vector-meters! (-> arg0 extra trans) 2744.18  23.5 -4901.49))  ;; zoomwalk into extended across to other balls, or up from money-4940
     (('crate-2997) (set-vector-meters! (-> arg0 extra trans) 2793.0  -7.85 -4844.2))  ;; on awning above entrance in room to blue sage, zoomwalk to extended from money-4936
     (('crate-2998) (set-vector-meters! (-> arg0 extra trans) 2651.28  54.7 -4624.8))  ;; on awning above entrance in launcher room 
-    ;; (('crate-2999) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('crate-3000) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-    ;; (('crate-3001) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    (('crate-2999) (set-vector-meters! (-> arg0 extra trans) 2877.91  51.33 -4783.76))  ;; top of balls above redsage, boosted into ceiling jump from plats up to top of citadel
+    (('crate-3000) (set-vector-meters! (-> arg0 extra trans) 2872.31  12.46 -4749.68))  ;; blue ball above red sage cage (citadel skip v2)
+    (('crate-3001) (set-vector-meters! (-> arg0 extra trans) 2794.83  -5.39 -4627.91  ))  ;; in green sage cage
     ;; (('crate-3002) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     
     ;; CELLS
@@ -149,21 +149,11 @@
     ;; (('citb-stair-plat-6) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
 
     (('citb-launcher-1) (set-vector-meters! (-> arg0 extra trans) 2642.70   7.0 -4624.29))  ;; on awning above entrance in launcher room
-    (('citb-launcher-2) (set-vector-meters! (-> arg0 extra trans) 2595.96 -23.0 -4638.16))  ;; boosted out to this, use to get to ^
-    (('citb-launcher-3) (set-vector-meters! (-> arg0 extra trans) 2620.81  -23.0 -4676.64))  ;; shortcut thru room
-    ;; (('citb-launcher-4) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
-    ;; (('citb-launcher-5) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
-    ;; (('citb-launcher-6) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
-    ;; (('citb-launcher-7) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
-    ;; (('citb-launcher-8) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
-    ;; (('citb-launcher-9) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
-    ;; (('citb-launcher-10) (set-vector-meters! (-> arg0 extra trans) ))  ;; circling - 
-    ;; (('citb-launcher-12) (set-vector-meters! (-> arg0 extra trans) ))  ;; circling - 
-    ;; (('citb-launcher-11) (set-vector-meters! (-> arg0 extra trans) ))  ;; circling - 
-    ;; (('citb-launcher-13) (set-vector-meters! (-> arg0 extra trans) ))  ;; circling - 
+    (('citb-launcher-2) (set-vector-meters! (-> arg0 extra trans) 2594.30  -23.0 -4628.22))  ;; boosted out to this, use to get to ^
+    (('citb-launcher-3) (set-vector-meters! (-> arg0 extra trans) 2673.48   9.6 -4773.2))  ;; on arning above exit in launcher room (use for orb-cache-top-32)
 
     ;; (('citb-plat-eco-1) (set-vector-meters! (-> arg0 extra trans) ))  ;; up and down - 
-    ;; (('citb-plat-eco-2) (set-vector-meters! (-> arg0 extra trans) ))  ;; up and down - 
+    (('citb-plat-eco-2) (set-vector-meters! (-> arg0 extra trans) 2732.1655 -14.6321 -4730.4677))  ;; up and down - 
     ;; (('citb-plat-eco-3) (set-vector-meters! (-> arg0 extra trans) ))  ;; up and down angled - 
 
     ;; (('citb-chain-plat-11) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
@@ -203,7 +193,7 @@
     ;; (('citb-disc-b-22) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
 
     ;; (('citb-disc-c-4) (set-vector-meters! (-> arg0 extra trans) ))  ;; 3/4 pie - 
-    ;; (('citb-disc-c-5) (set-vector-meters! (-> arg0 extra trans) ))  ;; 3/4 pie - 
+    (('citb-disc-c-5) (set-vector-meters! (-> arg0 extra trans) 2725.0 -15.95 -4691.5))  ;; 3/4 pie - after yellow sage cage, pulled out from wall
     ;; (('citb-disc-c-6) (set-vector-meters! (-> arg0 extra trans) ))  ;; 3/4 pie - 
     ;; (('citb-disc-c-10) (set-vector-meters! (-> arg0 extra trans) ))  ;; 3/4 pie - 
 

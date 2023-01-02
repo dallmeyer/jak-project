@@ -89,6 +89,7 @@
   (fop17 17)         ;; engine doesn't check it, set on babak near jungleb exit and in robot room.
   (eco-blocked 18)
   (respawn 19)
+  (mod-applied 20)
   )
 
 ;; Each individual enemy and pickup process will allocate a fact-info on its process heap.
