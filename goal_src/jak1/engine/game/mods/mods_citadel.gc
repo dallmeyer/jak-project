@@ -21,6 +21,32 @@
     (mod-move-eco "eco-322" (static-vector-meters 2700.08  -2.0 -4869.73))  ;; blue - on wooden plat in firehose room
 
     (mod-no-money-bob "money-4983") ;; in torch
+
+    ;; (('citb-button-30) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (set-pd-quat "citb-drop-plat-294" -0.25 -0.25  0.25 0.3)  ;; tilted to make you tilt
+    ;; (('citb-button-31) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    
+    ;; (('citb-button-28) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (set-pd-quat "citb-drop-plat-365" -0.25 0.25  0.25 -0.3)  ;; tilted to make you tilt
+    ;; (('citb-button-32) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+
+    ;; (('citb-button-33) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (set-pd-quat "citb-drop-plat-367" -0.25 0.25  0.25 -0.3)  ;; tilted to make you tilt
+    ;; (('citb-button-34) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+
+    ;; (('citb-button-35) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (set-pd-quat "citb-drop-plat-376" -0.25 0.25  0.25 -0.3)  ;; tilted to make you tilt
+
+    ;; (('citb-button-36) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (set-pd-quat "citb-drop-plat-242" -0.25 0.25  0.25 -0.3)  ;; tilted to make you tilt
+    ;; (('citb-button-41) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+
+    ;; (('citb-button-38) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (set-pd-quat "citb-drop-plat-335" 0.25 -0.25  0.25 0.25)  ;; tilted to make you tilt
+
+    ;; (('citb-button-39) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (set-pd-quat "citb-drop-plat-366" -0.25 -0.25  0.25 -0.3)  ;; tilted to make you tilt
+    ;; (('citb-button-40) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     )
   )
   
@@ -79,7 +105,6 @@
     (('money-4978) (set-vector-meters! (-> arg0 extra trans) 2816.0 -24.5 -4725.3))  ;; ^
     (('money-4979) (set-vector-meters! (-> arg0 extra trans) 2794.2 -24.5 -4737.7))  ;; ^
     (('money-4980) (set-vector-meters! (-> arg0 extra trans) 2772.0 -24.5 -4725.3))  ;; ^
-    (('money-4981) (set-vector-meters! (-> arg0 extra trans) 2772.1 -24.5 -4700.1))  ;; ^
     (('money-4982) (set-vector-meters! (-> arg0 extra trans) 2793.9 -24.5 -4686.7))  ;; ^
     (('money-4983) (set-vector-meters! (-> arg0 extra trans) 2831.6606 -20.2 -4680.3579))  ;; in torch near start of pizza path to red sage (boosted from here to money-4972)
     (('money-4984) (set-vector-meters! (-> arg0 extra trans) 2797.79 -29.0 -4781.96))  ;; falling colored plats
@@ -99,7 +124,8 @@
       (('money-4998) (set-vector-meters! (-> arg0 extra trans) 2989.64  -8.3 -4638.02))  ;; ^
       (('money-4999) (set-vector-meters! (-> arg0 extra trans) 2986.24  -8.3 -4650.11))  ;; ^
     (('money-5000) (set-vector-meters! (-> arg0 extra trans) 2761.96 -29.0 -4686.71))  ;; falling colored plats
-    (('money-5001) (set-vector-meters! (-> arg0 extra trans) 2734.02 -29.0 -4739.56))  ;; falling colored plats
+    (('money-5001) (set-vector-meters! (-> arg0 extra trans) 2723.81 -29.0 -4745.37))  ;; falling colored plats
+      (('money-4981) (set-vector-meters! (-> arg0 extra trans) 2738.60 -29.0 -4737.94  ))  ;; ^
 
     (('crate-3245) (set-vector-meters! (-> arg0 extra trans) 2770.88  -3.03 -4785.00))  ;; behind generator for blue sage cage (yelloweco/jump from top)
     (('crate-3246) (set-vector-meters! (-> arg0 extra trans) 2875.64 -30.13 -4700.52))  ;; plat with babak in before pizzas to red sage cage (yelloweco/jump from top)
@@ -154,10 +180,6 @@
     (('citb-launcher-2) (set-vector-meters! (-> arg0 extra trans) 2594.30  -23.0 -4628.22))  ;; boosted out to this, use to get to ^
     (('citb-launcher-3) (set-vector-meters! (-> arg0 extra trans) 2673.48   9.6 -4773.2))  ;; on arning above exit in launcher room (use for orb-cache-top-32)
 
-    ;; (('citb-plat-eco-1) (set-vector-meters! (-> arg0 extra trans) ))  ;; up and down - 
-    (('citb-plat-eco-2) (set-vector-meters! (-> arg0 extra trans) 2732.1655 -14.6321 -4730.4677))  ;; up and down - 
-    ;; (('citb-plat-eco-3) (set-vector-meters! (-> arg0 extra trans) ))  ;; up and down angled - 
-
     ;; (('citb-chain-plat-11) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('citb-chain-plat-12) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
     ;; (('citb-chain-plat-13) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
@@ -200,32 +222,6 @@
     (('citb-disc-c-10) (set-vector-meters! (-> arg0 extra trans) 2875.8200 -27.0000 -4678.5224))  ;; 3/4 pie - start of pizza path to red sage
 
     (('citb-disc-d-2) (set-vector-meters! (-> arg0 extra trans) 2858.37  55.0 -4663.3))  ;; full pie - up near top of citadel/red/green sage (use for crate-3002)
-
-    ;; (('citb-button-30) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    (('citb-drop-plat-294) (set-vector! (-> arg0 quat) -0.25 -0.25  0.25 0.3))  ;; tilted to make you tilt
-    ;; (('citb-button-31) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    
-    ;; (('citb-button-28) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    (('citb-drop-plat-365) (set-vector! (-> arg0 quat) -0.25 0.25  0.25 -0.3))  ;; tilted to make you tilt
-    ;; (('citb-button-32) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-
-    ;; (('citb-button-33) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    (('citb-drop-plat-367) (set-vector! (-> arg0 quat) -0.25 0.25  0.25 -0.3))  ;; tilted to make you tilt
-    ;; (('citb-button-34) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-
-    ;; (('citb-button-35) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    (('citb-drop-plat-376) (set-vector! (-> arg0 quat) -0.25 0.25  0.25 -0.3))  ;; tilted to make you tilt
-
-    ;; (('citb-button-36) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    (('citb-drop-plat-242) (set-vector! (-> arg0 quat) -0.25 0.25  0.25 -0.3))  ;; tilted to make you tilt
-    ;; (('citb-button-41) (set-vector-meters! (-> arg0 extra trans) ))  ;;
-
-    ;; (('citb-button-38) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    (('citb-drop-plat-335) (set-vector! (-> arg0 quat) 0.25 -0.25  0.25 0.25))  ;; tilted to make you tilt
-
-    ;; (('citb-button-39) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    (('citb-drop-plat-366) (set-vector! (-> arg0 quat) -0.25 -0.25  0.25 -0.3))  ;; tilted to make you tilt
-    ;; (('citb-button-40) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     
     ;; (('babak-391) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
     ;; (('babak-392) (set-vector-meters! (-> arg0 extra trans) ))  ;;  

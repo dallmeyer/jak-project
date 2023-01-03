@@ -56,6 +56,27 @@
     )
   )
 
+(defmacro move-pd-str (actor-name x y z)
+  `(let ((pd (the process-drawable (process-by-ename ,actor-name)))
+         (vec (static-vector-meters ,x ,y ,z)))
+    (when pd
+      (vector-copy-no-w! (-> pd root trans) vec)
+      (vector-copy-no-w! (-> pd root-override trans) vec)
+      (vector-copy-no-w! (-> pd root-override root-prim prim-core world-sphere) vec)
+      )
+    (none)
+    )
+  )
+
+(defmacro set-pd-quat (actor-name x y z w)
+  `(let ((pd (the process-drawable (process-by-ename ,actor-name))))
+    (when pd
+      (set-vector! (-> pd root quat) ,x ,y ,z ,w)
+      )
+    (none)
+    )
+  )
+
 (defun override-fuel-cell-position ((arg0 entity-actor) (x float) (y float) (z float))
   (format 0 "override-fuel-cell-pos for ~P~%" arg0)
   (when arg0
