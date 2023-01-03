@@ -19,6 +19,8 @@
     (mod-move-eco "eco-292" (static-vector-meters 2536.95 -22.0 -4745.47))  ;; blue - central path
     (mod-move-eco "eco-293" (static-vector-meters 2578.13 -22.0 -4787.19))  ;; blue - central path
     (mod-move-eco "eco-322" (static-vector-meters 2700.08  -2.0 -4869.73))  ;; blue - on wooden plat in firehose room
+
+    (mod-no-money-bob "money-4983") ;; in torch
     )
   )
   
@@ -67,37 +69,37 @@
     (('money-4968) (set-vector-meters! (-> arg0 extra trans) 2844.77  -4.2 -4760.23))  ;; stray blue eco plat outside red sage cage
     (('money-4969) (set-vector-meters! (-> arg0 extra trans) 2875.3  13.9 -4717.15))  ;; on spike/bone near red sage cage
     (('money-4970) (set-vector-meters! (-> arg0 extra trans) 2897.9  24.6 -4767.8))  ;; awning above red sage cage (jump from balls above, crate-2999)
-    ;; (('money-4971) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4972) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4973) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4974) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4975) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4976) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4977) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4978) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4979) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4980) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4981) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4982) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4983) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4984) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4985) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4986) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4987) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4988) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4989) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4990) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4991) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4992) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4993) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4994) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4995) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4996) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4997) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4998) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-4999) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-5000) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('money-5001) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('money-4972) (set-vector-meters! (-> arg0 extra trans) 2824.89 -19.21 -4701.03))  ;; between start/pizza path to red sage, boosted from torch near robot to far plat
+    (('money-4973) (set-vector-meters! (-> arg0 extra trans) 2793.3   1.5 -4831.42))  ;; awning above entrance to room to bluesage, jump from 3/4 pie top of citadel
+    (('money-4974) (set-vector-meters! (-> arg0 extra trans) 2793.79  50.6 -4790.28))  ;; atop 3/4 pie near top of citadel, blue sage
+    (('money-4975) (set-vector-meters! (-> arg0 extra trans) 2858.37  55.6 -4663.3))  ;; atop full pie near top of citadel, green/red sage
+    (('money-4976) (set-vector-meters! (-> arg0 extra trans) 2687.93  11.6 -4643.7))  ;; awning outside entrance to launcher room, jump from 3/4 pie top of citadel
+    (('money-4977) (set-vector-meters! (-> arg0 extra trans) 2727.6  50.6 -4660.0))  ;; atop 3/4 pie near top of citadel, over entrance to launcher room
+    (('money-4971) (set-vector-meters! (-> arg0 extra trans) 2772.0 -24.5 -4699.9))  ;; near robot, behind barrier (free all sages first)
+    (('money-4978) (set-vector-meters! (-> arg0 extra trans) 2816.0 -24.5 -4725.3))  ;; ^
+    (('money-4979) (set-vector-meters! (-> arg0 extra trans) 2794.2 -24.5 -4737.7))  ;; ^
+    (('money-4980) (set-vector-meters! (-> arg0 extra trans) 2772.0 -24.5 -4725.3))  ;; ^
+    (('money-4981) (set-vector-meters! (-> arg0 extra trans) 2772.1 -24.5 -4700.1))  ;; ^
+    (('money-4982) (set-vector-meters! (-> arg0 extra trans) 2793.9 -24.5 -4686.7))  ;; ^
+    (('money-4983) (set-vector-meters! (-> arg0 extra trans) 2831.6606 -20.2 -4680.3579))  ;; in torch near start of pizza path to red sage (boosted from here to money-4972)
+    (('money-4984) (set-vector-meters! (-> arg0 extra trans) 2797.79 -29.0 -4781.96))  ;; falling colored plats
+      (('money-4985) (set-vector-meters! (-> arg0 extra trans) 2790.20 -29.0 -4794.01))  ;; ^
+      (('money-4986) (set-vector-meters! (-> arg0 extra trans) 2790.11 -29.0 -4810.64))  ;; ^
+      (('money-4987) (set-vector-meters! (-> arg0 extra trans) 2798.07 -29.0 -4813.65))  ;; ^
+    (('money-4988) (set-vector-meters! (-> arg0 extra trans) 2846.08 -29.0 -4716.47))  ;; falling colored plats
+      (('money-4989) (set-vector-meters! (-> arg0 extra trans) 2858.51 -29.0 -4721.19))  ;; ^
+      (('money-4990) (set-vector-meters! (-> arg0 extra trans) 2866.49 -29.0 -4716.93))  ;; ^
+    (('money-4991) (set-vector-meters! (-> arg0 extra trans) 2862.52 -29.0 -4749.78))  ;; falling colored plats
+      (('money-4992) (set-vector-meters! (-> arg0 extra trans) 2852.94 -29.0 -4740.43))  ;; ^
+      (('money-4993) (set-vector-meters! (-> arg0 extra trans) 2840.81 -29.0 -4739.29))  ;; ^
+    (('money-4994) (set-vector-meters! (-> arg0 extra trans) 2803.56 -24.70 -4663.87))  ;; falling colored plats
+      (('money-4995) (set-vector-meters! (-> arg0 extra trans) 2795.88 -24.0 -4667.70))  ;; ^
+    (('money-4996) (set-vector-meters! (-> arg0 extra trans) 2982.37  -8.3 -4618.56))  ;; falling colored plats
+      (('money-4997) (set-vector-meters! (-> arg0 extra trans) 2985.90  -8.3 -4627.12))  ;; ^
+      (('money-4998) (set-vector-meters! (-> arg0 extra trans) 2989.64  -8.3 -4638.02))  ;; ^
+      (('money-4999) (set-vector-meters! (-> arg0 extra trans) 2986.24  -8.3 -4650.11))  ;; ^
+    (('money-5000) (set-vector-meters! (-> arg0 extra trans) 2761.96 -29.0 -4686.71))  ;; falling colored plats
+    (('money-5001) (set-vector-meters! (-> arg0 extra trans) 2734.02 -29.0 -4739.56))  ;; falling colored plats
 
     (('crate-3245) (set-vector-meters! (-> arg0 extra trans) 2770.88  -3.03 -4785.00))  ;; behind generator for blue sage cage (yelloweco/jump from top)
     (('crate-3246) (set-vector-meters! (-> arg0 extra trans) 2875.64 -30.13 -4700.52))  ;; plat with babak in before pizzas to red sage cage (yelloweco/jump from top)
@@ -116,7 +118,7 @@
     (('crate-2999) (set-vector-meters! (-> arg0 extra trans) 2877.91  51.33 -4783.76))  ;; top of balls above redsage, boosted into ceiling jump from plats up to top of citadel
     (('crate-3000) (set-vector-meters! (-> arg0 extra trans) 2872.31  12.46 -4749.68))  ;; blue ball above red sage cage (citadel skip v2)
     (('crate-3001) (set-vector-meters! (-> arg0 extra trans) 2794.83  -5.39 -4627.91  ))  ;; in green sage cage
-    ;; (('crate-3002) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+    (('crate-3002) (set-vector-meters! (-> arg0 extra trans) 2902.22  23.5 -4642.8))  ;; awning above pizza path to red sage, boosted from full pie from top of citadel
     
     ;; CELLS
     ;; (('citb-generator-2) (set-vector-meters! (-> arg0 extra trans) ))  ;; yellow sage
@@ -141,12 +143,12 @@
     ;; (('citb-plat-17) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
     ;; (('citb-plat-18) (set-vector-meters! (-> arg0 extra trans) ))  ;; back and forth - 
 
-    ;; (('citb-stair-plat-1) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('citb-stair-plat-2) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('citb-stair-plat-3) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('citb-stair-plat-4) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('citb-stair-plat-5) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
-    ;; (('citb-stair-plat-6) (set-vector-meters! (-> arg0 extra trans) ))  ;; 
+    (('citb-stair-plat-1) (set-vector-meters! (-> arg0 extra trans) 2815.1604 -29.0000 -4754.8364))  ;; shift left
+    (('citb-stair-plat-2) (set-vector-meters! (-> arg0 extra trans) 2825.5339 -22.0000 -4755.7080))  ;; shift right
+    (('citb-stair-plat-3) (set-vector-meters! (-> arg0 extra trans) 2823.4392 -15.0000 -4768.4877))  ;; shift left
+    (('citb-stair-plat-4) (set-vector-meters! (-> arg0 extra trans) 2833.6572 -8.0000 -4768.7871))  ;; shift right
+    (('citb-stair-plat-5) (set-vector-meters! (-> arg0 extra trans) 2831.5512 -1.0000 -4781.4404))  ;; shift left
+    (('citb-stair-plat-6) (set-vector-meters! (-> arg0 extra trans) 2841.9904 6.0000 -4781.8310))  ;; shift right
 
     (('citb-launcher-1) (set-vector-meters! (-> arg0 extra trans) 2642.70   7.0 -4624.29))  ;; on awning above entrance in launcher room
     (('citb-launcher-2) (set-vector-meters! (-> arg0 extra trans) 2594.30  -23.0 -4628.22))  ;; boosted out to this, use to get to ^
@@ -177,52 +179,52 @@
     ;; (('citb-disc-a-11) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/4 pie - 
     ;; (('citb-disc-a-12) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/4 pie - 
     ;; (('citb-disc-a-13) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/4 pie - 
-    ;; (('citb-disc-a-14) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/4 pie - 
-    ;; (('citb-disc-a-15) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/4 pie - 
-    ;; (('citb-disc-a-16) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/4 pie - 
+    (('citb-disc-a-14) (set-vector-meters! (-> arg0 extra trans) 2698.7827 -18.0000 -4710.6616))  ;; 1/4 pie - after yellow sage cage
+    (('citb-disc-a-15) (set-vector-meters! (-> arg0 extra trans) 2690.6379 -19.9480 -4737.5585))  ;; 1/4 pie - after yellow sage cage
+      (('citb-disc-a-16) (set-vector-meters! (-> arg0 extra trans) 2690.6379 -19.9480 -4737.5585))  ;; 1/4 pie - after yellow sage cage
     
     ;; (('citb-disc-b-12) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
-    ;; (('citb-disc-b-13) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
-    ;; (('citb-disc-b-14) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
+    (('citb-disc-b-13) (set-vector-meters! (-> arg0 extra trans) 2737.8232 -30.0000 -4673.1264))  ;; 1/2 pie - early path to launcher room
+    (('citb-disc-b-14) (set-vector-meters! (-> arg0 extra trans) 2875.6437 -21.0000 -4648.4555))  ;; 1/2 pie - mid pizza path to red sage
     ;; (('citb-disc-b-16) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
     ;; (('citb-disc-b-17) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
     ;; (('citb-disc-b-18) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
     ;; (('citb-disc-b-19) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
     ;; (('citb-disc-b-20) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
-    ;; (('citb-disc-b-21) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
+    (('citb-disc-b-21) (set-vector-meters! (-> arg0 extra trans) 2925.9699 -9.0000 -4627.0322))  ;; 1/2 pie - replacing 3/4 pie in pizza path to red sage
     ;; (('citb-disc-b-22) (set-vector-meters! (-> arg0 extra trans) ))  ;; 1/2 pie - 
 
-    ;; (('citb-disc-c-4) (set-vector-meters! (-> arg0 extra trans) ))  ;; 3/4 pie - 
+    (('citb-disc-c-4) (set-vector-meters! (-> arg0 extra trans) 2793.79  50.0 -4790.28))  ;; 3/4 pie - up top near top of citadel/blue sage (use for money-4973)
     (('citb-disc-c-5) (set-vector-meters! (-> arg0 extra trans) 2725.0 -15.95 -4691.5))  ;; 3/4 pie - after yellow sage cage, pulled out from wall
-    ;; (('citb-disc-c-6) (set-vector-meters! (-> arg0 extra trans) ))  ;; 3/4 pie - 
-    ;; (('citb-disc-c-10) (set-vector-meters! (-> arg0 extra trans) ))  ;; 3/4 pie - 
+    (('citb-disc-c-6) (set-vector-meters! (-> arg0 extra trans) 2727.6  50.0 -4660.0))  ;; 3/4 pie - up top near top of citadel, above entrance to launcher room (use for money-4976)
+    (('citb-disc-c-10) (set-vector-meters! (-> arg0 extra trans) 2875.8200 -27.0000 -4678.5224))  ;; 3/4 pie - start of pizza path to red sage
 
-    ;; (('citb-disc-d-2) (set-vector-meters! (-> arg0 extra trans) ))  ;; full pie - 
-    
+    (('citb-disc-d-2) (set-vector-meters! (-> arg0 extra trans) 2858.37  55.0 -4663.3))  ;; full pie - up near top of citadel/red/green sage (use for crate-3002)
+
     ;; (('citb-button-30) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    ;; (('citb-drop-plat-294) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (('citb-drop-plat-294) (set-vector! (-> arg0 quat) -0.25 -0.25  0.25 0.3))  ;; tilted to make you tilt
     ;; (('citb-button-31) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
     
     ;; (('citb-button-28) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    ;; (('citb-drop-plat-365) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (('citb-drop-plat-365) (set-vector! (-> arg0 quat) -0.25 0.25  0.25 -0.3))  ;; tilted to make you tilt
     ;; (('citb-button-32) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
 
     ;; (('citb-button-33) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    ;; (('citb-drop-plat-367) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (('citb-drop-plat-367) (set-vector! (-> arg0 quat) -0.25 0.25  0.25 -0.3))  ;; tilted to make you tilt
     ;; (('citb-button-34) (set-vector-meters! (-> arg0 extra trans) ))  ;;
 
     ;; (('citb-button-35) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    ;; (('citb-drop-plat-376) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (('citb-drop-plat-376) (set-vector! (-> arg0 quat) -0.25 0.25  0.25 -0.3))  ;; tilted to make you tilt
 
     ;; (('citb-button-36) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    ;; (('citb-drop-plat-242) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (('citb-drop-plat-242) (set-vector! (-> arg0 quat) -0.25 0.25  0.25 -0.3))  ;; tilted to make you tilt
     ;; (('citb-button-41) (set-vector-meters! (-> arg0 extra trans) ))  ;;
 
     ;; (('citb-button-38) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    ;; (('citb-drop-plat-335) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (('citb-drop-plat-335) (set-vector! (-> arg0 quat) 0.25 -0.25  0.25 0.25))  ;; tilted to make you tilt
 
     ;; (('citb-button-39) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
-    ;; (('citb-drop-plat-366) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
+    (('citb-drop-plat-366) (set-vector! (-> arg0 quat) -0.25 -0.25  0.25 -0.3))  ;; tilted to make you tilt
     ;; (('citb-button-40) (set-vector-meters! (-> arg0 extra trans) ))  ;;
     
     ;; (('babak-391) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
