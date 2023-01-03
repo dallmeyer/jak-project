@@ -1,6 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
+(define *finalboss-flip-launcher?* #f)
+
 (defmacro mod-citadel-run-each-frame ()
   `(begin
     (mod-move-ecovent "ecovent-248" (static-vector-meters 2850.51  24.94 -4795.30))  ;; yellow - box after pizzas on path to top of citadel
@@ -47,6 +49,19 @@
     ;; (('citb-button-39) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
     (set-pd-quat "citb-drop-plat-366" -0.25 -0.25  0.25 -0.3)  ;; tilted to make you tilt
     ;; (('citb-button-40) (set-vector-meters! (-> arg0 extra trans) ))  ;;
+
+    (cond
+      (*finalboss-flip-launcher?*
+        ;; flip ecovent and launcher
+        (move-pd-str "launcher-121" 3022.3857 481.3070 -4830.9995)
+        (mod-move-ecovent "ecovent-274" (static-vector-meters 3022.3796 481.2386 -4871.1630))
+        )
+      (else
+        ;; normal orientation
+        (move-pd-str "launcher-121" 3022.3796 481.2386 -4871.1630)
+        (mod-move-ecovent "ecovent-274" (static-vector-meters 3022.3857 481.3070 -4830.9995))
+        )
+      )
     )
   )
   
@@ -229,6 +244,17 @@
     ;; (('babak-394) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
     ;; (('babak-396) (set-vector-meters! (-> arg0 extra trans) ))  ;;  
 
+    ;; FINAL BOSS
+    (('crate-3250) (set-vector-meters! (-> arg0 extra trans) 2782.64 540.84 -4772.16))  ;; green - wall towards 100 cell door, right, behind invis wall
+    (('crate-3251) (set-vector-meters! (-> arg0 extra trans) 2790.64 540.84 -4761.07))  ;; big green - wall towards 100 cell door, right side
+    (('crate-3252) (set-vector-meters! (-> arg0 extra trans) 2746.83 540.84 -4727.06))  ;; big green - wall towards 100 cell door, left side
+    (('crate-3253) (set-vector-meters! (-> arg0 extra trans) 2761.77 540.84 -4753.70))  ;; big green - inside 100 cell door :P
+    (('crate-3254) (set-vector-meters! (-> arg0 extra trans) 2756.18 540.84 -4735.24))  ;; blue - left side of 100 cell door
+    (('crate-3255) (set-vector-meters! (-> arg0 extra trans) 2772.08 540.84 -4761.90))  ;; green - way back behind, left
+    (('crate-3256) (set-vector-meters! (-> arg0 extra trans) 2737.97 540.84 -4738.06))  ;; green - wall towards 100 cell door, left, behind invis wall
+    (('crate-3257) (set-vector-meters! (-> arg0 extra trans) 2780.23 540.84 -4753.93))  ;; blue - right side of 100 cell door
+    (('crate-3258) (set-vector-meters! (-> arg0 extra trans) 2750.46 540.84 -4745.61))  ;; green - way back behind, right
+    (('crate-3259) (set-vector-meters! (-> arg0 extra trans) 2756.01 540.83 -4760.31))  ;; big green - way back behind, center
 
     )
   )

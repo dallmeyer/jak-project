@@ -1486,6 +1486,8 @@
   (or (ja-group? robotboss-red-hit-ja) (ja-group? robotboss-red-last-hit-ja))
   )
 
+(define-extern *finalboss-flip-launcher?* symbol)
+
 (defstate robotboss-red-wait (robotboss)
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
     (case arg2
@@ -1583,11 +1585,8 @@
       (let ((t9-4 send-event-function)
             (v1-27 (-> self alts 11))
             )
-        (t9-4
-          (if v1-27
-              (-> v1-27 extra process)
-              )
-          a1-3
+        (when v1-27
+          (t9-4 (-> v1-27 extra process) a1-3)
           )
         )
       )
@@ -1606,12 +1605,10 @@
          (let ((t9-3 send-event-function)
                (v1-3 (-> self alts 11))
                )
-           (t9-3
-             (if v1-3
-                 (-> v1-3 extra process)
-                 )
-             a1-0
-             )
+          (when v1-3
+            (set! *finalboss-flip-launcher?* (= (knuth-rand-int-range 0 2) 0))
+            (t9-3 (-> v1-3 extra process) a1-0)
+            )
            )
          )
        (set! (-> self took-hit) #f)
@@ -1952,12 +1949,10 @@
          (let ((t9-2 send-event-function)
                (v1-5 (-> self alts 11))
                )
-           (t9-2
-             (if v1-5
-                 (-> v1-5 extra process)
-                 )
-             a1-2
-             )
+          (when v1-5
+            (set! *finalboss-flip-launcher?* (= (knuth-rand-int-range 0 2) 0))
+            (t9-2 (-> v1-5 extra process) a1-2)
+            )
            )
          )
        )
@@ -2062,11 +2057,8 @@
       (let ((t9-4 send-event-function)
             (v1-27 (-> self alts 11))
             )
-        (t9-4
-          (if v1-27
-              (-> v1-27 extra process)
-              )
-          a1-3
+        (when v1-27
+          (t9-4 (-> v1-27 extra process) a1-3)
           )
         )
       )
@@ -2488,11 +2480,8 @@
     (let ((t9-1 send-event-function)
           (v1-1 (-> self alts 11))
           )
-      (t9-1
-        (if v1-1
-            (-> v1-1 extra process)
-            )
-        a1-0
+      (when v1-1
+        (t9-1 (-> v1-1 extra process) a1-0)
         )
       )
     )
@@ -2586,6 +2575,7 @@
     (cond
       ((zero? (-> self hits-to-go))
        (play-ambient (-> self ambient) "GOL-AM06" #t (the-as vector #f))
+       (set! *finalboss-flip-launcher?* (= (knuth-rand-int-range 0 2) 0))
        (robotboss-blue-done)
        (set! (-> self took-hit) #f)
        (+! (-> self hits-to-go) -1)
