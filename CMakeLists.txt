@@ -243,10 +243,21 @@ add_subdirectory(third-party/tiny_gltf EXCLUDE_FROM_ALL)
 add_subdirectory(third-party/xdelta3 EXCLUDE_FROM_ALL)
 
 #CURL
+
+include_directories(/opt/NVIDIA_GPU_Computing_SDK/OpenCL/common/inc)
+link_directories(/opt/NVIDIA_GPU_Computing_SDK/OpenCL/common/<lib or something similar>)
+
+
+
+
+
+#include_directories(third-party/curlpp/include)
 include_directories(third-party/curlpp/include)
+
 include_directories(third-party/curl/include)
 add_subdirectory(third-party/curl EXCLUDE_FROM_ALL)
 add_subdirectory(third-party/curlpp EXCLUDE_FROM_ALL)
+link_directories(third-party/curl/lib)
 
 # discord rich presence
 include_directories(third-party/discord-rpc/include)

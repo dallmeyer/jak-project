@@ -5,6 +5,8 @@ enable_language(ASM_NASM)
 set(CMAKE_ASM_NASM_SOURCE_FILE_EXTENSIONS ${CMAKE_ASM_NASM_SOURCE_FILE_EXTENSIONS} asm)
 set(CMAKE_ASM_NASM_COMPILE_OBJECT "<CMAKE_ASM_NASM_COMPILER> <INCLUDES> -f ${CMAKE_ASM_NASM_OBJECT_FORMAT} -o <OBJECT> <SOURCE>")
 set_source_files_properties(kernel/asm_funcs.asm PROPERTIES COMPILE_FLAGS "-g")
+include_directories(third-party/curlpp/include)
+include_directories(third-party/curl/include)
 set(RUNTIME_SOURCE
         runtime.cpp
         discord.cpp
@@ -203,6 +205,8 @@ endfunction()
 write_svnrev_h()
 
 add_subdirectory(sound)
+
+
 
 # we build the runtime as a static library.
 add_library(runtime STATIC ${RUNTIME_SOURCE} "../third-party/glad/src/glad.c")
