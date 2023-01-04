@@ -175,6 +175,7 @@ include_directories(SYSTEM third-party/inja)
 # build repl library
 add_subdirectory(third-party/replxx EXCLUDE_FROM_ALL)
 
+
 # SQLite - Jak 2/3's built in editor
 add_definitions(-DHAVE_USLEEP=1)
 add_definitions(-DSQLITE_THREADSAFE=1)
@@ -185,8 +186,6 @@ string(REPLACE " ${THIRDPARTY_IGNORED_WARNINGS} " "" CMAKE_CXX_FLAGS "${CMAKE_CX
 
 # build common library
 add_subdirectory(common)
-add_subdirectory(third-party/curl EXCLUDE_FROM_ALL)
-add_subdirectory(third-party/curlpp EXCLUDE_FROM_ALL)
 
 # build decompiler
 add_subdirectory(decompiler)
@@ -242,6 +241,12 @@ add_subdirectory(third-party/fmt EXCLUDE_FROM_ALL)
 add_subdirectory(third-party/stb_image EXCLUDE_FROM_ALL)
 add_subdirectory(third-party/tiny_gltf EXCLUDE_FROM_ALL)
 add_subdirectory(third-party/xdelta3 EXCLUDE_FROM_ALL)
+
+#CURL
+include_directories(third-party/curlpp/include)
+include_directories(third-party/curl/include)
+add_subdirectory(third-party/curl EXCLUDE_FROM_ALL)
+add_subdirectory(third-party/curlpp EXCLUDE_FROM_ALL)
 
 # discord rich presence
 include_directories(third-party/discord-rpc/include)
