@@ -35,7 +35,8 @@
     ;; Update auto-splitter
     (update-autosplit-info-jak1)
     ;; Draw info to the screen
-    (speedrun-draw-settings))
+    ;; (speedrun-draw-settings)
+    )
 
   (when (-> *pc-settings* baby-mode?)
     ;; call post-init function
@@ -88,19 +89,19 @@
   (none)
   )
 
-(defun speedrun-draw-settings ()
-  "Draw speedrun related settings in the bottom left corner"
-  (when (and (-> *pc-settings* speedrunner-mode?)
-             (< (-> *autosplit-info-jak1* num-power-cells) 1))
-    (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
-                                      (bucket-id debug-no-zbuf))
-      (draw-string-xy (string-format "OpenGOAL Version: ~S ~%Speedrun mode: ~A ~%Cutscene Skips ~A"
-                                     *pc-settings-built-sha*
-                                     (-> *pc-settings* speedrunner-mode?)
-                                     (-> *pc-settings* cutscene-skips?))
-                      buf 0 (- 224 (* 8 4)) (font-color flat-yellow) (font-flags shadow kerning))))
-  (none)
-  )
+;; (defun speedrun-draw-settings ()
+;;   "Draw speedrun related settings in the bottom left corner"
+;;   (when (and (-> *pc-settings* speedrunner-mode?)
+;;              (< (-> *autosplit-info-jak1* num-power-cells) 1))
+;;     (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
+;;                                       (bucket-id debug-no-zbuf))
+;;       (draw-string-xy (string-format "OpenGOAL Version: ~S ~%Speedrun mode: ~A ~%Cutscene Skips ~A"
+;;                                      *pc-settings-built-sha*
+;;                                      (-> *pc-settings* speedrunner-mode?)
+;;                                      (-> *pc-settings* cutscene-skips?))
+;;                       buf 0 (- 224 (* 8 4)) (font-color flat-yellow) (font-flags shadow kerning))))
+;;   (none)
+;;   )
 
 (define *tmp-continue-point* (new 'static 'continue-point
                              :name "tmp"
@@ -145,11 +146,11 @@
   (set! (-> dst vis-nick) (-> src vis-nick))
   (when (-> *level* level0)
     (set! (-> dst lev0) (-> *level* level0 name))
-    (set! (-> dst disp0) (-> *level* level0 display?))
+    (set! (-> dst disp0) 'display)
     )
   (when (-> *level* level1)
     (set! (-> dst lev1) (-> *level* level1 name))
-    (set! (-> dst disp1) (-> *level* level0 display?))
+    (set! (-> dst disp1) 'display)
     )
   (none)
   )
