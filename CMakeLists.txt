@@ -185,6 +185,8 @@ string(REPLACE " ${THIRDPARTY_IGNORED_WARNINGS} " "" CMAKE_CXX_FLAGS "${CMAKE_CX
 
 # build common library
 add_subdirectory(common)
+add_subdirectory(third-party/curl EXCLUDE_FROM_ALL)
+add_subdirectory(third-party/curlpp EXCLUDE_FROM_ALL)
 
 # build decompiler
 add_subdirectory(decompiler)
