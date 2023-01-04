@@ -699,10 +699,10 @@
       (add-ee-profile-frame 'draw :g #x80)
 
       (with-profiler "menu"
-        (with-pc
-          (if 
-            (and (-> *pc-settings* display-sha) *debug-segment*)
-            (draw-build-revision)))
+        ;; (with-pc
+        ;;   (if 
+        ;;     (and (-> *pc-settings* display-sha) *debug-segment*)
+        ;;     (draw-build-revision)))
         (*menu-hook*)
         (add-ee-profile-frame 'draw :g #x40)
 

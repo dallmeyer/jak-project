@@ -1061,7 +1061,7 @@
       (('money 'eco 'crate 'crate-buzzer 'fisher 'fuel-cell 'orb-cache-top 'yakow 'plat 'plat-flip 
        'eggtop 'logtrap 'launcher 'racer 'spike 'balloon 'crate-darkeco-cluster 'aphid 'pelican 
        'ventblue 'harvester 'flutflutegg 'grottopole 'bird-lady-beach 'ecoventrock 'part-tracker 
-       'citb-disc-a 'citb-disc-b 'citb-disc-c 'citb-disc-d 'citb-launcher
+       'citb-disc-a 'citb-disc-b 'citb-disc-c 'citb-disc-d 'citb-launcher 'scarecrow-a 'scarecrow-b
        'junglesnake 'darkvine 'ecovent 'mistycannon 'babak-with-cannon 'periscope 'springbox 
        'plant-boss 'warrior 'gambler 'pontoonten 'pontoonfive 'blue-eco-charger 'swamp-spike 'dark-crystal
        'swamp-tetherrock 'swamp-rat-nest 'swamp-rock 'flutflut 'tar-plat 'balance-plat 'race-ring 'snow-bunny
@@ -2016,13 +2016,13 @@
         (when (and (= (-> s4-4 nickname) (-> *load-state* vis-nick)) ;; vis for A
                    (not (-> s4-4 inside-boxes?))                     ;; but not in A
                    )
-          (if (and (= *cheat-mode* 'debug) (-> s4-4 other inside-boxes?))
-              (format
-                *stdcon*
-                "~3LForcing outside of ~A [bad split boxes]~%~0L"
-                (-> s4-4 other name)
-                )
-              )
+          ;; (if (and (= *cheat-mode* 'debug) (-> s4-4 other inside-boxes?))
+          ;;     (format
+          ;;       *stdcon*
+          ;;       "~3LForcing outside of ~A [bad split boxes]~%~0L"
+          ;;       (-> s4-4 other name)
+          ;;       )
+          ;;     )
           (set! (-> s4-4 other inside-boxes?) #f)
           )
         )
@@ -2034,7 +2034,7 @@
   (cond
     ((not (or (-> obj level0 inside-boxes?) (-> obj level1 inside-boxes?)))
      (when (or (-> obj level0 vis-info 0) (-> obj level1 vis-info 0))
-       (if (= *cheat-mode* 'debug)
+       (if #f ;; (= *cheat-mode* 'debug)
            (format *stdcon* "~3Loutside of bsp~%~0L")
            )
        )

@@ -637,12 +637,12 @@
         (set! (-> self cur-channel) (if (-> self spool-name)
                                         (pc-subtitle-channel hint-named)
                                         (pc-subtitle-channel hint)))
-        (if *debug-segment*
-            (format *stdcon* "hint detected!~%~3L~A~0L/~3L#x~X~0L~%current str pos is ~D (~3L~D~0L)~%"
-                    (-> self spool-name) (-> self text-id)
-                    (current-str-pos (-> *hint-semaphore* 0 sound-id))
-                    (subtitle-str-adjust (current-str-pos (-> *hint-semaphore* 0 sound-id))))
-            )
+        ;; (if *debug-segment*
+        ;;     (format *stdcon* "hint detected!~%~3L~A~0L/~3L#x~X~0L~%current str pos is ~D (~3L~D~0L)~%"
+        ;;             (-> self spool-name) (-> self text-id)
+        ;;             (current-str-pos (-> *hint-semaphore* 0 sound-id))
+        ;;             (subtitle-str-adjust (current-str-pos (-> *hint-semaphore* 0 sound-id))))
+        ;;     )
         )
       )
 

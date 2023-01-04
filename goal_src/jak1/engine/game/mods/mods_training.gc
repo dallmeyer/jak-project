@@ -3,7 +3,13 @@
 
 (defmacro mod-training-run-each-frame ()
   `(begin
+    (mod-move-eco "eco-180" (static-vector-meters -1308.0  31.0 854.3)) ;; blue - @ orig ecovent, for door
+    (mod-move-eco "eco-181" (static-vector-meters -1254.8  41.80 987.5)) ;; blue - mosquito (so cant abuse)
+    (mod-move-eco "eco-182" (static-vector-meters -1255.3	27.87	673.17)) ;; blue - mosquito (so cant abuse)
+    (mod-move-eco "eco-183" (static-vector-meters -1255.8	13.93	358.83)) ;; blue - mosquito (so cant abuse)
+    (mod-move-eco "eco-184" (static-vector-meters -1256.5  44.5  986.6)) ;; blue - mosquito (so cant abuse)
 
+    (mod-move-ecovent "ecovent-245" (static-vector-meters -1247.0  14.30 945.8))  ;; blue - in pool of central geyser 
     )
   )
   
@@ -76,6 +82,18 @@
     (('fuel-cell-54) (override-fuel-cell-position arg0 -1308.0 37.0 1047.9))   ;; floating above start/end
     
     ;; MISC
-    ;; scarecrows?
+    (('scarecrow-a-1) (set-vector-meters! (-> arg0 extra trans) -1295.0  10.5 1049.48))  ;; on rock near start
+    (('scarecrow-a-3) (set-vector-meters! (-> arg0 extra trans) -1269.82  13.2 1016.70))  ;; on steps near start
+    (('scarecrow-a-5) (set-vector-meters! (-> arg0 extra trans) -1208.64  15.0 992.1))  ;; @ orig first cell
+    (('scarecrow-a-6) (set-vector-meters! (-> arg0 extra trans) -1261.0  58.92 889.95))  ;; on low eco route, above new cell
+    (('scarecrow-a-8) (set-vector-meters! (-> arg0 extra trans) -1135.6  9.3 918.9))  ;; geyser pool in back
+    (('scarecrow-a-9) (set-vector-meters! (-> arg0 extra trans) -1140.5  24.5 1013.02))  ;; looking out at geyser @ orig flies
+    (('scarecrow-a-10) (set-vector-meters! (-> arg0 extra trans) -1145.15  7.5 904.2))  ;; geyser pool in back
+    (('scarecrow-a-11) (set-vector-meters! (-> arg0 extra trans) -1274.9  44.17 881.1))  ;; on low eco route, before new cell
+    
+    ;; (('scarecrow-b-2) (set-vector-meters! (-> arg0 extra trans) ))  ;; NO TOUCHY - orig cell cutscene skip route, now for flies
+    (('scarecrow-b-3) (set-vector-meters! (-> arg0 extra trans) -993.51  -1.8 831.75))  ;; out in water behind back geyser
+    (('scarecrow-b-4) (set-vector-meters! (-> arg0 extra trans) -1312.15  38.78 930.45))  ;; on pole by small green eco circle
+    
     )
   )
