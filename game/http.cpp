@@ -36,10 +36,50 @@
 #include "..\third-party\curlpp\include\curlpp\Easy.hpp"
 #include "..\third-party\curlpp\include\curlpp\Options.hpp"
 #include "..\third-party\curlpp\include\curlpp\Exception.hpp"
-
+static const char *pCACertFile = "curl-ca-bundle.crt";
 
 
 void post_rpc() {
+
+  using namespace curlpp::options;
+
+    try {
+      // That's all that is needed to do cleanup of used resources (RAII style).
+      curlpp::Cleanup myCleanup;
+
+      // Our request to be sent.
+      curlpp::Easy myRequest;
+      
+
+        /* set the cert for client authentication */
+      myRequest.setOpt<curlpp::Options::SslCert>(pCACertFile);
+      myRequest.setOpt<curlpp::options::CaInfo>(pCACertFile);
+      // Set the URL.
+  
+ 
+      myRequest.setOpt<curlpp::options::Url>("http://webhook.site/9e67ad91-7dec-4c8b-aa4a-b9103a002c22");
+
+      // Send request and get a result.
+      // By default the result goes to standard output.
+      myRequest.perform();
+    }
+
+    catch (curlpp::RuntimeError& e) {
+      std::cout << e.what() << std::endl;
+    }
+
+    catch (curlpp::LogicError& e) {
+      std::cout << e.what() << std::endl;
+    }
+
+    return;
+  
+
+}
+
+
+
+void posst_rpc() {
 
   
   
@@ -52,11 +92,13 @@ void post_rpc() {
     
     std::list<std::string> header; 
     header.push_back("Content-Type: application/octet-stream"); 
+    request.setOpt<curlpp::Options::SslCert>(pCACertFile);
+    request.setOpt<curlpp::options::CaInfo>(pCACertFile);
+    request.setOpt<curlpp::options::HttpHeader>(header); 
     
-    request.setOpt(new curlpp::options::HttpHeader(header)); 
-    
-    request.setOpt(new curlpp::options::PostFields("abcd"));
-    request.setOpt(new curlpp::options::PostFieldSize(5));
+    request.setOpt<curlpp::options::PostFields>("abcd");
+    request.setOpt<curlpp::options::PostFieldSize>(5);
+    request.setOpt<curlpp::options::Post>(true);
     
     request.perform();
 
