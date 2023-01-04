@@ -24,7 +24,7 @@
 
 #include "curl_setup.h"
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #if defined(USE_THREADS_POSIX)
 #  ifdef HAVE_PTHREAD_H

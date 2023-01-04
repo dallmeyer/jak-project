@@ -88,8 +88,8 @@
 #ifndef CURL_DID_MEMORY_FUNC_TYPEDEFS /* only if not already done */
 /*
  * The following memory function replacement typedef's are COPIED from
- * curl/curl.h and MUST match the originals. We copy them to avoid having to
- * include curl/curl.h here. We avoid that include since it includes stdio.h
+ * third-party/curl/include/curl/curl.h and MUST match the originals. We copy them to avoid having to
+ * include third-party/curl/include/curl/curl.h here. We avoid that include since it includes stdio.h
  * and other headers that may get messed up with defines done here.
  */
 typedef void *(*curl_malloc_callback)(size_t size);

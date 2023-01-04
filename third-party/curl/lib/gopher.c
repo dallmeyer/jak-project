@@ -27,7 +27,7 @@
 #ifndef CURL_DISABLE_GOPHER
 
 #include "urldata.h"
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "transfer.h"
 #include "sendf.h"
 #include "cfilters.h"

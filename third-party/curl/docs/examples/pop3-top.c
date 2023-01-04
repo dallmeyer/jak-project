@@ -28,7 +28,7 @@
  */
 
 #include <stdio.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* This is a simple example showing how to retrieve only the headers of a mail
  * using libcurl's POP3 capabilities.

@@ -35,7 +35,7 @@
 #include <unistd.h>
 
 /* curl stuff */
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include <curl/mprintf.h>
 
 #ifndef CURLPIPE_MULTIPLEX

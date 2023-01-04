@@ -29,7 +29,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /*
  * This is a simple example show how to send an email using libcurl's SMTP

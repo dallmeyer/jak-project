@@ -27,7 +27,7 @@
  */
 #include <stdio.h>
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 static size_t wrfu(void *ptr,  size_t  size,  size_t  nmemb,  void *stream)
 {

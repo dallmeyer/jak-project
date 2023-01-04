@@ -28,7 +28,7 @@
  */
 
 #include <string.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* This is an example showing how to send mail using libcurl's SMTP
  * capabilities. It builds on the smtp-mail.c example to demonstrate how to use

@@ -29,7 +29,7 @@
 #include "../Exception.hpp"
 #include "../Types.hpp"
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #include <memory>
 

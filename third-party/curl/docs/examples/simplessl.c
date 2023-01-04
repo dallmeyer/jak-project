@@ -27,7 +27,7 @@
  */
 #include <stdio.h>
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* some requirements for this to work:
    1.   set pCertFile to the file with the client certificate

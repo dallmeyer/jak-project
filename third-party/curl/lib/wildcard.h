@@ -27,7 +27,7 @@
 #include "curl_setup.h"
 
 #ifndef CURL_DISABLE_FTP
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "llist.h"
 
 /* list of wildcard process states */

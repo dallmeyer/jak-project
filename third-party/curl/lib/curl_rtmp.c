@@ -33,7 +33,7 @@
 #include "progress.h" /* for Curl_pgrsSetUploadSize */
 #include "transfer.h"
 #include "warnless.h"
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include <librtmp/rtmp.h>
 #include "curl_memory.h"
 /* The last #include file should be: */

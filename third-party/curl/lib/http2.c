@@ -2318,7 +2318,7 @@ bool Curl_h2_http_1_1_error(struct Curl_easy *data)
 #else /* !USE_NGHTTP2 */
 
 /* Satisfy external references even if http2 is not compiled in. */
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 char *curl_pushheader_bynum(struct curl_pushheaders *h, size_t num)
 {

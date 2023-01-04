@@ -27,7 +27,7 @@
 #include "curl_setup.h"
 
 #ifdef USE_WINSOCK
-#include <curl/curl.h> /* for curl_socket_t */
+#include <third-party/curl/include/curl/curl.h> /* for curl_socket_t */
 #endif
 
 #define CURLX_FUNCTION_CAST(target_type, func) \

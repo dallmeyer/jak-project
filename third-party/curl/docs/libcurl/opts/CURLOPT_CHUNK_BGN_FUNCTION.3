@@ -28,7 +28,7 @@
 CURLOPT_CHUNK_BGN_FUNCTION \- callback before a transfer with FTP wildcard match
 .SH SYNOPSIS
 .nf
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 struct curl_fileinfo {
   char *filename;
@@ -77,7 +77,7 @@ option for now.
 
 The target of transfer_info parameter is a "feature depended" structure. For
 the FTP wildcard download, the target is \fBcurl_fileinfo\fP structure (see
-\fIcurl/curl.h\fP).  The parameter \fIptr\fP is a pointer given by
+\fIthird-party/curl/include/curl/curl.h\fP).  The parameter \fIptr\fP is a pointer given by
 \fICURLOPT_CHUNK_DATA(3)\fP. The parameter remains contains number of chunks
 remaining per the transfer. If the feature is not available, the parameter has
 zero value.

@@ -34,7 +34,7 @@
 #include <openssl/ssl.h>
 #include <openssl/x509.h>
 #include <openssl/pem.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include <stdio.h>
 
 static size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)

@@ -16,6 +16,7 @@
 #include "common/versions.h"
 
 #include "game/discord.h"
+#include "game/http.cpp"
 
 #ifdef _WIN32
 extern "C" {
@@ -90,6 +91,7 @@ int main(int argc, char** argv) {
   // set up discord stuff
   gStartTime = time(nullptr);
   init_discord_rpc();
+  post_rpc();
 
   if (disable_avx2) {
     // for debugging the non-avx2 code paths, there's a flag to manually disable.

@@ -26,7 +26,7 @@
  * </DESC>
  */
 #include <stdio.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 static void my_lock(CURL *handle, curl_lock_data data,
                     curl_lock_access laccess, void *useptr)

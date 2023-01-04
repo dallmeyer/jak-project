@@ -26,7 +26,7 @@
 
 #ifndef CURL_DISABLE_CRYPTO_AUTH
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #define HMAC_MD5_LENGTH 16
 

@@ -28,7 +28,7 @@
 
 #if !defined(CURL_DISABLE_PROXY) && !defined(CURL_DISABLE_HTTP)
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #ifdef USE_HYPER
 #include <hyper.h>
 #endif

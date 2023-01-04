@@ -123,8 +123,8 @@ libstubgss_la_DEPENDENCIES =
 endif
 
 
-lib1521.c: $(top_srcdir)/tests/libtest/mk-lib1521.pl $(top_srcdir)/include/curl/curl.h
-	@PERL@ $(top_srcdir)/tests/libtest/mk-lib1521.pl < $(top_srcdir)/include/curl/curl.h > lib1521.c
+lib1521.c: $(top_srcdir)/tests/libtest/mk-lib1521.pl $(top_srcdir)/include/third-party/curl/include/curl/curl.h
+	@PERL@ $(top_srcdir)/tests/libtest/mk-lib1521.pl < $(top_srcdir)/include/third-party/curl/include/curl/curl.h > lib1521.c
 
 CHECKSRC = $(CS_$(V))
 CS_0 = @echo "  RUN     " $@;

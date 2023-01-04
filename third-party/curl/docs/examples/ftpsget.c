@@ -24,7 +24,7 @@
 
 #include <stdio.h>
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* <DESC>
  * Get a single file from an FTPS server.

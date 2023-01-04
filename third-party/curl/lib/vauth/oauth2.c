@@ -29,7 +29,7 @@
 #if !defined(CURL_DISABLE_IMAP) || !defined(CURL_DISABLE_SMTP) || \
   !defined(CURL_DISABLE_POP3)
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "urldata.h"
 
 #include "vauth/vauth.h"

@@ -26,7 +26,7 @@
 
 /* should probably go into the public header */
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* generated table with all easy options */
 extern struct curl_easyoption Curl_easyopts[];

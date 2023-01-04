@@ -23,7 +23,7 @@
  ***************************************************************************/
 #include <stdio.h>
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* <DESC>
  * Similar to ftpget.c but also stores the received response-lines

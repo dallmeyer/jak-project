@@ -39,7 +39,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #define URL_BASE "http://speedtest.your.domain/"
 #define URL_1M   URL_BASE "file_1M.bin"

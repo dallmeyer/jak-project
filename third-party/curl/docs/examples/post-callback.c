@@ -27,7 +27,7 @@
  */
 #include <stdio.h>
 #include <string.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* silly test data to POST */
 static const char data[]="Lorem ipsum dolor sit amet, consectetur adipiscing "

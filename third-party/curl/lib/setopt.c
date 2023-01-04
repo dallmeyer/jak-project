@@ -410,7 +410,7 @@ CURLcode Curl_vsetopt(struct Curl_easy *data, CURLoption option, va_list param)
   case CURLOPT_TIMECONDITION:
     /*
      * Set HTTP time condition. This must be one of the defines in the
-     * curl/curl.h header file.
+     * third-party/curl/include/curl/curl.h header file.
      */
     arg = va_arg(param, long);
     if((arg < CURL_TIMECOND_NONE) || (arg >= CURL_TIMECOND_LAST))
@@ -899,7 +899,7 @@ CURLcode Curl_vsetopt(struct Curl_easy *data, CURLoption option, va_list param)
   case CURLOPT_HTTP_VERSION:
     /*
      * This sets a requested HTTP version to be used. The value is one of
-     * the listed enums in curl/curl.h.
+     * the listed enums in third-party/curl/include/curl/curl.h.
      */
     arg = va_arg(param, long);
     if(arg < CURL_HTTP_VERSION_NONE)

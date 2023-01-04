@@ -35,7 +35,7 @@
 #include <unistd.h>
 
 /* curl stuff */
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /*
  * Download an HTTP file and upload an FTP file simultaneously.

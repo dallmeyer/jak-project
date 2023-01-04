@@ -41,7 +41,7 @@ char *start_page = "https://www.reuters.com";
 #include <libxml/HTMLparser.h>
 #include <libxml/xpath.h>
 #include <libxml/uri.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>

@@ -40,7 +40,7 @@
 
 #include <stdio.h>
 #include <pthread.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #define NUMT 4
 

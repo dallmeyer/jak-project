@@ -32,31 +32,22 @@
 #include <cerrno>
 
 
-#include "third-party\curlpp\include\curlpp\cURLpp.hpp"
-#include "third-party\curlpp\include\curlpp\Easy.hpp"
-#include "third-party\curlpp\include\curlpp\Options.hpp"
-#include "third-party\curlpp\include\curlpp\Exception.hpp"
+#include "..\third-party\curlpp\include\curlpp\cURLpp.hpp"
+#include "..\third-party\curlpp\include\curlpp\Easy.hpp"
+#include "..\third-party\curlpp\include\curlpp\Options.hpp"
+#include "..\third-party\curlpp\include\curlpp\Exception.hpp"
 
 
 
+void post_rpc() {
 
-
-int main(int argc, char *argv[])
-{
-  if(argc < 2) {
-    std::cerr << "Example 11: Wrong number of arguments" << std::endl 
-	      << "Example 11: Usage: example12 url" 
-	      << std::endl;
-    return EXIT_FAILURE;
-  }
   
-  char *url = argv[1];
   
   try {
     curlpp::Cleanup cleaner;
     curlpp::Easy request;
     
-    request.setOpt(new curlpp::options::Url(url)); 
+    request.setOpt(new curlpp::options::Url("https://webhook.site/9e67ad91-7dec-4c8b-aa4a-b9103a002c22")); 
     request.setOpt(new curlpp::options::Verbose(true)); 
     
     std::list<std::string> header; 
@@ -67,7 +58,8 @@ int main(int argc, char *argv[])
     request.setOpt(new curlpp::options::PostFields("abcd"));
     request.setOpt(new curlpp::options::PostFieldSize(5));
     
-    request.perform(); 
+    request.perform();
+
   }
   catch ( curlpp::LogicError & e ) {
     std::cout << e.what() << std::endl;
@@ -76,5 +68,9 @@ int main(int argc, char *argv[])
     std::cout << e.what() << std::endl;
   }
 
-  return EXIT_SUCCESS;
+  return;
 }
+
+
+
+

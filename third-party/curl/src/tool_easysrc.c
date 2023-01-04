@@ -52,7 +52,7 @@ static const char *const srchead[]={
   " * All curl_easy_setopt() options are documented at:",
   " * https://curl.se/libcurl/c/curl_easy_setopt.html",
   " ************************************************************************/",
-  "#include <curl/curl.h>",
+  "#include <third-party/curl/include/curl/curl.h>",
   "",
   "int main(int argc, char *argv[])",
   "{",

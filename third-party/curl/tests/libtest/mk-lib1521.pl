@@ -24,7 +24,7 @@
 ###########################################################################
 
 # Usage:
-#   perl mk-lib1521.pl < ../../include/curl/curl.h > lib1521.c
+#   perl mk-lib1521.pl < ../../include/third-party/curl/include/curl/curl.h > lib1521.c
 
 # minimum and maximum long signed values
 my $minlong = "LONG_MIN";

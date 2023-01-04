@@ -28,7 +28,7 @@
 
 #ifdef USE_GSASL
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #include "vauth/vauth.h"
 #include "urldata.h"

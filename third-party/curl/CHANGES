@@ -920,7 +920,7 @@ Stefan Eissing (28 Nov 2022)
 
 Daniel Stenberg (28 Nov 2022)
 
-- include/curl/curl.h: bump the deprecated requirements to gcc 6.1
+- include/third-party/curl/include/curl/curl.h: bump the deprecated requirements to gcc 6.1
 
   Reported-by: Michael Kaufmann
   Fixes #9917
@@ -1556,7 +1556,7 @@ Daniel Stenberg (16 Nov 2022)
   Fixes #9903
   Closes #9925
 
-- include/curl/curl.h: bump the deprecated requirements to gcc 5.3
+- include/third-party/curl/include/curl/curl.h: bump the deprecated requirements to gcc 5.3
 
   Reported-by: Stephan Guilloux
   Fixes #9917

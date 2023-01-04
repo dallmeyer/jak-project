@@ -27,7 +27,7 @@
 #if !defined(CURL_DISABLE_RTSP) && !defined(USE_HYPER)
 
 #include "urldata.h"
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "transfer.h"
 #include "sendf.h"
 #include "multiif.h"

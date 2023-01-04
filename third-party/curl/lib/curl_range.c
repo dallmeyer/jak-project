@@ -23,7 +23,7 @@
  ***************************************************************************/
 
 #include "curl_setup.h"
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "curl_range.h"
 #include "sendf.h"
 #include "strtoofft.h"

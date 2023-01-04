@@ -24,7 +24,7 @@
 #ifndef SINGLE_THREADED_HPP
 #define SINGLE_THREADED_HPP
 
-#include "utilspp/NullType.hpp"
+#include "third-party/curlpp/include/utilspp/NullType.hpp"
 
 namespace utilspp
 {
@@ -47,6 +47,6 @@ namespace utilspp
       };
 }
 
-#include "utilspp/ThreadingSingle.inl"
+#include "third-party/curlpp/include/utilspp/ThreadingSingle.inl"
 
 #endif

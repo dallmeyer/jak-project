@@ -55,7 +55,7 @@ sub str2num {
 
 print <<EOS
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #define LIBCURL_HAS(x) \\
   (defined(x ## _FIRST) && (x ## _FIRST <= LIBCURL_VERSION_NUM) && \\

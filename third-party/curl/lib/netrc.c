@@ -29,7 +29,7 @@
 #include <pwd.h>
 #endif
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "netrc.h"
 #include "strtok.h"
 #include "strcase.h"

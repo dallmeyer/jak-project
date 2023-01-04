@@ -28,7 +28,7 @@
 
 #ifdef USE_WINDOWS_SSPI
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /*
  * When including the following three headers, it is mandatory to define either

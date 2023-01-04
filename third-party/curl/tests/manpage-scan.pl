@@ -45,7 +45,7 @@ use warnings;
 my $root=$ARGV[0] || ".";
 my $buildroot=$ARGV[1] || ".";
 my $syms = "$root/docs/libcurl/symbols-in-versions";
-my $curlh = "$root/include/curl/curl.h";
+my $curlh = "$root/include/third-party/curl/include/curl/curl.h";
 my $errors=0;
 
 # the prepopulated alias list is the CURLINFO_* defines that are used for the

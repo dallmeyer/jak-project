@@ -25,7 +25,7 @@
  * FTP wildcard pattern matching
  * </DESC>
  */
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include <stdio.h>
 
 struct callback_data {

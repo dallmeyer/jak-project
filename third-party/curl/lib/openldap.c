@@ -41,7 +41,7 @@
 #include <ldap.h>
 
 #include "urldata.h"
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "sendf.h"
 #include "vtls/vtls.h"
 #include "transfer.h"

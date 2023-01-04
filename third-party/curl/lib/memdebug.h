@@ -30,7 +30,7 @@
  * as well as the library. Do not mix with library internals!
  */
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "functypes.h"
 
 #if defined(__GNUC__) && __GNUC__ >= 3

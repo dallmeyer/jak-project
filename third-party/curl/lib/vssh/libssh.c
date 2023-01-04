@@ -51,7 +51,7 @@
 #include <inet.h>
 #endif
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "urldata.h"
 #include "sendf.h"
 #include "hostip.h"

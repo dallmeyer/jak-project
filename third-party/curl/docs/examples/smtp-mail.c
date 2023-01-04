@@ -29,7 +29,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /*
  * For an SMTP example using the multi interface please see smtp-multi.c.

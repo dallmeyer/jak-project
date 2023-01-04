@@ -34,7 +34,7 @@
 #include <unistd.h>
 
 /* curl stuff */
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #ifndef CURLPIPE_MULTIPLEX
 #error "too old libcurl, cannot do HTTP/2 server push!"

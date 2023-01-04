@@ -26,7 +26,7 @@
  * </DESC>
  */
 #include <stdio.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 struct data {
   char trace_ascii; /* 1 or 0 */

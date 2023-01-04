@@ -28,7 +28,7 @@
  */
 
 #include <stdio.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* This is a simple example showing how to delete an existing mailbox folder
  * using libcurl's IMAP capabilities.

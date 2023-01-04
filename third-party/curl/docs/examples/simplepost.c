@@ -27,7 +27,7 @@
  */
 #include <stdio.h>
 #include <string.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 int main(void)
 {

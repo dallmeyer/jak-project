@@ -31,7 +31,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #ifdef WIN32
 #  define FILENO(fp) _fileno(fp)

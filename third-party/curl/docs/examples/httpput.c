@@ -28,7 +28,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /*
  * This example shows an HTTP PUT operation. PUTs a file given as a command

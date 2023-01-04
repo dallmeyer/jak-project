@@ -57,7 +57,7 @@ include_directories(
   ${CURL_SOURCE_DIR}/tests/libtest
   ${CURL_SOURCE_DIR}/src
   ${CURL_BINARY_DIR}/lib          # To be able to reach "curl_config.h"
-  ${CURL_BINARY_DIR}/include      # To be able to reach "curl/curl.h"
+  ${CURL_BINARY_DIR}/include      # To be able to reach "third-party/curl/include/curl/curl.h"
 )
 
 foreach(_testfile ${UT_SRC})

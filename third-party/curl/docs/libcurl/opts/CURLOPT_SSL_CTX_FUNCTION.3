@@ -28,7 +28,7 @@
 CURLOPT_SSL_CTX_FUNCTION \- SSL context callback for OpenSSL, wolfSSL or mbedTLS
 .SH SYNOPSIS
 .nf
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 CURLcode ssl_ctx_callback(CURL *curl, void *ssl_ctx, void *userptr);
 
@@ -84,7 +84,7 @@ All TLS based protocols: HTTPS, FTPS, IMAPS, POP3S, SMTPS etc.
 /* OpenSSL specific */
 
 #include <openssl/ssl.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include <stdio.h>
 
 static CURLcode sslctx_function(CURL *curl, void *sslctx, void *parm)

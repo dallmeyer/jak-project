@@ -24,7 +24,7 @@
  *
  ***************************************************************************/
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /*
  * Only "raw" case insensitive strings. This is meant to be locale independent

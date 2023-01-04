@@ -63,7 +63,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #define MSG_OUT g_print   /* Change to "g_error" to write to stderr */
 #define SHOW_VERBOSE 0    /* Set to non-zero for libcurl messages */

@@ -31,7 +31,7 @@ function(setup_test TEST_NAME)          # ARGN are the files in the test
   include_directories(
     ${CURL_SOURCE_DIR}/lib          # To be able to reach "curl_setup_once.h"
     ${CURL_BINARY_DIR}/lib          # To be able to reach "curl_config.h"
-    ${CURL_BINARY_DIR}/include      # To be able to reach "curl/curl.h"
+    ${CURL_BINARY_DIR}/include      # To be able to reach "third-party/curl/include/curl/curl.h"
     ${CURL_SOURCE_DIR}/tests/libtest # To be able to build generated tests
     )
   if(USE_ARES)
@@ -75,10 +75,10 @@ endif()
 
 add_custom_command(
   OUTPUT lib1521.c
-  COMMAND ${PERL_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mk-lib1521.pl < ${CURL_SOURCE_DIR}/include/curl/curl.h > lib1521.c
+  COMMAND ${PERL_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mk-lib1521.pl < ${CURL_SOURCE_DIR}/include/third-party/curl/include/curl/curl.h > lib1521.c
   DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/mk-lib1521.pl"
-    "${CURL_SOURCE_DIR}/include/curl/curl.h"
+    "${CURL_SOURCE_DIR}/include/third-party/curl/include/curl/curl.h"
   VERBATIM)
 
 set_property(TARGET chkdecimalpoint

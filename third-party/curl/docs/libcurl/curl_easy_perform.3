@@ -27,7 +27,7 @@
 curl_easy_perform - perform a blocking file transfer
 .SH SYNOPSIS
 .nf
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 CURLcode curl_easy_perform(CURL *easy_handle);
 .fi
@@ -76,7 +76,7 @@ if(curl) {
 Always
 .SH RETURN VALUE
 CURLE_OK (0) means everything was OK, non-zero means an error occurred as
-.I <curl/curl.h>
+.I <third-party/curl/include/curl/curl.h>
 defines - see \fIlibcurl-errors(3)\fP. If the \fICURLOPT_ERRORBUFFER(3)\fP was
 set with \fIcurl_easy_setopt(3)\fP there will be a readable error message in
 the error buffer when non-zero is returned.

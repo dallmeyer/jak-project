@@ -28,7 +28,7 @@
 
 #include <stdio.h>
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* define this to switch off the use of ssh-agent in this program */
 #undef DISABLE_SSH_AGENT

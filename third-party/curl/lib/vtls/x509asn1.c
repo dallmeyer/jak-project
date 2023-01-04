@@ -42,7 +42,7 @@
 #define WANT_PARSEX509 /* ... uses Curl_parseX509() */
 #endif
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "urldata.h"
 #include "strcase.h"
 #include "curl_ctype.h"

@@ -144,7 +144,7 @@ typedef unsigned int curl_prot_t;
 
 #include "timeval.h"
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #include "http_chunks.h" /* for the structs and enum stuff */
 #include "hostip.h"

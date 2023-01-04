@@ -41,7 +41,7 @@
  * curl tool certainly uses libcurl's external interface.
  */
 
-#include <curl/curl.h> /* external interface */
+#include <third-party/curl/include/curl/curl.h> /* external interface */
 
 /*
  * Platform specific stuff.

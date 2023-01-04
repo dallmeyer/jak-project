@@ -145,7 +145,7 @@ CURLcode Curl_http_auth_act(struct Curl_easy *data);
 /* If only the PICKNONE bit is set, there has been a round-trip and we
    selected to use no auth at all. Ie, we actively select no auth, as opposed
    to not having one selected. The other CURLAUTH_* defines are present in the
-   public curl/curl.h header. */
+   public third-party/curl/include/curl/curl.h header. */
 #define CURLAUTH_PICKNONE (1<<30) /* don't use auth */
 
 /* MAX_INITIAL_POST_SIZE indicates the number of bytes that will make the POST

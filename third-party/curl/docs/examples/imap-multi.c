@@ -29,7 +29,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* This is a simple example showing how to fetch mail using libcurl's IMAP
  * capabilities. It builds on the imap-fetch.c example to demonstrate how to

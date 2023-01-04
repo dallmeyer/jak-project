@@ -31,7 +31,7 @@
 
 #include <stdio.h>
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include <gnutls/gnutls.h>
 #include <gnutls/x509.h>
 

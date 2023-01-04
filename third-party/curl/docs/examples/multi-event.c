@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <event2/event.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 struct event_base *base;
 CURLM *curl_handle;

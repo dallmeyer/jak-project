@@ -34,7 +34,7 @@
 #include <unistd.h>
 
 /* curl stuff */
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 typedef char bool;
 #define TRUE 1

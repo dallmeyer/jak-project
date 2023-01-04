@@ -31,7 +31,7 @@
  * be shared.
  */
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "timeval.h"
 
 struct connectdata;

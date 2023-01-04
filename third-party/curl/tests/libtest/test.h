@@ -31,7 +31,7 @@
 
 #include "curl_setup.h"
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #ifdef HAVE_SYS_SELECT_H
 /* since so many tests use select(), we can just as well include it here */

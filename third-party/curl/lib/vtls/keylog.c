@@ -24,7 +24,7 @@
 #include "curl_setup.h"
 
 #include "keylog.h"
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* The last #include files should be: */
 #include "curl_memory.h"

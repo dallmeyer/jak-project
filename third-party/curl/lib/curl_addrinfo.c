@@ -24,7 +24,7 @@
 
 #include "curl_setup.h"
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #ifdef HAVE_NETINET_IN_H
 #  include <netinet/in.h>

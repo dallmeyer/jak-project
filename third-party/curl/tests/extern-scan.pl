@@ -32,7 +32,7 @@ use warnings;
 my $root=$ARGV[0] || ".";
 
 my @incs = (
-    "$root/include/curl/curl.h",
+    "$root/include/third-party/curl/include/curl/curl.h",
     "$root/include/curl/easy.h",
     "$root/include/curl/mprintf.h",
     "$root/include/curl/multi.h",

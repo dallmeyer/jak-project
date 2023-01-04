@@ -28,7 +28,7 @@
 CURLOPT_SSL_CTX_DATA \- pointer passed to SSL context callback
 .SH SYNOPSIS
 .nf
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 CURLcode curl_easy_setopt(CURL *handle, CURLOPT_SSL_CTX_DATA, void *pointer);
 .fi
@@ -45,7 +45,7 @@ All TLS based protocols: HTTPS, FTPS, IMAPS, POP3S, SMTPS etc.
 /* OpenSSL specific */
 
 #include <openssl/ssl.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include <stdio.h>
 
 static CURLcode sslctx_function(CURL *curl, void *sslctx, void *parm)

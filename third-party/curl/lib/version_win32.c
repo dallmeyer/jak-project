@@ -26,7 +26,7 @@
 
 #if defined(WIN32)
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "version_win32.h"
 #include "warnless.h"
 

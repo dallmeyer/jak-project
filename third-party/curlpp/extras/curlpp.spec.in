@@ -59,14 +59,14 @@ rm -rf %{buildroot}
 %{_includedir}/curlpp/*.inl
 %{_includedir}/curlpp/*.h
 %dir %{_includedir}/curlpp/utilspp
-%dir %{_includedir}/curlpp/utilspp/singleton
-%{_includedir}/curlpp/utilspp/singleton/*.hpp
-%{_includedir}/curlpp/utilspp/singleton/*.inl
+%dir %{_includedir}/curlpp/third-party/curlpp/include/utilspp/singleton
+%{_includedir}/curlpp/third-party/curlpp/include/utilspp/singleton/*.hpp
+%{_includedir}/curlpp/third-party/curlpp/include/utilspp/singleton/*.inl
 %dir %{_includedir}/utilspp
-%{_includedir}/utilspp/*.hpp
-%{_includedir}/utilspp/*.inl
-%dir %{_includedir}/utilspp/functor
-%{_includedir}/utilspp/functor/*.hpp
+%{_includedir}/third-party/curlpp/include/utilspp/*.hpp
+%{_includedir}/third-party/curlpp/include/utilspp/*.inl
+%dir %{_includedir}/third-party/curlpp/include/utilspp/functor
+%{_includedir}/third-party/curlpp/include/utilspp/functor/*.hpp
 %{_libdir}/libcurlpp.la
 %{_libdir}/libcurlpp.a
 %{_libdir}/pkgconfig/curlpp.pc

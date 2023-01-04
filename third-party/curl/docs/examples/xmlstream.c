@@ -39,7 +39,7 @@
 #include <assert.h>
 
 #include <expat.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 struct MemoryStruct {
   char *memory;

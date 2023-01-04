@@ -27,7 +27,7 @@
  * </DESC>
  */
 #include <stdio.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL     3000000
 #define STOP_DOWNLOAD_AFTER_THIS_MANY_BYTES         6000

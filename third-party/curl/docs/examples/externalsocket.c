@@ -28,7 +28,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #ifdef WIN32
 #include <windows.h>

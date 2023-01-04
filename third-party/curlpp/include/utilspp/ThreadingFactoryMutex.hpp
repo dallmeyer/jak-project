@@ -40,6 +40,6 @@ namespace utilspp
       };
 }
 
-#include "utilspp/ThreadingFactoryMutex.inl"
+#include "third-party/curlpp/include/utilspp/ThreadingFactoryMutex.inl"
 
 #endif

@@ -28,7 +28,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* Auxiliary function that waits on the socket. */
 static int wait_on_socket(curl_socket_t sockfd, int for_recv, long timeout_ms)

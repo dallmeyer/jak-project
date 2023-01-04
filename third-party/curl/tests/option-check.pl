@@ -31,7 +31,7 @@ sub showline {
 
 my $root = $ARGV[0];
 
-open(F, "perl $root/lib/optiontable.pl < $root/include/curl/curl.h|");
+open(F, "perl $root/lib/optiontable.pl < $root/include/third-party/curl/include/curl/curl.h|");
 binmode F;
 my @gen=<F>;
 close(F);

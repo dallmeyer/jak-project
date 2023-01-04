@@ -83,7 +83,7 @@ void restore_signal_handlers(bool keep_sigalrm);
 
 #ifdef USE_UNIX_SOCKETS
 
-#include <curl/curl.h> /* for curl_socket_t */
+#include <third-party/curl/include/curl/curl.h> /* for curl_socket_t */
 
 #ifdef HAVE_SYS_UN_H
 #include <sys/un.h> /* for sockaddr_un */

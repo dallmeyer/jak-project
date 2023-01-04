@@ -69,7 +69,7 @@ callback.
 #include <time.h>
 #include <unistd.h>
 #include <sys/poll.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include <ev.h>
 #include <fcntl.h>
 #include <sys/stat.h>

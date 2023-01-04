@@ -31,7 +31,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /*
  * An SSL-enabled libcurl is required for this sample to work (at least one

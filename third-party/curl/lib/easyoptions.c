@@ -366,7 +366,7 @@ struct curl_easyoption Curl_easyopts[] = {
 #ifdef DEBUGBUILD
 /*
  * Curl_easyopts_check() is a debug-only function that returns non-zero
- * if this source file is not in sync with the options listed in curl/curl.h
+ * if this source file is not in sync with the options listed in third-party/curl/include/curl/curl.h
  */
 int Curl_easyopts_check(void)
 {

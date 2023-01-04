@@ -69,7 +69,7 @@
 #endif
 
 #include "urldata.h"
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "sendf.h"
 #include "escape.h"
 #include "progress.h"

@@ -53,7 +53,7 @@
 #endif
 
 #include "urldata.h"
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "transfer.h"
 #include "vtls/vtls.h"
 #include "url.h"
@@ -1059,7 +1059,7 @@ void curl_easy_reset(struct Curl_easy *data)
  * NOTE: if you have the receiving paused and you call this function to remove
  * the pausing, you may get your write callback called at this point.
  *
- * Action is a bitmask consisting of CURLPAUSE_* bits in curl/curl.h
+ * Action is a bitmask consisting of CURLPAUSE_* bits in third-party/curl/include/curl/curl.h
  *
  * NOTE: This is one of few API functions that are allowed to be called from
  * within a callback.

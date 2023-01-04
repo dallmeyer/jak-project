@@ -31,7 +31,7 @@
 #include <arpa/inet.h>
 #endif
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include "vtls/vtls.h"
 #include "sendf.h"
 #include "timeval.h"

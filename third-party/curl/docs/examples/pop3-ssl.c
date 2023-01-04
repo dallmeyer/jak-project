@@ -28,7 +28,7 @@
  */
 
 #include <stdio.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* This is a simple example showing how to retrieve mail using libcurl's POP3
  * capabilities. It builds on the pop3-retr.c example adding transport

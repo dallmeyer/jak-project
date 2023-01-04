@@ -95,7 +95,7 @@
 #include <winsock2.h>
 #include <windows.h>
 #endif
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 
 #define MAX_STRING              256

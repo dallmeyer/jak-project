@@ -24,7 +24,7 @@
 #define CURL_DISABLE_DEPRECATION  /* Testing the form api */
 #include "curlcheck.h"
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 static CURLcode unit_setup(void)
 {

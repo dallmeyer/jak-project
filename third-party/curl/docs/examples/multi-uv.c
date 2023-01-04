@@ -37,7 +37,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <uv.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 uv_loop_t *loop;
 CURLM *curl_handle;

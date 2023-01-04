@@ -28,7 +28,7 @@
 CURLINFO_TLS_SESSION, CURLINFO_TLS_SSL_PTR \- get TLS session info
 .SH SYNOPSIS
 .nf
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 CURLcode curl_easy_getinfo(CURL *handle, CURLINFO_TLS_SSL_PTR,
                            struct curl_tlssessioninfo **session);
@@ -128,7 +128,7 @@ https://github.com/curl/curl/issues/685
 All TLS-based
 .SH EXAMPLE
 .nf
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include <openssl/ssl.h>
 
 CURL *curl;

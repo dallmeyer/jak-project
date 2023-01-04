@@ -66,7 +66,7 @@ callback.
 #include <time.h>
 #include <unistd.h>
 #include <sys/poll.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include <event2/event.h>
 #include <event2/event_struct.h>
 #include <fcntl.h>

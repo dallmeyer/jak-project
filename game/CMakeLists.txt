@@ -207,11 +207,11 @@ write_svnrev_h()
 add_subdirectory(sound)
 
 
-
+set(CURL_INCLUDE_DIR "third-party/curl/include/curl")
 # we build the runtime as a static library.
 add_library(runtime STATIC ${RUNTIME_SOURCE} "../third-party/glad/src/glad.c")
 
-target_link_libraries(runtime common fmt glfw imgui discord-rpc sound stb_image libco SQLiteCpp)
+target_link_libraries(runtime common fmt glfw imgui discord-rpc sound stb_image libco SQLiteCpp curlpp)
 if(WIN32)
     target_link_libraries(runtime mman)
 else()

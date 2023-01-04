@@ -28,7 +28,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* read data to upload */
 static size_t readfunc(char *ptr, size_t size, size_t nmemb, void *stream)

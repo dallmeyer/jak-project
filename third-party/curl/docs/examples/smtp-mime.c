@@ -29,7 +29,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* This is a simple example showing how to send mime mail using libcurl's SMTP
  * capabilities. For an example of using the multi interface please see

@@ -28,7 +28,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 static const char olivertwist[]=
   "Among other public buildings in a certain town, which for many reasons "

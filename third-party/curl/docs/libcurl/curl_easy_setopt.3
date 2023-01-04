@@ -28,7 +28,7 @@
 curl_easy_setopt \- set options for a curl easy handle
 .SH SYNOPSIS
 .nf
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 CURLcode curl_easy_setopt(CURL *handle, CURLoption option, parameter);
 .fi
@@ -719,7 +719,7 @@ if(curl) {
 Always
 .SH RETURN VALUE
 \fICURLE_OK\fP (zero) means that the option was set properly, non-zero means an
-error occurred as \fI<curl/curl.h>\fP defines. See the \fIlibcurl-errors(3)\fP
+error occurred as \fI<third-party/curl/include/curl/curl.h>\fP defines. See the \fIlibcurl-errors(3)\fP
 man page for the full list with descriptions.
 
 Strings passed on to libcurl must be shorter than 8000000 bytes, otherwise

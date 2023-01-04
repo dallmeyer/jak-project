@@ -73,7 +73,7 @@ callback.
 #include <time.h>
 #include <unistd.h>
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 #define MSG_OUT stdout /* Send info to stdout, change to stderr if you want */
 

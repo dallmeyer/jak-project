@@ -28,7 +28,7 @@
 
 #include <openssl/err.h>
 #include <openssl/ssl.h>
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 #include <stdio.h>
 
 static size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)

@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <curl/curl.h>
+#include <third-party/curl/include/curl/curl.h>
 
 /* <DESC>
  * Checks a single file's size and mtime from an FTP server.

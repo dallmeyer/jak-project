@@ -19364,8 +19364,8 @@ uninstall-am:
 .PRECIOUS: Makefile
 
 
-lib1521.c: $(top_srcdir)/tests/libtest/mk-lib1521.pl $(top_srcdir)/include/curl/curl.h
-	@PERL@ $(top_srcdir)/tests/libtest/mk-lib1521.pl < $(top_srcdir)/include/curl/curl.h > lib1521.c
+lib1521.c: $(top_srcdir)/tests/libtest/mk-lib1521.pl $(top_srcdir)/include/third-party/curl/include/curl/curl.h
+	@PERL@ $(top_srcdir)/tests/libtest/mk-lib1521.pl < $(top_srcdir)/include/third-party/curl/include/curl/curl.h > lib1521.c
 
 checksrc:
 	$(CHECKSRC)@PERL@ $(top_srcdir)/scripts/checksrc.pl -D$(srcdir) $(srcdir)/*.[ch]
