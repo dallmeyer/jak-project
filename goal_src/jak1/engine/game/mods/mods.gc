@@ -466,17 +466,13 @@
           ;; Mountain Pass - up on "OOB" ledge with trees before big jump
           (set-vector-meters! dst 30.2  46.03 -2974.5)
           )
-        (('crate-3121 'crate-3123)
+        (('crate-3121 'crate-3123 'crate-3148)
           ;; Volcanic Crater - island before spider cave
           (set-vector-meters! dst 1135.24  44.9 -3419.32)
           ) 
         (('crate-3122 'crate-3126)
           ;; Volcanic Crater - bridge by gondola/miners
           (set-vector-meters! dst 1080.89  52.3 -3512.50)
-          )
-        (('crate-3148)
-          ;; Volcanic Crater - spider cave entrance
-          (set-vector-meters! dst )
           )
         (('crate-3124 'crate-3125)
           ;; Volcanic Crater - lava tube entrance

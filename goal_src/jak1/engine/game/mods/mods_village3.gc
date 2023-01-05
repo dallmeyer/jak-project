@@ -60,6 +60,7 @@
     (('money-4893) (set-vector-meters! (-> arg0 extra trans) 1209.39  57.1 -3527.87))  ;; follow from ^
     (('money-4903) (set-vector-meters! (-> arg0 extra trans) 1218.77  57.53 -3533.43)) ;; follow from ^
     (('money-4914) (set-vector-meters! (-> arg0 extra trans) 1219.93  49.82 -3542.29)) ;; down and around towards LT from ^
+    
     ;; FLIES
     (('crate-3121) (set-vector-meters! (-> arg0 extra trans) 1141.73  59.10 -3387.81)) ;; along orb path from rocket before spider cave entrance
     (('crate-3122) (set-vector-meters! (-> arg0 extra trans) 1041.33  82.90 -3530.87)) ;; up from money-4815 above miner entrance
