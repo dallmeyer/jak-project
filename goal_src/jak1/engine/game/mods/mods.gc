@@ -293,11 +293,11 @@
   )
 
 (defun mod-override-child-fuel-cell-movie-pos ((dst vector) (obj fuel-cell) (maybe-parent process))
-  (format #t "checking for override with parent ~A / grandparent ~A / maybe-parent ~A ~%"
-    (-> (ppointer->process (-> obj parent)) name)
-    (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name)
-    (-> maybe-parent name)
-    )          
+  ;; (format #t "checking for override with parent ~A / grandparent ~A / maybe-parent ~A ~%"
+  ;;   (-> (ppointer->process (-> obj parent)) name)
+  ;;   (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name)
+  ;;   (-> maybe-parent name)
+  ;;   )          
 
   ;; check parent
   (case (-> (ppointer->process (-> obj parent)) name) :comp name=
@@ -415,7 +415,7 @@
       (set-vector-meters! dst  2568.04 -11.5 -4525.38)
       )
     (else
-      (format #t "fuel movie override, didnt match parent ~A ~%" (-> (ppointer->process (-> obj parent)) name))
+      ;; (format #t "fuel movie override, didnt match parent ~A ~%" (-> (ppointer->process (-> obj parent)) name))
       ;; check grandparent
       (case (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name) :comp name=
         (('crate-2961 'crate-2959 'crate-2958 'crate-2957 'crate-2956 'crate-2955 'crate-2960)
@@ -482,8 +482,16 @@
           ;; darkcave - outside of water section
           (set-vector-meters! dst 865.07  48.5 -2854.20)
           )
+        (('crate-)
+          ;; snowy - 
+          ;; (set-vector-meters! dst )
+          )
+        (('crate-)
+          ;; citadel - 
+          ;; (set-vector-meters! dst )
+          )
         (else
-          (format #t "fuel movie override, didnt match grandparent ~A ~%" (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name))
+          ;; (format #t "fuel movie override, didnt match grandparent ~A ~%" (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name))
           ;; check maybe-parent
           (case (-> maybe-parent name) :comp name=
             (('bird-lady-beach-1)
@@ -492,7 +500,7 @@
               (vector-copy! (res-lump-struct (-> obj entity) 'movie-pos vector :time (the-as float -1000000000.0)) (-> *target* root trans))
               )
             (else
-              (when #t
+              (when #f
                 (format #t "no movie-pos override with parent ~A / grandparent ~A / maybe-parent ~A ~%"
                   (-> (ppointer->process (-> obj parent)) name)
                   (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name)

@@ -64,8 +64,8 @@
     (('racer-8) (set-vector-meters! (-> arg0 extra trans) 326.08  33.62 -1448.86)) ;; just up ledge from where normally is (invis walls removed)
     
     ;; MISC    
-    (('crate-1020) (set-vector-meters! (-> arg0 extra trans) -15.01  30.5 -220.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.7  0.0  -0.7)) ;; green - roll jump from start and get lava bounce onto it
-    (('crate-1022) (set-vector-meters! (-> arg0 extra trans) -15.01  30.5 -223.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.7  0.0  -0.7)) ;; green - roll jump from start and get lava bounce onto it
+    (('crate-1020) (set-vector-meters! (-> arg0 extra trans) -15.01  30.5 -220.5) (set-vector! (-> arg0 quat) 0.0  0.7  0.0  -0.7)) ;; green - roll jump from start and get lava bounce onto it
+    (('crate-1022) (set-vector-meters! (-> arg0 extra trans) -15.01  30.5 -223.5) (set-vector! (-> arg0 quat) 0.0  0.7  0.0  -0.7)) ;; green - roll jump from start and get lava bounce onto it
     (('racer-7) (set-vector-meters! (-> arg0 extra trans) -15.01  31.01 -247.64)) ;; past green eco crates ^
     (('spike-26) (set-vector-meters! (-> arg0 extra trans) 162.48  30.9 -650.75)) ;; in middle, two lava patches (this one triggers 27/28/29)
       (('spike-27) (set-vector-meters! (-> arg0 extra trans) 154.57  30.9 -657.33)) ;; in middle, two lava patches

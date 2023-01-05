@@ -178,17 +178,17 @@
     
     ;; MISC
     (('racer-1) (set-vector-meters! (-> arg0 extra trans) 96.15   9.96 1196.07))  ;; on island dock
-    (('crate-674) (set-vector-meters! (-> arg0 extra trans) 22.27	1.92	1086.98) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
-    (('crate-676) (set-vector-meters! (-> arg0 extra trans) 19.66	1.96	1089.56) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
-    (('crate-701) (set-vector-meters! (-> arg0 extra trans) 17.05	2.01	1092.14) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
-    (('crate-711) (set-vector-meters! (-> arg0 extra trans) 14.44	2.05	1094.72) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
+    (('crate-674) (set-vector-meters! (-> arg0 extra trans) 22.27	1.92	1086.98) (set-vector! (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
+    (('crate-676) (set-vector-meters! (-> arg0 extra trans) 19.66	1.96	1089.56) (set-vector! (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
+    (('crate-701) (set-vector-meters! (-> arg0 extra trans) 17.05	2.01	1092.14) (set-vector! (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
+    (('crate-711) (set-vector-meters! (-> arg0 extra trans) 14.44	2.05	1094.72) (set-vector! (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
     (('crate-746) (set-vector-meters! (-> arg0 extra trans) -35.99  -0.47 948.78)) ;; dark eco - in skeleton in zoomer section
     (('crate-2322) (set-vector-meters! (-> arg0 extra trans) -29.3  -0.1 949.1)) ;; dark eco - in skeleton in zoomer section
     (('crate-745) (set-vector-meters! (-> arg0 extra trans) -191.44  57.09 1018.57)) ;; green - where orig cannon is
 
     (('teetertotter-5) (set-vector-meters! (-> arg0 extra trans) -146.83  15.0 1112.8)) ;; mud on backside of island
     (('teetertotter-6) (set-vector-meters! (-> arg0 extra trans)   52.0  32.0  872.9) ;; pull away from wall slightly, near top of muse path
-      (set-vector! (-> arg0 extra quat) 0.0 0.9 0.0 -0.5) ;; rotate 180
+      (set-vector! (-> arg0 quat) 0.0 0.9 0.0 -0.5) ;; rotate 180
       )
     (('teetertotter-11) (set-vector-meters! (-> arg0 extra trans)   9.01   3.89 802.78)) ;; near entrance, towards orig boosted cell
     )

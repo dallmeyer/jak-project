@@ -199,46 +199,46 @@
     (('crate-2463) (set-vector-meters! (-> arg0 extra trans)  -286.00  31.52 -301.73)) ;; blue eco - cannon tower, top of right window
     (('crate-2471) (set-vector-meters! (-> arg0 extra trans) -260.38  32.27 -270.48)) ;; blue eco - cannon tower, top of left window
     ;; 3 cols x 10 rows for crate writings
-    (('crate-2317) (set-vector-meters! (-> arg0 extra trans) -321.6  9.8  -469.2) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel (skipped 1 row before this)
-    (('crate-2457) (set-vector-meters! (-> arg0 extra trans) -322.7  9.8  -468.2) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
-    (('crate-2458) (set-vector-meters! (-> arg0 extra trans) -323.8  9.8  -467.3) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
-    (('crate-2459) (set-vector-meters! (-> arg0 extra trans) -324.9  9.8  -466.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
-    (('crate-2460) (set-vector-meters! (-> arg0 extra trans) -326.1  9.8  -465.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
-    (('crate-2461) (set-vector-meters! (-> arg0 extra trans) -327.2  9.8  -464.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
-    (('crate-2462) (set-vector-meters! (-> arg0 extra trans) -328.3  9.8  -463.6) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
-    (('crate-2464) (set-vector-meters! (-> arg0 extra trans) -329.4  9.8  -462.6) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel (skip 1 row after this)
-    (('crate-2465) (set-vector-meters! (-> arg0 extra trans) -319.2  9.8  -468.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col2 on second sentinel (skip 3 rows after this)
-    (('crate-2466) (set-vector-meters! (-> arg0 extra trans) -323.6  9.8  -464.7) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col2 on second sentinel (skip 4 rows after this)
-    (('crate-2468) (set-vector-meters! (-> arg0 extra trans) -329.1  9.8  -460.0) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col2 on second sentinel
-    (('crate-2469) (set-vector-meters! (-> arg0 extra trans) -317.8  9.8  -466.8) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel (skip 4 rows after this)
-    (('crate-2470) (set-vector-meters! (-> arg0 extra trans) -323.3  9.8  -462.1) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel 
-    (('crate-200) (set-vector-meters! (-> arg0 extra trans)  -324.4  9.8  -461.1) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel 
-    (('crate-201) (set-vector-meters! (-> arg0 extra trans)  -325.6  9.8  -460.2) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel 
-    (('crate-202) (set-vector-meters! (-> arg0 extra trans)  -326.7  9.8  -459.2) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel (skip 1 row after this)
-    (('crate-203) (set-vector-meters! (-> arg0 extra trans)  -316.2  9.8  -462.5) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1 (skipped 1 row before this)
-    (('crate-204) (set-vector-meters! (-> arg0 extra trans)  -317.3  9.8  -461.6) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1
-    (('crate-207) (set-vector-meters! (-> arg0 extra trans)  -318.4  9.8  -460.6) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1
-    (('crate-208) (set-vector-meters! (-> arg0 extra trans)  -319.5  9.8  -459.6) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1 (skip 4 rows after this)
-    (('crate-209) (set-vector-meters! (-> arg0 extra trans)  -325.0  9.8  -454.8) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1
-    (('crate-210) (set-vector-meters! (-> arg0 extra trans)  -313.8  9.8  -461.9) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col2 (skip 4 rows after this)
-    (('crate-211) (set-vector-meters! (-> arg0 extra trans)  -319.3  9.8  -457.0) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col2 (skip 3 rows after this)
-    (('crate-214) (set-vector-meters! (-> arg0 extra trans)  -323.7  9.8  -453.1) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col2
-    (('crate-215) (set-vector-meters! (-> arg0 extra trans)  -313.5  9.8  -459.2) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3 (skipped 1 row before this)
-    (('crate-216) (set-vector-meters! (-> arg0 extra trans)  -314.6  9.8  -458.2) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
-    (('crate-217) (set-vector-meters! (-> arg0 extra trans)  -315.7  9.8  -457.3) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
-    (('crate-218) (set-vector-meters! (-> arg0 extra trans)  -316.8  9.8  -456.3) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
-    (('crate-219) (set-vector-meters! (-> arg0 extra trans)  -317.9  9.8  -455.3) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
-    (('crate-220) (set-vector-meters! (-> arg0 extra trans)  -319.0  9.8  -454.3) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
-    (('crate-221) (set-vector-meters! (-> arg0 extra trans)  -320.1  9.8  -453.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
-    (('crate-222) (set-vector-meters! (-> arg0 extra trans)  -321.2  9.8  -452.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3 (skip 1 row after this)  
-    (('crate-223) (set-vector-meters! (-> arg0 extra trans)  -360.3  23.58 -430.0) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - top of second sentinel
-    (('crate-224) (set-vector-meters! (-> arg0 extra trans)  -357.9  23.58 -429.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - top of second sentinel
-    (('crate-225) (set-vector-meters! (-> arg0 extra trans)  -359.0  23.58 -431.1) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - top of second sentinel
-    (('crate-226) (set-vector-meters! (-> arg0 extra trans)  -359.3  23.58 -428.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - top of second sentinel
-    (('crate-227) (set-vector-meters! (-> arg0 extra trans)  -360.3  25.58 -430.0) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - second layer on top of second sentinel
-    (('crate-228) (set-vector-meters! (-> arg0 extra trans)  -357.9  25.58 -429.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - second layer on top of second sentinel
-    (('crate-229) (set-vector-meters! (-> arg0 extra trans)  -359.0  25.58 -431.1) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - second layer on top of second sentinel
-    (('crate-230) (set-vector-meters! (-> arg0 extra trans)  -359.3  25.58 -428.4) (set-vector! (the-as vector (-> arg0 quat)) 0.0  0.9  0.0  0.43)) ;; green eco - second layer on top of second sentinel
+    (('crate-2317) (set-vector-meters! (-> arg0 extra trans) -321.6  9.8  -469.2) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel (skipped 1 row before this)
+    (('crate-2457) (set-vector-meters! (-> arg0 extra trans) -322.7  9.8  -468.2) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
+    (('crate-2458) (set-vector-meters! (-> arg0 extra trans) -323.8  9.8  -467.3) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
+    (('crate-2459) (set-vector-meters! (-> arg0 extra trans) -324.9  9.8  -466.4) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
+    (('crate-2460) (set-vector-meters! (-> arg0 extra trans) -326.1  9.8  -465.4) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
+    (('crate-2461) (set-vector-meters! (-> arg0 extra trans) -327.2  9.8  -464.5) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
+    (('crate-2462) (set-vector-meters! (-> arg0 extra trans) -328.3  9.8  -463.6) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel
+    (('crate-2464) (set-vector-meters! (-> arg0 extra trans) -329.4  9.8  -462.6) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col1 on second sentinel (skip 1 row after this)
+    (('crate-2465) (set-vector-meters! (-> arg0 extra trans) -319.2  9.8  -468.5) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col2 on second sentinel (skip 3 rows after this)
+    (('crate-2466) (set-vector-meters! (-> arg0 extra trans) -323.6  9.8  -464.7) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col2 on second sentinel (skip 4 rows after this)
+    (('crate-2468) (set-vector-meters! (-> arg0 extra trans) -329.1  9.8  -460.0) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col2 on second sentinel
+    (('crate-2469) (set-vector-meters! (-> arg0 extra trans) -317.8  9.8  -466.8) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel (skip 4 rows after this)
+    (('crate-2470) (set-vector-meters! (-> arg0 extra trans) -323.3  9.8  -462.1) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel 
+    (('crate-200) (set-vector-meters! (-> arg0 extra trans)  -324.4  9.8  -461.1) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel 
+    (('crate-201) (set-vector-meters! (-> arg0 extra trans)  -325.6  9.8  -460.2) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel 
+    (('crate-202) (set-vector-meters! (-> arg0 extra trans)  -326.7  9.8  -459.2) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "6" col3 on second sentinel (skip 1 row after this)
+    (('crate-203) (set-vector-meters! (-> arg0 extra trans)  -316.2  9.8  -462.5) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1 (skipped 1 row before this)
+    (('crate-204) (set-vector-meters! (-> arg0 extra trans)  -317.3  9.8  -461.6) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1
+    (('crate-207) (set-vector-meters! (-> arg0 extra trans)  -318.4  9.8  -460.6) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1
+    (('crate-208) (set-vector-meters! (-> arg0 extra trans)  -319.5  9.8  -459.6) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1 (skip 4 rows after this)
+    (('crate-209) (set-vector-meters! (-> arg0 extra trans)  -325.0  9.8  -454.8) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col1
+    (('crate-210) (set-vector-meters! (-> arg0 extra trans)  -313.8  9.8  -461.9) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col2 (skip 4 rows after this)
+    (('crate-211) (set-vector-meters! (-> arg0 extra trans)  -319.3  9.8  -457.0) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col2 (skip 3 rows after this)
+    (('crate-214) (set-vector-meters! (-> arg0 extra trans)  -323.7  9.8  -453.1) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col2
+    (('crate-215) (set-vector-meters! (-> arg0 extra trans)  -313.5  9.8  -459.2) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3 (skipped 1 row before this)
+    (('crate-216) (set-vector-meters! (-> arg0 extra trans)  -314.6  9.8  -458.2) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
+    (('crate-217) (set-vector-meters! (-> arg0 extra trans)  -315.7  9.8  -457.3) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
+    (('crate-218) (set-vector-meters! (-> arg0 extra trans)  -316.8  9.8  -456.3) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
+    (('crate-219) (set-vector-meters! (-> arg0 extra trans)  -317.9  9.8  -455.3) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
+    (('crate-220) (set-vector-meters! (-> arg0 extra trans)  -319.0  9.8  -454.3) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
+    (('crate-221) (set-vector-meters! (-> arg0 extra trans)  -320.1  9.8  -453.4) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3
+    (('crate-222) (set-vector-meters! (-> arg0 extra trans)  -321.2  9.8  -452.4) (set-vector!  (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - "9" col3 (skip 1 row after this)  
+    (('crate-223) (set-vector-meters! (-> arg0 extra trans)  -360.3  23.58 -430.0) (set-vector! (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - top of second sentinel
+    (('crate-224) (set-vector-meters! (-> arg0 extra trans)  -357.9  23.58 -429.4) (set-vector! (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - top of second sentinel
+    (('crate-225) (set-vector-meters! (-> arg0 extra trans)  -359.0  23.58 -431.1) (set-vector! (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - top of second sentinel
+    (('crate-226) (set-vector-meters! (-> arg0 extra trans)  -359.3  23.58 -428.4) (set-vector! (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - top of second sentinel
+    (('crate-227) (set-vector-meters! (-> arg0 extra trans)  -360.3  25.58 -430.0) (set-vector! (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - second layer on top of second sentinel
+    (('crate-228) (set-vector-meters! (-> arg0 extra trans)  -357.9  25.58 -429.4) (set-vector! (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - second layer on top of second sentinel
+    (('crate-229) (set-vector-meters! (-> arg0 extra trans)  -359.0  25.58 -431.1) (set-vector! (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - second layer on top of second sentinel
+    (('crate-230) (set-vector-meters! (-> arg0 extra trans)  -359.3  25.58 -428.4) (set-vector! (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; green eco - second layer on top of second sentinel
     
     )
   )

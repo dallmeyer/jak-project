@@ -57,9 +57,9 @@
     (('money-1842) (set-vector-meters! (-> arg0 extra trans)  633.84 -125.68 -1759.57)) ;; corner up high near piggyback skip
     (('money-1843) (set-vector-meters! (-> arg0 extra trans)  611.3 -138.46 -1690.8)) ;; under buttonskip ledge 
     (('money-1844) (set-vector-meters! (-> arg0 extra trans)  722.92 -150.0 -1772.42)) ;; jump in slide 1
-    (('money-1845) (set-vector-meters! (-> arg0 extra trans)  715.42 -175.14 -1692.40)) ;; jump in slide 1
-    (('money-1846) (set-vector-meters! (-> arg0 extra trans)  695.82 -191.0 -1654.92)) ;; jump in slide 1
-    (('money-1847) (set-vector-meters! (-> arg0 extra trans)  612.83 -212.5 -1615.28 )) ;; jump in slide 1
+    (('money-1845) (set-vector-meters! (-> arg0 extra trans)  714.4 -176.1 -1691.7)) ;; jump in slide 1
+    (('money-1846) (set-vector-meters! (-> arg0 extra trans)  695.82 -191.8 -1654.7)) ;; jump in slide 1
+    (('money-1847) (set-vector-meters! (-> arg0 extra trans)  612.83  -213.2 -1615.28)) ;; jump in slide 1
     (('money-1848) (set-vector-meters! (-> arg0 extra trans)  566.27 -144.29 -1637.53)) ;; behind coils on left at start
     (('money-1849) (set-vector-meters! (-> arg0 extra trans)  617.05 -154.79 -1630.02)) ;; under initial platform in first room
     (('money-1850) (set-vector-meters! (-> arg0 extra trans)  668.87 -151.88 -1628.48)) ;; among pipes in center first room
@@ -94,8 +94,8 @@
     (('money-1941) (set-vector-meters! (-> arg0 extra trans)  678.33 -139.85 -1773.41)) ;; jump in slide 1
     (('money-1942) (set-vector-meters! (-> arg0 extra trans)  730.90 -160.9 -1733.06)) ;; jump in slide 1
     (('money-3803) (set-vector-meters! (-> arg0 extra trans)  652.51 -201.8 -1636.93)) ;; jump in slide 1
-    (('money-3804) (set-vector-meters! (-> arg0 extra trans)  565.39 -221.50 -1614.96)) ;; jump in slide 1
-    (('money-3805) (set-vector-meters! (-> arg0 extra trans)  529.01 -234.34 -1635.53)) ;; jump in slide 1
+    (('money-3804) (set-vector-meters! (-> arg0 extra trans)  565.39 -222.4 -1614.5)) ;; jump in slide 1
+    (('money-3805) (set-vector-meters! (-> arg0 extra trans)  529.3 -234.9 -1636.1)) ;; jump in slide 1
     (('money-3806) (set-vector-meters! (-> arg0 extra trans)  843.90 -100.0 -1588.13)) ;; in window - boosted from top in pipegame room
     (('money-1759) (set-vector-meters! (-> arg0 extra trans)  817.51	-136.00	-1764.89)) ;; left side of moving platform in puzzle room 
     (('money-3807) (set-vector-meters! (-> arg0 extra trans)  820.81	-136.00	-1766.45)) ;; left side of moving platform in puzzle room
@@ -145,24 +145,24 @@
     (('money-4058) (set-vector-meters! (-> arg0 extra trans)  584.23 -226.0 -1779.33)) ;; up high in room before slide 2
     (('money-4059) (set-vector-meters! (-> arg0 extra trans)  570.1 -248.1 -1792.4)) ;; in coils in room before slide 2
     (('money-4061) (set-vector-meters! (-> arg0 extra trans)  576.52 -236.29 -1728.04)) ;; archway exiting elevator room
-    (('money-4062) (set-vector-meters! (-> arg0 extra trans)  511.98 -249.74 -1788.40)) ;; jump slide 2
-    (('money-4063) (set-vector-meters! (-> arg0 extra trans)  504.91 -260.37 -1825.05)) ;; jump slide 2
-    (('money-4064) (set-vector-meters! (-> arg0 extra trans)  530.24 -270.73 -1851.60)) ;; jump slide 2
-    (('money-4065) (set-vector-meters! (-> arg0 extra trans)  569.04 -278.67 -1853.06)) ;; jump slide 2
-    (('money-4066) (set-vector-meters! (-> arg0 extra trans)  605.53 -290.73 -1835.90)) ;; jump slide 2
-    (('money-4067) (set-vector-meters! (-> arg0 extra trans)  641.30 -308.57 -1834.57)) ;; jump slide 2
-    (('money-4068) (set-vector-meters! (-> arg0 extra trans)  669.13 -320.82 -1866.78)) ;; jump slide 2
-    (('money-4069) (set-vector-meters! (-> arg0 extra trans)  653.09 -329.74 -1907.58)) ;; jump slide 2
-    (('money-4070) (set-vector-meters! (-> arg0 extra trans)  612.70 -340.36 -1892.71)) ;; jump slide 2
-    (('money-4071) (set-vector-meters! (-> arg0 extra trans)  619.50 -345.8  -1848.12)) ;; jump slide 2
-    (('money-4072) (set-vector-meters! (-> arg0 extra trans)  645.85 -353.35 -1817.88)) ;; jump slide 2
-    (('money-4073) (set-vector-meters! (-> arg0 extra trans)  685.07 -373.37 -1834.58)) ;; jump slide 2
-    (('money-4074) (set-vector-meters! (-> arg0 extra trans)  726.31 -388.35 -1851.34)) ;; jump slide 2
-    (('money-4075) (set-vector-meters! (-> arg0 extra trans)  754.03 -400.92 -1826.96)) ;; jump slide 2
-    (('money-4076) (set-vector-meters! (-> arg0 extra trans)  725.73 -415.96 -1795.40)) ;; jump slide 2
-    (('money-4077) (set-vector-meters! (-> arg0 extra trans)  689.83 -424.0  -1800.06)) ;; jump slide 2
-    (('money-4082) (set-vector-meters! (-> arg0 extra trans)  661.97 -432.73 -1772.54)) ;; jump slide 2
-    (('money-4083) (set-vector-meters! (-> arg0 extra trans)  628.81 -441.28 -1771.25)) ;; jump slide 2
+    (('money-4062) (set-vector-meters! (-> arg0 extra trans)  511.98 -248.0 -1788.40)) ;; jump slide 2 (easier if you skip slide state with crate - hang then dj spin)
+    (('money-4063) (set-vector-meters! (-> arg0 extra trans)  504.91 -259.0 -1825.05)) ;; jump slide 2
+    (('money-4064) (set-vector-meters! (-> arg0 extra trans)  530.6 -269.0 -1851.6)) ;; jump slide 2
+    (('money-4065) (set-vector-meters! (-> arg0 extra trans)  569.5 -277.0 -1853.4)) ;; jump slide 2
+    (('money-4066) (set-vector-meters! (-> arg0 extra trans)  605.53 -289.0 -1835.90)) ;; jump slide 2
+    (('money-4067) (set-vector-meters! (-> arg0 extra trans)  641.5 -306.0 -1834.65)) ;; jump slide 2
+    (('money-4068) (set-vector-meters! (-> arg0 extra trans)  669.1 -319.0 -1867.2)) ;; jump slide 2
+    (('money-4069) (set-vector-meters! (-> arg0 extra trans)  652.4 -327.3 -1907.85)) ;; jump slide 2
+    (('money-4070) (set-vector-meters! (-> arg0 extra trans)  613.45 -337.7 -1894.0)) ;; jump slide 2
+    (('money-4071) (set-vector-meters! (-> arg0 extra trans)  619.4 -343.7  -1848.25)) ;; jump slide 2
+    (('money-4072) (set-vector-meters! (-> arg0 extra trans)  646.2 -350.7 -1818.1)) ;; jump slide 2
+    (('money-4073) (set-vector-meters! (-> arg0 extra trans)  685.5 -370.5 -1835.1)) ;; jump slide 2
+    (('money-4074) (set-vector-meters! (-> arg0 extra trans)  726.4 -385.8 -1851.5)) ;; jump slide 2
+    (('money-4075) (set-vector-meters! (-> arg0 extra trans)  754.03 -398.5 -1826.7)) ;; jump slide 2
+    (('money-4076) (set-vector-meters! (-> arg0 extra trans)  725.55 -413.1 -1795.45)) ;; jump slide 2
+    (('money-4077) (set-vector-meters! (-> arg0 extra trans)  689.8 -421.5  -1799.7)) ;; jump slide 2
+    (('money-4082) (set-vector-meters! (-> arg0 extra trans)  662.7 -431.4 -1772.9)) ;; jump slide 2
+    (('money-4083) (set-vector-meters! (-> arg0 extra trans)  627.95 -439.5 -1771.75)) ;; jump slide 2
     (('money-4057) (set-vector-meters! (-> arg0 extra trans)  586.80	-409.00	-1780.40)) ;; counterclockwise spiral in helix
     (('money-4084) (set-vector-meters! (-> arg0 extra trans)  591.75	-404.37	-1782.45)) ;; counterclockwise spiral in helix
     (('money-4085) (set-vector-meters! (-> arg0 extra trans)  593.80	-399.75	-1787.40)) ;; counterclockwise spiral in helix
@@ -285,17 +285,19 @@
     (('crate-2732) (set-vector-meters! (-> arg0 extra trans)  539.86 -242.99 -1677.05))  ;; orig eco charger 
     (('crate-2733) (set-vector-meters! (-> arg0 extra trans)  611.15 -242.99 -1680.80))  ;; orig eco charger
     (('crate-2734) (set-vector-meters! (-> arg0 extra trans)  561.36 -244.99 -1712.01))  ;; steps in elevator room
-    ;; crate-3061  ;; green
-    ;; crate-3066
-    ;; crate-2710
-    ;; crate-2711
-    ;; crate-2712
-    ;; crate-2714
-    ;; crate-3077
-    ;; crate-3081
-    ;; crate-3086
-    ;; crate-3105
-    ;; crate-3106
+    (('crate-3061) (set-vector-meters! (-> arg0 extra trans) 540.52 -249.07 -1764.13))  ;; green
+    (('crate-3077) (set-vector-meters! (-> arg0 extra trans) 537.0 -250.5 -1766.6)) ;; green - start of 2nd slide 
+    (('crate-3066) (set-vector-meters! (-> arg0 extra trans) 537.0 -248.6 -1767.1)  ;; green - on top of ^, use to skip slide state and collect orbs more easily
+      (set-vector! (-> arg0 quat) -0.1089  0.1712  0.0008  0.9791) ;; to match 3077
+      )
+    ;; (('crate-2710) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('crate-2711) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('crate-2712) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('crate-2714) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('crate-3081) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('crate-3086) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('crate-3105) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('crate-3106) (set-vector-meters! (-> arg0 extra trans) ))
 
     ;; crate-2706  ;; dark
     ;; crate-2707
