@@ -874,6 +874,8 @@
                 (("discord-rpc?") (set! (-> obj discord-rpc?) (file-stream-read-symbol file)))
                 (("speedrunner-mode?") (set! (-> obj speedrunner-mode?) (file-stream-read-symbol file)))
                 (("cutscene-skips?") (set! (-> obj cutscene-skips?) (file-stream-read-symbol file)))
+                (("baby-mode?") (set! (-> obj baby-mode?) (file-stream-read-symbol file)))
+                (("baby-mode-count") (set! (-> obj baby-mode-count) (file-stream-read-int file)))
                 (("first-camera-h-inverted?") (set! (-> obj first-camera-h-inverted?) (file-stream-read-symbol file)))
                 (("first-camera-v-inverted?") (set! (-> obj first-camera-v-inverted?) (file-stream-read-symbol file)))
                 (("third-camera-h-inverted?") (set! (-> obj third-camera-h-inverted?) (file-stream-read-symbol file)))
@@ -1016,6 +1018,8 @@
     (format file "  (text-language ~D)~%" (-> obj text-language))
     (format file "  (subtitle-language ~D)~%" (-> obj subtitle-language))
     (format file "  (subtitle-speaker ~A)~%" (-> obj subtitle-speaker?))
+    (format file "  (baby-mode? ~A)~%" (-> obj baby-mode?))
+    (format file "  (baby-mode-count ~D)~%" (-> obj baby-mode-count))
 
     #|
     (format file "  (scenes-seen")

@@ -4,10 +4,10 @@
 (defmacro mod-training-run-each-frame ()
   `(begin
     (mod-move-eco "eco-180" (static-vector-meters -1308.0  31.0 854.3)) ;; blue - @ orig ecovent, for door
-    (mod-move-eco "eco-181" (static-vector-meters -1254.8  41.80 987.5)) ;; blue - mosquito (so cant abuse)
-    (mod-move-eco "eco-182" (static-vector-meters -1255.3	27.87	673.17)) ;; blue - mosquito (so cant abuse)
-    (mod-move-eco "eco-183" (static-vector-meters -1255.8	13.93	358.83)) ;; blue - mosquito (so cant abuse)
-    (mod-move-eco "eco-184" (static-vector-meters -1256.5  44.5  986.6)) ;; blue - mosquito (so cant abuse)
+    (mod-move-eco "eco-181" (static-vector-meters -1254.8	41.8	987.5)) ;; blue - mosquito (so cant abuse)
+    (mod-move-eco "eco-182" (static-vector-meters -1255.3	42.7	987.1)) ;; blue - mosquito (so cant abuse)
+    (mod-move-eco "eco-183" (static-vector-meters -1255.8	43.6	986.7)) ;; blue - mosquito (so cant abuse)
+    (mod-move-eco "eco-184" (static-vector-meters -1256.3	44.5	986.3)) ;; blue - mosquito (so cant abuse)
 
     (mod-move-ecovent "ecovent-245" (static-vector-meters -1247.0  14.30 945.8))  ;; blue - in pool of central geyser 
     )

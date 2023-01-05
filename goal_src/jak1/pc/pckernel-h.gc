@@ -326,6 +326,7 @@
    (flava-hack int64)
 
    (baby-mode? symbol)  ;; allows custom checkpoints/respawn like practice mod if enabled
+   (baby-mode-count uint8)  ;; count of baby-mode resets
    ;; TODO - save/restore original settings (language/sound/etc)
    )
 
@@ -425,6 +426,8 @@
   (set! (-> obj speedrunner-mode?) #t)
   (set! (-> obj cutscene-skips?) #t)
   (set! (-> obj window-lock?) #t)
+  (set! (-> obj baby-mode?) #f)
+  (set! (-> obj baby-mode-count) 0)
 
   (reset-gfx obj)
   (reset-audio obj)

@@ -5,7 +5,16 @@
 (define-extern speedrun-practice-store-temp-checkpoint (function none)) ;; defined at end of this file
 (define *practice-spawn-post-init* (the-as (function none) #f))
 
+(define *last-real-continue-point* (the-as continue-point #f))
+(defun generic-post-init ()
+  (when *last-real-continue-point*
+    (set! (-> *game-info* current-continue) *last-real-continue-point*)
+    )
+  (none)
+  )
+
 (defun get-on-flutflut ()
+  (generic-post-init)
   (case (-> *target* state)
     ((target-flut-stance target-racing)
       (send-event *target* 'end-mode)
@@ -18,6 +27,7 @@
   )
 
 (defun get-on-zoomer ()
+  (generic-post-init)
   (case (-> *target* state)
     ((target-flut-stance target-racing)
       (send-event *target* 'end-mode)
@@ -29,12 +39,39 @@
   (none)
   )
 
+;; (defun speedrun-draw-settings ()
+;;   "Draw speedrun related settings in the bottom left corner"
+;;   (when (and (-> *pc-settings* speedrunner-mode?)
+;;              (< (-> *autosplit-info-jak1* num-power-cells) 1))
+;;     (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
+;;                                       (bucket-id debug-no-zbuf))
+;;       (draw-string-xy (string-format "OpenGOAL Version: ~S ~%Speedrun mode: ~A ~%Cutscene Skips ~A"
+;;                                      *pc-settings-built-sha*
+;;                                      (-> *pc-settings* speedrunner-mode?)
+;;                                      (-> *pc-settings* cutscene-skips?))
+;;                       buf 0 (- 224 (* 8 4)) (font-color flat-yellow) (font-flags shadow kerning))))
+;;   (none)
+;;   )
+
+(defun draw-baby-mode ()
+  "Draw baby-mode counter in the bottom left corner"
+  (when (and (-> *setting-control* current allow-pause) (-> *pc-settings* baby-mode?))
+    (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
+                                      (bucket-id debug-no-zbuf))
+      (draw-string-xy (string-format "Crybaby Count: ~D"
+                                     (-> *pc-settings* baby-mode-count))
+                      buf 0 210 (font-color flat-yellow) (font-flags shadow kerning))))
+  (none)
+  )
+
+
 (defun speedrun-mode-update ()
   "A per frame update for speedrunning related stuff"
   (when (-> *pc-settings* speedrunner-mode?)
     ;; Update auto-splitter
     (update-autosplit-info-jak1)
     ;; Draw info to the screen
+    (draw-baby-mode)
     ;; (speedrun-draw-settings)
     )
 
@@ -89,20 +126,6 @@
   (none)
   )
 
-;; (defun speedrun-draw-settings ()
-;;   "Draw speedrun related settings in the bottom left corner"
-;;   (when (and (-> *pc-settings* speedrunner-mode?)
-;;              (< (-> *autosplit-info-jak1* num-power-cells) 1))
-;;     (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
-;;                                       (bucket-id debug-no-zbuf))
-;;       (draw-string-xy (string-format "OpenGOAL Version: ~S ~%Speedrun mode: ~A ~%Cutscene Skips ~A"
-;;                                      *pc-settings-built-sha*
-;;                                      (-> *pc-settings* speedrunner-mode?)
-;;                                      (-> *pc-settings* cutscene-skips?))
-;;                       buf 0 (- 224 (* 8 4)) (font-color flat-yellow) (font-flags shadow kerning))))
-;;   (none)
-;;   )
-
 (define *tmp-continue-point* (new 'static 'continue-point
                              :name "tmp"
                              :level #f
@@ -123,14 +146,19 @@
 
 (defun speedrun-practice-temp-checkpoint ()
   (when (-> *tmp-continue-point* level)
+    (+! (-> *pc-settings* baby-mode-count) 1) ;; increment baby-mode-counter
     (cond
       (*tmp-flut?* (set! *practice-spawn-post-init* get-on-flutflut))
       (*tmp-zoomer?* (set! *practice-spawn-post-init* get-on-zoomer))
+      (else (set! *practice-spawn-post-init* generic-post-init))
       )
     ;; commented out to prevent malding 
     ;; (if (cpad-hold? 0 r2)  ;; fully reset game if r2 held too
     ;;   (initialize! *game-info* 'game (the-as game-save #f) "default")
     ;;   )
+    (when (not (string= (-> *game-info* current-continue name) "tmp"))
+      (set! *last-real-continue-point* (-> *game-info* current-continue))
+      )
     (set! (-> *game-info* current-continue) *tmp-continue-point*)
     (initialize! *game-info* 'dead (the-as game-save #f) (the-as string #f))
     (speedrun-reset-common-settings)
