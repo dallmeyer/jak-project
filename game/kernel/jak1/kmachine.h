@@ -44,6 +44,7 @@ struct HttpStruct {
   u32 fuel;
   u32 money_total;
   u32 buzzer_total;
+  u32 num_cells;
   u32 deaths;
   u32 status;
   u32 level;
@@ -64,5 +65,4 @@ struct AutoSplitterBlock {
 };
 extern AutoSplitterBlock gAutoSplitterBlock;
 }  // namespace jak1
-HttpStruct rpca;
-auto http_info_auto = Ptr<HttpStruct>().c() ;
+extern std::optional<HttpStruct> g_http_info;

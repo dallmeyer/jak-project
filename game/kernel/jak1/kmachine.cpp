@@ -556,8 +556,8 @@ void update_discord_rpc(u32 discord_info) {
     Discord_ClearPresence();
   }
 }
-auto http_info_auto = http_struct ? Ptr<HttpStruct>(http_struct).c() : NULL;
 
+std::optional<HttpStruct> g_http_info = {};
 void update_http_struct(u32 http_struct) {
     
     char state[128];
@@ -567,7 +567,7 @@ void update_http_struct(u32 http_struct) {
     char small_image_text[128];
     auto info = http_struct ? Ptr<HttpStruct>(http_struct).c() : NULL;
     if (info) {
-      int cells = (int)*Ptr<float>(info->fuel).c();
+      int num_cells = (int)*Ptr<float>(info->fuel).c();
       int orbs = (int)*Ptr<float>(info->money_total).c();
       int scout_flies = (int)*Ptr<float>(info->buzzer_total).c();
       int deaths = *Ptr<int>(info->deaths).c();
@@ -580,7 +580,6 @@ void update_http_struct(u32 http_struct) {
       char* status = Ptr<String>(info->status).c()->data();
       char* level = Ptr<String>(info->level).c()->data();
       const char* full_level_name = jak1_get_full_level_name(Ptr<String>(info->level).c()->data());
-      memset(&rpca, 0, sizeof(rpca));
       if (!indoors(level)) {
         char level_with_tod[128];
         strcpy(level_with_tod, level);
@@ -595,7 +594,7 @@ void update_http_struct(u32 http_struct) {
         strcpy(large_image_key, full_level_name);
         strcpy(large_image_text, level);
       }
-      rpca.fuel;
+      
       if (racer != offset_of_s7()) {
         strcpy(small_image_key, "target-racer");
         strcpy(small_image_text, "Driving A-Grav Zoomer");
@@ -612,7 +611,8 @@ void update_http_struct(u32 http_struct) {
           strcpy(small_image_text, "");
         }
       }
-      http_info_auto = info;
+      g_http_info = info;
+      
    
      
     }

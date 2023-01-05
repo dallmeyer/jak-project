@@ -188,12 +188,16 @@ void OpenGlDebugGui::draw(const DmaStats& dma_stats) {
    if (ImGui::Button("Do Local POST"))
    //If the post is to a garbage URL game crashes
             {
+              int cells = (int)*Ptr<float>(http_info_auto->fuel).c();
                 post_rpc(Gfx::g_global_settings.target_url);
             }
                if (ImGui::Button("Do Local GET"))
    //If the post is to a garbage URL game crashes
             {
-               int cells = (int)*Ptr<float>(http_info_auto->fuel).c();
+              if (g_http_info) {
+  // do the things
+              fmt::print("{}", g_http_info->fuel);
+                }
               
                 get_rpc(Gfx::g_global_settings.target_url);
             }

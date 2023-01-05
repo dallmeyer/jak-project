@@ -373,6 +373,7 @@
                                        'target-flut-start
                                        'target-flut-walk) #t))))
     (set! (-> info time-of-day) (&-> *time-of-day-context* time))
+    (if  ()= (-> info fuel))
 
     (with-profiler "http-struct-update" (pc-http-struct-update info))
     )
