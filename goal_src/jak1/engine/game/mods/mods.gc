@@ -466,6 +466,22 @@
           ;; Mountain Pass - up on "OOB" ledge with trees before big jump
           (set-vector-meters! dst 30.2  46.03 -2974.5)
           )
+        (('crate-3121 'crate-3123)
+          ;; Volcanic Crater - island before spider cave
+          (set-vector-meters! dst 1135.24  44.9 -3419.32)
+          ) 
+        (('crate-3122 'crate-3126)
+          ;; Volcanic Crater - bridge by gondola/miners
+          (set-vector-meters! dst 1080.89  52.3 -3512.50)
+          )
+        (('crate-3148)
+          ;; Volcanic Crater - spider cave entrance
+          (set-vector-meters! dst )
+          )
+        (('crate-3124 'crate-3125)
+          ;; Volcanic Crater - lava tube entrance
+          (set-vector-meters! dst 1233.38  47.0 -3563.32 )
+          )           
         (('crate-2685 'crate-2689 'crate-2697 'crate-3018)
           ;; maincave - on wooden structure with gnawers, mid level
           (set-vector-meters! dst 1071.87  34.9 -3103.22)
@@ -482,13 +498,37 @@
           ;; darkcave - outside of water section
           (set-vector-meters! dst 865.07  48.5 -2854.20)
           )
-        (('crate-)
-          ;; snowy - 
-          ;; (set-vector-meters! dst )
+        (('crate-975 'crate-1133)
+          ;; snowy - on path to orig yellow eco switch
+          (set-vector-meters! dst 686.43 220.6 -3333.60)
           )
-        (('crate-)
-          ;; citadel - 
-          ;; (set-vector-meters! dst )
+        (('crate-976 'crate-1132)
+          ;; snowy - near icy lake
+          (set-vector-meters! dst 737.66 260.08 -3474.30)
+          )
+        (('crate-1138)
+          ;; snowy - central bridge
+          (set-vector-meters! dst 909.37 222.5 -3328.53)
+          )
+        (('crate-980 'crate-3134)
+          ;; snowy - across gap near start
+          (set-vector-meters! dst 963.58 240.7 -3476.45)
+          )
+        (('crate-3025 'crate-3026 'crate-3027 'crate-3028 'crate-3029 'crate-3117 'crate-3118)
+          ;; lavatube - wherever target is (zoomer)
+          (vector-copy-no-w! dst (-> *target* root trans))
+          )
+        (('crate-2996 'crate-2997 )
+          ;; citadel - wooden plat in center of firehose room
+          (set-vector-meters! dst 2733.06 -22.6 -4902.56)
+          )
+        (('crate-2998)
+          ;; citadel - on orig eco cache start of launcher room
+          (set-vector-meters! dst 2633.38 -22.0 -4615.62)
+          )
+        (('crate-2999 'crate-3000 'crate-3001 'crate-3002)
+          ;; citadel - top of torch near start
+          (set-vector-meters! dst 2826.17 -22.2 -4657.68)
           )
         (else
           ;; (format #t "fuel movie override, didnt match grandparent ~A ~%" (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name))

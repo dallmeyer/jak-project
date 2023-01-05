@@ -159,7 +159,7 @@
     (('crate-2999) (set-vector-meters! (-> arg0 extra trans) 2877.91  51.33 -4783.76))  ;; top of balls above redsage, boosted into ceiling jump from plats up to top of citadel
     (('crate-3000) (set-vector-meters! (-> arg0 extra trans) 2872.31  12.46 -4749.68))  ;; blue ball above red sage cage (citadel skip v2)
     (('crate-3001) (set-vector-meters! (-> arg0 extra trans) 2794.83  -5.39 -4627.91  ))  ;; in green sage cage
-    (('crate-3002) (set-vector-meters! (-> arg0 extra trans) 2902.22  23.5 -4642.8))  ;; awning above pizza path to red sage, boosted from full pie from top of citadel
+    (('crate-3002) (set-vector-meters! (-> arg0 extra trans) 2902.22  22.5 -4642.8))  ;; awning above pizza path to red sage, boosted from full pie from top of citadel
     
     ;; CELLS
     ;; (('citb-generator-2) (set-vector-meters! (-> arg0 extra trans) ))  ;; yellow sage
