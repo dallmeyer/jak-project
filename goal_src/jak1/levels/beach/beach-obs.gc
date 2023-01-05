@@ -1253,10 +1253,6 @@
 (define-extern set-vector-meters! (function vector float float float vector))
 (defstate flutflutegg-break (flutflutegg)
   :code (behavior ((arg0 symbol))
-    (when arg0
-      (set-vector-meters! (-> self root-override trans) -257.45 -0.5 -497.26)
-      (quaternion-axis-angle! (-> self root-override quat) 0.0 1.0 0.0 -18204.445)
-      )
     (suspend)
     (update-transforms! (-> self root-override))
     (when (not arg0)
@@ -1293,9 +1289,7 @@
     (while (not (task-closed? (game-task beach-flutflut) (task-status need-resolution)))
       (suspend)
       )
-    (ja-channel-set! 1)      
-    (set-vector-meters! (-> self root-override trans) -257.45 -0.5 -497.26)
-    (quaternion-axis-angle! (-> self root-override quat) 0.0 1.0 0.0 0.0)
+    (ja-channel-set! 1)
     (ja :group! (-> self draw art-group data 6) :num! max)
     (loop
       (logior! (-> self mask) (process-mask sleep))

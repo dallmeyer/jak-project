@@ -4,6 +4,7 @@
 (defmacro mod-village1-run-each-frame ()
   `(begin
     (mod-move-eco "eco-11" (static-vector-meters -20.66  11.70   2.65)) ;; on ledge below orig position
+    (mod-move-eco "eco-10"  (static-vector-meters 38.17  23.67   1.6))  ;; boosted on wet feet route
     )
   )
   
