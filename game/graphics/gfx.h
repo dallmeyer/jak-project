@@ -100,7 +100,7 @@ struct GfxGlobalSettings {
   // use custom frame limiter
   bool framelimiter = true;
 
-  char target_url[256] = "http://www.google.com";
+  char target_url[256] = "http://localhost:27091/";
 
   // frame timing things
   bool experimental_accurate_lag = false;

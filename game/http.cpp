@@ -36,10 +36,11 @@
 #include "..\third-party\curlpp\include\curlpp\Easy.hpp"
 #include "..\third-party\curlpp\include\curlpp\Options.hpp"
 #include "..\third-party\curlpp\include\curlpp\Exception.hpp"
+#include "..\third-party\curlpp\include\curlpp\Infos.hpp"
 static const char *pCACertFile = "curl-ca-bundle.crt";
 
 
-void possfst_rpc() {
+void get_rpc(char* url) {
 
   using namespace curlpp::options;
 
@@ -57,11 +58,17 @@ void possfst_rpc() {
       // Set the URL.
   
  
-      myRequest.setOpt<curlpp::options::Url>("http://webhook.site/9e67ad91-7dec-4c8b-aa4a-b9103a002c22");
+      myRequest.setOpt<curlpp::options::Url>(url);
+      myRequest.setOpt<curlpp::options::HttpGet>("xpos1");
 
       // Send request and get a result.
       // By default the result goes to standard output.
       myRequest.perform();
+
+    std::string effURL;
+   
+		curlpp::infos::EffectiveUrl::get(myRequest, effURL);
+		std::cout << "Effective URL: " << effURL << std::endl;
     }
 
     catch (curlpp::RuntimeError& e) {
@@ -79,7 +86,7 @@ void possfst_rpc() {
 
 
 
-void post_rpc() {
+void post_rpc(char* url) {
 char *data = NULL;
 
 data = (char*) "dasjhdlksjajhfljkdhljds";
@@ -100,7 +107,7 @@ data = (char*) "dasjhdlksjajhfljkdhljds";
     curlpp::Cleanup cleaner;
     curlpp::Easy request;
     
-    request.setOpt(new curlpp::options::Url("http://localhost:27091/")); 
+    request.setOpt(new curlpp::options::Url(url)); 
     request.setOpt(new curlpp::options::Verbose(true)); 
     
     std::list<std::string> header; 

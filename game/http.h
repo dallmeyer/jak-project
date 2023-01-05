@@ -44,4 +44,5 @@ static const char* pCACertFile = "curl-ca-bundle.crt";
 
 
 
-static void post_rpc();
+static void post_rpc(char* url);
+static void get_rpc(char* url);
