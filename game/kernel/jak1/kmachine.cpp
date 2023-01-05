@@ -557,7 +557,7 @@ void update_discord_rpc(u32 discord_info) {
   }
 }
 
-std::optional<HttpStruct> g_http_info = {};
+std::optional<HttpStructNice> g_http_info = {};
 void update_http_struct(u32 http_struct) {
     
     char state[128];
@@ -611,9 +611,9 @@ void update_http_struct(u32 http_struct) {
           strcpy(small_image_text, "");
         }
       }
-      g_http_info = info;
-      
-   
+      HttpStructNice new_struct;
+      new_struct.num_cells = (int)*Ptr<float>(info->fuel).c();
+      g_http_info = new_struct;
      
     }
 

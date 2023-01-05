@@ -1,6 +1,9 @@
 #pragma once
 
 #include "common/common_types.h"
+#include <string>
+#include <optional>
+
 // Discord RPC
 struct DiscordRichPresence;
 extern int gDiscordRpcEnabled;
@@ -44,7 +47,6 @@ struct HttpStruct {
   u32 fuel;
   u32 money_total;
   u32 buzzer_total;
-  u32 num_cells;
   u32 deaths;
   u32 status;
   u32 level;
@@ -56,6 +58,10 @@ struct HttpStruct {
   u32 time_of_day;
 };
 
+struct HttpStructNice {
+int num_cells;
+};
+
 // To speedup finding the auto-splitter block in GOAL memory
 // all this has is a marker for LiveSplit to find, and then the pointer
 // to the symbol
@@ -64,5 +70,6 @@ struct AutoSplitterBlock {
   u64 pointer_to_symbol = 0;
 };
 extern AutoSplitterBlock gAutoSplitterBlock;
+extern std::optional<jak1::HttpStructNice> g_http_info;
+
 }  // namespace jak1
-extern std::optional<HttpStruct> g_http_info;
