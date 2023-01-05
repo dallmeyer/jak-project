@@ -14,6 +14,7 @@
 #include "game/tools/subtitles/subtitle_editor.h"
 
 struct RenderOptions {
+  bool httpPOST = false;
   bool draw_render_debug_window = false;
   bool draw_profiler_window = false;
   bool draw_small_profiler_window = false;

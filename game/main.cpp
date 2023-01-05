@@ -16,7 +16,7 @@
 #include "common/versions.h"
 
 #include "game/discord.h"
-#include "game/http.cpp"
+
 
 #ifdef _WIN32
 extern "C" {
@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
 
   // TODO - replace with CLI11 and just propagate args through
   // - https://github.com/CLIUtils/CLI11/issues/744
-  post_rpc();
+
 
   // Figure out if the CPU has AVX2 to enable higher performance AVX2 versions of functions.
   setup_cpu_info();

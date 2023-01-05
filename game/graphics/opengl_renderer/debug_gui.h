@@ -74,9 +74,13 @@ class OpenGlDebugGui {
   bool m_draw_frame_time = false;
   bool m_draw_profiler = false;
   bool m_draw_debug = false;
+  bool m_postHTTP = false;
   bool m_subtitle_editor = false;
   bool m_filters_menu = false;
   bool m_want_screenshot = false;
   char m_screenshot_save_name[256] = "screenshot.png";
   float target_fps_input = 60.f;
+  char urlbuf[256];
+  char target_url_input_string[256] = "http://localhost:27091/";
+ 
 };

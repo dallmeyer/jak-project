@@ -39,7 +39,7 @@
 static const char *pCACertFile = "curl-ca-bundle.crt";
 
 
-void post_rpc() {
+void possfst_rpc() {
 
   using namespace curlpp::options;
 
@@ -79,15 +79,28 @@ void post_rpc() {
 
 
 
-void posst_rpc() {
+void post_rpc() {
+char *data = NULL;
 
-  
-  
-  try {
+data = (char*) "dasjhdlksjajhfljkdhljds";
+	int size = strlen(data);
+
+	char buf[50];
+	try
+	{
+	
+
+		std::list<std::string> headers;
+		headers.push_back("Accept: text/html");
+                headers.push_back("X1POS:-2312.234");
+                headers.push_back("Y1POS:12.4535");
+                headers.push_back("Z1POS:32.3478");
+		sprintf(buf, "Content-Length: %d", size); 
+		headers.push_back(buf);
     curlpp::Cleanup cleaner;
     curlpp::Easy request;
     
-    request.setOpt(new curlpp::options::Url("https://webhook.site/9e67ad91-7dec-4c8b-aa4a-b9103a002c22")); 
+    request.setOpt(new curlpp::options::Url("http://localhost:27091/")); 
     request.setOpt(new curlpp::options::Verbose(true)); 
     
     std::list<std::string> header; 
@@ -95,6 +108,7 @@ void posst_rpc() {
     request.setOpt<curlpp::Options::SslCert>(pCACertFile);
     request.setOpt<curlpp::options::CaInfo>(pCACertFile);
     request.setOpt<curlpp::options::HttpHeader>(header); 
+    request.setOpt<curlpp::options::HttpHeader>(headers);
     
     request.setOpt<curlpp::options::PostFields>("abcd");
     request.setOpt<curlpp::options::PostFieldSize>(5);
@@ -103,12 +117,16 @@ void posst_rpc() {
     request.perform();
 
   }
-  catch ( curlpp::LogicError & e ) {
-    std::cout << e.what() << std::endl;
-  }
-  catch ( curlpp::RuntimeError & e ) {
-    std::cout << e.what() << std::endl;
-  }
+  catch (curlpp::LogicError & e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+	catch (curlpp::RuntimeError & e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+
+  
 
   return;
 }

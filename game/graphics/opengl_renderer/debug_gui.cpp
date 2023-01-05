@@ -5,8 +5,9 @@
 
 #include "game/graphics/gfx.h"
 #include "game/kernel/svnrev.h"
-
+#include<string.h>
 #include "third-party/imgui/imgui.h"
+#include "game/http.cpp"
 
 void FrameTimeRecorder::finish_frame() {
   m_frame_times[m_idx++] = m_compute_timer.getMs();
@@ -140,6 +141,19 @@ void OpenGlDebugGui::draw(const DmaStats& dma_stats) {
       if (ImGui::MenuItem("Reboot now!")) {
         want_reboot_in_debug = true;
       }
+      ImGui::EndMenu();
+    }
+
+    if (ImGui::BeginMenu("HTTP Test")) {
+      ImGui::InputText("Set URL", target_url_input_string, IM_ARRAYSIZE(target_url_input_string));
+      if (ImGui::MenuItem("Apply")) {
+        strcpy(Gfx::g_global_settings.target_url , target_url_input_string);
+      }
+   if (ImGui::Button("Do Local POST"))
+            {
+                post_rpc;
+            }
+      ImGui::Separator();
       ImGui::EndMenu();
     }
   }
