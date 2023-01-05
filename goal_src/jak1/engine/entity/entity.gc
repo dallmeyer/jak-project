@@ -920,7 +920,7 @@
                      )
                    )
                   ((and (or (= arg0 'full) (-> s0-0 extra process)) 
-                        (or *actor-view-toggle* ;; L2 to show all actor names
+                        (or #f ;; *actor-view-toggle* ;; L2 to show all actor names
                             (and
                               ;; some process-drawable thats close to jak -> show actor name
                               (type-type? (-> s0-0 extra process type) process-drawable)
