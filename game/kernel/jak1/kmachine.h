@@ -64,3 +64,5 @@ struct AutoSplitterBlock {
 };
 extern AutoSplitterBlock gAutoSplitterBlock;
 }  // namespace jak1
+HttpStruct rpca;
+auto http_info_auto = Ptr<HttpStruct>().c() ;

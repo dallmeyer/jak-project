@@ -556,9 +556,10 @@ void update_discord_rpc(u32 discord_info) {
     Discord_ClearPresence();
   }
 }
+auto http_info_auto = http_struct ? Ptr<HttpStruct>(http_struct).c() : NULL;
 
 void update_http_struct(u32 http_struct) {
-    HttpStruct rpca;
+    
     char state[128];
     char large_image_key[128];
     char large_image_text[128];
@@ -611,7 +612,7 @@ void update_http_struct(u32 http_struct) {
           strcpy(small_image_text, "");
         }
       }
-      rpca.fuel = cells;
+      http_info_auto = info;
    
      
     }

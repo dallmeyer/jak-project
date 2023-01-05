@@ -21,7 +21,7 @@
 #include "game/kernel/common/kdsnetm.h"
 #include "game/kernel/common/kernel_types.h"
 #include "game/kernel/common/klink.h"
-
+#include "game/kernel/jak1/kmachine.h"
 #include "game/kernel/common/kmalloc.h"
 #include "game/kernel/common/kprint.h"
 #include "game/kernel/common/kscheme.h"
@@ -193,6 +193,8 @@ void OpenGlDebugGui::draw(const DmaStats& dma_stats) {
                if (ImGui::Button("Do Local GET"))
    //If the post is to a garbage URL game crashes
             {
+               int cells = (int)*Ptr<float>(http_info_auto->fuel).c();
+              
                 get_rpc(Gfx::g_global_settings.target_url);
             }
       ImGui::Separator();
@@ -200,7 +202,6 @@ void OpenGlDebugGui::draw(const DmaStats& dma_stats) {
     }
   }
   ImGui::EndMainMenuBar();
- auto info = http_struct ? Ptr<HttpStruct>(http_struct).c() : NULL;
   if (m_draw_frame_time) {
     m_frame_timer.draw_window(dma_stats);
   }
