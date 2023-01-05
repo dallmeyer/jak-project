@@ -81,7 +81,7 @@
   )
 
 (defun override-fuel-cell-position ((arg0 entity-actor) (x float) (y float) (z float))
-  (format 0 "override-fuel-cell-pos for ~P~%" arg0)
+  ;; (format 0 "override-fuel-cell-pos for ~P~%" arg0)
   (when arg0
     (set-vector-meters! (-> arg0 extra trans) x y z)
     (set-vector-meters! (res-lump-struct arg0 'movie-pos vector :time (the-as float -1000000000.0)) x y z)

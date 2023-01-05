@@ -56,10 +56,10 @@
     (('money-1841) (set-vector-meters! (-> arg0 extra trans)  590.13 -146.35 -1715.44)) ;; shocky water in piggyback room
     (('money-1842) (set-vector-meters! (-> arg0 extra trans)  633.84 -125.68 -1759.57)) ;; corner up high near piggyback skip
     (('money-1843) (set-vector-meters! (-> arg0 extra trans)  611.3 -138.46 -1690.8)) ;; under buttonskip ledge 
-    (('money-1844) (set-vector-meters! (-> arg0 extra trans)  722.92 -150.0 -1772.42)) ;; jump in slide 1
-    (('money-1845) (set-vector-meters! (-> arg0 extra trans)  714.4 -176.1 -1691.7)) ;; jump in slide 1
-    (('money-1846) (set-vector-meters! (-> arg0 extra trans)  695.82 -191.8 -1654.7)) ;; jump in slide 1
-    (('money-1847) (set-vector-meters! (-> arg0 extra trans)  612.83  -213.2 -1615.28)) ;; jump in slide 1
+    (('money-1844) (set-vector-meters! (-> arg0 extra trans)  723.1 -149.1 -1772.55)) ;; jump in slide 1
+    (('money-1845) (set-vector-meters! (-> arg0 extra trans)  714.5 -175.5 -1691.8)) ;; jump in slide 1
+    (('money-1846) (set-vector-meters! (-> arg0 extra trans)  695.6 -191.2 -1654.75)) ;; jump in slide 1
+    (('money-1847) (set-vector-meters! (-> arg0 extra trans)  613.0  -212.5 -1615.25)) ;; jump in slide 1
     (('money-1848) (set-vector-meters! (-> arg0 extra trans)  566.27 -144.29 -1637.53)) ;; behind coils on left at start
     (('money-1849) (set-vector-meters! (-> arg0 extra trans)  617.05 -154.79 -1630.02)) ;; under initial platform in first room
     (('money-1850) (set-vector-meters! (-> arg0 extra trans)  668.87 -151.88 -1628.48)) ;; among pipes in center first room
@@ -91,11 +91,11 @@
     (('money-1938) (set-vector-meters! (-> arg0 extra trans)  727.48 -126.8 -1724.98)) ;; jump off crate in whirlpool room to ledge up top
     (('money-1939) (set-vector-meters! (-> arg0 extra trans)  749.86 -126.8 -1729.87)) ;; jump off crate in whirlpool room to ledge up top
     (('money-1940) (set-vector-meters! (-> arg0 extra trans)  759.01 -126.8 -1711.57)) ;; jump off crate in whirlpool room to ledge up top
-    (('money-1941) (set-vector-meters! (-> arg0 extra trans)  678.33 -139.85 -1773.41)) ;; jump in slide 1
-    (('money-1942) (set-vector-meters! (-> arg0 extra trans)  730.90 -160.9 -1733.06)) ;; jump in slide 1
-    (('money-3803) (set-vector-meters! (-> arg0 extra trans)  652.51 -201.8 -1636.93)) ;; jump in slide 1
-    (('money-3804) (set-vector-meters! (-> arg0 extra trans)  565.39 -222.4 -1614.5)) ;; jump in slide 1
-    (('money-3805) (set-vector-meters! (-> arg0 extra trans)  529.3 -234.9 -1636.1)) ;; jump in slide 1
+    (('money-1941) (set-vector-meters! (-> arg0 extra trans)  677.9 -138.9 -1773.45)) ;; jump in slide 1
+    (('money-1942) (set-vector-meters! (-> arg0 extra trans)  731.1 -160.0 -1733.1)) ;; jump in slide 1
+    (('money-3803) (set-vector-meters! (-> arg0 extra trans)  652.2 -200.6 -1636.95)) ;; jump in slide 1
+    (('money-3804) (set-vector-meters! (-> arg0 extra trans)  565.45 -221.7 -1614.5)) ;; jump in slide 1
+    (('money-3805) (set-vector-meters! (-> arg0 extra trans)  529.3 -234.1 -1636.25)) ;; jump in slide 1
     (('money-3806) (set-vector-meters! (-> arg0 extra trans)  843.90 -100.0 -1588.13)) ;; in window - boosted from top in pipegame room
     (('money-1759) (set-vector-meters! (-> arg0 extra trans)  817.51	-136.00	-1764.89)) ;; left side of moving platform in puzzle room 
     (('money-3807) (set-vector-meters! (-> arg0 extra trans)  820.81	-136.00	-1766.45)) ;; left side of moving platform in puzzle room
@@ -242,8 +242,8 @@
     ;; (('crate-919) (set-vector-meters! (-> arg0 extra trans)  ))  ;;  green - 
     ;; (('crate-920) (set-vector-meters! (-> arg0 extra trans)  ))  ;;  green - 
     ;; (('crate-921) (set-vector-meters! (-> arg0 extra trans)  ))  ;;  green - 
-    ;; (('crate-922) (set-vector-meters! (-> arg0 extra trans)  ))  ;;  green - 
-    ;; (('crate-924) (set-vector-meters! (-> arg0 extra trans)  ))  ;;  green - 
+    (('crate-922) (set-vector-meters! (-> arg0 extra trans)  669.2 -141.4 -1760.3))  ;;  green - start of 1st tube, use to skip slide state for easer orba
+    (('crate-924) (set-vector-meters! (-> arg0 extra trans)  669.2 -139.5 -1760.3))  ;;  green - ^
     ;; (('crate-3033) (set-vector-meters! (-> arg0 extra trans)  )) ;;  green - 
     ;; (('crate-3034) (set-vector-meters! (-> arg0 extra trans)  )) ;;  green - 
     ;; (('crate-3035) (set-vector-meters! (-> arg0 extra trans)  )) ;;  green - 
