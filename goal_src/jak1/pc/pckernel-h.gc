@@ -448,7 +448,7 @@
   (set-size! obj PC_BASE_WIDTH PC_BASE_HEIGHT)
 
   (set! (-> obj use-vis?) #f)
-  (set! (-> obj aspect-ratio-auto?) #t)
+  (set! (-> obj aspect-ratio-auto?) #f)
   (set! (-> obj vsync?) #t)
   (set! (-> obj letterbox?) #t)
 
