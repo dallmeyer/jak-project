@@ -386,6 +386,14 @@
     )
   )
 
+  (deftype http-struct (structure)
+  ((fuel (pointer float))
+   (target1X (pointer float))
+   (target1Y (pointer float))
+   (target1Z (pointer float))
+    )
+  )
+
 (defconstant PC_TEMP_STRING_LEN 512)
 (define *pc-temp-string* (new 'global 'string PC_TEMP_STRING_LEN (the string #f)))
 (define *pc-settings* (the pc-settings #f))

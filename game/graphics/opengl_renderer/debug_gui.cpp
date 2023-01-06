@@ -7,7 +7,44 @@
 #include "game/kernel/svnrev.h"
 
 #include "third-party/imgui/imgui.h"
+#include "game/http.h"
+#include "common/log/log.h"
+#include "common/symbols.h"
+#include "common/util/FileUtil.h"
 
+#include "game/discord.h"
+#include "game/graphics/gfx.h"
+#include "game/graphics/sceGraphicsInterface.h"
+#include "game/kernel/common/fileio.h"
+#include "game/kernel/common/kboot.h"
+#include "game/kernel/common/kdgo.h"
+#include "game/kernel/common/kdsnetm.h"
+#include "game/kernel/common/kernel_types.h"
+#include "game/kernel/common/klink.h"
+#include "game/kernel/jak1/kmachine.h"
+#include "game/kernel/common/kmalloc.h"
+#include "game/kernel/common/kprint.h"
+#include "game/kernel/common/kscheme.h"
+#include "game/kernel/common/ksocket.h"
+#include "game/kernel/common/ksound.h"
+#include "game/kernel/common/memory_layout.h"
+#include "game/kernel/jak1/kboot.h"
+#include "game/kernel/jak1/kdgo.h"
+#include "game/kernel/jak1/klisten.h"
+#include "game/kernel/jak1/kscheme.h"
+#include "game/kernel/jak1/ksound.h"
+#include "game/kernel/svnrev.h"
+#include "game/sce/deci2.h"
+#include "game/sce/libcdvd_ee.h"
+#include "game/sce/libdma.h"
+#include "game/sce/libgraph.h"
+#include "game/sce/sif_ee.h"
+#include "game/sce/stubs.h"
+#include "game/system/vm/vm.h"
+
+
+
+  
 void FrameTimeRecorder::finish_frame() {
   m_frame_times[m_idx++] = m_compute_timer.getMs();
   if (m_idx == SIZE) {
@@ -92,6 +129,8 @@ void OpenGlDebugGui::finish_frame() {
   m_frame_timer.finish_frame();
 }
 
+
+
 void OpenGlDebugGui::draw(const DmaStats& dma_stats) {
   if (ImGui::BeginMainMenuBar()) {
     if (ImGui::BeginMenu("Windows")) {
@@ -142,9 +181,34 @@ void OpenGlDebugGui::draw(const DmaStats& dma_stats) {
       }
       ImGui::EndMenu();
     }
+
+    if (ImGui::BeginMenu("HTTP Test")) {
+      ImGui::InputText(jak1::intToStr(jak1::g_http_info->num_cells), Gfx::g_global_settings.target_url, IM_ARRAYSIZE(Gfx::g_global_settings.target_url));
+      if (ImGui::MenuItem("Apply")) {
+        strcpy(Gfx::g_global_settings.target_url , Gfx::g_global_settings.target_url);
+      }
+   if (ImGui::Button("Do Local POST"))
+   //If the post is to a garbage URL game crashes
+            {
+              
+               // post_rpc(Gfx::g_global_settings.target_url);
+            }
+               if (ImGui::Button("Do Local GET"))
+   //If the post is to a garbage URL game crashes
+            {
+           
+  // do the things
+
+             // strcpy(intToStr(jak1::g_http_info->num_cells), Gfx::g_global_settings.target_url);
+                jak1::g_http_info->num_cells = 17;
+              
+                get_rpc(Gfx::g_global_settings.target_url);
+            }
+      ImGui::Separator();
+      ImGui::EndMenu();
+    }
   }
   ImGui::EndMainMenuBar();
-
   if (m_draw_frame_time) {
     m_frame_timer.draw_window(dma_stats);
   }

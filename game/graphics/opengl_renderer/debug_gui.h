@@ -8,6 +8,22 @@
 #include "common/dma/dma.h"
 #include "common/util/Timer.h"
 
+
+#include "common/common_types.h"
+// Discord RPC
+
+
+
+
+
+
+// To speedup finding the auto-splitter block in GOAL memory
+// all this has is a marker for LiveSplit to find, and then the pointer
+// to the symbol
+
+
+
+
 class FrameTimeRecorder {
  public:
   static constexpr int SIZE = 60 * 5;
@@ -38,6 +54,7 @@ class FrameTimeRecorder {
 };
 
 class OpenGlDebugGui {
+  
  public:
   void start_frame();
   void finish_frame();
@@ -74,9 +91,12 @@ class OpenGlDebugGui {
   bool m_draw_frame_time = false;
   bool m_draw_profiler = false;
   bool m_draw_debug = false;
+  bool m_postHTTP = false;
   bool m_subtitle_editor = false;
   bool m_filters_menu = false;
   bool m_want_screenshot = false;
   char m_screenshot_save_name[256] = "screenshot.png";
   float target_fps_input = 60.f;
+
+ 
 };

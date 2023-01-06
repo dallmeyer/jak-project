@@ -5,9 +5,12 @@ enable_language(ASM_NASM)
 set(CMAKE_ASM_NASM_SOURCE_FILE_EXTENSIONS ${CMAKE_ASM_NASM_SOURCE_FILE_EXTENSIONS} asm)
 set(CMAKE_ASM_NASM_COMPILE_OBJECT "<CMAKE_ASM_NASM_COMPILER> <INCLUDES> -f ${CMAKE_ASM_NASM_OBJECT_FORMAT} -o <OBJECT> <SOURCE>")
 set_source_files_properties(kernel/asm_funcs.asm PROPERTIES COMPILE_FLAGS "-g")
+include_directories(third-party/curlpp/include)
+include_directories(third-party/curl/include)
 set(RUNTIME_SOURCE
         runtime.cpp
         discord.cpp
+        http.cpp
         system/SystemThread.cpp
         system/IOP_Kernel.cpp
         system/iop_thread.cpp
@@ -203,10 +206,12 @@ write_svnrev_h()
 
 add_subdirectory(sound)
 
+
+set(CURL_INCLUDE_DIR "third-party/curl/include/curl")
 # we build the runtime as a static library.
 add_library(runtime STATIC ${RUNTIME_SOURCE} "../third-party/glad/src/glad.c")
 
-target_link_libraries(runtime common fmt glfw imgui discord-rpc sound stb_image libco SQLiteCpp)
+target_link_libraries(runtime common fmt glfw imgui discord-rpc sound stb_image libco SQLiteCpp curlpp)
 if(WIN32)
     target_link_libraries(runtime mman)
 else()

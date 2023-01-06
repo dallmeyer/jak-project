@@ -329,6 +329,21 @@
     (with-profiler "discord-update" (pc-discord-rpc-update info))
     )
 
+  (let ((info (new 'stack 'http-struct)))
+    (set! (-> info fuel) (&-> *target* root trans x))
+    (set! (-> info target1X) (&-> *target* root trans x))
+    (set! (-> info target1Y) (&-> *target* root trans y))
+    (set! (-> info target1Z) (&-> *target* root trans z))
+
+    
+
+    (with-profiler "http-struct-update" (pc-http-struct-update info))
+    (if *debug-segment*
+     (with-profiler "http-rpc-update" (pc-http-rpc-update info))
+    )
+   
+    )
+
   ;; update auto-splitter info
   (when (-> *pc-settings* speedrunner-mode?)
     (with-profiler "speedrun-update-jak1"

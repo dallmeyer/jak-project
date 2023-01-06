@@ -13,7 +13,7 @@
 #include "common/log/log.h"
 #include "common/symbols.h"
 #include "common/util/FileUtil.h"
-
+#include "game/http.h"
 #include "game/discord.h"
 #include "game/graphics/gfx.h"
 #include "game/graphics/sceGraphicsInterface.h"
@@ -556,6 +556,33 @@ void update_discord_rpc(u32 discord_info) {
     Discord_ClearPresence();
   }
 }
+char* intToStr(int data) {
+    std::string strData = std::to_string(data);
+
+    char* temp = new char[strData.length() + 1];
+    strcpy(temp, strData.c_str());
+
+   return temp;
+}
+
+std::optional<HttpStructNice> g_http_info = {};
+void update_http_struct(u32 http_struct) {
+    
+
+    auto info = http_struct ? Ptr<HttpStruct>(http_struct).c() : NULL;
+    if (info) {
+      int num_cells = (int)*Ptr<float>(info->fuel).c();
+      
+      HttpStructNice new_struct;
+      new_struct.num_cells = (int)*Ptr<float>(info->fuel).c();
+      new_struct.target1X = (int)*Ptr<float>(info->target1X).c();
+      new_struct.target1Y = (int)*Ptr<float>(info->target1Y).c();
+      new_struct.target1Z = (int)*Ptr<float>(info->target1Z).c();
+      g_http_info = new_struct;
+     
+    }
+
+}
 
 u32 get_fullscreen() {
   switch (Gfx::get_fullscreen()) {
@@ -578,6 +605,9 @@ void set_fullscreen(u32 symptr, s64 screen) {
     Gfx::set_fullscreen(GfxDisplayMode::Fullscreen, screen);
   }
 }
+
+
+
 
 void set_game_resolution(s64 w, s64 h) {
   Gfx::set_game_resolution(w, h);
@@ -642,6 +672,8 @@ void InitMachine_PCPort() {
   // discord rich presence
   make_function_symbol_from_c("pc-discord-rpc-set", (void*)set_discord_rpc);
   make_function_symbol_from_c("pc-discord-rpc-update", (void*)update_discord_rpc);
+  make_function_symbol_from_c("pc-http-struct-update", (void*)update_http_struct);
+  make_function_symbol_from_c("pc-http-rpc-update", (void*)post_rpc);
 
   // profiler
   make_function_symbol_from_c("pc-prof", (void*)prof_event);

@@ -26,6 +26,7 @@
 // for the vif callback
 #include "game/kernel/common/kmachine.h"
 #include "game/runtime.h"
+#include "game/http.h"
 
 namespace {
 std::string g_current_render;
@@ -557,6 +558,8 @@ void OpenGLRenderer::render(DmaFollower dma, const RenderOptions& settings) {
     }
     m_small_profiler.draw(m_render_state.load_status_debug, stats);
   }
+
+
 
   if (settings.draw_subtitle_editor_window) {
     m_subtitle_editor.draw_window();

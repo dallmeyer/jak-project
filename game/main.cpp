@@ -17,6 +17,7 @@
 
 #include "game/discord.h"
 
+
 #ifdef _WIN32
 extern "C" {
 __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
@@ -54,6 +55,7 @@ int main(int argc, char** argv) {
   // TODO - replace with CLI11 and just propagate args through
   // - https://github.com/CLIUtils/CLI11/issues/744
 
+
   // Figure out if the CPU has AVX2 to enable higher performance AVX2 versions of functions.
   setup_cpu_info();
   // If the CPU doesn't have AVX, GOAL code won't work and we exit.
@@ -90,7 +92,7 @@ int main(int argc, char** argv) {
   // set up discord stuff
   gStartTime = time(nullptr);
   init_discord_rpc();
-
+ 
   if (disable_avx2) {
     // for debugging the non-avx2 code paths, there's a flag to manually disable.
     printf("Note: AVX2 code has been manually disabled.\n");
