@@ -326,56 +326,18 @@
     )
 
   (let ((info (new 'stack 'http-struct)))
-    (set! (-> info fuel) (&-> *game-info* fuel))
-    (set! (-> info money-total) (&-> *game-info* money-total))
-    (set! (-> info buzzer-total) (&-> *game-info* buzzer-total))
-    (set! (-> info deaths) (&-> *game-info* total-deaths))
-    (set! (-> info status) "Playing Jak and Daxter: The Precursor Legacy™")
-    (set! (-> info level) (symbol->string (-> (level-get-target-inside *level*) name))) ;; grab the name of level we're in
-    (set! (-> info cutscene?) (-> obj movie?))
-    (set! (-> info ogreboss?) (aif (process-by-ename "ogreboss-1") (case (-> it next-state name) (
-                                      ('ogreboss-die
-                                       'ogreboss-idle
-                                       'ogreboss-stage1
-                                       'ogreboss-stage2
-                                       'ogreboss-stage3-hit
-                                       'ogreboss-stage3-shuffle
-                                       'ogreboss-stage3-throw
-                                       'ogreboss-wait-for-player) #t))))
-    (set! (-> info plant-boss?) (aif (process-by-ename "plant-boss-3") (case (-> it next-state name) (
-                                      ('plant-boss-idle
-                                       'plant-boss-hit
-                                       'plant-boss-vulnerable
-                                       'plant-boss-spawn
-                                       'plant-boss-reset
-                                       'plant-boss-attack) #t))))
-    (set! (-> info racer?) (aif *target* (case (-> it next-state name) (
-                                      ('target-racing
-                                       'target-racing-bounce
-                                       'target-racing-death
-                                       'target-racing-falling
-                                       'target-racing-grab
-                                       'target-racing-hit
-                                       'target-racing-jump
-                                       'target-racing-smack
-                                       'target-racing-start) #t))))
-    (set! (-> info flutflut?) (aif *target* (case (-> it next-state name) (
-                                      ('target-flut-air-attack
-                                       'target-flut-air-attack-hit-ground
-                                       'target-flut-double-jump
-                                       'target-flut-falling
-                                       'target-flut-grab
-                                       'target-flut-hit
-                                       'target-flut-hit-ground
-                                       'target-flut-jump
-                                       'target-flut-running-attack
-                                       'target-flut-stance
-                                       'target-flut-start
-                                       'target-flut-walk) #t))))
-    (set! (-> info time-of-day) (&-> *time-of-day-context* time))
-    (if  ()= (-> info fuel))
+    (set! (-> info fuel) (&-> *target* root trans x))
+    (set! (-> info target1X) (&-> *target* root trans x))
+    (set! (-> info target1Y) (&-> *target* root trans y))
+    (set! (-> info target1Z) (&-> *target* root trans z))
+
+    
 
     (with-profiler "http-struct-update" (pc-http-struct-update info))
+    (if *debug-segment*
+     (with-profiler "http-rpc-update" (pc-http-rpc-update info))
+    )
+   
     )
 
   ;; update auto-splitter info

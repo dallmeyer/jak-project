@@ -28,6 +28,10 @@ int ShutdownMachine();
 
 void InitMachineScheme();
 
+
+
+extern char* intToStr(int data);
+
 struct DiscordInfo {
   u32 fuel;
   u32 money_total;
@@ -45,21 +49,16 @@ struct DiscordInfo {
 
 struct HttpStruct {
   u32 fuel;
-  u32 money_total;
-  u32 buzzer_total;
-  u32 deaths;
-  u32 status;
-  u32 level;
-  u32 cutscene;   // check if cutscene is playing
-  u32 ogreboss;   // are we fighting ogreboss?
-  u32 plantboss;  // are we fighting plant-boss?
-  u32 racer;      // are we driving the zoomer?
-  u32 flutflut;   // are we riding on flut flut?
-  u32 time_of_day;
+  int target1X;
+  int target1Y;
+  int target1Z;
 };
 
 struct HttpStructNice {
 int num_cells;
+int target1X;
+int target1Y;
+int target1Z;
 };
 
 // To speedup finding the auto-splitter block in GOAL memory

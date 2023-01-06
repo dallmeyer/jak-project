@@ -13,7 +13,7 @@
 #include "common/log/log.h"
 #include "common/symbols.h"
 #include "common/util/FileUtil.h"
-
+#include "game/http.h"
 #include "game/discord.h"
 #include "game/graphics/gfx.h"
 #include "game/graphics/sceGraphicsInterface.h"
@@ -556,63 +556,28 @@ void update_discord_rpc(u32 discord_info) {
     Discord_ClearPresence();
   }
 }
+char* intToStr(int data) {
+    std::string strData = std::to_string(data);
+
+    char* temp = new char[strData.length() + 1];
+    strcpy(temp, strData.c_str());
+
+   return temp;
+}
 
 std::optional<HttpStructNice> g_http_info = {};
 void update_http_struct(u32 http_struct) {
     
-    char state[128];
-    char large_image_key[128];
-    char large_image_text[128];
-    char small_image_key[128];
-    char small_image_text[128];
+
     auto info = http_struct ? Ptr<HttpStruct>(http_struct).c() : NULL;
     if (info) {
       int num_cells = (int)*Ptr<float>(info->fuel).c();
-      int orbs = (int)*Ptr<float>(info->money_total).c();
-      int scout_flies = (int)*Ptr<float>(info->buzzer_total).c();
-      int deaths = *Ptr<int>(info->deaths).c();
-      float time = *Ptr<float>(info->time_of_day).c();
-      auto cutscene = Ptr<Symbol>(info->cutscene)->value;
-      auto ogreboss = Ptr<Symbol>(info->ogreboss)->value;
-      auto plantboss = Ptr<Symbol>(info->plantboss)->value;
-      auto racer = Ptr<Symbol>(info->racer)->value;
-      auto flutflut = Ptr<Symbol>(info->flutflut)->value;
-      char* status = Ptr<String>(info->status).c()->data();
-      char* level = Ptr<String>(info->level).c()->data();
-      const char* full_level_name = jak1_get_full_level_name(Ptr<String>(info->level).c()->data());
-      if (!indoors(level)) {
-        char level_with_tod[128];
-        strcpy(level_with_tod, level);
-        strcat(level_with_tod, "-");
-        strcat(level_with_tod, time_of_day_str(time));
-        strcpy(large_image_key, level_with_tod);
-      } else {
-        strcpy(large_image_key, level);
-      }
-      strcpy(large_image_text, full_level_name);
-      if (!strcmp(full_level_name, "unknown")) {
-        strcpy(large_image_key, full_level_name);
-        strcpy(large_image_text, level);
-      }
       
-      if (racer != offset_of_s7()) {
-        strcpy(small_image_key, "target-racer");
-        strcpy(small_image_text, "Driving A-Grav Zoomer");
-      } else if (flutflut != offset_of_s7()) {
-        strcpy(small_image_key, "flutflut");
-        strcpy(small_image_text, "Riding on Flut Flut");
-      } else {
-        if (!indoors(level)) {
-          strcpy(small_image_key, time_of_day_str(time));
-          strcpy(small_image_text, "Time of day: ");
-          strcat(small_image_text, get_time_of_day(time).c_str());
-        } else {
-          strcpy(small_image_key, "");
-          strcpy(small_image_text, "");
-        }
-      }
       HttpStructNice new_struct;
       new_struct.num_cells = (int)*Ptr<float>(info->fuel).c();
+      new_struct.target1X = (int)*Ptr<float>(info->target1X).c();
+      new_struct.target1Y = (int)*Ptr<float>(info->target1Y).c();
+      new_struct.target1Z = (int)*Ptr<float>(info->target1Z).c();
       g_http_info = new_struct;
      
     }
@@ -640,6 +605,9 @@ void set_fullscreen(u32 symptr, s64 screen) {
     Gfx::set_fullscreen(GfxDisplayMode::Fullscreen, screen);
   }
 }
+
+
+
 
 void set_game_resolution(s64 w, s64 h) {
   Gfx::set_game_resolution(w, h);
@@ -705,6 +673,7 @@ void InitMachine_PCPort() {
   make_function_symbol_from_c("pc-discord-rpc-set", (void*)set_discord_rpc);
   make_function_symbol_from_c("pc-discord-rpc-update", (void*)update_discord_rpc);
   make_function_symbol_from_c("pc-http-struct-update", (void*)update_http_struct);
+  make_function_symbol_from_c("pc-http-rpc-update", (void*)post_rpc);
 
   // profiler
   make_function_symbol_from_c("pc-prof", (void*)prof_event);

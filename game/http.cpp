@@ -30,13 +30,20 @@
 
 #include <cstdlib>
 #include <cerrno>
+#include <string>
 
+#include <sstream>
+#include <iostream>
+
+
+#include "kernel\jak1\kmachine.h"
 
 #include "..\third-party\curlpp\include\curlpp\cURLpp.hpp"
 #include "..\third-party\curlpp\include\curlpp\Easy.hpp"
 #include "..\third-party\curlpp\include\curlpp\Options.hpp"
 #include "..\third-party\curlpp\include\curlpp\Exception.hpp"
 #include "..\third-party\curlpp\include\curlpp\Infos.hpp"
+
 static const char *pCACertFile = "curl-ca-bundle.crt";
 
 
@@ -51,20 +58,37 @@ void get_rpc(char* url) {
       // Our request to be sent.
       curlpp::Easy myRequest;
       
-
+       std::stringstream response;
         /* set the cert for client authentication */
       myRequest.setOpt<curlpp::Options::SslCert>(pCACertFile);
       myRequest.setOpt<curlpp::options::CaInfo>(pCACertFile);
       // Set the URL.
   
- 
+      curlpp::options::Url myUrl(std::string("http://localhost:27091/"));
       myRequest.setOpt<curlpp::options::Url>(url);
-      myRequest.setOpt<curlpp::options::HttpGet>("xpos1");
+      myRequest.setOpt<curlpp::options::HttpGet>("X1POS:");
+
+      
+
+      std::ostringstream os;
+      curlpp::options::WriteStream ws(&os);
+      myRequest.setOpt(ws);
+      std::string headersBuffer;
+      myRequest.setOpt(
+          curlpp::options::HeaderFunction([&headersBuffer](char* ptr, size_t size, size_t nbItems) {
+            const auto incomingSize = size * nbItems;
+            headersBuffer.append(ptr, incomingSize);
+            std::cout << incomingSize;
+            return incomingSize;
+          }));
+      myRequest.perform();
+    
+      std::cout << myUrl.getValue() << std::endl;
 
       // Send request and get a result.
       // By default the result goes to standard output.
       myRequest.perform();
-
+    
     std::string effURL;
    
 		curlpp::infos::EffectiveUrl::get(myRequest, effURL);
@@ -86,9 +110,9 @@ void get_rpc(char* url) {
 
 
 
-void post_rpc(char* url) {
+void post_rpc() {
 char *data = NULL;
-
+char *url = "http://localhost:27091/"; 
 data = (char*) "dasjhdlksjajhfljkdhljds";
 	int size = strlen(data);
 
@@ -98,11 +122,19 @@ data = (char*) "dasjhdlksjajhfljkdhljds";
 	
 
 		std::list<std::string> headers;
+    std::string myString((jak1::intToStr(jak1::g_http_info->target1X)));
+    std::string myotherString(("X1POS:"));
+
+    std::string myStringy((jak1::intToStr(jak1::g_http_info->target1Y)));
+    std::string myotherStringy(("Y1POS:"));
+
+    std::string myStringz((jak1::intToStr(jak1::g_http_info->target1Z)));
+    std::string myotherStringz(("Z1POS:"));
 		headers.push_back("Accept: text/html");
-                headers.push_back("X1POS:-2312.234");
-                headers.push_back("Y1POS:12.4535");
-                headers.push_back("Z1POS:32.3478");
-		sprintf(buf, "Content-Length: %d", size); 
+                headers.push_back(myotherString + myString);
+                headers.push_back(myotherStringy + myStringy);
+                headers.push_back(myotherStringz + myStringz);
+		sprintf(buf, "Content-Length: %d", size);
 		headers.push_back(buf);
     curlpp::Cleanup cleaner;
     curlpp::Easy request;

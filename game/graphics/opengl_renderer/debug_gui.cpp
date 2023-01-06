@@ -7,7 +7,7 @@
 #include "game/kernel/svnrev.h"
 
 #include "third-party/imgui/imgui.h"
-#include "game/http.cpp"
+#include "game/http.h"
 #include "common/log/log.h"
 #include "common/symbols.h"
 #include "common/util/FileUtil.h"
@@ -128,14 +128,7 @@ void OpenGlDebugGui::start_frame() {
 void OpenGlDebugGui::finish_frame() {
   m_frame_timer.finish_frame();
 }
-char* intToStr(int data) {
-    std::string strData = std::to_string(data);
 
-    char* temp = new char[strData.length() + 1];
-    strcpy(temp, strData.c_str());
-
-   return temp;
-}
 
 
 void OpenGlDebugGui::draw(const DmaStats& dma_stats) {
@@ -190,7 +183,7 @@ void OpenGlDebugGui::draw(const DmaStats& dma_stats) {
     }
 
     if (ImGui::BeginMenu("HTTP Test")) {
-      ImGui::InputText(intToStr(jak1::g_http_info->num_cells), Gfx::g_global_settings.target_url, IM_ARRAYSIZE(Gfx::g_global_settings.target_url));
+      ImGui::InputText(jak1::intToStr(jak1::g_http_info->num_cells), Gfx::g_global_settings.target_url, IM_ARRAYSIZE(Gfx::g_global_settings.target_url));
       if (ImGui::MenuItem("Apply")) {
         strcpy(Gfx::g_global_settings.target_url , Gfx::g_global_settings.target_url);
       }
@@ -198,7 +191,7 @@ void OpenGlDebugGui::draw(const DmaStats& dma_stats) {
    //If the post is to a garbage URL game crashes
             {
               
-                post_rpc(Gfx::g_global_settings.target_url);
+               // post_rpc(Gfx::g_global_settings.target_url);
             }
                if (ImGui::Button("Do Local GET"))
    //If the post is to a garbage URL game crashes
@@ -207,7 +200,7 @@ void OpenGlDebugGui::draw(const DmaStats& dma_stats) {
   // do the things
 
              // strcpy(intToStr(jak1::g_http_info->num_cells), Gfx::g_global_settings.target_url);
-                
+                jak1::g_http_info->num_cells = 17;
               
                 get_rpc(Gfx::g_global_settings.target_url);
             }

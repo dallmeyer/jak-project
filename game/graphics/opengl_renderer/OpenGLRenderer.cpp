@@ -541,9 +541,7 @@ void OpenGLRenderer::render(DmaFollower dma, const RenderOptions& settings) {
   }
 
 
-  if(settings.httpPOST){
-    post_rpc;
-  }
+
   if (settings.draw_subtitle_editor_window) {
     m_subtitle_editor.draw_window();
   }
