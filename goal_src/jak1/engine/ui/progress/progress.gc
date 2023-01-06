@@ -1727,6 +1727,10 @@
                                  (let ((gp-1 (-> *setting-control* default auto-save)))
                                    (sound-volume-off)
                                    (set! (-> *game-info* mode) 'play)
+                                   
+                                   ;; reset counter on new game, switch files and ur fucked
+                                   (set! (-> *pc-settings* baby-mode-count) 0)
+
                                    (cond
                                     ;; Start a new game differently if speedrunning mode is active
                                     ((= (-> *pc-settings* speedrunner-mode?) #t)
