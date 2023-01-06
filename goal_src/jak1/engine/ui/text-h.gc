@@ -763,6 +763,7 @@
 
   (rolling-buzzer               #x1600)
   (baby-mode                    #x1601)  
+  (tnt-dodged                   #x1602)
 
 ;; GAME-TEXT-ID ENUM ENDS
   )

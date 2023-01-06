@@ -981,9 +981,9 @@
                         :task-id (game-task ogre-secret)
                         :task-name
                         (new 'static 'array game-text-id 4
-                             (game-text-id hidden-power-cell)
-                             (game-text-id hidden-power-cell)
-                             (game-text-id hidden-power-cell)
+                             (game-text-id tnt-dodged)
+                             (game-text-id tnt-dodged)
+                             (game-text-id tnt-dodged)
                              (game-text-id zero)
                              )
                         )
