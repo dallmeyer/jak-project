@@ -297,10 +297,14 @@
   ;;   (-> (ppointer->process (-> obj parent)) name)
   ;;   (-> (ppointer->process (-> (ppointer->process (-> obj parent)) parent)) name)
   ;;   (-> maybe-parent name)
-  ;;   )          
+  ;;   )
 
   ;; check parent
   (case (-> (ppointer->process (-> obj parent)) name) :comp name=
+    (('farmer-3) ;; inside hut
+      (set-vector-meters! dst -22.16   3.75 -75.35)
+      (set-vector-meters! (res-lump-struct (-> obj entity) 'movie-pos (vector) :time (the-as float -1000000000.0)) -22.16   3.75 -75.35)
+      )
     (('plant-boss-3)
       ;; plant boss -> in center where eco switch usually is
       (set-vector-meters! dst 434.3 -41.0 -248.5)
@@ -338,6 +342,18 @@
     (('racer-8)
       ;; up ledge from where normally is at end of FC
       (set-vector-meters! dst 326.08  33.62 -1448.86)
+      )
+    (('gambler-1) ;; dock towards sage hut
+      (set-vector-meters! dst 319.37   5.00 -1604.09)
+      (set-vector-meters! (res-lump-struct (-> obj entity) 'movie-pos (vector) :time (the-as float -1000000000.0)) 319.37   5.00 -1604.09)
+      )
+    (('geologist-1);; on wooden thing near orig pos
+      (set-vector-meters! dst 192.10  13.71 -1615.26)
+      (set-vector-meters! (res-lump-struct (-> obj entity) 'movie-pos (vector) :time (the-as float -1000000000.0)) 192.10  13.71 -1615.26)
+      )
+    (('warrior-1) ;; dock towards sage hut
+      (set-vector-meters! dst 318.73   4.68 -1590.79)
+      (set-vector-meters! (res-lump-struct (-> obj entity) 'movie-pos (vector) :time (the-as float -1000000000.0)) 318.73   4.68 -1590.79)
       )
     (('exit-chamber-1)  ;; inside elevator
       (vector-copy! dst (static-vector-meters 575.8 -246.8 -1679.49))
