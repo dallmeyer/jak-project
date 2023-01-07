@@ -250,7 +250,7 @@
       (vector-copy-no-w! (-> obj root-override trans) vec)
       (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
 
-      (if (-> obj sound)        
+      (if (-> obj sound)
         (vector-copy-no-w! (-> obj sound trans) vec)
         )
       )

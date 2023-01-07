@@ -20,8 +20,12 @@
         (set-vector! (-> (the plant-boss-leaf (ppointer->process (-> obj leaf 1))) root-override scale) 1.0 1.0 -1.0 1.0)
         (when (logtest? (-> obj entity extra perm status) (entity-perm-status complete))
           ;; unlock eco vents on plant boss death
-          (set! (-> (the ecovent (process-by-ename "ecovent-170")) block-func) (the-as (function vent symbol) false-func))
-          (set! (-> (the ecovent (process-by-ename "ecovent-206")) block-func) (the-as (function vent symbol) false-func))
+          (when (process-by-ename "ecovent-170")
+            (set! (-> (the ecovent (process-by-ename "ecovent-170")) block-func) (the-as (function vent symbol) false-func))
+            )
+          (when (process-by-ename "ecovent-206")
+            (set! (-> (the ecovent (process-by-ename "ecovent-206")) block-func) (the-as (function vent symbol) false-func))
+          )
           )
         )
       )
@@ -73,20 +77,8 @@
         (set-vector-meters! (-> obj basetrans) 434.3 -42.0 -248.5)
         )
       )
-    (when (process-by-ename "ecovent-170")  ;; in orig eco switch room
-      (let ((obj (the ecovent (process-by-ename "ecovent-170"))))
-        (set-vector-meters! (-> obj root trans) 451.1 -42.6 -246.2)
-        (set-vector-meters! (-> obj root-override trans) 451.1 -42.6 -246.2)
-        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) 451.1 -42.6 -246.2)
-        )
-      )
-    (when (process-by-ename "ecovent-206")  ;; near temple elevator
-      (let ((obj (the ecovent (process-by-ename "ecovent-206"))))
-        (set-vector-meters! (-> obj root trans) 355.75 -49.0 -247.9)
-        (set-vector-meters! (-> obj root-override trans) 355.75 -49.0 -247.9)
-        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) 355.75 -49.0 -247.9)
-        )
-      )
+    (mod-move-ecovent "ecovent-170" (static-vector-meters 451.1 -42.6 -246.2)) ;; in orig eco switch room
+    (mod-move-ecovent "ecovent-206" (static-vector-meters 355.75 -49.0 -247.9))  ;; near temple elevator
     (when (process-by-ename "plat-81")  ;; on way up to launcher in orig plantboss room
       (let ((obj (the plat (process-by-ename "plat-81"))))
         (send-event obj 'idle)
@@ -111,13 +103,7 @@
         (set-vector-meters! (-> obj basetrans) 275.3 -30.5 -287.0)
         )
       )
-    (when (process-by-ename "ecovent-171")  ;; on top of platforms in orig plantboss room
-      (let ((obj (the ecovent (process-by-ename "ecovent-171"))))
-        (set-vector-meters! (-> obj root trans) 275.3 -30.5 -287.0)
-        (set-vector-meters! (-> obj root-override trans) 275.3 -30.5 -287.0)
-        (set-vector-meters! (-> obj root-override root-prim prim-core world-sphere) 275.3 -30.5 -287.0)
-        )
-      )
+    (mod-move-ecovent "ecovent-171" (static-vector-meters 275.3 -30.5 -287.0))  ;; on top of platforms in orig plantboss room
     (when (process-by-ename "plat-79")  ;; past way up to launcher in orig plantboss room
       (let ((obj (the plat (process-by-ename "plat-79"))))
         (send-event obj 'idle)
