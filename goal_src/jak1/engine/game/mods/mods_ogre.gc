@@ -3,18 +3,8 @@
 
 (defmacro mod-ogre-run-each-frame ()
   `(begin
-    (when (process-by-ename "ecovent-271")  ;; blue - start of MP race
-      (let ((obj (the ecovent (process-by-ename "ecovent-271")))
-            (vec (static-vector-meters 195.88  35.60 -2023.30))
-            )
-        (vector-copy-no-w! (-> obj root trans) vec)
-        (vector-copy-no-w! (-> obj root-override trans) vec)
-        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
-        )
-      )
-    (when (process-by-ename "money-4882") ;; in cave in MP, between stalag/stalac
-      (set! (-> (the money (process-by-ename "money-4882")) bob-amount) 0.0)
-      )
+    (mod-move-ecovent "ecovent-271" (static-vector-meters 195.88  35.60 -2023.30))  ;; blue - start of MP race
+    (mod-no-money-bob "money-4882") ;; in cave in MP, between stalag/stalac
       
     ;; eco-255 ;; blue
     ;; eco-270

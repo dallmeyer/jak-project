@@ -807,6 +807,7 @@
     )
   )
 
+(define-extern static-vector-meters (function float float float vector))
 (defstate pelican-explode (pelican)
   :code (behavior ((arg0 symbol))
     (let ((v1-2 (-> self entity extra perm)))
@@ -838,7 +839,7 @@
       (set! (-> gp-2 y) (+ 8192.0 (-> gp-2 y)))
       (when (not (task-complete? *game-info* (-> self entity extra perm task)))
         (let ((v1-29 (birth-pickup-at-point
-                       gp-2
+                       (static-vector-meters -256.17  29.5 -465.54)
                        (pickup-type fuel-cell)
                        (the float (-> self entity extra perm task))
                        #f

@@ -26,6 +26,24 @@
     ;; ecovent-239
     ;; ecovent-240
     ;; ecovent-241
+    
+    ;; square-platform-7
+    ;; (when (process-by-ename "square-platform-8") ;; going right instead of straight across
+    ;;   (let ((obj (the square-platform (process-by-ename "square-platform-8")))
+    ;;         (vec (static-vector-meters 619.42 -140.0 -1744.79)))
+        ;; (vector-copy! (-> obj root trans) vec)
+        ;; (vector-copy! (-> obj root-override trans) vec)
+    ;;     (vector-copy! (-> obj basetrans) vec)
+    ;;     )
+    ;;   )
+    ;; (when (process-by-ename "square-platform-9") ;; on right instead of across
+    ;;   (let ((obj (the square-platform (process-by-ename "square-platform-9")))
+    ;;         (vec (static-vector-meters 634.2 -140.0 -1752.8)))
+        ;; (vector-copy! (-> obj root trans) vec)
+        ;; (vector-copy! (-> obj root-override trans) vec)
+      ;;   (vector-copy! (-> obj basetrans) vec)
+      ;;   )
+      ;; )
     )
   )
 
@@ -280,12 +298,24 @@
     ;; plat-62
 
     ;; LPC (sunkenb) misc
+    ;; square-platform-7
+    ;; (('square-platform-8) ;; going right instead of straight across
+    ;;   (set-vector-meters! (-> (the-as square-platform obj) root trans) 619.42 -140.0 -1744.79)
+    ;;   (set-vector-meters! (-> (the-as square-platform obj) root-override trans) 619.42 -140.0 -1744.79)
+    ;;   (set-vector-meters! (-> (the-as square-platform obj) basetrans) 619.42 -140.0 -1744.79)
+    ;;   )
+    ;; (('square-platform-9) ;; on right instead of across
+    ;;   (set-vector-meters! (-> (the-as square-platform obj) root trans) 634.2 -140.0 -1752.8)
+    ;;   (set-vector-meters! (-> (the-as square-platform obj) root-override trans) 634.2 -140.0 -1752.8)
+    ;;   (set-vector-meters! (-> (the-as square-platform obj) basetrans) 634.2 -140.0 -1752.8)
+    ;;   )
+
     (('bully-16) (set-vector-meters! (-> arg0 extra trans) 572.99 -238.99 -1698.60)) ;; moved to other side of elevator top ledge (so can hit orb crates)
     (('bully-17) (set-vector-meters! (-> arg0 extra trans) 575.97 -238.99 -1660.87)) ;; moved to other side of elevator top ledge (so can hit orb crates)
     (('crate-2732) (set-vector-meters! (-> arg0 extra trans)  539.86 -242.99 -1677.05))  ;; orig eco charger 
     (('crate-2733) (set-vector-meters! (-> arg0 extra trans)  611.15 -242.99 -1680.80))  ;; orig eco charger
     (('crate-2734) (set-vector-meters! (-> arg0 extra trans)  561.36 -244.99 -1712.01))  ;; steps in elevator room
-    (('crate-3061) (set-vector-meters! (-> arg0 extra trans) 540.52 -249.07 -1764.13))  ;; green
+    ;; (('crate-3061) (set-vector-meters! (-> arg0 extra trans) 540.52 -249.07 -1764.13))  ;; green
     (('crate-3077) (set-vector-meters! (-> arg0 extra trans) 537.0 -250.5 -1766.6)) ;; green - start of 2nd slide 
     (('crate-3066) (set-vector-meters! (-> arg0 extra trans) 537.0 -248.6 -1767.1)  ;; green - on top of ^, use to skip slide state and collect orbs more easily
       (set-vector! (-> arg0 quat) -0.1089  0.1712  0.0008  0.9791) ;; to match 3077

@@ -3,42 +3,10 @@
 
 (defmacro mod-firecanyon-run-each-frame ()
   `(begin
-    (when (process-by-ename "ecovent-195")  ;; blue - left side of first ramp
-      (let ((obj (the ecovent (process-by-ename "ecovent-195")))
-            (vec (static-vector-meters 110.87  30.9 -427.01))
-            )
-        (vector-copy-no-w! (-> obj root trans) vec)
-        (vector-copy-no-w! (-> obj root-override trans) vec)
-        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
-        )
-      )
-    (when (process-by-ename "ecovent-196")  ;; blue - on ramp left of darkeco-clusters and fly
-      (let ((obj (the ecovent (process-by-ename "ecovent-196")))
-            (vec (static-vector-meters 172.75  34.75 -861.44))
-            )
-        (vector-copy-no-w! (-> obj root trans) vec)
-        (vector-copy-no-w! (-> obj root-override trans) vec)
-        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
-        )
-      )
-    (when (process-by-ename "ecovent-197")  ;; blue - beginning of first bridge
-      (let ((obj (the ecovent (process-by-ename "ecovent-197")))
-            (vec (static-vector-meters 138.01  30.99 -574.58))
-            )
-        (vector-copy-no-w! (-> obj root trans) vec)
-        (vector-copy-no-w! (-> obj root-override trans) vec)
-        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
-        )
-      )
-    (when (process-by-ename "ecovent-198")  ;; blue - in middle path towards end
-      (let ((obj (the ecovent (process-by-ename "ecovent-198")))
-            (vec (static-vector-meters 215.83  30.99 -1216.6))
-            )
-        (vector-copy-no-w! (-> obj root trans) vec)
-        (vector-copy-no-w! (-> obj root-override trans) vec)
-        (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
-        )
-      )
+    (mod-move-ecovent "ecovent-195" (static-vector-meters 110.87  30.9 -427.01))  ;; blue - left side of first ramp
+    (mod-move-ecovent "ecovent-196" (static-vector-meters 172.75  34.75 -861.44))  ;; blue - on ramp left of darkeco-clusters and fly
+    (mod-move-ecovent "ecovent-197" (static-vector-meters 138.01  30.99 -574.58))  ;; blue - beginning of first bridge
+    (mod-move-ecovent "ecovent-198" (static-vector-meters 215.83  30.99 -1216.6))  ;; blue - in middle path towards end
     )
   )
 

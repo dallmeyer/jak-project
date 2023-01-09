@@ -1,24 +1,6 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
-(defmacro set-vector-meters! (dst x y z)
-  `(set-vector! ,dst (meters ,x) (meters ,y) (meters ,z) (-> ,dst w))
-  )
-
-(defmacro static-vector-meters (x y z)
-  `(new 'static 'vector :x (meters ,x) :y (meters ,y) :z (meters ,z) :w 1.0)
-  )
-
-(defmacro static-vector-meters-wz (x y z)
-  `(new 'static 'vector :x (meters ,x) :y (meters ,y) :z (meters ,z) :w 0.0)
-  )
-  
-(defun vector-copy-no-w! ((dst vector) (src vector))
-  (set! (-> dst x) (-> src x))
-  (set! (-> dst y) (-> src y))
-  (set! (-> dst z) (-> src z))
-  )
-
 (defmacro mod-copy-mesh-and-path (dst-name src-name)
   `(let ((dst (the nav-enemy (process-by-ename ,dst-name)))
          (src (the nav-enemy (process-by-ename ,src-name)))
@@ -325,6 +307,9 @@
         ((name= (-> (the pelican (ppointer->process (-> obj parent))) state name) 'pelican-explode)
           (set-vector-meters! dst -256.17  28.28 -465.54) ;; high plateau above grotto
           )
+        (else
+          (format #t "unknown pelican-1 state ~S~%" (-> (the pelican (ppointer->process (-> obj parent))) state name))
+          )
         )
       )
     (('mistycannon-4 'babak-with-cannon-1)
@@ -450,7 +435,7 @@
           ;; sentinel -> orig flutflutegg nest
           (set-vector-meters! dst -56.42  42.7 -290.57)
           )
-        (('crate-659 'crate-672 'crate-673 'crate-684 'crate-747 'crate-2560 'crate-2561)
+        (('crate-659 'crate-672 'crate-673 'crate-684 'crate-747 'crate-2561) ;; crate-2560 excluded because I think its set to instant collect, expected to be picked up on zoomer?
           ;; misty -> bone near arena entrance
           (set-vector-meters! dst -158.17  22.0 883.41)
           )

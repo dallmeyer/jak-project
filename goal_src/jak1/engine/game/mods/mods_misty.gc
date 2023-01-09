@@ -184,7 +184,9 @@
     (('crate-711) (set-vector-meters! (-> arg0 extra trans) 14.44	2.05	1094.72) (set-vector! (-> arg0 quat) 0.0  0.9  0.0  0.43)) ;; dark eco - path under/through lurker ship
     (('crate-746) (set-vector-meters! (-> arg0 extra trans) -35.99  -0.47 948.78)) ;; dark eco - in skeleton in zoomer section
     (('crate-2322) (set-vector-meters! (-> arg0 extra trans) -29.3  -0.1 949.1)) ;; dark eco - in skeleton in zoomer section
-    (('crate-745) (set-vector-meters! (-> arg0 extra trans) -191.44  57.09 1018.57)) ;; green - where orig cannon is
+    (('crate-745) (set-vector-meters! (-> arg0 extra trans) -191.44  57.09 1022.57)) ;; green - where orig cannon is
+    (('crate-2323) (set-vector-meters! (-> arg0 extra trans) -191.44  57.09 1014.57)) ;; green - where orig cannon is
+    (('crate-2324) (set-vector-meters! (-> arg0 extra trans) -191.44  57.09 1018.57)) ;; green - where orig cannon is
 
     (('teetertotter-5) (set-vector-meters! (-> arg0 extra trans) -146.83  15.0 1112.8)) ;; mud on backside of island
     (('teetertotter-6) (set-vector-meters! (-> arg0 extra trans)   52.0  32.0  872.9) ;; pull away from wall slightly, near top of muse path
