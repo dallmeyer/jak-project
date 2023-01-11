@@ -2847,6 +2847,105 @@
 
 (set! (-> *citadel-mood* num-stars) 0.0)
 
+;; #############################################################################
+;; #############################################################################
+;; #############################################################################
+;; CUSTOM MOOD STUFF TEST ######################################################
+;; #############################################################################
+;; #############################################################################
+;; #############################################################################
 
 
+(defun make-crystal-cave-light-kit ((arg0 mood-context))
+  (make-light-kit (-> arg0 light-group 1) 38229.332 0.9 0.9 0.4)
+  (let ((s5-0 (-> arg0 light-group 2)))
+    (make-light-kit s5-0 2730.6667 1.0 1.0 0.8)
+    (let ((v1-0 (-> s5-0 dir2)))
+      (set! (-> v1-0 direction x) 0.0)
+      (set! (-> v1-0 direction y) -1.0)
+      (set! (-> v1-0 direction z) 0.0)
+      (set! (-> v1-0 direction w) 0.0)
+      )
+    (set-vector! (-> s5-0 dir2 color) 0.75 0.375 0.0 1.0)
+    )
+  (make-light-kit (-> arg0 light-group 3) 53703.11 0.9 0.9 0.5)
+  (make-light-kit (-> arg0 light-group 4) 54613.332 0.9 0.9 0.4)
+  (make-light-kit (-> arg0 light-group 5) 54613.332 0.9 0.9 0.4)
+  (make-light-kit (-> arg0 light-group 6) 5461.3335 0.9 0.0 0.4)
+  (make-light-kit (-> arg0 light-group 7) 41870.223 0.9 0.9 0.4)
+  (none)
+  )
 
+(define *crystal-cave-mood-fog-table*
+  (new 'static 'mood-fog-table :data (new 'static 'inline-array mood-fog 8
+                                       (new 'static 'mood-fog
+                                         :fog-color (new 'static 'vector :x 160.0 :y 220.0 :z 180.0 :w 128.0)
+                                         :fog-dists (new 'static 'vector :x (meters 128.0) :y (meters 360.0) :z 255.0 :w 0.1)
+                                         :erase-color (new 'static 'vector :w 128.0)
+                                         )
+                                       (new 'static 'mood-fog)
+                                       (new 'static 'mood-fog)
+                                       (new 'static 'mood-fog)
+                                       (new 'static 'mood-fog)
+                                       (new 'static 'mood-fog)
+                                       (new 'static 'mood-fog)
+                                       (new 'static 'mood-fog)
+                                       )
+                               )
+  )
+
+(define *crystal-cave-mood-lights-table*
+  (new 'static 'mood-lights-table :data (new 'static 'inline-array mood-lights 8
+                                          (new 'static 'mood-lights
+                                            :direction (new 'static 'vector :x -0.8 :y 0.9 :z -0.3)
+                                            :lgt-color (new 'static 'vector :x 1.25 :y 1.0 :z 1.1 :w 1.0) 
+                                            :prt-color (new 'static 'vector :w 1.0)
+                                            :amb-color (new 'static 'vector :x 0.15 :y 0.25 :z 0.15 :w 1.0) 
+                                            :shadow (new 'static 'vector :x 0.8 :y -0.9 :z -0.3)
+                                            )
+                                          (new 'static 'mood-lights)
+                                          (new 'static 'mood-lights)
+                                          (new 'static 'mood-lights)
+                                          (new 'static 'mood-lights)
+                                          (new 'static 'mood-lights)
+                                          (new 'static 'mood-lights)
+                                          (new 'static 'mood-lights)
+                                          )
+                                  )
+  )
+
+(define *crystal-cave-mood-sun-table*
+  (new 'static 'mood-sun-table :data (new 'static 'inline-array mood-sun 8
+                                       (new 'static 'mood-sun
+                                         :sun-color (new 'static 'vector :x 255.0 :y 128.0 :w 128.0)   ;; :x Red   :y Green   :w Blue
+                                         :env-color (new 'static 'vector :x 255.0 :y 225.0 :z 96.0 :w 255.0)
+                                         )
+                                       (new 'static 'mood-sun)
+                                       (new 'static 'mood-sun)
+                                       (new 'static 'mood-sun)
+                                       (new 'static 'mood-sun)
+                                       (new 'static 'mood-sun)
+                                       (new 'static 'mood-sun)
+                                       (new 'static 'mood-sun)
+                                       )
+                               )
+  )
+
+
+(define *crystal-cave-mood* (new 'global 'mood-context))
+
+(set! (-> *crystal-cave-mood* mood-fog-table) *crystal-cave-mood-fog-table*)
+
+(set! (-> *crystal-cave-mood* mood-lights-table) *crystal-cave-mood-lights-table*)
+
+(set! (-> *crystal-cave-mood* mood-sun-table) *crystal-cave-mood-sun-table*)
+
+(set! (-> *crystal-cave-mood* fog-interp) *default-interp-table*)
+
+(set! (-> *crystal-cave-mood* palette-interp) *village1-palette-interp-table*)
+
+(set! (-> *crystal-cave-mood* sky-texture-interp) *default-interp-table*)
+
+(set! (-> *crystal-cave-mood* num-stars) 85.0)
+
+(make-crystal-cave-light-kit *crystal-cave-mood*)

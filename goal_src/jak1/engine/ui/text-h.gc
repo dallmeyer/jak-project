@@ -691,6 +691,14 @@
   (scene-player                 #x10c1)
   (play-credits                 #x10c2)
   (scrapbook                    #x10c3)
+  ;; CUSTOM LEVEL TEXTS
+  (crystalc-middle    #x10c4)
+  (crystalc-river     #x10c5)
+  (crystalc-ship      #x10c6)
+  (crystalc-shrooms   #x10c7)
+  (crystalc-buzzer    #x10c8)
+  (crystalc-level     #x10c9)
+
   (default                      #x10d0)
   (flava-vi1-unused0            #x10d1)
   (flava-sage                   #x10d2)

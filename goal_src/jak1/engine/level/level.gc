@@ -1071,7 +1071,9 @@
         (return #t)
         )
       (else
-        (if (-> *pc-settings* force-actors?)
+        (if (or (= (-> obj name) 'crystal-cave) 
+                (-> *pc-settings* force-actors?)
+                )
           (return #t)
           )
         )

@@ -6,7 +6,6 @@
 ;; dgos: GAME, ENGINE
 
 ;; DECOMP BEGINS
-
 (import "goal_src/jak1/import/deathcam-ag.gc")
 
 (defskelgroup *deathcam-sg* deathcam deathcam-lod0-jg deathcam-idle-ja
@@ -428,7 +427,13 @@
               )
             (set-continue! *game-info* "lavatube-end")
             )
+            ;; CUSTOM SPAWN POINT FOR WARPGATE FOR CUSTOM LEVEL
+           ((string= (-> arg0 name) "crystal-cave-warp")  ;; NAME OF THE WARP CHECKPOINT HERE
+            (set! (-> s5-6 quad) (-> (entity-by-name "crystalc-warpmiddle-01") extra trans quad)) ;; ACTOR IN THE PORTAL, SPAWN IT WITH THE JSONC OF YOUR CUSTOM LEVEL
+            (set-continue! *game-info* "crystal-cave-start") ;; IF YOU WANT THE CHECKPOINT TO BE SWITCHED TO A DIFFERENT ONE AFTER WARPING
            )
+         )
+
          (go target-warp-in s5-6 (-> arg0 trans))
          )
        )

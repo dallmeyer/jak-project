@@ -1278,3 +1278,1304 @@
 
 
 
+
+;; CUSTOM LEVEL PARTS
+
+(defpartgroup group-crystalc-waterfall-01
+  :id 155                                                                        ;; NEEDS TO BE UNIQUE
+  :flags (always-draw)
+  :bounds (static-bspherem 0 12 0 12)
+  :parts ((sp-item 801 :fade-after (meters 160) :falloff-to (meters 160))          ;;sp-item = start the items under
+    (sp-item 802 :fade-after (meters 160) :falloff-to (meters 160))
+    (sp-item 803 :fade-after (meters 160) :falloff-to (meters 160))
+    (sp-item 804 :fade-after (meters 160) :falloff-to (meters 160))
+    )
+  )
+
+(defpart 801
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x18 :page #x2))
+    (sp-flt spt-num 1.5)                                                         ;; Particles quantity
+    (sp-rnd-flt spt-x (meters -3.0) (meters 6.0) 1.0)                            ;; (Start pos) (start lenght) 
+    (sp-flt spt-y (meters 77.0))                                                 ;; Start height
+    (sp-rnd-flt spt-z (meters -40.0) (meters 4.0) 1.0)                           ;; (Start pos) (start lenght)
+    (sp-rnd-flt spt-scale-x (meters 2.4) (meters 1.6) 1.0)                       ;; X Scaling of the particle texture 
+    (sp-rnd-flt spt-scale-y (meters 1.2) (meters 0.8) 1.0)                       ;; Y Scaling of the particle texture  
+    (sp-flt spt-r 192.0)                                                         ;; Red lighting (64.0 to 192.0)
+    (sp-flt spt-g 192.0)                                                         ;; Green lighting (64.0 to 192.0) 
+    (sp-flt spt-b 192.0)                                                         ;; Blue lighting (64.0 to 192.0) 
+    (sp-rnd-flt spt-a 36.0 16.0 1.0)                                             ;; Alpha ?? multiplier
+    (sp-flt spt-vel-x (meters -0.055))                                           ;; Starting velocity X
+    (sp-rnd-flt spt-vel-y (meters 0.013333334) (meters 0.013333334) 1.0)         ;; Starting velocity Y
+    (sp-rnd-flt spt-vel-z (meters -0.0026666667) (meters 0.0033333334) 1.0)      ;; Starting velocity Z
+    (sp-flt spt-scalevel-x (meters 0.0073242188))                                ;; Scale while falling X
+    (sp-flt spt-scalevel-y (meters 0.029296875))                                 ;; Scale while falling Y
+    (sp-flt spt-accel-x 5.5000000)                                               ;; Acceleration X (forward)
+    (sp-rnd-flt spt-accel-y -15.018667 -2.7306666 1.0)                           ;; Acceleration Y (falling)
+    (sp-flt spt-accel-z 6.5000000)                                               ;; Acceleration Z (forward)
+    (sp-int spt-timer 480)                                                       ;; Timer before death 
+    (sp-cpuinfo-flags bit2)                                                      ;; ??
+    (sp-int spt-next-time 460)                                                   ;; Timer before next-launcher
+    (sp-launcher-by-id spt-next-launcher 791)                                    ;; 791 = Fade-out
+    (sp-rnd-flt spt-launchrot-x (degrees -15.0) (degrees 30.0) 1.0)              ;; X rotation of the particle texture
+    (sp-flt spt-rotate-y (degrees 90.0))                                         ;; Y rotation of the particle texture
+    )
+  )
+
+(defpart 802
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x18 :page #x2))
+    (sp-flt spt-num 5.0)                                                         ;; Particles quantity
+    (sp-rnd-flt spt-x (meters -12.0) (meters 12.0) 1.0)                            ;; (Start pos) (start lenght) 
+    (sp-flt spt-y (meters 78.0))                                                 ;; Start height
+    (sp-rnd-flt spt-z (meters -41.0) (meters 4.0) 1.0)                           ;; (Start pos) (start lenght)
+    (sp-rnd-flt spt-scale-x (meters 2.4) (meters 1.6) 1.0)                       ;; X Scaling of the particle texture 
+    (sp-rnd-flt spt-scale-y (meters 1.2) (meters 0.8) 1.0)                       ;; Y Scaling of the particle texture  
+    (sp-flt spt-r 192.0)                                                         ;; Red lighting (64.0 to 192.0)
+    (sp-flt spt-g 192.0)                                                         ;; Green lighting (64.0 to 192.0) 
+    (sp-flt spt-b 192.0)                                                         ;; Blue lighting (64.0 to 192.0) 
+    (sp-rnd-flt spt-a 36.0 16.0 1.0)                                             ;; Alpha ?? multiplier
+    (sp-flt spt-vel-x (meters -0.035))                                           ;; Starting velocity X
+    (sp-rnd-flt spt-vel-y (meters 0.013333334) (meters 0.013333334) 1.0)         ;; Starting velocity Y
+    (sp-rnd-flt spt-vel-z (meters -0.0026666667) (meters 0.0033333334) 1.0)      ;; Starting velocity Z
+    (sp-flt spt-scalevel-x (meters 0.0073242188))                                ;; Scale while falling X
+    (sp-flt spt-scalevel-y (meters 0.029296875))                                 ;; Scale while falling Y
+    (sp-flt spt-accel-x 3.8000000)                                               ;; Acceleration X (forward)
+    (sp-rnd-flt spt-accel-y -15.018667 -2.7306666 1.0)                           ;; Acceleration Y (falling)
+    (sp-flt spt-accel-z 7.3000000)                                               ;; Acceleration Z (forward)
+    (sp-int spt-timer 480)                                                       ;; Timer before death 
+    (sp-cpuinfo-flags bit2)                                                      ;; ??
+    (sp-int spt-next-time 460)                                                   ;; Timer before next-launcher
+    (sp-launcher-by-id spt-next-launcher 791)                                    ;; 791 = Fade-out
+    (sp-rnd-flt spt-launchrot-x (degrees -15.0) (degrees 30.0) 1.0)              ;; X rotation of the particle texture
+    (sp-flt spt-rotate-y (degrees 90.0))                                         ;; Y rotation of the particle texture
+    )
+  )
+
+(defpart 803
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x18 :page #x2))
+    (sp-flt spt-num 2.5)                                                         ;; Particles quantity
+    (sp-rnd-flt spt-x (meters -16.0) (meters 6.0) 1.0)                           ;; Random Start pos between 2pt 
+    (sp-flt spt-y (meters 79.0))                                                 ;; Start height
+    (sp-rnd-flt spt-z (meters -41.5) (meters .0) 1.0)                            ;; Random Start pos between 2pt 
+    (sp-rnd-flt spt-scale-x (meters 2.4) (meters 1.6) 1.0)                       ;; X Scaling of the particle texture 
+    (sp-rnd-flt spt-scale-y (meters 1.2) (meters 0.8) 1.0)                       ;; Y Scaling of the particle texture  
+    (sp-flt spt-r 192.0)                                                         ;; Red lighting (64.0 to 192.0)
+    (sp-flt spt-g 192.0)                                                         ;; Green lighting (64.0 to 192.0) 
+    (sp-flt spt-b 192.0)                                                         ;; Blue lighting (64.0 to 192.0) 
+    (sp-rnd-flt spt-a 36.0 16.0 1.0)                                             ;; Random Alpha / multiplier
+    (sp-flt spt-vel-x (meters -0.075))                                           ;; Starting velocity X
+    (sp-rnd-flt spt-vel-y (meters 0.013333334) (meters 0.013333334) 1.0)         ;; Starting velocity Y
+    (sp-rnd-flt spt-vel-z (meters -0.0026666667) (meters 0.0033333334) 1.0)      ;; Starting velocity Z
+    (sp-flt spt-scalevel-x (meters 0.0073242188))                                ;; Scale while moving X
+    (sp-flt spt-scalevel-y (meters 0.029296875))                                 ;; Scale while moving Y
+    (sp-flt spt-accel-x 8.2000000)                                               ;; Acceleration X (forward)
+    (sp-rnd-flt spt-accel-y -15.018667 -2.7306666 1.0)                           ;; Acceleration Y (falling)
+    (sp-flt spt-accel-z 9.5000000)                                               ;; Acceleration Z (forward)
+    (sp-int spt-timer 480)                                                       ;; Timer before death 
+    (sp-cpuinfo-flags bit2)                                                      ;; ??
+    (sp-int spt-next-time 440)                                                   ;; Timer before next-launcher
+    (sp-launcher-by-id spt-next-launcher 791)                                    ;; 790 = Fade out of the alpha
+    (sp-rnd-flt spt-launchrot-x (degrees -15.0) (degrees 30.0) 1.0)              ;; X rotation of the particle texture
+    (sp-flt spt-rotate-y (degrees 90.0))                                         ;; Y rotation of the particle texture
+    )
+  )
+
+(defpart 804
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x19 :page #x2))
+    (sp-flt spt-num 0.2)                                                       ;; Particles quantity
+    (sp-rnd-flt spt-x (meters -2) (meters 10) 1.0)                                 ;; Random Start pos between 2pt  
+    (sp-flt spt-y (meters -3.5))                                                 ;; Start height
+    (sp-rnd-flt spt-z (meters -2) (meters 10) 1.0)                               ;; Random Start pos between 2pt 
+    (sp-flt spt-scale-x (meters 12))                                             ;; X Scaling of the particle texture
+    (sp-rnd-flt spt-rot-z (degrees 0.0) (degrees 360.0) 1.0)                     ;; Starting random rotation
+    (sp-copy-from-other spt-scale-y -4)                                          ;; Copy X scaling to Y
+    (sp-flt spt-r 128.0)                                                         ;; Red lighting (64.0 to 192.0)
+    (sp-flt spt-g 128.0)                                                         ;; Green lighting (64.0 to 192.0) 
+    (sp-flt spt-b 128.0)                                                         ;; Blue lighting (64.0 to 192.0) 
+    (sp-flt spt-a 0.0)                                                           ;; Starting Alpha 
+    (sp-rnd-flt spt-vel-x (meters -0.006666667) (meters 0.02) 1.0)               ;; Starting velocity X
+    (sp-flt spt-vel-y (meters 0.053333335))                                      ;; Starting velocity Y
+    (sp-rnd-flt spt-vel-z (meters -0.006666667) (meters 0.013333334) 1.0)        ;; Starting velocity Z
+    (sp-flt spt-scalevel-x (meters 0.006666667))                                 ;; Scale while moving X
+    (sp-rnd-flt spt-rotvel-z (degrees -0.3) (degrees 0.6) 1.0)                   ;; Random rotation while moving Z
+    (sp-copy-from-other spt-scalevel-y -4)                                       ;; Copy X Scale while moving to Y
+    (sp-flt spt-fade-a 1.28)                                                     ;; Fade alpha to visible
+    (sp-flt spt-accel-y 0.013653334)                                             ;; Acceleration Y
+    (sp-flt spt-friction 0.99)                                                   ;; Friction (slowdown)
+    (sp-int spt-timer 900)                                                       ;; Timer before death 
+    (sp-cpuinfo-flags bit2)                                                      ;; ??
+    (sp-int-plain-rnd spt-next-time 45 29 1)                                     ;; Random Timer before next-launcher
+    (sp-launcher-by-id spt-next-launcher 790)                                    ;; 790 = Fade out of the alpha
+    (sp-flt spt-rotate-y (degrees 90.0))                                         ;; Y rotation of the particle texture
+    )
+  )
+
+(defpartgroup group-crystalc-bad-ground-01
+  :id 156                                                                        ;; NEEDS TO BE UNIQUE
+  :flags (always-draw)
+  :bounds (static-bspherem 0 12 0 12)
+  :parts ((sp-item 811 :fade-after (meters 160) :falloff-to (meters 160))          ;;sp-item = start the items under
+    )
+  )
+
+(defpart 811
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x19 :page #x2))
+    (sp-flt spt-num 1.5)                                                       ;; Particles quantity
+    (sp-rnd-flt spt-x (meters -35) (meters 70) 1.0)                               ;; Random Start pos between 2pt  
+    (sp-rnd-flt spt-y (meters 0) (meters 5) 1.0)                                  ;; Start height
+    (sp-rnd-flt spt-z (meters -45) (meters 90) 1.0)                               ;; Random Start pos between 2pt 
+    (sp-flt spt-scale-x (meters 12))                                             ;; X Scaling of the particle texture
+    (sp-rnd-flt spt-rot-z (degrees 0.0) (degrees 360.0) 1.0)                     ;; Starting random rotation
+    (sp-copy-from-other spt-scale-y -4)                                          ;; Copy X scaling to Y
+    (sp-flt spt-r 120.0)                                                         ;; Red lighting (64.0 to 192.0)
+    (sp-flt spt-g 20.0)                                                         ;; Green lighting (64.0 to 192.0) 
+    (sp-flt spt-b 90.0)                                                         ;; Blue lighting (64.0 to 192.0) 
+    (sp-flt spt-a 0.0)                                                           ;; Starting Alpha 
+    (sp-rnd-flt spt-vel-x (meters -0.006666667) (meters 0.02) 1.0)               ;; Starting velocity X
+    (sp-flt spt-vel-y (meters 0.020))                                            ;; Starting velocity Y
+    (sp-rnd-flt spt-vel-z (meters -0.006666667) (meters 0.013333334) 1.0)        ;; Starting velocity Z
+    (sp-flt spt-scalevel-x (meters 0.006666667))                                 ;; Scale while moving X
+    (sp-rnd-flt spt-rotvel-z (degrees -0.3) (degrees 0.6) 1.0)                   ;; Random rotation while moving Z
+    (sp-copy-from-other spt-scalevel-y -4)                                       ;; Copy X Scale while moving to Y
+    (sp-flt spt-fade-a 0.4)                                                     ;; Fade alpha to visible
+    (sp-flt spt-accel-y 0.013653334)                                             ;; Acceleration Y
+    (sp-flt spt-friction 0.99)                                                   ;; Friction (slowdown)
+    (sp-int spt-timer 900)                                                       ;; Timer before death 
+    (sp-cpuinfo-flags bit2)                                                      ;; ??
+    (sp-int-plain-rnd spt-next-time 200 50 1)                                     ;; Random Timer before next-launcher
+    (sp-launcher-by-id spt-next-launcher 790)                                    ;; 790 = Fade out of the alpha
+    (sp-flt spt-rotate-y (degrees 90.0))                                         ;; Y rotation of the particle texture
+    )
+  )
+
+(defpartgroup group-crystalc-bad-shroom-big
+  :id 157                                                                        ;; NEEDS TO BE UNIQUE
+  :flags (always-draw)
+  :bounds (static-bspherem 0 12 0 12)
+  :parts ((sp-item 812 :fade-after (meters 160) :falloff-to (meters 160))          ;;sp-item = start the items under
+    )
+  )
+
+(defpart 812
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x19 :page #x2))
+    (sp-flt spt-num 0.3)                                                         ;; Particles quantity
+    (sp-rnd-flt spt-x (meters 0) (meters 1) 1.0)                                 ;; Random Start pos between 2pt  
+    (sp-rnd-flt spt-y (meters 0) (meters 1) 1.0)                                 ;; Start height
+    (sp-rnd-flt spt-z (meters 0) (meters 1) 1.0)                                 ;; Random Start pos between 2pt 
+    (sp-flt spt-scale-x (meters 3))                                              ;; X Scaling of the particle texture
+    (sp-rnd-flt spt-rot-z (degrees 0.0) (degrees 360.0) 1.0)                     ;; Starting random rotation
+    (sp-copy-from-other spt-scale-y -4)                                          ;; Copy X scaling to Y
+    (sp-flt spt-r 120.0)                                                         ;; Red lighting (64.0 to 192.0)
+    (sp-flt spt-g 20.0)                                                          ;; Green lighting (64.0 to 192.0) 
+    (sp-flt spt-b 90.0)                                                          ;; Blue lighting (64.0 to 192.0) 
+    (sp-flt spt-a 0.0)                                                           ;; Starting Alpha 
+    (sp-rnd-flt spt-vel-x (meters 0.005) (meters -0.02) 1.0)                      ;; Starting velocity X
+    (sp-rnd-flt spt-vel-y (meters 0.005) (meters -0.02) 1.0)                      ;; Starting velocity Y
+    (sp-rnd-flt spt-vel-z (meters 0.005) (meters -0.02) 1.0)                      ;; Starting velocity Z
+    (sp-flt spt-scalevel-x (meters 0.006666667))                                 ;; Scale while moving X
+    (sp-rnd-flt spt-rotvel-z (degrees -0.3) (degrees 0.6) 1.0)                   ;; Random rotation while moving Z
+    (sp-copy-from-other spt-scalevel-y -4)                                       ;; Copy X Scale while moving to Y
+    (sp-flt spt-fade-a 0.5)                                                      ;; Fade alpha to visible
+    (sp-flt spt-friction 0.99)                                                   ;; Friction (slowdown)
+    (sp-int spt-timer 900)                                                       ;; Timer before death 
+    (sp-cpuinfo-flags bit2)                                                      ;; ??
+    (sp-int-plain-rnd spt-next-time 70 30 1)                                     ;; Random Timer before next-launcher
+    (sp-launcher-by-id spt-next-launcher 790)                                    ;; 790 = Fade out of the alpha
+    (sp-flt spt-rotate-y (degrees 90.0))                                         ;; Y rotation of the particle texture
+    )
+  )
+
+(defpartgroup group-crystalc-bad-shroom-small
+  :id 158                                                                        ;; NEEDS TO BE UNIQUE
+  :flags (always-draw)
+  :bounds (static-bspherem 0 12 0 12)
+  :parts ((sp-item 813 :fade-after (meters 160) :falloff-to (meters 160))          ;;sp-item = start the items under
+    )
+  )
+
+(defpart 813
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x19 :page #x2))
+    (sp-flt spt-num 0.2)                                                         ;; Particles quantity
+    (sp-rnd-flt spt-x (meters 0) (meters 0.5) 1.0)                                 ;; Random Start pos between 2pt  
+    (sp-rnd-flt spt-y (meters 0) (meters 0.5) 1.0)                                 ;; Start height
+    (sp-rnd-flt spt-z (meters 0) (meters 0.5) 1.0)                                 ;; Random Start pos between 2pt 
+    (sp-flt spt-scale-x (meters 2))                                              ;; X Scaling of the particle texture
+    (sp-rnd-flt spt-rot-z (degrees 0.0) (degrees 360.0) 1.0)                     ;; Starting random rotation
+    (sp-copy-from-other spt-scale-y -4)                                          ;; Copy X scaling to Y
+    (sp-flt spt-r 120.0)                                                         ;; Red lighting (64.0 to 192.0)
+    (sp-flt spt-g 20.0)                                                          ;; Green lighting (64.0 to 192.0) 
+    (sp-flt spt-b 90.0)                                                          ;; Blue lighting (64.0 to 192.0) 
+    (sp-flt spt-a 0.0)                                                           ;; Starting Alpha 
+    (sp-rnd-flt spt-vel-x (meters 0.005) (meters -0.02) 1.0)                      ;; Starting velocity X
+    (sp-rnd-flt spt-vel-y (meters 0.005) (meters -0.02) 1.0)                      ;; Starting velocity Y
+    (sp-rnd-flt spt-vel-z (meters 0.005) (meters -0.02) 1.0)                      ;; Starting velocity Z
+    (sp-flt spt-scalevel-x (meters 0.006666667))                                 ;; Scale while moving X
+    (sp-rnd-flt spt-rotvel-z (degrees -0.3) (degrees 0.6) 1.0)                   ;; Random rotation while moving Z
+    (sp-copy-from-other spt-scalevel-y -4)                                       ;; Copy X Scale while moving to Y
+    (sp-flt spt-fade-a 0.5)                                                      ;; Fade alpha to visible
+    (sp-flt spt-friction 0.99)                                                   ;; Friction (slowdown)
+    (sp-int spt-timer 900)                                                       ;; Timer before death 
+    (sp-cpuinfo-flags bit2)                                                      ;; ??
+    (sp-int-plain-rnd spt-next-time 50 20 1)                                     ;; Random Timer before next-launcher
+    (sp-launcher-by-id spt-next-launcher 790)                                    ;; 790 = Fade out of the alpha
+    (sp-flt spt-rotate-y (degrees 90.0))                                         ;; Y rotation of the particle texture
+    )
+  )
+
+(defpartgroup group-crystalc-godrays-01
+  :id 159
+  :bounds (static-bspherem 0 0 0 55)
+  :parts ((sp-item 814 :fade-after (meters 130) :falloff-to (meters 160))
+    )
+  )
+
+(defpart 814
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x2 :page #x2))
+    (sp-flt spt-num 0.01)
+    (sp-rnd-flt spt-x (meters 5) (meters 2) 1.0)
+    (sp-flt spt-y (meters -70))
+    (sp-rnd-flt spt-z (meters 6) (meters 2) 1.0)
+    (sp-rnd-flt spt-scale-x (meters 140) (meters 140) 1.0)
+    (sp-flt spt-rot-x (meters 180))
+    (sp-flt spt-rot-y (meters 180))
+    (sp-rnd-flt spt-rot-z (degrees 255.0) (degrees 20.0) 1.0)
+    ;;(sp-flt spt-rot-y (meters 0))
+    (sp-rnd-flt spt-scale-y (meters 70) (meters 30) 1.0)
+    (sp-flt spt-r 192.0)
+    (sp-flt spt-g 192.0)
+    (sp-rnd-flt spt-b 64.0 128.0 1.0)
+    (sp-flt spt-a 0.0)
+    (sp-flt spt-scalevel-x (meters 0.0003))
+    (sp-rnd-flt spt-rotvel-z (degrees -0.001) (degrees 0.002) 1.0)
+    (sp-flt spt-scalevel-y (meters 0.0003))
+    (sp-flt spt-fade-a 0.035)
+    (sp-int spt-timer 1600)
+    (sp-cpuinfo-flags bit2 bit3 bit14)
+    (sp-int spt-next-time 800)
+    (sp-launcher-by-id spt-next-launcher 815)
+    (sp-flt spt-rotate-y (degrees 0.0))
+    )
+  )
+
+(defpart 815
+  :init-specs ((sp-flt spt-fade-a -0.035))
+  )
+
+(defpartgroup group-crystalc-waterfall-02
+  :id 160                                                                        ;; NEEDS TO BE UNIQUE
+  :flags (always-draw)
+  :bounds (static-bspherem 0 12 0 12)
+  :parts ((sp-item 816 :fade-after (meters 160) :falloff-to (meters 160))          ;;sp-item = start the items under
+    )
+  )
+
+(defpart 816
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x18 :page #x2))
+    (sp-flt spt-num 1.2)                                                         ;; Particles quantity
+    (sp-rnd-flt spt-x (meters -1.5) (meters 3.0) 1.0)                            ;; (Start pos) (start lenght) 
+    (sp-flt spt-y (meters 1))                                                 ;; Start height
+    (sp-rnd-flt spt-z (meters -1.5) (meters 3.0) 1.0)                           ;; (Start pos) (start lenght)
+    (sp-rnd-flt spt-scale-x (meters 2.4) (meters 1.6) 1.0)                       ;; X Scaling of the particle texture 
+    (sp-rnd-flt spt-scale-y (meters 1.2) (meters 0.8) 1.0)                       ;; Y Scaling of the particle texture  
+    (sp-flt spt-r 192.0)                                                         ;; Red lighting (64.0 to 192.0)
+    (sp-flt spt-g 192.0)                                                         ;; Green lighting (64.0 to 192.0) 
+    (sp-flt spt-b 192.0)                                                         ;; Blue lighting (64.0 to 192.0) 
+    (sp-rnd-flt spt-a 45.0 16.0 1.0)                                             ;; Alpha ?? multiplier
+    (sp-rnd-flt spt-vel-x (meters -0.05) (meters 0.01) 1.0)                       ;; Starting velocity X
+    (sp-rnd-flt spt-vel-y (meters 0.01) (meters 0.01) 1.0)                       ;; Starting velocity Y
+    (sp-rnd-flt spt-vel-z (meters 0.005) (meters 0.01) 1.0)                    ;; Starting velocity Z
+    (sp-flt spt-scalevel-x (meters 0.0073242188))                                ;; Scale while falling X
+    (sp-flt spt-scalevel-y (meters 0.029296875))                                 ;; Scale while falling Y
+    (sp-flt spt-accel-x 0.0000000)                                               ;; Acceleration X (forward)
+    (sp-rnd-flt spt-accel-y -15.018667 -2.7306666 1.0)                           ;; Acceleration Y (falling)
+    (sp-flt spt-accel-z 0.0000000)                                               ;; Acceleration Z (forward)
+    (sp-int spt-timer 250)                                                       ;; Timer before death 
+    (sp-cpuinfo-flags bit2)                                                      ;; ??
+    (sp-int spt-next-time 60)                                                   ;; Timer before next-launcher
+    (sp-launcher-by-id spt-next-launcher 817)                                    ;; 791 = Fade-out
+    (sp-rnd-flt spt-launchrot-x (degrees -15.0) (degrees 30.0) 1.0)              ;; X rotation of the particle texture
+    (sp-flt spt-rotate-y (degrees 90.0))                                         ;; Y rotation of the particle texture
+    )
+  )
+
+(defpart 817
+  :init-specs ((sp-flt spt-fade-a -0.3))
+  )
+
+(defpartgroup group-crystalc-waterfall-03
+  :id 161                                                                        ;; NEEDS TO BE UNIQUE
+  :flags (always-draw)
+  :bounds (static-bspherem 0 12 0 12)
+  :parts ((sp-item 818 :fade-after (meters 160) :falloff-to (meters 160))          ;;sp-item = start the items under
+    )
+  )
+
+(defpart 818
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x18 :page #x2))
+    (sp-flt spt-num 2.5)                                                         ;; Particles quantity
+    (sp-rnd-flt spt-x (meters -3.25) (meters 6.5) 1.0)                            ;; (Start pos) (start lenght) 
+    (sp-flt spt-y (meters 1))                                                 ;; Start height
+    (sp-rnd-flt spt-z (meters -3.25) (meters 6.5) 1.0)                           ;; (Start pos) (start lenght)
+    (sp-rnd-flt spt-scale-x (meters 2.4) (meters 1.6) 1.0)                       ;; X Scaling of the particle texture 
+    (sp-rnd-flt spt-scale-y (meters 1.2) (meters 0.8) 1.0)                       ;; Y Scaling of the particle texture  
+    (sp-flt spt-r 192.0)                                                         ;; Red lighting (64.0 to 192.0)
+    (sp-flt spt-g 192.0)                                                         ;; Green lighting (64.0 to 192.0) 
+    (sp-flt spt-b 192.0)                                                         ;; Blue lighting (64.0 to 192.0) 
+    (sp-rnd-flt spt-a 45.0 16.0 1.0)                                             ;; Alpha ?? multiplier
+    (sp-rnd-flt spt-vel-x (meters -0.05) (meters 0.01) 1.0)                       ;; Starting velocity X
+    (sp-rnd-flt spt-vel-y (meters 0.01) (meters 0.01) 1.0)                       ;; Starting velocity Y
+    (sp-rnd-flt spt-vel-z (meters 0.005) (meters 0.01) 1.0)                    ;; Starting velocity Z
+    (sp-flt spt-scalevel-x (meters 0.0073242188))                                ;; Scale while falling X
+    (sp-flt spt-scalevel-y (meters 0.029296875))                                 ;; Scale while falling Y
+    (sp-flt spt-accel-x 0.0000000)                                               ;; Acceleration X (forward)
+    (sp-rnd-flt spt-accel-y -15.018667 -2.7306666 1.0)                           ;; Acceleration Y (falling)
+    (sp-flt spt-accel-z 0.0000000)                                               ;; Acceleration Z (forward)
+    (sp-int spt-timer 250)                                                       ;; Timer before death 
+    (sp-cpuinfo-flags bit2)                                                      ;; ??
+    (sp-int spt-next-time 60)                                                   ;; Timer before next-launcher
+    (sp-launcher-by-id spt-next-launcher 817)                                    ;; 791 = Fade-out
+    (sp-rnd-flt spt-launchrot-x (degrees -15.0) (degrees 30.0) 1.0)              ;; X rotation of the particle texture
+    (sp-flt spt-rotate-y (degrees 90.0))                                         ;; Y rotation of the particle texture
+    )
+  )
+
+(defpartgroup group-crystalc-waterfall-04
+  :id 162                                                                        ;; NEEDS TO BE UNIQUE
+  :flags (always-draw)
+  :bounds (static-bspherem 0 12 0 12)
+  :parts ((sp-item 819 :fade-after (meters 160) :falloff-to (meters 160))          ;;sp-item = start the items under
+    (sp-item 821 :fade-after (meters 160) :falloff-to (meters 160))
+    (sp-item 822 :fade-after (meters 160) :falloff-to (meters 160))
+    )
+  )
+
+(defpart 819
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x18 :page #x2))
+    (sp-flt spt-num 5.5)                                                         ;; Particles quantity
+    (sp-rnd-flt spt-x (meters -3.25) (meters 7.5) 1.0)                            ;; (Start pos) (start lenght) 
+    (sp-flt spt-y (meters 1))                                                 ;; Start height
+    (sp-rnd-flt spt-z (meters -3.25) (meters 3) 1.0)                           ;; (Start pos) (start lenght)
+    (sp-rnd-flt spt-scale-x (meters 2.4) (meters 1.6) 1.0)                       ;; X Scaling of the particle texture 
+    (sp-rnd-flt spt-scale-y (meters 1.2) (meters 0.8) 1.0)                       ;; Y Scaling of the particle texture  
+    (sp-flt spt-r 130.0)                                                         ;; Red lighting (64.0 to 192.0)
+    (sp-flt spt-g 152.0)                                                         ;; Green lighting (64.0 to 192.0) 
+    (sp-flt spt-b 130.0)                                                         ;; Blue lighting (64.0 to 192.0) 
+    (sp-rnd-flt spt-a 45.0 16.0 1.0)                                             ;; Alpha ?? multiplier
+    (sp-rnd-flt spt-vel-x (meters 0.015) (meters 0.01) 1.0)                       ;; Starting velocity X
+    (sp-rnd-flt spt-vel-y (meters -0.05) (meters 0.01) 1.0)                       ;; Starting velocity Y
+    (sp-rnd-flt spt-vel-z (meters 0.035) (meters 0.01) 1.0)                    ;; Starting velocity Z
+    (sp-flt spt-scalevel-x (meters 0.01))                                ;; Scale while falling X
+    (sp-flt spt-scalevel-y (meters 0.035))                                 ;; Scale while falling Y
+    (sp-flt spt-accel-x 6.00)                                               ;; Acceleration X (forward)
+    (sp-rnd-flt spt-accel-y -10.018667 -2.7306666 1.0)                           ;; Acceleration Y (falling)
+    (sp-flt spt-accel-z 9.00)                                               ;; Acceleration Z (forward)
+    (sp-int spt-timer 400)                                                       ;; Timer before death 
+    (sp-cpuinfo-flags bit2)                                                      ;; ??
+    (sp-int spt-next-time 130)                                                   ;; Timer before next-launcher
+    (sp-launcher-by-id spt-next-launcher 820)                                    ;; 791 = Fade-out
+    (sp-rnd-flt spt-launchrot-x (degrees -15.0) (degrees 30.0) 1.0)              ;; X rotation of the particle texture
+    (sp-flt spt-rotate-y (degrees 90.0))                                         ;; Y rotation of the particle texture
+    )
+  )
+
+(defpart 820
+  :init-specs ((sp-flt spt-fade-a -0.22))
+  )
+
+(defpart 821
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x18 :page #x2))
+    (sp-flt spt-num 5.5)                                                         ;; Particles quantity
+    (sp-rnd-flt spt-x (meters -10) (meters 7.5) 1.0)                            ;; (Start pos) (start lenght) 
+    (sp-flt spt-y (meters 1))                                                 ;; Start height
+    (sp-rnd-flt spt-z (meters 2.5) (meters 3) 1.0)                           ;; (Start pos) (start lenght)
+    (sp-rnd-flt spt-scale-x (meters 2.4) (meters 1.6) 1.0)                       ;; X Scaling of the particle texture 
+    (sp-rnd-flt spt-scale-y (meters 1.2) (meters 0.8) 1.0)                       ;; Y Scaling of the particle texture  
+    (sp-flt spt-r 130.0)                                                         ;; Red lighting (64.0 to 192.0)
+    (sp-flt spt-g 152.0)                                                         ;; Green lighting (64.0 to 192.0) 
+    (sp-flt spt-b 130.0)                                                         ;; Blue lighting (64.0 to 192.0) 
+    (sp-rnd-flt spt-a 45.0 16.0 1.0)                                             ;; Alpha ?? multiplier
+    (sp-rnd-flt spt-vel-x (meters 0.015) (meters 0.01) 1.0)                       ;; Starting velocity X
+    (sp-rnd-flt spt-vel-y (meters -0.05) (meters 0.01) 1.0)                       ;; Starting velocity Y
+    (sp-rnd-flt spt-vel-z (meters 0.035) (meters 0.01) 1.0)                    ;; Starting velocity Z
+    (sp-flt spt-scalevel-x (meters 0.01))                                ;; Scale while falling X
+    (sp-flt spt-scalevel-y (meters 0.035))                                 ;; Scale while falling Y
+    (sp-flt spt-accel-x 6.00)                                               ;; Acceleration X (forward)
+    (sp-rnd-flt spt-accel-y -10.018667 -2.7306666 1.0)                           ;; Acceleration Y (falling)
+    (sp-flt spt-accel-z 9.00)                                               ;; Acceleration Z (forward)
+    (sp-int spt-timer 400)                                                       ;; Timer before death 
+    (sp-cpuinfo-flags bit2)                                                      ;; ??
+    (sp-int spt-next-time 130)                                                   ;; Timer before next-launcher
+    (sp-launcher-by-id spt-next-launcher 820)                                    ;; 791 = Fade-out
+    (sp-rnd-flt spt-launchrot-x (degrees -15.0) (degrees 30.0) 1.0)              ;; X rotation of the particle texture
+    (sp-flt spt-rotate-y (degrees 90.0))                                         ;; Y rotation of the particle texture
+    )
+  )
+
+(defpart 822
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x18 :page #x2))
+    (sp-flt spt-num 6.0)                                                         ;; Particles quantity
+    (sp-rnd-flt spt-x (meters 4) (meters 8) 1.0)                            ;; (Start pos) (start lenght) 
+    (sp-flt spt-y (meters 1))                                                 ;; Start height
+    (sp-rnd-flt spt-z (meters -9) (meters 6) 1.0)                           ;; (Start pos) (start lenght)
+    (sp-rnd-flt spt-scale-x (meters 2.4) (meters 1.6) 1.0)                       ;; X Scaling of the particle texture 
+    (sp-rnd-flt spt-scale-y (meters 1.2) (meters 0.8) 1.0)                       ;; Y Scaling of the particle texture  
+    (sp-flt spt-r 130.0)                                                         ;; Red lighting (64.0 to 192.0)
+    (sp-flt spt-g 152.0)                                                         ;; Green lighting (64.0 to 192.0) 
+    (sp-flt spt-b 130.0)                                                         ;; Blue lighting (64.0 to 192.0) 
+    (sp-rnd-flt spt-a 45.0 16.0 1.0)                                             ;; Alpha ?? multiplier
+    (sp-rnd-flt spt-vel-x (meters 0.015) (meters 0.01) 1.0)                       ;; Starting velocity X
+    (sp-rnd-flt spt-vel-y (meters -0.05) (meters 0.01) 1.0)                       ;; Starting velocity Y
+    (sp-rnd-flt spt-vel-z (meters 0.035) (meters 0.01) 1.0)                    ;; Starting velocity Z
+    (sp-flt spt-scalevel-x (meters 0.01))                                ;; Scale while falling X
+    (sp-flt spt-scalevel-y (meters 0.035))                                 ;; Scale while falling Y
+    (sp-flt spt-accel-x 6.00)                                               ;; Acceleration X (forward)
+    (sp-rnd-flt spt-accel-y -10.018667 -2.7306666 1.0)                           ;; Acceleration Y (falling)
+    (sp-flt spt-accel-z 9.00)                                               ;; Acceleration Z (forward)
+    (sp-int spt-timer 400)                                                       ;; Timer before death 
+    (sp-cpuinfo-flags bit2)                                                      ;; ??
+    (sp-int spt-next-time 130)                                                   ;; Timer before next-launcher
+    (sp-launcher-by-id spt-next-launcher 820)                                    ;; 791 = Fade-out
+    (sp-rnd-flt spt-launchrot-x (degrees -15.0) (degrees 30.0) 1.0)              ;; X rotation of the particle texture
+    (sp-flt spt-rotate-y (degrees 90.0))                                         ;; Y rotation of the particle texture
+    )
+  )
+
+(defpartgroup group-crystalc-waterfall-05
+  :id 163                                                                        ;; NEEDS TO BE UNIQUE
+  :flags (always-draw)
+  :bounds (static-bspherem 0 12 0 12)
+  :parts ((sp-item 823 :fade-after (meters 160) :falloff-to (meters 160))          ;;sp-item = start the items under
+    (sp-item 825 :fade-after (meters 160) :falloff-to (meters 160))
+    )
+  )
+
+(defpart 823
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x18 :page #x2))
+    (sp-flt spt-num 2.5)                                                         ;; Particles quantity
+    (sp-rnd-flt spt-x (meters -1.5) (meters 3.0) 1.0)                            ;; (Start pos) (start lenght) 
+    (sp-flt spt-y (meters 0.5))                                                 ;; Start height
+    (sp-rnd-flt spt-z (meters -1.5) (meters 3.0) 1.0)                           ;; (Start pos) (start lenght)
+    (sp-rnd-flt spt-scale-x (meters 2.4) (meters 1.6) 1.0)                       ;; X Scaling of the particle texture 
+    (sp-rnd-flt spt-scale-y (meters 1.2) (meters 0.8) 1.0)                       ;; Y Scaling of the particle texture  
+    (sp-flt spt-r 192.0)                                                         ;; Red lighting (64.0 to 192.0)
+    (sp-flt spt-g 192.0)                                                         ;; Green lighting (64.0 to 192.0) 
+    (sp-flt spt-b 192.0)                                                         ;; Blue lighting (64.0 to 192.0) 
+    (sp-rnd-flt spt-a 64.0 16.0 1.0)                                             ;; Alpha ?? multiplier
+    (sp-rnd-flt spt-vel-x (meters 0.0) (meters 0.01) 1.0)                       ;; Starting velocity X
+    (sp-rnd-flt spt-vel-y (meters 0.01) (meters 0.01) 1.0)                       ;; Starting velocity Y
+    (sp-rnd-flt spt-vel-z (meters 0.05) (meters 0.01) 1.0)                    ;; Starting velocity Z
+    (sp-flt spt-scalevel-x (meters 0.0073242188))                                ;; Scale while falling X
+    (sp-flt spt-scalevel-y (meters 0.029296875))                                 ;; Scale while falling Y
+    (sp-flt spt-accel-x 0.0000000)                                               ;; Acceleration X (forward)
+    (sp-rnd-flt spt-accel-y -15.018667 -2.7306666 1.0)                           ;; Acceleration Y (falling)
+    (sp-flt spt-accel-z 0.0000000)                                               ;; Acceleration Z (forward)
+    (sp-int spt-timer 100)                                                       ;; Timer before death 
+    (sp-cpuinfo-flags bit2)                                                      ;; ??
+    (sp-int spt-next-time 60)                                                   ;; Timer before next-launcher
+    (sp-launcher-by-id spt-next-launcher 824)                                    ;; 791 = Fade-out
+    (sp-rnd-flt spt-launchrot-x (degrees -15.0) (degrees 30.0) 1.0)              ;; X rotation of the particle texture
+    (sp-flt spt-rotate-y (degrees 90.0))                                         ;; Y rotation of the particle texture
+    )
+  )
+
+(defpart 824
+  :init-specs ((sp-flt spt-fade-a -0.7))
+  )
+
+(defpart 825
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x18 :page #x2))
+    (sp-flt spt-num 3.0)                                                         ;; Particles quantity
+    (sp-rnd-flt spt-x (meters -4.5) (meters 4.5) 1.0)                            ;; (Start pos) (start lenght) 
+    (sp-flt spt-y (meters 6.5))                                                 ;; Start height
+    (sp-rnd-flt spt-z (meters -17) (meters 4.5) 1.0)                           ;; (Start pos) (start lenght)
+    (sp-rnd-flt spt-scale-x (meters 2.4) (meters 1.6) 1.0)                       ;; X Scaling of the particle texture 
+    (sp-rnd-flt spt-scale-y (meters 1.2) (meters 0.8) 1.0)                       ;; Y Scaling of the particle texture  
+    (sp-flt spt-r 192.0)                                                         ;; Red lighting (64.0 to 192.0)
+    (sp-flt spt-g 192.0)                                                         ;; Green lighting (64.0 to 192.0) 
+    (sp-flt spt-b 192.0)                                                         ;; Blue lighting (64.0 to 192.0) 
+    (sp-rnd-flt spt-a 64.0 16.0 1.0)                                             ;; Alpha ?? multiplier
+    (sp-rnd-flt spt-vel-x (meters 0.015) (meters 0.01) 1.0)                       ;; Starting velocity X
+    (sp-rnd-flt spt-vel-y (meters 0.01) (meters 0.01) 1.0)                       ;; Starting velocity Y
+    (sp-rnd-flt spt-vel-z (meters 0.04) (meters 0.01) 1.0)                    ;; Starting velocity Z
+    (sp-flt spt-scalevel-x (meters 0.0073242188))                                ;; Scale while falling X
+    (sp-flt spt-scalevel-y (meters 0.029296875))                                 ;; Scale while falling Y
+    (sp-flt spt-accel-x 0.0000000)                                               ;; Acceleration X (forward)
+    (sp-rnd-flt spt-accel-y -15.018667 -2.7306666 1.0)                           ;; Acceleration Y (falling)
+    (sp-flt spt-accel-z 0.0000000)                                               ;; Acceleration Z (forward)
+    (sp-int spt-timer 150)                                                       ;; Timer before death 
+    (sp-cpuinfo-flags bit2)                                                      ;; ??
+    (sp-int spt-next-time 80)                                                   ;; Timer before next-launcher
+    (sp-launcher-by-id spt-next-launcher 824)                                    ;; 791 = Fade-out
+    (sp-rnd-flt spt-launchrot-x (degrees -15.0) (degrees 30.0) 1.0)              ;; X rotation of the particle texture
+    (sp-flt spt-rotate-y (degrees 90.0))                                         ;; Y rotation of the particle texture
+    )
+  )
+
+(defpartgroup group-cave-cavedrip-1
+  :id 319
+  :bounds (static-bspherem 0 8 0 8.25)
+  :parts ((sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 369 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 768 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 1167 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 1701 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 2736 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 3831 :length 5)
+    )
+  )
+
+(defpartgroup group-cave-cavedrip-2
+  :id 320
+  :bounds (static-bspherem 0 8 0 8.25)
+  :parts ((sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 467 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 834 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 984 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 2237 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 2597 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 3587 :length 5)
+    )
+  )
+
+(defpartgroup group-cave-cavedrip-3
+  :id 321
+  :bounds (static-bspherem 0 8 0 8.25)
+  :parts ((sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 801 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 867 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 1269 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 1983 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 2601 :length 5)
+    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period 5061 :length 5)
+    )
+  )
+
+(defpart 2230
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x9 :page #x2))
+    (sp-func spt-birth-func 'birth-func-y->userdata)
+    (sp-flt spt-num 1.0)
+    (sp-flt spt-y (meters 24))
+    (sp-flt spt-scale-x (meters 0.1))
+    (sp-flt spt-scale-y (meters 0.4))
+    (sp-rnd-flt spt-r 64.0 32.0 1.0)
+    (sp-rnd-flt spt-g 96.0 32.0 1.0)
+    (sp-rnd-flt spt-b 80.0 32.0 1.0)
+    (sp-flt spt-a 128.0)
+    (sp-flt spt-vel-y (meters -0.045714285))
+    (sp-flt spt-fade-a 0.5688889)
+    (sp-int spt-timer 900)
+    (sp-cpuinfo-flags bit2 bit3 bit12 bit14)
+    (sp-flt spt-userdata -98304.0)
+    (sp-func spt-func 'check-drop-level-maincave-drip)
+    (sp-int-plain-rnd spt-next-time 150 74 1)
+    (sp-launcher-by-id spt-next-launcher 2233)
+    )
+  )
+
+(defpart 2231
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x9 :page #x2))
+    (sp-rnd-flt spt-num 3.0 4.0 1.0)
+    (sp-rnd-flt spt-scale-x (meters 0.05) (meters 0.075) 1.0)
+    (sp-copy-from-other spt-scale-y -4)
+    (sp-rnd-flt spt-r 64.0 32.0 1.0)
+    (sp-rnd-flt spt-g 96.0 32.0 1.0)
+    (sp-rnd-flt spt-b 80.0 32.0 1.0)
+    (sp-rnd-flt spt-a 64.0 64.0 1.0)
+    (sp-rnd-flt spt-vel-y (meters 0.006666667) (meters 0.013333334) 1.0)
+    (sp-flt spt-fade-a -0.5688889)
+    (sp-flt spt-accel-y -2.7306666)
+    (sp-int spt-timer 225)
+    (sp-cpuinfo-flags bit2 bit3 bit12 bit14)
+    (sp-rnd-flt spt-conerot-x (degrees 20.0) (degrees 60.0) 1.0)
+    (sp-rnd-flt spt-conerot-y (degrees 0.0) (degrees 360.0) 1.0)
+    )
+  )
+
+(defpart 2232
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x1e :page #x2))
+    (sp-flt spt-num 1.0)
+    (sp-flt spt-y (meters 0.02))
+    (sp-flt spt-scale-x (meters 0.5))
+    (sp-copy-from-other spt-scale-y -4)
+    (sp-rnd-flt spt-r 64.0 32.0 1.0)
+    (sp-rnd-flt spt-g 96.0 32.0 1.0)
+    (sp-rnd-flt spt-b 80.0 32.0 1.0)
+    (sp-rnd-flt spt-a 64.0 64.0 1.0)
+    (sp-rnd-flt spt-scalevel-x (meters 0.016666668) (meters 0.01) 1.0)
+    (sp-copy-from-other spt-scalevel-y -4)
+    (sp-flt spt-fade-a -1.2222222)
+    (sp-int spt-timer 90)
+    (sp-cpuinfo-flags bit2 bit3 bit12 bit14)
+    (sp-rnd-flt spt-rotate-y (degrees 0.0) (degrees 360.0) 1.0)
+    )
+  )
+
+(defun check-drop-level-maincave-drip ((arg0 sparticle-system) (arg1 sparticle-cpuinfo) (arg2 vector))
+  (when (< (-> arg2 y) (-> arg1 user-float))
+    (let ((gp-0 (new 'stack-no-clear 'vector)))
+      (sp-kill-particle arg0 arg1)
+      (if (< (rand-float-gen) 0.25)
+          (sound-play "water-drop")
+          )
+      (set-vector! gp-0 (-> arg2 x) (-> arg1 user-float) (-> arg2 z) 1.0)
+      (launch-particles :rate 1.0 (-> *part-id-table* 2231) gp-0)
+      (launch-particles :system *sp-particle-system-3d* :rate 1.0 (-> *part-id-table* 2232) gp-0)
+      )
+    )
+  (none)
+  )
+
+;; FIND A WAY TO CHANGE THE ROTATION CENTER FOR THIS TO BE USEABLE. MAYBE BINDING ANOTHER PART?
+(defpartgroup group-crystalc-crystal-big1
+  :id 164
+  :bounds (static-bspherem 0 0 0 55)
+  :parts ((sp-item 826 :fade-after (meters 130) :falloff-to (meters 160))
+    )
+  )
+
+(defpart 826
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x2 :page #x2))
+    (sp-flt spt-num 0.02)
+    (sp-rnd-flt spt-x (meters 0) (meters 0) 1.0)
+    (sp-flt spt-y (meters 0))
+    (sp-rnd-flt spt-z (meters 0) (meters 0) 1.0)
+    (sp-rnd-flt spt-scale-x (meters 1.5) (meters 0.10) 1.0)
+    (sp-flt spt-rot-x (meters 0))
+    (sp-flt spt-rot-y (meters 270))
+    (sp-rnd-flt spt-rot-z (degrees 0) (degrees 0) 1.0)
+    (sp-rnd-flt spt-scale-y (meters 0.15) (meters 0) 1.0)
+    (sp-rnd-flt spt-r 64.0 16.0 1.0) 
+    (sp-flt spt-g 192.0)
+    (sp-flt spt-b 32.0)
+    (sp-flt spt-a 0.0)
+    (sp-flt spt-scalevel-x (meters 0.002))
+    ;;(sp-rnd-flt spt-rotvel-z (degrees 0.5) (degrees 0.00) 1.0)
+    (sp-flt spt-scalevel-y (meters 0.001))
+    (sp-flt spt-fade-a 0.5)
+    (sp-int spt-timer 1600)
+    (sp-cpuinfo-flags bit2 bit3 bit14)
+    (sp-int spt-next-time 800)
+    (sp-launcher-by-id spt-next-launcher 827)
+    (sp-flt spt-conerot-x (degrees 90.0))
+    (sp-rnd-flt spt-conerot-y (degrees 0.0) (degrees 360.0) 1.0)
+    (sp-rnd-flt spt-conerot-radius (meters 5) (meters 2) 1.0)
+  )
+)
+
+(defpart 827
+  :init-specs ((sp-flt spt-fade-a -0.2))
+  )
+
+(defpartgroup group-crystalc-precursor-bot
+  :id 165
+  :bounds (static-bspherem 0 0 0 8)
+  :parts ((sp-item 828 :fade-after (meters 100) :falloff-to (meters 100))
+    (sp-item 828 :fade-after (meters 50) :falloff-to (meters 50))
+    (sp-item 830 :fade-after (meters 300) :falloff-to (meters 300))
+    (sp-item 831 :fade-after (meters 400) :falloff-to (meters 400))
+    (sp-item 832 :fade-after (meters 400) :falloff-to (meters 400))
+    (sp-item 833 :fade-after (meters 400) :falloff-to (meters 400))
+    (sp-item 834 :fade-after (meters 400) :falloff-to (meters 400))
+    )
+  )
+
+(defpart 828
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x1f :page #x2))
+    (sp-rnd-flt spt-num 0.3 1.2 1.0)
+    (sp-rnd-flt spt-y (meters 2) (meters 3) 1.0)
+    (sp-rnd-flt spt-scale-x (meters 6) (meters 2) 1.0)
+    (sp-int spt-rot-x 4)
+    (sp-rnd-flt spt-rot-z (degrees -120.0) (degrees 60) 1.0)
+    (sp-rnd-flt spt-scale-y (meters 1) (meters 0.7) 1.0)
+    (sp-rnd-flt spt-r 32.0 32.0 1.0)
+    (sp-rnd-flt spt-g 96.0 32.0 1.0)
+    (sp-rnd-flt spt-b 128.0 64.0 1.0)
+    (sp-flt spt-a 128.0)
+    (sp-flt spt-fade-a -0.8)
+    (sp-int spt-timer 180)
+    (sp-cpuinfo-flags bit2 bit3 bit14)
+    (sp-int spt-next-time 20)
+    (sp-launcher-by-id spt-next-launcher 829)
+    (sp-flt spt-conerot-x (degrees 90.0))
+    (sp-rnd-flt spt-conerot-y (degrees 0.0) (degrees 360.0) 1.0)
+    (sp-rnd-flt spt-conerot-radius (meters 5) (meters 4) 1.0)
+    )
+  )
+
+(defpart 829
+  :init-specs ((sp-flt spt-r 64.0)
+    (sp-flt spt-g 64.0)
+    (sp-flt spt-fade-r -0.4)
+    (sp-flt spt-fade-g -0.4)
+    (sp-flt spt-fade-a -0.93333334)
+    )
+  )
+
+(defpart 830
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x4 :page #x2))
+    (sp-rnd-flt spt-num 2.0 3.0 1.0)
+    (sp-flt spt-y (meters 0.75))
+    (sp-rnd-flt spt-scale-x (meters 5) (meters 3) 1.0)
+    (sp-rnd-flt spt-scale-y (meters 6) (meters 2) 1.0)
+    (sp-flt spt-r 32.0)
+    (sp-rnd-flt spt-g 96.0 16.0 1.0)
+    (sp-rnd-flt spt-b 128.0 128.0 1.0)
+    (sp-rnd-flt spt-a 32.0 64.0 1.0)
+    (sp-flt spt-fade-a -1.28)
+    (sp-int spt-timer 75)
+    (sp-cpuinfo-flags bit2 bit14)
+    (sp-flt spt-conerot-x (degrees 90.0))
+    (sp-rnd-flt spt-conerot-y (degrees 0.0) (degrees 360.0) 1.0)
+    (sp-rnd-flt spt-conerot-radius (meters 5) (meters 4) 1.0)
+    )
+  )
+
+(defpart 831
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x12 :page #x2))
+    (sp-rnd-flt spt-num 0.2 1.5 1.0)
+    (sp-flt spt-y (meters 0.75))
+    (sp-rnd-flt spt-scale-x (meters 6) (meters 3) 1.0)
+    (sp-rnd-int-flt spt-rot-z (degrees 0.0) 1 32768.0)
+    (sp-rnd-flt spt-scale-y (meters 9) (meters 2) 1.0)
+    (sp-flt spt-r 32.0)
+    (sp-flt spt-g 64.0)
+    (sp-rnd-flt spt-b 96.0 64.0 1.0)
+    (sp-rnd-flt spt-a 128.0 64.0 1.0)
+    (sp-rnd-flt spt-rotvel-z (degrees -0.1) (degrees 0.2) 1.0)
+    (sp-flt spt-fade-a -0.64)
+    (sp-int spt-timer 300)
+    (sp-cpuinfo-flags bit2 bit3 bit14)
+    (sp-flt spt-conerot-x (degrees 90.0))
+    (sp-rnd-flt spt-conerot-y (degrees 0.0) (degrees 360.0) 1.0)
+    (sp-rnd-flt spt-conerot-radius (meters 5) (meters 4) 1.0)
+    )
+  )
+
+(defpart 832
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x1f :page #x2))
+    (sp-rnd-flt spt-num 0.10 0.5 1.0)
+    (sp-rnd-flt spt-y (meters 3) (meters 5) 1.0)
+    (sp-rnd-flt spt-scale-x (meters 6) (meters 2) 1.0)
+    (sp-int spt-rot-x 4)
+    (sp-rnd-flt spt-rot-z (degrees -120.0) (degrees 60) 1.0)
+    (sp-rnd-flt spt-scale-y (meters 1) (meters 0.7) 1.0)
+    (sp-rnd-flt spt-r 32.0 32.0 1.0)
+    (sp-rnd-flt spt-g 96.0 32.0 1.0)
+    (sp-rnd-flt spt-b 128.0 64.0 1.0)
+    (sp-flt spt-a 128.0)
+    (sp-flt spt-fade-a -0.8)
+    (sp-int spt-timer 180)
+    (sp-cpuinfo-flags bit2 bit3 bit14)
+    (sp-int spt-next-time 20)
+    (sp-launcher-by-id spt-next-launcher 829)
+    (sp-flt spt-conerot-x (degrees 90.0))
+    (sp-rnd-flt spt-conerot-y (degrees 0.0) (degrees 360.0) 1.0)
+    (sp-rnd-flt spt-conerot-radius (meters 1) (meters 5) 1.0)
+    )
+  )
+
+(defpart 833
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x4 :page #x2))
+    (sp-rnd-flt spt-num 0.5 1.0 1.0)
+    (sp-flt spt-y (meters 3))
+    (sp-rnd-flt spt-scale-x (meters 5) (meters 3) 1.0)
+    (sp-rnd-flt spt-scale-y (meters 6) (meters 2) 1.0)
+    (sp-flt spt-r 32.0)
+    (sp-rnd-flt spt-g 96.0 16.0 1.0)
+    (sp-rnd-flt spt-b 128.0 128.0 1.0)
+    (sp-rnd-flt spt-a 32.0 64.0 1.0)
+    (sp-flt spt-fade-a -1.28)
+    (sp-int spt-timer 75)
+    (sp-cpuinfo-flags bit2 bit14)
+    (sp-flt spt-conerot-x (degrees 90.0))
+    (sp-rnd-flt spt-conerot-y (degrees 0.0) (degrees 360.0) 1.0)
+    (sp-rnd-flt spt-conerot-radius (meters 1) (meters 5) 1.0)
+    )
+  )
+
+(defpart 834
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x12 :page #x2))
+    (sp-rnd-flt spt-num 0.1 0.5 1.0)
+    (sp-flt spt-y (meters 3))
+    (sp-rnd-flt spt-scale-x (meters 6) (meters 3) 1.0)
+    (sp-rnd-int-flt spt-rot-z (degrees 0.0) 1 32768.0)
+    (sp-rnd-flt spt-scale-y (meters 6) (meters 2) 1.0)
+    (sp-flt spt-r 32.0)
+    (sp-flt spt-g 64.0)
+    (sp-rnd-flt spt-b 96.0 64.0 1.0)
+    (sp-rnd-flt spt-a 128.0 64.0 1.0)
+    (sp-rnd-flt spt-rotvel-z (degrees -0.1) (degrees 0.2) 1.0)
+    (sp-flt spt-fade-a -0.64)
+    (sp-int spt-timer 300)
+    (sp-cpuinfo-flags bit2 bit3 bit14)
+    (sp-flt spt-conerot-x (degrees 90.0))
+    (sp-rnd-flt spt-conerot-y (degrees 0.0) (degrees 360.0) 1.0)
+    (sp-rnd-flt spt-conerot-radius (meters 1) (meters 5) 1.0)
+    )
+  )
+
+(defpartgroup group-crystalc-portal-flicker
+  :id 166
+  :bounds (static-bspherem 0 0 0 8)
+  :parts ((sp-item 835 :fade-after (meters 100) :falloff-to (meters 100))
+    )
+  )
+
+(defpart 835
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x1f :page #x2))
+    (sp-rnd-flt spt-num 0.01 0.04 1.0)
+    (sp-rnd-flt spt-x (meters -1.5) (meters 2) 1.0)
+    (sp-rnd-flt spt-y (meters -1.5) (meters 2) 1.0)
+    (sp-rnd-flt spt-z (meters -0.5) (meters 1) 1.0)
+    (sp-rnd-flt spt-scale-x (meters 0.3) (meters 1) 1.0)
+    (sp-int spt-rot-x 4)
+    ;;(sp-rnd-flt spt-rot-x (meters 0) (meters 360) 1.0)
+    (sp-rnd-flt spt-rot-z (degrees -120.0) (degrees 60) 1.0)
+    (sp-rnd-flt spt-scale-y (meters 0.2) (meters 1) 1.0)
+    (sp-rnd-flt spt-r 32.0 32.0 1.0)
+    (sp-rnd-flt spt-g 96.0 32.0 1.0)
+    (sp-rnd-flt spt-b 128.0 64.0 1.0)
+    (sp-flt spt-a 128.0)
+    (sp-flt spt-fade-a -0.8)
+    (sp-int spt-timer 180)
+    (sp-cpuinfo-flags bit2 bit3 bit14)
+    (sp-int spt-next-time 20)
+    (sp-launcher-by-id spt-next-launcher 829)
+    )
+  )
+
+;; MISTY TORCH CAN DELETE MAYBE LATE, JUST NEED FOR THE HEAT THING
+
+(defpartgroup group-part-misty-torch
+  :id 206
+  :bounds (static-bspherem 0 3 0 4)
+  :parts ((sp-item 974 :fade-after (meters 180) :falloff-to (meters 200))
+    (sp-item 975 :fade-after (meters 120) :falloff-to (meters 120))
+    (sp-item 976 :fade-after (meters 50) :falloff-to (meters 50) :period 600 :length 90)
+    (sp-item 977 :fade-after (meters 50) :falloff-to (meters 50) :period 369 :length 69)
+    (sp-item 978 :fade-after (meters 40) :falloff-to (meters 40) :period 710 :length 51)
+    (sp-item 979 :fade-after (meters 50) :falloff-to (meters 50))
+    )
+  )
+
+(defpart 974
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :page #x2))
+    (sp-rnd-int spt-num 1069547520 1 1.0)
+    (sp-rnd-flt spt-x (meters -0.35) (meters 0.7) 1.0)
+    (sp-rnd-flt spt-z (meters -0.35) (meters 0.7) 1.0)
+    (sp-rnd-flt spt-scale-x (meters 0.6) (meters 0.3) 1.0)
+    (sp-rnd-flt spt-rot-z (degrees 0.0) (degrees 360.0) 1.0)
+    (sp-copy-from-other spt-scale-y -4)
+    (sp-rnd-flt spt-r 128.0 128.0 1.0)
+    (sp-rnd-flt spt-g 0.0 60.0 1.0)
+    (sp-flt spt-a 0.0)
+    (sp-rnd-flt spt-vel-y (meters 0.016666668) (meters 0.013333334) 1.0)
+    (sp-rnd-flt spt-rotvel-z (degrees -0.1) (degrees 0.2) 1.0)
+    (sp-flt spt-fade-a 13.066667)
+    (sp-flt spt-accel-y -0.8192)
+    (sp-int spt-timer 75)
+    (sp-cpuinfo-flags bit2 bit3 bit14)
+    (sp-int spt-next-time 15)
+    (sp-launcher-by-id spt-next-launcher 981)
+    )
+  )
+
+(defpart 975
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :page #x2))
+    (sp-flt spt-num 0.4)
+    (sp-rnd-flt spt-x (meters -0.5) (meters 1) 1.0)
+    (sp-flt spt-y (meters 0.3))
+    (sp-rnd-flt spt-z (meters -0.5) (meters 1) 1.0)
+    (sp-rnd-flt spt-scale-x (meters 1) (meters 0.5) 1.0)
+    (sp-rnd-flt spt-rot-z (degrees 0.0) (degrees 360.0) 1.0)
+    (sp-copy-from-other spt-scale-y -4)
+    (sp-flt spt-r 128.0)
+    (sp-flt spt-g 96.0)
+    (sp-flt spt-b 96.0)
+    (sp-rnd-flt spt-a 16.0 32.0 1.0)
+    (sp-flt spt-vel-y (meters 0.01))
+    (sp-flt spt-scalevel-x (meters 0.0005))
+    (sp-rnd-int-flt spt-rotvel-z (degrees -0.26666668) 1 97.09037)
+    (sp-copy-from-other spt-scalevel-y -4)
+    (sp-flt spt-fade-r -0.10666667)
+    (sp-flt spt-fade-g -0.053333335)
+    (sp-flt spt-fade-b -0.053333335)
+    (sp-flt spt-fade-a -0.08)
+    (sp-flt spt-accel-x 0.27306667)
+    (sp-flt spt-accel-y 0.13653333)
+    (sp-flt spt-friction 0.9975)
+    (sp-int spt-timer 600)
+    (sp-cpuinfo-flags bit2 bit14)
+    (sp-rnd-flt spt-conerot-x (degrees 0.0) (degrees 5.0) 1.0)
+    (sp-rnd-flt spt-conerot-y (degrees 0.0) (degrees 360.0) 1.0)
+    )
+  )
+
+(defpart 976
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :page #x2))
+    (sp-flt spt-num 1.5)
+    (sp-rnd-flt spt-x (meters -0.4) (meters 0.8) 1.0)
+    (sp-flt spt-y (meters 1))
+    (sp-rnd-flt spt-z (meters -0.4) (meters 0.8) 1.0)
+    (sp-rnd-flt spt-scale-x (meters 0.6) (meters 0.3) 1.0)
+    (sp-rnd-flt spt-rot-z (degrees 0.0) (degrees 360.0) 1.0)
+    (sp-copy-from-other spt-scale-y -4)
+    (sp-rnd-flt spt-r 128.0 128.0 1.0)
+    (sp-rnd-flt spt-g 0.0 60.0 1.0)
+    (sp-flt spt-a 0.0)
+    (sp-rnd-flt spt-vel-y (meters 0.02) (meters 0.006666667) 1.0)
+    (sp-rnd-flt spt-rotvel-z (degrees -0.1) (degrees 0.2) 1.0)
+    (sp-flt spt-fade-a 13.066667)
+    (sp-flt spt-accel-y -0.8192)
+    (sp-int spt-timer 105)
+    (sp-cpuinfo-flags bit2 bit3 bit14)
+    (sp-int spt-next-time 15)
+    (sp-launcher-by-id spt-next-launcher 981)
+    )
+  )
+
+(defpart 977
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :page #x2))
+    (sp-flt spt-num 1.5)
+    (sp-rnd-flt spt-x (meters -0.2) (meters 0.6) 1.0)
+    (sp-flt spt-y (meters 0.5))
+    (sp-rnd-flt spt-z (meters 0) (meters 0.4) 1.0)
+    (sp-rnd-flt spt-scale-x (meters 0.6) (meters 0.3) 1.0)
+    (sp-rnd-flt spt-rot-z (degrees 0.0) (degrees 360.0) 1.0)
+    (sp-copy-from-other spt-scale-y -4)
+    (sp-rnd-flt spt-r 128.0 128.0 1.0)
+    (sp-rnd-flt spt-g 0.0 60.0 1.0)
+    (sp-flt spt-a 0.0)
+    (sp-rnd-flt spt-vel-y (meters 0.018333333) (meters 0.0033333334) 1.0)
+    (sp-rnd-flt spt-rotvel-z (degrees -0.1) (degrees 0.2) 1.0)
+    (sp-flt spt-fade-a 13.066667)
+    (sp-flt spt-accel-y -0.8192)
+    (sp-int spt-timer 105)
+    (sp-cpuinfo-flags bit2 bit3 bit14)
+    (sp-int spt-next-time 15)
+    (sp-launcher-by-id spt-next-launcher 981)
+    )
+  )
+
+(defpart 978
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :page #x2))
+    (sp-flt spt-num 2.0)
+    (sp-rnd-flt spt-x (meters 0) (meters 0.2) 1.0)
+    (sp-flt spt-y (meters 0.6))
+    (sp-rnd-flt spt-z (meters -0.6) (meters 0.6) 1.0)
+    (sp-rnd-flt spt-scale-x (meters 0.7) (meters 0.4) 1.0)
+    (sp-rnd-flt spt-rot-z (degrees 0.0) (degrees 360.0) 1.0)
+    (sp-copy-from-other spt-scale-y -4)
+    (sp-rnd-flt spt-r 128.0 128.0 1.0)
+    (sp-rnd-flt spt-g 0.0 60.0 1.0)
+    (sp-flt spt-a 0.0)
+    (sp-rnd-flt spt-vel-y (meters 0.018333333) (meters 0.005) 1.0)
+    (sp-rnd-flt spt-rotvel-z (degrees -0.1) (degrees 0.2) 1.0)
+    (sp-flt spt-fade-a 13.066667)
+    (sp-flt spt-accel-y -0.8192)
+    (sp-int spt-timer 105)
+    (sp-cpuinfo-flags bit2 bit3 bit14)
+    (sp-int spt-next-time 15)
+    (sp-launcher-by-id spt-next-launcher 981)
+    )
+  )
+
+(defpart 978
+  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :page #x2))
+    (sp-flt spt-num 2.0)
+    (sp-rnd-flt spt-x (meters 0) (meters 0.2) 1.0)
+    (sp-flt spt-y (meters 0.6))
+    (sp-rnd-flt spt-z (meters -0.6) (meters 0.6) 1.0)
+    (sp-rnd-flt spt-scale-x (meters 0.7) (meters 0.4) 1.0)
+    (sp-rnd-flt spt-rot-z (degrees 0.0) (degrees 360.0) 1.0)
+    (sp-copy-from-other spt-scale-y -4)
+    (sp-rnd-flt spt-r 128.0 128.0 1.0)
+    (sp-rnd-flt spt-g 0.0 60.0 1.0)
+    (sp-flt spt-a 0.0)
+    (sp-rnd-flt spt-vel-y (meters 0.018333333) (meters 0.005) 1.0)
+    (sp-rnd-flt spt-rotvel-z (degrees -0.1) (degrees 0.2) 1.0)
+    (sp-flt spt-fade-a 13.066667)
+    (sp-flt spt-accel-y -0.8192)
+    (sp-int spt-timer 105)
+    (sp-cpuinfo-flags bit2 bit3 bit14)
+    (sp-int spt-next-time 15)
+    (sp-launcher-by-id spt-next-launcher 981)
+    )
+  )
+
+(defpart 979
+  :init-specs ((sp-flt spt-num 0.3)
+    (sp-flt spt-x (meters 0.2))
+    (sp-rnd-flt spt-y (meters 1) (meters 1) 1.0)
+    (sp-int spt-rot-x 5)
+    (sp-flt spt-r 4096.0)
+    (sp-flt spt-g 2867.2)
+    (sp-flt spt-b 3276.8)
+    (sp-rnd-flt spt-vel-x (meters 0) (meters 0.006666667) 1.0)
+    (sp-flt spt-vel-y (meters 0.026666667))
+    (sp-int spt-timer 180)
+    (sp-cpuinfo-flags aux-list)
+    (sp-int spt-next-time 120)
+    (sp-launcher-by-id spt-next-launcher 980)
+    (sp-rnd-flt spt-rotate-y (degrees 0.0) (degrees 360.0) 1.0)
+    )
+  )
+
+(defpart 980
+  :init-specs ((sp-flt spt-fade-b -6.826667))
+  )
+
+(defpart 981
+  :init-specs ((sp-flt spt-fade-a -1.3333334))
+  )
+
+;; TRUSTER STUFF ::
+
+(defpartgroup group-crystalc-truster-right
+  :id 167
+  :bounds (static-bspherem 0 3 0 4)
+  :parts ((sp-item 982 :fade-after (meters 50) :falloff-to (meters 50))
+    )
+  )
+
+(defpart 982
+  :init-specs ((sp-flt spt-num 3.0)
+    (sp-rnd-flt spt-x (meters -6.0) (meters 12) 1.0)
+    (sp-rnd-flt spt-y (meters -6.0) (meters 12) 1.0)
+    (sp-rnd-flt spt-z (meters -6.0) (meters 12) 1.0)
+    (sp-int spt-rot-x 5)
+    (sp-flt spt-r 4096.0)
+    (sp-flt spt-g 2867.2)
+    (sp-flt spt-b 3276.8)
+    (sp-rnd-flt spt-vel-x (meters 0.1) (meters 0.05) 1.0)
+    (sp-rnd-flt spt-vel-y (meters -0.2) (meters 0.15) 1.0)
+    (sp-rnd-flt spt-vel-z (meters 0.1) (meters 0.05) 1.0)
+    (sp-flt spt-accel-y 100.0)
+    (sp-int spt-timer 80)
+    (sp-cpuinfo-flags aux-list)
+    (sp-int spt-next-time 40)
+    (sp-launcher-by-id spt-next-launcher 983)
+    (sp-rnd-flt spt-rotate-y (degrees 0.0) (degrees 360.0) 1.0)
+    )
+  )
+
+(defpart 983
+  :init-specs ((sp-flt spt-fade-b -6.826667))
+  )
+
+(defpartgroup group-crystalc-truster-left
+  :id 168
+  :bounds (static-bspherem 0 3 0 4)
+  :parts ((sp-item 984 :fade-after (meters 50) :falloff-to (meters 50))
+    )
+  )
+
+(defpart 984
+  :init-specs ((sp-flt spt-num 3.0)
+    (sp-rnd-flt spt-x (meters -6.0) (meters 12) 1.0)
+    (sp-rnd-flt spt-y (meters -6.0) (meters 12) 1.0)
+    (sp-rnd-flt spt-z (meters -6.0) (meters 12) 1.0)
+    (sp-int spt-rot-x 5)
+    (sp-flt spt-r 4096.0)
+    (sp-flt spt-g 2867.2)
+    (sp-flt spt-b 3276.8)
+    (sp-rnd-flt spt-vel-x (meters -0.1) (meters -0.05) 1.0)
+    (sp-rnd-flt spt-vel-y (meters -0.2) (meters 0.15) 1.0)
+    (sp-rnd-flt spt-vel-z (meters 0.1) (meters 0.05) 1.0)
+    (sp-flt spt-accel-y 100.0)
+    (sp-int spt-timer 80)
+    (sp-cpuinfo-flags aux-list)
+    (sp-int spt-next-time 40)
+    (sp-launcher-by-id spt-next-launcher 983)
+    (sp-rnd-flt spt-rotate-y (degrees 0.0) (degrees 360.0) 1.0)
+    )
+  )
+
+;; BREAKAWAY ROCKS STUFF ::
+#|
+(import "goal_src/jak1/import/breakaway-right-ag.gc")
+(import "goal_src/jak1/import/breakaway-mid-ag.gc")
+(import "goal_src/jak1/import/breakaway-left-ag.gc")
+
+
+(deftype breakaway (process-drawable)
+  ((root-override collide-shape-moving  :offset 112)
+   )
+  :heap-base #x40
+  :method-count-assert 22
+  :size-assert         #xb0
+  :flag-assert         #x16004000b0
+  (:methods
+    (init! (_type_ res-lump int) none 20)
+    (go-idle (_type_) none 21)
+    )
+  (:states
+    breakaway-about-to-fall
+    breakaway-fall
+    breakaway-idle
+    )
+  )
+
+
+(defstate breakaway-idle (breakaway)
+  :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
+    (case arg2
+      (('touch)
+       (send-event arg0 'no-look-around (seconds 1.5))
+       (go breakaway-about-to-fall)
+       )
+      )
+    )
+  :code (the-as (function none :behavior breakaway) anim-loop)
+  :post (the-as (function none :behavior breakaway) transform-post)
+  )
+
+(defun actor-wait-for-period ((arg0 time-frame))
+  (let ((s5-0 (-> *display* base-frame-counter)))
+    (while (< (- (-> *display* base-frame-counter) s5-0) arg0)
+      (suspend)
+      )
+    )
+  #f
+  )
+
+(defstate breakaway-about-to-fall (breakaway)
+  :code (behavior ()
+    (sound-play "falling-bones")
+    (launch-particles (-> *part-id-table* 281) (-> self root-override trans))              
+    (let ((gp-1 #f)
+          (s5-1 (-> *display* base-frame-counter))
+          )
+      (loop
+        (ja-no-eval :group! (ja-group) :num! (seek! (ja-aframe 15.0 0)) :frame-num (ja-aframe 1.0 0))
+        (until (ja-done? 0)
+          (when (and (not gp-1) (>= (- (-> *display* base-frame-counter) s5-1) (seconds 0.15)))
+            (set! gp-1 #t)
+            (send-to-next-and-prev (-> self link) 'touch)
+            )
+          (if (>= (- (-> *display* base-frame-counter) s5-1) (seconds 0.25))
+              (go breakaway-fall)
+              )
+          (suspend)
+          (ja :num! (seek! (ja-aframe 15.0 0)))
+          )
+        )
+      )
+    (none)
+    )
+  :post (the-as (function none :behavior breakaway) rider-post)
+  )
+
+(defstate breakaway-fall (breakaway)
+  :code (behavior ()
+    (let ((f30-0 0.0)
+          (f28-0 0.0)
+          (f26-0 (* 0.1 (- (-> *standard-dynamics* gravity-length))))
+          )
+      (ja-no-eval :group! (ja-group) :num! (seek! (ja-aframe 32.0 0) 0.4) :frame-num (ja-aframe 16.0 0))
+      (until (ja-done? 0)
+        (+! f30-0 (* f28-0 (-> *display* seconds-per-frame)))
+        (+! f28-0 (* f26-0 (-> *display* seconds-per-frame)))
+        (+! (-> self root-override trans y) f30-0)
+        (suspend)
+        (ja :num! (seek! (ja-aframe 32.0 0) 0.4))
+        )
+      )
+    (cleanup-for-death self)
+    (none)
+    )
+  :post (the-as (function none :behavior breakaway) rider-post)
+  )
+
+(defmethod init! breakaway ((obj breakaway) (arg0 res-lump) (arg1 int))
+  (set! (-> obj mask) (logior (process-mask platform) (-> obj mask)))
+  (let ((s4-0 (new 'process 'collide-shape-moving obj (collide-list-enum hit-by-player))))
+    (set! (-> s4-0 dynam) (copy *standard-dynamics* 'process))
+    (set! (-> s4-0 reaction) default-collision-reaction)
+    (set! (-> s4-0 no-reaction)
+          (the-as (function collide-shape-moving collide-shape-intersect vector vector none) nothing)
+          )
+    (alloc-riders s4-0 1)
+    (let ((s2-0 (new 'process 'collide-shape-prim-mesh s4-0 (the-as uint 0) (the-as uint 0))))
+      (set! (-> s2-0 prim-core collide-as) (collide-kind ground-object))
+      (set! (-> s2-0 collide-with) (collide-kind target))
+      (set! (-> s2-0 prim-core action) (collide-action solid))
+      (set! (-> s2-0 prim-core offense) (collide-offense indestructible))
+      (set! (-> s2-0 transform-index) arg1)
+      (set-vector! (-> s2-0 local-sphere) 8192.0 -4096.0 8192.0 16384.0)
+      (set-root-prim! s4-0 s2-0)
+      )
+    (set! (-> s4-0 nav-radius) (* 0.75 (-> s4-0 root-prim local-sphere w)))
+    (backup-collide-with-as s4-0)
+    (set! (-> obj root-override) s4-0)
+    )
+  (set! (-> obj link) (new 'process 'actor-link-info obj))
+  (process-drawable-from-entity! obj (the-as entity-actor arg0))
+  (none)
+  )
+
+(defmethod go-idle breakaway ((obj breakaway))
+  (go breakaway-idle)
+  (none)
+  )
+
+(deftype breakaway-right (breakaway)
+  ()
+  :heap-base #x40
+  :method-count-assert 22
+  :size-assert         #xb0
+  :flag-assert         #x16004000b0
+  )
+
+
+(deftype breakaway-mid (breakaway)
+  ()
+  :heap-base #x40
+  :method-count-assert 22
+  :size-assert         #xb0
+  :flag-assert         #x16004000b0
+  )
+
+
+(deftype breakaway-left (breakaway)
+  ()
+  :heap-base #x40
+  :method-count-assert 22
+  :size-assert         #xb0
+  :flag-assert         #x16004000b0
+  )
+
+
+(defskelgroup *breakaway-right-sg* breakaway-right breakaway-right-lod0-jg breakaway-right-idle-ja
+              ((breakaway-right-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 0 0 7)
+              )
+
+(defskelgroup *breakaway-mid-sg* breakaway-mid breakaway-mid-lod0-jg breakaway-mid-idle-ja
+              ((breakaway-mid-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 0 0 7)
+              )
+
+(defskelgroup *breakaway-left-sg* breakaway-left breakaway-left-lod0-jg breakaway-left-idle-ja
+              ((breakaway-left-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 0 0 7)
+              )
+
+(defmethod init-from-entity! breakaway-right ((obj breakaway-right) (arg0 entity-actor))
+  (init! obj arg0 3)
+  (initialize-skeleton obj *breakaway-right-sg* '())
+  (go-idle obj)
+  (none)
+  )
+
+(defmethod init-from-entity! breakaway-mid ((obj breakaway-mid) (arg0 entity-actor))
+  (init! obj arg0 3)
+  (initialize-skeleton obj *breakaway-mid-sg* '())
+  (go-idle obj)
+  (none)
+  )
+
+(defmethod init-from-entity! breakaway-left ((obj breakaway-left) (arg0 entity-actor))
+  (init! obj arg0 3)
+  (initialize-skeleton obj *breakaway-left-sg* '())
+  (go-idle obj)
+  (none)
+  )
+
+|#

@@ -18,6 +18,31 @@
   :flag-assert         #xf00000070
   )
 
+(defmacro set-max-slot! (warp-gate)
+  `(set! 
+    (-> ,warp-gate max-slot) 
+    (max
+      (-> ,warp-gate max-slot) 
+      (cond  ;; CHECK WHICH TASK HAS BEEN CLOSED TO UNLOCK X SLOTS IN THE PORTAL MENU
+        ((>= (-> *game-info* money-total) 2000.0)
+          5
+          )
+        ((task-closed? (game-task village4-button) (task-status need-hint))
+          4
+          )
+        ((task-closed? (game-task village3-button) (task-status need-hint))
+          3
+          )
+        ((task-closed? (game-task village2-levitator) (task-status need-hint))
+          2
+          )
+        (else
+          1 
+          )
+        )
+      )
+    )
+  )
 
 (defstate target-warp-in (target)
   :event target-generic-event-handler
@@ -140,7 +165,8 @@
               (go-virtual active)
               )
           (if (and *cheat-mode* (cpad-pressed? 0 l3))
-              (set! (-> self max-slot) 4)
+              (set! (-> self max-slot) (- (-> *warp-info* length) 1))          
+              (set-max-slot! self)
               )
           (let ((gp-0
                   (new 'stack 'font-context *font-default-matrix* 32 160 0.0 (font-color default) (font-flags shadow kerning))
@@ -196,6 +222,11 @@
     )
   )
 
+;;Return #t if the first entries in *warp-info* are in the expected state
+(defun vanilla-warp-info? ()
+  #f
+  )
+
 (defun print-level-name ((arg0 int) (arg1 font-context) (arg2 int) (arg3 int))
   (let ((s5-0 (if arg3
                   arg2
@@ -205,18 +236,64 @@
         )
     (+! (-> arg1 origin x) (the float s5-0))
     (let ((f30-0 (- 1.0 (* 0.0033333334 (the float arg2)))))
-      (print-game-text-scaled
+    ;;if not <4  and in the vanilla level order (Default levels do this!)
+    (if (and (vanilla-warp-info?) (< arg0 5) )
+    (begin
+        (print-game-text-scaled
         (lookup-text! *common-text* (the-as game-text-id (+ arg0 286)) #f)
         f30-0
         arg1
-        (the int (* 128.0 f30-0))
+        (the int (* 128.0 f30-0)))
+        )    
+    ;;if <4 (Its a custom level! sick lets see if it has a customname)
+    (begin
+    (if  (!= (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) customname) 0)
+    ;;It has a custom name cool! lets use that as the text in the warp menu!
+    (begin
+        (print-game-text-scaled
+        (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) customname)
+        f30-0
+        arg1
+        (the int (* 128.0 f30-0))))
         )
-      )
+    ;;It doesnt have a custom name :( lets default to the level code name VILLAGE1 ETC)
+    (if  (= (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) customname) 0)
+    (begin
+        (print-game-text-scaled
+        (symbol->string (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) name))
+        f30-0
+        arg1
+        (the int (* 128.0 f30-0))))))
+        )
+
+        (if (not (vanilla-warp-info?))
+    
+    ;;if <4 and the first entries are not in the default expeceted order (Its a custom level! sick lets see if it has a customname)
+    (begin
+    (if  (!= (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) customname) 0)
+    ;;It has a custom name cool! lets use that as the text in the warp menu!
+    (begin
+        (print-game-text-scaled
+        (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) customname)
+        f30-0
+        arg1
+        (the int (* 128.0 f30-0))))
+        )
+    ;;It doesnt have a custom name :( lets default to the level code name VILLAGE1 ETC)
+    (if  (= (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) customname) 0)
+    (begin
+        (print-game-text-scaled
+        (symbol->string (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) name))
+        f30-0
+        arg1
+        (the int (* 128.0 f30-0))))))
+        )
     (set! (-> arg1 origin x) (- (-> arg1 origin x) (the float s5-0)))
     )
   (set! (-> arg1 color) (font-color default))
   arg1
   )
+)
 
 (defstate active (warp-gate)
   :virtual #t
@@ -408,7 +485,8 @@
   (logior! (-> self mask) (process-mask actor-pause))
   (set! (-> self level) (-> self entity extra level name))
   (set! (-> self min-slot) 0)
-  (let ((v1-11 (-> self level)))
+  (let ((v1-11 (-> self level)))   
+  ;; CHECK SELF LEVEL TO NOT DISPLAY IT IN THE MENU, ADD NEW LEVELS AND MAKE SURE OF THE ORDER :   
     (set! (-> self level-slot) (cond
                                  ((= v1-11 'training)
                                   0
@@ -431,21 +509,7 @@
                                  )
           )
     )
-  (set! (-> self max-slot) (cond
-                             ((task-closed? (game-task village4-button) (task-status need-hint))
-                              4
-                              )
-                             ((task-closed? (game-task village3-button) (task-status need-hint))
-                              3
-                              )
-                             ((task-closed? (game-task village2-levitator) (task-status need-hint))
-                              2
-                              )
-                             (else
-                               1
-                               )
-                             )
-        )
+  (set-max-slot! self)
   (go-virtual idle)
   (none)
   )
@@ -1149,7 +1213,6 @@
   (go (method-of-object obj idle))
   (none)
   )
-
 
 
 

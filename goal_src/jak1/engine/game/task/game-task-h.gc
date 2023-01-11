@@ -126,6 +126,15 @@
   (finalboss-movies 112)
   (plunger-lurker-hit 113)
   (leaving-misty 114)
-  (assistant-village3 115)
-  (max 116)
+  (assistant-village3 115)  
+  ;; CUSTOM TASKS
+  (dummy 116)
+  ;; CRYSTAL CAVE
+  (crystalc-middle 117)
+  (crystalc-river 118)
+  (crystalc-ship 119)
+  (crystalc-shrooms 120)
+  (crystalc-buzzer 121)
+
+  (max 122) ;;change max to last +1
   )

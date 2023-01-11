@@ -134,8 +134,8 @@
    (disp1         symbol          :offset-assert 120)
    )
   :method-count-assert 10
-  :size-assert         #x7c
-  :flag-assert         #xa0000007c
+  ;; :size-assert         #x7c
+  ;; :flag-assert         #xa0000007c
   (:methods
     (debug-draw! (_type_) none 9)
     )

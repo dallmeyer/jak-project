@@ -451,6 +451,7 @@
                                              "village2-warp"
                                              "village3-warp"
                                              "citadel-warp"
+                                             "crystal-cave-warp"
                                              )
                                            )
         )
@@ -522,7 +523,7 @@
         )
       )
     (set-blackout-frames (seconds 0.05))
-    (start 'play (get-continue-by-name *game-info* (-> *warp-info* arg0)))
+    (start 'play (get-continue-by-name *game-info* (-> *warp-info* (+ 0 arg0))))
     (logior! (-> self mask) (process-mask sleep))
     (suspend)
     0
