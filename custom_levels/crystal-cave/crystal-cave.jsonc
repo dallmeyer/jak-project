@@ -110,11 +110,11 @@
     // ###########################################################################
     // ###########################################################################
     {
-      "trans": [-51.58, 104.35, 21.26], // translation
+      "trans": [-163.99, 126.77, -113.48], // translation
       "etype": "crate",  // actor type
       "game_task": 121, // associated game task (for powercells, etc)
       "quat" : [-0.010, 0.353, -0.060, 0.934], // quaternion
-      "bsphere": [-51.58, 104.35, 21.26, 10], // bounding sphere
+      "bsphere": [-163.99, 126.77, -113.486, 10], // bounding sphere
       "lump": {
         "name":"crystalc-crate-buzzer-01",
         "crate-type":"'iron",
@@ -123,11 +123,11 @@
       }
     },
     {
-      "trans": [-130.55, 95.89, -4.16], // translation
+      "trans": [-211.98, 105.69, -120.52], // translation
       "etype": "crate",  // actor type
       "game_task": 121, // associated game task (for powercells, etc)
       "quat" : [-0, 0.034, -0, 0.999], // quaternion
-      "bsphere": [-130.55, 95.89, -4.16, 10], // bounding sphere
+      "bsphere": [-211.98, 105.69, -120.52, 10], // bounding sphere
       "lump": {
         "name":"crystalc-crate-buzzer-02",
         "crate-type":"'iron",
@@ -604,91 +604,91 @@
     // ###########################################################################
     // ###########################################################################
     {
-      "trans": [ -69.51, 98.15, 25.66], // translation
+      "trans": [6.5, 113.10,  -5.0], // translation - ledge up/behind gate
       "etype": "money",  // actor type
       "game_task": 0, // associated game task (for powercells, etc)
       "quat" : [0, 0, 0, 1], // quaternion
-      "bsphere": [-69.51, 98.15, 25.66, 10], // bounding sphere
+      "bsphere": [6.5, 113.10,  -5.0, 10], // bounding sphere
       "lump": {
         "name":"crystalc-money-01"
       }
     },
     {
-      "trans": [ -67.24, 98.36, 25.63], // translation
+      "trans": [ -17.24, 115.69,  17.23], // translation - follow ledges around from ^
       "etype": "money",  // actor type
       "game_task": 0, // associated game task (for powercells, etc)
       "quat" : [0, 0, 0, 1], // quaternion
-      "bsphere": [-67.24, 98.36, 25.63, 10], // bounding sphere
+      "bsphere": [-17.24, 115.69,  17.23, 10], // bounding sphere
       "lump": {
         "name":"crystalc-money-02"
       }
     },
     {
-      "trans": [ -65.03, 98.56, 25.58], // translation
+      "trans": [-126.58, 104.11, -123.72], // translation - on platform  right of precursor ship
       "etype": "money",  // actor type
       "game_task": 0, // associated game task (for powercells, etc)
       "quat" : [0, 0, 0, 1], // quaternion
-      "bsphere": [-65.03, 98.56, 25.58, 10], // bounding sphere
+      "bsphere": [-126.58, 104.11, -123.72, 10], // bounding sphere
       "lump": {
         "name":"crystalc-money-03"
       }
     },
     {
-      "trans": [ -52.41, 107.52, 6.83], // translation
+      "trans": [-142.89, 116.67, -110.27], // translation - uppercut spin from ^ to get onto precursor ship mid
       "etype": "money",  // actor type
       "game_task": 0, // associated game task (for powercells, etc)
       "quat" : [0, 0, 0, 1], // quaternion
-      "bsphere": [-52.41, 107.52, 6.83, 10], // bounding sphere
+      "bsphere": [-142.89, 116.67, -110.27, 10], // bounding sphere
       "lump": {
         "name":"crystalc-money-04"
       }
     },
     {
-      "trans": [ -55, 107.6, 5.30], // translation
+      "trans": [-167.01, 133.78, -136.43], // translation - up from ^ back around left (clockwise)
       "etype": "money",  // actor type
       "game_task": 0, // associated game task (for powercells, etc)
       "quat" : [0, 0, 0, 1], // quaternion
-      "bsphere": [-55, 107.6, 5.30, 10], // bounding sphere
+      "bsphere": [-167.01, 133.78, -136.43, 10], // bounding sphere
       "lump": {
         "name":"crystalc-money-05"
       }
     },
     {
-      "trans": [ -57.30, 107.65, 3.79], // translation
+      "trans": [-148.09, 134.83, -133.53], // translation - up from ^ back around right (counter-clockwise)
       "etype": "money",  // actor type
       "game_task": 0, // associated game task (for powercells, etc)
       "quat" : [0, 0, 0, 1], // quaternion
-      "bsphere": [-57.30, 107.65, 3.79, 10], // bounding sphere
+      "bsphere": [-148.09, 134.83, -133.53, 10], // bounding sphere
       "lump": {
         "name":"crystalc-money-06"
       }
     },
     {
-      "trans": [ -95.62, 94.70, 4.52], // translation
+      "trans": [-177.58, 114.93, -116.97], // translation - same as "crystalc-money-04" but left side
       "etype": "money",  // actor type
       "game_task": 0, // associated game task (for powercells, etc)
       "quat" : [0, 0, 0, 1], // quaternion
-      "bsphere": [-95.62, 94.70, 4.52, 10], // bounding sphere
+      "bsphere": [-177.58, 114.93, -116.97, 10], // bounding sphere
       "lump": {
         "name":"crystalc-money-07"
       }
     },
     {
-      "trans": [ -99.15, 94.78, 3.33], // translation
+      "trans": [-176.85,  81.81, -136.99], // translation - under left side of precursor ship behind darkshroom
       "etype": "money",  // actor type
       "game_task": 0, // associated game task (for powercells, etc)
       "quat" : [0, 0, 0, 1], // quaternion
-      "bsphere": [-99.15, 94.78, 3.33, 10], // bounding sphere
+      "bsphere": [-176.85,  81.81, -136.99, 10], // bounding sphere
       "lump": {
         "name":"crystalc-money-08"
       }
     },
     {
-      "trans": [ -96.25, 94.36, 0.96], // translation
+      "trans": [-159.74,  85.3, -108.71  ], // translation - under bridge into precursor ship
       "etype": "money",  // actor type
       "game_task": 0, // associated game task (for powercells, etc)
       "quat" : [0, 0, 0, 1], // quaternion
-      "bsphere": [-96.25, 94.36, 0.96, 10], // bounding sphere
+      "bsphere": [-159.74,  85.08, -108.71, 10], // bounding sphere
       "lump": {
         "name":"crystalc-money-09"
       }
