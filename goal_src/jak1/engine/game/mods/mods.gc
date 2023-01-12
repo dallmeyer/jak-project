@@ -270,6 +270,7 @@
   (mod-cave-run-each-frame)
   (mod-lavatube-run-each-frame)
   (mod-citadel-run-each-frame)
+  (mod-crystalcave-run-each-frame)
 
   (none)
   )

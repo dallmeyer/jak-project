@@ -1,0 +1,9 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(defmacro mod-crystalcave-run-each-frame ()
+  `(begin
+    (mod-no-money-bob "crystalc-money-10")
+    )
+  )
+  
