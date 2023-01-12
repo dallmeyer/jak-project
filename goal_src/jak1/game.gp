@@ -2081,6 +2081,7 @@
    "game/mods/mods_cave.gc"
    "game/mods/mods_lavatube.gc"
    "game/mods/mods_citadel.gc"
+   "game/mods/mods_crystalcave.gc"
    "game/mods/mods.gc"
   )
 ;; the debug menu is modified to include PC specific options:

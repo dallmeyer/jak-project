@@ -4,6 +4,7 @@
 (defmacro mod-crystalcave-run-each-frame ()
   `(begin
     (mod-no-money-bob "crystalc-money-10")
+    (mod-no-money-bob "crystalc-money-50")
     )
   )
   
