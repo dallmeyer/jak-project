@@ -5,6 +5,8 @@
   `(begin
     (mod-no-money-bob "crystalc-money-10")
     (mod-no-money-bob "crystalc-money-50")
+    (mod-no-money-bob "crystalc-money-95")
+    (mod-no-money-bob "crystalc-money-96")
     )
   )
   
