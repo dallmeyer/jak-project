@@ -25,7 +25,7 @@
     ;; (mod-move-ecovent "ecovent-277" (static-vector-meters )) ;; yellow - 
     ;; (mod-move-ecovent "ecovent-281" (static-vector-meters )) ;; yellow - 
     ;; (mod-move-ecovent "ecovent-282" (static-vector-meters )) ;; yellow - 
-    ;; (mod-move-ecovent "ecovent-292" (static-vector-meters )) ;; yellow - 
+    (mod-move-ecovent "ecovent-292" (static-vector-meters 2493.39  -3.1 -3720.07)) ;; yellow - seldom-used path on right after oranges
     )
   )
   

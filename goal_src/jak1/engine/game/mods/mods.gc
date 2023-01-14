@@ -484,7 +484,7 @@
           ;; maincave - on wooden structure with gnawers, mid level
           (set-vector-meters! dst 1071.87  34.9 -3103.22)
           )
-        (('crate-2799)
+        (('crate-2779)
           ;; robocave - end of spidertunnel, launcher plat
           (set-vector-meters! dst 1199.41 -24.5 -2971.85)
           )
@@ -534,7 +534,7 @@
           (case (-> maybe-parent name) :comp name=
             (('bird-lady-beach-1)
               ;; wherever player is
-              (vector-copy! dst (-> *target* root trans))
+              (vector-copy-no-w! dst (-> *target* root trans))
               (vector-copy! (res-lump-struct (-> obj entity) 'movie-pos vector :time (the-as float -1000000000.0)) (-> *target* root trans))
               )
             (else
@@ -551,6 +551,14 @@
         )
       )
     )
+  
+  ;; failsafe for picking up scout flies on zoomer/flutflut
+  (when (and (= (-> (ppointer->process (-> obj parent)) type) buzzer)
+               (logtest? (-> *target* control root-prim prim-core action) (collide-action ca-9 ca-14))
+               )
+    (vector-copy-no-w! dst (-> *target* root trans))
+    )
+
   (none)
   )
 
