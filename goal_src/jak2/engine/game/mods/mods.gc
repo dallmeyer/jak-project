@@ -1,0 +1,144 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(defmacro mod-copy-mesh-and-path (dst-name src-name)
+  `(let ((dst (the nav-enemy (process-by-ename ,dst-name)))
+         (src (the nav-enemy (process-by-ename ,src-name)))
+         )
+    (when (and src dst)
+      (set! (-> dst nav mesh) (-> src nav mesh))
+      (set! (-> dst path flags) (-> src path flags))
+      (curve-copy! (-> dst path curve) (-> src path curve))
+      (set! (-> dst path num-cverts) (-> src path num-cverts))
+      (set! (-> dst path cverts) (-> src path cverts))
+      )
+    )
+  )
+
+(defmacro mod-no-collectable-bob (collectablename)
+  `(begin
+    (when (process-by-ename ,collectablename)
+      (set! (-> (the collectable (process-by-ename ,collectablename)) bob-amount) 0.0)
+      )
+    )
+  )
+
+;; takes a path-control and xyz values to offsets every node in the path by
+;; (defmacro shift-path! (path x y z)
+;;   `(let ((voff (static-vector-meters ,x ,y ,z)))
+;;     (dotimes (idx (-> ,path num-cverts))
+;;       (vector+! (-> ,path cverts idx) (-> ,path cverts idx) voff)
+;;       )
+;;     )
+;;   )
+
+;; (defmacro path-print-meters (path)
+;;   `(dotimes (idx (-> ,path num-cverts))
+;;     (print-vector3m (-> ,path cverts idx))
+;;     )
+;;   )
+
+(defmacro move-pd-str (actor-name x y z)
+  `(let ((pd (the process-drawable (process-by-ename ,actor-name))))
+    (when pd
+      (set-vector-meters! (-> pd root trans) ,x ,y ,z)
+      )
+    (none)
+    )
+  )
+
+(defmacro set-pd-quat (actor-name x y z w)
+  `(let ((pd (the process-drawable (process-by-ename ,actor-name))))
+    (when pd
+      (set-vector! (-> pd root quat) ,x ,y ,z ,w)
+      )
+    (none)
+    )
+  )
+
+;; (defun mod-override-plat-path ((obj plat) (arg0 entity-actor))
+;;   (case (-> obj name) :comp name=
+;;     (('citb-launcher-4) ;; back and forth - shortcut to other side
+;;       (set-vector-meters! (-> obj path cverts 0) 2630.9350 -23.0000 -4715.0468)
+;;       (set-vector-meters! (-> obj path cverts 1) 2649.4807 -23.0000 -4715.1137)
+;;       )
+;;     )
+;;   (none)
+;;   )
+
+(defun mod-override-init-position ((obj process-drawable) (arg0 entity-actor))
+  (case (-> obj name) :comp name=
+    ;; === fortress ===
+    ;; ORBS
+    ;; (('skill-8) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    (('skill-49) (set-vector-meters! (-> arg0 extra trans)  472.0 8.55 103.1)) ;; behind/under chair at start
+    (('skill-50) (set-vector-meters! (-> arg0 extra trans)  545.9 14.85 200.0)) ;; on shelf in 2nd room
+    ;; (('skill-62) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    ;; (('skill-63) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    ;; (('skill-69) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    ;; (('skill-70) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    ;; (('skill-71) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    ;; MISC
+    ;; (('crate-577) )  ;; dark eco
+    ;; (('crate-578) )  ;; health
+    ;; (('crate-579) )  ;; health
+    ;; (('crate-580) )  ;; dark eco
+    ;; (('crate-668) )  ;; dark eco
+    ;; (('crate-669) )  ;; dark eco
+    ;; (('crate-953) )  ;; health
+    ;; (('crate-954) )  ;; health
+    )
+  (none)
+  )
+
+;; (defun mod-move-eco ((eco-name string) (vec vector))
+;;   (let ((obj (the eco (process-by-ename eco-name))))
+;;     ;; only move if not being suck-sucked
+;;     (when (and obj (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue))))
+;;       (vector-copy-no-w! (-> obj base) vec)
+;;       (vector-copy-no-w! (-> obj root trans) vec)
+;;       (vector-copy-no-w! (-> obj root-override trans) vec)
+;;       (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
+
+;;       (if (-> obj sound)
+;;         (vector-copy-no-w! (-> obj sound trans) vec)
+;;         )
+;;       )
+;;     )
+;;   )
+
+(defun mod-run-each-frame ()
+
+  (none)
+  )
+
+
+;; more for testing purposes than anything
+(defun move-actor-str ((actor-name string) (x float) (y float) (z float))
+  (cond 
+    ((string= actor-name "target")
+      (set-vector-meters! (-> *target* root trans) x y z)
+      )
+    ((entity-by-name actor-name)
+      (let* ((entity-actor (entity-by-name actor-name))
+            (actor (-> entity-actor extra process))
+            )
+        (when actor
+          (set-vector! (-> entity-actor trans) (meters x) (meters y) (meters z) 1.0)
+          (set-vector! (-> entity-actor extra trans) (meters x) (meters y) (meters z) 1.0)
+          ;; (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+          )
+        )
+      )
+    )
+  (none)
+  )
+
+;; prints the position (root trans) of a process-drawable
+(defmacro pd-pos-m (procname)
+  `(let* ((obj (the process-drawable (process-by-ename ,procname)))
+          (vec (-> obj root trans)))
+    (format 0 "~m ~m ~m~%" (-> vec x) (-> vec y) (-> vec z) 4096.0)
+    (none)
+    )
+  )
