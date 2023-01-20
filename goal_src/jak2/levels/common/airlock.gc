@@ -338,7 +338,7 @@
     (cond
       ((and gp-0 (>= (- (-> self clock frame-counter) (-> obj spool-sound-time)) (seconds 2)))
        (set! (-> obj spool-sound-time) (-> self clock frame-counter))
-       (gui-control-method-9
+       (add-process
          *gui-control*
          obj
          (gui-channel alert)
@@ -356,8 +356,8 @@
   (none)
   )
 
-(defskelgroup skel-com-airlock-outer com-airlock-outer 0 2
-              ((1 (meters 999999)))
+(defskelgroup skel-com-airlock-outer com-airlock-outer com-airlock-outer-lod0-jg com-airlock-outer-idle-ja
+              ((com-airlock-outer-lod0-mg (meters 999999)))
               :bounds (static-spherem 0 5 0 14)
               )
 
@@ -827,6 +827,13 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! com-airlock-outer ((obj com-airlock-outer) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (stack-size-set! (-> obj main-thread) 1024)
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -891,6 +898,13 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! com-airlock-inner ((obj com-airlock-inner) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (stack-size-set! (-> obj main-thread) 1024)
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -968,6 +982,13 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! fort-entry-gate ((obj fort-entry-gate) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (stack-size-set! (-> obj main-thread) 1024)
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -1029,6 +1050,13 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! hip-door-a ((obj hip-door-a) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (stack-size-set! (-> obj main-thread) 1024)
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -1075,8 +1103,8 @@
   (none)
   )
 
-(defskelgroup skel-tomb-mar-door tomb-mar-door 0 2
-              ((1 (meters 999999)))
+(defskelgroup skel-tomb-mar-door tomb-mar-door tomb-mar-door-lod0-jg tomb-mar-door-idle-ja
+              ((tomb-mar-door-lod0-mg (meters 999999)))
               :bounds (static-spherem 0 6 0 18)
               :origin-joint-index 3
               )
@@ -1092,6 +1120,13 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! tomb-mar-door ((obj tomb-mar-door) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (stack-size-set! (-> obj main-thread) 1024)
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((v1-2 (new 'process 'collide-shape-prim-mesh s5-0 (the-as uint 0) (the-as uint 0))))
@@ -1133,8 +1168,8 @@
   )
 
 
-(defskelgroup skel-pal-throne-door pal-throne-door 0 2
-              ((1 (meters 999999)))
+(defskelgroup skel-pal-throne-door pal-throne-door pal-throne-door-lod0-jg pal-throne-door-idle-ja
+              ((pal-throne-door-lod0-mg (meters 999999)))
               :bounds (static-spherem 0 6 0 24)
               :origin-joint-index 3
               )
@@ -1150,6 +1185,12 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! pal-throne-door ((obj pal-throne-door) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -1212,6 +1253,12 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! vin-door-ctyinda ((obj vin-door-ctyinda) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -1274,6 +1321,12 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! under-door ((obj under-door) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -1333,6 +1386,13 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! oracle-door ((obj oracle-door) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (stack-size-set! (-> obj main-thread) 1024)
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))

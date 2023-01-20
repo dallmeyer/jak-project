@@ -9,7 +9,7 @@ void Compiler::save_repl_history() {
   m_repl->save_history();
 }
 
-void Compiler::print_to_repl(const std::string_view& str) {
+void Compiler::print_to_repl(const std::string& str) {
   m_repl->print_to_repl(str);
 }
 
@@ -152,13 +152,6 @@ void Compiler::shutdown_target() {
 
 bool Compiler::knows_object_file(const std::string& name) {
   return m_debugger.knows_object(name);
-}
-
-void Compiler::update_via_config_file(const std::string& json) {
-  auto cfg = parse_commented_json(json, "repl-config.json");
-  if (cfg.contains("numConnectToTargetAttempts")) {
-    m_target_connect_attempts = cfg.at("numConnectToTargetAttempts").get<int>();
-  }
 }
 
 /*!
