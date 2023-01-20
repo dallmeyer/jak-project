@@ -344,6 +344,7 @@
   ("pov-camera.o" "pov-camera")
   ("powerups.o" "powerups")
   ("crates.o" "crates")
+  ("mods.o" "mods")
   ("hud.o" "hud")
   ("hud-classes.o" "hud-classes")
   ("progress-static.o" "progress-static")

@@ -158,6 +158,9 @@
     (sv-288 string)
     (sv-304 string)
     )
+  (when (and (= *cheat-mode* 'debug) (cpad-pressed? 0 l2))
+    (format 0 "~6,,2m ~6,,2m ~6,,2m  ~%" (-> arg0 control trans x) (-> arg0 control trans y) (-> arg0 control trans z))
+    )
   (with-pp
     (let ((s5-0 pp))
       (set! pp arg0)

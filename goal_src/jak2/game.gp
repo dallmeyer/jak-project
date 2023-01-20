@@ -4568,6 +4568,13 @@
 (goal-src "pc/pckernel-h.gc" "dma-buffer")
 (goal-src "pc/pckernel.gc" "video")
 
+(goal-src-sequence
+  "engine/"
+   :deps ;; no idea what these depend on, make it depend on the whole engine
+   ("$OUT/obj/los-control.o")
+   "game/mods/mods.gc"
+  )
+
 ;; used for the type consistency test.
 (group-list "all-code"
   `(,@(reverse *all-gc*))
