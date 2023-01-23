@@ -23,7 +23,10 @@
 
     (defun runs-every-frame ()
       ;;(increase-power-cell-by-one) This is a call to increase-power-cell-by-one defined in define-custom-functions-here.gc
-
+      (if (and *target* (cpad-hold? 0 r2))
+        (send-event *camera* 'change-state cam-bike 0) ;; set camera to behind jak
+        (send-event *camera* 'change-state *camera-base-mode* 0)
+        )
       (none)
       )
 

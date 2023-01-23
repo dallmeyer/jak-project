@@ -60,7 +60,7 @@
               (!= (-> obj value2) arg1)
               (-> obj force-on-screen)
               (or (and (cpad-hold? 0 l2) (not (-> obj disable)))
-                  (and (not *cheat-mode*) (cpad-hold? 0 r2))
+                  ;; (and (not *cheat-mode*) (cpad-hold? 0 r2))
                   (-> obj first-init)
                   )
               )

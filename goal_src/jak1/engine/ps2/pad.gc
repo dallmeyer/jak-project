@@ -340,6 +340,70 @@
                       (set! (-> pad leftx) (- 255 (-> pad leftx)))
                       (set! (-> pad rightx) (- 255 (-> pad rightx)))
                       ))
+              
+              ;; limit inputs to 8 directions
+              (let* ((leftx (- (the int (-> pad leftx)) 128))
+                     (lefty (- (the int (-> pad lefty)) 128))
+                     (leftslope (/ (the float lefty) (the float leftx)))
+                     (leftrad (atan-rad (abs leftslope)))
+                    )
+                (cond 
+                  ((< leftrad (/ PI 8))
+                    ;; closest to x axis, set y to "zero"
+                    (set! (-> pad lefty) (the-as uint 128))
+                    )
+                  ((< leftrad (/ (* 3 PI) 8))
+                    ;; closest to 45 degrees, set both to average
+                    (let ((mid (/ (+ (abs leftx) (abs lefty)) 2)))
+                      (if (< leftx 0)
+                        (set! leftx (* -1 mid))
+                        (set! leftx mid)
+                        )
+                      (if (< lefty 0)
+                        (set! lefty (* -1 mid))
+                        (set! lefty mid)
+                        )
+                      (set! (-> pad leftx) (the-as uint (+ 128 leftx)))
+                      (set! (-> pad lefty) (the-as uint (+ 128 lefty)))
+                      )
+                    )
+                  (else
+                    ;; closest to y axis, set x to "zero"
+                    (set! (-> pad leftx) (the-as uint 128))
+                    )
+                  )
+                )
+              (let* ((rightx (- (the int (-> pad rightx)) 128))
+                     (righty (- (the int (-> pad righty)) 128))
+                     (rightslope (/ (the float righty) (the float rightx)))
+                     (rightrad (atan-rad (abs rightslope)))
+                    )
+                (cond 
+                  ((< rightrad (/ PI 8.0))
+                    ;; closest to x axis, set y to "zero"
+                    (set! (-> pad righty) (the-as uint 128))
+                    )
+                  ((< rightrad (/ (* 3.0 PI) 8.0))
+                    ;; closest to 45 degrees, set both to average
+                    (let ((mid (/ (+ (abs rightx) (abs righty)) 2)))
+                      (if (< rightx 0)
+                        (set! rightx (* -1 mid))
+                        (set! rightx mid)
+                        )
+                      (if (< righty 0)
+                        (set! righty (* -1 mid))
+                        (set! righty mid)
+                        )
+                      (set! (-> pad rightx) (the-as uint (+ 128 rightx)))
+                      (set! (-> pad righty) (the-as uint (+ 128 righty)))
+                      )
+                    )
+                  (else
+                    ;; closest to y axis, set x to "zero"
+                    (set! (-> pad rightx) (the-as uint 128))
+                    )
+                  )
+                )
               ;; compute speed and direction, with deadband.
               (let ((f30-0 (* 0.0078125 (the float (+ (-> pad leftx) -128))))
                     (f28-0 (* 0.0078125 (the float (- 127 (the-as int (-> pad lefty))))))
