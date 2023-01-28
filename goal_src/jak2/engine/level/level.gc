@@ -1733,8 +1733,15 @@
   obj
   )
 
-(defmethod is-object-visible? level ((obj level) (arg0 int))
+(defmethod is-object-visible? level ((obj level) (arg0 int) (actor entity))
   "Is drawable arg0 visible? Note that this will return #f if the visibility data is not loaded."
+
+  ;; hack to force visibility of stuff moved (rather than update visibility data)
+  (case (-> (the entity-actor actor) etype symbol)
+    (('skill 'crate)
+      (return #t)
+      )
+    )
 
   ;; check the vis bits!
   (let* (;; lwu v1, 388(a0)

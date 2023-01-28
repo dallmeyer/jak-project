@@ -68,23 +68,30 @@
 
 (defun mod-override-init-position ((obj process-drawable) (arg0 entity-actor))
   (case (-> obj name) :comp name=
-    ;; === fortress ===
-    ;; ORBS
-    ;; (('skill-8) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    ;; ====== ORBS ======
+    ;; === prison (first 2 rooms) ===
     (('skill-49) (set-vector-meters! (-> arg0 extra trans)  472.0 8.55 103.1)) ;; behind/under chair at start
     (('skill-50) (set-vector-meters! (-> arg0 extra trans)  545.9 14.85 200.0)) ;; on shelf in 2nd room
+    ;; === forexita (3rd room until shooting you from below) ===
     ;; (('skill-62) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
     ;; (('skill-63) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    ;; === forexitb (shooting you from below to city exit) ===
     ;; (('skill-69) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
     ;; (('skill-70) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    ;; (('skill-8) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
     ;; (('skill-71) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
-    ;; MISC
+
+
+    ;; ====== MISC ======
+    ;; === prison ===
+    ;; === forexita ===
     ;; (('crate-577) )  ;; dark eco
     ;; (('crate-578) )  ;; health
     ;; (('crate-579) )  ;; health
     ;; (('crate-580) )  ;; dark eco
     ;; (('crate-668) )  ;; dark eco
     ;; (('crate-669) )  ;; dark eco
+    ;; === forexitb ===
     ;; (('crate-953) )  ;; health
     ;; (('crate-954) )  ;; health
     )
