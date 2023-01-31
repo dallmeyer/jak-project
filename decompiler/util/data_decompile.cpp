@@ -156,7 +156,7 @@ goos::Object decompile_at_label_guess_type(const DecompilerLabel& label,
                                            GameVersion version) {
   auto guessed_type = get_type_of_label(label, words);
   if (!guessed_type.has_value()) {
-    throw std::runtime_error("Could not guess the type of " + label.name);
+    throw std::runtime_error("(1) Could not guess the type of " + label.name);
   }
   return decompile_at_label(*guessed_type, label, labels, words, ts, file, version);
 }
@@ -204,7 +204,7 @@ goos::Object decompile_at_label(const TypeSpec& type,
     if (type.has_single_arg()) {
       content_type_spec = type.get_single_arg();
     }
-    return decompile_boxed_array(label, labels, words, ts, file, content_type_spec, version);
+    return decompile_boxed_array(type, label, labels, words, ts, file, content_type_spec, version);
   }
 
   if (ts.tc(TypeSpec("structure"), type)) {
@@ -215,7 +215,8 @@ goos::Object decompile_at_label(const TypeSpec& type,
     return decompile_pair(label, labels, words, ts, true, file, version);
   }
 
-  throw std::runtime_error("Unimplemented decompile_at_label for " + type.print());
+  throw std::runtime_error(fmt::format(
+      "Unimplemented decompile_at_label for Label: {} and Type: {}", label.name, type.print()));
 }
 
 /*!
@@ -518,7 +519,7 @@ goos::Object decomp_ref_to_inline_array_guess_size(
     auto& word = all_words.at(my_seg).at(pad_byte_idx / 4);
     switch (word.kind()) {
       case LinkedWord::PLAIN_DATA:
-        ASSERT(word.get_byte(pad_byte_idx) == 0);
+        ASSERT(word.get_byte(pad_byte_idx % 4) == 0);
         break;
       case LinkedWord::TYPE_PTR:
         break;
@@ -732,6 +733,15 @@ const std::unordered_map<
            {{"init-specs", ArrayFieldDecompMeta(TypeSpec("sp-field-init-spec"), 16)}}},
           {"sparticle-launch-group",
            {{"launcher", ArrayFieldDecompMeta(TypeSpec("sparticle-group-item"), 32)}}},
+          {"nav-network-info",
+           {{"adjacency", ArrayFieldDecompMeta(TypeSpec("nav-network-adjacency"), 16)}}},
+          {"sig-path", {{"samples", ArrayFieldDecompMeta(TypeSpec("sig-path-sample"), 64)}}},
+          {"rigid-body-vehicle-constants",
+           {{"color-option-array", ArrayFieldDecompMeta(TypeSpec("vector"), 16)},
+            {"grab-rail-array", ArrayFieldDecompMeta(TypeSpec("vehicle-grab-rail-info"), 48)}}},
+          {"city-ambush-info", {{"array", ArrayFieldDecompMeta(TypeSpec("city-ambush-spot"), 32)}}},
+          {"fort-robotank-segment",
+           {{"event-tbl", ArrayFieldDecompMeta(TypeSpec("fort-robotank-segment-event"), 32)}}},
           {"race-info",
            {{"turbo-pad-array", ArrayFieldDecompMeta(TypeSpec("race-turbo-pad"), 32)},
             {"racer-array", ArrayFieldDecompMeta(TypeSpec("race-racer-info"), 16)},
@@ -744,6 +754,21 @@ const std::unordered_map<
            {{"data", ArrayFieldDecompMeta(TypeSpec("int8"),
                                           1,
                                           ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)}}},
+          {"enemy-info",
+           {{"idle-anim-script",
+             ArrayFieldDecompMeta(TypeSpec("idle-control-frame"),
+                                  4,
+                                  ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)}}},
+          {"nav-enemy-info",
+           {{"idle-anim-script",
+             ArrayFieldDecompMeta(TypeSpec("idle-control-frame"),
+                                  4,
+                                  ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)}}},
+          {"tpath-info",
+           // TODO - should be able to just decompile the `anims` field
+           {{"anim1", ArrayFieldDecompMeta(TypeSpec("tpath-control-frame"), 16)},
+            {"anim2", ArrayFieldDecompMeta(TypeSpec("tpath-control-frame"), 16)},
+            {"anim3", ArrayFieldDecompMeta(TypeSpec("tpath-control-frame"), 16)}}},
           // kinda want to add regex support now...
           {"bigmap-compressed-layers",
            {{"layer0", ArrayFieldDecompMeta(TypeSpec("uint32"),
@@ -809,7 +834,54 @@ const std::unordered_map<
           {"lightning-probe-vars", {{"probe-dirs", ArrayFieldDecompMeta(TypeSpec("vector"), 16)}}},
           {"nav-mesh",
            {{"poly-array", ArrayFieldDecompMeta(TypeSpec("nav-poly"), 64)},
-            {"nav-control-array", ArrayFieldDecompMeta(TypeSpec("nav-control"), 288)}}}}}};
+            {"nav-control-array", ArrayFieldDecompMeta(TypeSpec("nav-control"), 288)}}},
+          {"trail-conn-hash",
+           {{"cell", ArrayFieldDecompMeta(TypeSpec("trail-conn-hash-cell"), 4)},
+            {"conn-ids", ArrayFieldDecompMeta(TypeSpec("uint16"),
+                                              2,
+                                              ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)}}},
+          {"trail-graph",
+           {{"node", ArrayFieldDecompMeta(TypeSpec("trail-node"), 18)},
+            {"conn", ArrayFieldDecompMeta(TypeSpec("trail-conn"), 8)},
+            {"conn-ids", ArrayFieldDecompMeta(TypeSpec("uint16"),
+                                              2,
+                                              ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"visgroup", ArrayFieldDecompMeta(TypeSpec("trail-conn-hash-cell"), 4)},
+            {"visnode-ids", ArrayFieldDecompMeta(TypeSpec("uint16"),
+                                                 2,
+                                                 ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)}}},
+          {"predator-graph",
+           {{"node", ArrayFieldDecompMeta(TypeSpec("predator-node"), 48)},
+            {"edge", ArrayFieldDecompMeta(TypeSpec("predator-edge"), 4)}}},
+          {"sig0-course",
+           {{"spots", ArrayFieldDecompMeta(TypeSpec("bot-spot"), 32)},
+            {"speeches", ArrayFieldDecompMeta(TypeSpec("bot-speech-info"), 16)},
+            {"dirs", ArrayFieldDecompMeta(TypeSpec("vector"), 16)},
+            {"speech-tunings", ArrayFieldDecompMeta(TypeSpec("bot-speech-tuning"), 16)}}},
+          {"ashelin-course",
+           {{"spots", ArrayFieldDecompMeta(TypeSpec("bot-spot"), 32)},
+            {"speeches", ArrayFieldDecompMeta(TypeSpec("bot-speech-info"), 16)},
+            {"dirs", ArrayFieldDecompMeta(TypeSpec("vector"), 16)},
+            {"speech-tunings", ArrayFieldDecompMeta(TypeSpec("bot-speech-tuning"), 16)}}},
+          {"ai-task-pool",
+           {{"tasks", ArrayFieldDecompMeta(TypeSpec("uint32"),
+                                           4,
+                                           ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)}}},
+          {"bot-course", {{"spots", ArrayFieldDecompMeta(TypeSpec("bot-spot"), 32)}}},
+          {"hal3-course", {{"spots", ArrayFieldDecompMeta(TypeSpec("bot-spot"), 32)}}},
+          {"sig5-course",
+           {{"spots", ArrayFieldDecompMeta(TypeSpec("bot-spot"), 32)},
+            {"speeches", ArrayFieldDecompMeta(TypeSpec("bot-speech-info"), 16)},
+            {"dirs", ArrayFieldDecompMeta(TypeSpec("vector"), 16)},
+            {"speech-tunings", ArrayFieldDecompMeta(TypeSpec("bot-speech-tuning"), 16)}}},
+          {"under-block-puzzle",
+           {{"cells", ArrayFieldDecompMeta(TypeSpec("int32"),
+                                           4,
+                                           ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)},
+            {"pulse-ops",
+             ArrayFieldDecompMeta(TypeSpec("int8"),
+                                  1,
+                                  ArrayFieldDecompMeta::Kind::REF_TO_INTEGER_ARR)}}}}}};
 
 goos::Object decompile_structure(const TypeSpec& type,
                                  const DecompilerLabel& label,
@@ -878,6 +950,7 @@ goos::Object decompile_structure(const TypeSpec& type,
   }
 
   int word_count = (type_info->get_size_in_memory() + 3) / 4;
+  int byte_count = type_info->get_size_in_memory();
 
   // check alignment
   if (offset_location % 8) {
@@ -911,24 +984,17 @@ goos::Object decompile_structure(const TypeSpec& type,
   // status of each byte.
   enum ByteStatus : u8 { ZERO_UNREAD, HAS_DATA_UNREAD, ZERO_READ, HAS_DATA_READ };
   std::vector<int> field_status_per_byte;
-  for (int i = 0; i < word_count; i++) {
-    auto& w = obj_words.at(i);
+  for (int i = 0; i < byte_count; i++) {
+    auto& w = obj_words.at(i / 4);
     switch (w.kind()) {
       case LinkedWord::TYPE_PTR:
       case LinkedWord::PTR:
       case LinkedWord::SYM_PTR:
       case LinkedWord::EMPTY_PTR:
         field_status_per_byte.push_back(HAS_DATA_UNREAD);
-        field_status_per_byte.push_back(HAS_DATA_UNREAD);
-        field_status_per_byte.push_back(HAS_DATA_UNREAD);
-        field_status_per_byte.push_back(HAS_DATA_UNREAD);
         break;
       case LinkedWord::PLAIN_DATA: {
-        u8 bytes[4];
-        memcpy(bytes, &w.data, 4);
-        for (auto b : bytes) {
-          field_status_per_byte.push_back(b ? HAS_DATA_UNREAD : ZERO_UNREAD);
-        }
+        field_status_per_byte.push_back(w.get_byte(i % 4) ? HAS_DATA_UNREAD : ZERO_UNREAD);
       } break;
       default:
         throw std::runtime_error("Unsupported word in static data");
@@ -1084,6 +1150,11 @@ goos::Object decompile_structure(const TypeSpec& type,
               field_defs_out.emplace_back(field.name(),
                                           decompile_value(TypeSpec("gif-tag-regs"), bytes_out, ts));
             } else {
+              if (field.type() == TypeSpec("uint128")) {
+                throw std::runtime_error(
+                    fmt::format("Failed to decompile: looking at field {} (from {}) with type {}",
+                                field.name(), type_info->get_name(), field.type().print()));
+              }
               field_defs_out.emplace_back(field.name(),
                                           decompile_value(field.type(), bytes_out, ts));
             }
@@ -1244,7 +1315,8 @@ goos::Object decompile_structure(const TypeSpec& type,
       pretty_print::to_symbol(fmt::format("new 'static '{}", actual_type.print()))};
   for (auto& f : field_defs_out) {
     auto str = f.second.print();
-    if (str.length() < 40) {
+    bool hack = actual_type.base_type() == "sp-field-init-spec" && f.first == "object";
+    if (str.length() < 40 && !hack) {
       result_def.push_back(
           pretty_print::to_symbol(fmt::format(":{} {}", f.first, print_def(f.second))));
     } else {
@@ -1421,7 +1493,8 @@ goos::Object decompile_value(const TypeSpec& type,
   }
 }
 
-goos::Object decompile_boxed_array(const DecompilerLabel& label,
+goos::Object decompile_boxed_array(const TypeSpec& type,
+                                   const DecompilerLabel& label,
                                    const std::vector<DecompilerLabel>& labels,
                                    const std::vector<std::vector<LinkedWord>>& words,
                                    const TypeSystem& ts,
@@ -1450,8 +1523,15 @@ goos::Object decompile_boxed_array(const DecompilerLabel& label,
     throw std::runtime_error("Invalid alignment in decompile_boxed_array");
   }
 
+  std::string array_type = "boxed-array";
+
   if (content_type_override) {
     content_type = *content_type_override;
+  }
+
+  // Handle children of `array`
+  if (type.base_type() != "array") {
+    array_type = type.print();
   }
 
   // now get the size
@@ -1468,12 +1548,13 @@ goos::Object decompile_boxed_array(const DecompilerLabel& label,
   int array_allocated_length = size_word_2.data;
 
   auto content_type_info = ts.lookup_type(content_type);
-  auto params_obj = array_length == array_allocated_length
-                        ? pretty_print::to_symbol(fmt::format("new 'static 'boxed-array :type {}",
-                                                              content_type.print()))
-                        : pretty_print::to_symbol(fmt::format(
-                              "new 'static 'boxed-array :type {} :length {} :allocated-length {}",
-                              content_type.print(), array_length, array_allocated_length));
+  auto params_obj =
+      array_length == array_allocated_length
+          ? pretty_print::to_symbol(
+                fmt::format("new 'static '{} :type {}", array_type, content_type.print()))
+          : pretty_print::to_symbol(
+                fmt::format("new 'static '{} :type {} :length {} :allocated-length {}", array_type,
+                            content_type.print(), array_length, array_allocated_length));
   if (content_type_info->is_reference() || content_type == TypeSpec("object")) {
     // easy, stride of 4.
     std::vector<goos::Object> result = {params_obj};
@@ -1500,9 +1581,9 @@ goos::Object decompile_boxed_array(const DecompilerLabel& label,
         } else if (content_type == TypeSpec("type") && word.kind() == LinkedWord::TYPE_PTR) {
           result.push_back(pretty_print::to_symbol(word.symbol_name()));
         } else {
-          throw std::runtime_error(
-              fmt::format("Unknown content type in boxed array of references, word idx {}",
-                          first_elt_word_idx + elt));
+          throw std::runtime_error(fmt::format(
+              "Unknown content type in boxed array of references, word idx {} at label {}",
+              first_elt_word_idx + elt, label.name));
         }
       }
     }
@@ -1532,8 +1613,8 @@ goos::Object decompile_boxed_array(const DecompilerLabel& label,
       for (int j = start; j < end; j++) {
         auto& word = words.at(label.target_segment).at(j / 4);
         if (word.kind() != LinkedWord::PLAIN_DATA) {
-          throw std::runtime_error(
-              fmt::format("Got bad word of kind {} in boxed array of values", word.kind()));
+          throw std::runtime_error(fmt::format("Got bad word of kind {} in boxed array of values",
+                                               fmt::underlying(word.kind())));
         }
         elt_bytes.push_back(word.get_byte(j % 4));
       }
@@ -1555,7 +1636,14 @@ goos::Object decompile_pair_elt(const LinkedWord& word,
     auto& label = labels.at(word.label_id());
     auto guessed_type = get_type_of_label(label, words);
     if (!guessed_type.has_value()) {
-      throw std::runtime_error("Could not guess the type of " + label.name);
+      auto& info = file->label_db->lookup(label.name);
+      if (info.known) {
+        guessed_type = info.result_type;
+      }
+    }
+
+    if (!guessed_type.has_value()) {
+      throw std::runtime_error("(1) Could not guess the type of " + label.name);
     }
 
     if (guessed_type == TypeSpec("pair")) {
@@ -1579,6 +1667,14 @@ goos::Object decompile_pair_elt(const LinkedWord& word,
     throw std::runtime_error(fmt::format("Pair elt did not have a good word kind: k {} d {}",
                                          (int)word.kind(), word.data));
   }
+}
+
+bool is_pointer_to_pair(const LinkedWord& word, const std::vector<DecompilerLabel>& labels) {
+  if (word.kind() != LinkedWord::PTR) {
+    return false;
+  }
+  auto& dest_label = labels.at(word.label_id());
+  return (dest_label.offset % 8) == 2;
 }
 }  // namespace
 
@@ -1629,7 +1725,7 @@ goos::Object decompile_pair(const DecompilerLabel& label,
         }
       }
       // if pointer
-      if (cdr_word.kind() == LinkedWord::PTR) {
+      if (is_pointer_to_pair(cdr_word, labels)) {
         to_print = labels.at(cdr_word.label_id());
         continue;
       }
@@ -1642,21 +1738,8 @@ goos::Object decompile_pair(const DecompilerLabel& label,
         return pretty_print::build_list(list_tokens);
       }
     } else {
-      if ((to_print.offset % 4) != 0) {
-        throw std::runtime_error(
-            fmt::format("Invalid alignment for pair {}\n", to_print.offset % 16));
-      } else {
-        // improper
-        list_tokens.push_back(pretty_print::to_symbol("."));
-        list_tokens.push_back(
-            decompile_pair_elt(words.at(to_print.target_segment).at(to_print.offset / 4), labels,
-                               words, ts, file, version));
-        if (add_quote) {
-          return pretty_print::build_list("quote", pretty_print::build_list(list_tokens));
-        } else {
-          return pretty_print::build_list(list_tokens);
-        }
-      }
+      throw std::runtime_error(
+          fmt::format("Invalid alignment for pair {}\n", to_print.offset % 16));
     }
   }
 }
