@@ -122,6 +122,13 @@ SimpleAtom SimpleAtom::make_sym_val(const std::string& name) {
   return result;
 }
 
+SimpleAtom SimpleAtom::make_sym_val_ptr(const std::string& name) {
+  SimpleAtom result;
+  result.m_kind = Kind::SYMBOL_VAL_PTR;
+  result.m_string = name;
+  return result;
+}
+
 SimpleAtom SimpleAtom::make_empty_list() {
   SimpleAtom result;
   result.m_kind = Kind::EMPTY_LIST;
@@ -177,12 +184,11 @@ goos::Object SimpleAtom::to_form(const std::vector<DecompilerLabel>& labels, con
         s32 as_s32 = m_int;
         ASSERT(((s64)as_s32) == m_int);  // float should always be a sign extended 32-bit value.
         memcpy(&f, &as_s32, 4);
-        if (f == f) {
+        if (f == f && std::isfinite(f)) {
           return goos::Object::make_float(f);
         } else {
           // nan or weird
-          ASSERT(false);  // let's abort on this for now, can remove if it actually comes up.
-          return pretty_print::to_symbol(fmt::format("(the-as float #x{:x})", m_int));
+          return pretty_print::to_symbol(fmt::format("(the-as float #x{:x})", (u32)m_int));
         }
       } else {
         if (std::abs(m_int) > INT32_MAX) {
@@ -206,6 +212,8 @@ goos::Object SimpleAtom::to_form(const std::vector<DecompilerLabel>& labels, con
       return pretty_print::to_symbol("'()");
     case Kind::STATIC_ADDRESS:
       return pretty_print::to_symbol(labels.at(m_int).name);
+    case Kind::SYMBOL_VAL_PTR:
+      return pretty_print::to_symbol(fmt::format("(&-> '{} value)", m_string));
     default:
       ASSERT(false);
       return {};

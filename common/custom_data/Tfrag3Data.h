@@ -53,7 +53,7 @@ enum MemoryUsageCategory {
   NUM_CATEGORIES
 };
 
-constexpr int TFRAG3_VERSION = 21;
+constexpr int TFRAG3_VERSION = 22;
 
 // These vertices should be uploaded to the GPU at load time and don't change
 struct PreloadedVertex {
@@ -259,10 +259,10 @@ struct Texture {
 };
 
 // Tfrag trees have several kinds:
-enum class TFragmentTreeKind { NORMAL, TRANS, DIRT, ICE, LOWRES, LOWRES_TRANS, INVALID };
+enum class TFragmentTreeKind { NORMAL, TRANS, DIRT, ICE, LOWRES, LOWRES_TRANS, WATER, INVALID };
 
-constexpr const char* tfrag_tree_names[] = {"normal", "trans",        "dirt",   "ice",
-                                            "lowres", "lowres-trans", "invalid"};
+constexpr const char* tfrag_tree_names[] = {"normal", "trans",        "dirt",  "ice",
+                                            "lowres", "lowres-trans", "water", "invalid"};
 
 // A tfrag model
 struct TfragTree {
@@ -370,6 +370,9 @@ struct MercDraw {
 
 struct MercEffect {
   std::vector<MercDraw> draws;
+  DrawMode envmap_mode;
+  u32 envmap_texture;
+  bool has_envmap = false;
   void serialize(Serializer& ser);
 };
 

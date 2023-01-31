@@ -380,7 +380,7 @@
 ;; Text
 ;;;;;;;;;;;;;;;;;;;;;
 
-(defstep :in "game/assets/game_text.gp"
+(defstep :in "game/assets/jak1/game_text.gp"
   :tool 'text
   :out '("$OUT/iso/0COMMON.TXT"
          "$OUT/iso/1COMMON.TXT"
@@ -391,7 +391,7 @@
          "$OUT/iso/6COMMON.TXT")
   )
 
-(defstep :in "game/assets/game_subtitle.gp"
+(defstep :in "game/assets/jak1/game_subtitle.gp"
   :tool 'subtitle
   :out '("$OUT/iso/0SUBTIT.TXT"
          "$OUT/iso/3SUBTIT.TXT"
@@ -1722,13 +1722,16 @@
 
 (goal-src "pc/util/knuth-rand.gc" "settings-h" "vector-h")
 
+(goal-src "pc/features/speedruns-h.gc")
+
 (goal-src-sequence
  ;; prefix
  "engine/"
 
  :deps
  ("$OUT/obj/settings-h.o"
-  "$OUT/obj/knuth-rand.o")
+  "$OUT/obj/knuth-rand.o"
+  "$OUT/obj/speedruns-h.o")
 
  "util/capture.gc"
  "debug/memory-usage-h.gc"
@@ -2045,7 +2048,6 @@
 ;; Custom or Modified Code
 (goal-src "pc/features/autosplit-h.gc")
 (goal-src "pc/features/autosplit.gc" "autosplit-h" "task-control-h")
-(goal-src "pc/features/speedruns-h.gc")
 (goal-src "pc/features/speedruns.gc" "speedruns-h" "autosplit-h")
 (goal-src "pc/pckernel-h.gc" "dma-buffer")
 (goal-src "pc/util/pc-anim-util.gc" "target-h")
