@@ -225,6 +225,7 @@
       (= *master-mode* 'game)
       (not (paused?))
       (not (movie?)) 
+      (nonzero? (-> *game-info* level-opened 0))  ;; at least been to geyser
       )
     (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug-no-zbuf))
       (draw-string-xy-scaled 
