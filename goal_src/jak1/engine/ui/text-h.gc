@@ -789,6 +789,11 @@
   (speedrun-il-cave              #x151c)
   (speedrun-il-lavatube          #x151d)
   (speedrun-il-citadel           #x151e)
+
+  (swamp-1st-tether              #x1600)
+  (swamp-2nd-tether              #x1601)
+  (swamp-3rd-tether              #x1602)
+  (swamp-4th-tether              #x1603)
 ;; GAME-TEXT-ID ENUM ENDS
   )
 

@@ -45,6 +45,14 @@
 (defconstant PC_KERNEL_VER_REVISION (-> PC_KERNEL_VERSION revision))
 (defconstant PC_KERNEL_VER_BUILD (-> PC_KERNEL_VERSION build))
 
+;; should only need to change this if we make backwards-incompatible 
+;;  changes to reading/writing rco-settings
+(defglobalconstant RCO_SETTINGS_VERSION_MINOR #x0006)
+(defglobalconstant RCO_SETTINGS_VERSION_MAJOR #x0001)
+(defglobalconstant RCO_SETTINGS_VERSION (logior
+                                        (ash RCO_SETTINGS_VERSION_MAJOR 48)
+                                        (ash RCO_SETTINGS_VERSION_MINOR 32)
+                                        ))
 
 (defconstant PS2_VOICE_AMOUNT 48)
 (defconstant PC_VOICE_AMOUNT 256)
@@ -360,6 +368,40 @@
     )
   )
 
+(deftype rco-settings (basic)
+  (
+    (version uint64)
+    (use-random-seed? symbol)
+    (current-seed uint)
+    (misty? symbol)
+    (snowy? symbol)
+    (blue-rings? symbol)
+    (no-fcs? symbol)
+    (no-lts? symbol)
+    (nms-citadel? symbol)
+    (no-citadel-hops? symbol)
+    (no-tree-hops? symbol)
+    (fj-no-early-temple? symbol)
+    (fj-no-early-plant-boss? symbol)
+    (snowy-no-gate-skip? symbol)
+    (snowy-no-double-gate-skip? symbol)
+    (snowy-no-fortress-without-flut? symbol)
+    (prevent-mayor-orb-softlock? symbol)
+    (prevent-geologist-orb-softlock? symbol)
+    (prevent-gambler-orb-softlock? symbol)
+    )
+  (:methods
+    (new (symbol type) _type_)
+    (reset (_type_) none)
+    (read-from-file (_type_ string) symbol)
+    (commit-to-file (_type_) none)
+    (write-to-file (_type_ string) symbol)
+    (load-settings (_type_) int)
+    )
+  )
+
+(define *rco-settings* (the-as rco-settings #f))
+
 ;; information about a cutscene. placeholder. TODO look at jak 2
 (deftype pc-scene-info (structure)
   ((name string)
@@ -398,6 +440,32 @@
 ;;;; resets
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defmethod reset rco-settings ((obj rco-settings))
+  "Set the default settings for non-vanilla rco settings"
+
+  (format 0 "resetting rco settings~%")
+
+  (set! (-> obj version) RCO_SETTINGS_VERSION)
+  (set! (-> obj use-random-seed?) #t)
+  (set! (-> obj current-seed) 42069)
+  (set! (-> obj misty?) #t)
+  (set! (-> obj snowy?) #t)
+  (set! (-> obj blue-rings?) #t)
+  (set! (-> obj no-fcs?) #t)
+  (set! (-> obj no-lts?) #t)
+  (set! (-> obj nms-citadel?) #t)
+  (set! (-> obj no-citadel-hops?) #t)
+  (set! (-> obj no-tree-hops?) #t)
+  (set! (-> obj fj-no-early-temple?) #t)
+  (set! (-> obj fj-no-early-plant-boss?) #t)
+  (set! (-> obj snowy-no-gate-skip?) #t)
+  (set! (-> obj snowy-no-double-gate-skip?) #t)
+  (set! (-> obj snowy-no-fortress-without-flut?) #t)
+  (set! (-> obj prevent-mayor-orb-softlock?) #t)
+  (set! (-> obj prevent-geologist-orb-softlock?) #t)
+  (set! (-> obj prevent-gambler-orb-softlock?) #t)
+
+  (none))
 
 (defmethod reset pc-settings ((obj pc-settings))
   "Set the default settings"

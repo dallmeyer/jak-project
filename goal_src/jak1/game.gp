@@ -2060,6 +2060,13 @@
  "mods/put-custom-code-here.gc"
 )
 
+(goal-src-sequence
+  "engine/"
+  :deps ("$OUT/obj/ticky.o" "$OUT/obj/game-task-h.o" "$OUT/obj/knuth-rand.gc" "$OUT/obj/pckernel.gc" "$OUT/obj/pckernel-h.gc")
+  "mods/mods-rco-h.gc"
+  "mods/mods-rco.gc"
+  )
+
 ;; the debug menu is modified to include PC specific options:
 (goal-src "engine/debug/default-menu.gc" "anim-tester-x" "part-tester")
 

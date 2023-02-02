@@ -2614,6 +2614,7 @@
     (apply-settings *setting-control*)
     (progress-reset-music-parms)
     (commit-to-file *pc-settings*)
+    (commit-to-file *rco-settings*)
     (set! (-> self particles 3 init-pos x) -320.0)
     (set! (-> self particles 4 init-pos x) -320.0)
     (set! (-> self particles 32 init-pos x) -320.0)

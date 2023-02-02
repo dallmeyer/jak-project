@@ -5,22 +5,49 @@
 ;; name in dgo: mods-rco
 ;; dgos: GAME, ENGINE
 
-(define *rco-info* rc-info)
+(define *rco-info* (new 'global 'rco-info))
 
-(defun generate-rco-task-list (seed uint)
+(defun generate-rco-task-list ((seed uint))
   ;; set the seed which will be used for generating checkpoint list
   (knuth-rand-init (the int64 seed))
   
-  (let ((used (new 'static 'array symbol (the int (game-task max)) #f))
+  (let ((used (new 'static 'array symbol 116  ;; (game-task max)
+                #f #f #f #f #f #f #f #f #f #f
+                #f #f #f #f #f #f #f #f #f #f
+                #f #f #f #f #f #f #f #f #f #f
+                #f #f #f #f #f #f #f #f #f #f
+                #f #f #f #f #f #f #f #f #f #f
+                #f #f #f #f #f #f #f #f #f #f
+                #f #f #f #f #f #f #f #f #f #f
+                #f #f #f #f #f #f #f #f #f #f
+                #f #f #f #f #f #f #f #f #f #f
+                #f #f #f #f #f #f #f #f #f #f
+                #f #f #f #f #f #f #f #f #f #f
+                #f #f #f #f #f #f))
         (idx 0)
         (after-ogre-end-count 0)
-        (seen-fj-cell? #f))
+        (seen-fj-cell? #f)
+        (seen-basin-cell? #f))
     (while (< idx 101)
       (let* ((rand-idx (knuth-rand-int-range 0 101))
              (game-task-idx (-> *cell-list* rand-idx)))
-        (when (not (-> used game-task-idx))
+        (when (not (-> used (the-as int game-task-idx)))
           ;; we haven't used this game-task-idx yet...
-          (case
+          (cond
+            ((and (not (and (-> used (game-task training-gimmie)) (-> used (game-task training-door)) (-> used (game-task training-climb)) (-> used (game-task training-buzzer))))
+                  (> rand-idx 3)  ;; anything after training-buzzer
+                  )
+              ;; require geyser before non-geyser
+              )
+            ((or (and (not (-> used (game-task village1-oracle-money1))) (= game-task-idx (game-task village1-oracle-money2)))
+                 (and (not (-> used (game-task village2-oracle-money1))) (= game-task-idx (game-task village2-oracle-money2)))
+                 (and (not (-> used (game-task village3-oracle-money1))) (= game-task-idx (game-task village3-oracle-money2)))
+                 (and (not (-> used (game-task village3-miner-money1))) (= game-task-idx (game-task village3-miner-money2)))
+                 (and (not (-> used (game-task village3-miner-money2))) (= game-task-idx (game-task village3-miner-money3)))
+                 (and (not (-> used (game-task village3-miner-money3))) (= game-task-idx (game-task village3-miner-money4)))
+                 )
+              ;; require oracle/gambler cells in order
+              )
             ((and (-> *rco-settings* misty?)
                   (not (-> used (game-task jungle-fishgame)))
                   (or (= game-task-idx (game-task misty-muse)) (= game-task-idx (game-task misty-boat)) (= game-task-idx (game-task misty-cannon)) (= game-task-idx (game-task misty-warehouse))
@@ -55,6 +82,17 @@
                   )
               ;; require end of FC for anything after FC
               )
+            ((and (not (-> used (game-task ogre-end)))
+                  (> rand-idx 69) ;; anything after ogre-buzzer
+                  )
+              ;; require end of MP for anything after MP
+              )
+            ((and (-> *rco-settings* no-tree-hops?)
+                  (not (-> used (game-task ogre-end)))
+                  (= game-task-idx (game-task ogre-secret))
+                  )
+              ;; require end of MP before MP secret cell
+              )
             ((and (-> *rco-settings* no-lts?)
                   (not (>= idx 72))
                   (> rand-idx 93)  ;; anything after cave-buzzer (last hub3 cell)
@@ -72,12 +110,6 @@
                   (> rand-idx 95) ;; anything after lavatube-buzzer
                   )
               ;; require end of LT before citadel
-              )
-            ((and (-> *rco-settings* no-tree-hops?)
-                  (not (-> used (game-task ogre-end)))
-                  (= game-task-idx (game-task ogre-secret))
-                  )
-              ;; require end of MP before MP secret cell
               )
             ((and (-> *rco-settings* fj-no-early-temple?)
                   (not (-> used (game-task jungle-tower)))
@@ -105,7 +137,7 @@
               ;; snowy - require fortress gate cell and neither flies nor fortress cell for flies and fortress cell
               )
             ((and (-> *rco-settings* snowy-no-fortress-without-flut?)
-                  (not (-> used (game-task beach-flut)))
+                  (not (-> used (game-task beach-flutflut)))
                   (or (= game-task-idx (game-task snow-buzzer)) (= game-task-idx (game-task snow-fort)))
                   )
               ;; snowy - require flutflut before flies and fortress cell 
@@ -133,6 +165,7 @@
               )
             (else
               ;; OK to use this game-task-idx!
+              (format 0 "RCO - idx ~D rand-idx ~D game-task-idx ~D using ~S.. " idx rand-idx game-task-idx (game-task->string game-task-idx))
 
               ;; track some things
               (when (-> used (game-task ogre-end))
@@ -152,9 +185,10 @@
               ;; update used, add task to list, increment counter
               (set! (-> used game-task-idx) #t)
               (set! (-> *rco-info* task-list idx) game-task-idx)
-              (+! idx 1)      
+              (+! idx 1)
               )
             )
+          (format 0 "~%")
           )
         ) 
       )
@@ -162,8 +196,18 @@
   (none)
   )
 
+(defun update-rco-task-strings ()
+  (set! (-> *rco-info* task-level) (-> *cell-level-list* (the-as int (-> *rco-info* task-list (-> *rco-info* task-list-idx)))))
+  (set! (-> *rco-info* task-name) (-> *cell-name-list* (the-as int (-> *rco-info* task-list (-> *rco-info* task-list-idx)))))
+  (none)
+  )
+
 (defun rco-start-game ()
-  (generate-rco-task-list)
+  (if (-> *rco-settings* use-random-seed?)
+    (set! (-> *rco-settings* current-seed) (knuth-rand-next-int))
+    )
+  (generate-rco-task-list (-> *rco-settings* current-seed))
+  (update-rco-task-strings)
   (none)
   )
 
@@ -171,14 +215,15 @@
   (when 
     (and 
       (= *master-mode* 'game)
+      (not (paused?))
       (not (or (movie?) (< (-> *display* base-frame-counter) (-> *game-info* letterbox-time)))) 
-    )
-    (let ((str-x (the int (* 0.01 512)))
-          (str-y (the int 60)))
-      (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug))
-        (draw-string-xy (string-format "~S ~%~S" *rco-task-level* *rco-task-name*)
-          buf str-x str-y (font-color white) (font-flags shadow kerning large left))
-        )
+      )
+    (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug-no-zbuf))
+      (draw-string-xy-scaled 
+        (string-format "~S ~%~S" 
+          (lookup-text! *common-text* (-> *rco-info* task-level) #f)
+          (lookup-text! *common-text* (-> *rco-info* task-name) #f))
+        buf 256 180 (font-color flat-yellow) (font-flags shadow kerning large middle) 0.75)
       )
     )
   (none)
