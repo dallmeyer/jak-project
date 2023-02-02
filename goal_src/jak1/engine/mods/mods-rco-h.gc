@@ -118,8 +118,8 @@
   )))
 
 (define *cell-level-list* (the-as (array game-text-id) (new 'static 'boxed-array :type game-text-id :length 116 :allocated-length 116
+  (game-text-id zero) ;; 0
   (game-text-id zero)
-  (game-text-id zero)
   (game-text-id jungle-level-name)
   (game-text-id jungle-level-name)
   (game-text-id jungle-level-name)
@@ -128,17 +128,17 @@
   (game-text-id jungle-level-name)
   (game-text-id jungle-level-name)
   (game-text-id jungle-level-name)
+  (game-text-id village1-level-name)  ;; 10
   (game-text-id village1-level-name)
   (game-text-id village1-level-name)
   (game-text-id village1-level-name)
   (game-text-id village1-level-name)
-  (game-text-id village1-level-name)
   (game-text-id beach-level-name)
   (game-text-id beach-level-name)
   (game-text-id beach-level-name)
   (game-text-id beach-level-name)
   (game-text-id beach-level-name)
-  (game-text-id beach-level-name)
+  (game-text-id beach-level-name) ;; 20
   (game-text-id beach-level-name)
   (game-text-id beach-level-name)
   (game-text-id misty-level-name)
@@ -148,7 +148,7 @@
   (game-text-id misty-level-name)
   (game-text-id misty-level-name)
   (game-text-id misty-level-name)
-  (game-text-id misty-level-name)
+  (game-text-id misty-level-name) ;; 30
   (game-text-id village2-level-name)
   (game-text-id village2-level-name)
   (game-text-id village2-level-name)
@@ -158,17 +158,17 @@
   (game-text-id swamp-level-name)
   (game-text-id swamp-level-name)
   (game-text-id swamp-level-name)
+  (game-text-id swamp-level-name) ;; 40
   (game-text-id swamp-level-name)
   (game-text-id swamp-level-name)
   (game-text-id swamp-level-name)
-  (game-text-id swamp-level-name)
   (game-text-id sunken-level-name)
   (game-text-id sunken-level-name)
   (game-text-id sunken-level-name)
   (game-text-id sunken-level-name)
   (game-text-id sunken-level-name)
   (game-text-id sunken-level-name)
-  (game-text-id sunken-level-name)
+  (game-text-id sunken-level-name)  ;; 50
   (game-text-id sunken-level-name)
   (game-text-id rolling-level-name)
   (game-text-id rolling-level-name)
@@ -178,7 +178,7 @@
   (game-text-id rolling-level-name)
   (game-text-id rolling-level-name)
   (game-text-id rolling-level-name)
-  (game-text-id snow-level-name)
+  (game-text-id snow-level-name)  ;; 60
   (game-text-id snow-level-name)
   (game-text-id snow-level-name)
   (game-text-id snow-level-name)
@@ -188,7 +188,7 @@
   (game-text-id snow-level-name)
   (game-text-id firecanyon-level-name)
   (game-text-id firecanyon-level-name)
-  (game-text-id citadel-level-name)
+  (game-text-id citadel-level-name) ;; 70
   (game-text-id citadel-level-name)
   (game-text-id citadel-level-name)
   (game-text-id citadel-level-name)
@@ -198,7 +198,7 @@
   (game-text-id village3-level-name)
   (game-text-id cave-level-name)
   (game-text-id cave-level-name)
-  (game-text-id cave-level-name)
+  (game-text-id cave-level-name)  ;; 80
   (game-text-id cave-level-name)
   (game-text-id cave-level-name)
   (game-text-id cave-level-name)
@@ -208,7 +208,7 @@
   (game-text-id ogre-level-name)
   (game-text-id ogre-level-name)
   (game-text-id lavatube-level-name)
-  (game-text-id lavatube-level-name)
+  (game-text-id lavatube-level-name)  ;; 90
   (game-text-id citadel-level-name)
   (game-text-id training-level-name)
   (game-text-id training-level-name)
@@ -218,8 +218,8 @@
   (game-text-id village3-level-name)
   (game-text-id village3-level-name)
   (game-text-id village3-level-name)
+  (game-text-id village3-level-name)  ;; 100
   (game-text-id village3-level-name)
-  (game-text-id village3-level-name)
   (game-text-id zero)
   (game-text-id zero)
   (game-text-id zero)
@@ -228,7 +228,7 @@
   (game-text-id zero)
   (game-text-id zero)
   (game-text-id zero)
-  (game-text-id ogre-level-name)
+  (game-text-id ogre-level-name)  ;; 110
   (game-text-id zero)
   (game-text-id zero)
   (game-text-id zero)
@@ -237,6 +237,8 @@
   )))
 
 (define *cell-name-list* (the-as (array game-text-id) (new 'static 'boxed-array :type game-text-id :length 116 :allocated-length 116
+  (game-text-id zero)  ;; 0
+  (game-text-id zero)
   (game-text-id jungle-eggtop)
   (game-text-id jungle-lurkerm-connect)
   (game-text-id jungle-tower)
@@ -245,7 +247,7 @@
   (game-text-id beach-buzzer)
   (game-text-id jungle-canyon-end)
   (game-text-id jungle-temple-door)
-  (game-text-id village1-yakow-herd)
+  (game-text-id village1-yakow-herd) ;; 10
   (game-text-id village1-mayor-money)
   (game-text-id village1-uncle-money)
   (game-text-id village1-oracle)
@@ -255,7 +257,7 @@
   (game-text-id beach-flutflut-push)
   (game-text-id beach-seagull)
   (game-text-id beach-cannon)
-  (game-text-id beach-buzzer)
+  (game-text-id beach-buzzer) ;; 20
   (game-text-id beach-gimmie)
   (game-text-id beach-sentinel)
   (game-text-id misty-muse-return)
@@ -265,7 +267,7 @@
   (game-text-id misty-balloon-lurkers)
   (game-text-id beach-buzzer)
   (game-text-id misty-bike-jump)
-  (game-text-id misty-eco-challenge)
+  (game-text-id misty-eco-challenge) ;; 30
   (game-text-id village2-gambler-money)
   (game-text-id village2-geologist-money)
   (game-text-id village2-warrior-money)
@@ -275,7 +277,7 @@
   (game-text-id swamp-flutflut)
   (game-text-id swamp-battle)
   (game-text-id swamp-1st-tether)
-  (game-text-id swamp-2nd-tether)
+  (game-text-id swamp-2nd-tether) ;; 40
   (game-text-id swamp-3rd-tether)
   (game-text-id swamp-4th-tether)
   (game-text-id generic-buzzer)
@@ -285,7 +287,7 @@
   (game-text-id sunken-elevator-raise)
   (game-text-id sunken-pool)
   (game-text-id generic-buzzer)
-  (game-text-id sunken-climb-tube)
+  (game-text-id sunken-climb-tube) ;; 50
   (game-text-id sunken-spinning-room)
   (game-text-id rolling-race)
   (game-text-id rolling-robbers)
@@ -295,7 +297,7 @@
   (game-text-id generic-buzzer)
   (game-text-id rolling-ring-chase-1)
   (game-text-id rolling-ring-chase-2)
-  (game-text-id snow-eggtop)
+  (game-text-id snow-eggtop)  ;; 60
   (game-text-id snow-ram-3-left)
   (game-text-id snow-fort)
   (game-text-id snow-ball)
@@ -305,7 +307,7 @@
   (game-text-id snow-cage)
   (game-text-id firecanyon-buzzer)
   (game-text-id firecanyon-end)
-  (game-text-id citadel-sage-green)
+  (game-text-id citadel-sage-green) ;; 70
   (game-text-id citadel-sage-blue)
   (game-text-id citadel-sage-red)
   (game-text-id citadel-sage-yellow)
@@ -315,7 +317,7 @@
   (game-text-id village3-buzzer)
   (game-text-id cave-gnawers)
   (game-text-id cave-dark-crystals)
-  (game-text-id cave-dark-climb)
+  (game-text-id cave-dark-climb) ;; 80
   (game-text-id cave-robot-climb)
   (game-text-id cave-swing-poles)
   (game-text-id cave-spider-tunnel)
@@ -325,7 +327,7 @@
   (game-text-id ogre-end)
   (game-text-id ogre-buzzer)
   (game-text-id lavatube-end)
-  (game-text-id lavatube-buzzer)
+  (game-text-id lavatube-buzzer)  ;; 90
   (game-text-id citadel-buzzer)
   (game-text-id training-gimmie-task-name)
   (game-text-id training-door-task-name)
@@ -335,8 +337,8 @@
   (game-text-id village3-miner-money)
   (game-text-id village3-miner-money)
   (game-text-id village3-miner-money)
+  (game-text-id village3-oracle-money) ;; 100
   (game-text-id village3-oracle-money)
-  (game-text-id village3-oracle-money)
   (game-text-id zero)
   (game-text-id zero)
   (game-text-id zero)
@@ -345,7 +347,7 @@
   (game-text-id zero)
   (game-text-id zero)
   (game-text-id zero)
-  (game-text-id hidden-power-cell)
+  (game-text-id hidden-power-cell) ;; 110
   (game-text-id zero)
   (game-text-id zero)
   (game-text-id zero)

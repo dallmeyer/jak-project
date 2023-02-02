@@ -266,7 +266,7 @@
        (set! (-> obj level-opened v1-53) (the-as uint 0))
        (nop!)
        )
-      ;; (rco-start-game)
+      (rco-start-game)
      )
     )
   (case cause

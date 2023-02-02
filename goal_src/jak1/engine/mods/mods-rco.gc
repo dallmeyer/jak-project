@@ -6,12 +6,7 @@
 ;; dgos: GAME, ENGINE
 
 (define *rco-info* (new 'global 'rco-info))
-
-(defun generate-rco-task-list ((seed uint))
-  ;; set the seed which will be used for generating checkpoint list
-  (knuth-rand-init (the int64 seed))
-  
-  (let ((used (new 'static 'array symbol 116  ;; (game-task max)
+(define *tasks-used* (new 'static 'array symbol 116  ;; (game-task max)
                 #f #f #f #f #f #f #f #f #f #f
                 #f #f #f #f #f #f #f #f #f #f
                 #f #f #f #f #f #f #f #f #f #f
@@ -24,32 +19,40 @@
                 #f #f #f #f #f #f #f #f #f #f
                 #f #f #f #f #f #f #f #f #f #f
                 #f #f #f #f #f #f))
-        (idx 0)
+
+(defun generate-rco-task-list ((seed uint))
+  ;; set the seed which will be used for generating checkpoint list
+  (knuth-rand-init (the int64 seed))
+  
+  (dotimes (i 116)
+    (set! (-> *tasks-used* i) #f)
+    )
+  (let ((idx 0)
         (after-ogre-end-count 0)
         (seen-fj-cell? #f)
         (seen-basin-cell? #f))
     (while (< idx 101)
       (let* ((rand-idx (knuth-rand-int-range 0 101))
              (game-task-idx (-> *cell-list* rand-idx)))
-        (when (not (-> used (the-as int game-task-idx)))
+        (when (not (-> *tasks-used* (the-as int game-task-idx)))
           ;; we haven't used this game-task-idx yet...
           (cond
-            ((and (not (and (-> used (game-task training-gimmie)) (-> used (game-task training-door)) (-> used (game-task training-climb)) (-> used (game-task training-buzzer))))
+            ((and (not (and (-> *tasks-used* (game-task training-gimmie)) (-> *tasks-used* (game-task training-door)) (-> *tasks-used* (game-task training-climb)) (-> *tasks-used* (game-task training-buzzer))))
                   (> rand-idx 3)  ;; anything after training-buzzer
                   )
               ;; require geyser before non-geyser
               )
-            ((or (and (not (-> used (game-task village1-oracle-money1))) (= game-task-idx (game-task village1-oracle-money2)))
-                 (and (not (-> used (game-task village2-oracle-money1))) (= game-task-idx (game-task village2-oracle-money2)))
-                 (and (not (-> used (game-task village3-oracle-money1))) (= game-task-idx (game-task village3-oracle-money2)))
-                 (and (not (-> used (game-task village3-miner-money1))) (= game-task-idx (game-task village3-miner-money2)))
-                 (and (not (-> used (game-task village3-miner-money2))) (= game-task-idx (game-task village3-miner-money3)))
-                 (and (not (-> used (game-task village3-miner-money3))) (= game-task-idx (game-task village3-miner-money4)))
+            ((or (and (not (-> *tasks-used* (game-task village1-oracle-money1))) (= game-task-idx (game-task village1-oracle-money2)))
+                 (and (not (-> *tasks-used* (game-task village2-oracle-money1))) (= game-task-idx (game-task village2-oracle-money2)))
+                 (and (not (-> *tasks-used* (game-task village3-oracle-money1))) (= game-task-idx (game-task village3-oracle-money2)))
+                 (and (not (-> *tasks-used* (game-task village3-miner-money1))) (= game-task-idx (game-task village3-miner-money2)))
+                 (and (not (-> *tasks-used* (game-task village3-miner-money2))) (= game-task-idx (game-task village3-miner-money3)))
+                 (and (not (-> *tasks-used* (game-task village3-miner-money3))) (= game-task-idx (game-task village3-miner-money4)))
                  )
               ;; require oracle/gambler cells in order
               )
             ((and (-> *rco-settings* misty?)
-                  (not (-> used (game-task jungle-fishgame)))
+                  (not (-> *tasks-used* (game-task jungle-fishgame)))
                   (or (= game-task-idx (game-task misty-muse)) (= game-task-idx (game-task misty-boat)) (= game-task-idx (game-task misty-cannon)) (= game-task-idx (game-task misty-warehouse))
                       (= game-task-idx (game-task misty-bike)) (= game-task-idx (game-task misty-bike-jump)) (= game-task-idx (game-task misty-eco-challenge)) (= game-task-idx (game-task misty-buzzer))
                       )
@@ -57,7 +60,7 @@
               ;; require FJ fish before misty
               )
             ((and (-> *rco-settings* snowy?)
-                  (not (and (-> used (game-task firecanyon-end)) (-> used (game-task ogre-end)) (>= after-ogre-end-count 2)))
+                  (not (and (-> *tasks-used* (game-task firecanyon-end)) (-> *tasks-used* (game-task ogre-end)) (>= after-ogre-end-count 2)))
                   (or (= game-task-idx (game-task snow-eggtop)) (= game-task-idx (game-task snow-ram)) (= game-task-idx (game-task snow-bumpers)) (= game-task-idx (game-task snow-cage)) 
                       (= game-task-idx (game-task snow-fort)) (= game-task-idx (game-task snow-ball)) (= game-task-idx (game-task snow-bunnies)) (= game-task-idx (game-task snow-buzzer))
                       )
@@ -65,7 +68,7 @@
               ;; require end of FC, end of MP, and any other 2 cells before snowy
               )
             ((and (-> *rco-settings* blue-rings?)
-                  (not (-> used (game-task rolling-ring-chase-1)))
+                  (not (-> *tasks-used* (game-task rolling-ring-chase-1)))
                   (= game-task-idx (game-task rolling-ring-chase-2))
                   )
               ;; require purple rings before blue rings
@@ -77,18 +80,18 @@
               ;; require 20 cells for either FC cell
               )
             ((and (-> *rco-settings* no-fcs?)
-                  (not (-> used (game-task firecanyon-end)))
+                  (not (-> *tasks-used* (game-task firecanyon-end)))
                   (> rand-idx 35)  ;; anything after firecanyon-buzzer
                   )
               ;; require end of FC for anything after FC
               )
-            ((and (not (-> used (game-task ogre-end)))
+            ((and (not (-> *tasks-used* (game-task ogre-end)))
                   (> rand-idx 69) ;; anything after ogre-buzzer
                   )
               ;; require end of MP for anything after MP
               )
             ((and (-> *rco-settings* no-tree-hops?)
-                  (not (-> used (game-task ogre-end)))
+                  (not (-> *tasks-used* (game-task ogre-end)))
                   (= game-task-idx (game-task ogre-secret))
                   )
               ;; require end of MP before MP secret cell
@@ -100,64 +103,64 @@
               ;; require 72 cells for lavatube and beyond
               )
             ((and (-> *rco-settings* nms-citadel?)
-                  (not (and (-> used (game-task citadel-sage-blue)) (-> used (game-task citadel-sage-red)) (-> used (game-task citadel-sage-yellow))))
+                  (not (and (-> *tasks-used* (game-task citadel-sage-blue)) (-> *tasks-used* (game-task citadel-sage-red)) (-> *tasks-used* (game-task citadel-sage-yellow))))
                   (= game-task-idx (game-task citadel-sage-green))
                   )
               ;; require blue+red+yellow sage before green sage
               )
             ((and (-> *rco-settings* no-citadel-hops?)
-                  (not (-> used (game-task lavatube-end)))
+                  (not (-> *tasks-used* (game-task lavatube-end)))
                   (> rand-idx 95) ;; anything after lavatube-buzzer
                   )
               ;; require end of LT before citadel
               )
             ((and (-> *rco-settings* fj-no-early-temple?)
-                  (not (-> used (game-task jungle-tower)))
+                  (not (-> *tasks-used* (game-task jungle-tower)))
                   (or (= game-task-idx (game-task jungle-plant)) (= game-task-idx (game-task jungle-eggtop)))
                   )
               ;; FJ - require top of tower before plant boss and blue switch
               )
             ((and (-> *rco-settings* fj-no-early-plant-boss?)
-                  (not (-> used (game-task jungle-eggtop)))
+                  (not (-> *tasks-used* (game-task jungle-eggtop)))
                   (= game-task-idx (game-task jungle-plant))
                   )
               ;; FJ - require blue switch before plant boss
               )
             ((and (-> *rco-settings* snowy-no-gate-skip?)
-                  (not (-> used (game-task snow-cage)))
+                  (not (-> *tasks-used* (game-task snow-cage)))
                   (or (= game-task-idx (game-task snow-buzzer)) (= game-task-idx (game-task snow-fort)))
                   )
               ;; snowy - require fortress gate cell before flies and fortress cell 
               )
             ((and (-> *rco-settings* snowy-no-double-gate-skip?)
-                  (not (-> used (game-task snow-cage)))
-                  (or (-> used (game-task snow-buzzer)) (-> used (game-task snow-fort)))
+                  (not (-> *tasks-used* (game-task snow-cage)))
+                  (or (-> *tasks-used* (game-task snow-buzzer)) (-> *tasks-used* (game-task snow-fort)))
                   (or (= game-task-idx (game-task snow-buzzer)) (= game-task-idx (game-task snow-fort)))
                   )
               ;; snowy - require fortress gate cell and neither flies nor fortress cell for flies and fortress cell
               )
             ((and (-> *rco-settings* snowy-no-fortress-without-flut?)
-                  (not (-> used (game-task beach-flutflut)))
+                  (not (-> *tasks-used* (game-task beach-flutflut)))
                   (or (= game-task-idx (game-task snow-buzzer)) (= game-task-idx (game-task snow-fort)))
                   )
               ;; snowy - require flutflut before flies and fortress cell 
               )
             ((and (-> *rco-settings* prevent-mayor-orb-softlock?)
-                  (not (-> used (game-task jungle-lurkerm)))
+                  (not (-> *tasks-used* (game-task jungle-lurkerm)))
                   seen-fj-cell?
                   (= game-task-idx (game-task village1-mayor-money))
                   )
               ;; require mirrors before mayor orbs if we've encountered any FJ cells 
               )
             ((and (-> *rco-settings* prevent-geologist-orb-softlock?)
-                  (not (-> used (game-task rolling-moles)))
+                  (not (-> *tasks-used* (game-task rolling-moles)))
                   seen-basin-cell?
                   (= game-task-idx (game-task village2-geologist-money))
                   )
               ;; require moles before geologist orbs if we've encountered any Basin cells 
               )
             ((and (-> *rco-settings* prevent-geologist-orb-softlock?)
-                  (not (-> used (game-task rolling-race)))
+                  (not (-> *tasks-used* (game-task rolling-race)))
                   seen-basin-cell?
                   (= game-task-idx (game-task village2-gambler-money))
                   )
@@ -165,10 +168,10 @@
               )
             (else
               ;; OK to use this game-task-idx!
-              (format 0 "RCO - idx ~D rand-idx ~D game-task-idx ~D using ~S.. " idx rand-idx game-task-idx (game-task->string game-task-idx))
+              (format 0 "RCO - idx ~D rand-idx ~D game-task-idx ~D using ~S ~%" idx rand-idx game-task-idx (game-task->string game-task-idx))
 
               ;; track some things
-              (when (-> used (game-task ogre-end))
+              (when (-> *tasks-used* (game-task ogre-end))
                 (+! after-ogre-end-count 1)
                 )
               (when (or (= game-task-idx (game-task jungle-lurkerm)) (= game-task-idx (game-task jungle-tower)) (= game-task-idx (game-task jungle-eggtop)) (= game-task-idx (game-task jungle-plant)) 
@@ -183,12 +186,11 @@
                 )
 
               ;; update used, add task to list, increment counter
-              (set! (-> used game-task-idx) #t)
+              (set! (-> *tasks-used* game-task-idx) #t)
               (set! (-> *rco-info* task-list idx) game-task-idx)
               (+! idx 1)
               )
             )
-          (format 0 "~%")
           )
         ) 
       )
@@ -196,7 +198,12 @@
   (none)
   )
 
-(defun update-rco-task-strings ()
+(defun rco-correct-task? ((tsk game-task))
+  (= tsk (-> *rco-info* task-list (-> *rco-info* task-list-idx)))
+  )
+
+(defun update-rco-task-strings ((increment? symbol))
+  (if increment? (+! (-> *rco-info* task-list-idx) 1))
   (set! (-> *rco-info* task-level) (-> *cell-level-list* (the-as int (-> *rco-info* task-list (-> *rco-info* task-list-idx)))))
   (set! (-> *rco-info* task-name) (-> *cell-name-list* (the-as int (-> *rco-info* task-list (-> *rco-info* task-list-idx)))))
   (none)
@@ -207,7 +214,8 @@
     (set! (-> *rco-settings* current-seed) (knuth-rand-next-int))
     )
   (generate-rco-task-list (-> *rco-settings* current-seed))
-  (update-rco-task-strings)
+  (set! (-> *rco-info* task-list-idx) 0)
+  (update-rco-task-strings #f)
   (none)
   )
 
