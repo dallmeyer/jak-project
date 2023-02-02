@@ -224,7 +224,7 @@
     (and 
       (= *master-mode* 'game)
       (not (paused?))
-      (not (or (movie?) (< (-> *display* base-frame-counter) (-> *game-info* letterbox-time)))) 
+      (not (movie?)) 
       )
     (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug-no-zbuf))
       (draw-string-xy-scaled 

@@ -266,7 +266,6 @@
        (set! (-> obj level-opened v1-53) (the-as uint 0))
        (nop!)
        )
-      (rco-start-game)
      )
     )
   (case cause
@@ -308,6 +307,8 @@
        (set! (-> *setting-control* default border-mode) #f)
        (set! *spawn-actors* #f)
        (set-blackout-frames (seconds 0.1))
+       
+       (rco-start-game)
 
        ;; send target a 'reset message.
        (send-event *target* 'reset)
@@ -929,7 +930,7 @@
   (none)
   )
 
-(defun-debug game-task->string ((arg0 game-task))
+(defun game-task->string ((arg0 game-task))
   (enum->string game-task arg0)
   )
 
