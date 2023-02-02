@@ -363,6 +363,21 @@ struct DrawableInlineArrayTransTFrag : public DrawableInlineArrayTFrag {
   std::string my_type() const override { return "drawable-inline-array-trans-tfrag"; }
 };
 
+struct DrawableInlineArrayTFragTrans : public DrawableInlineArrayTFrag {
+  std::string my_type() const override { return "drawable-inline-array-tfrag-trans"; }
+};
+
+struct DrawableInlineArrayTFragWater : public DrawableInlineArrayTFrag {
+  std::string my_type() const override { return "drawable-inline-array-tfrag-water"; }
+};
+
+struct DrawableTreeTfragTrans : public DrawableTreeTfrag {
+  std::string my_type() const override { return "drawable-tree-tfrag-trans"; }
+};
+
+struct DrawableTreeTfragWater : public DrawableTreeTfrag {
+  std::string my_type() const override { return "drawable-tree-tfrag-water"; }
+};
 /////////////////////
 // TIE
 /////////////////////
@@ -436,6 +451,7 @@ struct PrototypeTie : public DrawableInlineArray {
 // a prototype bucket is a collection of 4 different prototypes (called geometries), one for each
 // level of detail. All geometries share the same time of day palette.
 // the bucket also refers to the fact that it collect instances during actual rendering.
+// Note: collision extraction is only supported in jak 1.
 struct PrototypeBucketTie {
   std::string name;  // 4 - 8
   u32 flags;         // 8 - 12

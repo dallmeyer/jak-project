@@ -221,19 +221,19 @@ void do_wind_math(u16 wind_idx,
   // vmula.xyzw acc, vf16, vf1       # acc = vf16
   // vmsubax.xyzw acc, vf18, vf19    # acc = vf16 - vf18 * wind_const.x
   // vmsuby.xyzw vf16, vf17, vf19
-  //# vf16 -= (vf18 * wind_const.x) + (vf17 * wind_const.y)
+  // # vf16 -= (vf18 * wind_const.x) + (vf17 * wind_const.y)
   vf16.x() -= cx * vf18_x + cy * vf17_x;
   vf16.z() -= cx * vf18_z + cy * vf17_z;
 
   // vmulaz.xyzw acc, vf16, vf19     # acc = vf16 * wind_const.z
   // vmadd.xyzw vf18, vf1, vf18
-  //# vf18 += vf16 * wind_const.z
+  // # vf18 += vf16 * wind_const.z
   math::Vector4f vf18(vf18_x, 0.f, vf18_z, 0.f);
   vf18 += vf16 * cz;
 
   // vmulaz.xyzw acc, vf18, vf19    # acc = vf18 * wind_const.z
   // vmadd.xyzw vf17, vf17, vf1
-  //# vf17 += vf18 * wind_const.z
+  // # vf17 += vf18 * wind_const.z
   math::Vector4f vf17(vf17_x, 0.f, vf17_z, 0.f);
   vf17 += vf18 * cz;
 
@@ -383,17 +383,7 @@ void Tie3::render(DmaFollower& dma, SharedRenderState* render_state, ScopedProfi
 
   for (int i = 0; i < 4; i++) {
     settings.planes[i] = m_pc_port_data.planes[i];
-  }
-
-  if (false) {
-    //    for (int i = 0; i < 8; i++) {
-    //      settings.time_of_day_weights[i] = m_time_of_days[i];
-    //    }
-  } else {
-    for (int i = 0; i < 8; i++) {
-      settings.time_of_day_weights[i] =
-          2 * (0xff & m_pc_port_data.itimes[i / 2].data()[2 * (i % 2)]) / 127.f;
-    }
+    settings.itimes[i] = m_pc_port_data.itimes[i];
   }
 
   if (!m_override_level) {
@@ -552,9 +542,9 @@ void Tie3::render_tree(int idx,
 
   Timer interp_timer;
   if (m_use_fast_time_of_day) {
-    interp_time_of_day_fast(settings.time_of_day_weights, tree.tod_cache, m_color_result.data());
+    interp_time_of_day_fast(settings.itimes, tree.tod_cache, m_color_result.data());
   } else {
-    interp_time_of_day_slow(settings.time_of_day_weights, *tree.colors, m_color_result.data());
+    interp_time_of_day_slow(settings.itimes, *tree.colors, m_color_result.data());
   }
   tree.perf.tod_time.add(interp_timer.getSeconds());
 

@@ -7,6 +7,7 @@
 #include "common/log/log.h"
 #include "common/util/FileUtil.h"
 #include "common/util/json_util.h"
+#include "common/util/string_util.h"
 #include "common/util/unicode_util.h"
 
 #include "decompiler/util/DecompilerTypeSystem.h"
@@ -21,15 +22,22 @@ int main(int argc, char** argv) {
   fs::path output_path;
   std::string game_name = "jak1";
   std::string parent_type = "";
-  int type_size = -1;
+  int method_id_min = -1;
+  std::string type_size = "";
   std::string field_json = "";
+  bool get_all = false;
 
   lg::initialize();
 
   CLI::App app{"OpenGOAL Type Searcher"};
   app.add_option("--output-path", output_path, "Where to output the search results file");
+  app.add_flag("-a,--all", get_all, "Just retrieve all possible type names");
   app.add_option("-g,--game", game_name, "Specify the game name, defaults to 'jak1'");
-  app.add_option("-s,--size", type_size, "The size of the type we are searching for");
+  app.add_option(
+      "-s,--size", type_size,
+      "The size of the type we are searching for, this can be a range (max-min), assumes decimal");
+  app.add_option("-m,--method_id", method_id_min,
+                 "Require the provided method id to be supported by the type");
   app.add_option("-p,--parent", parent_type, "The type of which it is an descendent of");
   app.add_option("-f,--fields", field_json,
                  "JSON encoded string specifying which field types and their offsets are required "
@@ -58,16 +66,45 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  std::vector<std::string> potential_types = {};
+  auto results = nlohmann::json::array({});
+
+  if (get_all) {
+    auto type_names = dts.ts.get_all_type_names();
+    for (const auto& name : type_names) {
+      fmt::print("{}\n", name);
+      results.push_back(name);
+    }
+
+    // Output the results as a json list
+    file_util::write_text_file(output_path.string(), results.dump());
+    return 0;
+  }
+
+  std::optional<std::vector<std::string>> potential_types = {};
 
   // First filter by parent type is available
   if (!parent_type.empty()) {
     potential_types = dts.ts.search_types_by_parent_type(parent_type);
   }
 
+  // Filter by method count
+  if (method_id_min != -1) {
+    potential_types = dts.ts.search_types_by_minimum_method_id(method_id_min, potential_types);
+  }
+
   // Filter out types by size next
-  if (type_size != -1) {
-    potential_types = dts.ts.search_types_by_size(type_size, potential_types);
+  if (!type_size.empty()) {
+    // Check if a range was given
+    int min_size = 0;
+    std::optional<int> max_size = {};
+    if (str_util::contains(type_size, "-")) {
+      auto tokens = str_util::split(type_size, '-');
+      min_size = std::stoi(tokens[0]);
+      max_size = std::stoi(tokens[1]);
+    } else {
+      min_size = std::stoi(type_size);
+    }
+    potential_types = dts.ts.search_types_by_size(min_size, max_size, potential_types);
   }
 
   // Filter out by fields
@@ -89,10 +126,13 @@ int main(int argc, char** argv) {
     potential_types = dts.ts.search_types_by_fields(search_fields, potential_types);
   }
 
-  auto results = nlohmann::json::array({});
-  for (const auto& val : potential_types) {
-    fmt::print("{}\n", val);
-    results.push_back(val);
+  if (potential_types) {
+    for (const auto& val : potential_types.value()) {
+      fmt::print("{}\n", val);
+      results.push_back(val);
+    }
+  } else {
+    fmt::print("Found Nothing!\n");
   }
 
   // Output the results as a json list

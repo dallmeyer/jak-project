@@ -30,6 +30,7 @@
   ("dma-bucket.o" "dma-bucket")
   ("dma-disasm.o" "dma-disasm")
   ("pad.o" "pad")
+  ("pckernel-h.o" "pckernel-h") ;; added
   ("gs.o" "gs")
   ("display-h.o" "display-h")
   ("geometry.o" "geometry")
@@ -289,6 +290,7 @@
   ("collide-reaction-target.o" "collide-reaction-target")
   ("logic-target.o" "logic-target")
   ("sidekick.o" "sidekick")
+  ("effect-control.o" "effect-control")
   ("voicebox.o" "voicebox")
   ("collectables-part.o" "collectables-part")
   ("debug-part.o" "debug-part")
@@ -323,6 +325,7 @@
   ("prototype.o" "prototype")
   ("main-collide.o" "main-collide")
   ("video.o" "video")
+  ("pckernel.o" "pckernel") ;; added
   ("main.o" "main")
   ("collide-cache.o" "collide-cache")
   ("collide-debug.o" "collide-debug")

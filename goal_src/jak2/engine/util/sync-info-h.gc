@@ -12,8 +12,9 @@
   )
 
 ;; DECOMP BEGINS
+
 (deftype sync-info-params (structure)
-  ((sync-type  basic       :offset-assert   0)
+  ((sync-type  symbol      :offset-assert   0)
    (sync-flags sync-flags  :offset-assert   8)
    (entity     basic       :offset-assert  16)
    (period     uint32      :offset-assert  20)
@@ -27,6 +28,7 @@
   :size-assert         #x2c
   :flag-assert         #x90000002c
   )
+
 
 (deftype sync-info (structure)
   ((sync-flags sync-flags  :offset-assert   0)
@@ -47,12 +49,15 @@
     )
   )
 
+
 (deftype sync-linear (sync-info)
   ()
+  :pack-me
   :method-count-assert 16
   :size-assert         #x10
   :flag-assert         #x1000000010
   )
+
 
 (deftype sync-eased (sync-info)
   ((tlo       float  :offset-assert  16)
@@ -63,10 +68,12 @@
    (pause-in  float  :offset-assert  36)
    (pause-out float  :offset-assert  40)
    )
+  :pack-me
   :method-count-assert 16
   :size-assert         #x2c
   :flag-assert         #x100000002c
   )
+
 
 (deftype sync-paused (sync-info)
   ((pause-in  float  :offset-assert  16)
@@ -77,6 +84,7 @@
   :flag-assert         #x1000000018
   )
 
+
 (deftype delayed-rand-float (structure)
   ((min-time   int32       :offset-assert   0)
    (max-time   int32       :offset-assert   4)
@@ -85,6 +93,7 @@
    (start-time time-frame  :offset-assert  16)
    (value      float       :offset-assert  24)
    )
+  :pack-me
   :method-count-assert 13
   :size-assert         #x1c
   :flag-assert         #xd0000001c
@@ -96,6 +105,7 @@
     )
   )
 
+
 (deftype oscillating-float (structure)
   ((value   float  :offset-assert   0)
    (target  float  :offset-assert   4)
@@ -104,6 +114,7 @@
    (damping float  :offset-assert  16)
    (accel   float  :offset-assert  20)
    )
+  :allow-misaligned
   :method-count-assert 11
   :size-assert         #x18
   :flag-assert         #xb00000018
@@ -113,6 +124,7 @@
     )
   )
 
+
 (deftype bouncing-float (structure)
   ((osc        oscillating-float :inline :offset-assert   0)
    (max-value  float                     :offset-assert  24)
@@ -120,6 +132,7 @@
    (elasticity float                     :offset-assert  32)
    (state      int32                     :offset-assert  36)
    )
+  :allow-misaligned
   :method-count-assert 13
   :size-assert         #x28
   :flag-assert         #xd00000028
@@ -130,6 +143,7 @@
     (at-max? (_type_) symbol 12)
     )
   )
+
 
 (deftype delayed-rand-vector (structure)
   ((min-time   int32              :offset-assert   0)
@@ -150,6 +164,7 @@
     (update-with-delay-or-reset! (_type_) vector 12)
     )
   )
+
 
 (deftype oscillating-vector (structure)
   ((value   vector :inline :offset-assert   0)

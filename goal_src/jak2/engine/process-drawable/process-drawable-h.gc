@@ -20,6 +20,21 @@
 (define-extern ja-min? (function int symbol :behavior process-drawable))
 (define-extern ja-max? (function int symbol :behavior process-drawable))
 
+;; NOTE - for basebutton
+(define-extern rider-trans (function none :behavior process-drawable))
+;; NOTE - for base-plat
+(define-extern rider-post (function none :behavior process-drawable))
+;; NOTE - for fma-sphere
+(define-extern sleep-code (function symbol :behavior process-drawable))
+
+(define-extern ja-post (function none :behavior process-drawable))
+
+(declare-type debug-vertex-stats basic)
+(define-extern *debug-vertex-stats* debug-vertex-stats)
+
+;; TODO - this shouldn't really be needed...but recursive call fails otherwise
+(define-extern cspace-inspect-tree (function process-drawable cspace int int object process-drawable))
+
 ;; DECOMP BEGINS
 
 (defun cspace-by-name-no-fail ((arg0 process-drawable) (arg1 string))
@@ -258,6 +273,7 @@
    - (chan channel) = copy frame from another channel.
    - min = the start of the animation.
    - max = the end of the animation.
+   - zero = frame zero.
    "
 
   (let* ((num-args (if (pair? num!) (cdr num!) '()))
@@ -266,7 +282,7 @@
               ((or (eq? num! 'identity)
                    (eq? num! 'min)
                    (eq? num! 'max)
-                   )
+                   (eq? num! 'zero))
                    'num-func-identity)
               ((eq? num! 'none) 'num-func-none)
               ((eq? num! '+!) 'num-func-+!)
@@ -298,11 +314,13 @@
                 (cond
                   ((eq? num! 'seek!) (if (or (null? num-args) (null? (cdr num-args))) 1.0 (cadr num-args)))
                   )))
-        (frame-num (if (eq? 'max frame-num) (if group!
+        (frame-num (cond
+                      ((eq? 'max frame-num) (if group!
                                                 `(the float (1- (-> (the art-joint-anim ,group!) frames num-frames)))
                                                 `(the float (1- (-> ja-ch frame-group frames num-frames)))
-                                                )
-                                            frame-num))
+                                                ))
+                      ((eq? 'zero frame-num) 0)
+                      (#t frame-num)))
         (frame-group (if (or p0 p1 frame-num (not nf)) group! #f))
       )
   `(let ((ja-ch (-> self skel root-channel ,chan)))

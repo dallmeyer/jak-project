@@ -781,6 +781,18 @@ std::unique_ptr<DrawableInlineArray> make_drawable_inline_array(
     return result;
   }
 
+  if (ref.type->get_name() == "drawable-inline-array-tfrag-trans") {
+    auto result = std::make_unique<DrawableInlineArrayTFragTrans>();
+    result->read_from_file(ref, dts, stats, version);
+    return result;
+  }
+
+  if (ref.type->get_name() == "drawable-inline-array-tfrag-water") {
+    auto result = std::make_unique<DrawableInlineArrayTFragWater>();
+    result->read_from_file(ref, dts, stats, version);
+    return result;
+  }
+
   if (ref.type->get_name() == "drawable-inline-array-instance-tie") {
     auto result = std::make_unique<DrawableInlineArrayInstanceTie>();
     result->read_from_file(ref, dts, stats, version);
@@ -921,7 +933,6 @@ void PrototypeBucketTie::read_from_file(TypedRef ref,
       break;
     case GameVersion::Jak2:
       flags = read_plain_data_field<u16>(ref, "flags", dts);
-      lg::print("flag: {}\n", flags);
       break;
     default:
       ASSERT(false);
@@ -942,8 +953,6 @@ void PrototypeBucketTie::read_from_file(TypedRef ref,
         collide_frag.read_from_file(typed_ref_from_basic(p, dts), dts, stats, version);
       }
     }
-  } else {
-    lg::warn("Skipping prototype-bucket-tie collision");
   }
 
   auto next_slot = get_field_ref(ref, "next", dts);
@@ -1769,6 +1778,18 @@ std::unique_ptr<DrawableTree> make_drawable_tree(TypedRef ref,
 
   if (ref.type->get_name() == "drawable-tree-instance-tie") {
     auto tree = std::make_unique<DrawableTreeInstanceTie>();
+    tree->read_from_file(ref, dts, stats, version);
+    return tree;
+  }
+
+  if (ref.type->get_name() == "drawable-tree-tfrag-trans") {
+    auto tree = std::make_unique<DrawableTreeTfragTrans>();
+    tree->read_from_file(ref, dts, stats, version);
+    return tree;
+  }
+
+  if (ref.type->get_name() == "drawable-tree-tfrag-water") {
+    auto tree = std::make_unique<DrawableTreeTfragWater>();
     tree->read_from_file(ref, dts, stats, version);
     return tree;
   }

@@ -364,6 +364,10 @@
     (.xor.vf vf18 vf18 vf18)
     (.xor.vf vf23 vf23 vf23)
     (.xor.vf vf19 vf19 vf19)
+    (.xor.vf vf3 vf3 vf3)
+    (.xor.vf vf4 vf4 vf4)
+    (.xor.vf vf5 vf5 vf5)
+
     (init-vf0-vector)
     (nop!)
     (nop!)
@@ -971,7 +975,6 @@
 (defun matrix-axis-angle! ((arg0 matrix) (arg1 vector) (arg2 float))
   "Create an axis-angle rotation matrix."
   (matrix-axis-sin-cos! arg0 arg1 (sin arg2) (cos arg2))
-  (none)
   )
 
 (defun matrix-lerp! ((arg0 matrix) (arg1 matrix) (arg2 matrix) (arg3 float))

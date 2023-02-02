@@ -16,13 +16,13 @@
 (defbehavior board-post board ()
   (let* ((a0-0 (-> self parent))
          (v1-0 (if a0-0
-                   (the-as target (-> (the-as target (-> a0-0 0)) self))
+                   (-> (the-as target (-> a0-0 0)) self-override)
                    )
                )
          )
     (set! (-> self root trans quad) (-> v1-0 board board-trans quad))
     (let ((a0-4 (-> v1-0 board board-quat quad)))
-      (set! (-> self root quat vec quad) a0-4)
+      (set! (-> self root quat quad) a0-4)
       )
     (set! (-> self root scale quad) (-> v1-0 board board-scale quad))
     (set! (-> self draw light-index) (-> v1-0 draw light-index))
@@ -89,8 +89,8 @@
 ;; failed to figure out what this is:
 (defstate idle (board)
   :virtual #t
-  :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
-    (case arg2
+  :event (behavior ((proc process) (arg1 int) (event-type symbol) (event event-message-block))
+    (case event-type
       (('open)
        (go-virtual use)
        )
@@ -140,8 +140,8 @@
 ;; failed to figure out what this is:
 (defstate use (board)
   :virtual #t
-  :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
-    (case arg2
+  :event (behavior ((proc process) (arg1 int) (event-type symbol) (event event-message-block))
+    (case event-type
       (('close)
        (go-virtual idle #f)
        )

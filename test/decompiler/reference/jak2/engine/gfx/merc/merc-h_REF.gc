@@ -228,7 +228,6 @@
   )
 
 ;; definition for method 3 of type merc-fragment-control
-;; INFO: this function exists in multiple non-identical object files
 (defmethod inspect merc-fragment-control ((obj merc-fragment-control))
   (when (not obj)
     (set! obj obj)
@@ -292,10 +291,10 @@
 
 ;; definition of type mei-envmap-tint
 (deftype mei-envmap-tint (structure)
-  ((fade0 float   :offset-assert   0)
-   (fade1 float   :offset-assert   4)
-   (tint  uint32  :offset-assert   8)
-   (dummy int32   :offset-assert  12)
+  ((fade0 float  :offset-assert   0)
+   (fade1 float  :offset-assert   4)
+   (tint  rgba   :offset-assert   8)
+   (dummy int32  :offset-assert  12)
    )
   :method-count-assert 9
   :size-assert         #x10
@@ -413,7 +412,7 @@
    (blend-data          merc-blend-data        :offset-assert   8)
    (blend-ctrl          merc-blend-ctrl        :offset-assert  12)
    (merc-effect-version uint8                  :offset-assert  16)
-   (effect-bits         uint8                  :offset-assert  17)
+   (effect-bits         effect-bits            :offset-assert  17)
    (frag-count          uint16                 :offset-assert  18)
    (blend-frag-count    uint16                 :offset-assert  20)
    (tri-count           uint16                 :offset-assert  22)
@@ -687,7 +686,7 @@
 ;; definition of type merc-ctrl
 (deftype merc-ctrl (art-element)
   ((num-joints int32                             :offset         20)
-   (seg-table  basic                             :offset         24)
+   (seg-table  (array uint64)                    :offset         24)
    (header     merc-ctrl-header :inline          :offset-assert  32)
    (effect     merc-effect      :inline :dynamic :offset-assert 160)
    )
@@ -697,7 +696,6 @@
   )
 
 ;; definition for method 3 of type merc-ctrl
-;; INFO: this function exists in multiple non-identical object files
 (defmethod inspect merc-ctrl ((obj merc-ctrl))
   (when (not obj)
     (set! obj obj)

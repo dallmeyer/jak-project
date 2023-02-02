@@ -32,8 +32,10 @@
             )
         )
       (let ((a0-19 (-> (the-as connection v1-7) param1)))
-        (if (and (>= a0-19 (-> *kernel-context* relocating-min)) (< a0-19 (-> *kernel-context* relocating-max)))
-            (+! (-> (the-as connection v1-7) param1) arg0)
+        (if (and (>= (the-as int a0-19) (-> *kernel-context* relocating-min))
+                 (< (the-as int a0-19) (-> *kernel-context* relocating-max))
+                 )
+            (&+! (-> (the-as connection v1-7) param1) arg0)
             )
         )
       (let ((a0-24 (-> (the-as connection v1-7) param2)))
@@ -63,7 +65,11 @@
         (&+! (-> obj ppointer) arg0)
         )
     )
-  (let ((s4-0 (&+ (-> obj heap-base) 4)))
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Don't remove this cast
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  (let ((s4-0 (the-as basic (&+ (-> obj heap-base) 4))))
     (while (< (the-as int s4-0) (the-as int (-> obj heap-cur)))
       (relocate s4-0 arg0)
       (&+! s4-0 (logand -16 (+ (asize-of s4-0) 15)))
@@ -98,6 +104,7 @@
   obj
   )
 
+;; WARN: Return type mismatch process vs process-drawable.
 (defmethod relocate process-drawable ((obj process-drawable) (arg0 int))
   (let ((v1-0 *kernel-context*))
     (set! (-> v1-0 relocating-process) obj)
@@ -163,6 +170,7 @@
   obj
   )
 
+;; WARN: Return type mismatch collide-shape vs collide-shape-moving.
 (defmethod relocate collide-shape-moving ((obj collide-shape-moving) (arg0 int))
   (if (-> obj dynam)
       (&+! (-> obj dynam) arg0)
@@ -177,7 +185,7 @@
 
 (defmethod relocate collide-shape-prim-group ((obj collide-shape-prim-group) (arg0 int))
   (&+! (-> obj cshape) arg0)
-  (set! (-> obj child) (the-as (inline-array collide-shape) (&+ (the-as pointer (-> obj child)) arg0)))
+  (set! (-> obj child) (the-as (inline-array collide-shape-prim) (&+ (the-as pointer (-> obj child)) arg0)))
   obj
   )
 
@@ -322,6 +330,7 @@
   obj
   )
 
+;; WARN: Return type mismatch process vs camera-master.
 (defmethod relocate camera-master ((obj camera-master) (arg0 int))
   (if (nonzero? (-> obj water-drip))
       (&+! (-> obj water-drip) arg0)
@@ -329,6 +338,7 @@
   (the-as camera-master ((method-of-type process relocate) obj arg0))
   )
 
+;; WARN: Return type mismatch process vs time-of-day-proc.
 (defmethod relocate time-of-day-proc ((obj time-of-day-proc) (arg0 int))
   (if (nonzero? (-> obj sun))
       (&+! (-> obj sun) arg0)
@@ -342,6 +352,7 @@
   (the-as time-of-day-proc ((method-of-type process relocate) obj arg0))
   )
 
+;; WARN: Return type mismatch process vs part-tracker.
 (defmethod relocate part-tracker ((obj part-tracker) (arg0 int))
   (if (nonzero? (-> obj root))
       (&+! (-> obj root) arg0)
@@ -352,6 +363,7 @@
   (the-as part-tracker ((method-of-type process relocate) obj arg0))
   )
 
+;; WARN: Return type mismatch process vs part-spawner.
 (defmethod relocate part-spawner ((obj part-spawner) (arg0 int))
   (if (nonzero? (-> obj root))
       (&+! (-> obj root) arg0)
@@ -365,6 +377,7 @@
   (the-as part-spawner ((method-of-type process relocate) obj arg0))
   )
 
+;; WARN: Return type mismatch process vs lightning-tracker.
 (defmethod relocate lightning-tracker ((obj lightning-tracker) (arg0 int))
   (if (nonzero? (-> obj root))
       (&+! (-> obj root) arg0)
@@ -375,6 +388,7 @@
   (the-as lightning-tracker ((method-of-type process relocate) obj arg0))
   )
 
+;; WARN: Return type mismatch process-drawable vs manipy.
 (defmethod relocate manipy ((obj manipy) (arg0 int))
   (if (nonzero? (-> obj joint 0))
       (&+! (-> obj joint 0) arg0)

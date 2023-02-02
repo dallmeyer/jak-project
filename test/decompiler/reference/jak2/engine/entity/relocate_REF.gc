@@ -27,8 +27,10 @@
             )
         )
       (let ((a0-19 (-> (the-as connection v1-7) param1)))
-        (if (and (>= a0-19 (-> *kernel-context* relocating-min)) (< a0-19 (-> *kernel-context* relocating-max)))
-            (+! (-> (the-as connection v1-7) param1) arg0)
+        (if (and (>= (the-as int a0-19) (-> *kernel-context* relocating-min))
+                 (< (the-as int a0-19) (-> *kernel-context* relocating-max))
+                 )
+            (&+! (-> (the-as connection v1-7) param1) arg0)
             )
         )
       (let ((a0-24 (-> (the-as connection v1-7) param2)))
@@ -180,7 +182,7 @@
 ;; definition for method 7 of type collide-shape-prim-group
 (defmethod relocate collide-shape-prim-group ((obj collide-shape-prim-group) (arg0 int))
   (&+! (-> obj cshape) arg0)
-  (set! (-> obj child) (the-as (inline-array collide-shape) (&+ (the-as pointer (-> obj child)) arg0)))
+  (set! (-> obj child) (the-as (inline-array collide-shape-prim) (&+ (the-as pointer (-> obj child)) arg0)))
   obj
   )
 

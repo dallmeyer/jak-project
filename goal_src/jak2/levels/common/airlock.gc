@@ -5,6 +5,8 @@
 ;; name in dgo: airlock
 ;; dgos: GAME, COMMON
 
+;; og:update-with-merge
+
 ;; DECOMP BEGINS
 
 (deftype com-airlock (process-drawable)
@@ -338,7 +340,7 @@
     (cond
       ((and gp-0 (>= (- (-> self clock frame-counter) (-> obj spool-sound-time)) (seconds 2)))
        (set! (-> obj spool-sound-time) (-> self clock frame-counter))
-       (gui-control-method-9
+       (add-process
          *gui-control*
          obj
          (gui-channel alert)
@@ -356,98 +358,72 @@
   (none)
   )
 
-(let ((a0-10 (new 'static 'skeleton-group
-               :name "skel-com-airlock-outer"
-               :extra #f
-               :info #f
-               :art-group-name "com-airlock-outer"
-               :bounds (new 'static 'vector :y 20480.0 :w 57344.0)
-               :version #x7
-               )
-             )
-      )
-  (set! (-> a0-10 jgeo) 0)
-  (set! (-> a0-10 janim) 2)
-  (set! (-> a0-10 mgeo 0) 1)
-  (set! (-> a0-10 lod-dist 0) 4095996000.0)
-  (add-to-loading-level a0-10)
-  )
+(defskelgroup skel-com-airlock-outer com-airlock-outer com-airlock-outer-lod0-jg com-airlock-outer-idle-ja
+              ((com-airlock-outer-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 5 0 14)
+              )
 
-(let ((a0-11 (new 'static 'skeleton-group
-               :name "skel-com-airlock-inner"
-               :extra #f
-               :info #f
-               :art-group-name "com-airlock-inner"
-               :bounds (new 'static 'vector :y 20480.0 :w 57344.0)
-               :version #x7
-               )
-             )
-      )
-  (set! (-> a0-11 jgeo) 0)
-  (set! (-> a0-11 janim) 2)
-  (set! (-> a0-11 mgeo 0) 1)
-  (set! (-> a0-11 lod-dist 0) 4095996000.0)
-  (add-to-loading-level a0-11)
-  )
+(defskelgroup skel-com-airlock-inner com-airlock-inner com-airlock-inner-lod0-jg com-airlock-inner-idle-ja
+              ((com-airlock-inner-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 5 0 14)
+              )
 
 (defstate close (com-airlock)
   :virtual #t
-  :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
-    (let ((v1-0 arg2))
-      (the-as
-        object
-        (cond
-          ((= v1-0 'close)
-           (set! (-> self latch-closed-time) (+ (-> self clock frame-counter) (if (>= arg1 1)
-                                                                                  (the-as int (-> arg3 param 0))
-                                                                                  3000
-                                                                                  )
-                                                )
-                 )
-           (if (and (>= arg1 2) (and (= (-> arg3 param 1) #t) (not (want-cross-airlock? self))))
-               (ja :group! (get-art-by-name (-> self draw art-group) "idle" art-joint-anim) :num! min)
-               )
-           (and (-> self next-state) (= (-> self next-state name) 'open))
-           )
-          ((= v1-0 'open)
-           (set! (-> self latch-open-time) (+ (-> self clock frame-counter) (if (>= arg1 1)
-                                                                                (the-as int (-> arg3 param 0))
+  :event (behavior ((proc process) (arg1 int) (event-type symbol) (event event-message-block))
+    (the-as
+      object
+      (case event-type
+        (('close)
+         (set! (-> self latch-closed-time) (+ (-> self clock frame-counter) (if (>= arg1 1)
+                                                                                (the-as int (-> event param 0))
                                                                                 3000
                                                                                 )
                                               )
-                 )
-           (if (and (>= arg1 2) (and (= (-> arg3 param 1) #t) (want-cross-airlock? self) (destination-loaded? self #f)))
-               (ja :group! (get-art-by-name (-> self draw art-group) "idle" art-joint-anim)
-                   :num! (identity
-                     (the float (+ (-> (get-art-by-name (-> self draw art-group) "idle" art-joint-anim) frames num-frames) -1))
-                     )
+               )
+         (if (and (>= arg1 2) (and (= (-> event param 1) #t) (not (want-cross-airlock? self))))
+             (ja :group! (get-art-by-name (-> self draw art-group) "idle" art-joint-anim) :num! min)
+             )
+         (and (-> self next-state) (= (-> self next-state name) 'open))
+         )
+        (('open)
+         (set! (-> self latch-open-time) (+ (-> self clock frame-counter) (if (>= arg1 1)
+                                                                              (the-as int (-> event param 0))
+                                                                              3000
+                                                                              )
+                                            )
+               )
+         (if (and (>= arg1 2) (and (= (-> event param 1) #t) (want-cross-airlock? self) (destination-loaded? self #f)))
+             (ja :group! (get-art-by-name (-> self draw art-group) "idle" art-joint-anim)
+                 :num! (identity
+                   (the float (+ (-> (get-art-by-name (-> self draw art-group) "idle" art-joint-anim) frames num-frames) -1))
                    )
-               )
-           (and (-> self next-state) (= (-> self next-state name) 'close))
-           )
-          ((= v1-0 'front)
-           (let ((f30-0 (check-crossing-distance self (target-pos 0) #f))
-                 (f0-3 (check-crossing-distance self (camera-pos) #f))
                  )
-             (and (< 2048.0 f30-0) (>= (* f30-0 f0-3) 0.0))
              )
-           )
-          ((= v1-0 'back)
-           (let ((f30-1 (check-crossing-distance self (target-pos 0) #f))
-                 (f0-5 (check-crossing-distance self (camera-pos) #f))
-                 )
-             (and (< f30-1 -2048.0) (>= (* f30-1 f0-5) 0.0))
-             )
-           )
-          ((= v1-0 'sound)
-           (if (>= (check-crossing-distance self (target-pos 0) #f) 0.0)
-               (play-city-voice-sound self (the-as symbol (-> arg3 param 0)))
+         (and (-> self next-state) (= (-> self next-state name) 'close))
+         )
+        (('front)
+         (let ((f30-0 (check-crossing-distance self (target-pos 0) #f))
+               (f0-3 (check-crossing-distance self (camera-pos) #f))
                )
+           (and (< 2048.0 f30-0) (>= (* f30-0 f0-3) 0.0))
            )
-          ((= v1-0 'distance)
-           (* (the int (check-crossing-distance self (target-pos 0) #f)) 8)
+         )
+        (('back)
+         (let ((f30-1 (check-crossing-distance self (target-pos 0) #f))
+               (f0-5 (check-crossing-distance self (camera-pos) #f))
+               )
+           (and (< f30-1 -2048.0) (>= (* f30-1 f0-5) 0.0))
            )
-          )
+         )
+        (('sound)
+         (if (>= (check-crossing-distance self (target-pos 0) #f) 0.0)
+             (the-as object (play-city-voice-sound self (the-as symbol (-> event param 0))))
+             )
+         )
+        (('distance)
+         (* (the int (check-crossing-distance self (target-pos 0) #f)) 8)
+         )
         )
       )
     )
@@ -853,6 +829,13 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! com-airlock-outer ((obj com-airlock-outer) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (stack-size-set! (-> obj main-thread) 1024)
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -880,7 +863,7 @@
     (set! (-> s5-0 nav-radius) (* 0.75 (-> s5-0 root-prim local-sphere w)))
     (let ((v1-13 (-> s5-0 root-prim)))
       (set! (-> s5-0 backup-collide-as) (-> v1-13 prim-core collide-as))
-      (set! (-> s5-0 backup-collde-with) (-> v1-13 prim-core collide-with))
+      (set! (-> s5-0 backup-collide-with) (-> v1-13 prim-core collide-with))
       )
     (set! (-> obj root-override) s5-0)
     )
@@ -917,6 +900,13 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! com-airlock-inner ((obj com-airlock-inner) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (stack-size-set! (-> obj main-thread) 1024)
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -944,7 +934,7 @@
     (set! (-> s5-0 nav-radius) (* 0.75 (-> s5-0 root-prim local-sphere w)))
     (let ((v1-13 (-> s5-0 root-prim)))
       (set! (-> s5-0 backup-collide-as) (-> v1-13 prim-core collide-as))
-      (set! (-> s5-0 backup-collde-with) (-> v1-13 prim-core collide-with))
+      (set! (-> s5-0 backup-collide-with) (-> v1-13 prim-core collide-with))
       )
     (set! (-> obj root-override) s5-0)
     )
@@ -978,22 +968,10 @@
   (none)
   )
 
-(let ((a0-20 (new 'static 'skeleton-group
-               :name "skel-fort-entry-gate"
-               :extra #f
-               :info #f
-               :art-group-name "fort-entry-gate"
-               :bounds (new 'static 'vector :y 12288.0 :w 40960.0)
-               :version #x7
-               )
-             )
-      )
-  (set! (-> a0-20 jgeo) 0)
-  (set! (-> a0-20 janim) 2)
-  (set! (-> a0-20 mgeo 0) 1)
-  (set! (-> a0-20 lod-dist 0) 4095996000.0)
-  (add-to-loading-level a0-20)
-  )
+(defskelgroup skel-fort-entry-gate fort-entry-gate fort-entry-gate-lod0-jg fort-entry-gate-idle-ja
+              ((fort-entry-gate-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 3 0 10)
+              )
 
 (deftype fort-entry-gate (com-airlock)
   ()
@@ -1006,6 +984,13 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! fort-entry-gate ((obj fort-entry-gate) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (stack-size-set! (-> obj main-thread) 1024)
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -1033,7 +1018,7 @@
     (set! (-> s5-0 nav-radius) (* 0.75 (-> s5-0 root-prim local-sphere w)))
     (let ((v1-13 (-> s5-0 root-prim)))
       (set! (-> s5-0 backup-collide-as) (-> v1-13 prim-core collide-as))
-      (set! (-> s5-0 backup-collde-with) (-> v1-13 prim-core collide-with))
+      (set! (-> s5-0 backup-collide-with) (-> v1-13 prim-core collide-with))
       )
     (set! (-> obj root-override) s5-0)
     )
@@ -1051,22 +1036,10 @@
   (none)
   )
 
-(let ((a0-24 (new 'static 'skeleton-group
-               :name "skel-hip-door-a"
-               :extra #f
-               :info #f
-               :art-group-name "hip-door-a"
-               :bounds (new 'static 'vector :y 8192.0 :w 20480.0)
-               :version #x7
-               )
-             )
-      )
-  (set! (-> a0-24 jgeo) 0)
-  (set! (-> a0-24 janim) 2)
-  (set! (-> a0-24 mgeo 0) 1)
-  (set! (-> a0-24 lod-dist 0) 4095996000.0)
-  (add-to-loading-level a0-24)
-  )
+(defskelgroup skel-hip-door-a hip-door-a hip-door-a-lod0-jg hip-door-a-idle-ja
+              ((hip-door-a-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 2 0 5)
+              )
 
 (deftype hip-door-a (com-airlock)
   ()
@@ -1079,6 +1052,13 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! hip-door-a ((obj hip-door-a) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (stack-size-set! (-> obj main-thread) 1024)
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -1106,7 +1086,7 @@
     (set! (-> s5-0 nav-radius) (* 0.75 (-> s5-0 root-prim local-sphere w)))
     (let ((v1-13 (-> s5-0 root-prim)))
       (set! (-> s5-0 backup-collide-as) (-> v1-13 prim-core collide-as))
-      (set! (-> s5-0 backup-collde-with) (-> v1-13 prim-core collide-with))
+      (set! (-> s5-0 backup-collide-with) (-> v1-13 prim-core collide-with))
       )
     (set! (-> obj root-override) s5-0)
     )
@@ -1125,23 +1105,11 @@
   (none)
   )
 
-(let ((a0-28 (new 'static 'skeleton-group
-               :name "skel-tomb-mar-door"
-               :extra #f
-               :info #f
-               :art-group-name "tomb-mar-door"
-               :bounds (new 'static 'vector :y 24576.0 :w 73728.0)
-               :version #x7
-               :origin-joint-index 3
-               )
-             )
-      )
-  (set! (-> a0-28 jgeo) 0)
-  (set! (-> a0-28 janim) 2)
-  (set! (-> a0-28 mgeo 0) 1)
-  (set! (-> a0-28 lod-dist 0) 4095996000.0)
-  (add-to-loading-level a0-28)
-  )
+(defskelgroup skel-tomb-mar-door tomb-mar-door tomb-mar-door-lod0-jg tomb-mar-door-idle-ja
+              ((tomb-mar-door-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 6 0 18)
+              :origin-joint-index 3
+              )
 
 (deftype tomb-mar-door (com-airlock)
   ()
@@ -1154,6 +1122,13 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! tomb-mar-door ((obj tomb-mar-door) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (stack-size-set! (-> obj main-thread) 1024)
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((v1-2 (new 'process 'collide-shape-prim-mesh s5-0 (the-as uint 0) (the-as uint 0))))
@@ -1168,7 +1143,7 @@
     (set! (-> s5-0 nav-radius) (* 0.75 (-> s5-0 root-prim local-sphere w)))
     (let ((v1-5 (-> s5-0 root-prim)))
       (set! (-> s5-0 backup-collide-as) (-> v1-5 prim-core collide-as))
-      (set! (-> s5-0 backup-collde-with) (-> v1-5 prim-core collide-with))
+      (set! (-> s5-0 backup-collide-with) (-> v1-5 prim-core collide-with))
       )
     (set! (-> obj root-override) s5-0)
     )
@@ -1195,23 +1170,11 @@
   )
 
 
-(let ((a0-34 (new 'static 'skeleton-group
-               :name "skel-pal-throne-door"
-               :extra #f
-               :info #f
-               :art-group-name "pal-throne-door"
-               :bounds (new 'static 'vector :y 24576.0 :w 98304.0)
-               :version #x7
-               :origin-joint-index 3
-               )
-             )
-      )
-  (set! (-> a0-34 jgeo) 0)
-  (set! (-> a0-34 janim) 2)
-  (set! (-> a0-34 mgeo 0) 1)
-  (set! (-> a0-34 lod-dist 0) 4095996000.0)
-  (add-to-loading-level a0-34)
-  )
+(defskelgroup skel-pal-throne-door pal-throne-door pal-throne-door-lod0-jg pal-throne-door-idle-ja
+              ((pal-throne-door-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 6 0 24)
+              :origin-joint-index 3
+              )
 
 (deftype pal-throne-door (com-airlock)
   ()
@@ -1224,6 +1187,12 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! pal-throne-door ((obj pal-throne-door) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -1251,7 +1220,7 @@
     (set! (-> s5-0 nav-radius) (* 0.75 (-> s5-0 root-prim local-sphere w)))
     (let ((v1-13 (-> s5-0 root-prim)))
       (set! (-> s5-0 backup-collide-as) (-> v1-13 prim-core collide-as))
-      (set! (-> s5-0 backup-collde-with) (-> v1-13 prim-core collide-with))
+      (set! (-> s5-0 backup-collide-with) (-> v1-13 prim-core collide-with))
       )
     (set! (-> obj root-override) s5-0)
     )
@@ -1270,22 +1239,10 @@
   (none)
   )
 
-(let ((a0-38 (new 'static 'skeleton-group
-               :name "skel-vin-door-ctyinda"
-               :extra #f
-               :info #f
-               :art-group-name "vin-door-ctyinda"
-               :bounds (new 'static 'vector :y 12288.0 :w 24576.0)
-               :version #x7
-               )
-             )
-      )
-  (set! (-> a0-38 jgeo) 0)
-  (set! (-> a0-38 janim) 2)
-  (set! (-> a0-38 mgeo 0) 1)
-  (set! (-> a0-38 lod-dist 0) 4095996000.0)
-  (add-to-loading-level a0-38)
-  )
+(defskelgroup skel-vin-door-ctyinda vin-door-ctyinda 0 2
+              ((1 (meters 999999)))
+              :bounds (static-spherem 0 3 0 6)
+              )
 
 (deftype vin-door-ctyinda (com-airlock)
   ()
@@ -1298,6 +1255,13 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! vin-door-ctyinda ((obj vin-door-ctyinda) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (stack-size-set! (-> obj main-thread) 1024)
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -1325,7 +1289,7 @@
     (set! (-> s5-0 nav-radius) (* 0.75 (-> s5-0 root-prim local-sphere w)))
     (let ((v1-13 (-> s5-0 root-prim)))
       (set! (-> s5-0 backup-collide-as) (-> v1-13 prim-core collide-as))
-      (set! (-> s5-0 backup-collde-with) (-> v1-13 prim-core collide-with))
+      (set! (-> s5-0 backup-collide-with) (-> v1-13 prim-core collide-with))
       )
     (set! (-> obj root-override) s5-0)
     )
@@ -1344,22 +1308,10 @@
   (none)
   )
 
-(let ((a0-42 (new 'static 'skeleton-group
-               :name "skel-under-door"
-               :extra #f
-               :info #f
-               :art-group-name "hip-door-a"
-               :bounds (new 'static 'vector :y 8192.0 :w 20480.0)
-               :version #x7
-               )
-             )
-      )
-  (set! (-> a0-42 jgeo) 0)
-  (set! (-> a0-42 janim) 2)
-  (set! (-> a0-42 mgeo 0) 1)
-  (set! (-> a0-42 lod-dist 0) 4095996000.0)
-  (add-to-loading-level a0-42)
-  )
+(defskelgroup skel-under-door hip-door-a hip-door-a-lod0-jg hip-door-a-idle-ja
+              ((hip-door-a-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 2 0 5)
+              )
 
 (deftype under-door (com-airlock)
   ()
@@ -1372,6 +1324,13 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! under-door ((obj under-door) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (stack-size-set! (-> obj main-thread) 1024) ;; added
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -1399,7 +1358,7 @@
     (set! (-> s5-0 nav-radius) (* 0.75 (-> s5-0 root-prim local-sphere w)))
     (let ((v1-13 (-> s5-0 root-prim)))
       (set! (-> s5-0 backup-collide-as) (-> v1-13 prim-core collide-as))
-      (set! (-> s5-0 backup-collde-with) (-> v1-13 prim-core collide-with))
+      (set! (-> s5-0 backup-collide-with) (-> v1-13 prim-core collide-with))
       )
     (set! (-> obj root-override) s5-0)
     )
@@ -1418,22 +1377,7 @@
   (none)
   )
 
-(let ((a0-46 (new 'static 'skeleton-group
-               :name "skel-oracle-door"
-               :extra #f
-               :info #f
-               :art-group-name "oracle-door"
-               :bounds (new 'static 'vector :y 16384.0 :w 40960.0)
-               :version #x7
-               )
-             )
-      )
-  (set! (-> a0-46 jgeo) 0)
-  (set! (-> a0-46 janim) 2)
-  (set! (-> a0-46 mgeo 0) 1)
-  (set! (-> a0-46 lod-dist 0) 4095996000.0)
-  (add-to-loading-level a0-46)
-  )
+(defskelgroup skel-oracle-door oracle-door 0 2 ((1 (meters 999999))) :bounds (static-spherem 0 4 0 10))
 
 (deftype oracle-door (com-airlock)
   ()
@@ -1446,6 +1390,13 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! oracle-door ((obj oracle-door) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (stack-size-set! (-> obj main-thread) 1024)
   (let ((s5-0 (new 'process 'collide-shape obj (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 penetrated-by) (penetrate))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
@@ -1473,7 +1424,7 @@
     (set! (-> s5-0 nav-radius) (* 0.75 (-> s5-0 root-prim local-sphere w)))
     (let ((v1-13 (-> s5-0 root-prim)))
       (set! (-> s5-0 backup-collide-as) (-> v1-13 prim-core collide-as))
-      (set! (-> s5-0 backup-collde-with) (-> v1-13 prim-core collide-with))
+      (set! (-> s5-0 backup-collide-with) (-> v1-13 prim-core collide-with))
       )
     (set! (-> obj root-override) s5-0)
     )
