@@ -256,14 +256,23 @@
   (none)
   )
 
+(define *baby-mode-orb-dist* (the-as float #f))
 (defun draw-baby-mode ()
   "Draw baby-mode counter in the bottom left corner"
   (when (and (-> *setting-control* current allow-pause) (-> *pc-settings* baby-mode?))
     (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
                                       (bucket-id debug-no-zbuf))
-      (draw-string-xy (string-format "Crybaby Count: ~D"
-                                     (-> *pc-settings* baby-mode-count))
-                      buf 0 210 (font-color flat-yellow) (font-flags shadow kerning))))
+      (if (= *baby-mode-orb-dist* #f)
+        (draw-string-xy (string-format "Closest Orb: N/A ~%Crybaby Count: ~D"
+                                      (-> *pc-settings* baby-mode-count))
+                        buf 0 200 (font-color flat-yellow) (font-flags shadow kerning))
+        (draw-string-xy (string-format "Closest Orb: ~Mm ~%Crybaby Count: ~D"
+                                      *baby-mode-orb-dist*
+                                      (-> *pc-settings* baby-mode-count))
+                        buf 0 200 (font-color flat-yellow) (font-flags shadow kerning))
+        )
+      )
+    )
   (none)
   )
 
@@ -281,6 +290,7 @@
 (defun speedrun-draw-settings ()
   "Draw speedrun related settings in the bottom left corner"
   (when (and (-> *pc-settings* speedrunner-mode?)
+             (not (-> *pc-settings* baby-mode?))
              (not (paused?))
              (-> *speedrun-info* should-display?))
     (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))

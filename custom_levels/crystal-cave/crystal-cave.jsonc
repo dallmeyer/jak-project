@@ -30,7 +30,7 @@
   //
   // adds a vector tag 'movie-pos':
   // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
-
+  "ambients": [],
   "actors" : [
     // TEST actor 
     /*{

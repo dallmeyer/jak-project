@@ -24,7 +24,7 @@
     (max
       (-> ,warp-gate max-slot) 
       (cond  ;; CHECK WHICH TASK HAS BEEN CLOSED TO UNLOCK X SLOTS IN THE PORTAL MENU
-        ((>= (-> *game-info* money-total) 2000.0)
+        ((or (-> *pc-settings* baby-mode?) (>= (-> *game-info* money-total) 2000.0))
           5
           )
         ((task-closed? (game-task village4-button) (task-status need-hint))
@@ -576,6 +576,9 @@
                (task-complete? *game-info* (game-task training-climb))
                (task-complete? *game-info* (game-task training-buzzer))
                )
+          #t
+          )
+         ((-> *pc-settings* baby-mode?)
           #t
           )
          (else
