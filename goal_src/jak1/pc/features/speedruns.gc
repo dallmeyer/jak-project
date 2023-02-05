@@ -263,13 +263,21 @@
     (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
                                       (bucket-id debug-no-zbuf))
       (if (= *baby-mode-orb-dist* #f)
-        (draw-string-xy (string-format "Closest Orb: N/A ~%Crybaby Count: ~D"
-                                      (-> *pc-settings* baby-mode-count))
-                        buf 0 200 (font-color flat-yellow) (font-flags shadow kerning))
-        (draw-string-xy (string-format "Closest Orb: ~Mm ~%Crybaby Count: ~D"
-                                      *baby-mode-orb-dist*
-                                      (-> *pc-settings* baby-mode-count))
-                        buf 0 200 (font-color flat-yellow) (font-flags shadow kerning))
+        (draw-string-xy (string-format "Closest Orb: N/A")
+                        buf 0 210 (font-color gray) (font-flags kerning))
+        ;; color based on distance
+        (let ((fc (cond
+                  ((< *baby-mode-orb-dist* (meters 10.0)) (font-color bright-orange-red))
+                  ((< *baby-mode-orb-dist* (meters 20.0)) (font-color yellow-orange))
+                  ((< *baby-mode-orb-dist* (meters 30.0)) (font-color flat-yellow))
+                  ((< *baby-mode-orb-dist* (meters 40.0)) (font-color lighter-lighter-blue))
+                  ((< *baby-mode-orb-dist* (meters 50.0)) (font-color light-blue))
+                  (else (font-color blue))
+                  )))
+          (draw-string-xy (string-format "Closest Orb: ~Mm"
+                                         *baby-mode-orb-dist*)
+                          buf 0 210 fc (font-flags kerning))
+          )
         )
       )
     )
