@@ -189,13 +189,13 @@
   ("entity-table.o" "entity-table")
   ("loader.o" "loader")
   ("task-control-h.o" "task-control-h")
-  ("speedruns-h.o" "speedruns-h") ;; added
   ("game-info.o" "game-info")
   ("game-save.o" "game-save")
   ("settings.o" "settings")
   ("pc-anim-util.o" "pc-anim-util") ;; added
   ("autosplit-h.o" "autosplit-h") ;; added
   ("autosplit.o" "autosplit") ;; added
+  ("speedruns-h.o" "speedruns-h") ;; added
   ("speedruns.o" "speedruns") ;; added
   ("pckernel.o" "pckernel") ;; added
   ("mood-tables.o" "mood-tables")
@@ -338,10 +338,7 @@
   ("plat-eco.o" "plat-eco")
   ("ropebridge.o" "ropebridge")
   ("ticky.o" "ticky")
-  ("mods-settings.o" "mods-settings") ;; added
-  ("put-custom-code-here.o" "put-custom-code-here") ;; added
-  ("define-custom-functions-here.o" "define-custom-functions-here") ;; added
-  ("put-custom-code-here.o" "put-custom-code-here") ;; added
+  ("hud-classes-pc.o" "hud-classes-pc") ;; added
   ;; keep zoomer stuff loaded
   ("target-racer-h.o" "target-racer-h")
   ("racer-part.o" "racer-part")
@@ -358,5 +355,4 @@
   ("target-flut.o" "target-flut")
   ("flut-saddle-ag.go" "flut-saddle")
   ("eichar-flut+0-ag.go" "eichar-flut+0")
-
   )

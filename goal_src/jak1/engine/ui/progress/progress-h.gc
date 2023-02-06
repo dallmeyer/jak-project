@@ -127,6 +127,13 @@
   (speedrun-options)
   (speedrun-il-options)
 
+  (practice-options)
+  (checkpoint-options)
+  (hub1-options)
+  (hub2-options)
+  (hub3-options)
+  (hub4-options)
+  (skip-options)
   ;; the last one!
   (max)
   )

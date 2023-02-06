@@ -235,6 +235,42 @@
     (set! (-> *pc-settings* cheats) (the-as pc-cheats #x0))
     ;; Run after-blackout speedrun setup (if needed)
     (setup-speedrun-post-blackout)
+
+    ;; call post-init function
+    (when (and *practice-spawn-post-init*
+               *target*
+               (-> *setting-control* current allow-pause)
+               (>= (- (-> *display* base-frame-counter) (-> *game-info* blackout-time)) (seconds 0.1))
+               )
+      (*practice-spawn-post-init*)
+      (set! *practice-spawn-post-init* #f)
+      )
+
+    (when (cpad-hold? 0 l2)
+      ;; Check for fast reset combo
+      (when (cpad-pressed? 0 up)
+        (format #t "player triggered reset combo~%")
+        (speedrun-practice-spawn)
+        )
+      
+      ;; Check for temp checkpoint combo
+      (when (cpad-pressed? 0 down)
+        (format #t "player triggered temp checkpoint combo~%")
+        (speedrun-practice-store-temp-checkpoint)
+        )
+      
+      ;; Check for flutflut
+      (when (cpad-pressed? 0 left)
+        (format #t "player triggered flutflut combo~%")
+        (get-on-flutflut)
+        )
+      
+      ;; Check for zoomer
+      (when (cpad-pressed? 0 right)
+        (format #t "player triggered zoomer combo~%")
+        (get-on-zoomer)
+        )
+      )
     )
   (none))
 
@@ -257,3 +293,506 @@
                                      (-> *pc-settings* skip-movies?))
                       buf 0 (- 220 (* 8 4)) (font-color flat-yellow) (font-flags shadow kerning))))
   (none))
+
+(define-extern speedrun-practice-spawn (function none)) ;; defined at end of this file
+(define-extern speedrun-practice-store-temp-checkpoint (function none)) ;; defined at end of this file
+
+(defenum speedrun-practice-option
+  :type uint8
+  (none)
+  (lts-old)
+  (lts-new)
+  (sfb)
+  (fcs)
+  (misty-boosted)
+  (boulderskip)
+  (piggyback)
+  (buttonskip)
+  (gondola-flut)
+  (gondola-foot)
+  (hub1-hundo)
+  (hub2-hundo)
+  (hub3-hundo)
+  )
+
+(define *last-speedrun-practice-option* (speedrun-practice-option none))
+(define *practice-spawn-post-init* (the-as (function none) #f))
+
+(define *last-real-continue-point* (the-as continue-point #f))
+(defun generic-post-init ()
+  (when *last-real-continue-point*
+    (set! (-> *game-info* current-continue) *last-real-continue-point*)
+    )
+  (none)
+  )
+
+(defun get-on-flutflut ()
+  (generic-post-init)
+  (case (-> *target* state)
+    ((target-flut-stance target-racing)
+      (send-event *target* 'end-mode)
+      )
+    (else
+      (send-event *target* 'change-mode 'flut #f)
+      )
+    )
+  (none)
+  )
+
+(defun get-on-zoomer ()
+  (generic-post-init)
+  (case (-> *target* state)
+    ((target-flut-stance target-racing)
+      (send-event *target* 'end-mode)
+      )
+    (else
+      (send-event *target* 'change-mode 'racing #f)
+      )
+    )
+  (none)
+  )
+
+(defun speedrun-reset-common-settings ()
+  ;; disable hints (this seems to be overriden by your slot 1 save though)
+  (set! (-> *setting-control* default play-hints) #f)
+  ;; ensure `force actors` is not enabled
+  (set! (-> *pc-settings* force-actors?) #f)
+  ;; force FPS to `60`
+  (set-frame-rate! *pc-settings* 60)
+  ;; skip intro cutscene
+  (close-specific-task! (game-task intro) (task-status need-resolution))
+  (none)
+  )
+
+(defun full-hp ()
+  (pickup-collectable! (-> *target* fact-info-target) (pickup-type eco-green) 1.0 (process->handle (-> *target* fact-info-target process)))
+  (pickup-collectable! (-> *target* fact-info-target) (pickup-type eco-green) 1.0 (process->handle (-> *target* fact-info-target process)))
+  (pickup-collectable! (-> *target* fact-info-target) (pickup-type eco-green) 1.0 (process->handle (-> *target* fact-info-target process)))
+  (pickup-collectable! (-> *target* fact-info-target) (pickup-type eco-green) 1.0 (process->handle (-> *target* fact-info-target process)))
+  (none)
+  )
+
+(define *tmp-continue-point* (new 'static 'continue-point
+                             :name "tmp"
+                             :level #f
+                             :trans (new 'static 'vector :w 1.0)
+                             :quat (new 'static 'quaternion :w 1.0)
+                             :camera-trans (new 'static 'vector :w 1.0)
+                             :camera-rot (new 'static 'array float 9)
+                             :load-commands '()
+                             :vis-nick #f
+                             :lev0 #f
+                             :disp0 #f
+                             :lev1 #f
+                             :disp1 #f
+                             )
+    )
+(define *tmp-flut?* #f)
+(define *tmp-zoomer?* #f)
+
+(defun speedrun-practice-temp-checkpoint ()
+  (when (-> *tmp-continue-point* level)
+    (cond
+      (*tmp-flut?* (set! *practice-spawn-post-init* get-on-flutflut))
+      (*tmp-zoomer?* (set! *practice-spawn-post-init* get-on-zoomer))
+      )
+    ;; fully reset game if r2 held too
+    (if (cpad-hold? 0 r2)  
+      (initialize! *game-info* 'game (the-as game-save #f) "default")
+      )
+    ;; store last real checkpoint to restore later
+    (when (not (string= (-> *game-info* current-continue name) "tmp"))
+      (set! *last-real-continue-point* (-> *game-info* current-continue))
+      )
+    (set! (-> *game-info* current-continue) *tmp-continue-point*)
+    (initialize! *game-info* 'dead (the-as game-save #f) (the-as string #f))
+    (speedrun-reset-common-settings)
+    )
+  (none)
+  )
+
+(defun speedrun-practice-LTS-old-start-run ()
+  (set! *practice-spawn-post-init* full-hp)
+  (initialize! *game-info* 'game (the-as game-save #f) "village3-lts-old")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "village3-lts-old"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+
+(defun speedrun-practice-LTS-new-start-run ()
+  (set! *practice-spawn-post-init* full-hp)
+  (initialize! *game-info* 'game (the-as game-save #f) "village3-lts-new")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "village3-lts-new"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+
+(defun speedrun-practice-SFB-start-run ()
+  (initialize! *game-info* 'game (the-as game-save #f) "lavatube-sfb")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "lavatube-sfb"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+
+(defun speedrun-practice-FCS-start-run ()
+  (initialize! *game-info* 'game (the-as game-save #f) "firecanyon-start")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "firecanyon-start"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+
+(defun speedrun-practice-misty-boosted-start-run ()
+  (initialize! *game-info* 'game (the-as game-save #f) "misty-boosted")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "misty-boosted"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+
+(defun speedrun-practice-boulderskip-start-run ()
+  (initialize! *game-info* 'game (the-as game-save #f) "village2-boulderskip")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "village2-boulderskip"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+
+(defun speedrun-practice-piggyback-start-run ()
+  (initialize! *game-info* 'game (the-as game-save #f) "sunken-piggyback")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "sunken-piggyback"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+
+(defun speedrun-practice-buttonskip-start-run ()
+  (initialize! *game-info* 'game (the-as game-save #f) "sunken-buttonskip")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "sunken-buttonskip"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+  
+(defun speedrun-practice-gondola-flut-start-run ()
+  (set! *practice-spawn-post-init* get-on-flutflut)
+  (initialize! *game-info* 'game (the-as game-save #f) "snow-gondola-flut")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "snow-gondola-flut"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+
+(defun speedrun-practice-gondola-foot-start-run ()
+  (initialize! *game-info* 'game (the-as game-save #f) "snow-gondola-foot")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "snow-gondola-foot"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+
+(defun give-seven-flies ((lvl-idx int))
+  ;; based on 'buzzer branch of (defmethod adjust game-info)
+  (let* ((ctrl (get-task-control (-> *level-task-data* lvl-idx task-info (-> *level-task-data* lvl-idx buzzer-task-index) task-id)))
+         (buzz-bits (get-reminder ctrl 0))
+         (t9-10 (method-of-object ctrl save-reminder))
+         )
+    (logior! buzz-bits #b1111111) ;; all 7 bits enabled
+    (t9-10 ctrl buzz-bits 0)
+    )
+  (set! (-> *game-counts* data lvl-idx buzzer-count) 7)
+  (none)
+  )
+
+(defun close-task-helper ((tsk game-task))
+  (logior! (-> *game-info* task-perm-list data (the int tsk) status) (entity-perm-status real-complete))
+  (close-specific-task! tsk (task-status need-resolution))
+  )
+
+(defun hub1-hundo-prep ()
+  ;; close tasks
+  (close-specific-task! (game-task intro) (task-status need-resolution))
+  (close-task-helper (game-task intro))
+  
+  (none)
+  )
+
+(defun speedrun-practice-hub1-hundo-start-run ()
+  (set! *practice-spawn-post-init* hub1-hundo-prep)
+  (initialize! *game-info* 'game (the-as game-save #f) "game-start")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "game-start"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+
+(defun hub2-hundo-prep ()
+  ;; set collectable counts
+  ;; geyser
+  (set! (-> *game-info* money-per-level 0) 50)
+  (give-seven-flies 0)
+  ;; sandover
+  (set! (-> *game-info* money-per-level 1) 50)
+  (give-seven-flies 1)
+  ;; sentinel beach
+  (set! (-> *game-info* money-per-level 2) 150)
+  (give-seven-flies 2)
+  ;; FJ
+  (set! (-> *game-info* money-per-level 3) 150)
+  (give-seven-flies 3)
+  ;; misty
+  (set! (-> *game-info* money-per-level 4) 150)
+  (give-seven-flies 4)
+  ;; FC
+  (set! (-> *game-info* money-per-level 5) 50)
+  (give-seven-flies 5)
+  ;; totals
+  (set! (-> *game-info* money-total) 600.0)
+  (set! (-> *game-info* money) 180.0)
+  (set! (-> *game-info* buzzer-total) 42.0)
+  (set! (-> *game-info* fuel) 36.0)
+
+  ;; close tasks
+  (close-specific-task! (game-task intro) (task-status need-resolution))
+  (close-task-helper (game-task intro))
+  (close-task-helper (game-task training-gimmie))
+  (close-task-helper (game-task training-door))
+  (close-task-helper (game-task training-climb))
+  (close-task-helper (game-task training-buzzer))
+  (close-task-helper (game-task village1-yakow))
+  (close-task-helper (game-task village1-mayor-money))
+  (close-task-helper (game-task village1-uncle-money))
+  (close-task-helper (game-task village1-oracle-money1))
+  (close-task-helper (game-task village1-oracle-money2))
+  (close-task-helper (game-task village1-buzzer))
+  (close-task-helper (game-task beach-ecorocks))
+  (close-task-helper (game-task beach-pelican))
+  (close-task-helper (game-task beach-flutflut))
+  (close-task-helper (game-task beach-seagull))
+  (close-task-helper (game-task beach-cannon))
+  (close-task-helper (game-task beach-buzzer))
+  (close-task-helper (game-task beach-gimmie))
+  (close-task-helper (game-task beach-sentinel))
+  (close-task-helper (game-task jungle-eggtop))
+  (close-task-helper (game-task jungle-lurkerm))
+  (close-task-helper (game-task jungle-tower))
+  (close-task-helper (game-task jungle-fishgame))
+  (close-task-helper (game-task jungle-plant))
+  (close-task-helper (game-task jungle-buzzer))
+  (close-task-helper (game-task jungle-canyon-end))
+  (close-task-helper (game-task jungle-temple-door))
+  (close-task-helper (game-task misty-muse))
+  (close-task-helper (game-task misty-boat))
+  (close-task-helper (game-task misty-warehouse))
+  (close-task-helper (game-task misty-cannon))
+  (close-task-helper (game-task misty-bike))
+  (close-task-helper (game-task misty-buzzer))
+  (close-task-helper (game-task misty-bike-jump))
+  (close-task-helper (game-task misty-eco-challenge))
+  (close-specific-task! (game-task firecanyon-assistant) (task-status need-reward-speech))
+  (close-task-helper (game-task firecanyon-buzzer))
+  (close-task-helper (game-task firecanyon-end))
+
+  ;; needed to remove blocking invis wall at end of FC
+  (let ((end-of-fc-racer (the racer (process-by-ename "racer-8"))))
+    (when end-of-fc-racer
+      (set! (-> end-of-fc-racer condition) 0) ;; I think any condition besides 3 works here? idk
+      )
+    )
+  (none)
+  )
+
+(defun speedrun-practice-hub2-hundo-start-run ()
+  (set! *practice-spawn-post-init* hub2-hundo-prep)
+  (initialize! *game-info* 'game (the-as game-save #f) "firecanyon-end")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "firecanyon-end"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+
+(defun hub3-hundo-prep ()
+  ;; reuse hub2-hundo-prep (completes hub1)
+  (hub2-hundo-prep)
+
+  ;; set collectable counts
+  ;; Rock Village
+  (set! (-> *game-info* money-per-level 6) 50)
+  (give-seven-flies 6)
+  ;; LPC
+  (set! (-> *game-info* money-per-level 7) 200)
+  (give-seven-flies 7)
+  ;; Boggy
+  (set! (-> *game-info* money-per-level 8) 200)
+  (give-seven-flies 8)
+  ;; PBasin
+  (set! (-> *game-info* money-per-level 9) 200)
+  (give-seven-flies 9)
+  ;; Mountain P(ass)
+  (set! (-> *game-info* money-per-level 10) 50)
+  (give-seven-flies 10)
+  ;; totals
+  (set! (-> *game-info* money-total) 1300.0)
+  (set! (-> *game-info* money) 370.0)
+  (set! (-> *game-info* buzzer-total) 77.0)
+  (set! (-> *game-info* fuel) 70.0)
+
+  ;; close tasks
+  (close-task-helper (game-task village2-gambler-money))
+  (close-task-helper (game-task village2-geologist-money))
+  (close-task-helper (game-task village2-warrior-money))
+  (close-task-helper (game-task village2-oracle-money1))
+  (close-task-helper (game-task village2-oracle-money2))
+  (close-task-helper (game-task village2-buzzer))
+  (close-task-helper (game-task swamp-billy))
+  (close-task-helper (game-task swamp-flutflut))
+  (close-task-helper (game-task swamp-battle))
+  (close-task-helper (game-task swamp-tether-1))
+  (close-task-helper (game-task swamp-tether-2))
+  (close-task-helper (game-task swamp-tether-3))
+  (close-task-helper (game-task swamp-tether-4))
+  (close-task-helper (game-task swamp-buzzer))
+  (close-task-helper (game-task sunken-platforms))
+  (close-task-helper (game-task sunken-pipe))
+  (close-task-helper (game-task sunken-slide))
+  (close-task-helper (game-task sunken-room))
+  (close-task-helper (game-task sunken-sharks))
+  (close-task-helper (game-task sunken-buzzer))
+  (close-task-helper (game-task sunken-top-of-helix))
+  (close-task-helper (game-task sunken-spinning-room))
+  (close-task-helper (game-task rolling-race))
+  (close-task-helper (game-task rolling-robbers))
+  (close-task-helper (game-task rolling-moles))
+  (close-task-helper (game-task rolling-plants))
+  (close-task-helper (game-task rolling-lake))
+  (close-task-helper (game-task rolling-buzzer))
+  (close-task-helper (game-task rolling-ring-chase-1))
+  (close-task-helper (game-task rolling-ring-chase-2))
+  (close-task-helper (game-task ogre-boss))
+  (close-task-helper (game-task ogre-end))
+  (close-task-helper (game-task ogre-buzzer))
+  (close-task-helper (game-task ogre-secret))
+
+  ;; needed to remove blocking invis wall at end of MP
+  (let ((end-of-mp-racer (the racer (process-by-ename "racer-14"))))
+    (when end-of-mp-racer
+      (set! (-> end-of-mp-racer condition) 0) ;; I think any condition besides 3 works here? idk
+      )
+    )
+  (none)
+  )
+
+(defun speedrun-practice-hub3-hundo-start-run ()
+  (set! *practice-spawn-post-init* hub3-hundo-prep)
+  (initialize! *game-info* 'game (the-as game-save #f) "ogre-end")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "ogre-end"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+
+(defun continue-point-copy! ((dst continue-point) (src continue-point))
+  (set! (-> dst level) (-> src level))
+  (set! (-> dst quat y) 0.0)
+  (set! (-> dst quat w) 1.0)
+  (set! (-> dst load-commands) (-> src load-commands))
+  (set! (-> dst vis-nick) (-> src vis-nick))
+  (when (-> *level* level0)
+    (set! (-> dst lev0) (-> *level* level0 name))
+    (set! (-> dst disp0) 'display)
+    )
+  (when (-> *level* level1)
+    (set! (-> dst lev1) (-> *level* level1 name))
+    (set! (-> dst disp1) 'display)
+    )
+  (none)
+  )
+
+(defun camera-rot-copy! ((dst continue-point) (src matrix))
+  (set! (-> dst camera-rot 0) (-> src vector 0 x))
+  (set! (-> dst camera-rot 1) (-> src vector 0 y))
+  (set! (-> dst camera-rot 2) (-> src vector 0 z))
+  (set! (-> dst camera-rot 3) (-> src vector 1 x))
+  (set! (-> dst camera-rot 4) (-> src vector 1 y))
+  (set! (-> dst camera-rot 5) (-> src vector 1 z))
+  (set! (-> dst camera-rot 6) (-> src vector 2 x))
+  (set! (-> dst camera-rot 7) (-> src vector 2 y))
+  (set! (-> dst camera-rot 8) (-> src vector 2 z))
+  (none)
+  )
+
+(defun speedrun-practice-store-temp-checkpoint ()
+  (case (-> *target* state)
+    ;; only store temp checkpoint if in one of these states
+    ((target-stance target-wade-stance target-swim-stance target-flut-stance target-racing)
+      (set! *last-speedrun-practice-option* (speedrun-practice-option none))
+      
+      ;; assume current continue is good enough for the current location
+      (continue-point-copy! *tmp-continue-point* (-> *game-info* current-continue))
+      (vector-copy! (-> *tmp-continue-point* trans) (-> *target* root trans))
+      (quaternion-copy! (-> *tmp-continue-point* quat) (-> *target* control unknown-quaternion00))
+      (vector-copy! (-> *tmp-continue-point* camera-trans) (-> *camera-combiner* trans))
+      (camera-rot-copy! *tmp-continue-point* (-> *camera-combiner* inv-camera-rot))
+
+      (set! *tmp-flut?* #f)
+      (set! *tmp-zoomer?* #f)
+      (case (-> *target* state)
+        ((target-flut-stance)
+          (set! *tmp-flut?* #t)
+          )
+        ((target-racing)
+          (set! *tmp-zoomer?* #t)
+          )
+        )
+      (sound-play "select-menu")
+      )
+    )
+  (none)
+  )
+
+(defun speedrun-practice-spawn ()
+  ;; enable speedrunner mode
+  (set! (-> *pc-settings* speedrunner-mode?) #t)
+  ;; randomize game id so the autosplitter knows to restart
+  (update-autosplit-jak1-new-game)
+
+  ;; reset any previous post-target-init callback
+  (set! *practice-spawn-post-init* #f)
+
+  (case *last-speedrun-practice-option*
+    (((speedrun-practice-option lts-old))
+      (speedrun-practice-LTS-old-start-run)
+      )
+    (((speedrun-practice-option lts-new))
+      (speedrun-practice-LTS-new-start-run)
+      )
+    (((speedrun-practice-option sfb))
+      (speedrun-practice-SFB-start-run)
+      )
+    (((speedrun-practice-option fcs))
+      (speedrun-practice-FCS-start-run)
+      )
+    (((speedrun-practice-option misty-boosted))
+      (speedrun-practice-misty-boosted-start-run)
+      )
+    (((speedrun-practice-option boulderskip))
+      (speedrun-practice-boulderskip-start-run)
+      )
+    (((speedrun-practice-option piggyback))
+      (speedrun-practice-piggyback-start-run)
+      )
+    (((speedrun-practice-option buttonskip))
+      (speedrun-practice-buttonskip-start-run)
+      )
+    (((speedrun-practice-option gondola-flut))
+      (speedrun-practice-gondola-flut-start-run)
+      )
+    (((speedrun-practice-option gondola-foot))
+      (speedrun-practice-gondola-foot-start-run)
+      )
+    (((speedrun-practice-option hub1-hundo))
+      (speedrun-practice-hub1-hundo-start-run)
+      )
+    (((speedrun-practice-option hub2-hundo))
+      (speedrun-practice-hub2-hundo-start-run)
+      )
+    (((speedrun-practice-option hub3-hundo))
+      (speedrun-practice-hub3-hundo-start-run)
+      )
+    (else
+      (speedrun-practice-temp-checkpoint)
+      )
+    )
+  
+  (none)
+  )
