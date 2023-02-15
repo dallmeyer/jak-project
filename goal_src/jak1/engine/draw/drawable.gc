@@ -902,39 +902,7 @@
 
 (define *generic-effect-mode* 0)
 
-(define-extern money type)
-(define-extern *baby-mode-orb-dist* float)
-(defun baby-mode-find-closest-orb ((obj level-group))
-  ;; find closest orb
-  (set! *baby-mode-orb-dist* (the-as float #f))
-  (when (not (or (= *master-mode* 'menu) (= *master-mode* 'progress)))
-    (dotimes (s4-0 (-> obj length))
-      (let ((v1-8 (-> obj level s4-0)))
-        (when (= (-> v1-8 status) 'active)
-          (let ((s3-0 (-> v1-8 bsp level entity)))
-            (dotimes (s2-0 (-> s3-0 length))
-              (let* ((s0-0 (-> s3-0 data s2-0 entity))
-                     (s1-0 (-> s0-0 extra trans))
-                     )
-                (when (type-type? (-> s0-0 extra process type) money)
-                  (let ((dist (vector-vector-distance 
-                                (target-pos 0) 
-                                (-> (the process-drawable (-> s0-0 extra process)) root trans))))
-                    (if (or (= *baby-mode-orb-dist* #f) (< dist *baby-mode-orb-dist*))
-                      (set! *baby-mode-orb-dist* dist)
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
-      )
-    )
-  (none)
-  )
-
+(define-extern baby-mode-find-closest-orb (function none))
 (defun real-main-draw-hook ()
   "The main drawing function. This dispatches all renderers and is called directly from the display-loop
   in main.gc"
@@ -1197,7 +1165,7 @@
 
   ;; find closest orb for baby-mode
   (if (-> *pc-settings* baby-mode?)
-    (baby-mode-find-closest-orb *level*)
+    (baby-mode-find-closest-orb)
     )
 
   ;; debug drawing

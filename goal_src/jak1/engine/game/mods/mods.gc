@@ -1,6 +1,42 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
+(defun baby-mode-find-closest-orb ()
+  ;; find closest orb
+  (set! *baby-mode-orb-dist* (the-as float #f))
+  (when (not (or (= *master-mode* 'menu) (= *master-mode* 'progress)))
+    (dotimes (s4-0 (-> *level* length))
+      (let ((v1-8 (-> *level* level s4-0)))
+        (when (= (-> v1-8 status) 'active)
+          (let ((s3-0 (-> v1-8 bsp level entity)))
+            (dotimes (s2-0 (-> s3-0 length))
+              (let* ((s0-0 (-> s3-0 data s2-0 entity))
+                     (s1-0 (-> s0-0 extra trans))
+                     (proc (-> s0-0 extra process))
+                     )
+                (when (or (type-type? (-> proc type) money) ;; open orbs
+                          (and (type-type? (-> proc type) orb-cache-top) (nonzero? (-> (the orb-cache-top proc) money)))  ;; orb cache top with remaining orbs
+                          (and (type-type? (-> proc type) crate) (= (-> (the crate proc) fact pickup-type) (pickup-type money))) ;; orb crate
+                          (and (type-type? (-> proc type) plant-boss) (< (-> (the plant-boss proc) entity extra perm user-int8 1) 5)) ;; plant-boss
+                          )
+                  (let ((dist (vector-vector-distance 
+                                (target-pos 0) 
+                                (-> (the process-drawable (-> s0-0 extra process)) root trans))))
+                    (if (or (= *baby-mode-orb-dist* #f) (< dist *baby-mode-orb-dist*))
+                      (set! *baby-mode-orb-dist* dist)
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  (none)
+  )
+
 (defmacro mod-copy-mesh-and-path (dst-name src-name)
   `(let ((dst (the nav-enemy (process-by-ename ,dst-name)))
          (src (the nav-enemy (process-by-ename ,src-name)))
