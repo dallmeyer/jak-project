@@ -7,10 +7,6 @@
 
 ;; DECOMP BEGINS
 
-;;-*-Lisp-*-
-(in-package goal)
-
-;; definition for symbol *instance-shrub-work*, type instance-shrub-work
 (define *instance-shrub-work*
   (new 'static 'instance-shrub-work
     :matrix-tmpl (new 'static 'inline-array qword 20
@@ -70,14 +66,22 @@
         :dma (new 'static 'dma-tag :qwc #x6 :id (dma-tag-id next))
         :vif1 (new 'static 'vif-tag :imm #x6 :cmd (vif-cmd direct) :msk #x1)
         )
-      :gif (new 'static 'array uint64 2 #x1000000000008005 #xe)
+      :gif0 (new 'static 'gif-tag64 :nloop #x5 :eop #x1 :nreg #x1)
+      :gif1 (new 'static 'gif-tag-regs :regs0 (gif-reg-id a+d))
       )
     :billboard-tmpl (new 'static 'dma-gif-packet
       :dma-vif (new 'static 'dma-packet
         :dma (new 'static 'dma-tag :qwc #xd :id (dma-tag-id next))
         :vif1 (new 'static 'vif-tag :imm #xd :cmd (vif-cmd direct) :msk #x1)
         )
-      :gif (new 'static 'array uint64 2 #x303e400000008004 #x412)
+      :gif0 (new 'static 'gif-tag64
+        :nloop #x4
+        :eop #x1
+        :pre #x1
+        :prim (new 'static 'gs-prim :prim (gs-prim-type tri-strip) :iip #x1 :tme #x1 :fge #x1 :abe #x1)
+        :nreg #x3
+        )
+      :gif1 (new 'static 'gif-tag-regs :regs0 (gif-reg-id st) :regs1 (gif-reg-id rgbaq) :regs2 (gif-reg-id xyzf2))
       )
     :shrub-near-packets (new 'static 'inline-array shrub-near-packet 6
       (new 'static 'shrub-near-packet
@@ -318,14 +322,10 @@
     )
   )
 
-;; failed to figure out what this is:
 (set! (-> *instance-shrub-work* mscalf-tmpl vif0 imm) 103)
 
-;; failed to figure out what this is:
 (set! (-> *instance-shrub-work* mscalf-ret-tmpl vif0 imm) 103)
 
-;; definition for function upload-generic-shrub
-;; INFO: Used lq/sq
 (defun upload-generic-shrub ((arg0 dma-buffer) (arg1 generic-shrub-fragment) (arg2 int) (arg3 int))
   (let* ((v1-0 arg0)
          (t0-0 (the-as object (-> v1-0 base)))
@@ -339,14 +339,14 @@
     )
   (let* ((v1-1 (the-as matrix (-> arg0 base)))
          (t3-0 (-> *math-camera* camera-temp))
-         (t0-3 (-> t3-0 vector 0 quad))
-         (t1-4 (-> t3-0 vector 1 quad))
-         (t2-4 (-> t3-0 vector 2 quad))
+         (t0-3 (-> t3-0 quad 0))
+         (t1-4 (-> t3-0 quad 1))
+         (t2-4 (-> t3-0 quad 2))
          (t3-1 (-> t3-0 trans quad))
          )
-    (set! (-> v1-1 vector 0 quad) t0-3)
-    (set! (-> v1-1 vector 1 quad) t1-4)
-    (set! (-> v1-1 vector 2 quad) t2-4)
+    (set! (-> v1-1 quad 0) t0-3)
+    (set! (-> v1-1 quad 1) t1-4)
+    (set! (-> v1-1 quad 2) t2-4)
     (set! (-> v1-1 trans quad) t3-1)
     )
   (&+! (-> arg0 base) 64)
@@ -421,7 +421,3 @@
     )
   arg0
   )
-
-
-
-

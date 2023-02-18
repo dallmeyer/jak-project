@@ -757,6 +757,18 @@ Mips2C_Line handle_vmadda(const Instruction& i0, const std::string& instr_str) {
           instr_str};
 }
 
+Mips2C_Line handle_vmsuba(const Instruction& i0, const std::string& instr_str) {
+  return {fmt::format("c->vmsuba(DEST::{},  {}, {});", dest_to_char(i0.cop2_dest),
+                      reg_to_name(i0.get_src(0)), reg_to_name(i0.get_src(1))),
+          instr_str};
+}
+
+Mips2C_Line handle_vmula(const Instruction& i0, const std::string& instr_str) {
+  return {fmt::format("c->vmula(DEST::{},  {}, {});", dest_to_char(i0.cop2_dest),
+                      reg_to_name(i0.get_src(0)), reg_to_name(i0.get_src(1))),
+          instr_str};
+}
+
 Mips2C_Line handle_vadda_bc(const Instruction& i0, const std::string& instr_str) {
   return {fmt::format("c->vadda_bc(DEST::{}, BC::{}, {}, {});", dest_to_char(i0.cop2_dest),
                       i0.cop2_bc_to_char(), reg_to_name(i0.get_src(0)), reg_to_name(i0.get_src(1))),
@@ -988,6 +1000,8 @@ Mips2C_Line handle_normal_instr(Mips2C_Output& output,
       return handle_generic_op3_bc_mask(i0, instr_str, "vmul_bc");
     case InstructionKind::VMADD:
       return handle_generic_op3_mask(i0, instr_str, "vmadd");
+    case InstructionKind::VMSUB:
+      return handle_generic_op3_mask(i0, instr_str, "vmsub");
     case InstructionKind::VMUL:
       return handle_generic_op3_mask(i0, instr_str, "vmul");
     case InstructionKind::VADD:
@@ -1020,6 +1034,8 @@ Mips2C_Line handle_normal_instr(Mips2C_Output& output,
       return handle_generic_op2_mask(i0, instr_str, "vabs");
     case InstructionKind::VADDQ:
       return handle_generic_op2_mask(i0, instr_str, "vaddq");
+    case InstructionKind::VMR32:
+      return handle_generic_op2_mask(i0, instr_str, "vmr32");
     case InstructionKind::ANDI:
     case InstructionKind::ORI:
     case InstructionKind::XORI:
@@ -1055,6 +1071,7 @@ Mips2C_Line handle_normal_instr(Mips2C_Output& output,
     case InstructionKind::PCGTW:
     case InstructionKind::PPACB:
     case InstructionKind::PADDW:
+    case InstructionKind::PADDB:
     case InstructionKind::PEXTUB:
     case InstructionKind::PMULTH:
     case InstructionKind::PMADDH:
@@ -1071,6 +1088,8 @@ Mips2C_Line handle_normal_instr(Mips2C_Output& output,
     case InstructionKind::SLTU:
     case InstructionKind::DSRAV:
     case InstructionKind::DSLLV:
+    case InstructionKind::DSRLV:
+    case InstructionKind::SLLV:
     case InstructionKind::PAND:
     case InstructionKind::PCEQB:
     case InstructionKind::PPACW:
@@ -1092,10 +1111,13 @@ Mips2C_Line handle_normal_instr(Mips2C_Output& output,
       return handle_generic_op3(i0, instr_str, "xor_");
     case InstructionKind::AND:
       return handle_generic_op3(i0, instr_str, "and_");  // and isn't allowed in C++
+    case InstructionKind::NOR:
+      return handle_generic_op3(i0, instr_str, "nor");  // and isn't allowed in C++
     case InstructionKind::DADDIU:
       return handle_daddiu(output, i0, instr_str, version);
     case InstructionKind::ADDIU:
     case InstructionKind::SLTI:
+    case InstructionKind::SLTIU:
       return handle_generic_op2_u16(i0, instr_str);
     case InstructionKind::QMTC2:
       return handle_generic_op2(i0, instr_str, "mov128_vf_gpr");
@@ -1111,6 +1133,10 @@ Mips2C_Line handle_normal_instr(Mips2C_Output& output,
       return handle_vmsuba_bc(i0, instr_str);
     case InstructionKind::VMADDA:
       return handle_vmadda(i0, instr_str);
+    case InstructionKind::VMSUBA:
+      return handle_vmsuba(i0, instr_str);
+    case InstructionKind::VMULA:
+      return handle_vmula(i0, instr_str);
     case InstructionKind::VMADD_BC:
       return handle_generic_op3_bc_mask(i0, instr_str, "vmadd_bc");
     case InstructionKind::VMSUB_BC:
@@ -1139,6 +1165,8 @@ Mips2C_Line handle_normal_instr(Mips2C_Output& output,
       return handle_generic_op2(i0, instr_str, "mtc1");
     case InstructionKind::NEGS:
       return handle_generic_op2(i0, instr_str, "negs");
+    case InstructionKind::ABSS:
+      return handle_generic_op2(i0, instr_str, "abss");
     case InstructionKind::MOVS:
       return handle_generic_op2(i0, instr_str, "movs");
     case InstructionKind::CVTWS:

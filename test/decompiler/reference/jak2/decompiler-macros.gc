@@ -116,8 +116,8 @@
   )
 
 (defmacro process->ppointer (proc)
-  ;"safely get a (pointer process) from a process, returning #f if invalid."
-  `(let ((the-proc ,proc))
+  "safely get a (pointer process) from a process, returning #f if invalid."
+  `(let ((the-proc (the-as process ,proc)))
      (if the-proc (-> the-proc ppointer))
      )
   )
@@ -345,6 +345,13 @@
       )
     `(new 'static 'sound-name :lo ,lo-val :hi ,hi-val)
     )
+  )
+
+(defmacro sound-play (name &key (id (new-sound-id))
+                           &key (vol 100.0) &key (pitch 0) &key (bend 0)
+                           &key (group sfx)
+                           &key (position #t))
+  `(sound-play-by-name (static-sound-name ,name) ,id (the int (* (/ 1024.0 100.0) ,vol)) (the int (* 1524.0 ,pitch)) ,bend (sound-group ,group) ,position)
   )
 
 (defmacro vftoi4.xyzw (dst src)
@@ -591,6 +598,10 @@
        )
   )
 
+(defmacro .sll (result in sa)
+  `(set! ,result (sext32 (the-as int (shl (logand ,in #xffffffff) ,sa))))
+  )
+
 (defmacro .mfc0 (&rest stuff)
   `(empty)
   )
@@ -814,6 +825,7 @@
    - (chan channel) = copy frame from another channel.
    - min = the start of the animation.
    - max = the end of the animation.
+   - zero = frame zero.
    "
 
   (let* ((num-args (if (pair? num!) (cdr num!) '()))
@@ -822,7 +834,7 @@
               ((or (eq? num! 'identity)
                    (eq? num! 'min)
                    (eq? num! 'max)
-                   )
+                   (eq? num! 'zero))
                    'num-func-identity)
               ((eq? num! 'none) 'num-func-none)
               ((eq? num! '+!) 'num-func-+!)
@@ -854,11 +866,13 @@
                 (cond
                   ((eq? num! 'seek!) (if (or (null? num-args) (null? (cdr num-args))) 1.0 (cadr num-args)))
                   )))
-        (frame-num (if (eq? 'max frame-num) (if group!
+        (frame-num (cond
+                      ((eq? 'max frame-num) (if group!
                                                 `(the float (1- (-> (the art-joint-anim ,group!) frames num-frames)))
                                                 `(the float (1- (-> ja-ch frame-group frames num-frames)))
-                                                )
-                                            frame-num))
+                                                ))
+                      ((eq? 'zero frame-num) 0)
+                      (#t frame-num)))
         (frame-group (if (or p0 p1 frame-num (not nf)) group! #f))
       )
   `(let ((ja-ch (-> self skel root-channel ,chan)))
@@ -930,6 +944,13 @@
   `(if (zero? ,condition)
        (set! ,dest #f)
        (set! ,dest ,src)
+       )
+   )
+
+(defmacro cmove-#f-nonzero (dest condition src)
+  `(if (zero? ,condition)
+       (set! ,dest ,src)
+       (set! ,dest #f)
        )
    )
 
@@ -1030,8 +1051,8 @@
   )
 
 (defmacro sp-rnd-flt (field-name val range mult)
-  `(new 'static 'sp-field-init-spec 
-        :field (sp-field-id ,field-name) 
+  `(new 'static 'sp-field-init-spec
+        :field (sp-field-id ,field-name)
         :initial-valuef ,val
         :random-rangef ,range
         :random-multf ,mult
@@ -1040,8 +1061,8 @@
   )
 
 (defmacro sp-flt (field-name val)
-  `(new 'static 'sp-field-init-spec 
-        :field (sp-field-id ,field-name) 
+  `(new 'static 'sp-field-init-spec
+        :field (sp-field-id ,field-name)
         :initial-valuef ,val
         :random-rangef 0.0
         :random-multf 1.0
@@ -1142,4 +1163,135 @@
   )
 (defmacro static-bspherem (x y z r)
   `(new 'static 'sphere :x (meters ,x) :y (meters ,y) :z (meters ,z) :w (meters ,r))
+  )
+
+;; art-h
+(desfun art-elt->index (ag-name elt-name)
+  (if (number? elt-name)
+      elt-name
+      (let ((ag-info (hash-table-try-ref *art-info* (symbol->string ag-name))))
+          (if (not (car ag-info))
+              -1
+              (let ((elt-info (hash-table-try-ref (cdr ag-info) (symbol->string elt-name))))
+                  (if (not (car elt-info))
+                      -1
+                      (cadr (cdr elt-info)))
+                  )
+              )
+          )
+      )
+  )
+
+(defmacro defskelgroup (name ag-name joint-geom joint-anim lods
+                        &key (shadow 0)
+                        &key bounds
+                        &key (longest-edge 0.0)
+                        &key (texture-level 0)
+                        &key (sort 0)
+                        &key (version 7) ;; do NOT use this!
+                        &key (origin-joint-index 0)
+                        &key (shadow-joint-index 0)
+                        &key (light-index 0)
+                        )
+  "define a new static skeleton group"
+
+  `(let ((skel (new 'static 'skeleton-group
+                        :name ,(symbol->string name)
+                        :info #f ;; all skeleton-groups seem to have these as #f
+                        :extra #f
+                        :art-group-name ,(symbol->string ag-name)
+                        :bounds ,bounds
+                        :longest-edge ,longest-edge
+                        :version ,version
+                        :max-lod ,(- (length lods) 1)
+                        :shadow ,(art-elt->index (string->symbol-format "{}-ag" ag-name) shadow)
+                        :texture-level ,texture-level
+                        :sort ,sort
+                        :origin-joint-index ,origin-joint-index
+                        :shadow-joint-index ,shadow-joint-index
+                        :light-index ,light-index
+                        )))
+        ;; set joint geometry and joint bones
+        (set! (-> skel jgeo) ,(art-elt->index (string->symbol-format "{}-ag" ag-name) joint-geom))
+        (set! (-> skel janim) ,(art-elt->index (string->symbol-format "{}-ag" ag-name) joint-anim))
+
+        ;; set lods
+        ,@(apply-i (lambda (x i)
+                      `(begin
+                          (set! (-> skel mgeo ,i) ,(art-elt->index (string->symbol-format "{}-ag" ag-name) (car x)))
+                          (set! (-> skel lod-dist ,i) ,(cadr x))
+                          )
+                      ) lods)
+
+        ;; define skel group
+        (define ,name skel)
+        ;; add to level
+        (add-to-loading-level ,name)
+        )
+  )
+
+(defmacro with-dma-bucket (bindings &rest body)
+  "Start a new dma-bucket in body that will be finished at the end.
+   The bindings are the dma-buffer, dma-bucket and bucket-id respectively."
+
+  (let ((buf (first bindings))
+        (bucket (second bindings))
+        (bucket-id (third bindings))
+        )
+
+      (with-gensyms (buf-start bucket-edge pkt)
+        `(let ((,buf-start (-> ,buf base)))
+
+            ,@body
+
+            ;; we end the chain with a next.  The bucket system will patch the next chain to this,
+            ;; and then patch all the buckets togehter before sending the DMA.
+            (let ((,bucket-edge (the (pointer dma-tag) (-> ,buf base))))
+                (let ((,pkt (the-as dma-packet (-> ,buf base))))
+
+                  (set! (-> ,pkt dma) (new 'static 'dma-tag :id (dma-tag-id next)))
+                  (set! (-> ,pkt vif0) (new 'static 'vif-tag :cmd (vif-cmd nop)))
+                  (set! (-> ,pkt vif1) (new 'static 'vif-tag :cmd (vif-cmd nop)))
+
+                  (set! (-> ,buf base) (&+ (the-as pointer ,pkt) (size-of dma-packet)))
+
+                  )
+                (dma-bucket-insert-tag ,bucket ,bucket-id
+                      ,buf-start ;; the first thing in this chain, bucket will patch previous to this
+                      ,bucket-edge ;; end of this chain (ptr to next tag)
+                      )
+                )
+            )
+        )
+
+      )
+  )
+
+(defmacro with-dma-buffer-add-bucket (bindings &key (bucket-group (-> (current-frame) bucket-group)) &rest body)
+  "Bind a dma-buffer to a variable and use it on a block to allow adding things to a new bucket.
+   usage: (with-dma-buffer-add-bucket ((buffer-name buffer) bucket-id) &rest body)
+   example: (with-dma-buffer-add-bucket ((buf (-> (current-frame) debug-buf)) (bucket-id debug-no-zbuf)) ...)"
+
+  `(let ((,(caar bindings) ,(cadar bindings)))
+    (with-dma-bucket (,(caar bindings) ,bucket-group ,(cadr bindings))
+      ,@body
+      )
+    )
+  )
+
+(defmacro current-frame ()
+  `(-> *display* frames (-> *display* on-screen))
+  )
+
+(defmacro def-mips2c (name type)
+  "Define a mips2c object (typically a function)."
+  `(begin
+     (define-extern ,name ,type)
+     (set! ,name (the-as ,type (__pc-get-mips2c ,(symbol->string name))))
+     )
+  )
+
+(defmacro defmethod-mips2c (name method-id method-type)
+  "Define a mips2c method."
+  `(method-set! ,method-type ,method-id (__pc-get-mips2c ,name))
   )

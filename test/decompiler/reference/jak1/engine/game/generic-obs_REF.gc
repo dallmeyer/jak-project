@@ -711,6 +711,8 @@
 
 ;; definition for function command-get-process
 ;; INFO: Return type mismatch object vs process.
+;; WARN: Failed load: (set! a0-1 (l.wu (+ a0-0 -4))) at op 11
+;; WARN: Failed load: (set! a0-2 (l.wu (+ a0-0 -4))) at op 48
 ;; WARN: disable def twice: 68. This may happen when a cond (no else) is nested inside of another conditional, but it should be rare.
 ;; WARN: disable def twice: 82. This may happen when a cond (no else) is nested inside of another conditional, but it should be rare.
 ;; WARN: disable def twice: 96. This may happen when a cond (no else) is nested inside of another conditional, but it should be rare.
@@ -784,6 +786,9 @@
 
 ;; definition for function command-get-camera
 ;; INFO: Return type mismatch object vs state.
+;; WARN: Failed load: (set! a0-3 (l.wu (+ a0-0 -4))) at op 47
+;; WARN: Failed load: (set! a0-1 (l.wu (+ a0-0 -4))) at op 23
+;; WARN: Failed load: (set! a0-2 (l.wu (+ a0-0 -4))) at op 35
 (defun command-get-camera ((arg0 object) (arg1 state))
   (the-as state (cond
                   ((null? arg0)
@@ -977,6 +982,8 @@
 
 ;; definition for method 14 of type camera-tracker
 ;; INFO: Return type mismatch object vs process.
+;; WARN: Failed load: (set! v1-42 (l.wu (+ a0-22 -4))) at op 159
+;; WARN: Failed load: (set! a0-72 (l.wu (+ s2-3 -4))) at op 393
 (defmethod eval camera-tracker ((obj camera-tracker) (arg0 pair))
   (with-pp
     (let ((gp-0 (the-as object #f)))
@@ -1157,26 +1164,24 @@
 (defstate camera-tracker-process (camera-tracker)
   :event (behavior ((proc process) (arg1 int) (event-type symbol) (event event-message-block))
     (local-vars (v0-0 uint))
-    (let ((v1-0 event-type))
-      (the-as object (cond
-                       ((= v1-0 'message)
-                        (set! v0-0 (-> event param 0))
-                        (set! (-> self message) (the-as basic v0-0))
-                        v0-0
-                        )
-                       ((= v1-0 'mask)
-                        (set! v0-0 (-> event param 0))
-                        (set! (-> self mask-to-clear) (the-as process-mask v0-0))
-                        v0-0
-                        )
-                       ((= v1-0 'border)
-                        (set! v0-0 (-> event param 0))
-                        (set! (-> self border-value) (the-as basic v0-0))
-                        v0-0
-                        )
-                       )
-              )
-      )
+    (the-as object (case event-type
+                     (('message)
+                      (set! v0-0 (-> event param 0))
+                      (set! (-> self message) (the-as basic v0-0))
+                      v0-0
+                      )
+                     (('mask)
+                      (set! v0-0 (-> event param 0))
+                      (set! (-> self mask-to-clear) (the-as process-mask v0-0))
+                      v0-0
+                      )
+                     (('border)
+                      (set! v0-0 (-> event param 0))
+                      (set! (-> self border-value) (the-as basic v0-0))
+                      v0-0
+                      )
+                     )
+            )
     )
   :enter (behavior ()
     (if (-> self entity)
@@ -1220,6 +1225,7 @@
   )
 
 ;; definition for function camera-tracker-init
+;; WARN: Failed load: (set! a0-3 (l.wu (+ a0-0 -4))) at op 42
 (defbehavior camera-tracker-init camera-tracker ((arg0 object))
   (stack-size-set! (-> self main-thread) 512)
   (logclear! (-> self mask) (process-mask actor-pause movie enemy platform projectile))
@@ -2234,100 +2240,98 @@
 (defstate touch-tracker-idle (touch-tracker)
   :event (behavior ((proc process) (arg1 int) (event-type symbol) (event event-message-block))
     (local-vars (v0-0 none))
-    (let ((v1-0 event-type))
-      (the-as object (cond
-                       ((= v1-0 'touched)
-                        (let ((v1-1 (ppointer->process (-> self parent))))
-                          (when (!= v1-1 proc)
-                            (cond
-                              ((= (-> self event) 'attack)
-                               (cond
-                                 ((= (-> proc type) target)
-                                  (send-event
-                                    proc
-                                    (-> self event)
-                                    :from (the-as process v1-1)
-                                    #f
-                                    (static-attack-info ((mode (the-as symbol (-> self event-mode)))))
-                                    )
+    (the-as object (case event-type
+                     (('touched)
+                      (let ((v1-1 (ppointer->process (-> self parent))))
+                        (when (!= v1-1 proc)
+                          (cond
+                            ((= (-> self event) 'attack)
+                             (cond
+                               ((= (-> proc type) target)
+                                (send-event
+                                  proc
+                                  (-> self event)
+                                  :from (the-as process v1-1)
+                                  #f
+                                  (static-attack-info ((mode (the-as symbol (-> self event-mode)))))
                                   )
-                                 ((= (-> v1-1 type) target)
-                                  (send-event
-                                    proc
-                                    (-> self event)
-                                    :from (the-as process v1-1)
-                                    #f
-                                    (-> self event-mode)
-                                    (-> *target* control unknown-dword50)
-                                    (-> *target* control unknown-dword51)
-                                    )
+                                )
+                               ((= (-> v1-1 type) target)
+                                (send-event
+                                  proc
+                                  (-> self event)
+                                  :from (the-as process v1-1)
+                                  #f
+                                  (-> self event-mode)
+                                  (-> *target* control unknown-dword50)
+                                  (-> *target* control unknown-dword51)
                                   )
-                                 (else
-                                   (let ((a1-5 (new 'stack-no-clear 'event-message-block)))
-                                     (set! (-> a1-5 from) (the-as process v1-1))
-                                     (set! (-> a1-5 num-params) 4)
-                                     (set! (-> a1-5 message) (-> self event))
-                                     (set! (-> a1-5 param 0) (the-as uint #f))
-                                     (set! (-> a1-5 param 1) (the-as uint (-> self event-mode)))
-                                     (let ((v1-19 (+ *global-attack-id* 1)))
-                                       (set! *global-attack-id* v1-19)
-                                       (set! (-> a1-5 param 2) (the-as uint v1-19))
-                                       )
-                                     (set! (-> a1-5 param 3) (the-as uint 0))
-                                     (send-event-function proc a1-5)
+                                )
+                               (else
+                                 (let ((a1-5 (new 'stack-no-clear 'event-message-block)))
+                                   (set! (-> a1-5 from) (the-as process v1-1))
+                                   (set! (-> a1-5 num-params) 4)
+                                   (set! (-> a1-5 message) (-> self event))
+                                   (set! (-> a1-5 param 0) (the-as uint #f))
+                                   (set! (-> a1-5 param 1) (the-as uint (-> self event-mode)))
+                                   (let ((v1-19 (+ *global-attack-id* 1)))
+                                     (set! *global-attack-id* v1-19)
+                                     (set! (-> a1-5 param 2) (the-as uint v1-19))
                                      )
+                                   (set! (-> a1-5 param 3) (the-as uint 0))
+                                   (send-event-function proc a1-5)
                                    )
                                  )
                                )
-                              ((-> self event)
-                               (send-event proc (-> self event) :from (the-as process v1-1))
-                               )
-                              (else
-                                (let ((t0-5 (new 'stack-no-clear 'event-message-block)))
-                                  (set! (-> t0-5 from) proc)
-                                  (set! (-> t0-5 num-params) arg1)
-                                  (set! (-> t0-5 message) event-type)
-                                  (set! (-> t0-5 param 0) (-> event param 0))
-                                  (set! (-> t0-5 param 1) (-> event param 1))
-                                  (set! (-> t0-5 param 2) (-> event param 2))
-                                  (set! (-> t0-5 param 3) (-> event param 3))
-                                  (set! (-> t0-5 param 4) (-> event param 4))
-                                  (set! (-> t0-5 param 5) (-> event param 5))
-                                  (set! (-> t0-5 param 6) (-> event param 6))
-                                  (send-event-function v1-1 t0-5)
-                                  )
+                             )
+                            ((-> self event)
+                             (send-event proc (-> self event) :from (the-as process v1-1))
+                             )
+                            (else
+                              (let ((t0-5 (new 'stack-no-clear 'event-message-block)))
+                                (set! (-> t0-5 from) proc)
+                                (set! (-> t0-5 num-params) arg1)
+                                (set! (-> t0-5 message) event-type)
+                                (set! (-> t0-5 param 0) (-> event param 0))
+                                (set! (-> t0-5 param 1) (-> event param 1))
+                                (set! (-> t0-5 param 2) (-> event param 2))
+                                (set! (-> t0-5 param 3) (-> event param 3))
+                                (set! (-> t0-5 param 4) (-> event param 4))
+                                (set! (-> t0-5 param 5) (-> event param 5))
+                                (set! (-> t0-5 param 6) (-> event param 6))
+                                (send-event-function v1-1 t0-5)
                                 )
                               )
                             )
                           )
                         )
-                       ((= v1-0 'target)
-                        (set! v0-0 (the-as none (process->handle (the-as process (-> event param 0)))))
-                        (set! (-> self target) (the-as handle v0-0))
-                        v0-0
-                        )
-                       ((= v1-0 'event)
-                        (set! (-> self event) (the-as symbol (-> event param 0)))
-                        (set! v0-0 (the-as none (-> event param 1)))
-                        (set! (-> self event-mode) (the-as basic v0-0))
-                        v0-0
-                        )
-                       ((= v1-0 'exit)
-                        (set! v0-0 (the-as none (-> event param 0)))
-                        (set! (-> self run-function) (the-as (function object) v0-0))
-                        v0-0
-                        )
-                       ((= v1-0 'eval)
-                        ((the-as (function touch-tracker none) (-> event param 0)) self)
-                        )
-                       ((= v1-0 'function)
-                        (set! v0-0 (the-as none (-> event param 0)))
-                        (set! (-> self callback) (the-as (function touch-tracker none) v0-0))
-                        v0-0
-                        )
-                       )
-              )
-      )
+                      )
+                     (('target)
+                      (set! v0-0 (the-as none (process->handle (the-as process (-> event param 0)))))
+                      (set! (-> self target) (the-as handle v0-0))
+                      v0-0
+                      )
+                     (('event)
+                      (set! (-> self event) (the-as symbol (-> event param 0)))
+                      (set! v0-0 (the-as none (-> event param 1)))
+                      (set! (-> self event-mode) (the-as basic v0-0))
+                      v0-0
+                      )
+                     (('exit)
+                      (set! v0-0 (the-as none (-> event param 0)))
+                      (set! (-> self run-function) (the-as (function object) v0-0))
+                      v0-0
+                      )
+                     (('eval)
+                      ((the-as (function touch-tracker none) (-> event param 0)) self)
+                      )
+                     (('function)
+                      (set! v0-0 (the-as none (-> event param 0)))
+                      (set! (-> self callback) (the-as (function touch-tracker none) v0-0))
+                      v0-0
+                      )
+                     )
+            )
     )
   :code (behavior ()
     (set! (-> self state-time) (-> *display* base-frame-counter))

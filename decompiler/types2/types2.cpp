@@ -735,7 +735,6 @@ end_type_pass:
       }
       auto& type = instr.unknown_label_tag->selected_type.value();
       int idx = instr.unknown_label_tag->label_idx;
-      ASSERT(type.base_type() != "pointer");  // want to test this if we find example...
       env.file->label_db->set_and_get_previous(idx, type, false, {});
     }
 
@@ -750,12 +749,13 @@ end_type_pass:
 
       auto& type = instr.unknown_stack_structure_tag->selected_type.value();
       int offset = instr.unknown_stack_structure_tag->stack_offset;
-      ASSERT(type.base_type() != "pointer");  // want to test this if we find example...
-      StackStructureHint hint;
-      hint.stack_offset = offset;
-      hint.container_type = StackStructureHint::ContainerType::NONE;
-      hint.element_type = type.print();
-      env.add_stack_structure_hint(hint);
+      if (type.base_type() != "pointer") {
+        StackStructureHint hint;
+        hint.stack_offset = offset;
+        hint.container_type = StackStructureHint::ContainerType::NONE;
+        hint.element_type = type.print();
+        env.add_stack_structure_hint(hint);
+      }
     }
   }
 

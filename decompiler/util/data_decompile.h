@@ -32,7 +32,7 @@ goos::Object decompile_at_label_with_hint(const LabelInfo& hint,
                                           const DecompilerLabel& label,
                                           const std::vector<DecompilerLabel>& labels,
                                           const std::vector<std::vector<LinkedWord>>& words,
-                                          DecompilerTypeSystem& dts,
+                                          const TypeSystem& dts,
                                           const LinkedObjectFile* file,
                                           GameVersion version);
 goos::Object decompile_at_label_guess_type(const DecompilerLabel& label,
@@ -56,7 +56,8 @@ goos::Object decompile_pair(const DecompilerLabel& label,
                             bool add_quote,
                             const LinkedObjectFile* file,
                             GameVersion version);
-goos::Object decompile_boxed_array(const DecompilerLabel& label,
+goos::Object decompile_boxed_array(const TypeSpec& type,
+                                   const DecompilerLabel& label,
                                    const std::vector<DecompilerLabel>& labels,
                                    const std::vector<std::vector<LinkedWord>>& words,
                                    const TypeSystem& ts,
@@ -82,6 +83,7 @@ goos::Object decompile_bitfield(const TypeSpec& type,
 
 struct BitFieldConstantDef {
   bool is_signed = false;
+  bool is_float = false;
   u64 value = -1;
   std::optional<std::string> enum_constant;
   std::string field_name;
@@ -118,4 +120,22 @@ std::vector<std::string> decompile_bitfield_enum_from_int(const TypeSpec& type,
 std::string decompile_int_enum_from_int(const TypeSpec& type, const TypeSystem& ts, u64 value);
 goos::Object bitfield_defs_print(const TypeSpec& type,
                                  const std::vector<BitFieldConstantDef>& defs);
+
+struct ArrayFieldDecompMeta {
+  enum class Kind { REF_TO_INLINE_ARR, REF_TO_INTEGER_ARR };
+
+  TypeSpec element_type;
+  int bytes_per_element;  // aka stride
+  Kind kind;
+
+  ArrayFieldDecompMeta(TypeSpec _element_type,
+                       int _bytes_per_element,
+                       Kind _kind = Kind::REF_TO_INLINE_ARR)
+      : element_type(_element_type), bytes_per_element(_bytes_per_element), kind(_kind){};
+};
+
+extern const std::unordered_map<
+    GameVersion,
+    std::unordered_map<std::string, std::unordered_map<std::string, ArrayFieldDecompMeta>>>
+    array_field_decomp_special_cases;
 }  // namespace decompiler

@@ -3,7 +3,7 @@
 
 ;; this file is debug only
 (declare-file (debug))
-(when *debug-segment*
+
 ;; definition for symbol *camera-layout-blink*, type symbol
 (define *camera-layout-blink* #f)
 
@@ -296,25 +296,12 @@
   )
 
 ;; definition for function cam-layout-print
+;; ERROR: Failed store: (s.w! (+ v1-6 8) 0) at op 22
 (defun cam-layout-print ((arg0 int) (arg1 int) (arg2 string))
-  (let* ((s5-0 (-> *display* frames (-> *display* on-screen) debug-buf))
-         (gp-0 (-> s5-0 base))
-         )
+  (with-dma-buffer-add-bucket ((s5-0 (-> *display* frames (-> *display* on-screen) debug-buf))
+                               (bucket-id debug2)
+                               )
     (draw-string-xy arg2 s5-0 arg0 arg1 (font-color #dadada) (font-flags shadow kerning))
-    (let ((a3-2 (-> s5-0 base)))
-      (let ((v1-6 (the-as object (-> s5-0 base))))
-        (set! (-> (the-as dma-packet v1-6) dma) (new 'static 'dma-tag :id (dma-tag-id next)))
-        (set! (-> (the-as dma-packet v1-6) vif0) (new 'static 'vif-tag))
-        (set! (-> (the-as dma-packet v1-6) vif1) (new 'static 'vif-tag))
-        (set! (-> s5-0 base) (&+ (the-as pointer v1-6) 16))
-        )
-      (dma-bucket-insert-tag
-        (-> *display* frames (-> *display* on-screen) bucket-group)
-        (bucket-id debug2)
-        gp-0
-        (the-as (pointer dma-tag) a3-2)
-        )
-      )
     )
   )
 
@@ -332,6 +319,21 @@
 
 ;; definition for function cam-layout-entity-volume-info-create
 ;; INFO: Used lq/sq
+;; WARN: Stack slot offset 164 signed mismatch
+;; WARN: Stack slot offset 164 signed mismatch
+;; WARN: Stack slot offset 164 signed mismatch
+;; WARN: Stack slot offset 164 signed mismatch
+;; WARN: Stack slot offset 164 signed mismatch
+;; WARN: Stack slot offset 164 signed mismatch
+;; WARN: Stack slot offset 164 signed mismatch
+;; WARN: Stack slot offset 164 signed mismatch
+;; WARN: Stack slot offset 164 signed mismatch
+;; WARN: Stack slot offset 164 signed mismatch
+;; WARN: Stack slot offset 164 signed mismatch
+;; WARN: Stack slot offset 164 signed mismatch
+;; WARN: Stack slot offset 164 signed mismatch
+;; WARN: Stack slot offset 164 signed mismatch
+;; WARN: Stack slot offset 164 signed mismatch
 ;; WARN: Stack slot offset 164 signed mismatch
 ;; WARN: Stack slot offset 164 signed mismatch
 ;; WARN: Stack slot offset 164 signed mismatch
@@ -1049,10 +1051,7 @@
                       res-tag
                       (make-u128
                         (logior (shl (shl #x8001 16) 32) (shr (shl (the-as int vector) 32) 32))
-                        (the-as
-                          res-tag
-                          (logior (shl (-> (new 'static 'array uint64 1 #xce6e6b28) 0) 32) (shr (shl (the-as int arg0) 32) 32))
-                          )
+                        (the-as res-tag (logior (shl (the-as uint #xce6e6b28) 32) (shr (shl (the-as int arg0) 32) 32)))
                         )
                       )
                     (the-as pointer (new 'static 'vector4w))
@@ -1081,7 +1080,7 @@
                       res-tag
                       (make-u128
                         (the-as res-tag (logior (shl (shl #x8001 16) 32) (shr (shl (the-as int quaternion) 32) 32)))
-                        (logior (shl (-> (new 'static 'array uint64 1 #xce6e6b28) 0) 32) (shr (shl (the-as int arg1) 32) 32))
+                        (logior (shl (the-as uint #xce6e6b28) 32) (shr (shl (the-as int arg1) 32) 32))
                         )
                       )
                     (the-as pointer (quaternion-identity! (new 'static 'quaternion)))
@@ -2504,13 +2503,11 @@
     (let ((f0-2 (+ f30-0 (analog-input (the-as int (-> *cpad-list* cpads 0 leftx)) 128.0 48.0 110.0 f0-0))))
       (add-32bit-data!
         (-> self cam-entity)
-        (the-as
-          res-tag
-          (make-u128
-            (the-as res-tag (logior (shl #x10000 32) (shr (shl (the-as int float) 32) 32)))
-            (logior (shl (-> (new 'static 'array uint64 1 #xce6e6b28) 0) 32) (shr (shl (the-as int arg0) 32) 32))
-            )
-          )
+        (the-as res-tag (make-u128
+                          (the-as res-tag (logior (shl #x10000 32) (shr (shl (the-as int float) 32) 32)))
+                          (logior (shl (the-as uint #xce6e6b28) 32) (shr (shl (the-as int arg0) 32) 32))
+                          )
+                )
         f0-2
         )
       )
@@ -3478,7 +3475,7 @@
                    (cam-layout-function-call
                      (-> s3-1 items s2-1 val-func)
                      *temp-string*
-                     (the-as int (-> s3-1 items s2-1 val-parm0))
+                     (-> s3-1 items s2-1 val-parm0)
                      (the-as basic (-> s3-1 items s2-1 val-parm1))
                      )
                    (cam-layout-print 320 s4-2 *temp-string*)
@@ -3644,5 +3641,3 @@
   (cam-layout-stop)
   (cam-layout-start)
   )
-
-)

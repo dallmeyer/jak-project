@@ -5,6 +5,7 @@
 
 #include "FileUtil.h"
 
+#include <algorithm>
 #include <cstdio> /* defines FILENAME_MAX */
 #include <cstdlib>
 #include <fstream>
@@ -74,6 +75,11 @@ fs::path get_user_settings_dir(GameVersion game_version) {
 fs::path get_user_memcard_dir(GameVersion game_version) {
   auto game_version_name = game_version_names[game_version];
   return get_user_config_dir() / game_version_name / "saves";
+}
+
+fs::path get_user_misc_dir(GameVersion game_version) {
+  auto game_version_name = game_version_names[game_version];
+  return get_user_config_dir() / game_version_name / "misc";
 }
 
 struct {
@@ -316,8 +322,44 @@ std::string base_name(const std::string& filename) {
       break;
     }
   }
-
   return filename.substr(pos);
+}
+
+std::string base_name_no_ext(const std::string& filename) {
+  size_t pos = 0;
+  ASSERT(!filename.empty());
+  for (size_t i = filename.size() - 1; i-- > 0;) {
+    if (filename.at(i) == '/' || filename.at(i) == '\\') {
+      pos = (i + 1);
+      break;
+    }
+  }
+  std::string file_name = filename.substr(pos);
+  return file_name.substr(0, file_name.find_last_of('.'));
+  ;
+}
+
+std::string split_path_at(const fs::path& path, const std::vector<std::string>& folders) {
+  std::string split_str = "";
+  for (const auto& folder : folders) {
+#ifdef _WIN32
+    split_str += folder + "\\";
+#else
+    split_str += folder + "/";
+#endif
+  }
+  const auto& path_str = path.u8string();
+  return path_str.substr(path_str.find(split_str) + split_str.length());
+}
+
+std::string convert_to_unix_path_separators(const std::string& path) {
+#ifdef _WIN32
+  std::string copy = path;
+  std::replace(copy.begin(), copy.end(), '\\', '/');
+  return copy;
+#else
+  return path;
+#endif
 }
 
 void ISONameFromAnimationName(char* dst, const char* src) {
@@ -524,12 +566,22 @@ std::vector<fs::path> find_files_recursively(const fs::path& base_dir, const std
   std::vector<fs::path> files = {};
   for (auto& p : fs::recursive_directory_iterator(base_dir)) {
     if (p.is_regular_file()) {
-      if (std::regex_match(fs::path(p.path()).filename().string(), pattern)) {
+      if (std::regex_match(p.path().filename().string(), pattern)) {
         files.push_back(p.path());
       }
     }
   }
   return files;
+}
+
+std::vector<fs::path> find_directories_in_dir(const fs::path& base_dir) {
+  std::vector<fs::path> dirs = {};
+  for (auto& p : fs::recursive_directory_iterator(base_dir)) {
+    if (p.is_directory()) {
+      dirs.push_back(p.path());
+    }
+  }
+  return dirs;
 }
 
 }  // namespace file_util

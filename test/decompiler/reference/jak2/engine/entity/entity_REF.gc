@@ -71,7 +71,6 @@
   )
 
 ;; definition for method 3 of type actor-group
-;; INFO: this function exists in multiple non-identical object files
 (defmethod inspect actor-group ((obj actor-group))
   (format #t "[~8x] ~A~%" obj (-> obj type))
   (format #t "~Tlength: ~D~%" (-> obj length))
@@ -258,7 +257,8 @@
 
 ;; definition for method 18 of type level-group
 ;; WARN: Return type mismatch int vs none.
-(defmethod level-group-method-18 level-group ((obj level-group))
+(defmethod update-nav-meshes-method level-group ((obj level-group))
+  "Clashes with a function name"
   (when (not (paused?))
     (dotimes (s5-0 (-> obj length))
       (let ((v1-4 (-> obj level s5-0)))
@@ -266,7 +266,7 @@
           (let ((s4-0 (-> v1-4 bsp nav-meshes)))
             (when (nonzero? s4-0)
               (dotimes (s3-0 (-> s4-0 length))
-                (nav-mesh-method-26 (-> s4-0 s3-0 nav-mesh))
+                (update-navigation (-> s4-0 s3-0 nav-mesh))
                 )
               )
             )
@@ -530,7 +530,6 @@
   )
 
 ;; definition for method 2 of type process
-;; INFO: this function exists in multiple non-identical object files
 (defmethod print process ((obj process))
   (cond
     ((and (-> obj top-thread) (!= (-> obj status) 'dead))
@@ -1039,7 +1038,7 @@
                               (when a0-25
                                 (set! sv-96 (new 'stack-no-clear 'vector))
                                 (set! sv-112 (new 'stack-no-clear 'vector))
-                                (nav-mesh-method-22 a0-25 sv-96 sv-112)
+                                (compute-bounding-box-from-vertices a0-25 sv-96 sv-112)
                                 (expand-bounding-box sv-20 sv-24 sv-96 sv-112)
                                 )
                               )
@@ -1051,7 +1050,7 @@
                    (else
                      (let ((a0-28 (nav-mesh-from-res-tag sv-40 'nav-mesh-actor 0)))
                        (if a0-28
-                           (nav-mesh-method-22 a0-28 sv-20 sv-24)
+                           (compute-bounding-box-from-vertices a0-28 sv-20 sv-24)
                            )
                        )
                      )
@@ -1789,7 +1788,7 @@
 
 ;; definition for function init-entity
 ;; WARN: Return type mismatch process vs none.
-(defun init-entity ((arg0 process) (arg1 entity-actor))
+(defun init-entity ((arg0 process) (arg1 entity-actor) (arg2 process))
   (activate arg0 *entity-pool* (res-lump-struct arg1 'name basic) (the-as pointer #x70004000))
   (set! (-> arg0 entity) arg1)
   (set! (-> arg0 level) (-> arg1 extra level))
@@ -1816,7 +1815,7 @@
          (set! (-> s4-0 type) s5-0)
          (and s5-0 (valid? s5-0 type #f #f 0) (valid? (method-of-object s4-0 init-from-entity!) function #f #f 0))
          )
-       (init-entity s4-0 obj)
+       (init-entity s4-0 obj (the-as process s5-0))
        )
       (else
         (when (not (birth-viewer s4-0 obj))
@@ -2627,8 +2626,6 @@
   )
 
 ;; definition (debug) for function entity-speed-test
-;; ERROR: Unsupported inline assembly instruction kind - [mtc0 Count, r0]
-;; ERROR: Unsupported inline assembly instruction kind - [sync.p]
 ;; ERROR: Unsupported inline assembly instruction kind - [mfc0 s4, Count]
 (defun-debug entity-speed-test ((arg0 string))
   (local-vars (s4-0 int))
@@ -2638,7 +2635,7 @@
       (reset-actors 'debug)
       0
       (disable-irq)
-      (.mtc0 Count r0)
+      (.mtc0 Count 0)
       (.sync.p)
       (birth! gp-0)
       (.mfc0 s4-0 Count)

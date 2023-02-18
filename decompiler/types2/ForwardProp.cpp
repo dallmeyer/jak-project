@@ -36,7 +36,7 @@ void types2_from_ambiguous_deref(types2::Instruction& instr,
 
   // HACK - this is disabled for now. This probably works, but the expression pass needs
   // a way to get the decisions.
-  type.type = TP_Type::make_from_ts(out.front().result_type);
+  type.type = TP_Type::make_from_ts(coerce_to_reg_type(out.front().result_type));
   return;
 
   // see if we've tagged this instruction in a previous iteration..
@@ -51,7 +51,7 @@ void types2_from_ambiguous_deref(types2::Instruction& instr,
       for (auto& sel : out) {
         if (sel.result_type == desired_type) {
           // found one, take it.
-          type.type = TP_Type::make_from_ts(desired_type);
+          type.type = TP_Type::make_from_ts(coerce_to_reg_type(desired_type));
           return;
         }
       }
@@ -59,11 +59,11 @@ void types2_from_ambiguous_deref(types2::Instruction& instr,
       // use the first one (highest scored).
       lg::print("type2_from_ambiguous_deref: wanted type {}, but couldn't find it.\n",
                 desired_type.print());
-      type.type = TP_Type::make_from_ts(out.front().result_type);
+      type.type = TP_Type::make_from_ts(coerce_to_reg_type(out.front().result_type));
       return;
     } else {
       // we've got a tag, but no info, just pick the first.
-      type.type = TP_Type::make_from_ts(out.front().result_type);
+      type.type = TP_Type::make_from_ts(coerce_to_reg_type(out.front().result_type));
       return;
     }
   } else {
@@ -81,7 +81,7 @@ void types2_from_ambiguous_deref(types2::Instruction& instr,
       // don't think this should be possible
       lg::warn("Tag lock prevented the creation of a tag in types2_from_ambiguous_deref");
     }
-    type.type = TP_Type::make_from_ts(out.front().result_type);
+    type.type = TP_Type::make_from_ts(coerce_to_reg_type(out.front().result_type));
     return;
   }
 }
@@ -189,6 +189,13 @@ TP_Type get_type_symbol_ptr(const std::string& name) {
   }
 }
 
+TP_Type get_type_symbol_val_ptr(const std::string& name,
+                                const DecompilerTypeSystem& dts,
+                                const Env& env) {
+  return TP_Type::make_from_ts(
+      TypeSpec("pointer", {get_type_symbol_val(name, dts, env).typespec()}));
+}
+
 /*!
  * Try to figure out the type of an atom.
  */
@@ -205,6 +212,8 @@ std::optional<TP_Type> try_get_type_of_atom(const types2::TypeState& type_state,
     case SimpleAtom::Kind::INTEGER_CONSTANT: {
       return TP_Type::make_from_integer(atom.get_int());
     } break;
+    case SimpleAtom::Kind::STATIC_ADDRESS:
+      return try_get_type_of_label(atom.label(), env);
     default:
       ASSERT_MSG(false,
                  fmt::format("unknown kind in try_get_type_of_atom: {}", atom.to_string(env)));
@@ -608,6 +617,10 @@ void types2_for_atom(types2::Type& type_out,
     } break;
     case SimpleAtom::Kind::SYMBOL_PTR: {
       auto type = get_type_symbol_ptr(atom.get_str());
+      type_out.type = type;
+    } break;
+    case SimpleAtom::Kind::SYMBOL_VAL_PTR: {
+      auto type = get_type_symbol_val_ptr(atom.get_str(), dts, env);
       type_out.type = type;
     } break;
     case SimpleAtom::Kind::INTEGER_CONSTANT: {
@@ -1086,8 +1099,9 @@ void types2_for_add(types2::Type& type_out,
   // honestly not sure why I have this one... let's have it abort for now.
   if (arg0_type.kind == TP_Type::Kind::OBJECT_PLUS_PRODUCT_WITH_CONSTANT &&
       arg1_type.typespec().base_type() == "pointer") {
-    ASSERT(false);
-    // return TP_Type::make_from_ts(TypeSpec("int"));
+    // ASSERT(false);
+    type_out.type = TP_Type::make_from_ts(TypeSpec("int"));
+    return;
   }
 
   // special case: dynamic access to the method table, to look up a method by ID.
