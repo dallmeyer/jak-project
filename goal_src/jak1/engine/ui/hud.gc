@@ -44,6 +44,7 @@
   (none)
   )
 
+(define-extern *last-rco-hud-time* time-frame)
 (defmethod tally-value hud ((obj hud) (arg0 int) (arg1 int))
   (if (= arg0 (-> obj target-value))
       (set! (-> obj last-target-equal-time) (-> *display* base-frame-counter))
@@ -64,6 +65,10 @@
                   (-> obj first-init)
                   )
               )
+      (when (or (and (cpad-hold? 0 l2) (not (-> obj disable)))
+                (and (not *cheat-mode*) (cpad-hold? 0 r2)))
+        (set! *last-rco-hud-time*  (-> *display* base-frame-counter))
+        )
       ;; modified for pc port
       (cond
         ((cpad-hold? 0 up)

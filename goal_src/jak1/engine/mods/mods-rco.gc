@@ -202,10 +202,16 @@
   (= tsk (-> *rco-info* task-list (-> *rco-info* task-list-idx)))
   )
 
+(define *last-rco-hud-time* (the time-frame #f))
+(define *new-task?* #f)
 (defun update-rco-task-strings ((increment? symbol))
-  (if increment? (+! (-> *rco-info* task-list-idx) 1))
+  (when increment? 
+    (+! (-> *rco-info* task-list-idx) 1)
+    (set! *new-task?* #t)
+    )
   (set! (-> *rco-info* task-level) (-> *cell-level-list* (the-as int (-> *rco-info* task-list (-> *rco-info* task-list-idx)))))
   (set! (-> *rco-info* task-name) (-> *cell-name-list* (the-as int (-> *rco-info* task-list (-> *rco-info* task-list-idx)))))
+  (set! *last-rco-hud-time* (+ (-> *display* base-frame-counter) (if increment? (seconds 8.0) (seconds 3.0))))
   (none)
   )
 
@@ -216,23 +222,30 @@
   (generate-rco-task-list (-> *rco-settings* current-seed))
   (set! (-> *rco-info* task-list-idx) 0)
   (update-rco-task-strings #f)
+  (set! *new-task?* #t)
   (none)
   )
 
 (defun update-hud-info ()
-  (when 
-    (and 
+  (cond 
+    ((and 
       (= *master-mode* 'game)
       (not (paused?))
-      (not (movie?)) 
+      (< (- (-> *display* base-frame-counter) *last-rco-hud-time*) (seconds 2.0))
       (nonzero? (-> *game-info* level-opened 0))  ;; at least been to geyser
       )
-    (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug-no-zbuf))
-      (draw-string-xy-scaled 
-        (string-format "~S ~%~S" 
-          (lookup-text! *common-text* (-> *rco-info* task-level) #f)
-          (lookup-text! *common-text* (-> *rco-info* task-name) #f))
-        buf 256 180 (font-color flat-yellow) (font-flags shadow kerning large middle) 0.75)
+      (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug-no-zbuf))
+        (draw-string-xy-scaled 
+          (string-format "~S ~%~S" 
+            (lookup-text! *common-text* (-> *rco-info* task-level) #f)
+            (lookup-text! *common-text* (-> *rco-info* task-name) #f))
+          buf 256 50
+          (if *new-task?* (font-color red) (font-color flat-yellow)) ;; red font when newly assigned task
+          (font-flags shadow kerning large middle) 0.5)
+        )
+      )
+    ((> (- (-> *display* base-frame-counter) *last-rco-hud-time*) (seconds 2.0))
+      (set! *new-task?* #f)
       )
     )
   (none)
