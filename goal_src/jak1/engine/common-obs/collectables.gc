@@ -1546,6 +1546,7 @@
       ;; dont allow pickup if its the wrong thing
       (begin
         (sound-play "oof")
+        (remove-setting! 'allow-progress)
         (go-virtual wait)
         )
       )
