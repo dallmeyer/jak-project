@@ -11,7 +11,6 @@
 (define-extern knuth-rand-next-int (function int))
 
 (define *randomizer-version-string* "Rando 0.12")
-(define *release-version-string* "Release 0.1.29+")
 (define *comment-string* "Option to randomize by level, then by checkpoint")
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
@@ -266,15 +265,6 @@
       )
    )
 
-  ;;clean *stdcon*
-  (clear *stdcon*)
-  (if (> *randomizer-items-collected* 0)
-    ;; Display the current seed
-    (if (= *cheat-mode* 'debug)
-      (format *stdcon* "SEED: ~D~%~S ~%~S ~%~S~%~%                                                                                                           "  (-> *randomizer-settings* current-seed) *randomizer-version-string* *release-version-string* *comment-string*)
-      (format *stdcon* "SEED: ~D~%~S ~%~%                                                                                                           "  (-> *randomizer-settings* current-seed) *randomizer-version-string*)
-    )
-  )
   (update-collectable-hud-counters)
   (when (-> *randomizer-settings* use-random-seed?)
       ;; burn through a random number every frame for improved randomness
