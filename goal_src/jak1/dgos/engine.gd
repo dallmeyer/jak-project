@@ -32,7 +32,7 @@
   "dma-buffer.o"
   "dma-bucket.o"
   "dma-disasm.o"
-  "pckernel-h.o"  ;; added
+  "pckernel-h.o" ;; added
   "pad.o"
   "gs.o"
   "display-h.o"
@@ -49,7 +49,7 @@
   "connect.o"
   "text-h.o"
   "settings-h.o"
-  "knuth-rand.o"  ;; added
+  "knuth-rand.o" ;; added
   "capture.o"
   "memory-usage-h.o"
   "texture.o"
@@ -221,7 +221,7 @@
   "collide-shape.o"
   "collide-shape-rider.o"
   "collide.o"
-  ;; "collide-planes.o"
+  ;;  "collide-planes.o"
   "merc-death.o"
   "water-h.o"
   "camera.o"
@@ -303,7 +303,9 @@
   "anim-tester.o"
   "viewer.o"
   "part-tester.o"
-  "anim-tester-x.o" ;; added
   "default-menu.o"
+  "anim-tester-x.o" ;; added
+  "entity-debug.o" ;; added
   "subtitle.o"  ;; added
+  "default-menu-pc.o"  ;; added
   ))

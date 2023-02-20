@@ -250,10 +250,17 @@
              (-> *speedrun-info* should-display?))
     (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
                                       (bucket-id debug-no-zbuf))
-      (draw-string-xy (string-format "OpenGOAL Rando Version: ~S ~%Seed: ~D ~%Speedrun Category: ~S ~%Cutscene Skips ~A"
-                                     *pc-settings-built-sha*
-                                     (-> *randomizer-settings* current-seed)
-                                     (enum->string speedrun-category (-> *speedrun-info* category))
-                                     (-> *pc-settings* skip-movies?))
-                      buf 0 (- 220 (* 8 4)) (font-color flat-yellow) (font-flags shadow kerning))))
+      (if (-> *randomizer-settings* checkpoint-randomizer?) 
+        (draw-string-xy (string-format "OpenGOAL Rando Version: ~S ~%Seed: ~D ~%Speedrun Category: ~S ~%Cutscene Skips ~A"
+                                      *pc-settings-built-sha*
+                                      (-> *randomizer-settings* current-seed) 
+                                      (enum->string speedrun-category (-> *speedrun-info* category))
+                                      (-> *pc-settings* skip-movies?))
+                        buf 0 (- 220 (* 8 4)) (font-color flat-yellow) (font-flags shadow kerning))
+        (draw-string-xy (string-format "OpenGOAL Rando Version: ~S ~%Seed: N/A ~%Speedrun Category: ~S ~%Cutscene Skips ~A"
+                                      *pc-settings-built-sha*
+                                      (enum->string speedrun-category (-> *speedrun-info* category))
+                                      (-> *pc-settings* skip-movies?))
+                        buf 0 (- 220 (* 8 4)) (font-color flat-yellow) (font-flags shadow kerning))
+        )))
   (none))

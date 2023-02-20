@@ -89,7 +89,7 @@
 
 (defmethod should-display? assistant-villagec ((obj assistant-villagec))
 (if (-> *randomizer-settings* checkpoint-randomizer?)
-  (and (task-closed? (game-task village3-button) (task-status need-introduction)) (-> *randomizer-settings* checkpoint-randomizer?)) 
+  (task-closed? (game-task village3-button) (task-status need-introduction))
 
   (and (task-closed? (game-task village3-button) (task-status need-introduction)) (not (sages-kidnapped?)))
   )

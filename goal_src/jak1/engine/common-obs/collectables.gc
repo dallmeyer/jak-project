@@ -265,12 +265,9 @@
   )
 
 (defmethod animate eco-collectable ((obj eco-collectable))
-
   0
   (none)
-  
-
-)
+  )
 
 (defun add-blue-shake ((arg0 vector) (arg1 vector) (arg2 vector))
   (let* ((f0-0 (vector-vector-distance arg1 arg2))
@@ -1552,9 +1549,6 @@
     )
   )
 
-
-
-
 (defstate pickup (fuel-cell)
   :virtual #t
   :enter (behavior ((arg0 object) (arg1 handle))
@@ -1632,103 +1626,92 @@
     (logclear! (-> self draw status) (draw-status hidden))
     (process-entity-status! self (entity-perm-status dead) #t)
     (stop! (-> self sound))
-    (if (enable-no-powercell-cutscenes)
-
-    (begin
-    (while (handle->process (-> *game-info* other-camera-handle))
-      (format
-        #t
-        "WARNING: fuel-cell stall ~D ~A ~A~%"
-        (-> *display* base-frame-counter)
-        (handle->process (-> *game-info* other-camera-handle))
-        (-> *level* loading-level)
-        )
-      (spool-push *art-control* (-> self victory-anim name) 0 self (the-as float -99.0))
-      (suspend)
-      )
-    (while (not (send-event *target* 'clone-anim self))
-      (spool-push *art-control* (-> self victory-anim name) 0 self (the-as float -99.0))
-      (format #t "WARNING: fuel-cell stall on not cloning.~%")
-      (suspend)
-      )
-    (set! sv-96 (new 'static 'res-tag))
-    (let* ((v1-34
-             (res-lump-data
-               (-> self entity)
-               'movie-pos
-               (inline-array vector)
-               :tag-ptr (& sv-96)
-               :time (the-as float -1000000000.0)
-               )
-             )
-           (gp-1 (if (and v1-34 (< (-> self movie-pos-index) (the-as int (-> sv-96 elt-count))))
-                     (-> v1-34 (-> self movie-pos-index))
-                     (the-as vector #f)
-                     )
-                 )
-           )
-      (cond
-        ((and *debug-segment* (< (-> *fuel-cell-tune-pos* w) 1000000000.0))
-         (move-to-point! (-> self root-override) *fuel-cell-tune-pos*)
-         (set-yaw-angle-clear-roll-pitch! (-> self root-override) (-> *fuel-cell-tune-pos* w))
-         )
-        ((= (-> self movie-pos-index) -1)
-         )
-        (gp-1
-          (move-to-point! (-> self root-override) gp-1)
-          (set-yaw-angle-clear-roll-pitch! (-> self root-override) (-> gp-1 w))
+    (when (enable-powercell-cutscenes?)
+      (while (handle->process (-> *game-info* other-camera-handle))
+        (format
+          #t
+          "WARNING: fuel-cell stall ~D ~A ~A~%"
+          (-> *display* base-frame-counter)
+          (handle->process (-> *game-info* other-camera-handle))
+          (-> *level* loading-level)
           )
-        (else
-          (move-to-point! (-> self root-override) (-> *target* control trans))
-          (set-yaw-angle-clear-roll-pitch! (-> self root-override) (y-angle (-> *target* control)))
-          (move-to-ground
-            (-> self root-override)
-            (the-as float 40960.0)
-            (the-as float 40960.0)
-            #f
-            (collide-kind background)
+        (spool-push *art-control* (-> self victory-anim name) 0 self (the-as float -99.0))
+        (suspend)
+        )
+      (while (not (send-event *target* 'clone-anim self))
+        (spool-push *art-control* (-> self victory-anim name) 0 self (the-as float -99.0))
+        (format #t "WARNING: fuel-cell stall on not cloning.~%")
+        (suspend)
+        )
+      (set! sv-96 (new 'static 'res-tag))
+      (let* ((v1-34
+              (res-lump-data
+                (-> self entity)
+                'movie-pos
+                (inline-array vector)
+                :tag-ptr (& sv-96)
+                :time (the-as float -1000000000.0)
+                )
+              )
+            (gp-1 (if (and v1-34 (< (-> self movie-pos-index) (the-as int (-> sv-96 elt-count))))
+                      (-> v1-34 (-> self movie-pos-index))
+                      (the-as vector #f)
+                      )
+                  )
+            )
+        (cond
+          ((and *debug-segment* (< (-> *fuel-cell-tune-pos* w) 1000000000.0))
+          (move-to-point! (-> self root-override) *fuel-cell-tune-pos*)
+          (set-yaw-angle-clear-roll-pitch! (-> self root-override) (-> *fuel-cell-tune-pos* w))
+          )
+          ((= (-> self movie-pos-index) -1)
+          )
+          (gp-1
+            (move-to-point! (-> self root-override) gp-1)
+            (set-yaw-angle-clear-roll-pitch! (-> self root-override) (-> gp-1 w))
+            )
+          (else
+            (move-to-point! (-> self root-override) (-> *target* control trans))
+            (set-yaw-angle-clear-roll-pitch! (-> self root-override) (y-angle (-> *target* control)))
+            (move-to-ground
+              (-> self root-override)
+              (the-as float 40960.0)
+              (the-as float 40960.0)
+              #f
+              (collide-kind background)
+              )
             )
           )
         )
+      (spool-push *art-control* (-> self victory-anim name) 0 self (the-as float -99.0))
       )
-    (spool-push *art-control* (-> self victory-anim name) 0 self (the-as float -99.0))
-  )
-)
     
     (send-event *target* 'get-pickup (-> self fact pickup-type) (-> self fact pickup-amount))
-    (if 
-    (enable-no-powercell-cutscenes)
-    (begin
-    (set! (-> self draw bounds w) 32768.0)
-    (logior! (-> self skel status) (janim-status inited))
-    (send-event *target* 'blend-shape #t)
-    (add-setting! 'music-volume 'rel (-> *setting-control* current music-volume-movie) 0)
-    (add-setting! 'sfx-volume 'rel (-> *setting-control* current sfx-volume-movie) 0)
-    (add-setting! 'ambient-volume 'rel (-> *setting-control* current ambient-volume-movie) 0)
-    (process-spawn othercam self 10 #f #t :to self)
-    ))
+    (when (enable-powercell-cutscenes?)
+      (set! (-> self draw bounds w) 32768.0)
+      (logior! (-> self skel status) (janim-status inited))
+      (send-event *target* 'blend-shape #t)
+      (add-setting! 'music-volume 'rel (-> *setting-control* current music-volume-movie) 0)
+      (add-setting! 'sfx-volume 'rel (-> *setting-control* current sfx-volume-movie) 0)
+      (add-setting! 'ambient-volume 'rel (-> *setting-control* current ambient-volume-movie) 0)
+      (process-spawn othercam self 10 #f #t :to self)
+      )
    
     (auto-save-command 'auto-save 0 0 *default-pool*)
 
     ;; play powercell animation if randomizer disabled
-    (if 
-     (enable-no-powercell-cutscenes)
-      (begin
-          (ja-play-spooled-anim
+    (when (enable-powercell-cutscenes?)
+      (ja-play-spooled-anim
         (-> self victory-anim)
         (the-as art-joint-anim (-> self draw art-group data 2))
         (the-as art-joint-anim #f)
         (the-as (function process-drawable symbol) false-func)
-        )))
+        ))
 
- (if (and (not flutflut?) (not racer?)) 
- (begin
-   (send-event *target* 'end-mode)
- ))
-
- 
-  
-
+    (when (and (not flutflut?) (not racer?)) 
+      (send-event *target* 'end-mode)
+      )
+    
     (remove-setting! 'music-volume)
     (remove-setting! 'sfx-volume)
     (remove-setting! 'ambient-volume)
@@ -1739,11 +1722,10 @@
     (suspend)
     (suspend)
 
-    
     ;; warp to random checkpoint if randomizer enabled
     (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-cell?))
       (orchestrateCheckpointWarp 1)
-    )
+      )
 
     (process-spawn-function
       process
@@ -1999,25 +1981,25 @@
       )
     (case (the int (-> self fact pickup-amount))
       (((game-task citadel-sage-blue))
-      (if (not enable-citadel-cutscene-skips)
-       (send-event (process-by-name "blue-sagecage-1" *active-pool*) 'play-anim)
-      )
-       )
+        (if (not (enable-citadel-cutscene-skips?))
+          (send-event (process-by-name "blue-sagecage-1" *active-pool*) 'play-anim)
+          )
+        )
       (((game-task citadel-sage-red))
-        (if (not enable-citadel-cutscene-skips)
-       (send-event (process-by-name "red-sagecage-1" *active-pool*) 'play-anim)
-      )
-       )
+        (if (not (enable-citadel-cutscene-skips?))
+          (send-event (process-by-name "red-sagecage-1" *active-pool*) 'play-anim)
+          )
+        )
       (((game-task citadel-sage-yellow))
-    (if (not enable-citadel-cutscene-skips)
-       (send-event (process-by-name "yellow-sagecage-1" *active-pool*) 'play-anim)
-      )
-       )
+        (if (not (enable-citadel-cutscene-skips?))
+          (send-event (process-by-name "yellow-sagecage-1" *active-pool*) 'play-anim)
+          )
+        )
       (((game-task citadel-sage-green))
-    (if (not enable-citadel-cutscene-skips)
-       (send-event (process-by-name "green-sagecage-1" *active-pool*) 'play-anim)
-      )
-       )
+        (if (not (enable-citadel-cutscene-skips?))
+          (send-event (process-by-name "green-sagecage-1" *active-pool*) 'play-anim)
+          )
+        )
       (((game-task jungle-eggtop) (game-task snow-eggtop) (game-task snow-ball) (game-task sunken-slide))
        )
       (else
@@ -2358,11 +2340,9 @@
           )
         )
       )
-    (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-buzzer?))
-    (begin
-       (orchestrateCheckpointWarp 1)
-    )
-    )
+    (when (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-buzzer?))
+      (orchestrateCheckpointWarp 1)
+      )
     (none)
     )
   )
@@ -2967,7 +2947,7 @@
 
 (defstate vent-wait-for-touch (vent)
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
-    (if (and
+    (when (and
         (-> *randomizer-settings* checkpoint-randomizer?)
         (-> *randomizer-settings* warp-on-eco-vents?)
         (or
@@ -2976,10 +2956,8 @@
           (and (-> *randomizer-settings* warp-on-red-eco?) (= (-> self fact pickup-type) (pickup-type eco-red)))
           (and (-> *randomizer-settings* warp-on-yellow-eco?) (= (-> self fact pickup-type) (pickup-type eco-yellow)))
         )
-       )
-      (begin
-        (orchestrateCheckpointWarp 1)
-       )
+        )
+      (orchestrateCheckpointWarp 1)
       )
     (if (and (or (= arg2 'touch) (= arg2 'attack))
              (let ((a1-1 (new 'stack-no-clear 'event-message-block)))
