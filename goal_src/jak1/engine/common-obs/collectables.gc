@@ -790,7 +790,7 @@
        )
       )
     
-    (if (and 
+    (when (and 
         (-> *randomizer-settings* checkpoint-randomizer?)
         (or 
           (and (-> *randomizer-settings* warp-on-green-eco?) (= (-> self fact pickup-type) (pickup-type eco-green)))
@@ -800,10 +800,8 @@
           (and (-> *randomizer-settings* warp-on-yellow-eco?) (= (-> self fact pickup-type) (pickup-type eco-yellow)))
         )
       )
-     (begin
-        (orchestrateCheckpointWarp 1)
+      (orchestrateCheckpointWarp 1)
       )
-    )
     (if (nonzero? (-> self part))
         (kill-and-free-particles (-> self part))
         )
@@ -1723,7 +1721,7 @@
     (suspend)
 
     ;; warp to random checkpoint if randomizer enabled
-    (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-cell?))
+    (when (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-cell?))
       (orchestrateCheckpointWarp 1)
       )
 

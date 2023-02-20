@@ -223,10 +223,8 @@
          (goto cfg-50)
          )
        )
-     (if (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-death?))
-      (begin
-        (orchestrateCheckpointWarp 1)
-       )
+     (when (and (-> *randomizer-settings* checkpoint-randomizer?) (-> *randomizer-settings* warp-on-death?))
+      (orchestrateCheckpointWarp 1)
       )
      )
     )

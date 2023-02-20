@@ -369,7 +369,7 @@
   ;; additional checkpoints enabled/disabled
   (if (logtest? (-> (get-continue-by-name *game-info* checkpointName) flags) (continue-flags additional-disabled))
     (return #f)
-  )
+    )
 
   #t
 )
