@@ -593,7 +593,9 @@
            (= v1-13 'up)
            )
          )
-       (sound-play "hit-up")
+      ;;  (sound-play "hit-up")
+       (sound-play "get-burned")
+
        )
       (else
         (sound-play "oof")
@@ -734,6 +736,9 @@
      (ja-no-eval :group! eichar-jump-ja :num! (seek!) :frame-num 0.0)
      (when (= (-> arg0 angle) 'air)
        (sound-play "smack-surface")
+       (if (-> *challenges-settings* challenges-bonkless?)
+        (reset-all)
+        )
        (dummy-10 (-> self skel effect) 'group-smack-surface (the-as float 0.0) 5)
        (dummy-10 (-> self skel effect) 'group-smack-surface-dizzy (the-as float 0.0) 8)
        )
@@ -742,6 +747,9 @@
      (ja-channel-push! 1 (seconds 0.05))
      (ja-no-eval :group! eichar-smack-surface-ja :num! (seek!) :frame-num 0.0)
      (sound-play "smack-surface")
+     (if (-> *challenges-settings* challenges-bonkless?)
+      (reset-all)
+      )
      )
     (else
       (when (not (ja-group? eichar-hit-from-front-ja))

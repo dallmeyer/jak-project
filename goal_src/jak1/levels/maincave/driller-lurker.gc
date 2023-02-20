@@ -951,6 +951,9 @@
     process-drawable-death-event-handler
     )
   :code (behavior ()
+    (if (-> *challenges-settings* challenges-pacifist?)
+      (reset-all)
+      )
     (shut-down! (-> self neck))
     (logclear! (-> self mask) (process-mask actor-pause))
     (ja-channel-push! 1 (seconds 0.2))

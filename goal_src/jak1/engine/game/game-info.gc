@@ -771,6 +771,10 @@
          ;; negative health. Subtract.
          (seek! (-> obj health) 0.0 (- amount))
 
+         (if (-> *challenges-settings* challenges-damageless?)
+          (reset-all)
+          )
+
          ;; not sure why we do this. But this will set the eco pill collection time.
          (if (>= amount -10.0)
              (pickup-collectable! obj (pickup-type eco-pill) 0.0 source-handle)

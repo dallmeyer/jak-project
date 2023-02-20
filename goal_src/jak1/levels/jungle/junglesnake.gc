@@ -578,6 +578,9 @@ junglesnake-default-event-handler
     process-drawable-death-event-handler
     )
   :code (behavior ()
+    (if (-> *challenges-settings* challenges-pacifist?)
+      (reset-all)
+      )
     (logclear! (-> self mask) (process-mask actor-pause))
     (clear-collide-with-as (-> self root-override))
     (ja-channel-push! 1 (seconds 0.15))

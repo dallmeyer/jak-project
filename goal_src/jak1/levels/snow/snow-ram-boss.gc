@@ -1889,6 +1889,9 @@
 (defstate nav-enemy-die (ram-boss)
   :virtual #t
   :code (behavior ()
+    (if (-> *challenges-settings* challenges-pacifist?)
+      (reset-all)
+      )
     (ja-channel-push! 1 (seconds 0.075))
     (clear-collide-with-as (-> self collide-info))
     (nav-enemy-fall-and-play-death-anim

@@ -1373,6 +1373,9 @@
 
 (defstate ice-cube-shatter (ice-cube)
   :code (behavior ()
+    (if (-> *challenges-settings* challenges-pacifist?)
+      (reset-all)
+      )
     (logclear! (-> self mask) (process-mask actor-pause))
     (let ((gp-0 (new 'stack-no-clear 'vector)))
       (vector<-cspace! gp-0 (-> self node-list data 3))

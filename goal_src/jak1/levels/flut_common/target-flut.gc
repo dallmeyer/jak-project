@@ -1750,7 +1750,10 @@
                (ja-channel-set! 1)
                (ja :group! (-> self draw art-group data 158) :num! min)
                )
-             (sound-play "smack-surface")
+            (sound-play "smack-surface")
+            (if (-> *challenges-settings* challenges-bonkless?)
+              (reset-all)
+              )
              (sound-play "flut-hit" :pitch 1)
              )
             (else

@@ -1289,6 +1289,12 @@ nav-enemy-default-event-handler
     (none)
     )
   :code (behavior ()
+    ;; no killing in pacifist, except for finalboss lurkers
+    (if (and (-> *challenges-settings* challenges-pacifist?)
+             (not (= (-> self type symbol) 'green-eco-lurker))
+             )
+      (reset-all)
+      )
     (ja-channel-push! 1 (seconds 0.075))
     (clear-collide-with-as (-> self collide-info))
     (nav-enemy-fall-and-play-death-anim
