@@ -344,15 +344,6 @@
 
 (defun checkpointValid? ((checkpointName string))
   (case-str checkpointName
-    ;; avoid citadel warps if cutscene task not closed
-    (  
-      ("citadel-start" "citadel-entrance" "citadel-warp" "citadel-launch-start" 
-        "citadel-launch-end" "citadel-plat-start" "citadel-plat-end" 
-        "citadel-generator-start" "citadel-generator-end" "citadel-elevator")
-      (if (not (task-closed? (game-task citadel-sage-green) (task-status need-hint)))
-        (return #f)
-      )
-    )
     ;; avoid village1-warp if cutscene tasks not closed
     (
       ("village1-warp")
