@@ -133,7 +133,6 @@
     (change-geyser-spawn-game-start))
 
   (when (enable-unlock-citadel-door-no-cells?)
-    (close-specific-task! (game-task citadel-sage-green) (task-status need-resolution))
     (unlock-citadel-door-no-cells)
     )
 
