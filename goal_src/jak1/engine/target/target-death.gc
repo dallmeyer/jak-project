@@ -593,9 +593,7 @@
            (= v1-13 'up)
            )
          )
-      ;;  (sound-play "hit-up")
-       (sound-play "get-burned")
-
+       (sound-play "hit-up")
        )
       (else
         (sound-play "oof")
