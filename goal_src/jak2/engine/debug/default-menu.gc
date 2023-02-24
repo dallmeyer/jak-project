@@ -3072,7 +3072,7 @@
             #f
             ,(lambda ()
               (set! *quick-krew* #t)
-              (set! (-> *game-info* mode) 'debug)
+              (set! (-> *game-info* mode) 'play)
               (initialize! *game-info* 'game (the-as game-save #f) "casboss-start")
               )
             )
@@ -3081,7 +3081,7 @@
             #f
             ,(lambda ()
               (set! *quick-krew* #f)
-              (set! (-> *game-info* mode) 'debug)
+              (set! (-> *game-info* mode) 'play)
               (initialize! *game-info* 'game (the-as game-save #f) "casboss-start")
               )
             )
