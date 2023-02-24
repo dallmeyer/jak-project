@@ -3056,10 +3056,39 @@
   #f
   )
 
+(define-extern *quick-krew* symbol)
 (defun debug-menu-context-make-default-menus ((arg0 debug-menu-context))
   (local-vars (sv-16 debug-menu-context))
   (let ((s5-0 (new 'debug 'debug-menu arg0 "Main menu")))
     (debug-menu-context-set-root-menu arg0 s5-0)
+    (debug-menu-append-item
+      s5-0
+      (debug-menu-make-from-template
+        arg0
+        '(menu
+          "Krew"
+          (function
+            "Reset Quick Krew"
+            #f
+            ,(lambda ()
+              (set! *quick-krew* #t)
+              (set! (-> *game-info* mode) 'debug)
+              (initialize! *game-info* 'game (the-as game-save #f) "casboss-start")
+              )
+            )
+          (function
+            "Reset Full Krew"
+            #f
+            ,(lambda ()
+              (set! *quick-krew* #f)
+              (set! (-> *game-info* mode) 'debug)
+              (initialize! *game-info* 'game (the-as game-save #f) "casboss-start")
+              )
+            )
+          )
+        )
+      )
+    #|
     (debug-menu-append-item
       s5-0
       (debug-menu-make-from-template
@@ -5947,6 +5976,7 @@
       )
     (debug-menu-append-item s5-0 (debug-menu-make-task-menu arg0))
     (debug-menu-append-item s5-0 (debug-menu-make-play-menu arg0))
+    |#
     )
   arg0
   )

@@ -588,7 +588,7 @@
 ;;       )
 ;;   )
 
-(when (-> *debug-menu-context* root-menu)
+(when #f ;; (-> *debug-menu-context* root-menu)
   ;; (debug-menu-append-item (-> *debug-menu-context* root-menu) (debug-menu-make-load-menu *debug-menu-context*))
   (debug-menu-append-item (-> *debug-menu-context* root-menu) (debug-menu-make-part-menu *debug-menu-context*))
   (debug-menu-append-item (-> *debug-menu-context* root-menu) (debug-menu-make-entity-menu *debug-menu-context*))

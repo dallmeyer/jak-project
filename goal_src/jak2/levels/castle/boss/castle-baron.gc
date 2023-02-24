@@ -2406,6 +2406,7 @@ For example for an elevator pre-compute the distance between the first and last 
   #f
   )
 
+(define *quick-krew* #t)
 (defstate idle (krew-boss)
   :virtual #t
   :enter (behavior ()
@@ -2515,7 +2516,7 @@ For example for an elevator pre-compute the distance between the first and last 
           )
         0
         (set! (-> self root-override2 trans y) 1449984.0)
-        (set! (-> self num-clones-to-spawn) 20)
+        (set! (-> self num-clones-to-spawn) (if *quick-krew* 0 20))
         (set! (-> self state-time) (-> self clock frame-counter))
         )
       (when (< (vector-vector-xz-distance
@@ -2876,7 +2877,7 @@ For example for an elevator pre-compute the distance between the first and last 
                (set! gp-0 70)
                )
            (+! (-> self gameplay-pass) 1)
-           (set! (-> self num-clones-to-spawn) 25)
+           (set! (-> self num-clones-to-spawn) (if *quick-krew* 0 25))
            (set! (-> *krew-boss-clone-nav-enemy-info* run-travel-speed) 36864.0)
            (send-event (-> self hud-handle process 0) 'hide-and-die)
            (set! (-> self hud-handle) (the-as handle #f))
@@ -2890,7 +2891,7 @@ For example for an elevator pre-compute the distance between the first and last 
            (if (< gp-0 40)
                (set! gp-0 40)
                )
-           (set! (-> self num-clones-to-spawn) 30)
+           (set! (-> self num-clones-to-spawn) (if *quick-krew* 0 30))
            (set! (-> *krew-boss-clone-nav-enemy-info* run-travel-speed) 40960.0)
            (+! (-> self gameplay-pass) 1)
            (send-event (-> self hud-handle process 0) 'hide-and-die)

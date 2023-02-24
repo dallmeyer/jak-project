@@ -45,9 +45,8 @@
          (dotimes (i 10)
            (suspend)
            )
-         (set! *display-profile* #t)
          (give-all-stuff)
-         ;;(set! *stats-profile-bars* #t)
+         (set! (-> *game-info* mode) 'play)
          )
        )
 

@@ -144,7 +144,7 @@
 (define *artist-fix-frustum* #f)
 (define *artist-error-spheres* #f)
 (define *artist-use-menu-subdiv* #f)
-(define *display-profile* #t)
+(define *display-profile* #f)
 (define *display-sidekick-stats* #f)
 (define *display-quad-stats* #f)
 (define *display-tri-stats* #f)
