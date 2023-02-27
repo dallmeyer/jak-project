@@ -393,7 +393,7 @@
       (checkpoint-randomizer? symbol) ;; enable Zed's checkpoint randomizer
       (use-random-seed? symbol) ;; boolean (#t = random seed / #f = set seed)
       (current-seed uint) ;; seed used to generate random checkpoint.
-      (backup-checkpoints-used int) ;; backup in case of game crash
+      (backup-next-idx int) ;; backup in case of game crash
       (warp-on-cell? symbol) ;; warp on cell
       (warp-on-orb? symbol) ;; warp on orb
       (warp-on-buzzer? symbol) ;; Warp on scoutfly
@@ -430,7 +430,7 @@
   (set! (-> obj show-warp-counter?) #f)
   (set! (-> obj use-random-seed?) #t)
   (set! (-> obj current-seed) 42069)
-  (set! (-> obj backup-checkpoints-used) 0)
+  (set! (-> obj backup-next-idx) 0)
   (set! (-> obj warp-on-cell?) #t)
   (set! (-> obj warp-on-orb?) #f)
   (set! (-> obj warp-on-buzzer?) #f)

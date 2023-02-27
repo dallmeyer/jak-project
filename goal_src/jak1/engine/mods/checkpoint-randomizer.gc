@@ -298,7 +298,8 @@
   (knuth-rand-init (the int64 seed))
 
   (dotimes (idx length)
-    (set! (-> *rando-state* checkpoint-list idx) ;; append checkpoint
+    ;; append checkpoint
+    (set! (-> *rando-state* checkpoint-list idx)
       (case (-> *randomizer-settings* checkpoint-logic)
         (('logic-random-level)
           ;; choose random level first...
@@ -323,6 +324,7 @@
         )
       )
     )
+  ;; reset initial index
   (set! (-> *rando-state* next-idx) 0)
   (none)
   )
@@ -369,9 +371,6 @@
 (defun getNextCheckpoint ()
   (let ((checkpointName (-> *rando-state* checkpoint-list (-> *rando-state* next-idx))))
     (while #t
-      ;; increment number of checkpoints used (intentionally includes any invalid, skipped checkpoints)
-      (+! (-> *randomizer-settings* backup-checkpoints-used) 1)
-
       ;; increment next-idx
       (advanceCheckpointList 1)
 
@@ -404,7 +403,7 @@
     )
   
   ;; reset checkpoint counter backup
-  (set! (-> *randomizer-settings* backup-checkpoints-used) 0)
+  (set! (-> *randomizer-settings* backup-next-idx) 0)
 
   ;; generate checkpoint list from seed
   (generateCheckpointList (-> *randomizer-settings* current-seed) *rando-list-length*)
@@ -414,11 +413,11 @@
 (defun orchestrateCheckpointWarp ((amount int))
   ;; in case of crash/closed window/etc, generate from last seed and advance checkpoints
   (when (null? (peekNextCheckpoint))
-    (format 0 "Regenerating checkpoint list from backup, checkpoints used: ~D~%" (-> *randomizer-settings* backup-checkpoints-used))
+    (format 0 "Regenerating checkpoint list from backup, checkpoints used: ~D~%" (-> *randomizer-settings* backup-next-idx))
 
     ;; generate checkpoint list from seed
     (generateCheckpointList (-> *randomizer-settings* current-seed) *rando-list-length*)
-    (advanceCheckpointList (-> *randomizer-settings* backup-checkpoints-used))
+    (advanceCheckpointList (-> *randomizer-settings* backup-next-idx))
     )
 
   ;; if blacked out we're already warping, so skip
@@ -438,7 +437,8 @@
       )
     )
 
-  ;; current-seed and backup-checkpoints-used are updated at this point, commit to file in case of crash/closed window
+  ;; update backup-next-idx, commit to file in case of crash/closed window
+  (set! (-> *randomizer-settings* backup-next-idx) (-> *rando-state* next-idx))
   (commit-to-file *randomizer-settings*)
   ;;(suspend)
   (none)
