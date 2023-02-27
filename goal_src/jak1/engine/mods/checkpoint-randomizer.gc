@@ -325,7 +325,7 @@
     )
   (set! (-> *rando-state* next-idx) 0)
   (none)
-)
+  )
 
 (defun advanceCheckpointList ((n int))
   (set! 
