@@ -799,6 +799,13 @@
   (speedrun-il-lavatube          #x151d)
   (speedrun-il-citadel           #x151e)
 
+  (speedrun-new-cat-ext          #x151f)
+  (speedrun-new-game-plus        #x1520)
+  (speedrun-hub1-100             #x1521)
+  (speedrun-hub2-100             #x1522)
+  (speedrun-hub3-100             #x1523)
+  (speedrun-all-cutscenes        #x1524)
+
   ;; Mod Options
   (mod-options                  #x1600)
   (checkpoint-randomizer        #x1601)
@@ -847,6 +854,7 @@
   (checkpoint-jungle-far        #x1654)
   (checkpoint-swamp-flutflut    #x1655)
   (checkpoint-village3-cart     #x1656)
+
 ;; GAME-TEXT-ID ENUM ENDS
   )
 

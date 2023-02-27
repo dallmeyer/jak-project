@@ -432,6 +432,20 @@
 (#x151e "GOL AND MAIA'S CITADEL IL"
         "GOL AND MAIA'S CITADEL IL")
 
+(#x151f "NEW CATEGORY EXTENSION RUN"
+        "NEW CATEGORY EXTENSION RUN")
+
+(#x1520 "NG+"
+        "NG+")
+(#x1521 "HUB 1 100%"
+        "HUB 1 100%")
+(#x1522 "HUB 2 100%"
+        "HUB 2 100%")
+(#x1523 "HUB 3 100%"
+        "HUB 3 100%")
+(#x1524 "ALL CUTSCENES"
+        "ALL CUTSCENES")
+
 ;; Mod Options
 (#x1600 "MOD OPTIONS"
         "MOD OPTIONS")
@@ -519,7 +533,6 @@
         "SWAMP-FLUTFLUT")
 (#x1656 "VILLAGE3-CART"
         "VILLAGE3-CART")
-
 ;; -----------------
 ;; test (DO NOT TRANSLATE)
 
