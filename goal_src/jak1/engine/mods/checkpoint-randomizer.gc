@@ -215,15 +215,41 @@
   )
 )
 
-;; collectable-interval serves as a counter, it counts up until it is raul to collectables-needed-to-warp, then it warps jak and resets itself to count again
-(define *collectable-interval* 0.0)
+(deftype rando-state (structure)
+  (
+    (next-idx int)
+    (checkpoint-list (array string))
+    (collectable-interval int) ;; serves as a counter, counts up until it reaches collectables-needed-to-warp, then resets back to 0
+    (collectable-count int)
+    )
+  (:methods
+    (new (symbol type int) _type_ 0)
+    )
+  )
+  
+(defmethod new rando-state ((allocation symbol) (type-to-make type) (length int))
+  "Allocate a new rando-state with a checkpoint list of given length"
+  (let ((obj (object-new allocation type-to-make (the-as int (-> type-to-make size)))))
+    (set! (-> obj next-idx) 0)
+    (set! (-> obj checkpoint-list)
+          (the-as (array string)
+                  ((method-of-type array new) allocation array string length)
+                  )
+          )
+    (set! (-> obj checkpoint-list length) 0)
+    (set! (-> obj collectable-interval) 0)
+    (set! (-> obj collectable-count) 0)
+    obj
+    )
+  )
 
-(define *randomizer-items-collected* 0)
+(define *rando-list-length* 1000)
+(define *rando-state* (new 'global 'rando-state *rando-list-length*))
 
 (defun update-collectable-hud-counters ()
   (when 
     (and 
-      (> *randomizer-items-collected* 0) 
+      (> (-> *rando-state* collectable-count) 0) 
       (= *master-mode* 'game)
       (not (or (movie?) (< (-> *display* base-frame-counter) (-> *game-info* letterbox-time)))) 
     )
@@ -231,7 +257,7 @@
       (let ((str-x (the int (* 0.01 512)))
             (str-y (the int 60)))
         (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug))
-          (draw-string-xy (string-format "~D/~D" (the int *collectable-interval*) (the int (-> *randomizer-settings* collectables-needed-to-warp)))
+          (draw-string-xy (string-format "~D/~D" (the int (-> *rando-state* collectable-interval)) (the int (-> *randomizer-settings* collectables-needed-to-warp)))
             buf str-x str-y (font-color white) (font-flags shadow kerning large left))
           )
         )
@@ -245,7 +271,7 @@
 (begin
 
   ;;update the number of items they have collected
-   (set! *randomizer-items-collected*
+   (set! (-> *rando-state* collectable-count)
    (+
       (if (-> *randomizer-settings* warp-on-cell?) (the int (-> *game-info* fuel)) 0)
       (if (-> *randomizer-settings* warp-on-orb?) (the int (-> *game-info* money-total)) 0)
@@ -267,56 +293,44 @@
 )
 (none))
 
-(define *rando-list-default-length* 3000)
-(define *rando-checkpoint-list* (cons '() '()))
-(define *next-rando-checkpoint-node* (cons '() '()))
-
 (defun generateCheckpointList ((seed uint) (length int))
   ;; set the seed which will be used for generating checkpoint list
   (knuth-rand-init (the int64 seed))
 
-  (let ((currentListNode *rando-checkpoint-list*))
-    (dotimes (temp length)
-      (set! (car currentListNode) ;; append checkpoint
-        (case (-> *randomizer-settings* checkpoint-logic)
-          (('logic-random-level)
-            ;; choose random level first...
-            (let ((random-level-idx (knuth-rand-int-range 0 (-> *checkpoint-list-by-level-idx* length))))
-              ;; ...then choose random checkpoint within that level
-              (let ((random-level-checkpoint-idx (knuth-rand-int-range 0 (-> *checkpoint-list-by-level-idx* random-level-idx length))))
-                (-> *checkpoint-list-by-level-idx* 
-                  random-level-idx 
-                  random-level-checkpoint-idx
-                  )
+  (dotimes (idx length)
+    (set! (-> *rando-state* checkpoint-list idx) ;; append checkpoint
+      (case (-> *randomizer-settings* checkpoint-logic)
+        (('logic-random-level)
+          ;; choose random level first...
+          (let ((random-level-idx (knuth-rand-int-range 0 (-> *checkpoint-list-by-level-idx* length))))
+            ;; ...then choose random checkpoint within that level
+            (let ((random-level-checkpoint-idx (knuth-rand-int-range 0 (-> *checkpoint-list-by-level-idx* random-level-idx length))))
+              (-> *checkpoint-list-by-level-idx* 
+                random-level-idx 
+                random-level-checkpoint-idx
                 )
               )
             )
-          (('logic-random-checkpoint)
-            ;; original logic, just choose random checkpoint from list
-            (-> *checkpoint-list* (knuth-rand-int-range 0 (-> *checkpoint-list* length)))
-            )
-          (else
-            ;; original logic, just choose random checkpoint from list
-            (-> *checkpoint-list* (knuth-rand-int-range 0 (-> *checkpoint-list* length)))
-            )
+          )
+        (('logic-random-checkpoint)
+          ;; original logic, just choose random checkpoint from list
+          (-> *checkpoint-list* (knuth-rand-int-range 0 (-> *checkpoint-list* length)))
+          )
+        (else
+          ;; original logic, just choose random checkpoint from list
+          (-> *checkpoint-list* (knuth-rand-int-range 0 (-> *checkpoint-list* length)))
           )
         )
-      (set! (cdr currentListNode) (cons '() '())) ;; create next node
-      (set! currentListNode (cdr currentListNode)) ;; move current to newly created node
       )
     )
-  (set! *next-rando-checkpoint-node* *rando-checkpoint-list*)
+  (set! (-> *rando-state* next-idx) 0)
   (none)
 )
 
 (defun advanceCheckpointList ((n int))
-  (dotimes (tempCount n)
-    (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
-
-    ;; if we're at end of list, reset pointer to head of list
-    (when (null? (car *next-rando-checkpoint-node*))
-      (set! *next-rando-checkpoint-node* *rando-checkpoint-list*)
-      )
+  (set! 
+    (-> *rando-state* next-idx)
+    (mod (+ (-> *rando-state* next-idx) n) *rando-list-length*)
     )
   )
 
@@ -353,34 +367,28 @@
   )
 
 (defun getNextCheckpoint ()
-  (let ((checkpointName (car *next-rando-checkpoint-node*)))
-    (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
-
+  (let ((checkpointName (-> *rando-state* checkpoint-list (-> *rando-state* next-idx))))
     (while #t
-      ;; if we're at end of list, reset pointer to head of list
-      (when (null? (car *next-rando-checkpoint-node*))
-        (set! *next-rando-checkpoint-node* *rando-checkpoint-list*)
-      )
-
       ;; increment number of checkpoints used (intentionally includes any invalid, skipped checkpoints)
       (+! (-> *randomizer-settings* backup-checkpoints-used) 1)
+
+      ;; increment next-idx
+      (advanceCheckpointList 1)
 
       (when (checkpointValid? (the-as string checkpointName))
         (format 0 "RANDOMIZER: checkpoint ~A is valid~%" checkpointName)
         (return checkpointName) ;; break from while loop
         )
         
-      ;; if we make it here
       (format 0 "RANDOMIZER: checkpoint ~A is NOT valid, will grab the next~%" checkpointName)
-      (set! checkpointName (car *next-rando-checkpoint-node*))
-      (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
+      (set! checkpointName (-> *rando-state* checkpoint-list (-> *rando-state* next-idx)))
       )
     )
   ""
   )
 
 (defun peekNextCheckpoint ()
-  (car *next-rando-checkpoint-node*)
+  (-> *rando-state* checkpoint-list (-> *rando-state* next-idx))
   )
 
 (defun blacked-out? ()
@@ -389,7 +397,7 @@
   )
 
 (defun resetCheckpointRandomizer ()
-  (set! *randomizer-items-collected* 0)
+  (set! (-> *rando-state* collectable-count) 0)
 
   (when (-> *randomizer-settings* use-random-seed?)
     (set! (-> *randomizer-settings* current-seed) (knuth-rand-next-int))
@@ -399,7 +407,7 @@
   (set! (-> *randomizer-settings* backup-checkpoints-used) 0)
 
   ;; generate checkpoint list from seed
-  (generateCheckpointList (-> *randomizer-settings* current-seed) *rando-list-default-length*)
+  (generateCheckpointList (-> *randomizer-settings* current-seed) *rando-list-length*)
   (none)
   )
 
@@ -409,20 +417,20 @@
     (format 0 "Regenerating checkpoint list from backup, checkpoints used: ~D~%" (-> *randomizer-settings* backup-checkpoints-used))
 
     ;; generate checkpoint list from seed
-    (generateCheckpointList (-> *randomizer-settings* current-seed) *rando-list-default-length*)
+    (generateCheckpointList (-> *randomizer-settings* current-seed) *rando-list-length*)
     (advanceCheckpointList (-> *randomizer-settings* backup-checkpoints-used))
     )
 
   ;; if blacked out we're already warping, so skip
   (if (not (blacked-out?))
     (begin
-      (+! *collectable-interval* amount)
+      (+! (-> *rando-state* collectable-interval) amount)
 
       ;; if we're above the collectable threshold, then warp
-      (when (>= *collectable-interval* (-> *randomizer-settings* collectables-needed-to-warp))
+      (when (>= (-> *rando-state* collectable-interval) (-> *randomizer-settings* collectables-needed-to-warp))
         (format 0 "RANDOMIZER: warping from ~A...~%" (-> *level* level 0 name))
         (warpToCheckpoint (the-as string (getNextCheckpoint)))
-        (set! *collectable-interval* 0.0)
+        (set! (-> *rando-state* collectable-interval) 0)
         )
       )
     (begin
@@ -442,7 +450,7 @@
     (set! (-> *randomizer-settings* current-seed) (knuth-rand-next-int))
     )
   ;; Generate a list of checkpoints based on our new updated current-seed
-  (generateCheckpointList (-> *randomizer-settings* current-seed) *rando-list-default-length*)
+  (generateCheckpointList (-> *randomizer-settings* current-seed) *rando-list-length*)
   ;; Print this list of checkpoints to REPL for debugging purposes
-  *rando-checkpoint-list*
+  (-> *rando-state* checkpoint-list)
   )
