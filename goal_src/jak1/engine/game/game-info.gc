@@ -181,6 +181,7 @@
   (enable-or-disable-additional-continue-flag obj "village3-cart" (-> *mods-settings* checkpoint-village3-cart))
   )
 
+(define-extern resetCheckpointRandomizer (function none))
 (define-extern orchestrateCheckpointWarp (function int none))
 (defmethod initialize! game-info ((obj game-info) (cause symbol) (save-to-load game-save) (continue-point-override string))
   "Initialize the game-info.
@@ -250,6 +251,7 @@
                             )
                           )
                     )
+     (resetCheckpointRandomizer)
      (set! (-> obj auto-save-count) 0)
      ;; mod skip disabling autosave if we want to autosave overtop.
      (if (not (or (-> *challenges-settings* challenges-hardcore?)(-> *challenges-settings* challenges-orbless?)))

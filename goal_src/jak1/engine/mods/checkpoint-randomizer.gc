@@ -5,97 +5,90 @@
 ;; name in dgo: checkpoint-randomizer
 ;; dgos: GAME, ENGINE
 
-(define-extern knuth-rand-advance-seed (function int))
-(define-extern knuth-rand-init (function int int))
-(define-extern knuth-rand-int-range (function int int int))
-(define-extern knuth-rand-next-int (function int))
-
-(define *randomizer-version-string* "Rando 0.12")
-(define *comment-string* "Option to randomize by level, then by checkpoint")
 (define *checkpoint-list* (the-as (array string) (new
                                              'static
                                              'boxed-array
                                              :type string :length 77 :allocated-length 77
-"game-start"
-"training-far"
-"village1-hut"
-"village1-warp"
-"beach-start"
-"beach-pelican"
-"beach-far"
-"beach-start"
-"beach-pelican"
-"beach-far"
-"jungle-start"
-"jungle-far"
-"jungle-tower"
-"jungle-start"
-"jungle-far"
-"jungle-tower"
-"misty-start"
-"misty-silo"
-"misty-bike"
-"misty-backside"
-"misty-silo2"
-"firecanyon-start"
-"firecanyon-end"
-"village2-start"
-"village2-warp"
-"village2-dock"
-"sunken-start"
-"sunken1"
-"sunken2"
-"sunken-tube1"
-"sunkenb-start"
-"sunkenb-helix"
-"swamp-start"
-"swamp-dock1"
-"swamp-cave1"
-"swamp-dock2"
-"swamp-cave2"
-"swamp-game"
-"swamp-cave3"
-"swamp-flutflut"
-"rolling-start"
-"ogre-start"
-"ogre-race"
-"ogre-end"
-"village3-start"
-"village3-warp"
-"village3-farside"
-"village3-cart"
-"snow-start"
-"snow-fort"
-"snow-flut-flut"
-"snow-pass-to-fort"
-"snow-by-ice-lake"
-"snow-by-ice-lake-alt"
-"snow-outside-fort"
-"snow-outside-cave"
-"snow-across-from-flut"
-"maincave-start"
-"maincave-to-darkcave"
-"maincave-to-robocave"
-"darkcave-start"
-"robocave-start"
-"robocave-bottom"
-"lavatube-start"
-"lavatube-middle"
-"lavatube-after-ribbon"
-"lavatube-end"
-"citadel-start"
-"citadel-entrance"
-"citadel-warp"
-"citadel-plat-start"
-"citadel-plat-end"
-"citadel-launch-start"
-"citadel-launch-end"
-"citadel-generator-start"
-"citadel-generator-end"
-"citadel-elevator"
-)
-)
-)
+  "game-start"
+  "training-far"
+  "village1-hut"
+  "village1-warp"
+  "beach-start"
+  "beach-pelican"
+  "beach-far"
+  "beach-start"
+  "beach-pelican"
+  "beach-far"
+  "jungle-start"
+  "jungle-far"
+  "jungle-tower"
+  "jungle-start"
+  "jungle-far"
+  "jungle-tower"
+  "misty-start"
+  "misty-silo"
+  "misty-bike"
+  "misty-backside"
+  "misty-silo2"
+  "firecanyon-start"
+  "firecanyon-end"
+  "village2-start"
+  "village2-warp"
+  "village2-dock"
+  "sunken-start"
+  "sunken1"
+  "sunken2"
+  "sunken-tube1"
+  "sunkenb-start"
+  "sunkenb-helix"
+  "swamp-start"
+  "swamp-dock1"
+  "swamp-cave1"
+  "swamp-dock2"
+  "swamp-cave2"
+  "swamp-game"
+  "swamp-cave3"
+  "swamp-flutflut"
+  "rolling-start"
+  "ogre-start"
+  "ogre-race"
+  "ogre-end"
+  "village3-start"
+  "village3-warp"
+  "village3-farside"
+  "village3-cart"
+  "snow-start"
+  "snow-fort"
+  "snow-flut-flut"
+  "snow-pass-to-fort"
+  "snow-by-ice-lake"
+  "snow-by-ice-lake-alt"
+  "snow-outside-fort"
+  "snow-outside-cave"
+  "snow-across-from-flut"
+  "maincave-start"
+  "maincave-to-darkcave"
+  "maincave-to-robocave"
+  "darkcave-start"
+  "robocave-start"
+  "robocave-bottom"
+  "lavatube-start"
+  "lavatube-middle"
+  "lavatube-after-ribbon"
+  "lavatube-end"
+  "citadel-start"
+  "citadel-entrance"
+  "citadel-warp"
+  "citadel-plat-start"
+  "citadel-plat-end"
+  "citadel-launch-start"
+  "citadel-launch-end"
+  "citadel-generator-start"
+  "citadel-generator-end"
+  "citadel-elevator"
+  )
+  )
+  )
 
 (define *checkpoint-list-by-level-idx* 
   (new 'static 'boxed-array :type (array string) :length 16 :allocated-length 16
@@ -247,7 +240,7 @@
   )
 
 (defun randomizer-run-each-frame ()
-;;Randomzier stuff that needs to run constantly
+;;Randomizer stuff that needs to run constantly
 (if (-> *randomizer-settings* checkpoint-randomizer?)
 (begin
 
@@ -267,13 +260,12 @@
 
   (update-collectable-hud-counters)
   (when (-> *randomizer-settings* use-random-seed?)
-      ;; burn through a random number every frame for improved randomness
-      (knuth-rand-advance-seed)
+    ;; burn through a random number every frame for improved randomness
+    (knuth-rand-advance-seed)
   )
 )
 )
 (none))
-
 
 (define *rando-list-default-length* 3000)
 (define *rando-checkpoint-list* (cons '() '()))
@@ -283,53 +275,50 @@
   ;; set the seed which will be used for generating checkpoint list
   (knuth-rand-init (the int64 seed))
 
-  (define currentListNode *rando-checkpoint-list*)
-
-  (dotimes (temp length)
-    (define tempCheckpointName 
-      (case (-> *randomizer-settings* checkpoint-logic)
-        (('logic-random-level)
-          ;; choose random level first...
-          (let ((random-level-idx (knuth-rand-int-range 0 (-> *checkpoint-list-by-level-idx* length))))
-            ;; ...then choose random checkpoint within that level
-            (let ((random-level-checkpoint-idx (knuth-rand-int-range 0 (-> *checkpoint-list-by-level-idx* random-level-idx length))))
-              (-> *checkpoint-list-by-level-idx* 
-                random-level-idx 
-                random-level-checkpoint-idx
+  (let ((currentListNode *rando-checkpoint-list*))
+    (dotimes (temp length)
+      (set! (car currentListNode) ;; append checkpoint
+        (case (-> *randomizer-settings* checkpoint-logic)
+          (('logic-random-level)
+            ;; choose random level first...
+            (let ((random-level-idx (knuth-rand-int-range 0 (-> *checkpoint-list-by-level-idx* length))))
+              ;; ...then choose random checkpoint within that level
+              (let ((random-level-checkpoint-idx (knuth-rand-int-range 0 (-> *checkpoint-list-by-level-idx* random-level-idx length))))
+                (-> *checkpoint-list-by-level-idx* 
+                  random-level-idx 
+                  random-level-checkpoint-idx
+                  )
+                )
               )
+            )
+          (('logic-random-checkpoint)
+            ;; original logic, just choose random checkpoint from list
+            (-> *checkpoint-list* (knuth-rand-int-range 0 (-> *checkpoint-list* length)))
+            )
+          (else
+            ;; original logic, just choose random checkpoint from list
+            (-> *checkpoint-list* (knuth-rand-int-range 0 (-> *checkpoint-list* length)))
             )
           )
         )
-        (('logic-random-checkpoint)
-          ;; original logic, just choose random checkpoint from list
-          (-> *checkpoint-list* (knuth-rand-int-range 0 (-> *checkpoint-list* length)))
-        )
-        (else
-          ;; original logic, just choose random checkpoint from list
-          (-> *checkpoint-list* (knuth-rand-int-range 0 (-> *checkpoint-list* length)))
-        )
-      ) 
+      (set! (cdr currentListNode) (cons '() '())) ;; create next node
+      (set! currentListNode (cdr currentListNode)) ;; move current to newly created node
+      )
     )
-    (set! (car currentListNode) tempCheckpointName) ;; append checkpoint
-    (set! (cdr currentListNode) (cons '() '())) ;; create next node
-    (set! currentListNode (cdr currentListNode)) ;; move current to newly created node
-  )
-
   (set! *next-rando-checkpoint-node* *rando-checkpoint-list*)
   (none)
 )
 
 (defun advanceCheckpointList ((n int))
-  (define tempCount 0)
   (dotimes (tempCount n)
     (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
 
     ;; if we're at end of list, reset pointer to head of list
     (when (null? (car *next-rando-checkpoint-node*))
       (set! *next-rando-checkpoint-node* *rando-checkpoint-list*)
+      )
     )
   )
-)
 
 (defun warpToCheckpoint ((checkpointName string))
   ;; warps to checkpoint, assuming it is already safe to use
@@ -340,21 +329,20 @@
   ;; this ensures init functions for new level run (misty boat, citadel elevator)
   (initialize! *game-info* 'die (the-as game-save #f) (the-as string #f))
   (none)
-)
+  )
 
 (defun checkpointValid? ((checkpointName string))
   (case-str checkpointName
     ;; avoid village1-warp if cutscene tasks not closed
-    (
-      ("village1-warp")
+    (("village1-warp")
       (if (or 
           (not (task-closed? (game-task intro) (task-status need-resolution))) 
           (not (task-closed? (game-task beach-ecorocks) (task-status need-introduction)))
-        )
+          )
         (return #f)
+        )
       )
     )
-  )
 
   ;; additional checkpoints enabled/disabled
   (if (logtest? (-> (get-continue-by-name *game-info* checkpointName) flags) (continue-flags additional-disabled))
@@ -362,59 +350,60 @@
     )
 
   #t
-)
+  )
 
 (defun getNextCheckpoint ()
-  (define checkpointName (car *next-rando-checkpoint-node*))
-  (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
+  (let ((checkpointName (car *next-rando-checkpoint-node*)))
+    (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
 
-  (while #t
-    ;; if we're at end of list, reset pointer to head of list
-    (when (null? (car *next-rando-checkpoint-node*))
-      (set! *next-rando-checkpoint-node* *rando-checkpoint-list*)
-    )
-    ;; increment number of checkpoints used (intentionally includes any skipped citadel checkpoints)
-    (+! (-> *randomizer-settings* backup-checkpoints-used) 1)
+    (while #t
+      ;; if we're at end of list, reset pointer to head of list
+      (when (null? (car *next-rando-checkpoint-node*))
+        (set! *next-rando-checkpoint-node* *rando-checkpoint-list*)
+      )
 
-    (if (checkpointValid? (the-as string checkpointName))
-      (begin 
+      ;; increment number of checkpoints used (intentionally includes any invalid, skipped checkpoints)
+      (+! (-> *randomizer-settings* backup-checkpoints-used) 1)
+
+      (when (checkpointValid? (the-as string checkpointName))
         (format 0 "RANDOMIZER: checkpoint ~A is valid~%" checkpointName)
         (return checkpointName) ;; break from while loop
-      )
-      (begin
-        (format 0 "RANDOMIZER: checkpoint ~A is NOT valid, will grab the next~%" checkpointName)
-        (set! checkpointName (car *next-rando-checkpoint-node*))
-        (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
+        )
+        
+      ;; if we make it here
+      (format 0 "RANDOMIZER: checkpoint ~A is NOT valid, will grab the next~%" checkpointName)
+      (set! checkpointName (car *next-rando-checkpoint-node*))
+      (set! *next-rando-checkpoint-node* (cdr *next-rando-checkpoint-node*))
       )
     )
-  )
   ""
-)
+  )
 
 (defun peekNextCheckpoint ()
   (car *next-rando-checkpoint-node*)
-)
+  )
 
 (defun blacked-out? ()
   ;; if blackout-time is in the future, we're blacked out
   (< (current-time) (-> *game-info* blackout-time))
-)
-
-(defun orchestrateCheckpointWarp ((amount int))
-  ;; first collectable? need to generate checkpoint list
-  (when (= *randomizer-items-collected* 1)
-    ;; randomly generate or set seed
-    (if (-> *randomizer-settings* use-random-seed?)
-      (set! (-> *randomizer-settings* current-seed) (knuth-rand-next-int))
-      (none)
-    )
-    ;; reset checkpoint counter backup
-    (set! (-> *randomizer-settings* backup-checkpoints-used) 0)
-
-    ;; generate checkpoint list from seed
-    (generateCheckpointList (-> *randomizer-settings* current-seed) *rando-list-default-length*)
   )
 
+(defun resetCheckpointRandomizer ()
+  (set! *randomizer-items-collected* 0)
+
+  (when (-> *randomizer-settings* use-random-seed?)
+    (set! (-> *randomizer-settings* current-seed) (knuth-rand-next-int))
+    )
+  
+  ;; reset checkpoint counter backup
+  (set! (-> *randomizer-settings* backup-checkpoints-used) 0)
+
+  ;; generate checkpoint list from seed
+  (generateCheckpointList (-> *randomizer-settings* current-seed) *rando-list-default-length*)
+  (none)
+  )
+
+(defun orchestrateCheckpointWarp ((amount int))
   ;; in case of crash/closed window/etc, generate from last seed and advance checkpoints
   (when (null? (peekNextCheckpoint))
     (format 0 "Regenerating checkpoint list from backup, checkpoints used: ~D~%" (-> *randomizer-settings* backup-checkpoints-used))
@@ -422,7 +411,7 @@
     ;; generate checkpoint list from seed
     (generateCheckpointList (-> *randomizer-settings* current-seed) *rando-list-default-length*)
     (advanceCheckpointList (-> *randomizer-settings* backup-checkpoints-used))
-  )
+    )
 
   ;; if blacked out we're already warping, so skip
   (if (not (blacked-out?))
@@ -434,27 +423,26 @@
         (format 0 "RANDOMIZER: warping from ~A...~%" (-> *level* level 0 name))
         (warpToCheckpoint (the-as string (getNextCheckpoint)))
         (set! *collectable-interval* 0.0)
+        )
       )
-    )
     (begin
       (format 0 "RANDOMIZER: skipping collectable/warp as we're already blackout. ~D ~D ~%" (current-time) (-> *game-info* blackout-time))
+      )
     )
-  )
 
   ;; current-seed and backup-checkpoints-used are updated at this point, commit to file in case of crash/closed window
   (commit-to-file *randomizer-settings*)
   ;;(suspend)
   (none)
-)
+  )
 
 (defun checkpointListTest ()
   ;; If we have random-seed on, update our current seed.
   (if (-> *randomizer-settings* use-random-seed?)
-        (set! (-> *randomizer-settings* current-seed) (knuth-rand-next-int))
-      )
+    (set! (-> *randomizer-settings* current-seed) (knuth-rand-next-int))
+    )
   ;; Generate a list of checkpoints based on our new updated current-seed
   (generateCheckpointList (-> *randomizer-settings* current-seed) *rando-list-default-length*)
   ;; Print this list of checkpoints to REPL for debugging purposes
-
   *rando-checkpoint-list*
-)
+  )
