@@ -71,10 +71,10 @@
     ;; ====== ORBS ======
     ;; === prison (first 2 rooms) ===
     (('skill-49) (set-vector-meters! (-> arg0 extra trans)  472.0 8.55 103.1)) ;; behind/under chair at start
-    (('skill-50) (set-vector-meters! (-> arg0 extra trans)  545.9 14.85 200.0)) ;; on shelf in 2nd room
+    (('skill-50) (set-vector-meters! (-> arg0 extra trans)  547.14 12.4 169.8)) ;; in crack behind boxes along normal path
     ;; === forexita (3rd room until shooting you from below) ===
-    ;; (('skill-62) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
-    ;; (('skill-63) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    (('skill-62) (set-vector-meters! (-> arg0 extra trans)  611.05  75.9 136.25)) ;; atop crane in middle of room
+    (('skill-63) (set-vector-meters! (-> arg0 extra trans)  679.99  87.1  90.4)) ;; up in crack above normal position 
     ;; === forexitb (shooting you from below to city exit) ===
     ;; (('skill-69) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
     ;; (('skill-70) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
