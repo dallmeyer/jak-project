@@ -76,9 +76,9 @@
     (('skill-62) (set-vector-meters! (-> arg0 extra trans)  611.05  75.9 136.25)) ;; atop crane in middle of room
     (('skill-63) (set-vector-meters! (-> arg0 extra trans)  679.99  87.1  90.4)) ;; up in crack above normal position 
     ;; === forexitb (shooting you from below to city exit) ===
-    ;; (('skill-69) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
-    ;; (('skill-70) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
-    ;; (('skill-8) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    (('skill-69) (set-vector-meters! (-> arg0 extra trans)  712.23  82.5 143.63)) ;; up in pipes, left when first entering room
+    (('skill-70) (set-vector-meters! (-> arg0 extra trans)  703.0  76.6  25.65)) ;; infin jump on chain -> extended to top of crane
+    (('skill-8) (set-vector-meters! (-> arg0 extra trans)  675.0  72.5  22.5)) ;; up behind pipe on left entering room before slide
     ;; (('skill-71) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
 
 
