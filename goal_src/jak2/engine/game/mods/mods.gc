@@ -15,10 +15,11 @@
     )
   )
 
-(defmacro mod-no-collectable-bob (collectablename)
+(defmacro mod-no-collectable-bob (collectablename height)
   `(begin
     (when (process-by-ename ,collectablename)
       (set! (-> (the collectable (process-by-ename ,collectablename)) bob-amount) 0.0)
+      (set! (-> (the collectable (process-by-ename ,collectablename)) root trans y) (meters ,height))
       )
     )
   )
@@ -69,6 +70,7 @@
 (defun mod-override-init-position ((obj process-drawable) (arg0 entity-actor))
   (case (-> obj name) :comp name=
     ;; ====== ORBS ======
+    ;; fortress
     ;; === prison (first 2 rooms) ===
     (('skill-49) (set-vector-meters! (-> arg0 extra trans)  472.0 8.55 103.1)) ;; behind/under chair at start
     (('skill-50) (set-vector-meters! (-> arg0 extra trans)  547.14 12.4 169.8)) ;; in crack behind boxes along normal path
@@ -76,13 +78,25 @@
     (('skill-62) (set-vector-meters! (-> arg0 extra trans)  611.05  75.9 136.25)) ;; atop crane in middle of room
     (('skill-63) (set-vector-meters! (-> arg0 extra trans)  679.99  87.1  90.4)) ;; up in crack above normal position 
     ;; === forexitb (shooting you from below to city exit) ===
+    (('skill-8) (set-vector-meters! (-> arg0 extra trans)  675.0  72.5  22.5)) ;; up behind pipe on left entering room before slide
     (('skill-69) (set-vector-meters! (-> arg0 extra trans)  712.23  82.5 143.63)) ;; up in pipes, left when first entering room
     (('skill-70) (set-vector-meters! (-> arg0 extra trans)  703.0  76.6  25.65)) ;; infin jump on chain -> extended to top of crane
-    (('skill-8) (set-vector-meters! (-> arg0 extra trans)  675.0  72.5  22.5)) ;; up behind pipe on left entering room before slide
-    ;; (('skill-71) (set-vector-meters! (-> arg0 extra trans)  )) ;; 
+    (('skill-71) (set-vector-meters! (-> arg0 extra trans)  598.5  28.8  51.5)) ;; up high atop pipe - right before exit, stand on lip of pipe near end of slide and boosted over. or boosted from edge before exit and ledge grab thru pipe ("OOB")
+    ;; dead town
+    ;; === ruins (+sagehut) === 
+    ;; (('skill-1) (set-vector-meters! (-> arg0 extra trans)  )) ;; this weird one doesn't actually spawn? but move it anyways - 
+    (('skill-2) (set-vector-meters! (-> arg0 extra trans)  997.29  80.0 -656.2)) ;; atop wall in far back (hover)
+    (('skill-3) (set-vector-meters! (-> arg0 extra trans)  1054.7  38.8 -545.0)) ;; jak1 orb hunt location - by keira's transpad
+    ;; (('skill-4) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('skill-5) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('skill-6) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('skill-7) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('skill-89) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; (('skill-90) (set-vector-meters! (-> arg0 extra trans)  )) ;;
 
 
     ;; ====== MISC ======
+    ;; fortress
     ;; === prison ===
     ;; === forexita ===
     ;; (('crate-577) )  ;; dark eco
@@ -94,6 +108,9 @@
     ;; === forexitb ===
     ;; (('crate-953) )  ;; health
     ;; (('crate-954) )  ;; health
+    ;; dead town
+    ;; 
+
     )
   (none)
   )
@@ -115,7 +132,12 @@
 ;;   )
 
 (defun mod-run-each-frame ()
-
+  ;; === prison (first 2 rooms) ===
+  ;; === forexita (3rd room until shooting you from below) ===
+  ;; === forexitb (shooting you from below to city exit) ===
+  ;; === ruins (+sagehut) ===
+  ;; (let ((p (the skill (process-by-ename "skill-3"))))  ;; make this visible only when sagehut loaded?
+  ;; )
   (none)
   )
 
