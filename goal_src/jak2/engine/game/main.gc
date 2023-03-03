@@ -1742,6 +1742,39 @@
     (set! (-> gp-1 frames 1 start-time) (the-as time-frame (timer-count (the-as timer-bank #x10000800))))
     (set! (-> gp-1 dog-ratio) 1.0)
     (while *run*
+      
+      (when *target*
+        (case (-> *target* next-state name)
+          (('target-indax-attack
+            'target-indax-attack-air 
+            'target-indax-death
+            'target-indax-double-jump
+            'target-indax-falling
+            'target-indax-hit 
+            'target-indax-hit-ground 
+            'target-indax-jump 
+            'target-indax-running-attack
+            'target-indax-stance
+            'target-indax-start
+            'target-indax-trip
+            'target-indax-walk
+            ;; poles, no dax animation for them
+            'target-pole-cycle
+            'target-pole-flip-forward
+            'target-pole-flip-forward-jump
+            'target-pole-flip-up
+            'target-pole-flip-up-jump
+            )
+            ;; do nothing
+            )
+          (else
+            ;; force to indax mode
+            (if (not (logtest? (-> *kernel-context* prevent-from-run) (process-mask movie)))
+              (send-event *target* 'change-mode 'indax #f))
+            )
+          )
+        )
+
       (display-loop-main gp-1)
       (with-profiler 'actors *profile-actors-color*
         (suspend)
