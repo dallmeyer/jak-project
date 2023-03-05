@@ -2945,18 +2945,6 @@
 
 (defstate vent-wait-for-touch (vent)
   :event (behavior ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
-    (when (and
-        (-> *randomizer-settings* checkpoint-randomizer?)
-        (-> *randomizer-settings* warp-on-eco-vents?)
-        (or
-          (and (-> *randomizer-settings* warp-on-green-eco?) (= (-> self fact pickup-type) (pickup-type eco-green)))
-          (and (-> *randomizer-settings* warp-on-blue-eco?) (= (-> self fact pickup-type) (pickup-type eco-blue)))
-          (and (-> *randomizer-settings* warp-on-red-eco?) (= (-> self fact pickup-type) (pickup-type eco-red)))
-          (and (-> *randomizer-settings* warp-on-yellow-eco?) (= (-> self fact pickup-type) (pickup-type eco-yellow)))
-        )
-        )
-      (orchestrateCheckpointWarp 1)
-      )
     (if (and (or (= arg2 'touch) (= arg2 'attack))
              (let ((a1-1 (new 'stack-no-clear 'event-message-block)))
                (set! (-> a1-1 from) self)
@@ -3014,6 +3002,18 @@
 (defstate vent-pickup (vent)
   :event vent-standard-event-handler
   :code (behavior ((arg0 handle))
+    (when (and
+        (-> *randomizer-settings* checkpoint-randomizer?)
+        (-> *randomizer-settings* warp-on-eco-vents?)
+        (or
+          (and (-> *randomizer-settings* warp-on-green-eco?) (= (-> self fact pickup-type) (pickup-type eco-green)))
+          (and (-> *randomizer-settings* warp-on-blue-eco?) (= (-> self fact pickup-type) (pickup-type eco-blue)))
+          (and (-> *randomizer-settings* warp-on-red-eco?) (= (-> self fact pickup-type) (pickup-type eco-red)))
+          (and (-> *randomizer-settings* warp-on-yellow-eco?) (= (-> self fact pickup-type) (pickup-type eco-yellow)))
+        )
+        )
+      (orchestrateCheckpointWarp 1)
+      )
     (when (-> self show-particles)
       (when (nonzero? (-> self collect-effect))
         (let* ((s5-0 (handle->process arg0))

@@ -468,6 +468,7 @@
   (string->int *pc-temp-string*)
   )
 
+(define-extern string->uint (function string uint))
 (defun file-stream-read-uint ((file file-stream))
   (file-stream-seek-past-whitespace file)
   (file-stream-read-word file)
