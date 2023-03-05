@@ -491,7 +491,11 @@
         (go
           target-indax-jump
           (-> *TARGET-bank* indax-jump-height-min)
-          (-> *TARGET-bank* indax-jump-height-max)
+          ;; multiply max height by 1.25 if holding l1, high jump hack
+          (if (cpad-hold? (-> self control cpad number) l1)
+            (*! (-> *TARGET-bank* indax-jump-height-max) 1.25)
+            (-> *TARGET-bank* indax-jump-height-max)
+            )
           (the-as surface #f)
           )
         )
