@@ -1802,7 +1802,8 @@
             ;; force to indax mode
             (when (not (logtest? (-> *kernel-context* prevent-from-run) (process-mask movie)))
               (format 0 "sending change-mode indax while in ~S next state ~S ~%" (-> *target* state name) (-> *target* next-state name))
-              (send-event *target* 'change-mode 'indax #f))
+              (send-event *target* 'change-mode 'indax #f)
+              )
             )
           )
         ;; hide jak
