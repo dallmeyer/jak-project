@@ -89,12 +89,16 @@ if the result of rand-vu-int-range is 1, then DANCE! if it is not 1, then Don't 
 ;;This function moves an actor to the given coordinates
 ;;example (move-actor farmer-3 3.0 74.0 -120.0)
 (defun move-actor ((actor-name string) (x float) (y float) (z float))
-  (when (entity-by-name actor-name)
+  (when (or (string= actor-name "target") (entity-by-name actor-name))
     (let* ((entity-actor (entity-by-name actor-name))
-           (actor (-> entity-actor extra process))
+           (actor (if (string= actor-name "target") *target* (-> entity-actor extra process)))
            )
+      (format 0 "actor type ~P~%" (-> actor type))
       (when actor
         (case (-> actor type)
+          ((target)
+            (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+            )
           ((fuel-cell)
               (set-vector! (-> entity-actor trans) (meters x) (meters y) (meters z) 1.0)
               (set-vector! (-> entity-actor extra trans) (meters x) (meters y) (meters z) 1.0)

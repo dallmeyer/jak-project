@@ -118,6 +118,14 @@
   (-> obj curve num-cverts)
   )
 
+;; (define new-static-curve-control ((allocation symbol) (type-to-make type) (proc process) (name symbol) (time float))
+;;   (let ((obj (object-new allocation type-to-make (the-as int (-> type-to-make size)))))
+;;     (set! (-> obj process) (the-as process-drawable proc))
+;;     (set! (-> obj name) name)
+
+;;     )
+;;   )
+
 (defmethod new curve-control ((allocation symbol) (type-to-make type) (proc process) (name symbol) (time float))
   (let ((obj (object-new allocation type-to-make (the-as int (-> type-to-make size)))))
     (set! (-> obj process) (the-as process-drawable proc))
