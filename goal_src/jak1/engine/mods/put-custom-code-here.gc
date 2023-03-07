@@ -20,10 +20,13 @@
     ;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;; Begin function defintions.
     ;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+  
+    (define v1 (new 'static 'vector :x (meters 685.10) :y (meters 252.0) :z (meters -3405.91) :w 1.0))
+    (define v2 (new 'static 'vector :x (meters 715.22) :y (meters 252.0) :z (meters -3383.55) :w 1.0))
+    ;; (blocking-plane-spawn (the-as curve-control (new 'process 'curve-control-custom 'path v1 v2)))
+    
     (defun runs-every-frame ()
       ;;(increase-power-cell-by-one) This is a call to increase-power-cell-by-one defined in define-custom-functions-here.gc
-
       (none)
       )
 

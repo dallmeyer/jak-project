@@ -38,6 +38,7 @@
   )
 
 (defbehavior blocking-plane-init-by-other blocking-plane ((arg0 curve-control) (arg1 int))
+  (format 0 "blocking-plane-init-by-other~%")
   (if (or (not arg0) (logtest? (-> arg0 flags) (path-control-flag not-found)))
       (deactivate self)
       )

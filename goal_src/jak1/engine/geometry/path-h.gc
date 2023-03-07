@@ -54,6 +54,13 @@
    (new (symbol type process symbol float) _type_ 0)
    )
   )
+  
+  (deftype curve-control-custom (curve-control)
+    ()
+   (:methods
+   (new (symbol type symbol vector vector) _type_ 0)
+   )
+  )
 
 (defmethod new path-control ((allocation symbol) (type-to-make type) (proc process) (name symbol) (time float))
   (local-vars (tag res-tag))
@@ -118,13 +125,20 @@
   (-> obj curve num-cverts)
   )
 
-;; (define new-static-curve-control ((allocation symbol) (type-to-make type) (proc process) (name symbol) (time float))
-;;   (let ((obj (object-new allocation type-to-make (the-as int (-> type-to-make size)))))
-;;     (set! (-> obj process) (the-as process-drawable proc))
-;;     (set! (-> obj name) name)
+(defmethod new curve-control-custom ((allocation symbol) (type-to-make type) (name symbol) (start vector) (end vector))
+  (let ((obj (object-new allocation type-to-make (the-as int (-> type-to-make size)))))
+    (set! (-> obj name) name)
+    (set! (-> obj process) *target*)
+    (set! (-> obj curve cverts) (new 'static 'inline-array vector 2))
+    (set! (-> obj curve num-cverts) 2)
+    (vector-copy! (-> obj curve cverts 0) start)
+    (vector-copy! (-> obj curve cverts 1) end)
 
-;;     )
-;;   )
+    ;; downgrade us to a path-control, we got cverts but no knots.
+    (set! (-> obj type) path-control)
+    obj
+    )
+  )
 
 (defmethod new curve-control ((allocation symbol) (type-to-make type) (proc process) (name symbol) (time float))
   (let ((obj (object-new allocation type-to-make (the-as int (-> type-to-make size)))))
