@@ -58,7 +58,7 @@
   (deftype curve-control-custom (curve-control)
     ()
    (:methods
-   (new (symbol type symbol vector vector) _type_ 0)
+   (new (symbol type process symbol vector vector) _type_ 0)
    )
   )
 
@@ -125,10 +125,11 @@
   (-> obj curve num-cverts)
   )
 
-(defmethod new curve-control-custom ((allocation symbol) (type-to-make type) (name symbol) (start vector) (end vector))
+(defmethod new curve-control-custom ((allocation symbol) (type-to-make type) (proc process) (name symbol) (start vector) (end vector))
   (let ((obj (object-new allocation type-to-make (the-as int (-> type-to-make size)))))
     (set! (-> obj name) name)
-    (set! (-> obj process) *target*)
+    (set! (-> obj flags) (path-control-flag display draw-line draw-point draw-text))
+    (set! (-> obj process) (the-as process-drawable proc))
     (set! (-> obj curve cverts) (new 'static 'inline-array vector 2))
     (set! (-> obj curve num-cverts) 2)
     (vector-copy! (-> obj curve cverts 0) start)

@@ -27,6 +27,9 @@
               )
 
 (defstate blocking-plane-idle (blocking-plane)
+  :enter (behavior ()
+    (format 0 "idle enter~%")
+    )
   :code (behavior ()
     (transform-post)
     (loop
@@ -37,6 +40,7 @@
     )
   )
 
+(define *last-blocking-plane* (the-as blocking-plane #f))
 (defbehavior blocking-plane-init-by-other blocking-plane ((arg0 curve-control) (arg1 int))
   (format 0 "blocking-plane-init-by-other~%")
   (if (or (not arg0) (logtest? (-> arg0 flags) (path-control-flag not-found)))
@@ -80,8 +84,11 @@
       (matrix->quaternion (-> self root quat) s4-2)
       )
     )
+  (format 0 "bout to init skeleton ef-plane~%")
   (initialize-skeleton self *ef-plane-sg* '())
   (logior! (-> self draw status) (draw-status skip-bones))
+  (set! *last-blocking-plane* self)
+  (format 0 "going idle?~%")
   (go blocking-plane-idle)
   (none)
   )
@@ -95,6 +102,7 @@
             (s4-0 0)
             )
         (while (< s4-0 s5-0)
+          (format 0 "in spawn ~D < ~D ? ~%" s4-0 s5-0)
           (process-spawn blocking-plane arg0 s4-0 :to self)
           (+! s4-0 2)
           )
