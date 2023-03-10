@@ -44,12 +44,12 @@
       ((arg0 surface) (arg1 object) (arg2 object) (arg3 int))
       (case arg3
         ((1)
-         (let* ((f0-0 (deg-diff (y-angle (-> self control)) (vector-y-angle (-> self control unknown-vector08))))
+         (let* ((f0-0 (deg-diff (y-angle (-> self control)) (vector-y-angle (-> self control to-target-pt-xz))))
                 (f30-0 (lerp-scale 0.0 1.0 (fabs f0-0) 1820.4445 6371.5557))
                 )
            (cond
              ((and (logtest? (-> self gun track?) 1)
-                   (!= (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) stick0-speed) 0.0)
+                   (!= (-> *cpad-list* cpads (-> self control cpad number) stick0-speed) 0.0)
                    (>= (-> self gun track-turnv-range)
                        (vector-vector-distance (-> self control trans) (-> self gun track-trans))
                        )
@@ -166,8 +166,7 @@
     (set! (-> self gun latch?) #f)
     (set! (-> self gun put-away?) #f)
     (set! (-> self gun charge-active?) (the-as handle #f))
-    self
-    (set! (-> self skel top-anim) (new 'process 'top-anim-joint-control))
+    (set! (-> self skel top-anim) (new 'process 'top-anim-joint-control self))
     (set! (-> self skel interp-select 0) 0)
     (set! (-> self skel interp-select 1) 0)
     (quaternion-identity! (the-as quaternion (-> self gun top-anim-twist)))
@@ -203,7 +202,7 @@
         )
     (mode-set! (-> gp-0 hips) (joint-mod-mode rotate))
     (set! (-> gp-0 gun-roty) (y-angle (-> self control)))
-    (top-anim-joint-control-method-9 (-> self skel top-anim))
+    (reset (-> self skel top-anim))
     (set! (-> self skel top-anim interp) 1.0)
     (quaternion-identity! (the-as quaternion (-> self gun top-anim-twist)))
     (quaternion-identity! (the-as quaternion (-> self gun top-anim-twist-targ)))
@@ -237,22 +236,20 @@
   (set! (-> self gun charge-ammo) 0.0)
   (set! (-> self gun charge-start-time) 0)
   (set! (-> self gun top-anim-tilt-up) 0.0)
-  (let ((f0-9 (if (or (nonzero? (-> self gun fire-pending))
-                      (cpad-hold? (-> self control unknown-cpad-info00 number) r1)
-                      (-> self gun latch?)
-                      )
-                  2.0
-                  1.0
-                  )
+  (let ((f0-9
+          (if (or (nonzero? (-> self gun fire-pending)) (cpad-hold? (-> self control cpad number) r1) (-> self gun latch?))
+              2.0
+              1.0
               )
+          )
         )
     (cond
       ((logtest? (-> self focus-status) (focus-status pilot-riding))
        (case (-> self gun gun-type)
          (((pickup-type eco-yellow))
-          (top-anim-joint-control-method-12
+          (push-anim-to-targ
             (-> self skel top-anim)
-            (-> self draw art-group data 229)
+            (the-as art-joint-anim (-> self draw art-group data 229))
             0.0
             0
             15
@@ -262,9 +259,9 @@
             )
           )
          (((pickup-type eco-red))
-          (top-anim-joint-control-method-12
+          (push-anim-to-targ
             (-> self skel top-anim)
-            (-> self draw art-group data 198)
+            (the-as art-joint-anim (-> self draw art-group data 198))
             0.0
             0
             15
@@ -274,9 +271,9 @@
             )
           )
          (((pickup-type eco-blue))
-          (top-anim-joint-control-method-12
+          (push-anim-to-targ
             (-> self skel top-anim)
-            (-> self draw art-group data 230)
+            (the-as art-joint-anim (-> self draw art-group data 230))
             0.0
             0
             15
@@ -286,9 +283,9 @@
             )
           )
          (((pickup-type eco-dark))
-          (top-anim-joint-control-method-12
+          (push-anim-to-targ
             (-> self skel top-anim)
-            (-> self draw art-group data 231)
+            (the-as art-joint-anim (-> self draw art-group data 231))
             0.0
             0
             15
@@ -302,9 +299,9 @@
       (else
         (case (-> self gun gun-type)
           (((pickup-type eco-yellow))
-           (top-anim-joint-control-method-12
+           (push-anim-to-targ
              (-> self skel top-anim)
-             (-> self draw art-group data 265)
+             (the-as art-joint-anim (-> self draw art-group data 265))
              0.0
              0
              15
@@ -314,9 +311,9 @@
              )
            )
           (((pickup-type eco-red))
-           (top-anim-joint-control-method-12
+           (push-anim-to-targ
              (-> self skel top-anim)
-             (-> self draw art-group data 263)
+             (the-as art-joint-anim (-> self draw art-group data 263))
              0.0
              0
              15
@@ -326,9 +323,9 @@
              )
            )
           (((pickup-type eco-blue))
-           (top-anim-joint-control-method-12
+           (push-anim-to-targ
              (-> self skel top-anim)
-             (-> self draw art-group data 266)
+             (the-as art-joint-anim (-> self draw art-group data 266))
              0.0
              0
              15
@@ -338,9 +335,9 @@
              )
            )
           (((pickup-type eco-dark))
-           (top-anim-joint-control-method-12
+           (push-anim-to-targ
              (-> self skel top-anim)
-             (-> self draw art-group data 264)
+             (the-as art-joint-anim (-> self draw art-group data 264))
              0.0
              0
              15
@@ -353,8 +350,8 @@
         )
       )
     )
-  (if (= (-> self control unknown-symbol00) 'duck)
-      (target-collide-set! (-> self control unknown-symbol00) (-> self control unknown-float000))
+  (if (= (-> self control collide-mode) 'duck)
+      (target-collide-set! (-> self control collide-mode) (-> self control collide-mode-transition))
       (target-collide-set! 'gun 0.0)
       )
   0
@@ -383,7 +380,7 @@
       )
     (set! (-> self gun active?) #f)
     (cond
-      ((and (not (logtest? (surface-flag gun-fast-exit) (-> self control unknown-surface01 flags)))
+      ((and (not (logtest? (surface-flag gun-fast-exit) (-> self control current-surface flags)))
             (zero? (logand (-> self focus-status) (focus-status dead)))
             )
        (sound-play "gun-putaway")
@@ -391,9 +388,9 @@
          ((logtest? (-> self focus-status) (focus-status pilot-riding))
           (case (-> self gun gun-type)
             (((pickup-type eco-yellow))
-             (top-anim-joint-control-method-12
+             (push-anim-to-targ
                (-> self skel top-anim)
-               (-> self draw art-group data 229)
+               (the-as art-joint-anim (-> self draw art-group data 229))
                0.0
                10
                0
@@ -404,9 +401,9 @@
              (set! (-> self skel top-anim frame-post-put-away) (the-as basic #t))
              )
             (((pickup-type eco-red))
-             (top-anim-joint-control-method-12
+             (push-anim-to-targ
                (-> self skel top-anim)
-               (-> self draw art-group data 198)
+               (the-as art-joint-anim (-> self draw art-group data 198))
                0.0
                10
                0
@@ -417,9 +414,9 @@
              (set! (-> self skel top-anim frame-post-put-away) (the-as basic #t))
              )
             (((pickup-type eco-blue))
-             (top-anim-joint-control-method-12
+             (push-anim-to-targ
                (-> self skel top-anim)
-               (-> self draw art-group data 230)
+               (the-as art-joint-anim (-> self draw art-group data 230))
                0.0
                10
                0
@@ -430,9 +427,9 @@
              (set! (-> self skel top-anim frame-post-put-away) (the-as basic #t))
              )
             (((pickup-type eco-dark))
-             (top-anim-joint-control-method-12
+             (push-anim-to-targ
                (-> self skel top-anim)
-               (-> self draw art-group data 231)
+               (the-as art-joint-anim (-> self draw art-group data 231))
                0.0
                10
                0
@@ -450,9 +447,9 @@
          (else
            (case (-> self gun gun-type)
              (((pickup-type eco-yellow))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 265)
+                (the-as art-joint-anim (-> self draw art-group data 265))
                 0.0
                 10
                 0
@@ -463,9 +460,9 @@
               (set! (-> self skel top-anim frame-post-put-away) (the-as basic #t))
               )
              (((pickup-type eco-red))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 263)
+                (the-as art-joint-anim (-> self draw art-group data 263))
                 0.0
                 10
                 0
@@ -476,9 +473,9 @@
               (set! (-> self skel top-anim frame-post-put-away) (the-as basic #t))
               )
              (((pickup-type eco-blue))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 266)
+                (the-as art-joint-anim (-> self draw art-group data 266))
                 14.0
                 10
                 0
@@ -489,9 +486,9 @@
               (set! (-> self skel top-anim frame-post-put-away) (the-as basic #t))
               )
              (((pickup-type eco-dark))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 264)
+                (the-as art-joint-anim (-> self draw art-group data 264))
                 0.0
                 10
                 0
@@ -515,8 +512,8 @@
     (set! (-> self gun gun-type) (pickup-type none))
     (remove-setting! 'mode-sound-bank)
     (remove-setting! 'sound-flava)
-    (if (= (-> self control unknown-symbol00) 'duck)
-        (target-collide-set! (-> self control unknown-symbol00) (-> self control unknown-float000))
+    (if (= (-> self control collide-mode) 'duck)
+        (target-collide-set! (-> self control collide-mode) (-> self control collide-mode-transition))
         (target-collide-set! 'normal 0.0)
         )
     (when arg0
@@ -534,7 +531,7 @@
 
 (defbehavior target-gun-ammo-out-pick target ()
   (cond
-    ((and (and (logtest? (-> self game features) (game-feature unk-game-feature-06))
+    ((and (and (logtest? (-> self game features) (game-feature gun))
                (-> *setting-control* user-current gun)
                (logtest? (logand (-> *setting-control* user-current features) (game-feature gun-yellow))
                          (-> self game features)
@@ -544,7 +541,7 @@
           )
      1
      )
-    ((and (and (logtest? (-> self game features) (game-feature unk-game-feature-06))
+    ((and (and (logtest? (-> self game features) (game-feature gun))
                (-> *setting-control* user-current gun)
                (logtest? (logand (-> *setting-control* user-current features) (game-feature gun-red))
                          (-> self game features)
@@ -554,7 +551,7 @@
           )
      2
      )
-    ((and (and (logtest? (-> self game features) (game-feature unk-game-feature-06))
+    ((and (and (logtest? (-> self game features) (game-feature gun))
                (-> *setting-control* user-current gun)
                (logtest? (logand (-> *setting-control* user-current features) (game-feature gun-blue))
                          (-> self game features)
@@ -564,7 +561,7 @@
           )
      3
      )
-    ((and (and (logtest? (-> self game features) (game-feature unk-game-feature-06))
+    ((and (and (logtest? (-> self game features) (game-feature gun))
                (-> *setting-control* user-current gun)
                (logtest? (logand (-> *setting-control* user-current features) (game-feature gun-dark))
                          (-> self game features)
@@ -588,7 +585,7 @@
                        (logand (-> self game features) (-> *setting-control* user-current features))
                        )
              )
-    (when (and (logtest? (-> self game features) (game-feature unk-game-feature-06))
+    (when (and (logtest? (-> self game features) (game-feature gun))
                (-> *setting-control* user-current gun)
                (logtest? (logand (-> *setting-control* user-current features) (game-feature gun-yellow))
                          (-> self game features)
@@ -597,7 +594,7 @@
       (set! arg0 1)
       (goto cfg-39)
       )
-    (when (and (logtest? (-> self game features) (game-feature unk-game-feature-06))
+    (when (and (logtest? (-> self game features) (game-feature gun))
                (-> *setting-control* user-current gun)
                (logtest? (logand (-> *setting-control* user-current features) (game-feature gun-red))
                          (-> self game features)
@@ -606,7 +603,7 @@
       (set! arg0 2)
       (goto cfg-39)
       )
-    (when (and (logtest? (-> self game features) (game-feature unk-game-feature-06))
+    (when (and (logtest? (-> self game features) (game-feature gun))
                (-> *setting-control* user-current gun)
                (logtest? (logand (-> *setting-control* user-current features) (game-feature gun-blue))
                          (-> self game features)
@@ -615,7 +612,7 @@
       (set! arg0 3)
       (goto cfg-39)
       )
-    (when (and (logtest? (-> self game features) (game-feature unk-game-feature-06))
+    (when (and (logtest? (-> self game features) (game-feature gun))
                (-> *setting-control* user-current gun)
                (logtest? (logand (-> *setting-control* user-current features) (game-feature gun-dark))
                          (-> self game features)
@@ -723,9 +720,9 @@
          (let ((v1-164 arg0))
            (cond
              ((and (= s5-0 (pickup-type eco-red)) (= v1-164 4))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 225)
+                (the-as art-joint-anim (-> self draw art-group data 225))
                 0.0
                 30
                 19
@@ -735,9 +732,9 @@
                 )
               )
              ((and (= s5-0 (pickup-type eco-dark)) (= v1-164 2))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 225)
+                (the-as art-joint-anim (-> self draw art-group data 225))
                 0.0
                 30
                 0
@@ -747,9 +744,9 @@
                 )
               )
              ((and (= s5-0 (pickup-type eco-red)) (= v1-164 1))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 226)
+                (the-as art-joint-anim (-> self draw art-group data 226))
                 0.0
                 30
                 19
@@ -759,9 +756,9 @@
                 )
               )
              ((and (= s5-0 (pickup-type eco-yellow)) (= v1-164 2))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 226)
+                (the-as art-joint-anim (-> self draw art-group data 226))
                 0.0
                 30
                 0
@@ -771,9 +768,9 @@
                 )
               )
              ((and (= s5-0 (pickup-type eco-red)) (= v1-164 3))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 227)
+                (the-as art-joint-anim (-> self draw art-group data 227))
                 0.0
                 30
                 19
@@ -783,9 +780,9 @@
                 )
               )
              ((and (= s5-0 (pickup-type eco-blue)) (= v1-164 2))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 227)
+                (the-as art-joint-anim (-> self draw art-group data 227))
                 0.0
                 30
                 0
@@ -795,9 +792,9 @@
                 )
               )
              ((and (= s5-0 (pickup-type eco-yellow)) (= v1-164 3))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 228)
+                (the-as art-joint-anim (-> self draw art-group data 228))
                 0.0
                 30
                 19
@@ -807,9 +804,9 @@
                 )
               )
              ((and (= s5-0 (pickup-type eco-blue)) (= v1-164 1))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 228)
+                (the-as art-joint-anim (-> self draw art-group data 228))
                 0.0
                 30
                 0
@@ -819,9 +816,9 @@
                 )
               )
              ((and (= s5-0 (pickup-type eco-dark)) (= v1-164 1))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 226)
+                (the-as art-joint-anim (-> self draw art-group data 226))
                 0.0
                 30
                 19
@@ -831,9 +828,9 @@
                 )
               )
              ((and (= s5-0 (pickup-type eco-dark)) (= v1-164 3))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 227)
+                (the-as art-joint-anim (-> self draw art-group data 227))
                 0.0
                 30
                 19
@@ -843,9 +840,9 @@
                 )
               )
              ((and (= s5-0 (pickup-type eco-blue)) (= v1-164 4))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 227)
+                (the-as art-joint-anim (-> self draw art-group data 227))
                 0.0
                 30
                 0
@@ -855,9 +852,9 @@
                 )
               )
              ((and (= s5-0 (pickup-type eco-yellow)) (= v1-164 4))
-              (top-anim-joint-control-method-12
+              (push-anim-to-targ
                 (-> self skel top-anim)
-                (-> self draw art-group data 226)
+                (the-as art-joint-anim (-> self draw art-group data 226))
                 0.0
                 30
                 0
@@ -874,9 +871,9 @@
             (cond
               ((and (= s5-0 (pickup-type eco-red)) (= v1-227 4))
                (if (rand-vu-percent? 0.5)
-                   (top-anim-joint-control-method-12
+                   (push-anim-to-targ
                      (-> self skel top-anim)
-                     (-> self draw art-group data 268)
+                     (the-as art-joint-anim (-> self draw art-group data 268))
                      0.0
                      30
                      19
@@ -884,9 +881,9 @@
                      2.0
                      (the-as symbol (static-sound-spec "gun-trans-1"))
                      )
-                   (top-anim-joint-control-method-12
+                   (push-anim-to-targ
                      (-> self skel top-anim)
-                     (-> self draw art-group data 269)
+                     (the-as art-joint-anim (-> self draw art-group data 269))
                      0.0
                      19
                      19
@@ -898,9 +895,9 @@
                )
               ((and (= s5-0 (pickup-type eco-dark)) (= v1-227 2))
                (if (rand-vu-percent? 0.5)
-                   (top-anim-joint-control-method-12
+                   (push-anim-to-targ
                      (-> self skel top-anim)
-                     (-> self draw art-group data 268)
+                     (the-as art-joint-anim (-> self draw art-group data 268))
                      0.0
                      30
                      19
@@ -908,9 +905,9 @@
                      2.0
                      (the-as symbol (static-sound-spec "gun-trans-1"))
                      )
-                   (top-anim-joint-control-method-12
+                   (push-anim-to-targ
                      (-> self skel top-anim)
-                     (-> self draw art-group data 269)
+                     (the-as art-joint-anim (-> self draw art-group data 269))
                      0.0
                      19
                      19
@@ -922,9 +919,9 @@
                )
               ((and (= s5-0 (pickup-type eco-dark)) (= v1-227 1))
                (if (rand-vu-percent? 0.5)
-                   (top-anim-joint-control-method-12
+                   (push-anim-to-targ
                      (-> self skel top-anim)
-                     (-> self draw art-group data 269)
+                     (the-as art-joint-anim (-> self draw art-group data 269))
                      0.0
                      19
                      19
@@ -932,9 +929,9 @@
                      2.0
                      (the-as symbol (static-sound-spec "gun-trans-2"))
                      )
-                   (top-anim-joint-control-method-12
+                   (push-anim-to-targ
                      (-> self skel top-anim)
-                     (-> self draw art-group data 270)
+                     (the-as art-joint-anim (-> self draw art-group data 270))
                      0.0
                      19
                      19
@@ -946,9 +943,9 @@
                )
               ((and (= s5-0 (pickup-type eco-red)) (= v1-227 1))
                (if (rand-vu-percent? 0.5)
-                   (top-anim-joint-control-method-12
+                   (push-anim-to-targ
                      (-> self skel top-anim)
-                     (-> self draw art-group data 269)
+                     (the-as art-joint-anim (-> self draw art-group data 269))
                      0.0
                      19
                      19
@@ -956,9 +953,9 @@
                      2.0
                      (the-as symbol (static-sound-spec "gun-trans-2"))
                      )
-                   (top-anim-joint-control-method-12
+                   (push-anim-to-targ
                      (-> self skel top-anim)
-                     (-> self draw art-group data 270)
+                     (the-as art-joint-anim (-> self draw art-group data 270))
                      0.0
                      19
                      19
@@ -969,9 +966,9 @@
                    )
                )
               ((and (= s5-0 (pickup-type eco-yellow)) (= v1-227 2))
-               (top-anim-joint-control-method-12
+               (push-anim-to-targ
                  (-> self skel top-anim)
-                 (-> self draw art-group data 268)
+                 (the-as art-joint-anim (-> self draw art-group data 268))
                  0.0
                  19
                  19
@@ -981,9 +978,9 @@
                  )
                )
               ((and (= s5-0 (pickup-type eco-yellow)) (= v1-227 4))
-               (top-anim-joint-control-method-12
+               (push-anim-to-targ
                  (-> self skel top-anim)
-                 (-> self draw art-group data 268)
+                 (the-as art-joint-anim (-> self draw art-group data 268))
                  0.0
                  19
                  19
@@ -993,9 +990,9 @@
                  )
                )
               ((and (= s5-0 (pickup-type eco-red)) (= v1-227 3))
-               (top-anim-joint-control-method-12
+               (push-anim-to-targ
                  (-> self skel top-anim)
-                 (-> self draw art-group data 271)
+                 (the-as art-joint-anim (-> self draw art-group data 271))
                  0.0
                  19
                  19
@@ -1005,9 +1002,9 @@
                  )
                )
               ((and (= s5-0 (pickup-type eco-dark)) (= v1-227 3))
-               (top-anim-joint-control-method-12
+               (push-anim-to-targ
                  (-> self skel top-anim)
-                 (-> self draw art-group data 271)
+                 (the-as art-joint-anim (-> self draw art-group data 271))
                  0.0
                  19
                  19
@@ -1017,9 +1014,9 @@
                  )
                )
               ((and (= s5-0 (pickup-type eco-blue)) (= v1-227 2))
-               (top-anim-joint-control-method-12
+               (push-anim-to-targ
                  (-> self skel top-anim)
-                 (-> self draw art-group data 272)
+                 (the-as art-joint-anim (-> self draw art-group data 272))
                  0.0
                  19
                  19
@@ -1029,9 +1026,9 @@
                  )
                )
               ((and (= s5-0 (pickup-type eco-blue)) (= v1-227 4))
-               (top-anim-joint-control-method-12
+               (push-anim-to-targ
                  (-> self skel top-anim)
-                 (-> self draw art-group data 272)
+                 (the-as art-joint-anim (-> self draw art-group data 272))
                  0.0
                  19
                  19
@@ -1041,9 +1038,9 @@
                  )
                )
               ((and (= s5-0 (pickup-type eco-yellow)) (= v1-227 3))
-               (top-anim-joint-control-method-12
+               (push-anim-to-targ
                  (-> self skel top-anim)
-                 (-> self draw art-group data 271)
+                 (the-as art-joint-anim (-> self draw art-group data 271))
                  0.0
                  30
                  19
@@ -1053,9 +1050,9 @@
                  )
                )
               ((and (= s5-0 (pickup-type eco-blue)) (= v1-227 1))
-               (top-anim-joint-control-method-12
+               (push-anim-to-targ
                  (-> self skel top-anim)
-                 (-> self draw art-group data 252)
+                 (the-as art-joint-anim (-> self draw art-group data 252))
                  0.0
                  19
                  19
@@ -1086,16 +1083,16 @@
              )
     (let ((s5-0 (the-as int (-> arg0 gun using-gun-type))))
       (cond
-        ((cpad-pressed? (-> arg0 control unknown-cpad-info00 number) down)
+        ((cpad-pressed? (-> arg0 control cpad number) down)
          (set! s5-0 1)
          )
-        ((cpad-pressed? (-> arg0 control unknown-cpad-info00 number) up)
+        ((cpad-pressed? (-> arg0 control cpad number) up)
          (set! s5-0 2)
          )
-        ((cpad-pressed? (-> arg0 control unknown-cpad-info00 number) left)
+        ((cpad-pressed? (-> arg0 control cpad number) left)
          (set! s5-0 3)
          )
-        ((cpad-pressed? (-> arg0 control unknown-cpad-info00 number) right)
+        ((cpad-pressed? (-> arg0 control cpad number) right)
          (set! s5-0 4)
          )
         )
@@ -1147,19 +1144,19 @@
         (set! (-> s4-0 quad)
               (-> (the-as
                     vector
-                    (if (and (or (= (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) stick0-speed) 0.0)
-                                 (logtest? (surface-flag gun-strafe) (-> self control unknown-surface01 flags))
+                    (if (and (or (= (-> *cpad-list* cpads (-> self control cpad number) stick0-speed) 0.0)
+                                 (logtest? (surface-flag gun-strafe) (-> self control current-surface flags))
                                  )
                              (not (and (logtest? (focus-status dark) (-> self focus-status)) (nonzero? (-> self darkjak))))
                              )
                         (-> self gun fire-dir)
-                        (-> self control unknown-vector08)
+                        (-> self control to-target-pt-xz)
                         )
                     )
                   quad
                   )
               )
-        (vector-flatten! s4-0 s4-0 (-> self control unknown-matrix01 vector 1))
+        (vector-flatten! s4-0 s4-0 (-> self control c-R-w vector 1))
         (vector-normalize! s4-0 1.0)
         (set! (-> gp-0 y) (+ 6144.0 (-> gp-0 y)))
         (vector+float*! gp-0 gp-0 s4-0 -32768.0)
@@ -1170,7 +1167,7 @@
             )
         (set! (-> s3-0 w) (* 0.5 (vector-vector-distance gp-0 s5-0)))
         (set! (-> s4-1 length)
-              (spatial-hash-method-36 *actor-hash* (the-as sphere s3-0) (-> s4-1 data) (-> s4-1 allocated-length))
+              (fill-actor-list-for-sphere *actor-hash* (the-as sphere s3-0) (-> s4-1 data) (-> s4-1 allocated-length))
               )
         )
       )
@@ -1185,11 +1182,11 @@
       (set! (-> self gun track?) (logand -9 (-> self gun track?)))
       )
   (let ((gp-0 (the-as basic #f)))
-    (when (and (or (< (- (-> self clock frame-counter) (-> self control unknown-time-frame29)) (seconds 0.2))
-                   (and (logtest? (-> self control unknown-surface00 flags) (surface-flag air))
-                        (zero? (logand (-> self control status) (cshape-moving-flags on-surface)))
+    (when (and (or (< (- (-> self clock frame-counter) (-> self control time-of-last-nonzero-input)) (seconds 0.2))
+                   (and (logtest? (-> self control mod-surface flags) (surface-flag air))
+                        (zero? (logand (-> self control status) (collide-status on-surface)))
                         )
-                   (or (logtest? (surface-flag gun-direct) (-> self control unknown-surface01 flags))
+                   (or (logtest? (surface-flag gun-direct) (-> self control current-surface flags))
                        (= (-> self gun gun-type) (pickup-type eco-dark))
                        )
                    )
@@ -1199,7 +1196,7 @@
       (let ((t2-0 (vector<-cspace! (new 'stack-no-clear 'vector) (-> self node-list data 8))))
         (set! (-> t2-0 y) (+ 2048.0 (-> t2-0 y)))
         (cond
-          ((logtest? (surface-flag gun-strafe) (-> self control unknown-surface01 flags))
+          ((logtest? (surface-flag gun-strafe) (-> self control current-surface flags))
            (set! gp-0 (find-nearest-focusable
                         (-> self focus-search)
                         (-> self control trans)
@@ -1212,10 +1209,10 @@
                         )
                  )
            )
-          ((or (and (logtest? (-> self control unknown-surface00 flags) (surface-flag air))
-                    (zero? (logand (-> self control status) (cshape-moving-flags on-surface)))
+          ((or (and (logtest? (-> self control mod-surface flags) (surface-flag air))
+                    (zero? (logand (-> self control status) (collide-status on-surface)))
                     )
-               (logtest? (surface-flag gun-direct) (-> self control unknown-surface01 flags))
+               (logtest? (surface-flag gun-direct) (-> self control current-surface flags))
                )
            (set! gp-0 (find-nearest-focusable
                         (-> self focus-search)
@@ -1268,7 +1265,7 @@
                (the-as process-focusable gp-0)
                )
           (set! (-> self gun track-start-time) (-> self clock frame-counter))
-          (if (< (- (-> self clock frame-counter) (-> self control unknown-time-frame29)) (seconds 0.2))
+          (if (< (- (-> self clock frame-counter) (-> self control time-of-last-nonzero-input)) (seconds 0.2))
               (set! (-> self gun track-press-start-time) (-> self clock frame-counter))
               )
           )
@@ -1287,7 +1284,7 @@
                                     (< (-> self clock frame-counter) (-> self gun track-target-hold-time))
                                     )
                                )
-                          (and (not (logtest? (surface-flag spin) (-> self control unknown-surface01 flags)))
+                          (and (not (logtest? (surface-flag spin) (-> self control current-surface flags)))
                                (let ((f30-0 21845.334)
                                      (s4-0 (-> self control))
                                      (s2-0 (-> self gun track-trans))
@@ -1300,10 +1297,10 @@
                                  )
                                )
                           )
-                     (and (or (and (logtest? (-> self control unknown-surface00 flags) (surface-flag air))
-                                   (zero? (logand (-> self control status) (cshape-moving-flags on-surface)))
+                     (and (or (and (logtest? (-> self control mod-surface flags) (surface-flag air))
+                                   (zero? (logand (-> self control status) (collide-status on-surface)))
                                    )
-                              (logtest? (surface-flag gun-direct) (-> self control unknown-surface01 flags))
+                              (logtest? (surface-flag gun-direct) (-> self control current-surface flags))
                               )
                           (< 102400.0 (vector-vector-distance (-> self control trans) (-> self gun track-trans)))
                           (< (vector-dot
@@ -1348,7 +1345,7 @@
       )
     (let ((s5-2 (handle->process (-> self gun track-target 1 handle))))
       (cond
-        ((logtest? (surface-flag gun-strafe) (-> self control unknown-surface01 flags))
+        ((logtest? (surface-flag gun-strafe) (-> self control current-surface flags))
          (send-event *camera* 'set-slave-option #x8000)
          )
         ((the-as process-focusable s5-2)
@@ -1356,8 +1353,8 @@
            (let ((s3-1 (new 'stack-no-clear 'vector4w)))
              (cond
                ((and (logtest? (process-mask enemy guard) (-> s5-2 mask)) (transform-point-qword! s3-1 s4-5))
-                (let ((v1-173 (the-as int (+ (/ (the-as int (-> s3-1 x)) 16) -2048))))
-                  (+ (/ (the-as int (-> s3-1 y)) 16) -2048)
+                (let ((v1-173 (+ (/ (-> s3-1 x) 16) -2048)))
+                  (+ (/ (-> s3-1 y) 16) -2048)
                   (let ((a0-91 (abs v1-173)))
                     (cond
                       ((< a0-91 65)
@@ -1404,15 +1401,15 @@
   0
   (none)
   )
-  
+
 (defbehavior target-top-anim-base-mode target ((arg0 int))
   (cond
     ((logtest? (-> self focus-status) (focus-status pilot-riding))
      (case (-> self gun gun-type)
        (((pickup-type eco-yellow))
-        (top-anim-joint-control-method-12
+        (push-anim-to-targ
           (-> self skel top-anim)
-          (-> self draw art-group data 220)
+          (the-as art-joint-anim (-> self draw art-group data 220))
           0.0
           arg0
           0
@@ -1422,9 +1419,9 @@
           )
         )
        (((pickup-type eco-blue))
-        (top-anim-joint-control-method-12
+        (push-anim-to-targ
           (-> self skel top-anim)
-          (-> self draw art-group data 221)
+          (the-as art-joint-anim (-> self draw art-group data 221))
           0.0
           arg0
           0
@@ -1434,9 +1431,9 @@
           )
         )
        (((pickup-type eco-red))
-        (top-anim-joint-control-method-12
+        (push-anim-to-targ
           (-> self skel top-anim)
-          (-> self draw art-group data 218)
+          (the-as art-joint-anim (-> self draw art-group data 218))
           0.0
           arg0
           0
@@ -1446,9 +1443,9 @@
           )
         )
        (((pickup-type eco-dark))
-        (top-anim-joint-control-method-12
+        (push-anim-to-targ
           (-> self skel top-anim)
-          (-> self draw art-group data 219)
+          (the-as art-joint-anim (-> self draw art-group data 219))
           0.0
           arg0
           0
@@ -1462,9 +1459,9 @@
     (else
       (case (-> self gun gun-type)
         (((pickup-type eco-yellow))
-         (top-anim-joint-control-method-12
+         (push-anim-to-targ
            (-> self skel top-anim)
-           (-> self draw art-group data 254)
+           (the-as art-joint-anim (-> self draw art-group data 254))
            0.0
            arg0
            0
@@ -1478,9 +1475,9 @@
              )
          )
         (((pickup-type eco-blue))
-         (top-anim-joint-control-method-12
+         (push-anim-to-targ
            (-> self skel top-anim)
-           (-> self draw art-group data 255)
+           (the-as art-joint-anim (-> self draw art-group data 255))
            0.0
            arg0
            0
@@ -1490,9 +1487,9 @@
            )
          )
         (((pickup-type eco-red))
-         (top-anim-joint-control-method-12
+         (push-anim-to-targ
            (-> self skel top-anim)
-           (-> self draw art-group data 244)
+           (the-as art-joint-anim (-> self draw art-group data 244))
            0.0
            arg0
            0
@@ -1502,9 +1499,9 @@
            )
          )
         (((pickup-type eco-dark))
-         (top-anim-joint-control-method-12
+         (push-anim-to-targ
            (-> self skel top-anim)
-           (-> self draw art-group data 253)
+           (the-as art-joint-anim (-> self draw art-group data 253))
            0.0
            arg0
            0
@@ -1529,8 +1526,8 @@
   )
 
 (defbehavior target-gun-joint-pre0 target ()
-  (if (!= (zero? (logand (-> self game features) (game-feature unk-game-feature-06))) (not (-> self gun gun)))
-      (target-gun-setup (logtest? (-> self game features) (game-feature unk-game-feature-06)))
+  (if (!= (zero? (logand (-> self game features) (game-feature gun))) (not (-> self gun gun)))
+      (target-gun-setup (logtest? (-> self game features) (game-feature gun)))
       )
   (if (and (>= (- (-> self clock frame-counter) (-> self gun combo-window-start)) (seconds 0.7))
            (zero? (-> self gun fire-pending))
@@ -1538,11 +1535,11 @@
       (set! (-> self gun combo-window-state) #f)
       )
   (cond
-    ((and (cpad-pressed? (-> self control unknown-cpad-info00 number) r1)
+    ((and (cpad-pressed? (-> self control cpad number) r1)
           (< (- (-> self clock frame-counter) (-> self gun combo-window-start)) (seconds 0.7))
           (not (logtest? (focus-status mech dark) (-> self focus-status)))
-          (not (logtest? (surface-flag gun-off) (-> self control unknown-surface01 flags)))
-          (not (logtest? (state-flags sf18) (-> self state-flags)))
+          (not (logtest? (surface-flag gun-off) (-> self control current-surface flags)))
+          (not (logtest? (state-flags prevent-gun) (-> self state-flags)))
           (zero? (-> self gun track-target-hold-time))
           )
      (when (send-event self 'gun-combo #f)
@@ -1551,7 +1548,7 @@
                      (the-as handle #f)
                      (-> self control trans)
                      61440.0
-                     (-> self control unknown-matrix01 vector 2)
+                     (-> self control c-R-w vector 2)
                      65536.0
                      )
                    )
@@ -1595,10 +1592,10 @@
          )
        )
      )
-    ((and (cpad-pressed? (-> self control unknown-cpad-info00 number) r1)
+    ((and (cpad-pressed? (-> self control cpad number) r1)
           (using-gun? self)
-          (logtest? (surface-flag gun-turn-fast) (-> self control unknown-surface01 flags))
-          (not (logtest? (state-flags sf18) (-> self state-flags)))
+          (logtest? (surface-flag gun-turn-fast) (-> self control current-surface flags))
+          (not (logtest? (state-flags prevent-gun) (-> self state-flags)))
           (zero? (-> self gun track-target-hold-time))
           (or (zero? (-> self gun turn-fast-hold-time))
               (>= (-> self clock frame-counter) (-> self gun turn-fast-hold-time))
@@ -1617,7 +1614,7 @@
   (when (and (not (using-gun? self)) (want-to-gun? self #f))
     (let ((gp-2 (nonzero? (-> self gun using-gun-type))))
       (send-event self 'change-mode 'gun #f (-> self gun using-gun-type))
-      (when (and (not gp-2) (or (cpad-hold? (-> self control unknown-cpad-info00 number) r1) (-> self gun latch?)))
+      (when (and (not gp-2) (or (cpad-hold? (-> self control cpad number) r1) (-> self gun latch?)))
         (if (zero? (-> self gun fire-pending))
             (+! (-> self gun fire-pending) 1)
             )
@@ -1635,14 +1632,14 @@
        0
        )
      (cond
-       ((and (= (-> self control unknown-symbol00) 'normal) (!= (-> self control unknown-symbol00) 'duck))
+       ((and (= (-> self control collide-mode) 'normal) (!= (-> self control collide-mode) 'duck))
         (target-collide-set! 'gun 0.0)
         )
-       ((= (-> self control unknown-symbol00) 'gun)
+       ((= (-> self control collide-mode) 'gun)
         (cond
-          ((or (and (not (logtest? (-> self control status) (cshape-moving-flags on-surface)))
-                    (or (and (logtest? (-> self control unknown-surface00 flags) (surface-flag air))
-                             (zero? (logand (-> self control status) (cshape-moving-flags on-surface)))
+          ((or (and (not (logtest? (-> self control status) (collide-status on-surface)))
+                    (or (and (logtest? (-> self control mod-surface flags) (surface-flag air))
+                             (zero? (logand (-> self control status) (collide-status on-surface)))
                              )
                         (< 2048.0 (target-height-above-ground))
                         )
@@ -1650,24 +1647,24 @@
                (logtest? (-> self focus-status) (focus-status edge-grab))
                (-> *setting-control* user-current doorway)
                )
-           (if (!= (-> self control unknown-float31) 0.0)
+           (if (!= (-> self control duck-gun-tube-transision) 0.0)
                (target-collide-set! 'gun 0.0)
                )
            )
           (else
-            (when (!= (-> self control unknown-float31) 1.0)
-              (when (= (-> self control unknown-symbol00) 'gun)
+            (when (!= (-> self control duck-gun-tube-transision) 1.0)
+              (when (= (-> self control collide-mode) 'gun)
                 (let ((gp-3 (new 'stack-no-clear 'collide-query))
                       (s5-2 (new 'stack-no-clear 'inline-array 'sphere 2))
                       )
                   (dotimes (s4-1 1)
                     ((method-of-type sphere new) (the-as symbol (-> s5-2 s4-1)) sphere)
                     )
-                  (let ((f30-1 (seek (-> self control unknown-float000) 1.0 (* 0.1 (-> self clock time-adjust-ratio)))))
-                    (set! (-> s5-2 0 quad) (-> self control unknown-sphere-array00 2 prim-core world-sphere quad))
+                  (let ((f30-1 (seek (-> self control collide-mode-transition) 1.0 (* 0.1 (-> self clock time-adjust-ratio)))))
+                    (set! (-> s5-2 0 quad) (-> self control collision-spheres 2 prim-core world-sphere quad))
                     (set! (-> s5-2 0 r) (lerp-scale (-> *TARGET-bank* body-radius) 7372.8 f30-1 0.0 1.0))
                     (let ((v1-212 gp-3))
-                      (set! (-> v1-212 spheres) s5-2)
+                      (set! (-> v1-212 best-dist) (the-as float s5-2))
                       (set! (-> v1-212 num-spheres) (the-as uint 1))
                       (set! (-> v1-212 collide-with) (-> self control root-prim prim-core collide-with))
                       (set! (-> v1-212 ignore-process0) #f)
@@ -1701,7 +1698,7 @@
                (* 5461.3335 (-> self clock seconds-per-frame))
                )
              )
-            ((!= (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) stick0-speed) 0.0)
+            ((!= (-> *cpad-list* cpads (-> self control cpad number) stick0-speed) 0.0)
              (seek! (-> self gun top-anim-tilt-up) 0.0 (* 1820.4445 (-> self clock seconds-per-frame)))
              )
             )
@@ -1737,19 +1734,19 @@
                  (< (-> self clock frame-counter) (-> self gun turn-fast-hold-time))
                  )
             (and (logtest? (-> self gun track?) 1) (logtest? (-> self gun track?) 4))
-            (or (logtest? (surface-flag gun-strafe) (-> self control unknown-surface01 flags))
+            (or (logtest? (surface-flag gun-strafe) (-> self control current-surface flags))
                 (logtest? (-> self focus-status) (focus-status pilot-riding))
                 )
             )
         (seek! (-> self upper-body twist z) 0.0 (* 65536.0 (-> self clock seconds-per-frame)))
         )
-       ((logtest? (surface-flag gun-no-twist) (-> self control unknown-surface01 flags))
+       ((logtest? (surface-flag gun-no-twist) (-> self control current-surface flags))
         (seek! (-> self upper-body twist z) 0.0 (* 16384.0 (-> self clock seconds-per-frame)))
         )
-       ((and (< 0.0 (-> self control unknown-float10))
-             (zero? (logand (-> self control unknown-surface01 flags) (surface-flag duck)))
+       ((and (< 0.0 (-> self control turn-to-magnitude))
+             (zero? (logand (-> self control current-surface flags) (surface-flag duck)))
              )
-        (let* ((f0-28 (deg-diff (y-angle (-> self control)) (vector-y-angle (-> self control unknown-vector08))))
+        (let* ((f0-28 (deg-diff (y-angle (-> self control)) (vector-y-angle (-> self control to-target-pt-xz))))
                (f0-30 (fmax -5461.3335 (fmin 5461.3335 f0-28)))
                )
           (seek! (-> self upper-body twist z) f0-30 (fabs (* 0.2 f0-30)))
@@ -1757,7 +1754,7 @@
         )
        )
      (set! (-> (new 'stack-no-clear 'vector) quad) (-> self control trans quad))
-     (if (logtest? (surface-flag gun-no-twist) (-> self control unknown-surface01 flags))
+     (if (logtest? (surface-flag gun-no-twist) (-> self control current-surface flags))
          (set! (-> self upper-body flex-blend) 0.0)
          (seek! (-> self upper-body flex-blend) 1.0 (* 8.0 (-> self clock seconds-per-frame)))
          )
@@ -1776,7 +1773,7 @@
              (set! (-> gp-6 y) (+ -1638.4 (-> gp-6 y)))
              )
            )
-         (if (not (logtest? (surface-flag gun-no-twist) (-> self control unknown-surface01 flags)))
+         (if (not (logtest? (surface-flag gun-no-twist) (-> self control current-surface flags)))
              (target-set! (-> self upper-body) gp-6)
              )
          (when *gun-marks*
@@ -1799,9 +1796,9 @@
              (logtest? (process-mask enemy guard) (-> (handle->process (-> self gun track-target 0 handle)) mask))
              )
         (if (and (< (- (-> self clock frame-counter) (-> self gun track-press-start-time)) (seconds 0.5))
-                 (< (-> self control unknown-dword12) 150)
-                 (and (= (-> self control unknown-float10) 0.0)
-                      (not (logtest? (-> self control unknown-surface01 flags) (surface-flag air attack)))
+                 (< (-> self control time-between-zero-inputs) (seconds 0.5))
+                 (and (= (-> self control turn-to-magnitude) 0.0)
+                      (not (logtest? (-> self control current-surface flags) (surface-flag air attack)))
                       (-> self gun active?)
                       )
                  )
@@ -1824,10 +1821,10 @@
            (set! (-> self gun upper-body twist-speed-y) 0.2)
            (set! (-> self gun upper-body twist-speed-x) 0.6)
            )
-          ((and (or (and (logtest? (-> self control unknown-surface00 flags) (surface-flag air))
-                         (zero? (logand (-> self control status) (cshape-moving-flags on-surface)))
+          ((and (or (and (logtest? (-> self control mod-surface flags) (surface-flag air))
+                         (zero? (logand (-> self control status) (collide-status on-surface)))
                          )
-                    (logtest? (surface-flag gun-direct) (-> self control unknown-surface01 flags))
+                    (logtest? (surface-flag gun-direct) (-> self control current-surface flags))
                     )
                 (< (vector-vector-distance (-> self control trans) (-> self gun track-trans)) 81920.0)
                 )
@@ -1835,7 +1832,7 @@
            (set! (-> self gun upper-body twist-speed-y) 0.2)
            (set! (-> self gun upper-body twist-speed-x) 0.1)
            )
-          ((or (= (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) stick0-speed) 0.0)
+          ((or (= (-> *cpad-list* cpads (-> self control cpad number) stick0-speed) 0.0)
                (let ((f30-2 10922.667)
                      (gp-8 deg-diff)
                      (v1-417 (-> self control))
@@ -1844,7 +1841,7 @@
                  (>= f30-2
                      (gp-8
                        (vector-y-angle (vector-! (new 'stack-no-clear 'vector) a1-54 (-> v1-417 trans)))
-                       (vector-y-angle (-> self control unknown-vector08))
+                       (vector-y-angle (-> self control to-target-pt-xz))
                        )
                      )
                  )
@@ -1931,7 +1928,7 @@
                      ((and (and v1-17 (or (= v1-17 self) (= v1-17 (-> self draw art-group data 261))))
                            (< (-> self gun top-anim-low-high) 0.5)
                            )
-                      (let ((s5-0 (top-anim-joint-control-method-11 (-> self skel top-anim) 0)))
+                      (let ((s5-0 (get-channel (-> self skel top-anim) 0)))
                         (set! gp-0 (if (< 0.9 (-> self control unknown-float002))
                                        (-> self draw art-group data 299)
                                        (-> self draw art-group data 298)
@@ -1955,13 +1952,13 @@
                                     )
                                   )
                          (seek! (-> self gun top-anim-low-high) 0.0 (* 6.0 (-> self clock seconds-per-frame)))
-                         (top-anim-joint-control-method-12
+                         (push-anim-to-targ
                            (-> self skel top-anim)
-                           (-> self draw art-group data 247)
+                           (the-as art-joint-anim (-> self draw art-group data 247))
                            0.0
                            0
                            60
-                           (if (< 20480.0 (-> self control unknown-float05))
+                           (if (< 20480.0 (-> self control ctrl-xz-vel))
                                2.0
                                1.0
                                )
@@ -1978,7 +1975,7 @@
                  (let ((v1-67 (ja-group)))
                    (cond
                      ((and v1-67 (or (= v1-67 self) (= v1-67 (-> self draw art-group data 12))))
-                      (let ((s5-1 (top-anim-joint-control-method-11 (-> self skel top-anim) 0)))
+                      (let ((s5-1 (get-channel (-> self skel top-anim) 0)))
                         (set! gp-0 (if (< 0.9 (-> self control unknown-float002))
                                        (-> self draw art-group data 299)
                                        (-> self draw art-group data 298)
@@ -1997,7 +1994,7 @@
                       )
                      (else
                        (when (and (or (>= (- (-> self clock frame-counter) (-> self gun fire-time)) (seconds 2.5))
-                                      (and (< 4096.0 (-> self control unknown-float05))
+                                      (and (< 4096.0 (-> self control ctrl-xz-vel))
                                            (>= (- (-> self clock frame-counter) (-> self gun fire-time)) (seconds 1.25))
                                            )
                                       )
@@ -2009,9 +2006,9 @@
                                     )
                                   )
                          (seek! (-> self gun top-anim-low-high) 0.0 (* 6.0 (-> self clock seconds-per-frame)))
-                         (top-anim-joint-control-method-12
+                         (push-anim-to-targ
                            (-> self skel top-anim)
-                           (-> self draw art-group data 295)
+                           (the-as art-joint-anim (-> self draw art-group data 295))
                            0.0
                            0
                            30
@@ -2033,7 +2030,7 @@
                                 (>= (- (-> self clock frame-counter) (-> self gun fire-time)) (seconds 0.2))
                                 )
                            )
-                      (let ((s5-2 (top-anim-joint-control-method-11 (-> self skel top-anim) 0)))
+                      (let ((s5-2 (get-channel (-> self skel top-anim) 0)))
                         (set! gp-0 (if (< 0.9 (-> self control unknown-float002))
                                        (-> self draw art-group data 262)
                                        (-> self draw art-group data 303)
@@ -2056,7 +2053,7 @@
                 ((let ((v1-150 (ja-group)))
                    (and v1-150 (or (= v1-150 self) (= v1-150 (-> self draw art-group data 12))))
                    )
-                 (let ((s5-3 (top-anim-joint-control-method-11 (-> self skel top-anim) 0)))
+                 (let ((s5-3 (get-channel (-> self skel top-anim) 0)))
                    (set! gp-0 (if (< 0.9 (-> self control unknown-float002))
                                   (-> self draw art-group data 299)
                                   (-> self draw art-group data 298)
@@ -2131,10 +2128,7 @@
     (set! (-> self gun gun-daxter)
           (if (and (logtest? (-> self focus-status) (focus-status pilot-riding))
                    (nonzero? (-> self skel float-channels))
-                   (= (-> (top-anim-joint-control-method-11 (-> self skel top-anim) (the-as int (+ (-> self skel float-channels) -1)))
-                          frame-interp
-                          1
-                          )
+                   (= (-> (get-channel (-> self skel top-anim) (the-as int (+ (-> self skel float-channels) -1))) frame-interp 1)
                       1.0
                       )
                    )
@@ -2147,7 +2141,7 @@
        (set! (-> self gun gun-roty-targ) (y-angle (-> self control)))
        (set! (-> self gun gun-roty) (-> self gun gun-roty-targ))
        (set! (-> self gun gun-roty-rel) 0.0)
-       (let ((v1-24 (top-anim-joint-control-method-11 (-> self skel top-anim) 0)))
+       (let ((v1-24 (get-channel (-> self skel top-anim) 0)))
          (cond
            ((not v1-24)
             )
@@ -2170,7 +2164,7 @@
            )
          )
        (set! (-> self gun active?)
-             (and (not (logtest? (surface-flag gun-inactive gun-hide gun-off) (-> self control unknown-surface01 flags)))
+             (and (not (logtest? (surface-flag gun-inactive gun-hide gun-off) (-> self control current-surface flags)))
                   (and (>= (- (-> self clock frame-counter) (-> self gun gun-get-on-time)) (seconds 0.1))
                        (>= (-> self clock frame-counter) (-> self gun surpress-time))
                        (let ((v1-35 (-> self skel top-anim frame-group))
@@ -2242,10 +2236,10 @@
            (set! (-> self gun active-time) (-> self clock frame-counter))
            )
        (set! (-> self gun laser-active?)
-             (zero? (logand (surface-flag gun-inactive gun-hide gun-off laser-hide) (-> self control unknown-surface01 flags))
+             (zero? (logand (surface-flag gun-inactive gun-hide gun-off laser-hide) (-> self control current-surface flags))
                     )
              )
-       (when (and (not (and (not (logtest? (surface-flag gun-inactive gun-hide gun-off) (-> self control unknown-surface01 flags)))
+       (when (and (not (and (not (logtest? (surface-flag gun-inactive gun-hide gun-off) (-> self control current-surface flags)))
                             (>= (- (-> self clock frame-counter) (-> self gun gun-get-on-time)) (seconds 0.1))
                             (>= (-> self clock frame-counter) (-> self gun surpress-time))
                             )
@@ -2258,54 +2252,54 @@
          (set! (-> self gun fire-pending) 0)
          0
          )
-       (if (and (or (logtest? (surface-flag gun-hide gun-off) (-> self control unknown-surface01 flags))
-                    (logtest? (state-flags sf18) (-> self state-flags))
+       (if (and (or (logtest? (surface-flag gun-hide gun-off) (-> self control current-surface flags))
+                    (logtest? (state-flags prevent-gun) (-> self state-flags))
                     (let ((v1-75 (-> self gun gun-type)))
                       (or (and (cond
                                  ((= v1-75 (pickup-type eco-yellow))
-                                  (logtest? (logior (logior (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 0)
-                                                            (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 1)
+                                  (logtest? (logior (logior (-> *cpad-list* cpads (-> self control cpad number) button0-rel 0)
+                                                            (-> *cpad-list* cpads (-> self control cpad number) button0-rel 1)
                                                             )
-                                                    (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 2)
+                                                    (-> *cpad-list* cpads (-> self control cpad number) button0-rel 2)
                                                     )
                                             (pad-buttons down)
                                             )
                                   )
                                  ((= v1-75 (pickup-type eco-red))
-                                  (logtest? (logior (logior (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 0)
-                                                            (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 1)
+                                  (logtest? (logior (logior (-> *cpad-list* cpads (-> self control cpad number) button0-rel 0)
+                                                            (-> *cpad-list* cpads (-> self control cpad number) button0-rel 1)
                                                             )
-                                                    (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 2)
+                                                    (-> *cpad-list* cpads (-> self control cpad number) button0-rel 2)
                                                     )
                                             (pad-buttons up)
                                             )
                                   )
                                  ((= v1-75 (pickup-type eco-blue))
-                                  (logtest? (logior (logior (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 0)
-                                                            (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 1)
+                                  (logtest? (logior (logior (-> *cpad-list* cpads (-> self control cpad number) button0-rel 0)
+                                                            (-> *cpad-list* cpads (-> self control cpad number) button0-rel 1)
                                                             )
-                                                    (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 2)
+                                                    (-> *cpad-list* cpads (-> self control cpad number) button0-rel 2)
                                                     )
                                             (pad-buttons left)
                                             )
                                   )
                                  (else
-                                   (logtest? (logior (logior (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 0)
-                                                             (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 1)
+                                   (logtest? (logior (logior (-> *cpad-list* cpads (-> self control cpad number) button0-rel 0)
+                                                             (-> *cpad-list* cpads (-> self control cpad number) button0-rel 1)
                                                              )
-                                                     (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 2)
+                                                     (-> *cpad-list* cpads (-> self control cpad number) button0-rel 2)
                                                      )
                                              (pad-buttons right)
                                              )
                                    )
                                  )
-                               (and (not (cpad-hold? (-> self control unknown-cpad-info00 number) r1))
-                                    (not (logtest? (surface-flag gun-inactive) (-> self control unknown-surface01 flags)))
+                               (and (not (cpad-hold? (-> self control cpad number) r1))
+                                    (not (logtest? (surface-flag gun-inactive) (-> self control current-surface flags)))
                                     (zero? (logand (-> self focus-status) (focus-status grabbed)))
                                     )
                                )
                           (-> self gun put-away?)
-                          (not (logtest? (-> self game features) (game-feature unk-game-feature-06)))
+                          (not (logtest? (-> self game features) (game-feature gun)))
                           (not (logtest? (the-as game-feature (ash 1 (+ (-> self gun gun-type) 5)))
                                          (logand (-> self game features) (-> *setting-control* user-current features))
                                          )
@@ -2326,11 +2320,11 @@
                       (= v1-110 (-> self draw art-group data 298))
                       (= v1-110 (-> self draw art-group data 262))
                       (= v1-110 (-> self draw art-group data 303))
-                      (logtest? (surface-flag gun-fast-exit) (-> self control unknown-surface01 flags))
+                      (logtest? (surface-flag gun-fast-exit) (-> self control current-surface flags))
                       )
                   )
                 )
-           (target-gun-end-mode (zero? (logand (surface-flag gun-hide) (-> self control unknown-surface01 flags))))
+           (target-gun-end-mode (zero? (logand (surface-flag gun-hide) (-> self control current-surface flags))))
            )
        )
       (else
@@ -2342,6 +2336,7 @@
   (none)
   )
 
+;; WARN: Return type mismatch symbol vs none.
 (defbehavior target-gun-fire target ((arg0 pickup-type))
   (when (using-gun? self)
     (let* ((gp-0 (-> self gun))
@@ -2353,20 +2348,20 @@
              (logtest? (state-flags sf16) (-> self state-flags))
              (logtest? (-> self game secrets) (game-secrets endless-ammo))
              )
-         (pickup-collectable! (-> self fact) (the-as pickup-type a1-0) -1.0 (the-as handle #f))
+         (pickup-collectable! (-> self fact-override) (the-as pickup-type a1-0) -1.0 (the-as handle #f))
          (case (-> gp-0 gun-type)
            (((pickup-type eco-blue))
             (cond
               ((logtest? (-> self focus-status) (focus-status pilot-riding))
-               (let ((v1-15 (top-anim-joint-control-method-11 (-> self skel top-anim) 0)))
+               (let ((v1-15 (get-channel (-> self skel top-anim) 0)))
                  (when (not (or (= (-> self skel top-anim frame-group) (-> self draw art-group data 206))
                                 (and v1-15 (= (-> v1-15 frame-group) (-> self draw art-group data 206)))
                                 )
                             )
-                   (if (< 4096.0 (-> self control unknown-float05))
-                       (top-anim-joint-control-method-12
+                   (if (< 4096.0 (-> self control ctrl-xz-vel))
+                       (push-anim-to-targ
                          (-> self skel top-anim)
-                         (-> self draw art-group data 207)
+                         (the-as art-joint-anim (-> self draw art-group data 207))
                          1.0
                          9
                          9
@@ -2374,9 +2369,9 @@
                          0.0
                          #f
                          )
-                       (top-anim-joint-control-method-12
+                       (push-anim-to-targ
                          (-> self skel top-anim)
-                         (-> self draw art-group data 207)
+                         (the-as art-joint-anim (-> self draw art-group data 207))
                          1.0
                          6
                          6
@@ -2389,15 +2384,15 @@
                  )
                )
               (else
-                (let ((v1-32 (top-anim-joint-control-method-11 (-> self skel top-anim) 0)))
+                (let ((v1-32 (get-channel (-> self skel top-anim) 0)))
                   (when (not (or (= (-> self skel top-anim frame-group) (-> self draw art-group data 257))
                                  (and v1-32 (= (-> v1-32 frame-group) (-> self draw art-group data 257)))
                                  )
                              )
-                    (if (< 4096.0 (-> self control unknown-float05))
-                        (top-anim-joint-control-method-12
+                    (if (< 4096.0 (-> self control ctrl-xz-vel))
+                        (push-anim-to-targ
                           (-> self skel top-anim)
-                          (-> self draw art-group data 258)
+                          (the-as art-joint-anim (-> self draw art-group data 258))
                           1.0
                           9
                           9
@@ -2405,9 +2400,9 @@
                           0.0
                           #f
                           )
-                        (top-anim-joint-control-method-12
+                        (push-anim-to-targ
                           (-> self skel top-anim)
-                          (-> self draw art-group data 258)
+                          (the-as art-joint-anim (-> self draw art-group data 258))
                           1.0
                           6
                           6
@@ -2425,9 +2420,9 @@
            (((pickup-type eco-yellow))
             (cond
               ((logtest? (-> self focus-status) (focus-status pilot-riding))
-               (top-anim-joint-control-method-12
+               (push-anim-to-targ
                  (-> self skel top-anim)
-                 (-> self draw art-group data 223)
+                 (the-as art-joint-anim (-> self draw art-group data 223))
                  0.0
                  15
                  0
@@ -2437,9 +2432,9 @@
                  )
                )
               ((< (-> self gun top-anim-low-high) 0.5)
-               (top-anim-joint-control-method-12
+               (push-anim-to-targ
                  (-> self skel top-anim)
-                 (-> self draw art-group data 246)
+                 (the-as art-joint-anim (-> self draw art-group data 246))
                  0.0
                  15
                  0
@@ -2450,9 +2445,9 @@
                (set! (-> self gun top-anim-low-high) 1.0)
                )
               (else
-                (top-anim-joint-control-method-12
+                (push-anim-to-targ
                   (-> self skel top-anim)
-                  (-> self draw art-group data 260)
+                  (the-as art-joint-anim (-> self draw art-group data 260))
                   0.0
                   0
                   0
@@ -2473,9 +2468,9 @@
                   )
               (cond
                 ((logtest? (-> self focus-status) (focus-status pilot-riding))
-                 (top-anim-joint-control-method-12
+                 (push-anim-to-targ
                    (-> self skel top-anim)
-                   (-> self draw art-group data 222)
+                   (the-as art-joint-anim (-> self draw art-group data 222))
                    0.0
                    15
                    0
@@ -2488,9 +2483,9 @@
                    )
                  )
                 ((< 0.5 (-> self gun top-anim-low-high))
-                 (top-anim-joint-control-method-12
+                 (push-anim-to-targ
                    (-> self skel top-anim)
-                   (-> self draw art-group data 292)
+                   (the-as art-joint-anim (-> self draw art-group data 292))
                    0.0
                    0
                    15
@@ -2501,9 +2496,9 @@
                  (set! (-> self gun top-anim-low-high) 0.0)
                  )
                 ((and (rand-vu-percent? 0.2) (< (- (-> self clock frame-counter) (-> self gun fire-time)) (seconds 2)))
-                 (top-anim-joint-control-method-12
+                 (push-anim-to-targ
                    (-> self skel top-anim)
-                   (-> self draw art-group data 293)
+                   (the-as art-joint-anim (-> self draw art-group data 293))
                    0.0
                    0
                    15
@@ -2518,9 +2513,9 @@
                 ((and (or (rand-vu-percent? 0.2) (= (-> self skel top-anim frame-targ) (-> self draw art-group data 256)))
                       (< (- (-> self clock frame-counter) (-> self gun fire-time)) (seconds 2))
                       )
-                 (top-anim-joint-control-method-12
+                 (push-anim-to-targ
                    (-> self skel top-anim)
-                   (-> self draw art-group data 291)
+                   (the-as art-joint-anim (-> self draw art-group data 291))
                    0.0
                    0
                    15
@@ -2531,9 +2526,9 @@
                  (set! (-> self gun top-anim-low-high) 1.0)
                  )
                 ((logtest? (-> self game features) (game-feature gun-upgrade-speed))
-                 (top-anim-joint-control-method-12
+                 (push-anim-to-targ
                    (-> self skel top-anim)
-                   (-> self draw art-group data 309)
+                   (the-as art-joint-anim (-> self draw art-group data 309))
                    0.0
                    0
                    15
@@ -2543,9 +2538,9 @@
                    )
                  )
                 (else
-                  (top-anim-joint-control-method-12
+                  (push-anim-to-targ
                     (-> self skel top-anim)
-                    (-> self draw art-group data 256)
+                    (the-as art-joint-anim (-> self draw art-group data 256))
                     1.0
                     0
                     15
@@ -2560,9 +2555,9 @@
             )
            (((pickup-type eco-dark))
             (if (logtest? (-> self focus-status) (focus-status pilot-riding))
-                (top-anim-joint-control-method-12
+                (push-anim-to-targ
                   (-> self skel top-anim)
-                  (-> self draw art-group data 224)
+                  (the-as art-joint-anim (-> self draw art-group data 224))
                   0.0
                   0
                   15
@@ -2570,9 +2565,9 @@
                   0.0
                   #f
                   )
-                (top-anim-joint-control-method-12
+                (push-anim-to-targ
                   (-> self skel top-anim)
-                  (-> self draw art-group data 259)
+                  (the-as art-joint-anim (-> self draw art-group data 259))
                   0.0
                   0
                   15
@@ -2628,17 +2623,17 @@
                )
           (gun-info-method-9 gp-0)
           )
-      (if (and (logtest? (surface-flag spin) (-> self control unknown-surface01 flags))
-               (logtest? (-> self control unknown-surface01 flags) (surface-flag air))
+      (if (and (logtest? (surface-flag spin) (-> self control current-surface flags))
+               (logtest? (-> self control current-surface flags) (surface-flag air))
                )
           (set! (-> gp-0 combo-window-state) 'target-attack-air)
           )
-      (if (cpad-pressed? (-> self control unknown-cpad-info00 number) r1)
+      (if (cpad-pressed? (-> self control cpad number) r1)
           (set! (-> gp-0 fire-start-time) (-> self clock frame-counter))
           )
       (case (-> gp-0 gun-control)
         ((1)
-         (when (and (cpad-pressed? (-> self control unknown-cpad-info00 number) r1)
+         (when (and (cpad-pressed? (-> self control cpad number) r1)
                     (< (the-as time-frame (+ (-> gp-0 fire-delay) -30)) (- (-> self clock frame-counter) (-> gp-0 fire-time)))
                     )
            (set! (-> gp-0 fire-pending-time) (-> self clock frame-counter))
@@ -2671,7 +2666,7 @@
            )
          )
         ((2)
-         (when (and (cpad-hold? (-> self control unknown-cpad-info00 number) r1)
+         (when (and (cpad-hold? (-> self control cpad number) r1)
                     (and (not (handle->process (-> self gun charge-active?)))
                          (< (the-as time-frame (+ (-> gp-0 fire-delay) -30)) (- (-> self clock frame-counter) (-> gp-0 fire-time)))
                          )
@@ -2701,7 +2696,7 @@
          )
         ((4)
          (cond
-           ((cpad-hold? (-> self control unknown-cpad-info00 number) r1)
+           ((cpad-hold? (-> self control cpad number) r1)
             (seek! (-> gp-0 fire-spinv) 218453.33 (* 145635.56 (-> self clock seconds-per-frame)))
             (if (and (nonzero? (-> self gun track-target-hold-time))
                      (< (-> self clock frame-counter) (-> self gun track-target-hold-time))
@@ -2735,12 +2730,13 @@
                   (f0-24 (- f0-23 (* (the float (the int (/ f0-23 4.0))) 4.0)))
                   )
              (set! (-> self gun top-anim-blue-cycle) f0-24)
-             (top-anim-joint-control-method-12
+             (push-anim-to-targ
                (-> self skel top-anim)
-               (if (logtest? (-> self focus-status) (focus-status pilot-riding))
-                   (-> self draw art-group data 206)
-                   (-> self draw art-group data 257)
-                   )
+               (the-as art-joint-anim (if (logtest? (-> self focus-status) (focus-status pilot-riding))
+                                          (-> self draw art-group data 206)
+                                          (-> self draw art-group data 257)
+                                          )
+                       )
                (* 6.0 f0-24)
                0
                5
@@ -2750,7 +2746,7 @@
                )
              )
            )
-         (when (and (cpad-hold? (-> self control unknown-cpad-info00 number) r1)
+         (when (and (cpad-hold? (-> self control cpad number) r1)
                     (-> self gun active?)
                     (< (the-as time-frame (+ (-> gp-0 fire-delay) -30)) (- (-> self clock frame-counter) (-> gp-0 fire-time)))
                     )
@@ -2813,6 +2809,7 @@
   (none)
   )
 
+;; WARN: Return type mismatch object vs none.
 (defun camera-rotate-to-vector ((arg0 vector) (arg1 vector))
   (let ((s5-0 (new 'stack-no-clear 'vector)))
     (set! (-> s5-0 quad) (-> arg0 quad))
@@ -2838,17 +2835,17 @@
       (update-rates! (-> self clock) (/ f30-0 (the float gp-1)))
       (while (nonzero? gp-1)
         (+! gp-1 -1)
-        (set! (-> self control unknown-word07) gp-1)
+        (set! (-> self control remaining-ctrl-iterations) gp-1)
         (flag-setup)
         (build-conversions (-> self control transv))
         (do-rotations1)
         (let ((s4-0 (new-stack-vector0)))
           (read-pad s4-0)
           (turn-to-vector s4-0 (debounce-speed
-                                 (-> self control unknown-float12)
-                                 (-> self control unknown-float13)
-                                 (-> self control unknown-vector12)
-                                 (-> self control unknown-vector13)
+                                 (-> self control pad-magnitude)
+                                 (-> self control last-pad-magnitude)
+                                 (-> self control pad-xz-dir)
+                                 (-> self control last-pad-xz-dir)
                                  )
                           )
           )
@@ -2887,7 +2884,7 @@
           (set! (-> a2-1 ignore-process1) #f)
           (set! (-> a2-1 ignore-pat) (-> v1-33 pat-ignore-mask))
           (set! (-> a2-1 action-mask) (collide-action solid))
-          (collide-shape-method-32 v1-33 (-> v1-33 transv) a2-1 (meters 1))
+          (fill-cache-integrate-and-collide v1-33 (-> v1-33 transv) a2-1 (meters 1))
           )
         (if (and (logtest? (-> self control root-prim prim-core action) (collide-action check-edge))
                  (>= (vector-dot
@@ -2897,7 +2894,7 @@
                      (-> *TARGET-bank* edge-grab-height-off-ground)
                      )
                  )
-            (target-method-27 *target* *collide-cache* *collide-edge-spec*)
+            (do-edge-grabs *target* *collide-cache* *collide-edge-spec*)
             )
         (when *debug-segment*
           (let ((s5-2 (-> *display* frames (-> *display* on-screen) profile-array data 0)))

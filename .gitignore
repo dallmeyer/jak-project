@@ -1,3 +1,6 @@
+# logs
+/log
+
 # for CMake
 /Testing
 
@@ -6,9 +9,12 @@ cmake-build-debug/*
 cmake-build-debug--o0/*
 .idea/*
 build/*
-decompiler_out/*
-decompiler_out2/*
+/decompiler_out*
 logs/*
+
+# for vscode/clangd
+.cache/*
+.DS_Store
 
 # wsl apparently builds to here?
 linux-default/
@@ -33,9 +39,10 @@ search-results.json
 /search-results.json
 
 # graphics debug
-debug_out/*
-gfx_dumps/*
-screenshots/*
+debug_out/
+glb_out/
+gfx_dumps/
+screenshots/
 
 # game stuff
 game_config/*
@@ -59,3 +66,7 @@ __pycache__/
 
 # backup files from OpenMaya
 *.bak
+
+# docs
+/jak1-*.json
+/jak2-*.json

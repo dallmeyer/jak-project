@@ -8,7 +8,7 @@
 #include "common/util/FileUtil.h"
 #include "common/util/json_util.h"
 #include "common/util/read_iso_file.h"
-#include <common/util/unicode_util.h>
+#include "common/util/unicode_util.h"
 
 #include "decompiler/Disasm/OpcodeInfo.h"
 #include "decompiler/ObjectFile/ObjectFileDB.h"
@@ -35,7 +35,7 @@ IsoFile extract_files(fs::path input_file_path, fs::path extracted_iso_path) {
 
 std::tuple<std::optional<ISOMetadata>, ExtractorErrorCode> validate(
     const fs::path& extracted_iso_path,
-    const xxh::hash64_t expected_hash,
+    const uint64_t expected_hash,
     const int expected_num_files) {
   if (!fs::exists(extracted_iso_path / "DGO")) {
     lg::error("input folder doesn't have a DGO folder. Is this the right input?");
@@ -71,13 +71,13 @@ std::tuple<std::optional<ISOMetadata>, ExtractorErrorCode> validate(
     return {std::nullopt, ExtractorErrorCode::VALIDATION_ELF_MISSING_FROM_DB};
   }
 
-  auto version_info = meta_entry->second;
+  auto& version_info = meta_entry->second;
   // Print out some information
   lg::info("Detected Game Metadata:");
   lg::info("\tDetected - {}", version_info.canonical_name);
   lg::info("\tRegion - {}", get_territory_name(version_info.region));
   lg::info("\tSerial - {}", dbEntry->first);
-  lg::info("\tUses Decompiler Config - {}", version_info.decomp_config);
+  lg::info("\tUses Decompiler Config Version - {}", version_info.decomp_config_version);
 
   // - Number of Files
   if (version_info.num_files != expected_num_files) {
@@ -104,9 +104,10 @@ void decompile(const fs::path& iso_data_path, const std::string& data_subfolder)
   // Determine which config to use from the database
   const auto version_info = get_version_info_or_default(iso_data_path);
 
-  Config config = read_config_file((file_util::get_jak_project_dir() / "decompiler" / "config" /
-                                    fmt::format("{}.jsonc", version_info.decomp_config))
-                                       .string());
+  Config config = read_config_file(file_util::get_jak_project_dir() / "decompiler" / "config" /
+                                       version_info.game_name /
+                                       fmt::format("{}_config.jsonc", version_info.game_name),
+                                   version_info.decomp_config_version);
 
   std::vector<fs::path> dgos, objs;
 
@@ -290,8 +291,12 @@ int main(int argc, char** argv) {
     }
   }
 
-  auto log_path = file_util::get_jak_project_dir() / "extractor.log";
-  lg::set_file(log_path.string());
+  try {
+    lg::set_file(file_util::get_file_path({"log", "extractor.log"}));
+  } catch (const std::exception& e) {
+    lg::error("Failed to setup logging: {}", e.what());
+    return 1;
+  }
 
   fs::path iso_data_path;
 

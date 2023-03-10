@@ -5,11 +5,21 @@
 ;; name in dgo: debug-part
 ;; dgos: ENGINE, GAME
 
+;; this file is debug only
+(declare-file (debug))
+
+(deftype hud-money (hud)
+  "Not actually defined in jak 2's code, but referenced."
+  ()
+  :method-count-assert 27
+  :size-assert         #xba4
+  :flag-assert         #x1b0b300ba4)
+
 ;; DECOMP BEGINS
 
 ;; this file is debug only
 (declare-file (debug))
-(when *debug-segment*
+
 (defpart 335
   :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x47 :page #xc))
     (sp-flt spt-num 1.0)
@@ -1660,7 +1670,20 @@
     )
   )
 
-;; ERROR: function has no type analysis. Cannot decompile.
+(defun sparticle-track-root-money ((arg0 sparticle-system) (arg1 sparticle-cpuinfo) (arg2 vector))
+  "Hopefully unused, it still uses a jak 1 symbol -- [[hud-money]] which no longer exists!"
+  (let ((v1-1 (-> arg1 key proc)))
+    (when (!= (-> v1-1 type) hud-money)
+      (let ((v1-3 (-> v1-1 root trans)))
+        (set! (-> arg2 x) (-> v1-3 x))
+        (set! (-> arg2 y) (+ 2048.0 (-> v1-3 y)))
+        (set! (-> arg2 z) (-> v1-3 z))
+        )
+      )
+    )
+  0
+  (none)
+  )
 
 (defpart 412
   :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x92 :page #xc))
@@ -2020,5 +2043,3 @@
     (sp-launcher-by-id spt-next-launcher 310)
     )
   )
-
-)

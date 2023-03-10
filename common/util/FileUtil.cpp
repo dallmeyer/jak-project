@@ -5,6 +5,7 @@
 
 #include "FileUtil.h"
 
+#include <algorithm>
 #include <cstdio> /* defines FILENAME_MAX */
 #include <cstdlib>
 #include <fstream>
@@ -76,6 +77,11 @@ fs::path get_user_memcard_dir(GameVersion game_version) {
   return get_user_config_dir() / game_version_name / "saves";
 }
 
+fs::path get_user_misc_dir(GameVersion game_version) {
+  auto game_version_name = game_version_names[game_version];
+  return get_user_config_dir() / game_version_name / "misc";
+}
+
 struct {
   bool initialized = false;
   fs::path path_to_data;
@@ -123,6 +129,7 @@ std::optional<std::string> try_get_jak_project_path() {
 
 std::optional<fs::path> try_get_data_dir() {
   fs::path my_path = get_current_executable_path();
+  lg::info("Current executable directory - {}", my_path.string());
   auto data_dir = my_path.parent_path() / "data";
   if (fs::exists(data_dir) && fs::is_directory(data_dir)) {
     return std::make_optional(data_dir);
@@ -207,6 +214,12 @@ void write_binary_file(const fs::path& name, const void* data, size_t size) {
     throw std::runtime_error("couldn't open file " + name.string());
   }
 
+  if (size == 0) {
+    // nothing to write, just 'touch' the file
+    fclose(fp);
+    return;
+  }
+
   if (fwrite(data, size, 1, fp) != 1) {
     fclose(fp);
     throw std::runtime_error("couldn't write file " + name.string());
@@ -267,6 +280,10 @@ std::vector<uint8_t> read_binary_file(const fs::path& path) {
                              " cannot be opened: " + std::string(strerror(errno)));
   fseek(fp, 0, SEEK_END);
   auto len = ftell(fp);
+  if (len == 0) {
+    fclose(fp);
+    return {};
+  }
   rewind(fp);
 
   std::vector<uint8_t> data;
@@ -316,8 +333,44 @@ std::string base_name(const std::string& filename) {
       break;
     }
   }
-
   return filename.substr(pos);
+}
+
+std::string base_name_no_ext(const std::string& filename) {
+  size_t pos = 0;
+  ASSERT(!filename.empty());
+  for (size_t i = filename.size() - 1; i-- > 0;) {
+    if (filename.at(i) == '/' || filename.at(i) == '\\') {
+      pos = (i + 1);
+      break;
+    }
+  }
+  std::string file_name = filename.substr(pos);
+  return file_name.substr(0, file_name.find_last_of('.'));
+  ;
+}
+
+std::string split_path_at(const fs::path& path, const std::vector<std::string>& folders) {
+  std::string split_str = "";
+  for (const auto& folder : folders) {
+#ifdef _WIN32
+    split_str += folder + "\\";
+#else
+    split_str += folder + "/";
+#endif
+  }
+  const auto& path_str = path.u8string();
+  return path_str.substr(path_str.find(split_str) + split_str.length());
+}
+
+std::string convert_to_unix_path_separators(const std::string& path) {
+#ifdef _WIN32
+  std::string copy = path;
+  std::replace(copy.begin(), copy.end(), '\\', '/');
+  return copy;
+#else
+  return path;
+#endif
 }
 
 void ISONameFromAnimationName(char* dst, const char* src) {
@@ -524,12 +577,35 @@ std::vector<fs::path> find_files_recursively(const fs::path& base_dir, const std
   std::vector<fs::path> files = {};
   for (auto& p : fs::recursive_directory_iterator(base_dir)) {
     if (p.is_regular_file()) {
-      if (std::regex_match(fs::path(p.path()).filename().string(), pattern)) {
+      if (std::regex_match(p.path().filename().string(), pattern)) {
         files.push_back(p.path());
       }
     }
   }
   return files;
+}
+
+std::vector<fs::path> find_directories_in_dir(const fs::path& base_dir) {
+  std::vector<fs::path> dirs = {};
+  for (auto& p : fs::recursive_directory_iterator(base_dir)) {
+    if (p.is_directory()) {
+      dirs.push_back(p.path());
+    }
+  }
+  return dirs;
+}
+
+void copy_file(const fs::path& src, const fs::path& dst) {
+  // Check that the src path exists
+  if (!fs::exists(src)) {
+    throw std::runtime_error(fmt::format("Cannot copy '{}', path does not exist", src.string()));
+  }
+  // Ensure the directory can be copied into
+  if (!fs::exists(dst.parent_path()) && !create_dir_if_needed_for_file(dst)) {
+    throw std::runtime_error(fmt::format(
+        "Cannot copy '{}', couldn't make directory to copy into '{}'", src.string(), dst.string()));
+  }
+  fs::copy_file(src, dst, fs::copy_options::overwrite_existing);
 }
 
 }  // namespace file_util

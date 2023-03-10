@@ -4,6 +4,7 @@
 #include "common/util/Assert.h"
 
 #include "third-party/fmt/core.h"
+#include "third-party/fmt/format.h"
 
 namespace pretty_print {
 
@@ -100,7 +101,7 @@ inline const std::string quote_symbol(Node::QuoteKind kind) {
     case Node::QuoteKind::UNQUOTE_SPLICING:
       return ",@";
     default:
-      ASSERT_MSG(false, fmt::format("invalid quote kind {}", kind));
+      ASSERT_MSG(false, fmt::format("invalid quote kind {}", fmt::underlying(kind)));
       return "[invalid]";
   }
 }
@@ -267,7 +268,8 @@ void break_list(Node* node) {
                name == "when" || name == "behavior" || name == "lambda" || name == "defpart" ||
                name == "define") {
       node->top_line_count = 2;
-    } else if (name == "let" || name == "let*" || name == "rlet") {
+    } else if (name == "let" || name == "let*" || name == "rlet" ||
+               name == "with-dma-buffer-add-bucket") {
       // special case for things like let.
       node->top_line_count = 2;  // (let <defs>
       if (node->child_nodes.size() > 1 && node->child_nodes[1].child_nodes.size() > 1 &&

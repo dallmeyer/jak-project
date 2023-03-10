@@ -76,6 +76,14 @@ Val* Compiler::compile_dbg(const goos::Object& form, const goos::Object& rest, E
   return get_none();
 }
 
+Val* Compiler::compile_dbg_and_continue(const goos::Object& form,
+                                        const goos::Object& rest,
+                                        Env* env) {
+  compile_dbg(form, rest, env);
+  compile_cont(form, rest, env);
+  return get_none();
+}
+
 Val* Compiler::compile_dbs(const goos::Object& form, const goos::Object& rest, Env* env) {
   // todo - do something with args.
   (void)form;
@@ -332,8 +340,14 @@ Val* Compiler::compile_di(const goos::Object& form, const goos::Object& rest, En
         form,
         "Cannot get debug info, the debugger must be connected and the target must be halted.");
   }
+  auto args = get_va(form, rest);
 
-  m_debugger.update_break_info();
+  std::optional<std::string> dump_path;
+  if (args.unnamed.size() > 0 && args.unnamed.at(0).is_string()) {
+    dump_path = args.unnamed.at(0).as_string()->data;
+  }
+
+  m_debugger.update_break_info(dump_path);
   return get_none();
 }
 

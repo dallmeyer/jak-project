@@ -125,6 +125,8 @@ void ObjectFileDB::process_object_file_data(
 void ObjectFileDB::analyze_functions_ir2(
     const fs::path& output_dir,
     const Config& config,
+    const std::optional<std::function<void(std::string)>> prefile_callback,
+    const std::optional<std::function<void()>> postfile_callback,
     const std::unordered_set<std::string>& skip_functions,
     const std::unordered_map<std::string, std::unordered_set<std::string>>& skip_states) {
   int total_file_count = 0;
@@ -133,8 +135,14 @@ void ObjectFileDB::analyze_functions_ir2(
   }
   int file_idx = 1;
   for_each_obj([&](ObjectFileData& data) {
+    if (prefile_callback) {
+      prefile_callback.value()(data.to_unique_name());
+    }
     lg::info("[{:3d}/{}]------ {}", file_idx++, total_file_count, data.to_unique_name());
     process_object_file_data(data, output_dir, config, skip_functions, skip_states);
+    if (postfile_callback) {
+      postfile_callback.value()();
+    }
   });
 
   lg::info("{}", stats.let.print());
@@ -274,15 +282,13 @@ void ObjectFileDB::ir2_top_level_pass(const Config& config) {
           func.type = TypeSpec("function");
         }
 
-        if (config.hacks.asm_functions_by_name.find(name) !=
-            config.hacks.asm_functions_by_name.end()) {
-          func.warnings.info("Flagged as asm by config");
-          func.suspected_asm = true;
-        }
-
         if (config.hacks.mips2c_functions_by_name.find(name) !=
             config.hacks.mips2c_functions_by_name.end()) {
           func.warnings.info("Flagged as mips2c by config");
+          func.suspected_asm = true;
+        } else if (config.hacks.asm_functions_by_name.find(name) !=
+                   config.hacks.asm_functions_by_name.end()) {
+          func.warnings.error("Flagged as asm by config");
           func.suspected_asm = true;
         }
       }
@@ -902,6 +908,10 @@ std::string ObjectFileDB::ir2_function_to_string(ObjectFileData& data, Function&
   result += "; .function " + func.name() + "\n";
   result += ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n";
   result += func.prologue.to_string(2) + "\n";
+  if (func.guessed_name.kind == FunctionName::FunctionKind::NV_STATE ||
+      func.guessed_name.kind == FunctionName::FunctionKind::V_STATE) {
+    result += fmt::format("  ;internal_name: {}\n", func.state_handler_as_anon_func);
+  }
   if (func.warnings.has_warnings()) {
     result += ";; Warnings:\n" + func.warnings.get_warning_text(true) + "\n";
   }
@@ -1045,7 +1055,9 @@ std::string ObjectFileDB::ir2_function_to_string(ObjectFileData& data, Function&
   }
 
   if (func.mips2c_output) {
+    result += ";;-*-MIPS2C-Start-*-\n";
     result += *func.mips2c_output;
+    result += ";;-*-MIPS2C-End-*-\n";
   }
 
   result += "\n";

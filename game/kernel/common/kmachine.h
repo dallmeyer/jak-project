@@ -19,7 +19,7 @@ extern OverlordDataSource isodrv;
 extern u32 modsrc;
 
 // Reboot IOP on start?
-extern u32 reboot;
+extern u32 reboot_iop;  // renamed to reboot_iop to avoid conflict
 
 extern const char* init_types[];
 extern u32 vblank_interrupt_handler;
@@ -59,6 +59,8 @@ u64 DecodeInactiveTimeout();
 void DecodeTime(u32 ptr);
 u64 read_ee_timer();
 void c_memmove(u32 dst, u32 src, u32 size);
+void set_game_resolution(s64 w, s64 h);
+void set_msaa(s64 samples);
 void get_window_size(u32 w_ptr, u32 h_ptr);
 void get_window_scale(u32 x_ptr, u32 y_ptr);
 void get_screen_size(s64 vmode_idx, u32 w_ptr, u32 h_ptr);
@@ -83,3 +85,4 @@ u64 pc_get_mips2c(u32 name);
 void send_gfx_dma_chain(u32 /*bank*/, u32 chain);
 void pc_texture_upload_now(u32 page, u32 mode);
 void pc_texture_relocate(u32 dst, u32 src, u32 format);
+u64 pc_filter_debug_string(u32 str_ptr, u32 distance);

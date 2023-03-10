@@ -13,6 +13,14 @@
 (defconstant DPROCESS_STACK_SIZE (#if PC_PORT #x8000 #x3800))
 (defconstant PROCESS_STACK_SIZE (#if PC_PORT #x6000 #x1c00))
 
+;; the size of the shared heap used by dynamically sized processes
+(#if PC_BIG_MEMORY
+  (defconstant PROCESS_HEAP_MULT 4) ;; 4x actors
+  (defconstant PROCESS_HEAP_MULT 1)
+  )
+(defconstant PROCESS_HEAP_SIZE (* PROCESS_HEAP_MULT 1540 1024))
+(defconstant PROCESS_HEAP_MAX (* PROCESS_HEAP_MULT 768))
+
 (defconstant *tab-size* (the binteger 8))
 (defconstant *gtype-basic-offset* 4)
 
@@ -481,7 +489,7 @@
 
 (defmacro process->ppointer (proc)
   "safely get a (pointer process) from a process, returning #f if invalid."
-  `(let ((the-proc ,proc))
+  `(let ((the-proc (the-as process ,proc)))
      (if the-proc (-> the-proc ppointer))
      )
   )
@@ -489,7 +497,7 @@
 (defmacro ppointer->handle (pproc)
   "convert a ppointer to a handle. assumes the ppointer is valid."
   `(let ((the-process (the-as (pointer process) ,pproc)))
-      (new 'static 'handle :process the-process :pid (-> the-process 0 pid))
+      (new 'static 'handle :process the-process :pid (if the-process (-> the-process 0 pid)))
       )
   )
 
@@ -573,7 +581,7 @@
   ((len              int32           :offset-assert   4)
    (allocated-length uint32          :offset-assert   8)
    (error            symbol          :offset-assert  12)
-   (data             symbol :dynamic :offset-assert  16)
+   (data             string :dynamic :offset-assert  16)
    )
   :method-count-assert 9
   :size-assert         #x10

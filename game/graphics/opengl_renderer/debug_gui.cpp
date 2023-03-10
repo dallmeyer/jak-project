@@ -99,11 +99,13 @@ void OpenGlDebugGui::draw(const DmaStats& dma_stats) {
       ImGui::MenuItem("Render Debug", nullptr, &m_draw_debug);
       ImGui::MenuItem("Profiler", nullptr, &m_draw_profiler);
       ImGui::MenuItem("Small Profiler", nullptr, &small_profiler);
+      ImGui::MenuItem("Loader", nullptr, &m_draw_loader);
       ImGui::EndMenu();
     }
 
     if (ImGui::BeginMenu("Tools")) {
       ImGui::MenuItem("Subtitle Editor", nullptr, &m_subtitle_editor);
+      ImGui::MenuItem("Filters", nullptr, &m_filters_menu);
       ImGui::EndMenu();
     }
 
@@ -139,10 +141,6 @@ void OpenGlDebugGui::draw(const DmaStats& dma_stats) {
       if (ImGui::MenuItem("Reboot now!")) {
         want_reboot_in_debug = true;
       }
-      ImGui::EndMenu();
-    }
-
-    if (ImGui::BeginMenu(fmt::format("WORK IN PROGRESS VERSION ({})!", GIT_VERSION).c_str())) {
       ImGui::EndMenu();
     }
   }

@@ -3,7 +3,7 @@
 
 ;; this file is debug only
 (declare-file (debug))
-(when *debug-segment*
+
 ;; definition for symbol *editable-temp-id*, type int
 (define *editable-temp-id* 0)
 
@@ -261,7 +261,7 @@
   :flag-assert         #xd00000030
   (:methods
     (new (symbol type) _type_ 0)
-    (editable-region-method-9 () none 9)
+    (editable-region-method-9 (_type_ editable-array int int) none 9)
     (editable-region-method-10 (_type_ int) symbol 10)
     (editable-region-method-11 (_type_ vector int) none 11)
     (editable-region-method-12 (_type_) editable-filter 12)
@@ -1199,5 +1199,3 @@
 
 ;; failed to figure out what this is:
 0
-
-)

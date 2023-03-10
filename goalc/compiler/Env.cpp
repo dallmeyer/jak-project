@@ -108,6 +108,16 @@ FileEnv* GlobalEnv::add_file(std::string name) {
   return m_files.back().get();
 }
 
+std::vector<std::string> GlobalEnv::list_files_with_prefix(const std::string& prefix) {
+  std::vector<std::string> matches = {};
+  for (const auto& file : m_files) {
+    if (file->name().rfind(prefix) == 0) {
+      matches.push_back(file->name());
+    }
+  }
+  return matches;
+}
+
 ///////////////////
 // BlockEnv
 ///////////////////
@@ -169,6 +179,14 @@ bool FileEnv::is_empty() {
   return m_functions.size() == 1 && m_functions.front().get() == m_top_level_func &&
          m_top_level_func->code().empty();
 }
+
+void FileEnv::cleanup_after_codegen() {
+  m_top_level_func = nullptr;
+  m_functions.clear();
+  m_statics.clear();
+  m_vals.clear();
+}
+
 ///////////////////
 // FunctionEnv
 ///////////////////

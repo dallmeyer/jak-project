@@ -15,6 +15,7 @@
 #include "common/util/Assert.h"
 
 #include "third-party/fmt/core.h"
+#include "third-party/fmt/format.h"
 
 namespace {
 
@@ -38,7 +39,7 @@ const std::string& get_text_version_name(GameTextVersion version) {
       return name;
     }
   }
-  throw std::runtime_error(fmt::format("invalid text version {}", version));
+  throw std::runtime_error(fmt::format("invalid text version {}", fmt::underlying(version)));
 }
 
 GameTextFontBank::GameTextFontBank(GameTextVersion version,
@@ -502,6 +503,10 @@ static std::vector<ReplaceInfo> s_replace_info_jak1 = {
     {"I~Y~-19H~-5V'~Z", "Í"},
     {"O~Y~-22H~-4V'~Z", "Ó"},
     {"U~Y~-24H~-3V'~Z", "Ú"},
+
+    // double acute accents
+    {"O~Y~-28H~-4V'~-9H'~Z", "Ő"},   // custom
+    {"U~Y~-27H~-4V'~-12H'~Z", "Ű"},  // custom
 
     // circumflex
     {"A~Y~-20H~-4V^~Z", "Â"},  // custom

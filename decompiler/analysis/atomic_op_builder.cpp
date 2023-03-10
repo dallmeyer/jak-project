@@ -359,6 +359,7 @@ std::unique_ptr<AtomicOp> make_asm_op(const Instruction& i0, int idx) {
     case InstructionKind::PCPYLD:
     case InstructionKind::PROT3W:
     case InstructionKind::PAND:
+    case InstructionKind::PXOR:
     case InstructionKind::PMADDH:
     case InstructionKind::PMULTH:
     case InstructionKind::PEXEW:
@@ -1097,6 +1098,28 @@ std::unique_ptr<AtomicOp> convert_daddiu_2(const Instruction& i0,
     return std::make_unique<SetVarConditionOp>(make_dst_var(dest, idx),
                                                IR2_Condition(kind, make_src_atom(src, idx)), idx);
   }
+
+  //  daddiu v1, v1, L152
+  //  daddu v1, v1, fp
+  if (i1.kind == InstructionKind::DADDU && i0.get_src(1).is_label()) {
+    auto dest = i0.get_src(0).get_reg();
+    if (!i0.get_src(0).is_reg(dest)) {
+      return nullptr;
+    }
+    if (!i1.get_src(0).is_reg(dest)) {
+      return nullptr;
+    }
+    if (!i1.get_src(0).is_reg(dest)) {
+      return nullptr;
+    }
+    if (!i1.get_src(1).is_reg(rfp())) {
+      return nullptr;
+    }
+    auto stat = SimpleAtom::make_static_address(i0.get_src(1).get_label());
+    auto expr = SimpleExpression(SimpleExpression::Kind::ADD, make_src_atom(dest, idx), stat);
+    return std::make_unique<SetVarOp>(make_dst_var(dest, idx), expr, idx);
+  }
+
   return nullptr;
 }
 

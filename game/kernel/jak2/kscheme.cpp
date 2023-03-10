@@ -255,6 +255,25 @@ u64 make_string_from_c(const char* c_str) {
   return mem;
 }
 
+u64 make_debug_string_from_c(const char* c_str) {
+  auto str_size = strlen(c_str);
+  auto mem_size = str_size + 1;
+  if (mem_size < 8) {
+    mem_size = 8;
+  }
+
+  auto mem = alloc_heap_object((s7 + FIX_SYM_DEBUG).offset, u32_in_fixed_sym(FIX_SYM_STRING_TYPE),
+                               mem_size + BASIC_OFFSET + 4, UNKNOWN_PP);
+  // there's no check for failed allocation here!
+
+  // string size field
+  *Ptr<u32>(mem) = str_size;
+
+  // rest is chars
+  kstrcpy(Ptr<char>(mem + 4).c(), c_str);
+  return mem;
+}
+
 extern "C" {
 void _arg_call_linux();
 }
@@ -710,7 +729,6 @@ Ptr<Type> alloc_and_init_type(Ptr<Symbol4<Ptr<Type>>> sym,
 
   if (!force_global_type &&
       u32_in_fixed_sym(FIX_SYM_LOADING_LEVEL) != u32_in_fixed_sym(FIX_SYM_GLOBAL_HEAP)) {
-    printf("using level types!\n");  // added
     u32 type_list_ptr = LevelTypeList->value();
     if (type_list_ptr == 0) {
       // we don't have a type-list... just alloc on global
@@ -935,7 +953,6 @@ u64 new_type(u32 symbol, u32 parent, u64 flags) {
       MsgWarn("dkernel: loading-level init of type %s, but was interned global (this is okay)\n",
               sym_to_string(new_type_obj->symbol)->data());
     } else {
-      printf("case 2 for new_type level types\n");
       new_type_obj->memusage_method.offset = original_type_list_value;
     }
   }
@@ -962,7 +979,7 @@ u64 type_typep(Ptr<Type> t1, Ptr<Type> t2) {
 
 u64 method_set(u32 type_, u32 method_id, u32 method) {
   Ptr<Type> type(type_);
-  if (method_id > 127)
+  if (method_id > 255)
     printf("[METHOD SET ERROR] tried to set method %d\n", method_id);
 
   auto existing_method = type->get_method(method_id).offset;
@@ -1750,9 +1767,11 @@ u64 loadc(const char* /*file_name*/, kheapinfo* /*heap*/, u32 /*flags*/) {
   return 0;
 }
 
-u64 loado(u32 /*file_name_in*/, u32 /*heap_in*/) {
-  ASSERT(false);
-  return 0;
+u64 loado(u32 file_name_in, u32 /*heap_in*/) {
+  // ASSERT(false);
+  Ptr<String> file_name(file_name_in);
+  printf("****** CALL TO loado(%s) ******\n", file_name->data());
+  return s7.offset;
 }
 
 /*!

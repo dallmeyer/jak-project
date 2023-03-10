@@ -30,7 +30,7 @@
 
 ;; definition for method 20 of type simple-focus
 (defmethod get-trans simple-focus ((obj simple-focus) (arg0 int))
-  "@returns the `trans` [[vector]] from the process's `root` (typically either a [[trsqv]] or a [[collide-shape]]"
+  "@returns the `trans` [[vector]] from the process's `root` (typically either a [[trsqv]] or a [[collide-shape]])"
   (-> obj root-override trans)
   )
 
@@ -46,15 +46,15 @@
 (defstate idle (simple-focus)
   :virtual #t
   :event (behavior ((proc process) (arg1 int) (event-type symbol) (event event-message-block))
-    (let ((v1-0 event-type))
-      (the-as object (when (= v1-0 'move-trans)
-                       (let ((v0-0 (-> self root-override trans)))
-                         (set! (-> v0-0 quad) (-> (the-as vector (-> event param 0)) quad))
-                         v0-0
-                         )
-                       )
-              )
-      )
+    (the-as object (case event-type
+                     (('move-trans)
+                      (let ((v0-0 (-> self root-override trans)))
+                        (set! (-> v0-0 quad) (-> (the-as vector (-> event param 0)) quad))
+                        v0-0
+                        )
+                      )
+                     )
+            )
     )
   :code (the-as (function none :behavior simple-focus) sleep-code)
   )

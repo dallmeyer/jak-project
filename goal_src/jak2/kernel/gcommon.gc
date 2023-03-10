@@ -1320,7 +1320,7 @@
      )
   )
 
-(defmacro with-profiler (name &rest body)
+(defmacro with-pc-profiler (name &rest body)
   "Execute the body in a named profiler block.
    Do not `return` or `go` from inside this block,
    otherwise the end will be skipped."
@@ -1372,6 +1372,13 @@
        )
    )
 
+(defmacro cmove-#f-nonzero (dest condition src)
+  `(if (zero? ,condition)
+       (set! ,dest ,src)
+       (set! ,dest #f)
+       )
+   )
+
 (defmacro empty-form ()
   `(none)
   )
@@ -1382,6 +1389,10 @@
 
 (defmacro .sra (result in sa)
   `(set! ,result (sext32 (sar (logand #xffffffff (the-as int ,in)) ,sa)))
+  )
+
+(defmacro l32-false-check (in)
+  `(- (logand #xffffffff (the-as uint ,in)) (the-as uint #f))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -1396,4 +1407,8 @@
   (fake-asm .mfc0 dest src)
   ;; Copies the contents of a gpr to a cop0 (system control) register
   (fake-asm .mtc0 dest src)
+  ;; Move to perf counter register
+  (fake-asm .mtpc src dest)
+  ;; Move from perf counter register
+  (fake-asm .mfpc dest src)
   )

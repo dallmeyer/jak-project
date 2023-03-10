@@ -691,12 +691,9 @@
              (set! (-> s5-1 sound-name) (-> obj name))
              (set! (-> s5-1 fo-max) (-> obj falloff-far))
              (set! (-> s5-1 mask) (sound-mask))
-             (when (-> obj params)
-               ;; ADDED - the function after this has been removed in jak 2, and calling it will crash.
-               (format 0 "bad case in update! ambient-sound~%")
-               pp
-               (effect-param->sound-spec s5-1 (-> obj params) (-> obj param-count))
-               )
+             (if (-> obj params)
+                 (effect-param->sound-spec s5-1 (-> obj params) (-> obj param-count) (the-as process-focusable pp))
+                 )
              )
            (let ((v1-23 (-> s5-1 fo-max)))
              (if (and (nonzero? v1-23) (< (* 4096.0 (the float v1-23)) (vector-vector-distance (ear-trans 0) (-> obj trans))))
@@ -733,7 +730,7 @@
                                    (-> obj pitch)
                                    0
                                    (sound-group sfx)
-                                   (the-as symbol (-> obj trans))
+                                   (-> obj trans)
                                    )
              )
        )
@@ -747,7 +744,7 @@
                   (-> obj pitch)
                   0
                   (sound-group sfx)
-                  (the-as symbol (-> obj trans))
+                  (-> obj trans)
                   )
                 )
           (set! (-> obj play-time)
@@ -849,7 +846,7 @@
       arg0
       (+ (* s5-0 16) 16)
       48
-      (font-color default-#cddbcd)
+      (font-color default)
       (font-flags shadow)
       )
     )
@@ -862,7 +859,7 @@
       arg0
       (+ (* s5-1 16) 16)
       64
-      (font-color default-#cddbcd)
+      (font-color default)
       (font-flags shadow)
       )
     )
@@ -874,7 +871,7 @@
       (-> *level* sound-bank 1)
       (-> *level* sound-bank 2)
       )
-    (s5-2 *temp-string* arg0 16 88 (font-color default-#cddbcd) (font-flags shadow))
+    (s5-2 *temp-string* arg0 16 88 (font-color default) (font-flags shadow))
     )
   (let ((s5-3 draw-string-xy))
     (format
@@ -887,7 +884,7 @@
       (-> *setting-control* user-current sound-excitement)
       (-> *setting-control* user-current mode-sound-bank)
       )
-    (s5-3 *temp-string* arg0 16 104 (font-color default-#cddbcd) (font-flags shadow))
+    (s5-3 *temp-string* arg0 16 104 (font-color default) (font-flags shadow))
     )
   0
   )
@@ -900,7 +897,7 @@
       (-> *sound-iop-info* freemem)
       (shr (-> *sound-iop-info* freemem) 10)
       )
-    (s5-0 *temp-string* arg0 32 96 (font-color default-#cddbcd) (font-flags shadow))
+    (s5-0 *temp-string* arg0 32 96 (font-color default) (font-flags shadow))
     )
   (let ((s5-1 draw-string-xy))
     (format
@@ -909,7 +906,7 @@
       (-> *sound-iop-info* freemem2)
       (shr (-> *sound-iop-info* freemem2) 10)
       )
-    (s5-1 *temp-string* arg0 32 64 (font-color default-#cddbcd) (font-flags shadow))
+    (s5-1 *temp-string* arg0 32 64 (font-color default) (font-flags shadow))
     )
   0
   )
@@ -938,9 +935,6 @@
   0
   )
 
-;; temporarily removed, will crash on startup
-(format 0 "HACK: skipping check-irx-version and common soundbank load.~%")
-#|
 (check-irx-version)
 
 (case (scf-get-territory)
@@ -961,7 +955,6 @@
       )
     )
   )
-|#
 
 
 

@@ -9,8 +9,9 @@
 #include "common/util/Timer.h"
 #include "common/util/diff.h"
 #include "common/util/os.h"
+#include "common/util/set_util.h"
+#include "common/util/unicode_util.h"
 #include "common/versions.h"
-#include <common/util/unicode_util.h>
 
 #include "ObjectFile/ObjectFileDB.h"
 #include "decompiler/data/TextureDB.h"
@@ -18,29 +19,38 @@
 #include "decompiler/level_extractor/extract_level.h"
 
 #include "third-party/CLI11.hpp"
+#include "third-party/json.hpp"
 
 int main(int argc, char** argv) {
   ArgumentGuard u8_guard(argc, argv);
 
   if (!file_util::setup_project_path(std::nullopt)) {
+    lg::error("Unable to setup project path");
     return 1;
   }
-  lg::set_file(file_util::get_file_path({"log/decompiler.txt"}));
-  lg::set_file_level(lg::level::info);
-  lg::set_stdout_level(lg::level::info);
-  lg::set_flush_level(lg::level::info);
-  lg::initialize();
+
+  try {
+    lg::set_file(file_util::get_file_path({"log", "decompiler.log"}));
+    lg::set_file_level(lg::level::info);
+    lg::set_stdout_level(lg::level::info);
+    lg::set_flush_level(lg::level::info);
+    lg::initialize();
+  } catch (const std::exception& e) {
+    lg::error("Failed to setup logging: {}", e.what());
+    return 1;
+  }
 
   fs::path config_path;
   fs::path in_folder;
   fs::path out_folder;
 
+  std::string config_game_version = "";
   std::string config_override = "{}";
 
   CLI::App app{"OpenGOAL Decompiler"};
   app.add_option("config-path", config_path,
                  "Path to the decompiler config .jsonc file. ie. "
-                 "./decompiler/config/jak1_ntsc_black_label.jsonc")
+                 "./decompiler/config/jak1/jak1_config.jsonc")
       ->required();
   app.add_option("in-folder", in_folder,
                  "The path containing the iso_data folders. ie. ./iso_data/. Assumes the "
@@ -49,6 +59,10 @@ int main(int argc, char** argv) {
   app.add_option("out-folder", out_folder,
                  "The path for where the decompiler should place it's outputs. Assumes the "
                  "'gameName' from the config as a sub-directory")
+      ->required();
+
+  app.add_option("--version", config_game_version,
+                 "The name of the game version to update the config with, ie. ntsc_v2")
       ->required();
   app.add_option("--config-override", config_override,
                  "JSON provided will be merged with the specified config, use to override options");
@@ -60,9 +74,17 @@ int main(int argc, char** argv) {
 
   Config config;
   try {
-    config = read_config_file(config_path, config_override);
+    config = read_config_file(config_path, config_game_version, config_override);
   } catch (const std::exception& e) {
     lg::error("Failed to parse config: {}", e.what());
+    return 1;
+  }
+
+  // Check if any banned objects are also in the allowed objects list
+  // if so, throw an error as this can be a confusing situation
+  auto intersection = set_util::intersection(config.allowed_objects, config.banned_objects);
+  if (!intersection.empty()) {
+    lg::error("Aborting - There is an overlap between 'allowed_objects' and 'banned_objects'");
     return 1;
   }
 
@@ -109,15 +131,26 @@ int main(int argc, char** argv) {
     strs.push_back(in_folder / str_name);
   }
 
-  if (config.rip_levels) {
-    file_util::create_dir_if_needed(file_util::get_jak_project_dir() / "debug_out");
-  }
-
   lg::info("[Mem] After config read: {} MB", get_peak_rss() / (1024 * 1024));
 
   // build file database
   lg::info("Setting up object file DB...");
   ObjectFileDB db(dgos, fs::path(config.obj_file_name_map_file), objs, strs, config);
+
+  // Explicitly fail if a file in the 'allowed_objects' list wasn't found in the DB
+  // as this is another silent error that can be confusing
+  if (!config.allowed_objects.empty()) {
+    for (const auto& expected_obj : config.allowed_objects) {
+      if (db.obj_files_by_name.count(expected_obj) == 0) {
+        // TODO - this is wrong for jak1, fix eventually as this is now done in 3 places
+        lg::error(
+            "Expected to find '{}' in the ObjectFileDB but did not. Check "
+            "./decompiler/config/{}/inputs.jsonc",
+            expected_obj, config.game_name);
+        return 1;
+      }
+    }
+  }
 
   lg::info("[Mem] After DB setup: {} MB", get_peak_rss() / (1024 * 1024));
 
@@ -152,14 +185,29 @@ int main(int argc, char** argv) {
                          config.write_hex_near_instructions);
   }
 
-  // process art groups (used in decompilation)
-  if (config.decompile_code || config.process_art_groups) {
+  if (config.process_art_groups) {
     db.extract_art_info();
+    // dumb art info to json if requested
+    if (config.dump_art_group_info) {
+      auto file_name = out_folder / "dump" / "art-group-info.min.json";
+      nlohmann::json json = db.dts.art_group_info;
+      file_util::create_dir_if_needed_for_file(file_name);
+      file_util::write_text_file(file_name, json.dump(-1));
+      lg::info("[DUMP] Dumped art group info to {}", file_name.string());
+    }
+  } else if (!config.art_group_info_dump.empty()) {
+    // process art groups (used in decompilation)
+    // - if the config has a path to the art info dump, just use that
+    // - otherwise (or if we want to dump it fresh) extract it
+    db.dts.art_group_info = config.art_group_info_dump;
+  } else {
+    lg::error("`process_art_groups` was false and no art-group-info dump was provided!");
+    return 1;
   }
 
   // main decompile.
   if (config.decompile_code) {
-    db.analyze_functions_ir2(out_folder, config, {});
+    db.analyze_functions_ir2(out_folder, config, {}, {}, {});
   }
 
   if (config.generate_all_types) {

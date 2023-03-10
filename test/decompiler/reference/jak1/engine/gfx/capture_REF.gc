@@ -3,7 +3,7 @@
 
 ;; this file is debug only
 (declare-file (debug))
-(when *debug-segment*
+
 ;; definition of type gs-store-image-packet
 (deftype gs-store-image-packet (structure)
   ((vifcode        vif-tag      4 :offset-assert   0)
@@ -45,7 +45,6 @@
 
 ;; definition for function gs-set-default-store-image
 ;; INFO: Used lq/sq
-;; ERROR: Unsupported inline assembly instruction kind - [sync.l]
 (defun gs-set-default-store-image ((packet gs-store-image-packet)
                           (src-fbp int)
                           (src-w int)
@@ -129,5 +128,3 @@
     )
   0
   )
-
-)

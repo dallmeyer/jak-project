@@ -7,6 +7,7 @@
 
 #include "TypeSystem.h"
 
+#include <algorithm>
 #include <stdexcept>
 
 #include "common/log/log.h"
@@ -369,8 +370,9 @@ bool TypeSystem::partially_defined_type_exists(const std::string& name) const {
   return m_forward_declared_types.find(name) != m_forward_declared_types.end();
 }
 
-TypeSpec TypeSystem::make_array_typespec(const TypeSpec& element_type) const {
-  return TypeSpec("array", {element_type});
+TypeSpec TypeSystem::make_array_typespec(const std::string& array_type,
+                                         const TypeSpec& element_type) const {
+  return TypeSpec(array_type, {element_type});
 }
 
 /*!
@@ -475,7 +477,7 @@ Type* TypeSystem::lookup_type_allow_partial_def(const std::string& name) const {
     auto fwd_dec = m_forward_declared_types.find(current_name);
     if (fwd_dec == m_forward_declared_types.end()) {
       if (current_name == name) {
-        throw_typesystem_error("The type {} is unknown (2).\n", name);
+        throw_typesystem_error("The type '{}' is unknown (2).\n", name);
       } else {
         throw_typesystem_error("When looking up forward defined type {}, could not find a type {}.",
                                name, current_name);
@@ -511,6 +513,21 @@ int TypeSystem::get_load_size_allow_partial_def(const TypeSpec& ts) const {
   }
   ASSERT(partial_def->get_load_size() == 4);
   return partial_def->get_load_size();
+}
+
+MethodInfo TypeSystem::override_method(Type* type,
+                                       const std::string& /*type_name*/,
+                                       const int method_id,
+                                       const std::optional<std::string>& docstring) {
+  // Lookup the method from the parent type
+  MethodInfo existing_info;
+  bool exists = try_lookup_method(type->get_parent(), method_id, &existing_info);
+  if (!exists) {
+    throw_typesystem_error("Trying to use override a method that has no parent declaration");
+  }
+  // use the existing ID.
+  return type->add_method({existing_info.id, existing_info.name, existing_info.type,
+                           type->get_name(), existing_info.no_virtual, false, true, docstring});
 }
 
 MethodInfo TypeSystem::declare_method(const std::string& type_name,
@@ -563,7 +580,7 @@ MethodInfo TypeSystem::declare_method(Type* type,
 
     // use the existing ID.
     return type->add_method(
-        {existing_info.id, method_name, ts, type->get_name(), no_virtual, true, docstring});
+        {existing_info.id, method_name, ts, type->get_name(), no_virtual, true, false, docstring});
   } else {
     if (got_existing) {
       // make sure we aren't changing anything.
@@ -594,7 +611,7 @@ MethodInfo TypeSystem::declare_method(Type* type,
     } else {
       // add a new method!
       return type->add_method({get_next_method_id(type), method_name, ts, type->get_name(),
-                               no_virtual, false, docstring});
+                               no_virtual, false, false, docstring});
     }
   }
 }
@@ -628,12 +645,23 @@ MethodInfo TypeSystem::define_method(Type* type,
   bool got_existing = try_lookup_method(type, method_name, &existing_info);
 
   if (got_existing) {
-    // make sure we aren't changing anything.
-    if (!existing_info.type.is_compatible_child_method(ts, type->get_name())) {
+    // Update the docstring
+    existing_info.docstring = docstring;
+    int bad_arg_idx = -99;
+    // make sure we aren't changing anything that isn't the return type.
+    if (!existing_info.type.is_compatible_child_method(ts, type->get_name(), &bad_arg_idx) &&
+        bad_arg_idx != (int)ts.arg_count() - 1) {
       throw_typesystem_error(
           "The method {} of type {} was originally defined as {}, but has been "
-          "redefined as {}\n",
-          method_name, type->get_name(), existing_info.type.print(), ts.print());
+          "redefined as {} (see argument index {})\n",
+          method_name, type->get_name(), existing_info.type.print(), ts.print(), bad_arg_idx);
+    } else if (bad_arg_idx == (int)ts.arg_count() - 1 &&
+               !tc(existing_info.type.last_arg(), ts.last_arg())) {
+      throw_typesystem_error(
+          "The method {} of type {} was originally defined as returning {}, but has been redefined "
+          "and returns {}\n",
+          method_name, type->get_name(), existing_info.type.last_arg().print(),
+          ts.last_arg().print());
     }
 
     return existing_info;
@@ -663,7 +691,7 @@ MethodInfo TypeSystem::add_new_method(Type* type,
 
     return existing;
   } else {
-    return type->add_new_method({0, "new", ts, type->get_name(), false, false, docstring});
+    return type->add_new_method({0, "new", ts, type->get_name(), false, false, false, docstring});
   }
 }
 
@@ -953,8 +981,9 @@ int TypeSystem::add_field_to_type(StructureType* type,
     int aligned_offset = align(offset, field_alignment);
     field.mark_as_user_placed();
     if (offset != aligned_offset) {
-      throw_typesystem_error("Tried to place field {} at {}, but it is not aligned correctly\n",
-                             field_name, offset);
+      throw_typesystem_error(
+          "Tried to place field {} at {}, but it is not aligned correctly, requires {}\n",
+          field_name, offset, field_alignment);
     }
   }
 
@@ -1119,7 +1148,7 @@ void TypeSystem::add_builtin_types(GameVersion version) {
   add_field_to_type(vu_function_type, "length", make_typespec("int32"));   // todo integer type
   add_field_to_type(vu_function_type, "origin", make_typespec("int32"));   // todo sign extend?
   add_field_to_type(vu_function_type, "qlength", make_typespec("int32"));  // todo integer type
-  add_field_to_type(vu_function_type, "data", make_typespec("uint8"), false, true);
+  add_field_to_type(vu_function_type, "data", make_typespec("uint8"), false, true, -1, -1, true);
 
   // link block
   builtin_structure_inherit(link_block_type);
@@ -1267,6 +1296,7 @@ int TypeSystem::get_size_in_type(const Field& field) const {
             "Attempted to use `{}` inline, this probably isn't what you wanted.\n",
             field_type->get_name());
       }
+      // TODO - crashes LSP
       ASSERT(field_type->is_reference());
       return field.array_size() * align(field_type->get_size_in_memory(),
                                         field_type->get_inline_array_stride_alignment());
@@ -1305,14 +1335,22 @@ int TypeSystem::get_size_in_type(const Field& field) const {
   }
 }
 
+std::vector<std::string> TypeSystem::get_all_type_names() {
+  std::vector<std::string> results = {};
+  for (const auto& [type_name, type_info] : m_types) {
+    results.push_back(type_name);
+  }
+  return results;
+}
+
 std::vector<std::string> TypeSystem::search_types_by_parent_type(
     const std::string& parent_type,
-    const std::vector<std::string>& existing_matches) {
+    const std::optional<std::vector<std::string>>& existing_matches) {
   std::vector<std::string> results = {};
   // If we've been given a list of already matched types, narrow it down from there, otherwise
   // iterate through the entire map
-  if (!existing_matches.empty()) {
-    for (const auto& type_name : existing_matches) {
+  if (existing_matches) {
+    for (const auto& type_name : existing_matches.value()) {
       if (typecheck_base_types(parent_type, type_name, false)) {
         results.push_back(type_name);
       }
@@ -1334,12 +1372,12 @@ std::vector<std::string> TypeSystem::search_types_by_parent_type(
 
 std::vector<std::string> TypeSystem::search_types_by_minimum_method_id(
     const int minimum_method_id,
-    const std::vector<std::string>& existing_matches) {
+    const std::optional<std::vector<std::string>>& existing_matches) {
   std::vector<std::string> results = {};
   // If we've been given a list of already matched types, narrow it down from there, otherwise
   // iterate through the entire map
-  if (!existing_matches.empty()) {
-    for (const auto& type_name : existing_matches) {
+  if (existing_matches) {
+    for (const auto& type_name : existing_matches.value()) {
       if (get_type_method_count(type_name) - 1 >= minimum_method_id) {
         results.push_back(type_name);
       }
@@ -1355,14 +1393,18 @@ std::vector<std::string> TypeSystem::search_types_by_minimum_method_id(
 }
 
 std::vector<std::string> TypeSystem::search_types_by_size(
-    const int search_size,
-    const std::vector<std::string>& existing_matches) {
+    const int min_size,
+    const std::optional<int> max_size,
+    const std::optional<std::vector<std::string>>& existing_matches) {
   std::vector<std::string> results = {};
   // If we've been given a list of already matched types, narrow it down from there, otherwise
   // iterate through the entire map
-  if (!existing_matches.empty()) {
-    for (const auto& type_name : existing_matches) {
-      if (m_types[type_name]->get_size_in_memory() == search_size) {
+  if (existing_matches) {
+    for (const auto& type_name : existing_matches.value()) {
+      const auto size_of_type = m_types[type_name]->get_size_in_memory();
+      if (max_size && size_of_type <= max_size && size_of_type >= min_size) {
+        results.push_back(type_name);
+      } else if (!max_size && size_of_type == min_size) {
         results.push_back(type_name);
       }
     }
@@ -1372,7 +1414,10 @@ std::vector<std::string> TypeSystem::search_types_by_size(
       if (!type_info->has_parent()) {
         continue;
       }
-      if (type_info->get_size_in_memory() == search_size) {
+      const auto size_of_type = m_types[type_name]->get_size_in_memory();
+      if (max_size && size_of_type <= max_size && size_of_type >= min_size) {
+        results.push_back(type_name);
+      } else if (!max_size && size_of_type == min_size) {
         results.push_back(type_name);
       }
     }
@@ -1383,11 +1428,11 @@ std::vector<std::string> TypeSystem::search_types_by_size(
 
 std::vector<std::string> TypeSystem::search_types_by_fields(
     const std::vector<TypeSearchFieldInput>& search_fields,
-    const std::vector<std::string>& existing_matches) {
+    const std::optional<std::vector<std::string>>& existing_matches) {
   // TODO - maybe support partial matches eventually
   std::vector<std::string> results = {};
-  if (!existing_matches.empty()) {
-    for (const auto& type_name : existing_matches) {
+  if (existing_matches) {
+    for (const auto& type_name : existing_matches.value()) {
       // For each type, look at it's fields
       if (dynamic_cast<StructureType*>(m_types[type_name].get()) != nullptr) {
         bool type_valid = true;
@@ -1858,6 +1903,8 @@ std::string TypeSystem::generate_deftype_footer(const Type* type) const {
   }
 
   std::string methods_string;
+
+  // New Method
   auto new_info = type->get_new_method_defined_for_type();
   if (new_info) {
     methods_string.append("(new (");
@@ -1878,7 +1925,13 @@ std::string TypeSystem::generate_deftype_footer(const Type* type) const {
     methods_string.append("0)\n    ");
   }
 
+  // Rest of methods
   for (auto& info : type->get_methods_defined_for_type()) {
+    // check if we only override the docstring
+    if (info.only_overrides_docstring) {
+      continue;
+    }
+
     methods_string.append(fmt::format("({} (", info.name));
     for (size_t i = 0; i < info.type.arg_count() - 1; i++) {
       methods_string.append(info.type.get_arg(i).print());
@@ -1893,7 +1946,7 @@ std::string TypeSystem::generate_deftype_footer(const Type* type) const {
       methods_string.append(":no-virtual ");
     }
 
-    if (info.overrides_method_type_of_parent) {
+    if (info.overrides_parent) {
       methods_string.append(":replace ");
     }
 
