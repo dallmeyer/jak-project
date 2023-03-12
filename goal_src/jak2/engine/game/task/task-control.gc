@@ -1827,7 +1827,7 @@
   )
 
 (defbehavior task-manager-init-by-other task-manager ((arg0 game-task-node-info) (arg1 symbol))
-  (stack-size-set! (-> self main-thread) 1024)
+  (stack-size-set! (-> self main-thread) 2048)
   (add-connection *task-manager-engine* self nothing self arg0 #f)
   (set! (-> self node-info) arg0)
   (set! (-> self lev-name) arg1)
@@ -1843,7 +1843,7 @@
                  )
            )
       (if a1-6
-          (process-entity-set! self (the-as entity-actor a1-6))
+          (process-entity-set! self a1-6)
           )
       )
     )
@@ -2171,7 +2171,7 @@
       )
     (let ((gp-3 (-> self info on-complete)))
       (if gp-3
-          (eval! (new 'stack 'script-context (the-as basic (process->ppointer self)) self (the-as vector #f)) gp-3)
+          (eval! (new 'stack 'script-context (process->ppointer self) self (the-as vector #f)) gp-3)
           )
       )
     (task-node-close! (-> self info final-node))
@@ -2204,7 +2204,7 @@
       )
     (let ((gp-1 (-> self info on-fail)))
       (if gp-1
-          (eval! (new 'stack 'script-context (the-as basic (process->ppointer self)) self (the-as vector #f)) gp-1)
+          (eval! (new 'stack 'script-context (process->ppointer self) self (the-as vector #f)) gp-1)
           )
       )
     (let ((a0-10 (-> self info retry-continue))

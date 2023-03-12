@@ -1676,7 +1676,7 @@
             )
         (set! (-> s5-0 position quad) (-> self begin-pos quad))
         (quaternion-axis-angle! (-> s5-0 rotation) 0.0 1.0 0.0 0.0)
-        (set! (-> s5-0 object-type) (the-as uint 13))
+        (set! (-> s5-0 object-type) (traffic-type bikec))
         (set! (-> s5-0 behavior) (the-as uint 0))
         (set! (-> s5-0 id) (the-as uint 0))
         (set! (-> s5-0 proc) #f)
@@ -1846,7 +1846,7 @@
             (when (or (not v1-130) (!= (-> v1-130 display?) 'display))
               (backup-load-state-and-set-cmds *load-state* '())
               (eval!
-                (new 'stack 'script-context (the-as basic (process->ppointer self)) self (the-as vector #f))
+                (new 'stack 'script-context (process->ppointer self) self (the-as vector #f))
                 '(want-display 'ctyport 'display)
                 )
               (restore-load-state-and-cleanup *load-state*)
