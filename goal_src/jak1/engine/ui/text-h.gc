@@ -895,6 +895,8 @@
 ;; will store the COMMON text when it is loaded.
 (define *common-text* (the-as game-text-info #f))
 
+(defun-extern print-game-text string font-context symbol int int float)
+
 ;; added
 (defun-debug game-text-id->string ((text game-text-id))
   (enum->string game-text-id text)
