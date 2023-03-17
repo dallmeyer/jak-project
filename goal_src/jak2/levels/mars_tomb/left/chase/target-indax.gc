@@ -459,6 +459,8 @@
   :post target-indax-post
   )
 
+(define *dax-highjump-factor* 1.6)
+
 (defstate target-indax-stance (target)
   :event target-indax-handler
   :enter (behavior ()
@@ -491,9 +493,9 @@
         (go
           target-indax-jump
           (-> *TARGET-bank* indax-jump-height-min)
-          ;; multiply max height by 1.25 if holding l1, high jump hack
+          ;; multiply max height if holding l1, high jump hack
           (if (cpad-hold? (-> self control cpad number) l1)
-            (* (-> *TARGET-bank* indax-jump-height-max) 1.4)
+            (* (-> *TARGET-bank* indax-jump-height-max) *dax-highjump-factor*)
             (-> *TARGET-bank* indax-jump-height-max)
             )
           (the-as surface #f)
@@ -993,11 +995,11 @@
         (go
           target-indax-jump
           (-> *TARGET-bank* indax-jump-height-min)
-          ;; multiply max height by 1.25 if holding l1 and not moving, high jump hack
+          ;; multiply max height if holding l1 and not moving, high jump hack
           (if (and (cpad-hold? (-> self control cpad number) l1)
                    (zero? (-> *cpad-list* cpads (-> self control cpad number) stick0-speed))
                    )
-            (* (-> *TARGET-bank* indax-jump-height-max) 1.4)
+            (* (-> *TARGET-bank* indax-jump-height-max) *dax-highjump-factor*)
             (-> *TARGET-bank* indax-jump-height-max)
             )
           (the-as surface #f)
