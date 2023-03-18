@@ -1772,7 +1772,7 @@
             'target-pilot-get-off
             'target-pilot-hit
             'target-pilot-impact
-            ;; jetboard?
+            ;; jetboard
             'target-board-clone-anim
             'target-board-duck-stance
             'target-board-falling
@@ -1794,6 +1794,8 @@
             'target-board-trickx
             'target-board-turn-to
             'target-board-wall-kick
+            ;; dark?
+            target-darkjak-get-on
             )
             ;; do nothing
             )
