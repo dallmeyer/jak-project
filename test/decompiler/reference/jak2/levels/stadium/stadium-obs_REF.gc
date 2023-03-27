@@ -490,10 +490,10 @@ This commonly includes things such as:
                      (collide-action no-standon)
                      (collide-action)
                      )
-                    (zero? (logand (-> self root-override-2 penetrated-by)
+                    (not (logtest? (-> self root-override-2 penetrated-by)
                                    (-> (the-as collide-shape (-> (the-as process-drawable s4-1) root)) penetrate-using)
                                    )
-                           )
+                         )
                     )
                (send-shoves (-> self root-override-2) arg0 (the-as touching-shapes-entry gp-1) 0.7 6144.0 16384.0)
                )
@@ -2280,7 +2280,7 @@ This commonly includes things such as:
 
 ;; definition for method 10 of type stad-samos
 (defmethod deactivate stad-samos ((obj stad-samos))
-  (if (valid? (-> obj hud) (the-as type #f) (the-as symbol "") #t 0)
+  (if (valid? (-> obj hud) (the-as type #f) "" #t 0)
       (send-event (handle->process (-> obj hud)) 'hide-and-die)
       )
   (kill-lightning obj)
@@ -3710,7 +3710,3 @@ This commonly includes things such as:
   0
   (none)
   )
-
-
-
-
