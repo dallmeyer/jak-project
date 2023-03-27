@@ -227,7 +227,7 @@
 (define-extern *trace-list* pair)
 (define-extern print-tree-bitmask (function int int symbol))
 (define-extern breakpoint-range-set! (function uint uint uint int))
-(define-extern valid? (function object type symbol symbol object symbol))
+(define-extern valid? (function object type string symbol object symbol))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; gstring-h                      ;;
@@ -2942,7 +2942,7 @@
   (emerc-lcom-shrub    193)  ;; emerc
   (gmerc-lcom-shrub    194)  ;; mercneric
 
-  (bucket-195          195)  ;; shadow
+  (shadow              195)  ;; shadow
 
   (tex-l0-pris         196)  ;; tex
   (merc-l0-pris        197)  ;; merc
@@ -3081,12 +3081,12 @@
   (tex-lcom-sky-post   309)
 
   (ocean-near          310)  ;; ocean
-  (bucket-311          311)  ;; depth-cue
+  (depth-cue           311)  ;; depth-cue
 
   (tex-all-sprite      312)
   (particles           313)  ;; particles
-  (bucket-314          314)  ;; shadow
-  (bucket-315          315)  ;; effects
+  (shadow2             314)  ;; shadow
+  (effects             315)  ;; effects
   (tex-all-warp        316)  ;; tex
   (gmerc-warp          317)  ;; mercneric
 
@@ -3094,7 +3094,7 @@
   (tex-all-map         319)  ;; tex
   (progress            320)  ;; hud | progress
   (screen-filter       321)  ;; hud letterbox, no zbuf
-  (bucket-322          322)  ;; hud
+  (subtitle            322)  ;; hud
   (bucket-323          323)  ;; hud
   (debug2              324)  ;; debug
   (debug-no-zbuf2      325)  ;; debug
@@ -4440,7 +4440,7 @@
   ((on-screen            int32             :offset-assert 4)
    (last-screen          int32             :offset-assert 8)
    (frames               display-frame 2   :offset-assert 12)
-   (bgcolor              uint64            :offset-assert 24)
+   (bgcolor              gs-bgcolor        :offset-assert 24)
    (pmode                gs-pmode          :offset-assert 32)
    (clock                clock         13  :offset-assert 40)
    (session-clock        clock             :offset        40)
@@ -6069,9 +6069,6 @@
    (level4 level :inline :offset 21184)
    (level5 level :inline :offset 26416)
    (default-level level :inline :offset 31648)
-
-   (unknown-inline-vec-01 (inline-array vector) :offset 32064)
-   (unknown-inline-vec-02 (inline-array vector) :offset 33712)
 
    (pad2 uint8 4)
    )
@@ -9016,7 +9013,7 @@
 
 (deftype traffic-suppression-params (structure)
   ((bbox     bounding-box :inline :offset-assert 0)
-   (duration uint64               :offset-assert 32)
+   (duration time-frame           :offset-assert 32)
    (id       int8                 :offset-assert 40)
    )
   :method-count-assert 13
@@ -9058,6 +9055,21 @@
   )
 ;; ---traffic-h:traffic-type
 
+;; +++traffic-h:traffic-spawn-flags
+(defenum traffic-spawn-flags
+  :type uint32
+  :bitfield #t
+  (trsflags-00)
+  (trsflags-01)
+  (trsflags-02)
+  (dark-guard)
+  (trsflags-04)
+  (trsflags-05)
+  (trsflags-06)
+  (trsflags-07)
+  )
+;; ---traffic-h:traffic-spawn-flags
+
 (declare-type nav-mesh basic)
 (declare-type nav-branch structure)
 (deftype traffic-object-spawn-params (structure)
@@ -9072,7 +9084,7 @@
    (handle      handle             :offset-assert 80)
    (guard-type  uint8              :offset-assert 88)
    (user-data   uint32             :offset-assert 92)
-   (flags       uint32             :offset-assert 96)
+   (flags       traffic-spawn-flags  :offset-assert 96)
    (proc        process              :offset-assert 100)
    )
   :method-count-assert 9
@@ -24976,13 +24988,14 @@
 ;; etie-vu1                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype etie-consts (structure)
   ((gifbufs qword        :inline :offset-assert 0)
-   (adgif   qword        :inline :offset-assert 16)
-   (alpha   qword        :inline :offset-assert 32)
-   (strgif  qword        :inline :offset-assert 48)
-   (envgif  qword        :inline :offset-assert 64)
+   ;(adgif   qword        :inline :offset-assert 16)
+   (adgif gs-gif-tag     :inline :offset-assert 16)
+   ;;(alpha   qword        :inline :offset-assert 32)
+   (alpah   gs-adcmd     :inline)
+   (strgif  gs-gif-tag        :inline :offset-assert 48)
+   (envgif  gs-gif-tag        :inline :offset-assert 64)
    (envmap  adgif-shader :inline :offset-assert 80)
    (pers0   vector       :inline :offset-assert 160)
    (pers1   vector       :inline :offset-assert 176)
@@ -24991,27 +25004,24 @@
   :size-assert         #xc0
   :flag-assert         #x9000000c0
   )
-|#
 
-#|
 (deftype etie-matrix (structure)
   ((rmtx  matrix  :inline :offset-assert 0)
    (nmtx  matrix3 :inline :offset-assert 64)
-   (morph float           :offset-assert 76)
-   (fog   float           :offset-assert 92)
-   (fade  uint32          :offset-assert 108)
+   (morph float           :offset 76)
+   (fog   float           :offset 92)
+   (fade  uint32          :offset 108)
    (tint  qword   :inline :offset-assert 112)
    )
   :method-count-assert 9
   :size-assert         #x80
   :flag-assert         #x900000080
   )
-|#
 
-;; (define-extern etie-vu1-block object)
-;; (define-extern etie-magic function)
-;; (define-extern etie-init-consts function)
-(define-extern etie-init-engine (function dma-buffer none))
+(define-extern etie-vu1-block vu-function)
+(define-extern etie-magic (function int int))
+(define-extern etie-init-consts (function etie-consts gs-alpha none))
+(define-extern etie-init-engine (function dma-buffer gs-alpha gs-test none))
 (define-extern etie-end-buffer (function dma-buffer none))
 ;; (define-extern etie-float-reg-bp function)
 ;; (define-extern etie-float-reg function)
@@ -25186,7 +25196,7 @@
 (define-extern draw-drawable-tree-instance-tie (function drawable-tree-instance-tie level none))
 (define-extern tie-init-scissor-buf (function bucket-id gs-alpha gs-test gs-test none))
 (define-extern tie-init-buf (function bucket-id gs-alpha gs-test gs-test none))
-(define-extern tie-init-envmap-buf (function bucket-id gs-alpha int int none))
+(define-extern tie-init-envmap-buf (function bucket-id gs-alpha gs-test none))
 (define-extern tie-init-envmap-scissor-buf (function bucket-id gs-alpha int int none))
 (define-extern *tie-init-table* (inline-array tie-init-data))
 (define-extern tie-vu1-init-buffers (function none))
@@ -32277,8 +32287,8 @@
 (deftype com-airlock (process-drawable)
   ((child-override        basic    :offset 24) ;; what is this!
    (root-override         collide-shape    :offset 128 :score 999)
-   (level-name            string   :offset-assert 200)
-   (open-test             symbol   :offset-assert 204)
+   (level-name            pair     :offset-assert 200)
+   (open-test             pair     :offset-assert 204)
    (were-behind?          symbol   :offset-assert 208)
    (inner?                symbol   :offset-assert 212)
    (sound-behind?         symbol   :offset-assert 216)
@@ -45223,8 +45233,8 @@
 
 (deftype rift-rider (rigid-body-object)
   (
-    (escort-actor            actor-reference 2   :inline   :offset-assert 272) ;; elt size: 8
-    (escort-force            vector 2  :inline     :offset-assert 288) ;; elt size: 16
+    (escort-actor            entity-actor 2             :offset-assert 272) ;; elt size: 8
+    (escort-force            vector 2  :inline    :offset-assert 288) ;; elt size: 16
     (brutter-balloon-actor   entity-actor         :offset-assert 320)
     (path-pos                float          :offset-assert 324)
     (dest-pos                vector :inline :offset-assert 336)
@@ -45233,7 +45243,7 @@
     (init-height             float          :offset-assert 360)
     (battle-entity-triggered int32          :offset-assert 364)
     (battle-info-index       int32          :offset-assert 368)
-    (sound-id                uint32         :offset-assert 372)
+    (sound-id                sound-id       :offset-assert 372)
     (hover-volume            float          :offset-assert 376)
   )
   :method-count-assert 58
@@ -45315,10 +45325,11 @@
     (move-rift-rider () _type_ :state 29)
     (hit () _type_ :state 30)
     (die () _type_ :state 31)
-    (stad-samos-method-32 (_type_) none 32)
-    (stad-samos-method-33 (_type_) none 33)
-    (stad-samos-method-34 (_type_) none 34)
-    (stad-samos-method-35 (_type_) none 35))
+    (init! (_type_) none 32)
+    (get-position (_type_) symbol 33)
+    (spawn-lightning (_type_) none 34)
+    (kill-lightning (_type_) none 35)
+    )
   )
 
 (deftype stad-youngsamos (stad-samos)
@@ -45409,14 +45420,14 @@
 (define-extern *rift-rider-battle-table* (array rift-rider-battle-info))
 (define-extern defend-stadium-rift-rider-handler (function process int symbol event-message-block object :behavior rift-rider))
 (define-extern rift-rider-travel-post (function none :behavior rift-rider))
-;; (define-extern rift-rider-bounce-reaction function)
+(define-extern rift-rider-bounce-reaction (function control-info collide-query vector vector collide-status))
 (define-extern *stad-nav-callback-info* nav-callback-info)
 (define-extern *stad-samos-lightning-joint-tbl* (array int32))
 (define-extern stad-samos-post (function none :behavior stad-samos))
 (define-extern spawn-energy (function none :behavior stad-samos))
 (define-extern stad-samos-handler (function process int symbol event-message-block object :behavior stad-samos))
 (define-extern stadium-barrier-init-by-other (function vector quaternion vector none :behavior stadium-barrier))
-(define-extern stadium-barrier-spawn (function stad-force-field vector quaternion vector (pointer process)))
+(define-extern stadium-barrier-spawn (function stad-force-field vector quaternion vector (pointer stadium-barrier)))
 (define-extern stad-keira-init-by-other (function none :behavior stad-keira))
 (define-extern stad-brutter-init-by-other (function none :behavior stad-keira))
 (define-extern *suppress-stadium* traffic-suppression-params)
@@ -50464,6 +50475,7 @@
   :method-count-assert 9
   :size-assert         #x4
   :flag-assert         #x900000004
+  :pack-me
   )
 
 (deftype race-mesh-hash-cell (structure)
@@ -50505,9 +50517,9 @@
   :size-assert         #x1c
   :flag-assert         #x140000001c
   (:methods
-    (race-mesh-method-9 (_type_ int int rgba rgba) none 9)
-    (race-mesh-method-10 (_type_ int int) symbol 10)
-    (race-mesh-method-11 (_type_ int) none 11)
+    (debug-draw-path (_type_ int int rgba rgba) none 9)
+    (debug-draw-path-from-history (_type_ int int) symbol 10)
+    (debug-draw-slice (_type_ int) none 11)
     (debug-draw-edges (_type_) none 12)
     (race-mesh-method-13 (_type_ race-mesh-slice-query) none 13)
     (race-mesh-method-14 (_type_ race-mesh-slice-query) none 14)
@@ -51168,7 +51180,7 @@
    (v-speed           vector :inline :offset-assert 1088)
    (end-pos           vector :inline :offset-assert 1104)
    (task-done?        symbol         :offset-assert 1120)
-   (task-node         uint16         :offset-assert 1124)
+   (task-node         game-task-node :offset-assert 1124)
    (jump-in-pipe?     symbol         :offset-assert 1128)
    (pipe-name         string         :offset-assert 1132)
    (coming-from-pw    symbol         :offset-assert 1136)

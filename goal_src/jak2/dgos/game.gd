@@ -377,7 +377,6 @@
   "sampler.o"
   "default-menu.o"
   "anim-tester-x.o" ;; added
-  "entity-debug.o" ;; added
   "default-menu-pc.o" ;; added
   "dir-tpages.go"
   "tpage-11.go"
@@ -445,4 +444,5 @@
   "battle.o"
   "elec-gate.o"
   "cty-guard-turret-button.o"
+  "entity-debug.o" ;; added
  ))

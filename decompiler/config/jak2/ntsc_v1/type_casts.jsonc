@@ -1923,7 +1923,7 @@
   ],
   "(method 45 nav-mesh)": [
     [15, "v1", "entity-nav-mesh"],
-    [[34, 43], "v1", "nav-mesh"]
+    [[34, 43], "v1", "nav-mesh-link"]
   ],
   "(method 13 nav-engine)": [
     [[53, 65], "s4", "nav-mesh"],
@@ -11005,5 +11005,15 @@
   "(method 98 gun-buoy)": [
     [46, "v1", "collide-shape-moving"],
     [76, "v1", "collide-shape-moving"]
+  ],
+  "etie-init-engine": [
+    [[3, 10], "a0", "dma-packet"],
+    [[12, 19], "a0", "gs-gif-tag"],
+    [24, "a0", "(pointer gs-reg64)"],
+    [[34, 48], "a0", "dma-packet"],
+    [[58, 66], "a0", "dma-packet"],
+    [[68, 75], "a0", "dma-packet"],
+    [[79, 86], "a0", "(pointer uint32)"],
+    [[87, 94], "a0", "(pointer vif-tag)"]
   ]
 }

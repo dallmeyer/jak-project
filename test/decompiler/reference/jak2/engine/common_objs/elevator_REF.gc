@@ -531,10 +531,10 @@ do so.
   (local-vars (zero float))
   (let ((target *target*))
     (when (and target
-               (zero? (logand (focus-status dead inactive in-air grabbed edge-grab pole pilot-riding pilot teleporting)
+               (not (logtest? (focus-status dead inactive in-air grabbed edge-grab pole pilot-riding pilot teleporting)
                               (-> target focus-status)
                               )
-                      )
+                    )
                )
       (set! zero (the-as float 0.0))
       (when (and (find-closest-point-in-path! obj (get-trans target 0) (& zero) #t #t) (!= (-> obj move-pos 1) zero))
@@ -614,7 +614,7 @@ do so.
       (set! (-> self ride-timer) (-> self clock frame-counter))
       (-> self params)
       (if (and (logtest? (-> self params flags) (elevator-flags elevator-flags-0))
-               (zero? (logand (-> self params flags) (elevator-flags elevator-flags-3)))
+               (not (logtest? (-> self params flags) (elevator-flags elevator-flags-3)))
                )
           (move-to-next-point! self)
           )
@@ -678,10 +678,7 @@ do so.
     (set-setting! 'board #f 0 0)
     (let ((gp-0 (-> self on-activate)))
       (if gp-0
-          (eval!
-            (new 'stack 'script-context (* (the int (-> self move-pos 0)) 8) self (-> self root-override trans))
-            gp-0
-            )
+          (script-eval gp-0 :key (* (the int (-> self move-pos 0)) 8) :vector (-> self root-override trans))
           )
       )
     (set! (-> self path-pos) 0.0)
@@ -771,10 +768,7 @@ do so.
         )
     (let ((gp-0 (-> self on-deactivate)))
       (if gp-0
-          (eval!
-            (new 'stack 'script-context (* (the int (-> self move-pos 1)) 8) self (-> self root-override trans))
-            gp-0
-            )
+          (script-eval gp-0 :key (* (the int (-> self move-pos 1)) 8) :vector (-> self root-override trans))
           )
       )
     (none)
@@ -782,7 +776,7 @@ do so.
   :trans (behavior ()
     (if (and (< (- (-> self ride-timer) (-> self sticky-player-last-ride-time)) (seconds 2))
              (begin *target* *target*)
-             (logtest? (-> *target* focus-status) (focus-status in-air))
+             (focus-test? *target* in-air)
              )
         (set! (-> self ride-timer) (-> self clock frame-counter))
         )
