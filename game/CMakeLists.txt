@@ -120,6 +120,7 @@ set(RUNTIME_SOURCE
         overlord/ssound.cpp
         overlord/stream.cpp
         graphics/gfx.cpp
+        graphics/jak2_texture_remap.cpp
         graphics/display.cpp
         graphics/sceGraphicsInterface.cpp
         graphics/opengl_renderer/background/background_common.cpp
@@ -136,7 +137,6 @@ set(RUNTIME_SOURCE
         graphics/opengl_renderer/sprite/Sprite3.cpp
         graphics/opengl_renderer/sprite/Sprite3_Distort.cpp
         graphics/opengl_renderer/sprite/Sprite3_Glow.cpp
-        graphics/opengl_renderer/sprite/SpriteRenderer.cpp
         graphics/opengl_renderer/ocean/CommonOceanRenderer.cpp
         graphics/opengl_renderer/ocean/OceanMid.cpp
         graphics/opengl_renderer/ocean/OceanMid_PS2.cpp

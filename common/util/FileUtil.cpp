@@ -129,6 +129,7 @@ std::optional<std::string> try_get_jak_project_path() {
 
 std::optional<fs::path> try_get_data_dir() {
   fs::path my_path = get_current_executable_path();
+  lg::info("Current executable directory - {}", my_path.string());
   auto data_dir = my_path.parent_path() / "data";
   if (fs::exists(data_dir) && fs::is_directory(data_dir)) {
     return std::make_optional(data_dir);
@@ -408,11 +409,16 @@ void ISONameFromAnimationName(char* dst, const char* src) {
 
         // some special case words map to special letters (likely to avoid animation name conflicts)
         if (next_ptr - src_ptr == 10 && !memcmp(src_ptr, "resolution", 10)) {
+          // NOTE : jak 2 also allows "res" here but that doesn't work properly.
           char_to_add = 'z';
         } else if (next_ptr - src_ptr == 6 && !memcmp(src_ptr, "accept", 6)) {
           char_to_add = 'y';
         } else if (next_ptr - src_ptr == 6 && !memcmp(src_ptr, "reject", 6)) {
           char_to_add = 'n';
+        } else if (next_ptr - src_ptr == 5 && !memcmp(src_ptr, "keira", 5)) {
+          // NOTE : this was added in jak 2. it's safe to use in jak 1 since she was referred to as
+          // "assistant" there
+          char_to_add = 'i';
         } else {
           // not a special case, just take the first letter.
           char_to_add = *src_ptr;
