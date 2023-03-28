@@ -1817,6 +1817,10 @@
             'target-mech-stance
             'target-mech-start
             'target-mech-walk
+            ;; turrets
+            'target-turret-get-off
+            'target-turret-get-on
+            'target-turret-stance
             )
             ;; do nothing
             )
