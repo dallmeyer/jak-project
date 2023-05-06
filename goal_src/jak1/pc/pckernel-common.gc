@@ -141,7 +141,7 @@
   (pc-get-window-scale (&-> obj dpi-x) (&-> obj dpi-y))
 
   (when (-> obj use-vis?)
-    (if (= (get-game-setting! obj 'aspect-ratio) 'aspect4x3)
+    (if (= (get-game-setting obj 'aspect-ratio) 'aspect4x3)
         (set-aspect-ratio! obj ASPECT_4X3)
         (set-aspect-ratio! obj ASPECT_16X9)
         )
@@ -340,6 +340,31 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+(defmethod get-current-game-width pc-settings ((obj pc-settings))
+  "return the current width in pixels of the visible portion of the game"
+
+  (cond
+    ((= (-> obj display-mode) 'windowed)
+      (if (-> obj letterbox?)
+          (-> obj lbox-width)
+          (-> obj real-width)))
+    (else
+      (-> obj width))
+    )
+  )
+(defmethod get-current-game-height pc-settings ((obj pc-settings))
+  "return the current height in pixels of the visible portion of the game"
+
+  (cond
+    ((= (-> obj display-mode) 'windowed)
+      (if (-> obj letterbox?)
+          (-> obj lbox-height)
+          (-> obj real-height)))
+    (else
+      (-> obj height))
+    )
+  )
+
 (when *debug-segment*
 
 (defmethod draw pc-settings ((obj pc-settings) (buf dma-buffer))
@@ -354,7 +379,7 @@
 
     (draw-string-xy *pc-temp-string* buf 0 (- 224 (* 8 4)) (font-color default) (font-flags shadow kerning))
     )
-  (when (-> obj display-actor-bank)
+  (when *display-actor-bank*
     (draw-string-xy (string-format "Actor Bank: ~,,1m/~,,1m (~D)" (-> *ACTOR-bank* pause-dist) (-> *ACTOR-bank* birth-dist) (-> *ACTOR-bank* birth-max)) buf 512 (- 224 8) (font-color default) (font-flags shadow kerning right))
     )
   )
@@ -720,7 +745,7 @@
   
   (format file "  (fps ~D)~%" (-> obj target-fps))
   (format file "  (msaa ~D)~%" (-> obj gfx-msaa))
-  (format file "  (aspect-state ~A ~D ~D ~A)~%" (get-game-setting! obj 'aspect-ratio)
+  (format file "  (aspect-state ~A ~D ~D ~A)~%" (get-game-setting obj 'aspect-ratio)
                                                 (-> obj aspect-custom-x) (-> obj aspect-custom-y)
                                                 (-> obj aspect-ratio-auto?))
   (format file "  (display-mode ~A)~%" (-> obj display-mode))
@@ -766,7 +791,7 @@
   (format file "  (music-fadein? ~A)~%" (-> obj music-fadein?))
   (format file "  (music-fadeout? ~A)~%" (-> obj music-fadeout?))
   (format file "  (hinttitles? ~A)~%" (-> obj hinttitles?))
-  (format file "  (game-language ~D)~%" (get-game-language! obj))
+  (format file "  (game-language ~D)~%" (get-game-language obj))
   (format file "  (text-language ~D)~%" (-> obj text-language))
   (format file "  (subtitle-speaker ~A)~%" (-> obj subtitle-speaker?))
   (format file "  (baby-mode? ~A)~%" (-> obj baby-mode?))

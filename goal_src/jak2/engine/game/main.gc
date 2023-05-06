@@ -353,30 +353,9 @@
     (with-dma-buffer-add-bucket ((s4-0 (-> *display* frames (-> *display* on-screen) global-buf))
                                  (-> obj bucket)
                                  )
-      (let ((v1-7 s4-0))
-        (let ((a0-2 (the-as object (-> v1-7 base))))
-          (set! (-> (the-as dma-packet a0-2) dma) (new 'static 'dma-tag :qwc #x2 :id (dma-tag-id cnt)))
-          (set! (-> (the-as dma-packet a0-2) vif0) (new 'static 'vif-tag))
-          (set! (-> (the-as dma-packet a0-2) vif1) (new 'static 'vif-tag :imm #x2 :cmd (vif-cmd direct) :msk #x1))
-          (set! (-> v1-7 base) (&+ (the-as pointer a0-2) 16))
-          )
-        )
-      (let ((v1-8 s4-0))
-        (let ((a0-4 (the-as object (-> v1-8 base))))
-          (set! (-> (the-as gs-gif-tag a0-4) tag) (new 'static 'gif-tag64 :nloop #x1 :eop #x1 :nreg #x1))
-          (set! (-> (the-as gs-gif-tag a0-4) regs) GIF_REGS_ALL_AD)
-          (set! (-> v1-8 base) (&+ (the-as pointer a0-4) 16))
-          )
-        )
-      (let ((v1-9 s4-0))
-        (let ((a0-6 (-> v1-9 base)))
-          (set! (-> (the-as (pointer gs-test) a0-6) 0)
-                (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
-                )
-          (set! (-> (the-as (pointer gs-reg64) a0-6) 1) (gs-reg64 test-1))
-          (set! (-> v1-9 base) (&+ a0-6 16))
-          )
-        )
+      (dma-buffer-add-gs-set s4-0
+                             (test-1 (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always)))
+                             )
       (let ((t1-0 (new 'static 'rgba
                     :r (the int (-> obj color x))
                     :g (the int (-> obj color y))
@@ -1320,9 +1299,6 @@
     (when *debug-segment*
       ;; do all debug drawing.
       (#when PC_PORT
-        ;; (if (-> *pc-settings* debug-pad-display)
-        ;;   (debug-pad-display (-> *cpad-list* cpads 0))
-        ;;   )
         (when (and (or (= *master-mode* 'game) (= *master-mode* 'pause)))
           (when (-> *entity-debug-inspect* entity)
             (define-extern entity-inspect-draw (function entity-debug-inspect object))
@@ -1415,7 +1391,7 @@
                (and (!= *cheat-mode* 'camera) (or (zero? *screen-shot-work*) (= (-> *screen-shot-work* count) -1)))
                )
           (draw-string-xy
-            (lookup-text! *common-text* (game-text-id pause) #f)
+            (lookup-text! *common-text* (text-id pause) #f)
             buf
             256
             (if (< (-> *display* base-clock frame-counter) (-> *game-info* letterbox-time))
@@ -1537,7 +1513,7 @@
       )
 
     ;; map texture stuff
-    ; (update *bigmap*)
+    (update *bigmap*)
 
     ;; continue loading level
     (if (-> *level* loading-level)
@@ -1602,7 +1578,7 @@
       )
 
     ;; generate DMA data for doing the main blit
-    ; (blit-displays)
+    (blit-displays)
 
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;; END of normal frame
@@ -1688,7 +1664,8 @@
     (level-update *level*)
 
     ;; do some memory card operations, check auto-save
-    ; (mc-run)
+    (mc-run)
+    ;; for the same reasons as jak 1, we do not run this.
     ; (auto-save-check)
     (none)
     )
@@ -1738,8 +1715,8 @@
     ;   )
     (suspend)
     (set! (-> *setting-control* user-default bg-a) 0.0)
-    (set! (-> gp-1 frames 0 start-time) (the-as time-frame (timer-count (the-as timer-bank #x10000800))))
-    (set! (-> gp-1 frames 1 start-time) (the-as time-frame (timer-count (the-as timer-bank #x10000800))))
+    (set! (-> gp-1 frames 0 start-time) (the-as int (timer-count (the-as timer-bank #x10000800))))
+    (set! (-> gp-1 frames 1 start-time) (the-as int (timer-count (the-as timer-bank #x10000800))))
     (set! (-> gp-1 dog-ratio) 1.0)
     (while *run*
       (display-loop-main gp-1)
