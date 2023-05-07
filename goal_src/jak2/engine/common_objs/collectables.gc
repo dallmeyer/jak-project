@@ -143,6 +143,9 @@
            )
        (vector-reset! (-> obj root-override2 transv))
        )
+      ((= arg0 0)
+        ;; do nothing, keep bob-amount
+        )
       (else
         (logior! (-> obj flags) (collectable-flag bounce))
         (logclear! (-> obj flags) (collectable-flag pickup))

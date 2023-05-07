@@ -67,6 +67,28 @@
 ;;   (none)
 ;;   )
 
+(defmacro spawn-skill (x y z)
+  `(when *target*
+    (let ((fax (new 'stack 'fact-info *target* (pickup-type skill) 1.0)))
+      ;; make sure it doesn't timeout and disappear
+      (logior! (-> fax options) (actor-option fade-out))
+      (set! (-> fax fade-time) (the-as time-frame 0))
+      (birth-pickup-at-point (static-vector-meters ,x ,y ,z) (pickup-type skill) 1.0 #t *target* fax)
+      )
+    )
+  )
+
+(defun mod-spawn-new-entities ()
+  ;; fortress
+  ;; === prison (first 2 rooms) ===
+  (spawn-skill 485.36   4.0  91.0)  ;; under platform dax comes up on 
+  (spawn-skill 463.0  26.78  54.1)  ;; above warpgate
+  (spawn-skill 528.85  22.5 129.86) ;; up/behind pipes on right before 2nd room
+  (spawn-skill 546.2 14.8 199.95)   ;; on shelf in 2nd room
+  (spawn-skill 497.5  31.5 138.3)  ;; abbah bounce on vault handle in 2nd room
+  (none)
+  )
+
 (defun mod-override-init-position ((obj process-drawable) (arg0 entity-actor))
   (case (-> obj name) :comp name=
     ;; ====== ORBS ======
@@ -84,9 +106,9 @@
     (('skill-71) (set-vector-meters! (-> arg0 extra trans)  598.5  28.8  51.5)) ;; up high atop pipe - right before exit, stand on lip of pipe near end of slide and boosted over. or boosted from edge before exit and ledge grab thru pipe ("OOB")
     ;; dead town
     ;; === ruins (+sagehut) === 
-    ;; (('skill-1) (set-vector-meters! (-> arg0 extra trans)  )) ;; this weird one doesn't actually spawn? but move it anyways - 
+    ;; (('skill-1) (set-vector-meters! (-> arg0 extra trans)  )) ;; this weird one doesn't actually spawn? but move it for the lulz - 
     (('skill-2) (set-vector-meters! (-> arg0 extra trans)  997.29  80.0 -656.2)) ;; atop wall in far back (hover)
-    (('skill-3) (set-vector-meters! (-> arg0 extra trans)  1054.7  38.8 -545.0)) ;; jak1 orb hunt location - by keira's transpad
+    (('skill-3) (set-vector-meters! (-> arg0 extra trans)  1054.7  38.8 -545.0)) ;; jak1 orb hunt location - samos hut by keira's transpad
     ;; (('skill-4) (set-vector-meters! (-> arg0 extra trans)  )) ;;
     ;; (('skill-5) (set-vector-meters! (-> arg0 extra trans)  )) ;;
     ;; (('skill-6) (set-vector-meters! (-> arg0 extra trans)  )) ;;
