@@ -388,15 +388,19 @@ This commonly includes things such as:
 (defstate idle (prsn-cell-door)
   :virtual #t
   :event (behavior ((proc process) (arg1 int) (event-type symbol) (event event-message-block))
-    (case event-type
-      (('open)
-       (set! (-> self desired) 1.0)
-       (format #t "open~%")
-       )
-      (('close)
-       (set! (-> self desired) 0.0)
-       (format #t "close~%")
-       )
+    (let ((prev-desired (-> self desired)))
+      (case event-type
+        (('open)
+        (set! (-> self desired) 1.0)
+        ;;  (format #t "open~%")
+        )
+        (('close)
+        (set! (-> self desired) 0.0)
+        ;;  (format #t "close~%")
+        )
+        )
+      ;; return true if we changed desired state
+      (!= prev-desired (-> self desired))
       )
     )
   :code (behavior ()

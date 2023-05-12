@@ -1467,6 +1467,7 @@
   (none)
   )
 
+(define-extern mod-run-each-frame (function none))
 (defun display-loop-main ((arg0 display))
   "Run the engine.
    This function is called after actors update."
@@ -1477,6 +1478,8 @@
     (if (-> *level* loading-level)
         (load-continue (-> *level* loading-level))
         )
+
+    (mod-run-each-frame)
 
     ; ;; Run blerc to modify foreground models
     (with-profiler 'merc *profile-merc-color*

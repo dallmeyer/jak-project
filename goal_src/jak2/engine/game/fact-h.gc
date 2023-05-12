@@ -77,6 +77,8 @@
   (cond-low-ammo             25) ;; hi 512
   (no-distance-check-fadeout 26) ;; 1024
   (no-track                  27) ;; hi 2048
+  ;; 28-30
+  (force-bob        31) ;; hi 32768
   )
 
 (defenum enemy-option

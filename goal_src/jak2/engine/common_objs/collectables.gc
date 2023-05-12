@@ -143,7 +143,7 @@
            )
        (vector-reset! (-> obj root-override2 transv))
        )
-      ((= arg0 0)
+      ((logtest? (-> obj fact options) (actor-option force-bob))
         ;; do nothing, keep bob-amount
         )
       (else
@@ -2626,6 +2626,9 @@ This commonly includes things such as:
          (set! sv-48 0)
          0
          )
+       (when (logtest? (-> arg5 options) (actor-option force-bob))
+        (logior! (-> sv-56 options) (actor-option force-bob))
+        )
        (set! sv-40 (process-spawn
                      skill
                      :init money-init-by-other
