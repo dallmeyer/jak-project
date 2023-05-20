@@ -187,6 +187,10 @@
     ;; (('skill-7) (set-vector-meters! (-> arg0 extra trans)  )) ;;
     ;; (('skill-89) (set-vector-meters! (-> arg0 extra trans)  )) ;;
     ;; (('skill-90) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; === ctysluma (near hideout) ===
+    (('burning-bush-9)  ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
+      (set-vector-meters! (-> arg0 extra trans) 1125.92   8.14 149.91) ;; near yellow barrier skip hidden by fruit
+      )
     ;; === ctyslumb (near prison exit) ===
     (('burning-bush-17)  ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
       (set-vector-meters! (-> arg0 extra trans) 827.57  24.6  56.04) ;; atop roundabout building towards ctysluma
@@ -209,6 +213,36 @@
     ;; === forexitb ===
     (('crate-953) (set-vector-meters! (-> arg0 extra trans) 538.16  26.34   40.87))  ;; health - moved to cylinder from ceiling for fortexitb-skill-4/5
     (('crate-954) (set-vector-meters! (-> arg0 extra trans) 548.87  26.69   64.18))  ;; health - moved to cylinder from ceiling for fortexitb-skill-5
+    ;; === cty-sluma (near hideout) === 
+    (('cty-fruit-stand-1)
+      (set-vector-meters! (-> arg0 extra trans) 1132.0   8.2 163.0) ;; 
+      (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
+      )
+    (('cty-fruit-stand-2)
+      (set-vector-meters! (-> arg0 extra trans) 1132.0   10.2 160.0) ;; 
+      (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
+      )
+    (('cty-fruit-stand-3)
+      (set-vector-meters! (-> arg0 extra trans) 1132.0   12.2 157.0) ;; 
+      (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
+      )
+    (('cty-fruit-stand-4)
+      (set-vector-meters! (-> arg0 extra trans) 1132.0   14.2 154.0) ;; 
+      (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
+      )
+    (('cty-fruit-stand-5)
+      (set-vector-meters! (-> arg0 extra trans) 1132.0   16.2 151.0) ;;
+      (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
+      )
+    ;; (('cty-fruit-stand-6)
+    ;;   (set-vector-meters! (-> arg0 extra trans) 803.61   13.26 161.12) ;;
+    ;;   (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
+    ;;   )
+    ;; (('cty-fruit-stand-7)
+    ;;   (set-vector-meters! (-> arg0 extra trans) 803.61   15.26 158.12) ;;
+    ;;   (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
+    ;;   )
+
     ;; dead town
     ;; 
 
@@ -241,6 +275,7 @@
   (prison-door-button-check "prison-part-378" "prsn-cell-door-5")
   ;; === forexita (3rd room until shooting you from below) ===
   ;; === forexitb (shooting you from below to city exit) ===
+  ;; === ctysluma (near hideout) ===
   ;; === ruins (+sagehut) ===
   ;; (let ((p (the skill (process-by-ename "skill-3"))))  ;; make this visible only when sagehut loaded?
   ;; )
