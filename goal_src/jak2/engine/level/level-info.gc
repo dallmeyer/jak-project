@@ -6502,21 +6502,21 @@
         :name "ctysluma-burning-bush"
         :level 'ctysluma
         :flags (continue-flags cf3)
-        :trans (new 'static 'vector :x 3420067.8 :y 33357.414 :z 984182.4 :w 1.0)
-        :quat (new 'static 'vector :x 0.0002 :y -0.5079 :w 0.8614)
-        :camera-trans (new 'static 'vector :x 3465968.8 :y 53951.69 :z 1002505.0 :w 1.0)
+        :trans (new 'static 'vector :x 4626626.0000 :y 33358.7851 :z 617963.8125 :w 1.0)
+        :quat (new 'static 'vector :x 0.0001 :y 0.6155 :z -0.0015 :w 0.7880)
+        :camera-trans (new 'static 'vector :x 4675683.5000 :y 54097.7304 :z 627260.0625 :w 1.0)
         :camera-rot (new 'static 'inline-array vector3s 3
-          (new 'static 'vector3s :data (new 'static 'array float 3 -0.3607 0.0 0.9326))
-          (new 'static 'vector3s :data (new 'static 'array float 3 -0.1111 0.9928 -0.0429))
-          (new 'static 'vector3s :data (new 'static 'array float 3 -0.9259 -0.1191 -0.3582))
+          (new 'static 'vector3s :data (new 'static 'array float 3  -0.1786  -0.0000  0.9839))
+          (new 'static 'vector3s :data (new 'static 'array float 3  -0.1480   0.9886 -0.0268))
+          (new 'static 'vector3s :data (new 'static 'array float 3  -0.9727  -0.1504 -0.1765))
           )
         :on-goto #f
         :vis-nick 'ctysluma
         :want (new 'static 'inline-array level-buffer-state 6
           (new 'static 'level-buffer-state :name 'ctysluma :display? 'display :force-vis? #f :force-inside? #f)
           (new 'static 'level-buffer-state :name 'ctywide :display? 'display :force-vis? #f :force-inside? #f)
+          (new 'static 'level-buffer-state :name 'ctyindb :display? 'display :force-vis? #f :force-inside? #f)
           (new 'static 'level-buffer-state :name #f :display? #f :force-vis? #f :force-inside? #f)
-          (new 'static 'level-buffer-state :name 'fordumpa :display? #f :force-vis? #f :force-inside? #f)
           (new 'static 'level-buffer-state :name #f :display? #f :force-vis? #f :force-inside? #f)
           (new 'static 'level-buffer-state :name #f :display? #f :force-vis? #f :force-inside? #f)
           )

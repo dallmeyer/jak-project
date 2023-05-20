@@ -127,6 +127,23 @@
   (spawn-skill 1199.4   4.25    52.6    #f "hideout-skill-1") ;; in furnace
   (spawn-skill 1199.5   3.45    69.0    #t "hideout-skill-2") ;; behind fire right side
   (spawn-skill 1184.95  5.25    65.5    #t "hideout-skill-3") ;; pillow on bed right side
+  ;; === vinroom ===
+  (spawn-skill 1120.5   31.05   1120.6  #f "vinroom-skill-1") ;; in center hologram (jetboard lulz)
+  ;; === hiphog ===
+  (spawn-skill -84.02   9.6     1308.33 #t "hiphog-skill-1")  ;; wrestling arena (jetboard lulz)
+  (spawn-skill -106.1   10.05   1289.6  #f "hiphog-skill-2")  ;; mirror orb
+  (spawn-skill -80.4    9.35    1324.90 #f "hiphog-skill-3")  ;; behind whack a mole
+  ;; === ctyfarmb (b/t bazaar and port)
+  (spawn-skill -167.32  30.5    935.36  #t "ctyfarmb-skill-1")  ;; atop pipes near sprinkler (jump from hose into abbah bounce against wall, then up and over)
+  ;; === ctyfarma (b/w bazaar and ctygen)
+  ;; === ctyport ===
+  (spawn-skill -260.0   5.7     1919.32 #t "ctyport-skill-1") ;; behind big circle things towards underport exit (boosted over)
+  ;; === ctymark (bazaar near brutter) ===
+  (spawn-skill -118.2   22.53   486.9   #f "ctymarka-skill-1")  ;; above fish on brutter kiosk
+  ;; === onintent ===
+  (spawn-skill 708.7    9.0     746.2   #t "onintent-skill-1")  ;; on left behind pole (need to crouch)
+  ;; === oracle ===
+  (spawn-skill 698.0    6.5     -447.75 #t "oracle-skill-1")  ;; corner on right side
   (none)
   )
 

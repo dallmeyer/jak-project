@@ -632,7 +632,7 @@
                                  :color (new 'static 'rgba :r #xff :g #xff :b #xff :a #x80)
                                  )
                                (new 'static 'minimap-class-node
-                                 :default-position (new 'static 'vector :x 3391774.8 :y 33341.44 :z 984637.44 :w 1.0)
+                                 :default-position (new 'static 'vector :x 4611546.0000 :y 45629.4765 :z 614461.250 :w 1.0)
                                  :flags (minimap-flag bigmap city-only)
                                  :name "bbush-sluma"
                                  :icon-xy (new 'static 'vector2ub :data (new 'static 'array uint8 2 #x2 #x3))

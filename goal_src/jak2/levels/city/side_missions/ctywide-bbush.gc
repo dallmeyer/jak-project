@@ -2820,13 +2820,13 @@ This commonly includes things such as:
 (defun mod-override-burning-bush-get-on! ((info burning-bush-get-on-info) (task game-task))
     ;; === ctyslumb (near prison exit) ====
   (case task
-    (((game-task city-burning-bush-get-to-XX))  ;; behind fruit stands near yellow barrier skip
+    (((game-task city-burning-bush-get-to-1))  ;; behind fruit stands near yellow barrier skip
       (set-vector-meters! (-> info trans) 891.46   0.8 351.41) ;; in trench closer to fortress, at ramp in middle
-      ;; (set-vector! (-> info camera-trans) 3110917.2500 136020.1250 -1186875.5000 1.0)
-      ;; (set! (-> info camera-rot 0) 0.9980) (set! (-> info camera-rot 1) 0.0000) (set! (-> info camera-rot 2) 0.0630)
-      ;; (set! (-> info camera-rot 3) -0.0139) (set! (-> info camera-rot 4) 0.9753) (set! (-> info camera-rot 5) 0.2202)
-      ;; (set! (-> info camera-rot 6) -0.0614) (set! (-> info camera-rot 7) -0.2206) (set! (-> info camera-rot 8) 0.9734)
-      ;; (set! (-> info time) 6600.0)
+      (set-vector! (-> info camera-trans) 3607523.7500  22645.5039 1377616.7500 1.0)
+      (set! (-> info camera-rot 0) 0.6236) (set! (-> info camera-rot 1) 0.0000) (set! (-> info camera-rot 2) -0.7816)
+      (set! (-> info camera-rot 3) 0.0934) (set! (-> info camera-rot 4) 0.9928) (set! (-> info camera-rot 5) 0.0745)
+      (set! (-> info camera-rot 6) 0.7760) (set! (-> info camera-rot 7) -0.1195) (set! (-> info camera-rot 8) 0.6192)
+      (set! (-> info time) 5600.0)
       )
     (((game-task city-burning-bush-get-to-13)) ;; atop roundabout building towards ctysluma
       (set-vector-meters! (-> info trans) 761.9  32.0 -278.9)  ;; balcony near roundabout farther into ctyslumb
