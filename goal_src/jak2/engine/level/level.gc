@@ -1763,7 +1763,7 @@ into 7 sections, which might explain the weird sizes in the center.
 
   ;; hack to force visibility of stuff moved (rather than update visibility data)
   (case (-> (the entity-actor actor) etype symbol)
-    (('skill 'crate)
+    (('skill 'crate 'burning-bush)
       (return #t)
       )
     )

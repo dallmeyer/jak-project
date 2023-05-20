@@ -112,12 +112,21 @@
   (spawn-skill 501.0    9.1     -192.0  #t "ctyslumb-skill-2")  ;; behind burning can towards ctyslumc (water slums)
   (spawn-skill 693.0    35.05   -310.3  #t "ctyslumb-skill-3")  ;; up high near billboards, jump from vehicle to pipes
   (spawn-skill 430.0    9.3     -18.9   #t "ctyslumb-skill-4")  ;; inside end of pipe near green barrier
-  ;; === ctysluma (near HQ) ===
+  (spawn-skill 636.2    43.3    -172.4  #t "ctysluma-skill-2")  ;; climb pipe (first intersection after prison exit)
+  ;; === ctysluma (near hideout) ===
   (spawn-skill 833.8    34.5    13.9    #t "ctysluma-skill-1")  ;; in window above pipes in roundabout (swag can rocket to pipes)
-  (spawn-skill 636.2    43.3    -172.4  #t "ctysluma-skill-2")  ;; ???
-  ;; === ctyslums (water slums) ===
+  (spawn-skill 1127.95  32.72   -16.0   #t "ctysluma-skill-2")  ;; rooftops near hideout (hover)
+  (spawn-skill 1113.96  26.7    349.47  #t "ctysluma-skill-3")  ;; above pipes/generators right before ctyindb
+  (spawn-skill 1001.2   33.5    160.5   #t "ctysluma-skill-4")  ;; in KG neon sign
+  ;; === ctyslumc (water slums) ===
   (spawn-skill 656.25   27.3    -733.02 #t "ctyslumc-skill-1")  ;; in chimney exhaust on building right side of atoll entrance
   (spawn-skill 465.60   19.8    -757.27 #t "ctyslumc-skill-2")  ;; behind bent roof on building left side of atoll entrance
+  (spawn-skill 707.35   50.6    -454.33 #f "ctyslumc-skill-3")  ;; top of oracle building - hover (can extended frontflip from top of adjacent roof)
+  (spawn-skill 467.0    3.0     -314.9  #t "ctyslumc-skill-4")  ;; among building supports near water, immediate right from water slums entrance
+  ;; === hideout ====
+  (spawn-skill 1199.4   4.25    52.6    #f "hideout-skill-1") ;; in furnace
+  (spawn-skill 1199.5   3.45    69.0    #t "hideout-skill-2") ;; behind fire right side
+  (spawn-skill 1184.95  5.25    65.5    #t "hideout-skill-3") ;; pillow on bed right side
   (none)
   )
 
@@ -178,7 +187,14 @@
     ;; (('skill-7) (set-vector-meters! (-> arg0 extra trans)  )) ;;
     ;; (('skill-89) (set-vector-meters! (-> arg0 extra trans)  )) ;;
     ;; (('skill-90) (set-vector-meters! (-> arg0 extra trans)  )) ;;
-
+    ;; === ctyslumb (near prison exit) ===
+    (('burning-bush-17)  ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
+      (set-vector-meters! (-> arg0 extra trans) 827.57  24.6  56.04) ;; atop roundabout building towards ctysluma
+      )
+    ;; === ctyslumc (water slums) ===
+    (('burning-bush-11) ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
+      (set-vector-meters! (-> arg0 extra trans) 440.0  19.87 -536.5)  ;; atop small building in corner
+      )
 
     ;; ====== MISC ======
     ;; fortress
