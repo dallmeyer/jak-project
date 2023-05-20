@@ -107,6 +107,18 @@
   (spawn-skill 537.70   27.3    33.21   #t "fortexitb-skill-3") ;; on backside of first cylinder thing on ceiling
   (spawn-skill 523.80   27.9    51.82   #t "fortexitb-skill-4") ;; follow from ^, on pipes in back of room
   (spawn-skill 551.6    27.3    76.18   #t "fortexitb-skill-5") ;; on JakPiss sewer pipe
+  ;; === fordumpa (tank pt 1) ===
+  (spawn-skill 746.19   8.5     261.65  #t "fordumpa-skill-1")  ;; immediate left corner in tank section
+  (spawn-skill 697.79   19.3    295.74  #t "fordumpa-skill-2")  ;; up/behind pipe in first tank room
+  (spawn-skill 728.28   6.5     303.2   #t "fordumpa-skill-3")  ;; on vent under platforms in first tank room, avoid death plane
+  (spawn-skill 521.12   8.5     346.27  #t "fordumpa-skill-4")  ;; secret area on ground level in room with 2 rotating platforms, behind boxes
+  ;; === fordumpb (guards after tank) ===
+  (spawn-skill 404.74   25.0    319.0   #t "fordumpb-skill-1")  ;; behind boxes before first spiky floor
+  (spawn-skill 459.35   38.3    365.09  #t "fordumpb-skill-2")  ;; above fence right near first barrier you groundpound through
+  (spawn-skill 494.91   21.9    386.68  #t "fordumpb-skill-3")  ;; on boxes on right above first flat escalator
+  (spawn-skill 534.04   42.6    373.68  #t "fordumpb-skill-4")  ;; in arms of crane before fortdumpc
+  ;; === forresca (rescue friends) ===
+  (spawn-skill 693.65   46.0    199.09  #t "forresca-skill-1")  ;; way up behind cylinder in right corner (computer > HJ from lil pipe to left pipe > DEEP extended to right pipes > standpoint on cylinder > higher on pipes > GG)
   ;; === ctyslumb (near prison exit) ===
   (spawn-skill 548.85   40.5    -0.73   #t "ctyslumb-skill-1")  ;; immediately up left from prison exit (can get back up ejecting from zoomer), grab then with jump + abbah bounce, or return with jetboard
   (spawn-skill 501.0    9.1     -192.0  #t "ctyslumb-skill-2")  ;; behind burning can towards ctyslumc (water slums)

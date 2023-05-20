@@ -125,7 +125,7 @@
   )
 
 (defun set-roboscreen-alpha! ((arg0 float))
-  (format 0 "TODO - roboscreen disabled!~%")
+  ;; (format 0 "TODO - roboscreen disabled!~%")
   ;; (set! (-> *blit-displays-work* line-color)
   ;;       (logior (logand (-> *blit-displays-work* line-color) (the-as uint #xffffffff00ffffff))
   ;;               (shr (shl (the int (* 16.0 arg0)) 56) 32)
