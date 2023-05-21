@@ -117,6 +117,12 @@
   (spawn-skill 459.35   38.3    365.09  #t "fordumpb-skill-2")  ;; above fence right near first barrier you groundpound through
   (spawn-skill 494.91   21.9    386.68  #t "fordumpb-skill-3")  ;; on boxes on right above first flat escalator
   (spawn-skill 534.04   42.6    373.68  #t "fordumpb-skill-4")  ;; in arms of crane before fortdumpc
+  ;; === fordumpc (final tank section) ===
+  (spawn-skill 646.5    50.6    383.4   #t "fordumpc-skill-1")  ;; behind boxes/barrels up right
+  (spawn-skill 632.0    72.0    321.8   #t "fordumpc-skill-2")  ;; way up left boxes
+  (spawn-skill 738.62   50.0    333.60  #t "fordumpc-skill-3")  ;; top of pipes left of exit
+  (spawn-skill 696.0    60.7    353.05  #t "fordumpc-skill-4")  ;; top of do rocket off rocket before tank blows them up
+  (spawn-skill 736.52   54.3    322.04  #t "fordumpc-skill-5")  ;; corner behind boxes on upper ledge above exit, abbah bounce on computer/pipes
   ;; === forresca (rescue friends) ===
   (spawn-skill 693.65   46.0    199.09  #t "forresca-skill-1")  ;; way up behind cylinder in right corner (computer > HJ from lil pipe to left pipe > DEEP extended to right pipes > standpoint on cylinder > higher on pipes > GG)
   ;; === ctyslumb (near prison exit) ===
@@ -228,6 +234,10 @@
     (('burning-bush-11) ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
       (set-vector-meters! (-> arg0 extra trans) 440.0  19.87 -536.5)  ;; atop small building in corner
       )
+    ;; === palshaft (shaft up to cable bridge) ===
+    ;; skill-31
+    ;; === palcab (cable bridge to palace) ===
+    ;; skill-33
 
     ;; ====== MISC ======
     ;; fortress
