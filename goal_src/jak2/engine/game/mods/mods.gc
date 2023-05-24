@@ -84,84 +84,152 @@
     )
   )
 
-(defun mod-spawn-new-entities ()
-  ;; fortress
-  ;; === prison (first 2 rooms) ===
-  (spawn-skill 485.36   4.0     91.0    #t "prison-skill-1") ;; under platform dax comes up on 
-  (spawn-skill 463.0    26.78   54.1    #t "prison-skill-2") ;; above warpgate
-  (spawn-skill 528.85   22.5    129.86  #t "prison-skill-3") ;; up/behind pipes on right before 2nd room
-  (spawn-skill 546.2    14.8    199.95  #t "prison-skill-4") ;; on shelf in 2nd room
-  (spawn-skill 497.5    31.5    138.3   #t "prison-skill-5") ;; up high in corner, abbah bounce on vault handle in 2nd room
-  (spawn-skill 531.59   30.2    171.46  #t "prison-skill-6") ;; above pipes in 2nd room (extended, maybe boosted)
-  (spawn-skill 510.29   8.3     59.07   #t "prison-skill-7") ;; inside 3rd cell
-  ;; --- fortexita (3rd room until shooting you from below) ===
-  (spawn-skill 561.5    95.0    126.05  #t "fortexita-skill-1") ;; way up between pipes on left where you learn to crouch jump (boosted from nearby pipe climb)
-  (spawn-skill 586.0    77.0    91.48   #t "fortexita-skill-2") ;; against wall above machines near first guard (jump off small pipe)
-  (spawn-skill 689.9    93.0    111.55  #t "fortexita-skill-3") ;; way up on pipes above swingpole
-  (spawn-skill 725.33   57.0    180.1   #t "fortexita-skill-4") ;; in pit below where original orb is, but behind metal tubing on right
-  (spawn-skill 750.21   91.3    167.9   #t "fortexita-skill-5") ;; end of hallway before next section, way up on pipes
-  (spawn-skill 676.46   99.24   169.99  #t "fortexita-skill-6") ;; farther up from ^ and then backtrack
-  ;; === forexitb (shooting you from below to city exit) ===
-  (spawn-skill 740.8    78.0    24.3    #t "fortexitb-skill-1") ;; room with chains, up in far right corner (infin jump on chain, uppercut to pipes)
-  (spawn-skill 601.25   4.71    42.9    #f "fortexitb-skill-2") ;; underwater in corner with debris
-  (spawn-skill 537.70   27.3    33.21   #t "fortexitb-skill-3") ;; on backside of first cylinder thing on ceiling
-  (spawn-skill 523.80   27.9    51.82   #t "fortexitb-skill-4") ;; follow from ^, on pipes in back of room
-  (spawn-skill 551.6    27.3    76.18   #t "fortexitb-skill-5") ;; on JakPiss sewer pipe
-  ;; === fordumpa (tank pt 1) ===
-  (spawn-skill 746.19   8.5     261.65  #t "fordumpa-skill-1")  ;; immediate left corner in tank section
-  (spawn-skill 697.79   19.3    295.74  #t "fordumpa-skill-2")  ;; up/behind pipe in first tank room
-  (spawn-skill 728.28   6.5     303.2   #t "fordumpa-skill-3")  ;; on vent under platforms in first tank room, avoid death plane
-  (spawn-skill 521.12   8.5     346.27  #t "fordumpa-skill-4")  ;; secret area on ground level in room with 2 rotating platforms, behind boxes
-  ;; === fordumpb (guards after tank) ===
-  (spawn-skill 404.74   25.0    319.0   #t "fordumpb-skill-1")  ;; behind boxes before first spiky floor
-  (spawn-skill 459.35   38.3    365.09  #t "fordumpb-skill-2")  ;; above fence right near first barrier you groundpound through
-  (spawn-skill 494.91   21.9    386.68  #t "fordumpb-skill-3")  ;; on boxes on right above first flat escalator
-  (spawn-skill 534.04   42.6    373.68  #t "fordumpb-skill-4")  ;; in arms of crane before fortdumpc
-  ;; === fordumpc (final tank section) ===
-  (spawn-skill 646.5    50.6    383.4   #t "fordumpc-skill-1")  ;; behind boxes/barrels up right
-  (spawn-skill 632.0    72.0    321.8   #t "fordumpc-skill-2")  ;; way up left boxes
-  (spawn-skill 738.62   50.0    333.60  #t "fordumpc-skill-3")  ;; top of pipes left of exit
-  (spawn-skill 696.0    60.7    353.05  #t "fordumpc-skill-4")  ;; top of do rocket off rocket before tank blows them up
-  (spawn-skill 736.52   54.3    322.04  #t "fordumpc-skill-5")  ;; corner behind boxes on upper ledge above exit, abbah bounce on computer/pipes
-  ;; === forresca (rescue friends) ===
-  (spawn-skill 693.65   46.0    199.09  #t "forresca-skill-1")  ;; way up behind cylinder in right corner (computer > HJ from lil pipe to left pipe > DEEP extended to right pipes > standpoint on cylinder > higher on pipes > GG)
-  ;; === ctyslumb (near prison exit) ===
-  (spawn-skill 548.85   40.5    -0.73   #t "ctyslumb-skill-1")  ;; immediately up left from prison exit (can get back up ejecting from zoomer), grab then with jump + abbah bounce, or return with jetboard
-  (spawn-skill 501.0    9.1     -192.0  #t "ctyslumb-skill-2")  ;; behind burning can towards ctyslumc (water slums)
-  (spawn-skill 693.0    35.05   -310.3  #t "ctyslumb-skill-3")  ;; up high near billboards, jump from vehicle to pipes
-  (spawn-skill 430.0    9.3     -18.9   #t "ctyslumb-skill-4")  ;; inside end of pipe near green barrier
-  (spawn-skill 636.2    43.3    -172.4  #t "ctysluma-skill-2")  ;; climb pipe (first intersection after prison exit)
-  ;; === ctysluma (near hideout) ===
-  (spawn-skill 833.8    34.5    13.9    #t "ctysluma-skill-1")  ;; in window above pipes in roundabout (swag can rocket to pipes)
-  (spawn-skill 1127.95  32.72   -16.0   #t "ctysluma-skill-2")  ;; rooftops near hideout (hover)
-  (spawn-skill 1113.96  26.7    349.47  #t "ctysluma-skill-3")  ;; above pipes/generators right before ctyindb
-  (spawn-skill 1001.2   33.5    160.5   #t "ctysluma-skill-4")  ;; in KG neon sign
-  ;; === ctyslumc (water slums) ===
-  (spawn-skill 656.25   27.3    -733.02 #t "ctyslumc-skill-1")  ;; in chimney exhaust on building right side of atoll entrance
-  (spawn-skill 465.60   19.8    -757.27 #t "ctyslumc-skill-2")  ;; behind bent roof on building left side of atoll entrance
-  (spawn-skill 707.35   50.6    -454.33 #f "ctyslumc-skill-3")  ;; top of oracle building - hover (can extended frontflip from top of adjacent roof)
-  (spawn-skill 467.0    3.0     -314.9  #t "ctyslumc-skill-4")  ;; among building supports near water, immediate right from water slums entrance
-  ;; === hideout ====
-  (spawn-skill 1199.4   4.25    52.6    #f "hideout-skill-1") ;; in furnace
-  (spawn-skill 1199.5   3.45    69.0    #t "hideout-skill-2") ;; behind fire right side
-  (spawn-skill 1184.95  5.25    65.5    #t "hideout-skill-3") ;; pillow on bed right side
-  ;; === vinroom ===
-  (spawn-skill 1120.5   31.05   1120.6  #f "vinroom-skill-1") ;; in center hologram (jetboard lulz)
-  ;; === hiphog ===
-  (spawn-skill -84.02   9.6     1308.33 #t "hiphog-skill-1")  ;; wrestling arena (jetboard lulz)
-  (spawn-skill -106.1   10.05   1289.6  #f "hiphog-skill-2")  ;; mirror orb
-  (spawn-skill -80.4    9.35    1324.90 #f "hiphog-skill-3")  ;; behind whack a mole
-  ;; === ctyfarmb (b/t bazaar and port)
-  (spawn-skill -167.32  30.5    935.36  #t "ctyfarmb-skill-1")  ;; atop pipes near sprinkler (jump from hose into abbah bounce against wall, then up and over)
-  ;; === ctyfarma (b/w bazaar and ctygen)
-  ;; === ctyport ===
-  (spawn-skill -260.0   5.7     1919.32 #t "ctyport-skill-1") ;; behind big circle things towards underport exit (boosted over)
-  ;; === ctymark (bazaar near brutter) ===
-  (spawn-skill -118.2   22.53   486.9   #f "ctymarka-skill-1")  ;; above fish on brutter kiosk
-  ;; === onintent ===
-  (spawn-skill 708.7    9.0     746.2   #t "onintent-skill-1")  ;; on left behind pole (need to crouch)
-  ;; === oracle ===
-  (spawn-skill 698.0    6.5     -447.75 #t "oracle-skill-1")  ;; corner on right side
+(defun mod-spawn-new-entities ((level symbol))
+  (case level
+    (('prison)  ;; (first 2 rooms) ===
+      (spawn-skill 485.36   4.0     91.0    #t "prison-skill-1") ;; under platform dax comes up on 
+      (spawn-skill 463.0    26.78   54.1    #t "prison-skill-2") ;; above warpgate
+      (spawn-skill 528.85   22.5    129.86  #t "prison-skill-3") ;; up/behind pipes on right before 2nd room
+      (spawn-skill 546.2    14.8    199.95  #t "prison-skill-4") ;; on shelf in 2nd room
+      (spawn-skill 497.5    31.5    138.3   #t "prison-skill-5") ;; up high in corner, abbah bounce on vault handle in 2nd room
+      (spawn-skill 531.59   30.2    171.46  #t "prison-skill-6") ;; above pipes in 2nd room (extended, maybe boosted)
+      (spawn-skill 510.29   8.3     59.07   #t "prison-skill-7") ;; inside 3rd cell
+      )
+    (('forexita) ;; (3rd room until shooting you from below)
+      (spawn-skill 561.5    95.0    126.05  #t "fortexita-skill-1") ;; way up between pipes on left where you learn to crouch jump (boosted from nearby pipe climb)
+      (spawn-skill 586.0    77.0    91.48   #t "fortexita-skill-2") ;; against wall above machines near first guard (jump off small pipe)
+      (spawn-skill 689.9    93.0    111.55  #t "fortexita-skill-3") ;; way up on pipes above swingpole
+      (spawn-skill 725.33   57.0    180.1   #t "fortexita-skill-4") ;; in pit below where original orb is, but behind metal tubing on right
+      (spawn-skill 750.21   91.3    167.9   #t "fortexita-skill-5") ;; end of hallway before next section, way up on pipes
+      (spawn-skill 676.46   99.24   169.99  #t "fortexita-skill-6") ;; farther up from ^ and then backtrack
+      )
+    (('forexitb) ;; (shooting you from below to city exit) ===
+      (spawn-skill 740.8    78.0    24.3    #t "fortexitb-skill-1") ;; room with chains, up in far right corner (infin jump on chain, uppercut to pipes)
+      (spawn-skill 601.25   4.71    42.9    #f "fortexitb-skill-2") ;; underwater in corner with debris
+      (spawn-skill 537.70   27.3    33.21   #t "fortexitb-skill-3") ;; on backside of first cylinder thing on ceiling
+      (spawn-skill 523.80   27.9    51.82   #t "fortexitb-skill-4") ;; follow from ^, on pipes in back of room
+      (spawn-skill 551.6    27.3    76.18   #t "fortexitb-skill-5") ;; on JakPiss sewer pipe
+      )
+    (('fordumpa) ;; (tank pt 1) ===
+      (spawn-skill 746.19   8.5     261.65  #t "fordumpa-skill-1")  ;; immediate left corner in tank section
+      (spawn-skill 697.79   19.3    295.74  #t "fordumpa-skill-2")  ;; up/behind pipe in first tank room
+      (spawn-skill 728.28   6.5     303.2   #t "fordumpa-skill-3")  ;; on vent under platforms in first tank room, avoid death plane
+      (spawn-skill 521.12   8.5     346.27  #t "fordumpa-skill-4")  ;; secret area on ground level in room with 2 rotating platforms, behind boxes
+      )
+    (('fordumpb) ;; (guards after tank) ===
+      (spawn-skill 404.74   25.0    319.0   #t "fordumpb-skill-1")  ;; behind boxes before first spiky floor
+      (spawn-skill 459.35   38.3    365.09  #t "fordumpb-skill-2")  ;; above fence right near first barrier you groundpound through
+      (spawn-skill 494.91   21.9    386.68  #t "fordumpb-skill-3")  ;; on boxes on right above first flat escalator
+      (spawn-skill 534.04   42.6    373.68  #t "fordumpb-skill-4")  ;; in arms of crane before fortdumpc
+      )
+    (('fordumpc) ;; (final tank section) ===
+      (spawn-skill 646.5    50.6    383.4   #t "fordumpc-skill-1")  ;; behind boxes/barrels up right
+      (spawn-skill 632.0    72.0    321.8   #t "fordumpc-skill-2")  ;; way up left boxes
+      (spawn-skill 738.62   50.0    333.60  #t "fordumpc-skill-3")  ;; top of pipes left of exit
+      (spawn-skill 696.0    60.7    353.05  #t "fordumpc-skill-4")  ;; top of do rocket off rocket before tank blows them up
+      (spawn-skill 736.52   54.3    322.04  #t "fordumpc-skill-5")  ;; corner behind boxes on upper ledge above exit, abbah bounce on computer/pipes
+      )
+    (('forresca) ;; (rescue friends) ===
+      (spawn-skill 693.65   46.0    199.09  #t "forresca-skill-1")  ;; way up behind cylinder in right corner (computer > HJ from lil pipe to left pipe > DEEP extended to right pipes > standpoint on cylinder > higher on pipes > GG)
+      )
+    (('ctyslumb) ;; (near prison exit) ===
+      (spawn-skill 548.85   40.5    -0.73   #t "ctyslumb-skill-1")  ;; immediately up left from prison exit (can get back up ejecting from zoomer), grab then with jump + abbah bounce, or return with jetboard
+      (spawn-skill 501.0    9.1     -192.0  #t "ctyslumb-skill-2")  ;; behind burning can towards ctyslumc (water slums)
+      (spawn-skill 693.0    35.05   -310.3  #t "ctyslumb-skill-3")  ;; up high near billboards, jump from vehicle to pipes
+      (spawn-skill 430.0    9.3     -18.9   #t "ctyslumb-skill-4")  ;; inside end of pipe near green barrier
+      (spawn-skill 636.2    43.3    -172.4  #t "ctysluma-skill-2")  ;; climb pipe (first intersection after prison exit)
+      )
+    (('ctysluma) ;; (near hideout) ===
+      (spawn-skill 833.8    34.5    13.9    #t "ctysluma-skill-1")  ;; in window above pipes in roundabout (swag can rocket to pipes)
+      (spawn-skill 1127.95  32.72   -16.0   #t "ctysluma-skill-2")  ;; rooftops near hideout (hover)
+      (spawn-skill 1113.96  26.7    349.47  #t "ctysluma-skill-3")  ;; above pipes/generators right before ctyindb
+      (spawn-skill 1001.2   33.5    160.5   #t "ctysluma-skill-4")  ;; in KG neon sign
+      )
+    (('ctyslumc) ;; (water slums) ===
+      (spawn-skill 656.25   27.3    -733.02 #t "ctyslumc-skill-1")  ;; in chimney exhaust on building right side of atoll entrance
+      (spawn-skill 465.60   19.8    -757.27 #t "ctyslumc-skill-2")  ;; behind bent roof on building left side of atoll entrance
+      (spawn-skill 707.35   50.6    -454.33 #f "ctyslumc-skill-3")  ;; top of oracle building - hover (can extended frontflip from top of adjacent roof)
+      (spawn-skill 467.0    3.0     -314.9  #t "ctyslumc-skill-4")  ;; among building supports near water, immediate right from water slums entrance
+      )
+    (('hideout) ;; ====
+      (spawn-skill 1199.4   4.25    52.6    #f "hideout-skill-1") ;; in furnace
+      (spawn-skill 1199.5   3.45    69.0    #t "hideout-skill-2") ;; behind fire right side
+      (spawn-skill 1184.95  5.25    65.5    #t "hideout-skill-3") ;; pillow on bed right side
+      )
+    (('vinroom) ;; ===
+      (spawn-skill 1120.5   31.05   1120.6  #f "vinroom-skill-1") ;; in center hologram (jetboard lulz)
+      )
+    (('hiphog) ;; ===
+      (spawn-skill -84.02   9.6     1308.33 #t "hiphog-skill-1")  ;; wrestling arena (jetboard lulz)
+      (spawn-skill -106.1   10.05   1289.6  #f "hiphog-skill-2")  ;; mirror orb
+      (spawn-skill -80.4    9.35    1324.90 #f "hiphog-skill-3")  ;; behind whack a mole
+      )
+    (('ctyfarmb) ;; (b/t bazaar and port)
+      (spawn-skill -167.32  30.5    935.36  #t "ctyfarmb-skill-1")  ;; atop pipes near sprinkler (jump from hose into abbah bounce against wall, then up and over)
+      )
+    (('ctyfarma) ;; (b/w bazaar and ctygen)
+
+      )
+    (('ctyport) ;; ===
+      (spawn-skill -260.0   5.7     1919.32 #t "ctyport-skill-1") ;; behind big circle things towards underport exit (boosted over)
+      )
+    (('ctymark) ;; (bazaar near brutter) ===
+      (spawn-skill -118.2   22.53   486.9   #f "ctymarka-skill-1")  ;; above fish on brutter kiosk
+      )
+    (('onintent) ;; ===
+      (spawn-skill 708.7    9.0     746.2   #t "onintent-skill-1")  ;; on left behind pole (need to crouch)
+      )
+    (('oracle) ;; ===
+      (spawn-skill 698.0    6.5     -447.75 #t "oracle-skill-1")  ;; corner on right side
+      )
+    (('palcab) ;; (cable bridge to palace) ===
+      (spawn-skill 223.5    385.13  149.0   #t "palcab-skill-1")  ;; left side of rotating hexagons
+      )
+    (('palroof) ;;/palboss ===
+      (spawn-skill 166.12   442.99  532.45  #t "palroof-skill-1") ;; high corner above glass, abbah bounce in corner over invis wall for next orb
+      (spawn-skill 159.16   445.43  571.50  #t "palroof-skill-2") ;; on wall above glass ceiling, follow from ^ and abbah bounce again
+      (spawn-skill 173.6    463.6   563.65  #t "palroof-skill-3") ;; another abbah bounce up from ^, walk along edge
+      (spawn-skill 180.7    460.2   526.0   #t "palroof-skill-4") ;; follow from ^ to next roof, boosted from corner to corner
+      (spawn-skill 219.53   426.8   534.36  #t "palroof-skill-5") ;; on roof in praxis 1st phase, spin cancel jump on slant to get up
+      )
+    (('village1) ;; ===
+      (spawn-skill -26.5    22.0    -83.7   #t "village1-skill-1")  ;; top of farmers hut
+      (spawn-skill -30.3    8.7     -68.4   #t "village1-skill-2")  ;; tucked under farmers hut roof
+      (spawn-skill 6.5      23.2    -108.3  #t "village1-skill-3")  ;; tree towards fire canyon
+      (spawn-skill 84.6     28.0    30.0    #t "village1-skill-4")  ;; ledge above oracle
+      (spawn-skill 79.7     18.0    -41.5   #t "village1-skill-5")  ;; outer ledge on path to oracle
+      (spawn-skill -25.5    4.7     -66.6   #t "village1-skill-6")  ;; fireplace in farmers hut
+      (spawn-skill 88.18    18.57   18.87   #t "village1-skill-7")  ;; behind oracle mouth
+      (spawn-skill -107.9   35.0    219.7   #t "village1-skill-8")  ;; behind samos hut
+      (spawn-skill -182.85  32.9   213.01   #t "village1-skill-9")  ;; on rocks/ferns near samos hut, need to come from behind
+      ;; (spawn-skill    #t "village1-skill-10") ;; (replacement for on pillars supporting samos hut)
+      (spawn-skill -72.2    25.5    141.4   #t "village1-skill-11") ;; in tree coming from samos hut
+      (spawn-skill -75.5    1.8     109.7   #t "village1-skill-12") ;; in broken boat
+      (spawn-skill -125.0   21.5    42.7    #t "village1-skill-13") ;; mayors roof in the back
+      (spawn-skill -58.0    15.6    -34.2   #t "village1-skill-14") ;; in cage in bird ladys house
+      (spawn-skill -50.3    11.5    36.9    #t "village1-skill-15") ;; by uncles bed
+      (spawn-skill -63.5    16.3    71.5    #t "village1-skill-16") ;; in net in fishermans
+      (spawn-skill 13.8     12.2    20.5    #t "village1-skill-17") ;; near blue eco spawn
+      (spawn-skill 74.9     6.5     25.0    #t "village1-skill-18") ;; below oracle
+      (spawn-skill -141.4   9.8     -13.5   #t "village1-skill-19") ;; behind sculptors house
+      (spawn-skill -103.6   1.5     -38.5   #t "village1-skill-20") ;; corner by stairs to beach
+      (spawn-skill 117.1    7.8     -51.2   #t "village1-skill-21") ;; upper corner ledge in water between yakows/oracle
+      (spawn-skill 73.5     14.5    -169.0  #t "village1-skill-22") ;; ledge in crop field
+      (spawn-skill 48.6     20.5    -85.1   #t "village1-skill-23") ;; ledge above yakows towards oracle
+      ;; (spawn-skill -21.6    0.0     100.0   #t "village1-skill-24") ;; (replacement for under fishermans boat)
+      (spawn-skill -43.7    3.7     25.5    #t "village1-skill-25") ;; behind uncle house
+      (spawn-skill -157.0   14.8    -87.8   #t "village1-skill-26") ;; high ledge towards beach
+      ;; (spawn-skill -139.4   11.0    -109.0  #t "village1-skill-27") ;; high ledge towards beach 2
+      (spawn-skill -126.2   12.5    -96.0   #t "village1-skill-28") ;; high ledge towards beach 3
+      (spawn-skill -101.5   11.8    -73.0   #t "village1-skill-29") ;; corner ledge towards beach
+      (spawn-skill -121.87  12.05   49.9    #f "village1-skill-30") ;; back left room of mayors house
+      (spawn-skill -146.2   35.0    211.5   #t "village1-skill-31") ;; near keira
+      (spawn-skill -118.0   46.5    208.0   #t "village1-skill-32") ;; in samos hut, left of warp gate
+      (spawn-skill -105.4   13.3    73.15   #f "village1-skill-33") ;; in fountain
+      (spawn-skill -122.1   19.0    14.5    #t "village1-skill-34") ;; tree by mayor/sculptor
+      (spawn-skill 207.5    12.2    -122.0  #t "village1-skill-35") ;; near mirrors
+      )
+    )
   (none)
   )
 
@@ -199,7 +267,6 @@
 (defun mod-override-init-position ((obj process-drawable) (arg0 entity-actor))
   (case (-> obj name) :comp name=
     ;; ====== ORBS ======
-    ;; fortress
     ;; === prison (first 2 rooms) ===
     (('skill-49) (set-vector-meters! (-> arg0 extra trans)  472.0 8.55 103.1)) ;; behind/under chair at start
     (('skill-50) (set-vector-meters! (-> arg0 extra trans)  547.14 12.4 169.8)) ;; in crack behind boxes along normal path
@@ -211,7 +278,6 @@
     (('skill-8) (set-vector-meters! (-> arg0 extra trans)  675.0  72.5  22.5)) ;; up behind pipe on left entering room before slide
     (('skill-70) (set-vector-meters! (-> arg0 extra trans)  703.0  76.6  25.65)) ;; infin jump on chain -> extended to top of crane
     (('skill-71) (set-vector-meters! (-> arg0 extra trans)  598.5  28.8  51.5)) ;; up high atop pipe - right before exit, stand on lip of pipe near end of slide and boosted over. or boosted from edge before exit and ledge grab thru pipe ("OOB")
-    ;; dead town
     ;; === ruins (+sagehut) === 
     ;; (('skill-1) (set-vector-meters! (-> arg0 extra trans)  )) ;; this weird one doesn't actually spawn? but move it for the lulz - 
     (('skill-2) (set-vector-meters! (-> arg0 extra trans)  997.29  80.0 -656.2)) ;; atop wall in far back (hover)
@@ -237,10 +303,10 @@
     ;; === palshaft (shaft up to cable bridge) ===
     ;; skill-31
     ;; === palcab (cable bridge to palace) ===
-    ;; skill-33
+    (('skill-32) (set-vector-meters! (-> arg0 extra trans) 216.1 401.5 -18.9))  ;; far side of first hotplate section, ledgegrab
+    (('skill-33) (set-vector-meters! (-> arg0 extra trans) 225.70 401.31  -4.96))  ;; atop light at end of first hotplate section
 
     ;; ====== MISC ======
-    ;; fortress
     ;; === prison ===
     ;; === forexita ===
     (('crate-577) (set-vector-meters! (-> arg0 extra trans) 673.71  81.37 147.63))  ;; dark eco - on top of machine after swingpole
@@ -281,10 +347,10 @@
     ;;   (set-vector-meters! (-> arg0 extra trans) 803.61   15.26 158.12) ;;
     ;;   (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
     ;;   )
-
-    ;; dead town
-    ;; 
-
+    ;; village1
+    ;; (('crate-665) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('crate-666) (set-vector-meters! (-> arg0 extra trans) ))
+    ;; (('crate-667) (set-vector-meters! (-> arg0 extra trans) ))
     )
   (none)
   )
