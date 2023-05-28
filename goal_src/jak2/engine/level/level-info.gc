@@ -5924,13 +5924,13 @@
         :name "ctygena-burning-bush-2"
         :level 'ctygena
         :flags (continue-flags cf3)
-        :trans (new 'static 'vector :x -1549425.0 :y 32753.254 :z -805722.1 :w 1.0)
-        :quat (new 'static 'vector :y -0.6395 :w 0.7687)
-        :camera-trans (new 'static 'vector :x -1498315.1 :y 53847.656 :z -808805.2 :w 1.0)
+        :trans (new 'static 'vector :x -1562447.5000 :y 95869.0859 :z -1153554.875 :w 1.0)
+        :quat (new 'static 'vector :y 0.7751 :w 0.6317)
+        :camera-trans (new 'static 'vector :x -1517327.7500 :y 115367.5312 :z -1155636.3750 :w 1.0)
         :camera-rot (new 'static 'inline-array vector3s 3
-          (new 'static 'vector3s :data (new 'static 'array float 3 0.0599 0.0 0.9982))
-          (new 'static 'vector3s :data (new 'static 'array float 3 -0.1207 0.9926 0.0072))
-          (new 'static 'vector3s :data (new 'static 'array float 3 -0.9908 -0.1209 0.0595))
+          (new 'static 'vector3s :data (new 'static 'array float 3 0.0254 0.0000 0.9996))
+          (new 'static 'vector3s :data (new 'static 'array float 3 -0.1473 0.9890 0.0037))
+          (new 'static 'vector3s :data (new 'static 'array float 3 -0.9887 -0.1473 0.0251))
           )
         :on-goto #f
         :vis-nick 'ctygena

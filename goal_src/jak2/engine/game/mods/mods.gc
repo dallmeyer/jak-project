@@ -170,6 +170,10 @@
     (('ctyfarma) ;; (b/w bazaar and ctygen)
 
       )
+    (('ctygena) ;; (canals near farm)
+      (spawn-skill -311.7   24.6    -357.85 #t "ctygena-skill-1") ;; up on high ledge at first turn from farm, jump from zoomer ez
+      (spawn-skill -153.85  30.5    -386.54 #t "ctygena-skill-2") ;; up on high ledge near lurker pipe, jump from zoomer
+      )
     (('ctyport) ;; ===
       (spawn-skill -260.0   5.7     1919.32 #t "ctyport-skill-1") ;; behind big circle things towards underport exit (boosted over)
       )
@@ -201,8 +205,8 @@
       (spawn-skill -25.5    4.7     -66.6   #t "village1-skill-6")  ;; fireplace in farmers hut
       (spawn-skill 88.18    18.57   18.87   #t "village1-skill-7")  ;; behind oracle mouth
       (spawn-skill -107.9   35.0    219.7   #t "village1-skill-8")  ;; behind samos hut
-      (spawn-skill -182.85  32.9   213.01   #t "village1-skill-9")  ;; on rocks/ferns near samos hut, need to come from behind
-      ;; (spawn-skill    #t "village1-skill-10") ;; (replacement for on pillars supporting samos hut)
+      (spawn-skill -182.85  32.9    213.01  #t "village1-skill-9")  ;; on rocks/ferns near samos hut, need to come from behind
+      (spawn-skill -90.6    49.90   34.6    #t "village1-skill-10") ;; on honeycomb on mayor windmill (abbah; replacement for on pillars supporting samos hut)
       (spawn-skill -72.2    25.5    141.4   #t "village1-skill-11") ;; in tree coming from samos hut
       (spawn-skill -75.5    1.8     109.7   #t "village1-skill-12") ;; in broken boat
       (spawn-skill -125.0   21.5    42.7    #t "village1-skill-13") ;; mayors roof in the back
@@ -216,10 +220,10 @@
       (spawn-skill 117.1    7.8     -51.2   #t "village1-skill-21") ;; upper corner ledge in water between yakows/oracle
       (spawn-skill 73.5     14.5    -169.0  #t "village1-skill-22") ;; ledge in crop field
       (spawn-skill 48.6     20.5    -85.1   #t "village1-skill-23") ;; ledge above yakows towards oracle
-      ;; (spawn-skill -21.6    0.0     100.0   #t "village1-skill-24") ;; (replacement for under fishermans boat)
+      (spawn-skill 134.4    12.0    -20.3   #t "village1-skill-24") ;; behind sculptors rock (replacement for under fishermans boat)
       (spawn-skill -43.7    3.7     25.5    #t "village1-skill-25") ;; behind uncle house
       (spawn-skill -157.0   14.8    -87.8   #t "village1-skill-26") ;; high ledge towards beach
-      ;; (spawn-skill -139.4   11.0    -109.0  #t "village1-skill-27") ;; high ledge towards beach 2
+      (spawn-skill 123.5    21.8    -52.74  #t "village1-skill-27") ;; abbah bounce up to ledge above skill-21 (replacement for high ledge towards beach 2)
       (spawn-skill -126.2   12.5    -96.0   #t "village1-skill-28") ;; high ledge towards beach 3
       (spawn-skill -101.5   11.8    -73.0   #t "village1-skill-29") ;; corner ledge towards beach
       (spawn-skill -121.87  12.05   49.9    #f "village1-skill-30") ;; back left room of mayors house
@@ -300,6 +304,10 @@
     (('burning-bush-11) ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
       (set-vector-meters! (-> arg0 extra trans) 440.0  19.87 -536.5)  ;; atop small building in corner
       )
+    ;; === ctygena (canals near farm) ===
+    (('burning-bush-16) ;; orbhunt - 
+      (set-vector-meters! (-> arg0 extra trans) -383.08  23.40 -281.34) ;; awning near first turn from farm
+      )
     ;; === palshaft (shaft up to cable bridge) ===
     ;; skill-31
     ;; === palcab (cable bridge to palace) ===
@@ -348,9 +356,9 @@
     ;;   (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
     ;;   )
     ;; village1
-    ;; (('crate-665) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('crate-666) (set-vector-meters! (-> arg0 extra trans) ))
-    ;; (('crate-667) (set-vector-meters! (-> arg0 extra trans) ))
+    (('crate-665) (set-vector-meters! (-> arg0 extra trans) -82.0 21.5 -10.3))      ;; high ledge between bridges
+    (('crate-666) (set-vector-meters! (-> arg0 extra trans) 32.5 12.5 -132.7))      ;; on tree 
+    (('crate-667) (set-vector-meters! (-> arg0 extra trans) -132.6 11.9 32.3))      ;; behind mayors
     )
   (none)
   )

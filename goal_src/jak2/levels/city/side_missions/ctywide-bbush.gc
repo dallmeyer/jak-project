@@ -2818,8 +2818,8 @@ This commonly includes things such as:
   )
 
 (defun mod-override-burning-bush-get-on! ((info burning-bush-get-on-info) (task game-task))
-    ;; === ctyslumb (near prison exit) ====
   (case task
+    ;; === ctyslumb (near prison exit) ====
     (((game-task city-burning-bush-get-to-1))  ;; behind fruit stands near yellow barrier skip
       (set-vector-meters! (-> info trans) 891.46   0.8 351.41) ;; in trench closer to fortress, at ramp in middle
       (set-vector! (-> info camera-trans) 3607523.7500  22645.5039 1377616.7500 1.0)
@@ -2844,6 +2844,15 @@ This commonly includes things such as:
       (set! (-> info camera-rot 3) -0.2271) (set! (-> info camera-rot 4) 0.9711) (set! (-> info camera-rot 5) -0.0722)
       (set! (-> info camera-rot 6) -0.9254) (set! (-> info camera-rot 7) -0.2383) (set! (-> info camera-rot 8) -0.2944)
       (set! (-> info time) 4000.0)
+      )
+    ;; === ctygena (canals near farm) ===
+    (((game-task city-burning-bush-get-to-14))  ;; on awning near first turn from farm
+      (set-vector-meters! (-> info trans) -284.7  31.5 -273.8)  ;; in gap among billboards
+      (set-vector! (-> info camera-trans) -1147260.2500 148365.6562 -1051547.750 1.0)
+      (set! (-> info camera-rot 0) -0.9957) (set! (-> info camera-rot 1) -0.0000) (set! (-> info camera-rot 2) 0.0923)
+      (set! (-> info camera-rot 3) -0.0113) (set! (-> info camera-rot 4) 0.9924) (set! (-> info camera-rot 5) -0.1219)
+      (set! (-> info camera-rot 6) -0.0916) (set! (-> info camera-rot 7) -0.1224) (set! (-> info camera-rot 8) -0.9882)
+      (set! (-> info time) 3250.0)
       )
     )
   (none)
