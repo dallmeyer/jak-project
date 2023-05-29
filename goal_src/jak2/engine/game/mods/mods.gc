@@ -1,6 +1,62 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
+;; more for testing purposes than anything
+(defun move-actor-str-target-offset ((actor-name string) (x float) (y float) (z float))
+  (cond 
+    ((entity-by-name actor-name)
+      (let* ((entity-actor (entity-by-name actor-name))
+            (actor (the process-drawable (-> entity-actor extra process)))
+            )
+        (when actor
+          (vector-copy! (-> actor root trans) (target-pos 0))
+          (+! (-> actor root trans x) (meters x))
+          (+! (-> actor root trans y) (meters y))
+          (+! (-> actor root trans z) (meters z))
+          (vector-copy! (-> entity-actor trans) (target-pos 0))
+          (+! (-> entity-actor trans x) (meters x))
+          (+! (-> entity-actor trans y) (meters y))
+          (+! (-> entity-actor trans z) (meters z))
+          (vector-copy! (-> entity-actor extra trans) (target-pos 0))
+          (+! (-> entity-actor extra trans x) (meters x))
+          (+! (-> entity-actor extra trans y) (meters y))
+          (+! (-> entity-actor extra trans z) (meters z))
+          )
+        )
+      )
+    )
+  (none)
+  )
+
+(defun move-actor-str ((actor-name string) (x float) (y float) (z float))
+  (cond 
+    ((string= actor-name "target")
+      (set-vector-meters! (-> *target* root trans) x y z)
+      )
+    ((entity-by-name actor-name)
+      (let* ((entity-actor (entity-by-name actor-name))
+            (actor (-> entity-actor extra process))
+            )
+        (when actor
+          (set-vector! (-> entity-actor trans) (meters x) (meters y) (meters z) 1.0)
+          (set-vector! (-> entity-actor extra trans) (meters x) (meters y) (meters z) 1.0)
+          ;; (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+          )
+        )
+      )
+    )
+  (none)
+  )
+
+;; prints the position (root trans) of a process-drawable
+(defmacro pd-pos-m (procname)
+  `(let* ((obj (the process-drawable (process-by-ename ,procname)))
+          (vec (-> obj root trans)))
+    (format 0 "~m ~m ~m~%" (-> vec x) (-> vec y) (-> vec z) 4096.0)
+    (none)
+    )
+  )
+
 (defmacro mod-copy-mesh-and-path (dst-name src-name)
   `(let ((dst (the nav-enemy (process-by-ename ,dst-name)))
          (src (the nav-enemy (process-by-ename ,src-name)))
@@ -221,6 +277,28 @@
       (spawn-skill  12.5    12.0    -692.6  #t "skatea-skill-1")  ;; behind glass wall at start, go around or over
       (spawn-skill  -72.35  -6.99   -465.50 #t "skatea-skill-2")  ;; behind some ramps and things against wall opposite entrance
       )
+    (('caspad)  ;; landing pad connecting atoll, dig, castle
+      (spawn-skill 301.1    43.2    -1700.2   #t "caspad-skill-1")  ;; up above tree/rock near dig entrance
+      (spawn-skill 218.02   34.14   -1724.96  #t "caspad-skill-2")  ;; in crack of rocks between dig/castle
+      (spawn-skill 236.98   48.8    -1709.0   #t "caspad-skill-3")  ;; up & right from skill-2 (abbah)
+      (spawn-skill 209.75   45.8    -1730.5   #t "caspad-skill-4")  ;; up & left from skill-2 (abbah)
+      (spawn-skill 190.1    58.8    -1713.6   #t "caspad-skill-5")  ;; up & left from skill-4 (or maybe abbah?)
+      (spawn-skill 127.4    66.2    -1698.9   #t "caspad-skill-6")  ;; atop tall rock towards castle entrance (abbah)
+      (spawn-skill 83.42    75.16   -1704.72  #t "caspad-skill-7")  ;; atop rocks right right outside castle entrance (abbah)
+      (spawn-skill 216.53   37.08   -1570.87  #t "caspad-skill-8")  ;; in crack in rocks between castle and atoll
+      (spawn-skill 203.31   53.4    -1568.01  #t "caspad-skill-9")  ;; up/right from skill-8
+      (spawn-skill 189.67   72.7    -1554.08  #t "caspad-skill-10") ;; up from skill-9 (abbah)
+      (spawn-skill 202.31   83.6    -1546.70  #t "caspad-skill-11") ;; low-poly leaves are solid, free orb near skill-10
+      (spawn-skill 79.62    121.5   -1519.64  #t "caspad-skill-12") ;; low-poly leaves, way in the back towards castle
+      )
+    (('castle)  ;; 
+      )
+    (('dig1)  ;; with guards and explosive barrels
+      )
+    (('dig3a) ;; first room with metalheads and totem
+      )
+    (('dig3b) ;; back room with metalheads and buttons
+      )
     (('village1) ;; ===
       (spawn-skill -26.5    22.0    -83.7   #t "village1-skill-1")  ;; top of farmers hut
       (spawn-skill -30.3    8.7     -68.4   #t "village1-skill-2")  ;; tucked under farmers hut roof
@@ -338,10 +416,23 @@
     ;; === palcab (cable bridge to palace) ===
     (('skill-32) (set-vector-meters! (-> arg0 extra trans) 216.1 401.5 -18.9))  ;; far side of first hotplate section, ledgegrab
     (('skill-33) (set-vector-meters! (-> arg0 extra trans) 225.70 401.31  -4.96))  ;; atop light at end of first hotplate section
+    ;; === palroof/palboss ===
+    ;; skill-34
     ;; === stadium ===
     (('burning-bush-20)
       (set-vector-meters! (-> arg0 extra trans) 267.45  10.99 -759.22)  ;; behind bushes on side of stadium
       )
+    ;; === dig3a (front room with metalheads) ===
+    ;; skill-14
+    ;; skill-15
+    ;; skill-16
+    ;; === dig3b (second room with metalheads, buttons) ===
+    ;; skill-17
+    ;; skill-18
+    ;; skill-19
+    ;; skill-20
+    ;; skill-106
+
 
     ;; ====== MISC ======
     ;; === prison ===
@@ -392,22 +483,6 @@
   (none)
   )
 
-;; (defun mod-move-eco ((eco-name string) (vec vector))
-;;   (let ((obj (the eco (process-by-ename eco-name))))
-;;     ;; only move if not being suck-sucked
-;;     (when (and obj (not (or (name= (-> obj state name) 'pickup) (name= (-> obj state name) 'notice-blue))))
-;;       (vector-copy-no-w! (-> obj base) vec)
-;;       (vector-copy-no-w! (-> obj root trans) vec)
-;;       (vector-copy-no-w! (-> obj root-override trans) vec)
-;;       (vector-copy-no-w! (-> obj root-override root-prim prim-core world-sphere) vec)
-
-;;       (if (-> obj sound)
-;;         (vector-copy-no-w! (-> obj sound trans) vec)
-;;         )
-;;       )
-;;     )
-;;   )
-
 (defun mod-run-each-frame ()
   ;; === prison (first 2 rooms) ===
   (prison-door-button-check "prison-part-374" "prsn-cell-door-4")
@@ -422,44 +497,7 @@
   ;; (let ((p (the skill (process-by-ename "skill-3"))))  ;; make this visible only when sagehut loaded?
   ;; )
   
-  ;; (when (and 
-  ;;           (cpad-hold? 0 l1)
-  ;;           (cpad-hold? 0 r1)
-  ;;           (cpad-hold? 0 l2)
-  ;;           (cpad-hold? 0 r2)
-  ;;           )
-  ;;   (spawn-skill 582.04  26.00 183.42  #t "yoyo")
-  ;;   )
+  ;; (move-actor-str-target-offset "ctyport-part-86" 0.0 1.5 0.0)  ;; jakpoop
+
   (none)
-  )
-
-
-;; more for testing purposes than anything
-(defun move-actor-str ((actor-name string) (x float) (y float) (z float))
-  (cond 
-    ((string= actor-name "target")
-      (set-vector-meters! (-> *target* root trans) x y z)
-      )
-    ((entity-by-name actor-name)
-      (let* ((entity-actor (entity-by-name actor-name))
-            (actor (-> entity-actor extra process))
-            )
-        (when actor
-          (set-vector! (-> entity-actor trans) (meters x) (meters y) (meters z) 1.0)
-          (set-vector! (-> entity-actor extra trans) (meters x) (meters y) (meters z) 1.0)
-          ;; (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
-          )
-        )
-      )
-    )
-  (none)
-  )
-
-;; prints the position (root trans) of a process-drawable
-(defmacro pd-pos-m (procname)
-  `(let* ((obj (the process-drawable (process-by-ename ,procname)))
-          (vec (-> obj root trans)))
-    (format 0 "~m ~m ~m~%" (-> vec x) (-> vec y) (-> vec z) 4096.0)
-    (none)
-    )
   )
