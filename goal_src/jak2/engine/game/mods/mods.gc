@@ -395,6 +395,17 @@
     ;; (('skill-7) (set-vector-meters! (-> arg0 extra trans)  )) ;;
     ;; (('skill-89) (set-vector-meters! (-> arg0 extra trans)  )) ;;
     ;; (('skill-90) (set-vector-meters! (-> arg0 extra trans)  )) ;;
+    ;; === atoll/atoll-ext ===
+    ;; skill-10
+    ;; skill-11
+    ;; skill-12
+    ;; skill-13
+    ;; skill-21
+    ;; skill-22
+    ;; skill-23
+    ;; === sewer/sewerb ===
+    ;; skill-124
+    
     ;; === ctysluma (near hideout) ===
     (('burning-bush-9)  ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
       (set-vector-meters! (-> arg0 extra trans) 1125.92   8.14 149.91) ;; near yellow barrier skip hidden by fruit
@@ -420,7 +431,7 @@
     ;; skill-34
     ;; === stadium ===
     (('burning-bush-20)
-      (set-vector-meters! (-> arg0 extra trans) 267.45  10.99 -759.22)  ;; behind bushes on side of stadium
+      (set-vector-meters! (-> arg0 extra trans)  31.82  11.99 -423.43)  ;; end of hallway to keira garage
       )
     ;; === dig3a (front room with metalheads) ===
     ;; skill-14
@@ -432,6 +443,13 @@
     ;; skill-19
     ;; skill-20
     ;; skill-106
+    ;; === castle ===
+    ;; skill-126
+    ;; skill-127
+    ;; skill-128
+    ;; skill-129
+    ;; skill-130
+
 
 
     ;; ====== MISC ======

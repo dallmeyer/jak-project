@@ -48,6 +48,7 @@ into 7 sections, which might explain the weird sizes in the center.
   (send-event *target* 'get-pickup 16 #x447a0000)
   (send-event *target* 'get-pickup 7 #x42c80000)
   (logior! (-> *game-info* features) (game-feature gun gun-yellow gun-red gun-blue gun-dark board darkjak))
+  (logior! (-> *game-info* secrets) (game-secrets endless-ammo invulnerable endless-dark gungame-blue gungame-dark reverse-races))
   (let ((v0-7
           (logior (-> *game-info* debug-features) (game-feature gun gun-yellow gun-red gun-blue gun-dark board darkjak))
           )

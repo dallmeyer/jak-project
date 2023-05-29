@@ -760,7 +760,7 @@
                                  :color (new 'static 'rgba :r #xff :g #xff :b #xff :a #x80)
                                  )
                                (new 'static 'minimap-class-node
-                                 :default-position (new 'static 'vector :x 1392926.8 :y 32768.0 :z -3109273.5 :w 1.0)
+                                 :default-position (new 'static 'vector :x 130346.6250 :y 49151.9960 :z -1734402.5 :w 1.0)
                                  :flags (minimap-flag bigmap city-only)
                                  :name "bbush-stadium"
                                  :icon-xy (new 'static 'vector2ub :data (new 'static 'array uint8 2 #x2 #x3))
