@@ -68,16 +68,21 @@
 ;;   )
 
 (defmacro spawn-skill (x y z bob? name)
-  `(when *target*
-    (let ((fax (new 'stack 'fact-info *target* (pickup-type skill) 1.0)))
+  `(begin 
+    (format 0 "trying to spawn ~A~%" ,name)
+    (let ((fax (new 'static 'fact-info)))
+      (set! (-> fax pickup-type) (pickup-type skill))
+      (set! (-> fax pickup-amount) 1.0)
+      (set! (-> fax pickup-spawn-amount) 1.0)
       ;; make sure it doesn't timeout and disappear
       (logior! (-> fax options) (actor-option fade-out))
+      (set! (-> fax fade-time) (the-as time-frame 0))
       (when ,bob?
         (logior! (-> fax options) (actor-option force-bob))
         )
-      (set! (-> fax fade-time) (the-as time-frame 0))
-      (let ((proc (ppointer->process (birth-pickup-at-point (static-vector-meters ,x ,y ,z) (pickup-type skill) 1.0 #t *target* fax))))
-        (copy-string<-string (-> proc name) ,name)
+      (let ((proc (ppointer->process (birth-pickup-at-point-named (static-vector-meters ,x ,y ,z) (pickup-type skill) 1.0 #t *active-pool* fax ,name))))
+        ;; (copy-string<-string (-> proc name) ,name) ;; lol this overwrote the skill type name and caused weird problems
+        (format 0 "spawned ~A~%" proc)
         proc  ;; return proc
         )
       )
@@ -85,6 +90,7 @@
   )
 
 (defun mod-spawn-new-entities ((level symbol))
+  (format 0 "spawning extra mod entities for level ~A~%" level)
   (case level
     (('prison)  ;; (first 2 rooms) ===
       (spawn-skill 485.36   4.0     91.0    #t "prison-skill-1") ;; under platform dax comes up on 
@@ -189,12 +195,31 @@
     (('palcab) ;; (cable bridge to palace) ===
       (spawn-skill 223.5    385.13  149.0   #t "palcab-skill-1")  ;; left side of rotating hexagons
       )
-    (('palroof) ;;/palboss ===
+    (('palroof) ;; palboss ===
       (spawn-skill 166.12   442.99  532.45  #t "palroof-skill-1") ;; high corner above glass, abbah bounce in corner over invis wall for next orb
       (spawn-skill 159.16   445.43  571.50  #t "palroof-skill-2") ;; on wall above glass ceiling, follow from ^ and abbah bounce again
       (spawn-skill 173.6    463.6   563.65  #t "palroof-skill-3") ;; another abbah bounce up from ^, walk along edge
       (spawn-skill 180.7    460.2   526.0   #t "palroof-skill-4") ;; follow from ^ to next roof, boosted from corner to corner
       (spawn-skill 219.53   426.8   534.36  #t "palroof-skill-5") ;; on roof in praxis 1st phase, spin cancel jump on slant to get up
+      )
+    (('throne)
+      (spawn-skill 122.92   340.6   531.25  #t "throne-skill-1")  ;; in gap under walkway to throne
+      (spawn-skill 103.0    374.5   499.15  #t "throne-skill-2")  ;; window above throne (abbah duh)
+      (spawn-skill 183.74   345.5   549.98  #t "throne-skill-3")  ;; corner before drop down to palent
+      )
+    (('palent)  ;; palace interior with guards
+      
+      )
+    (('garage)  ;; keira garage
+      (spawn-skill 126.4    12.5    -442.7  #f "garage-skill-1")  ;; in box inside barrel in back of garage
+      (spawn-skill 105.5    24.5    -407.7  #t "garage-skill-2")  ;; above lamp
+      )
+    (('stadium)
+      (spawn-skill 171.35   31.00   -511.70 #t "stadium-skill-1") ;; outside, up behind sculpture's head on left side
+      )
+    (('skatea)
+      (spawn-skill  12.5    12.0    -692.6  #t "skatea-skill-1")  ;; behind glass wall at start, go around or over
+      (spawn-skill  -72.35  -6.99   -465.50 #t "skatea-skill-2")  ;; behind some ramps and things against wall opposite entrance
       )
     (('village1) ;; ===
       (spawn-skill -26.5    22.0    -83.7   #t "village1-skill-1")  ;; top of farmers hut
@@ -309,10 +334,14 @@
       (set-vector-meters! (-> arg0 extra trans) -383.08  23.40 -281.34) ;; awning near first turn from farm
       )
     ;; === palshaft (shaft up to cable bridge) ===
-    ;; skill-31
+    (('skill-31) (set-vector-meters! (-> arg0 extra trans) 229.96 457.0 -166.2))  ;; top of elevator shaft on light, use other lights for infinite jumps
     ;; === palcab (cable bridge to palace) ===
     (('skill-32) (set-vector-meters! (-> arg0 extra trans) 216.1 401.5 -18.9))  ;; far side of first hotplate section, ledgegrab
     (('skill-33) (set-vector-meters! (-> arg0 extra trans) 225.70 401.31  -4.96))  ;; atop light at end of first hotplate section
+    ;; === stadium ===
+    (('burning-bush-20)
+      (set-vector-meters! (-> arg0 extra trans) 267.45  10.99 -759.22)  ;; behind bushes on side of stadium
+      )
 
     ;; ====== MISC ======
     ;; === prison ===
@@ -392,6 +421,15 @@
   ;; === ruins (+sagehut) ===
   ;; (let ((p (the skill (process-by-ename "skill-3"))))  ;; make this visible only when sagehut loaded?
   ;; )
+  
+  ;; (when (and 
+  ;;           (cpad-hold? 0 l1)
+  ;;           (cpad-hold? 0 r1)
+  ;;           (cpad-hold? 0 l2)
+  ;;           (cpad-hold? 0 r2)
+  ;;           )
+  ;;   (spawn-skill 582.04  26.00 183.42  #t "yoyo")
+  ;;   )
   (none)
   )
 

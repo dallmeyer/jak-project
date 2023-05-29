@@ -2426,6 +2426,7 @@ into 7 sections, which might explain the weird sizes in the center.
   0
   )
 
+(define-extern mod-spawn-new-entities (function symbol none))
 (defmethod update! load-state ((obj load-state))
   "Update level stuff based on load state.
    This does scary transitions."
@@ -2569,6 +2570,7 @@ into 7 sections, which might explain the weird sizes in the center.
                   ((not (-> lev display?)) ;; off to on:
                    (cond
                      ((or (= (-> lev status) 'loaded) (= (-> lev status) 'active))
+                      (mod-spawn-new-entities (-> obj want want-lev-i name))
                       (format 0 "Displaying level ~A [~A]~%" (-> obj want want-lev-i name) (-> obj want want-lev-i display?))
                       ;; will activate/birth, starting entities and background drawing.
                       (level-get-for-use *level* (-> lev info name) 'active)
