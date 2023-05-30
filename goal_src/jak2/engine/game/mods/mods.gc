@@ -158,19 +158,20 @@
       (spawn-skill 510.29   8.3     59.07   #t "prison-skill-7") ;; inside 3rd cell
       )
     (('forexita) ;; (3rd room until shooting you from below)
-      (spawn-skill 561.5    95.0    126.05  #t "fortexita-skill-1") ;; way up between pipes on left where you learn to crouch jump (boosted from nearby pipe climb)
-      (spawn-skill 586.0    77.0    91.48   #t "fortexita-skill-2") ;; against wall above machines near first guard (jump off small pipe)
-      (spawn-skill 689.9    93.0    111.55  #t "fortexita-skill-3") ;; way up on pipes above swingpole
-      (spawn-skill 725.33   57.0    180.1   #t "fortexita-skill-4") ;; in pit below where original orb is, but behind metal tubing on right
-      (spawn-skill 750.21   91.3    167.9   #t "fortexita-skill-5") ;; end of hallway before next section, way up on pipes
-      (spawn-skill 676.46   99.24   169.99  #t "fortexita-skill-6") ;; farther up from ^ and then backtrack
+      (spawn-skill 561.5    95.0    126.05  #t "forexita-skill-1") ;; way up between pipes on left where you learn to crouch jump (boosted from nearby pipe climb)
+      (spawn-skill 586.0    77.0    91.48   #t "forexita-skill-2") ;; against wall above machines near first guard (jump off small pipe)
+      (spawn-skill 689.9    93.0    111.55  #t "forexita-skill-3") ;; way up on pipes above swingpole
+      (spawn-skill 725.33   57.0    180.1   #t "forexita-skill-4") ;; in pit below where original orb is, but behind metal tubing on right
+      (spawn-skill 750.21   91.3    167.9   #t "forexita-skill-5") ;; end of hallway before next section, way up on pipes
+      (spawn-skill 676.46   99.24   169.99  #t "forexita-skill-6") ;; farther up from ^ and then backtrack
       )
     (('forexitb) ;; (shooting you from below to city exit) ===
-      (spawn-skill 740.8    78.0    24.3    #t "fortexitb-skill-1") ;; room with chains, up in far right corner (infin jump on chain, uppercut to pipes)
-      (spawn-skill 601.25   4.71    42.9    #f "fortexitb-skill-2") ;; underwater in corner with debris
-      (spawn-skill 537.70   27.3    33.21   #t "fortexitb-skill-3") ;; on backside of first cylinder thing on ceiling
-      (spawn-skill 523.80   27.9    51.82   #t "fortexitb-skill-4") ;; follow from ^, on pipes in back of room
-      (spawn-skill 551.6    27.3    76.18   #t "fortexitb-skill-5") ;; on JakPiss sewer pipe
+      (spawn-skill 740.8    78.0    24.3    #t "forexitb-skill-1") ;; room with chains, up in far right corner (infin jump on chain, uppercut to pipes)
+      (spawn-skill 601.25   4.71    42.9    #f "forexitb-skill-2") ;; underwater in corner with debris
+      (spawn-skill 537.70   27.3    33.21   #t "forexitb-skill-3") ;; on backside of first cylinder thing on ceiling
+      (spawn-skill 523.80   27.9    51.82   #t "forexitb-skill-4") ;; follow from ^, on pipes in back of room
+      (spawn-skill 551.6    27.3    76.18   #t "forexitb-skill-5") ;; on JakPiss sewer pipe
+      (spawn-skill 743.39   83.5    92.92   #t "forexitb-skill-6")
       )
     (('fordumpa) ;; (tank pt 1) ===
       (spawn-skill 746.19   8.5     261.65  #t "fordumpa-skill-1")  ;; immediate left corner in tank section
@@ -554,7 +555,7 @@
     ;; skill-34
     ;; === stadium ===
     (('burning-bush-20)
-      (set-vector-meters! (-> arg0 extra trans)  31.82  11.99 -423.43)  ;; end of hallway to keira garage
+      (set-vector-meters! (-> arg0 extra trans) 44.40  12.01 -433.91)  ;; end of hallway to keira garage
       )
     ;; === dig3a (front room with metalheads) ===
     ;; skill-14

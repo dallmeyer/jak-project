@@ -8584,13 +8584,13 @@
         :name "stadium-burning-bush"
         :level 'stadium
         :flags (continue-flags cf3)
-        :trans (new 'static 'vector :x 151582.7500 :y 49151.9960 :z -1735517.625 :w 1.0)
-        :quat (new 'static 'vector :x -0.000 :y -0.7223 :z -0.000 :w 0.6915)
-        :camera-trans (new 'static 'vector :x 202621.2656 :y 70246.4375 :z -1731362.375 :w 1.0)
+        :trans (new 'static 'vector :x 178891.7812 :y 49151.9960 :z -1755879.3750 :w 1.0)
+        :quat (new 'static 'vector :x -0.000 :y -0.7861 :z -0.000 :w -0.6179)
+        :camera-trans (new 'static 'vector :x 145883.0000 :y 70246.4453 :z -1716696.1250 :w 1.0)
         :camera-rot (new 'static 'inline-array vector3s 3
-          (new 'static 'vector3s :data (new 'static 'array float 3 -0.0808  -0.0000   0.9967))
-          (new 'static 'vector3s :data (new 'static 'array float 3 -0.1202   0.9926  -0.0097))
-          (new 'static 'vector3s :data (new 'static 'array float 3 -0.9894  -0.1206  -0.0802))
+          (new 'static 'vector3s :data (new 'static 'array float 3 -0.7601  0.0000 -0.6497))
+          (new 'static 'vector3s :data (new 'static 'array float 3  0.0778  0.9928 -0.0910))
+          (new 'static 'vector3s :data (new 'static 'array float 3  0.6450 -0.1197 -0.7546))
           )
         :on-goto #f
         :vis-nick 'stadium
