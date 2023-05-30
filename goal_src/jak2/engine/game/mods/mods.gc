@@ -299,6 +299,48 @@
       )
     (('dig3b) ;; back room with metalheads and buttons
       )
+    (('sewer 'sewerb)
+      )
+    (('sewesc 'sewescb)
+      )
+    (('strip)
+      )
+    (('mountain 'mtnext)
+      )
+    (('mincan)  ;; little area where they put all the precursor crap together
+      )
+    (('forest)   ;; entrance side?
+      )
+    (('forestb)   ;; sage/tree side?
+      )
+    (('drill) ;; eggs section?
+      )
+    (('drillmtn) ;; background???
+      )
+    (('drillmid) ;; gun on rails section?
+      )
+    (('drillb)  ;; mech suit area
+      )
+    (('tomba) ;; central chamber
+      )
+    (('tombb) ;; left tomb
+      )
+    (('tombc) ;; right tomb
+      )
+    (('tombd) ;; entrance
+      )
+    (('tombe) ;; daxter spider chase
+      )
+    (('tombboss) ;; praxis 2
+      )
+    (('consite 'consiteb)
+      )
+    (('under 'underb)
+      )
+    (('nest)  ;; outside
+      )
+    (('nestb) ;; inside
+      )
     (('village1) ;; ===
       (spawn-skill -26.5    22.0    -83.7   #t "village1-skill-1")  ;; top of farmers hut
       (spawn-skill -30.3    8.7     -68.4   #t "village1-skill-2")  ;; tucked under farmers hut roof
@@ -405,7 +447,88 @@
     ;; skill-23
     ;; === sewer/sewerb ===
     ;; skill-124
-    
+    ;; === sewesc/sewescb ===
+    ;; none
+    ;; === strip ===
+    ;; skill-108
+    ;; skill-109
+    ;; skill-110
+    ;; skill-111
+    ;; skill-112
+    ;; skill-113
+    ;; skill-114
+    ;; === mountain/mtnext ===
+    ;; skill-76
+    ;; skill-77
+    ;; skill-91
+    ;; skill-92
+    ;; skill-93
+    ;; skill-94
+    ;; skill-95
+    ;; skill-96
+    ;; skill-97
+    ;; skill-98
+    ;; skill-99
+    ;; skill-100
+    ;; skill-101
+    ;; skill-102
+    ;; skill-103
+    ;; skill-104
+    ;; skill-105
+    ;; === mincan === 
+    ;; none
+    ;; === forest (entrance side?) ===
+    ;; skill-123
+    ;; === forestb (sage side?) ===
+    ;; skill-115
+    ;; skill-116
+    ;; skill-117
+    ;; skill-118
+    ;; skill-119
+    ;; skill-120
+    ;; skill-121
+    ;; skill-122
+    ;; === drill/drillmid/drillmtn ===
+    ;; skill-53
+    ;; skill-54
+    ;; skill-55
+    ;; skill-56
+    ;; skill-57
+    ;; === drillb (mech suit area) === 
+    ;; none
+    ;; === tomba (central chamber) ===
+    ;; skill-65
+    ;; skill-66
+    ;; skill-67
+    ;; skill-68
+    ;; === tombb (left tomb) ===
+    ;; skill-9
+    ;; === tombc (right tomb) ===
+    ;; none
+    ;; === tombd (entrance area) ===
+    ;; none
+    ;; === tombe (daxter spider chase) ===
+    ;; none
+    ;; === tombboss (praxis 2)
+    ;; none
+    ;; === consite/consiteb ===
+    ;; skill-83
+    ;; skill-84
+    ;; === under/underb (mech suit area) ===
+    ;; skill-87
+    ;; skill-88 ;; originally OOB but we use it
+    ;; === nest (outside) ===
+    ;; skill-24
+    ;; skill-25
+    ;; skill-26
+    ;; skill-27
+    ;; skill-28
+    ;; skill-29
+    ;; skill-30
+    ;; === nestb (inside) ===
+    ;; none
+
+
     ;; === ctysluma (near hideout) ===
     (('burning-bush-9)  ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
       (set-vector-meters! (-> arg0 extra trans) 1125.92   8.14 149.91) ;; near yellow barrier skip hidden by fruit
