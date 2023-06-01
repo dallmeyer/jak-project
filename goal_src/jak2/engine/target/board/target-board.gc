@@ -712,7 +712,13 @@
                            )
                        )
                      )
-                   )
+                    )
+                  ;; barg - get jetboard boosts on race tracks ^_^
+                  ((= v1-3 'turbo-pickup)
+                    (vector+float*! (-> self control transv) (-> self control transv) (-> self control c-R-w vector 2) 80960.0)
+                    (sound-play "turbo-pickup")
+                    (sound-play "board-boost")
+                    )
                   ((= v1-3 'touched)
                    (cond
                      ((and (-> self control danger-mode) ((method-of-type touching-shapes-entry prims-touching?)

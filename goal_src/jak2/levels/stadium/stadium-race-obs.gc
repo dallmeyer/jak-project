@@ -33,10 +33,16 @@
   :event (behavior ((proc process) (arg1 int) (event-type symbol) (event event-message-block))
     (the-as object (case event-type
                      (('open)
-                      (set! (-> self tt-target) 1.0)
+                      (if (= (-> self tt-target) 1.0)
+                        #f
+                        (set! (-> self tt-target) 1.0)
+                        )
                       )
                      (('close)
-                      (set! (-> self tt-target) 0.0)
+                      (if (= (-> self tt-target) 0.0)
+                        #f
+                        (set! (-> self tt-target) 0.0)
+                        )
                       )
                      )
             )

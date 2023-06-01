@@ -452,6 +452,32 @@
   (none)
   )
 
+(defun stdmb-hatch-check ((stdmb-hatch string))
+  (when *target*
+    (case (-> *target* state name)
+      ;; if target is attacking...
+      (('target-attack 'target-running-attack 'target-attack-uppercut-jump 'target-attack-air 'target-flop)
+        (let ((hatch (the process-drawable (process-by-ename stdmb-hatch)))
+              )
+          ;; ... and hatch exists, and player is close enough ...
+          (when (and hatch (-> hatch root) (-> hatch root trans))
+            (let ((hatch-vec (-> hatch root trans)))
+              (when (<= (vector-vector-xz-distance (-> *target* root trans) hatch-vec) (meters 4.0))
+                ;; ... then we (try to) open hatch ...
+                (when (send-event hatch 'open)
+                  ;; ... if successful we play sound
+                  (sound-play "timer-warn")
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  (none)
+  )
+
 (defun mod-override-init-position ((obj process-drawable) (arg0 entity-actor))
   (case (-> obj name) :comp name=
     ;; ====== ORBS / CITY ======
@@ -687,6 +713,13 @@
   (none)
   )
 
+(defun mod-turbo-jetboard? () 
+  (or (= (level-status *level* 'stadiumb) 'active)
+      (= (level-status *level* 'stadiumc) 'active)
+      (= (level-status *level* 'stadiumd) 'active)
+      )
+  )
+
 (defun mod-run-each-frame ()
   ;; === prison (first 2 rooms) ===
   (prison-door-button-check "prison-part-374" "prsn-cell-door-4")
@@ -694,6 +727,8 @@
   (prison-door-button-check "prison-part-376" "prsn-cell-door-2")
   (prison-door-button-check "prison-part-377" "prsn-cell-door-1")
   (prison-door-button-check "prison-part-378" "prsn-cell-door-5")
+  ;; === stadiumb (class 3) ===
+  (stdmb-hatch-check "stdmb-race-hatch-2")
   
   ;; (move-actor-str-target-offset "ctyport-part-86" 0.0 1.5 0.0)  ;; jakpoop
 

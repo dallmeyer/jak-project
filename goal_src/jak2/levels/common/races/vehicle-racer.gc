@@ -262,6 +262,7 @@
   (none)
   )
 
+;; attempt to use turbo boost
 (defmethod vehicle-method-66 vehicle-racer ((obj vehicle-racer))
   (when (and (not (logtest? (rigid-body-object-flag turbo-boost) (-> obj flags))) (> (-> obj turbo-pickup-count) 0))
     (+! (-> obj turbo-pickup-count) -1)
