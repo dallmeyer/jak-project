@@ -265,6 +265,7 @@
     (+ (* (shr (logand bcd #xf0) 4) 10) (logand bcd #x0f))
   )
 
+(define-extern baby-mode-update (function none))
 (defmethod update pc-settings ((obj pc-settings))
   "Update settings to/from PC kernel. Call this at the start of every frame.
    This will update things like the aspect-ratio, which will be used for graphics code later."
@@ -279,6 +280,10 @@
   ;; update auto-splitter info
   (when (-> *pc-settings* speedrunner-mode?)
     (update-speedrun obj))
+
+  (when (-> *pc-settings* baby-mode?)
+    (baby-mode-update)
+    )
 
   (when (not (-> obj use-vis?))
     (update-video-hacks obj)
