@@ -126,23 +126,92 @@
 (defmacro spawn-skill (x y z bob? name)
   `(begin 
     (format 0 "trying to spawn ~A~%" ,name)
-    (let ((fax (new 'static 'fact-info)))
-      (set! (-> fax pickup-type) (pickup-type skill))
-      (set! (-> fax pickup-amount) 1.0)
-      (set! (-> fax pickup-spawn-amount) 1.0)
-      ;; make sure it doesn't timeout and disappear
-      (logior! (-> fax options) (actor-option fade-out))
-      (set! (-> fax fade-time) (the-as time-frame 0))
-      (when ,bob?
-        (logior! (-> fax options) (actor-option force-bob))
+    (cond
+      ((process-by-name ,name *active-pool*)
+        (format 0 "~A is already spawned, skipping")
         )
-      (let ((proc (ppointer->process (birth-pickup-at-point-named (static-vector-meters ,x ,y ,z) (pickup-type skill) 1.0 #t *active-pool* fax ,name))))
-        ;; (copy-string<-string (-> proc name) ,name) ;; lol this overwrote the skill type name and caused weird problems
-        (format 0 "spawned ~A~%" proc)
-        proc  ;; return proc
+      (#f ;; TODO track collection
+        (format 0 "~A is already collected, skipping")
+        )
+      (else
+        (let ((fax (new 'static 'fact-info)))
+          (set! (-> fax pickup-type) (pickup-type skill))
+          (set! (-> fax pickup-amount) 1.0)
+          (set! (-> fax pickup-spawn-amount) 1.0)
+          ;; make sure it doesn't timeout and disappear
+          (logior! (-> fax options) (actor-option fade-out))
+          (set! (-> fax fade-time) (the-as time-frame 0))
+          (when ,bob?
+            (logior! (-> fax options) (actor-option force-bob))
+            )
+          (let ((proc (ppointer->process (birth-pickup-at-point-named (static-vector-meters ,x ,y ,z) (pickup-type skill) 1.0 #t *active-pool* fax ,name))))
+            ;; (copy-string<-string (-> proc name) ,name) ;; lol this overwrote the "skill" string in the symbol table
+            (format 0 "spawned ~A~%" proc)
+            )
+          )
         )
       )
     )
+  )
+
+(define *baby-mode-orb-dist* (the-as float #f))
+(defun baby-mode-find-closest-orb ()
+  ;; find closest orb
+  (set! *baby-mode-orb-dist* (the-as float #f))
+  (when (not (or (= *master-mode* 'menu) (= *master-mode* 'progress)))
+    (dotimes (s4-0 (-> *level* length))
+      (let ((v1-8 (-> *level* level s4-0)))
+        (when (= (-> v1-8 status) 'active)
+          (let ((s3-0 (-> v1-8 bsp level entity)))
+            (dotimes (s2-0 (-> s3-0 length))
+              (let* ((s0-0 (-> s3-0 data s2-0 entity))
+                     (s1-0 (-> s0-0 extra trans))
+                     (proc (-> s0-0 extra process))
+                     )
+                (when (and proc (type-type? (-> proc type) skill)) ;; open orbs
+                  (let ((dist (vector-vector-distance 
+                                (target-pos 0) 
+                                (-> (the process-drawable (-> s0-0 extra process)) root trans))))
+                    (if (or (= *baby-mode-orb-dist* #f) (< dist *baby-mode-orb-dist*))
+                      (set! *baby-mode-orb-dist* dist)
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          ;; TODO check skills spawned the hacky way too
+          )
+        )
+      )
+    )
+  (none)
+  )
+
+(defun draw-baby-mode ()
+  (when (and (pause-allowed?) (-> *pc-settings* baby-mode?))
+    (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
+                                      (bucket-id debug-no-zbuf1))
+      (if (= *baby-mode-orb-dist* #f)
+        (draw-string-xy (string-format "Closest Orb: N/A")
+                        buf 5 395 (font-color transparent) (font-flags kerning shadow))
+        ;; color based on distance
+        (let ((fc (cond
+                  ((< *baby-mode-orb-dist* (meters 10.0)) (font-color orange))
+                  ((< *baby-mode-orb-dist* (meters 20.0)) (font-color progress-old-yellow))
+                  ((< *baby-mode-orb-dist* (meters 30.0)) (font-color flat-yellow))
+                  ((< *baby-mode-orb-dist* (meters 40.0)) (font-color progress-old-blue))
+                  ((< *baby-mode-orb-dist* (meters 50.0)) (font-color cyan))
+                  (else (font-color blue))
+                  )))
+          (draw-string-xy (string-format "Closest Orb: ~Mm"
+                                         *baby-mode-orb-dist*)
+                          buf 5 395 fc (font-flags kerning shadow))
+          )
+        )
+      )
+    )
+  (none)
   )
 
 (defun mod-spawn-new-entities ((level symbol))

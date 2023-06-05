@@ -1470,6 +1470,7 @@
   (none)
   )
 
+(define-extern baby-mode-find-closest-orb (function none))
 (define-extern mod-run-each-frame (function none))
 (defun display-loop-main ((arg0 display))
   "Run the engine.
@@ -1498,6 +1499,11 @@
     ;; final call to update joints before drawing.
     (with-profiler 'joints *profile-joints-color*
       (execute-math-engine)
+      )
+
+    ;; find closest orb for baby-mode
+    (if (-> *pc-settings* baby-mode?)
+      (baby-mode-find-closest-orb)
       )
 
     ;; execute the debug hook before doing the big updates
