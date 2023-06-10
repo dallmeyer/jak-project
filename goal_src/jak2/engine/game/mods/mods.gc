@@ -426,6 +426,7 @@
     (('tombe) ;; daxter spider chase
       )
     (('tombboss) ;; praxis 2
+    ;; 255.85 -69.420 1411.91)) ;; where daxter exits chase in boss room (tomb-boss-door changed to open if boss completed)
       )
     ;; ====== ORBS / DIG ======
     (('dig1)  ;; with guards and explosive barrels
@@ -660,12 +661,12 @@
     ;; none
     ;; ====== ORBS / TOMB ======
     ;; === tomba (central chamber) ===
-    ;; skill-65
-    ;; skill-66
-    ;; skill-67
-    ;; skill-68
+    (('skill-65) (set-vector-meters! (-> arg0 extra trans) 222.33 -64.0 1265.3))  ;; corner of pillar at start of OOB for left tomb skip
+    (('skill-66) (set-vector-meters! (-> arg0 extra trans) 192.13 -48.0 1069.2)) ;; little hole under bridge near top
+    (('skill-67) (set-vector-meters! (-> arg0 extra trans) 162.35 -16.7 1057.65)) ;; up around right corner at start
+    (('skill-68) (set-vector-meters! (-> arg0 extra trans) 172.33 -22.0 1383.98)) ;; top right above boss - proxy from torch to upper ledge then abbah bounce (or just proxy/hover)
     ;; === tombb (left tomb) ===
-    ;; skill-9
+    (('skill-9) (set-vector-meters! (-> arg0 extra trans) 332.85 -36.5 1253.96)) ;; in flame above where it usually is
     ;; === tombc (right tomb) ===
     ;; none
     ;; === tombd (entrance area) ===
@@ -673,7 +674,7 @@
     ;; === tombe (daxter spider chase) ===
     ;; none
     ;; === tombboss (praxis 2)
-    ;; none
+    ;; none 
     ;; ====== ORBS / DIG ======
     ;; === dig3a (front room with metalheads) ===
     ;; skill-14
