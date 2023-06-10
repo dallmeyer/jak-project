@@ -51,6 +51,7 @@
   (none)
   )
 
+(define-extern draw-baby-mode (function none))
 (defun baby-mode-update ()
   (when (-> *pc-settings* baby-mode?)
     ;; Draw info to the screen
