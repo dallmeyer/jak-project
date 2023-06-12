@@ -252,6 +252,8 @@
       )
     (('ctyfarmb) ;; (b/t bazaar and port)
       (spawn-skill -167.32  30.5    935.36  #t "ctyfarmb-skill-1")  ;; atop pipes near sprinkler (jump from hose into abbah bounce against wall, then up and over)
+      (spawn-skill -404.64  9.77    1155.76 #t "ctyfarmb-skill-2")  ;; in center pumpkin near port
+      (spawn-skill -444.33  12.3    1195.2  #t "ctyfarmb-skill-3")  ;; in corner crack near port
       )
     (('ctyfarma) ;; (b/w bazaar and ctygen)
 
