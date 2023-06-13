@@ -252,8 +252,11 @@
       )
     (('ctyfarmb) ;; (b/t bazaar and port)
       (spawn-skill -167.32  30.5    935.36  #t "ctyfarmb-skill-1")  ;; atop pipes near sprinkler (jump from hose into abbah bounce against wall, then up and over)
-      (spawn-skill -404.64  9.77    1155.76 #t "ctyfarmb-skill-2")  ;; in center pumpkin near port
+      (spawn-skill -404.64  9.2     1155.76 #t "ctyfarmb-skill-2")  ;; in center pumpkin near port
       (spawn-skill -444.33  12.3    1195.2  #t "ctyfarmb-skill-3")  ;; in corner crack near port
+      (spawn-skill -371.36  9.6     920.16  #t "ctyfarmb-skill-4")  ;; inside lurker escape pipe
+      (spawn-skill -82.3    12.2    1031.47 #t "ctyfarmb-skill-5")  ;; in crack between rocks by yakows, bazaar side
+      (spawn-skill -36.61   25.2    938.81  #t "ctyfarmb-skill-6")  ;; in tree behind rock near bazaar
       )
     (('ctyfarma) ;; (b/w bazaar and ctygen)
 
@@ -265,8 +268,10 @@
     (('ctyport) ;; ===
       (spawn-skill -260.0   5.7     1919.32 #t "ctyport-skill-1") ;; behind big circle things towards underport exit (boosted over)
       )
-    (('ctymark) ;; (bazaar near brutter) ===
+    (('ctymarka) ;; (bazaar between ctyfarma/b, ctypal. brutter)) ===
       (spawn-skill -118.2   22.53   486.9   #f "ctymarka-skill-1")  ;; above fish on brutter kiosk
+      )
+    (('ctymarkb) ;; (bazaar between ctypal and ctyind. overpass. onin. denfend ashelin) ===
       )
     (('onintent) ;; ===
       (spawn-skill 708.7    9.0     746.2   #t "onintent-skill-1")  ;; on left behind pole (need to crouch)
@@ -298,7 +303,7 @@
       (spawn-skill 537.70   27.3    33.21   #t "forexitb-skill-3") ;; on backside of first cylinder thing on ceiling
       (spawn-skill 523.80   27.9    51.82   #t "forexitb-skill-4") ;; follow from ^, on pipes in back of room
       (spawn-skill 551.6    27.3    76.18   #t "forexitb-skill-5") ;; on JakPiss sewer pipe
-      (spawn-skill 743.39   83.5    92.92   #t "forexitb-skill-6")
+      (spawn-skill 743.39   83.5    92.92   #t "forexitb-skill-6") ;; above pipe when getting shot from below (uppercut from valve on wall)
       )
     (('fordumpa) ;; (tank pt 1) ===
       (spawn-skill 746.19   8.5     261.65  #t "fordumpa-skill-1")  ;; immediate left corner in tank section
