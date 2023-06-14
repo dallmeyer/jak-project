@@ -33,7 +33,9 @@ add_library(common
         dma/dma.cpp
         dma/gs.cpp
         formatter/formatter.cpp
+        formatter/formatting_rules.cpp
         formatter/formatter_tree.cpp
+        formatter/config/rule_config.cpp
         global_profiler/GlobalProfiler.cpp
         goos/Interpreter.cpp
         goos/Object.cpp
@@ -51,6 +53,8 @@ add_library(common
         repl/util.cpp
         serialization/subtitles/subtitles_deser.cpp
         serialization/subtitles/subtitles_ser.cpp
+        serialization/subtitles2/subtitles2_deser.cpp
+        serialization/subtitles2/subtitles2_ser.cpp
         type_system/defenum.cpp
         type_system/deftype.cpp
         type_system/state.cpp

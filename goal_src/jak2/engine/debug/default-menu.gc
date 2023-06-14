@@ -2695,7 +2695,7 @@
                     (a0-5 arg1)
                     )
                 (when (if (= a0-5 'test)
-                          (logtest? (continue-flags cf17) (-> (the-as continue-point v1-2) flags))
+                          (logtest? (continue-flags test) (-> (the-as continue-point v1-2) flags))
                           #t
                           )
                   (let ((s2-0 (method-of-type pair new))
@@ -3927,9 +3927,14 @@
              (function "carb" #f ,(lambda () (dm-pilot-mode 4) (none)))
              (function "carc" #f ,(lambda () (dm-pilot-mode 5) (none)))
              (function "hellcat" #f ,(lambda () (dm-pilot-mode 7) (none)))
+             ;; race-bike-a/b require the city-erol-challenge task to be active
              (function "race-bike-a" #f ,(lambda () (dm-pilot-race-mode 0) (none)))
              (function "race-bike-b" #f ,(lambda () (dm-pilot-race-mode 1) (none)))
-             (function "race-bike-c" #f ,(lambda () (dm-pilot-race-mode 2) (none)))
+             ;; race-bike-c doesn't actually work?
+             (function "race-bike-c" #f ,(lambda () (dm-pilot-race-mode 2) (none))) 
+             ;; race-bike-d/e require one of the stadium race tasks to be active
+             (function "race-bike-d" #f ,(lambda () (dm-pilot-race-mode 3) (none)))
+             (function "race-bike-e" #f ,(lambda () (dm-pilot-race-mode 4) (none)))
              (function "evantestbike" #f ,(lambda () (dm-pilot-mode 8) (none)))
              (function "test-bike" #f ,(lambda () (dm-pilot-mode 9) (none)))
              (function "test-car" #f ,(lambda () (dm-pilot-mode 10) (none)))
@@ -5563,7 +5568,7 @@
            (flag "Sound channels" *display-iop-info* dm-boolean-toggle-pick-func)
            (function "Reload Banks" #f sound-bank-reload)
            (function "List Sounds" #f ,(lambda () (list-sounds) (none)))
-           (function "IOP Info" #f ,(lambda () (loader-test-command (sound-command iop-mem) (the-as uint 0)) (none)))
+           ;(function "IOP Info" #f ,(lambda () (loader-test-command (sound-command iop-mem) (the-as uint 0)) (none)))
            )
         )
       )

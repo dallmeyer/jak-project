@@ -844,7 +844,6 @@
 ;;      - does bone calcs for merc
 ;;      - does VU0/CPU stuff for generic/shadow/lightning
 
-
 (defun dma-add-process-drawable ((pd process-drawable) (dc draw-control) (flag symbol) (dma-buf dma-buffer))
   "Draw a normal process-drawable. Set up lighting/shadow settings, then pass on to foreground renderer."
   (local-vars
@@ -1143,8 +1142,12 @@
                       )
                     ;; lod hacks!
                     (with-pc
-                      (if (not (-> *pc-settings* ps2-lod-dist?))
-                        (set! lod-idx (minmax (-> *pc-settings* lod-force-actor) 0 (-> dc lod-set max-lod))))
+                      (when (not (-> *pc-settings* ps2-lod-dist?))
+                        (set! lod-idx (minmax (-> *pc-settings* lod-force-actor) 0 (-> dc lod-set max-lod)))
+                        (when (> (-> dc force-lod) -1)
+                          (set! lod-idx (-> dc force-lod))
+                          )
+                        )
                       )
                     (if (#if (not PC_PORT)
                              (and (< (-> dc lod-set lod lod-idx dist) dist-w) (< (-> dc force-lod) 0))
@@ -1207,8 +1210,9 @@
                         (protect ((-> *pc-settings* force-envmap?))
                           (when (not (movie?))
                             (dotimes (eff-i (-> dc mgeo header effect-count))
-                              (if (logtest? (effect-bits cross-fade) (-> dc mgeo effect eff-i effect-bits))
-                                (false! (-> *pc-settings* force-envmap?)))))
+                              (if (and (zero? (logand (ash 1 eff-i) (-> dc effect-mask)))
+                                       (logtest? (effect-bits cross-fade) (-> dc mgeo effect eff-i effect-bits)))
+                                  (false! (-> *pc-settings* force-envmap?)))))
                           (foreground-draw dc dma-buf dist-w)
                           )
                         )
@@ -1345,7 +1349,7 @@
   (none)
   )
 
-(defun main-debug-hook ()
+(defun-debug main-debug-hook ()
   "Execute the debug engine, collision renderer, and draw-instance-info."
   (when (not (or (= *master-mode* 'menu) (= *master-mode* 'progress)))
     (let ((a0-3 *col-rend*))
