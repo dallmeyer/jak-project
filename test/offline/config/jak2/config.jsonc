@@ -56,6 +56,7 @@
     "DGO/LPROTECT.DGO",
     "DGO/LSACK.DGO",
     "DGO/LSHUTTLE.DGO",
+    "DGO/LWHACK.DGO",
     "DGO/MCN.DGO",
     "DGO/MTN.DGO",
     "DGO/NEB.DGO",
@@ -310,7 +311,9 @@
     "(method 224 crimson-guard)", // .mula.s
     "metalkor-egg-reaction", // .mula.s
     "init-vortex-polys",
-    "(method 11 cty-guard-turret)" // handle casts
+    "(method 11 cty-guard-turret)", // handle casts
+    "shadow-execute-all",
+    "shadow-vu0-upload"
   ],
 
   "skip_compile_states": {

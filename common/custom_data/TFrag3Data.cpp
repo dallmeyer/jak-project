@@ -173,23 +173,30 @@ std::array<math::Vector3f, 3> tie_normal_transform_v2(const std::array<math::Vec
   // sqc2 vf12, -80(t8)
 }
 
+u32 pack_to_gl_normal(s16 nx, s16 ny, s16 nz) {
+  ASSERT(nx >= -512 && nx <= 511);
+  ASSERT(ny >= -512 && ny <= 511);
+  ASSERT(nz >= -512 && nz <= 511);
+  return (nx & 0x3ff) | ((ny & 0x3ff) << 10) | ((nz & 0x3ff) << 20);
+}
+
 /*!
  * Unpack tie normal by transforming and converting to s16 for OpenGL.
  */
-math::Vector<s16, 3> unpack_tie_normal(const std::array<math::Vector3f, 3>& mat,
-                                       s8 nx,
-                                       s8 ny,
-                                       s8 nz) {
+u32 unpack_tie_normal(const std::array<math::Vector3f, 3>& mat, s8 nx, s8 ny, s8 nz) {
   // rotate the normal
   math::Vector3f nrm = math::Vector3f::zero();
   nrm += mat[0] * nx;
   nrm += mat[1] * ny;
   nrm += mat[2] * nz;
   // convert to s16 for OpenGL renderer
-  nrm *= 0.0078125;      // number from EE asm
-  nrm *= 256.f * 128.f;  // for normalize s16 -> float conversion by OpenGL.
+  // nrm /= 0x100;  // number from EE asm
+  // nrm *= 0x200;  // for normalized s10 -> float conversion by OpenGL.
+  nrm *= 2;  // for normalized s10 -> float conversion by OpenGL.
 
-  return nrm.cast<s16>();
+  auto as_int = nrm.cast<s16>();
+
+  return pack_to_gl_normal(as_int.x(), as_int.y(), as_int.z());
 }
 
 void TieTree::unpack() {
@@ -206,9 +213,7 @@ void TieTree::unpack() {
         vtx.z = proto_vtx.z;
         vtx.s = proto_vtx.s;
         vtx.t = proto_vtx.t;
-        vtx.nx = proto_vtx.nx << 8;
-        vtx.ny = proto_vtx.ny << 8;
-        vtx.nz = proto_vtx.nz << 8;
+        vtx.nor = pack_to_gl_normal(proto_vtx.nx << 1, proto_vtx.ny << 1, proto_vtx.nz << 1);
         vtx.r = proto_vtx.r;
         vtx.g = proto_vtx.g;
         vtx.b = proto_vtx.b;
@@ -229,10 +234,7 @@ void TieTree::unpack() {
         vtx.z = temp.z();
         vtx.s = proto_vtx.s;
         vtx.t = proto_vtx.t;
-        auto nrm = unpack_tie_normal(nmat, proto_vtx.nx, proto_vtx.ny, proto_vtx.nz);
-        vtx.nx = nrm.x();
-        vtx.ny = nrm.y();
-        vtx.nz = nrm.z();
+        vtx.nor = unpack_tie_normal(nmat, proto_vtx.nx, proto_vtx.ny, proto_vtx.nz);
         vtx.r = proto_vtx.r;
         vtx.g = proto_vtx.g;
         vtx.b = proto_vtx.b;
@@ -396,6 +398,11 @@ void MercDraw::serialize(Serializer& ser) {
   ser.from_ptr(&num_triangles);
 }
 
+void Blerc::serialize(Serializer& ser) {
+  ser.from_pod_vector(&float_data);
+  ser.from_pod_vector(&int_data);
+}
+
 void MercModifiableDrawGroup::serialize(Serializer& ser) {
   if (ser.is_saving()) {
     ser.save<size_t>(mod_draw.size());
@@ -418,6 +425,8 @@ void MercModifiableDrawGroup::serialize(Serializer& ser) {
   ser.from_pod_vector(&vertex_lump4_addr);
   ser.from_pod_vector(&fragment_mask);
   ser.from_ptr(&expect_vidx_end);
+
+  blerc.serialize(ser);
 }
 
 void MercEffect::serialize(Serializer& ser) {
@@ -535,6 +544,8 @@ void MercModifiableDrawGroup::memory_usage(MemoryUsageTracker* tracker) const {
   tracker->add(MemoryUsageCategory::MERC_MOD_DRAW_1, sizeof(MercDraw) * fix_draw.size());
   tracker->add(MemoryUsageCategory::MERC_MOD_DRAW_2, sizeof(MercDraw) * mod_draw.size());
   tracker->add(MemoryUsageCategory::MERC_MOD_TABLE, sizeof(u16) * vertex_lump4_addr.size());
+  tracker->add(MemoryUsageCategory::BLERC, sizeof(BlercFloatData) * blerc.float_data.size());
+  tracker->add(MemoryUsageCategory::BLERC, sizeof(u32) * blerc.int_data.size());
 }
 
 void MercEffect::memory_usage(MemoryUsageTracker* tracker) const {
@@ -686,6 +697,7 @@ void print_memory_usage(const tfrag3::Level& lev, int uncompressed_data_size) {
       {"merc-mod-table", mem_use.data[tfrag3::MemoryUsageCategory::MERC_MOD_TABLE]},
       {"merc-mod-draw-1", mem_use.data[tfrag3::MemoryUsageCategory::MERC_MOD_DRAW_1]},
       {"merc-mod-draw-2", mem_use.data[tfrag3::MemoryUsageCategory::MERC_MOD_DRAW_2]},
+      {"blerc", mem_use.data[tfrag3::MemoryUsageCategory::BLERC]},
   };
   for (auto& known : known_categories) {
     total_accounted += known.second;

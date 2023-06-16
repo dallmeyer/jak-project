@@ -1,5 +1,6 @@
 # logs
 /log
+prof.json
 
 # for CMake
 /Testing
@@ -57,6 +58,7 @@ texture_replacements/*
 
 # generated cmake files
 svnrev.h
+common/versions/revision.h
 ci-artifacts/
 out/build/
 __pycache__/
@@ -71,5 +73,5 @@ __pycache__/
 # docs
 /jak1-*.json
 /jak2-*.json
-
-multiplayer_hns_settings.json
+/TODO.md
+unifont-15.0.03.ttf
