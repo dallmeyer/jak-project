@@ -258,7 +258,7 @@
       (spawn-skill -82.3    12.2    1031.47 #t "ctyfarmb-skill-5")  ;; in crack between rocks by yakows, bazaar side
       (spawn-skill -36.61   25.2    938.81  #t "ctyfarmb-skill-6")  ;; in tree behind rock near bazaar
       )
-    (('ctyfarma) ;; (b/w bazaar and ctygen)
+    (('ctyfarma) ;; (b/w bazaar and ctygen, with mountain/forest exit)
 
       )
     (('ctygena) ;; (canals near farm)
