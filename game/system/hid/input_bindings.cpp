@@ -129,7 +129,12 @@ const InputBindingGroups DEFAULT_KEYBOARD_BINDS =
                         {SDLK_UP, {InputBinding(PadData::ButtonIndex::DPAD_UP)}},
                         {SDLK_DOWN, {InputBinding(PadData::ButtonIndex::DPAD_DOWN)}},
                         {SDLK_LEFT, {InputBinding(PadData::ButtonIndex::DPAD_LEFT)}},
-                        {SDLK_RIGHT, {InputBinding(PadData::ButtonIndex::DPAD_RIGHT)}}});
+                        {SDLK_RIGHT, {InputBinding(PadData::ButtonIndex::DPAD_RIGHT)}},
+                        // added for speedrun practice mod
+                        {SDLK_x, {InputBinding(PadData::ButtonIndex::L2), InputBinding(PadData::ButtonIndex::DPAD_DOWN)}},
+                        {SDLK_c, {InputBinding(PadData::ButtonIndex::L2), InputBinding(PadData::ButtonIndex::DPAD_DOWN)}},
+                        {SDLK_v, {InputBinding(PadData::ButtonIndex::L2), InputBinding(PadData::ButtonIndex::DPAD_UP)}},
+                        });
 
 const InputBindingGroups DEFAULT_MOUSE_BINDS = InputBindingGroups(MOUSE, {}, {}, {});
 
