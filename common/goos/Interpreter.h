@@ -31,6 +31,7 @@ class Interpreter {
                    const std::shared_ptr<EnvironmentObject>& env,
                    Object* result);
   Arguments get_args(const Object& form, const Object& rest, const ArgumentSpec& spec);
+  Arguments get_args_no_named(const Object& form, const Object& rest, const ArgumentSpec& spec);
   void set_args_in_env(const Object& form,
                        const Arguments& args,
                        const ArgumentSpec& arg_spec,
@@ -62,8 +63,11 @@ class Interpreter {
       const std::unordered_map<std::string, std::pair<bool, std::optional<ObjectType>>>& named);
 
   Object eval_pair(const Object& o, const std::shared_ptr<EnvironmentObject>& env);
+
+ public:
   ArgumentSpec parse_arg_spec(const Object& form, Object& rest);
 
+ private:
   Object quasiquote_helper(const Object& form, const std::shared_ptr<EnvironmentObject>& env);
 
   IntType number_to_integer(const Object& obj);
@@ -209,6 +213,9 @@ class Interpreter {
   Object eval_string_split(const Object& form,
                            Arguments& args,
                            const std::shared_ptr<EnvironmentObject>& env);
+  Object eval_string_substr(const Object& form,
+                            Arguments& args,
+                            const std::shared_ptr<EnvironmentObject>& env);
   Object eval_ash(const Object& form,
                   Arguments& args,
                   const std::shared_ptr<EnvironmentObject>& env);

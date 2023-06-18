@@ -179,7 +179,7 @@ void Compiler::generate_field_description(const goos::Object& form,
   } else if (m_ts.tc(m_ts.make_typespec("integer"), f.type())) {
     // Integer
     if (m_ts.lookup_type(f.type())->get_load_size() > 8) {
-      str_template += fmt::format("{}: <cannot-print>~%", tabs, f.name());
+      str_template += fmt::format("{}{}: <cannot-print>~%", tabs, f.name());
     } else {
       str_template += fmt::format("{}{}: ~D~%", tabs, f.name());
       format_args.push_back(get_field_of_structure(type, reg, f.name(), env)->to_gpr(form, env));
@@ -273,7 +273,7 @@ Val* Compiler::generate_inspector_for_structure_type(const goos::Object& form,
 
   // add this function to the object file
   auto fe = env->function_env();
-  auto method = fe->alloc_val<LambdaVal>(m_ts.make_typespec("function"));
+  auto method = fe->alloc_val<LambdaVal>(m_ts.make_typespec("function"), false);
   method->func = method_env.get();
   auto obj_env_inspect = method_env->file_env();
   obj_env_inspect->add_function(std::move(method_env));
@@ -344,7 +344,7 @@ Val* Compiler::generate_inspector_for_bitfield_type(const goos::Object& form,
 
   // add this function to the object file
   auto fe = env->function_env();
-  auto method = fe->alloc_val<LambdaVal>(m_ts.make_typespec("function"));
+  auto method = fe->alloc_val<LambdaVal>(m_ts.make_typespec("function"), false);
   method->func = method_env.get();
   auto obj_env_inspect = method_env->file_env();
   obj_env_inspect->add_function(std::move(method_env));
@@ -450,7 +450,7 @@ Val* Compiler::compile_defmethod(const goos::Object& form, const goos::Object& _
     throw_compiler_error(form, "Method type must be a symbol, got {}", method_name.print());
   }
 
-  auto place = fe->alloc_val<LambdaVal>(get_none()->type());
+  auto place = fe->alloc_val<LambdaVal>(get_none()->type(), false);
   auto& lambda = place->lambda;
   auto lambda_ts = m_ts.make_typespec("function");
 
@@ -480,8 +480,9 @@ Val* Compiler::compile_defmethod(const goos::Object& form, const goos::Object& _
   // todo, verify argument list types (check that first arg is _type_ for methods that aren't "new")
   lambda.debug_name = fmt::format("(method {} {})", method_name.print(), type_name.print());
 
-  // TODO - docstring - do something with the docstring!
+  std::optional<std::string> docstring;
   if (body->as_pair()->car.is_string() && !body->as_pair()->cdr.is_empty_list()) {
+    docstring = pair_car(*body).as_string()->data;
     body = &pair_cdr(*body);
   }
 
@@ -612,15 +613,14 @@ Val* Compiler::compile_defmethod(const goos::Object& form, const goos::Object& _
   }
   place->set_type(lambda_ts);
 
-  m_symbol_info.add_method(symbol_string(method_name), symbol_string(type_name), form);
-
-  // TODO!
-  auto info =
-      m_ts.define_method(symbol_string(type_name), symbol_string(method_name), lambda_ts, {});
+  auto info = m_ts.define_method(symbol_string(type_name), symbol_string(method_name), lambda_ts,
+                                 docstring);
   auto type_obj = compile_get_symbol_value(form, symbol_string(type_name), env)->to_gpr(form, env);
   auto id_val = compile_integer(info.id, env)->to_gpr(form, env);
   auto method_val = place->to_gpr(form, env);
   auto method_set_val = compile_get_symbol_value(form, "method-set!", env)->to_gpr(form, env);
+
+  m_symbol_info.add_method(symbol_string(method_name), lambda.params, info, form);
   return compile_real_function_call(form, method_set_val, {type_obj, id_val, method_val}, env);
 }
 

@@ -1,3 +1,7 @@
+# logs
+/log
+prof.json
+
 # for CMake
 /Testing
 
@@ -6,9 +10,9 @@ cmake-build-debug/*
 cmake-build-debug--o0/*
 .idea/*
 build/*
-decompiler_out/*
-decompiler_out2/*
+/decompiler_out*
 logs/*
+profile_data/*
 
 # for vscode/clangd
 .cache/*
@@ -54,6 +58,7 @@ texture_replacements/*
 
 # generated cmake files
 svnrev.h
+common/versions/revision.h
 ci-artifacts/
 out/build/
 __pycache__/
@@ -64,3 +69,9 @@ __pycache__/
 
 # backup files from OpenMaya
 *.bak
+
+# docs
+/jak1-*.json
+/jak2-*.json
+/TODO.md
+unifont-15.0.03.ttf

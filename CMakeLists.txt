@@ -38,13 +38,13 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         -Wall \
         -Wno-c++11-narrowing \
         -Wno-c++98-compat \
-        -O3")
+        -O3 \
+        -D_CRT_SECURE_NO_WARNINGS")
 
     # Increase stack size for windows, who's default is too low
     if(WIN32)
         # Increase the reserved stack size for all threads to 16MB
         # Note: this is only _reserved_ memory, not necessarily _committed_ memory
-        # TODO - test with add_link_options instead
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LDFLAGS} -Xlinker /STACK:16000000")
     else()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -g -Wextra")
@@ -56,7 +56,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     endif()
 
     if(CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
-        # TODO - test with add_link_options instead
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LDFLAGS} -Xlinker /debug")
     endif()
 
@@ -151,8 +150,6 @@ if(WIN32)
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-    set(CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION 7.1.7600.0.30514) # win7.1, supports xp
-    message("Windows SDK version: ${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION}")
 endif()
 
 # Code Coverage
@@ -183,6 +180,11 @@ include_directories(third-party/SQLiteCpp/include)
 add_subdirectory(third-party/SQLiteCpp)
 string(REPLACE " ${THIRDPARTY_IGNORED_WARNINGS} " "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
+# build tree-sitter parser
+include_directories(third-party/tree-sitter/tree-sitter/lib/include)
+include_directories(third-party/tree-sitter/tree-sitter-opengoal/include)
+add_subdirectory(third-party/tree-sitter EXCLUDE_FROM_ALL)
+
 # build common library
 add_subdirectory(common)
 
@@ -198,13 +200,15 @@ add_subdirectory(lsp)
 # build libco
 add_subdirectory(third-party/libco)
 
-# build glfw library
-add_subdirectory(third-party/glfw EXCLUDE_FROM_ALL)
 add_subdirectory(third-party/zstd EXCLUDE_FROM_ALL)
+
+# build SDL
+include(SDLOptions)
+add_subdirectory(third-party/SDL EXCLUDE_FROM_ALL)
 
 # build imgui
 include_directories(third-party/glad/include)
-include_directories(third-party/glfw/include)
+include_directories(third-party/SDL/include)
 add_subdirectory(third-party/imgui EXCLUDE_FROM_ALL)
 string(REPLACE " ${THIRDPARTY_IGNORED_WARNINGS} " "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 

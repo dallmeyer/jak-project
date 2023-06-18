@@ -44,7 +44,9 @@ Val* Compiler::compile_goos_macro(const goos::Object& o,
   auto compile_env_for_macro =
       env->function_env()->alloc_env<MacroExpandEnv>(env, name.as_symbol(), macro->body, o);
   try {
-    return compile(goos_result, compile_env_for_macro);
+    const auto& compile_result = compile(goos_result, compile_env_for_macro);
+    m_macro_specs.emplace(macro->name, macro->args);
+    return compile_result;
   } catch (CompilerException& ce) {
     if (ce.print_err_stack) {
       bool good_info = false;
@@ -134,9 +136,11 @@ Val* Compiler::compile_gscond(const goos::Object& form, const goos::Object& rest
  * Current only supports 'thing or '(). Static lists/pairs should be added at some point.
  */
 Val* Compiler::compile_quote(const goos::Object& form, const goos::Object& rest, Env* env) {
-  auto args = get_va(form, rest);
-  va_check(form, args, {{}}, {});
-  auto thing = args.unnamed.at(0);
+  auto args = get_va_no_named(form, rest);
+  if (args.unnamed.size() != 1) {
+    throw_compiler_error(form, "invalid number of arguments to compile quote");
+  }
+  auto& thing = args.unnamed.front();
   switch (thing.type) {
     case goos::ObjectType::SYMBOL:
       return compile_get_sym_obj(thing.as_symbol()->name, env);
@@ -168,13 +172,14 @@ Val* Compiler::compile_define_constant(const goos::Object& form,
   rest = &pair_cdr(*rest);
 
   // check for potential docstring
-  // TODO - docstring - actually do something with this!
+  SymbolInfo::Metadata sym_meta;
   if (rest->is_pair() && pair_car(*rest).is_string() && !pair_cdr(*rest).is_empty_list()) {
-    // std::string docstring = pair_car(*rest).as_string()->data;
+    std::string docstring = pair_car(*rest).as_string()->data;
+    sym_meta.docstring = docstring;
     rest = &pair_cdr(*rest);
   }
 
-  auto value = pair_car(*rest);
+  auto& value = pair_car(*rest);
 
   rest = &rest->as_pair()->cdr;
   if (!rest->is_empty_list()) {
@@ -203,7 +208,9 @@ Val* Compiler::compile_define_constant(const goos::Object& form,
     m_goos.global_environment.as_env()->vars[sym] = value;
   }
 
-  m_symbol_info.add_constant(sym->name, form);
+  // TODO - eventually, it'd be nice if global constants were properly typed
+  // and this information was propagated
+  m_symbol_info.add_constant(sym->name, form, sym_meta);
 
   return get_none();
 }

@@ -60,84 +60,84 @@
   )
 
 (defpart 2104
-  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #xbb :page #xc))
-    (sp-flt spt-num 1.0)
-    (sp-rnd-flt spt-scale-x (meters 9) (meters 0.5) 1.0)
-    (sp-flt spt-rot-x 409.6)
-    (sp-rnd-flt spt-scale-y (meters 7) (meters 0.5) 1.0)
-    (sp-rnd-flt spt-r 64.0 64.0 1.0)
-    (sp-flt spt-g 0.0)
-    (sp-flt spt-b 128.0)
-    (sp-flt spt-a 40.0)
-    (sp-int spt-timer 5)
-    (sp-cpuinfo-flags sp-cpuinfo-flag-2 sp-cpuinfo-flag-3 glow)
-    (sp-flt spt-userdata 2048.0)
+  :init-specs ((:texture (new 'static 'texture-id :index #xbb :page #xc))
+    (:num 1.0)
+    (:scale-x (meters 9) (meters 0.5))
+    (:rot-x (degrees 2.25))
+    (:scale-y (meters 7) (meters 0.5))
+    (:r 64.0 64.0)
+    (:g 0.0)
+    (:b 128.0)
+    (:a 40.0)
+    (:timer (seconds 0.017))
+    (:flags (sp-cpuinfo-flag-2 sp-cpuinfo-flag-3 glow))
+    (:userdata 2048.0)
     )
   )
 
 (defpart 2103
-  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x29 :page #xc))
-    (sp-flt spt-num 1.0)
-    (sp-flt spt-x (meters 0.1))
-    (sp-flt spt-y (meters 0))
-    (sp-flt spt-z (meters 0))
-    (sp-rnd-flt spt-scale-x (meters 2) (meters 1) 1.0)
-    (sp-flt spt-rot-x 0.0)
-    (sp-flt spt-rot-y (degrees 0.0))
-    (sp-flt spt-rot-z (degrees 90.0))
-    (sp-rnd-flt spt-scale-y (meters 4.4) (meters 1) 1.0)
-    (sp-flt spt-r 255.0)
-    (sp-rnd-flt spt-g 128.0 128.0 1.0)
-    (sp-flt spt-b 255.0)
-    (sp-rnd-flt spt-a 80.0 20.0 1.0)
-    (sp-rnd-flt spt-accel-y -1.3653333 -4.096 1.0)
-    (sp-int spt-timer 5)
-    (sp-cpuinfo-flags sp-cpuinfo-flag-2 sp-cpuinfo-flag-3 sp-cpuinfo-flag-14)
-    (sp-flt spt-rotate-y (degrees 0.0))
+  :init-specs ((:texture (new 'static 'texture-id :index #x29 :page #xc))
+    (:num 1.0)
+    (:x (meters 0.1))
+    (:y (meters 0))
+    (:z (meters 0))
+    (:scale-x (meters 2) (meters 1))
+    (:rot-x (degrees 0))
+    (:rot-y (degrees 0))
+    (:rot-z (degrees 90))
+    (:scale-y (meters 4.4) (meters 1))
+    (:r 255.0)
+    (:g 128.0 128.0)
+    (:b 255.0)
+    (:a 80.0 20.0)
+    (:accel-y (meters -0.00033333333) (meters -0.001))
+    (:timer (seconds 0.017))
+    (:flags (sp-cpuinfo-flag-2 sp-cpuinfo-flag-3 sp-cpuinfo-flag-14))
+    (:rotate-y (degrees 0))
     )
   )
 
 (defpart 2102
-  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x13 :page #xc))
-    (sp-flt spt-num 1.0)
-    (sp-flt spt-x (meters 0.1))
-    (sp-flt spt-y (meters 0))
-    (sp-flt spt-z (meters 0))
-    (sp-flt spt-scale-x (meters 3.4))
-    (sp-flt spt-rot-x 0.0)
-    (sp-flt spt-rot-y (degrees 0.0))
-    (sp-flt spt-rot-z (degrees 90.0))
-    (sp-flt spt-scale-y (meters 5.4))
-    (sp-rnd-flt spt-r 128.0 128.0 1.0)
-    (sp-flt spt-g 0.0)
-    (sp-flt spt-b 255.0)
-    (sp-rnd-flt spt-a 10.0 10.0 1.0)
-    (sp-rnd-flt spt-accel-y -1.3653333 -4.096 1.0)
-    (sp-int spt-timer 5)
-    (sp-cpuinfo-flags sp-cpuinfo-flag-2 sp-cpuinfo-flag-3 sp-cpuinfo-flag-14)
-    (sp-flt spt-rotate-y (degrees 0.0))
+  :init-specs ((:texture (new 'static 'texture-id :index #x13 :page #xc))
+    (:num 1.0)
+    (:x (meters 0.1))
+    (:y (meters 0))
+    (:z (meters 0))
+    (:scale-x (meters 3.4))
+    (:rot-x (degrees 0))
+    (:rot-y (degrees 0))
+    (:rot-z (degrees 90))
+    (:scale-y (meters 5.4))
+    (:r 128.0 128.0)
+    (:g 0.0)
+    (:b 255.0)
+    (:a 10.0 10.0)
+    (:accel-y (meters -0.00033333333) (meters -0.001))
+    (:timer (seconds 0.017))
+    (:flags (sp-cpuinfo-flag-2 sp-cpuinfo-flag-3 sp-cpuinfo-flag-14))
+    (:rotate-y (degrees 0))
     )
   )
 
 (defpart 2101
-  :init-specs ((sp-tex spt-texture (new 'static 'texture-id :index #x2c :page #xc))
-    (sp-flt spt-num 1.0)
-    (sp-flt spt-x (meters 0.1))
-    (sp-flt spt-y (meters 0))
-    (sp-flt spt-z (meters 0))
-    (sp-flt spt-scale-x (meters 3.5))
-    (sp-flt spt-rot-x 0.0)
-    (sp-flt spt-rot-y (degrees 0.0))
-    (sp-flt spt-rot-z (degrees 90.0))
-    (sp-flt spt-scale-y (meters 5.5))
-    (sp-rnd-flt spt-r 128.0 128.0 1.0)
-    (sp-rnd-flt spt-g 0.0 64.0 1.0)
-    (sp-flt spt-b 255.0)
-    (sp-rnd-flt spt-a 128.0 128.0 1.0)
-    (sp-rnd-flt spt-accel-y -1.3653333 -4.096 1.0)
-    (sp-int spt-timer 5)
-    (sp-cpuinfo-flags sp-cpuinfo-flag-2 sp-cpuinfo-flag-3 sp-cpuinfo-flag-14)
-    (sp-flt spt-rotate-y (degrees 0.0))
+  :init-specs ((:texture (new 'static 'texture-id :index #x2c :page #xc))
+    (:num 1.0)
+    (:x (meters 0.1))
+    (:y (meters 0))
+    (:z (meters 0))
+    (:scale-x (meters 3.5))
+    (:rot-x (degrees 0))
+    (:rot-y (degrees 0))
+    (:rot-z (degrees 90))
+    (:scale-y (meters 5.5))
+    (:r 128.0 128.0)
+    (:g 0.0 64.0)
+    (:b 255.0)
+    (:a 128.0 128.0)
+    (:accel-y (meters -0.00033333333) (meters -0.001))
+    (:timer (seconds 0.017))
+    (:flags (sp-cpuinfo-flag-2 sp-cpuinfo-flag-3 sp-cpuinfo-flag-14))
+    (:rotate-y (degrees 0))
     )
   )
 
@@ -169,8 +169,7 @@
   )
 
 (defmethod init-proj-settings! centurion-shot ((obj centurion-shot))
-  "Init relevant settings for the [[projectile]] such as gravity, speed, timeout, etc
-:virtual"
+  "Init relevant settings for the [[projectile]] such as gravity, speed, timeout, etc"
   ((the-as (function projectile none) (find-parent-method centurion-shot 31)) obj)
   (set! (-> obj max-speed) 327680.0)
   (set! (-> obj timeout) (seconds 1.25))
@@ -277,7 +276,72 @@
     :default-hit-points 3
     :gnd-collide-with (collide-spec backgnd)
     :overlaps-others-collide-with-filter (collide-spec jak bot player-list)
-    :penetrate-knocked #xffffffffffffffff
+    :penetrate-knocked (penetrate
+      touch
+      generic-attack
+      lunge
+      flop
+      punch
+      spin
+      roll
+      uppercut
+      bonk
+      tube
+      vehicle
+      flut-attack
+      board
+      mech
+      mech-punch
+      mech-bonk
+      dark-skin
+      dark-punch
+      dark-bomb
+      dark-giant
+      shield
+      explode
+      jak-yellow-shot
+      jak-red-shot
+      jak-blue-shot
+      jak-dark-shot
+      enemy-yellow-shot
+      enemy-dark-shot
+      eco-yellow
+      eco-red
+      eco-blue
+      eco-green
+      knocked
+      penetrate-33
+      penetrate-34
+      penetrate-35
+      penetrate-36
+      penetrate-37
+      penetrate-38
+      penetrate-39
+      penetrate-40
+      penetrate-41
+      penetrate-42
+      penetrate-43
+      penetrate-44
+      penetrate-45
+      penetrate-46
+      penetrate-47
+      penetrate-48
+      penetrate-49
+      penetrate-50
+      penetrate-51
+      penetrate-52
+      penetrate-53
+      penetrate-54
+      penetrate-55
+      penetrate-56
+      penetrate-57
+      penetrate-58
+      penetrate-59
+      penetrate-60
+      penetrate-61
+      penetrate-62
+      penetrate-63
+      )
     :movement-gravity (meters -100)
     :friction 0.1
     :attack-shove-back (meters 3)
@@ -421,7 +485,7 @@
                     (talker-spawn-func (-> *talker-speech* 58) *entity-pool* (target-pos 0) (the-as region #f))
                     )
                 (set! (-> *part-id-table* 2102 init-specs 13 initial-valuef) 255.0)
-                (set! (-> obj state-time) (-> pp clock frame-counter))
+                (set! (-> obj state-time) (current-time))
                 'back
                 )
               )
@@ -436,7 +500,7 @@
        (if (and (not (and (-> obj next-state) (= (-> obj next-state name) 'victory)))
                 (and (> (-> obj hit-points) 0)
                      (zero? (-> obj fated-time))
-                     (zero? (logand (-> obj focus-status) (focus-status grabbed)))
+                     (not (logtest? (-> obj focus-status) (focus-status grabbed)))
                      )
                 )
            (go (method-of-object obj victory))
@@ -701,7 +765,7 @@
           (set! (-> v1-32 attack-id) a0-26)
           (set! (-> s5-0 attack-id) a0-26)
           )
-        (set! (-> s5-0 timeout) (new 'static 'handle :process #x4b0 :u64 #x4b0))
+        (set! (-> s5-0 timeout) (seconds 4))
         (spawn-projectile centurion-shot s5-0 obj *default-dead-pool*)
         )
       (set! (-> obj can-shoot?) #f)
@@ -1094,7 +1158,7 @@
           (t9-0)
           )
       )
-    (set! (-> self state-time) (-> self clock frame-counter))
+    (set! (-> self state-time) (current-time))
     (nav-enemy-method-165 self)
     (set! (-> self joint-enable) #t)
     (set! (-> self can-shoot?) (the-as basic #t))
@@ -1150,14 +1214,14 @@
               (else
                 (when (-> self can-shoot?)
                   (if (and (get-enemy-target self)
-                           (>= (- (-> self clock frame-counter) (-> self state-time)) (the int (+ 60.0 (* 0.0036621094 f30-0))))
+                           (>= (- (current-time) (-> self state-time)) (the int (+ 60.0 (* 0.0036621094 f30-0))))
                            (check-los? (-> self los) 0)
                            )
                       (go-virtual fire)
                       )
                   )
                 (if (skip-check-los? (-> self los) 0)
-                    (set! (-> self state-time) (-> self clock frame-counter))
+                    (set! (-> self state-time) (current-time))
                     )
                 )
               )
@@ -1265,7 +1329,7 @@
               )
             )
           )
-        (+ (-> self clock frame-counter) (seconds 3))
+        (+ (current-time) (seconds 3))
         )
       #f
       )

@@ -1,6 +1,9 @@
 #include "string_util.h"
 
+#include <iomanip>
+#include <random>
 #include <regex>
+#include <sstream>
 
 #include "common/util/diff.h"
 
@@ -26,6 +29,8 @@ std::string ltrim(const std::string& s) {
   return (start == std::string::npos) ? "" : s.substr(start);
 }
 
+// TODO - used a lot in formatting, and its slow because i bet it iterates from the start and not
+// the end
 std::string rtrim(const std::string& s) {
   size_t end = s.find_last_not_of(WHITESPACE);
   return (end == std::string::npos) ? "" : s.substr(0, end + 1);
@@ -80,5 +85,109 @@ std::string diff(const std::string& lhs, const std::string& rhs) {
 /// Default splits on \n characters
 std::vector<std::string> split(const ::std::string& str, char delimiter) {
   return google_diff::split_string(str, delimiter);
+}
+
+std::vector<std::string> regex_get_capture_groups(const std::string& str,
+                                                  const std::string& regex) {
+  std::vector<std::string> groups;
+  std::smatch matches;
+  if (std::regex_search(str, matches, std::regex(regex))) {
+    for (size_t i = 1; i < matches.size(); i++) {
+      groups.push_back(matches[i].str());
+    }
+  }
+  return groups;
+}
+
+bool replace(std::string& str, const std::string& from, const std::string& to) {
+  size_t start_pos = str.find(from);
+  if (start_pos == std::string::npos)
+    return false;
+  str.replace(start_pos, from.length(), to);
+  return true;
+}
+
+std::string lower(const std::string& str) {
+  std::string res;
+  for (auto c : str) {
+    res.push_back(tolower(c));
+  }
+  return res;
+}
+
+std::string uuid() {
+  static std::random_device dev;
+  static std::mt19937 rng(dev());
+
+  std::uniform_int_distribution<int> dist(0, 15);
+
+  const char* v = "0123456789abcdef";
+  const bool dash[] = {0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0};
+
+  std::string res;
+  for (int i = 0; i < 16; i++) {
+    if (dash[i])
+      res += "-";
+    res += v[dist(rng)];
+    res += v[dist(rng)];
+  }
+  return res;
+}
+
+std::string repeat(size_t n, const std::string& str) {
+  if (n == 0 || str.empty())
+    return {};
+  if (n == 1)
+    return str;
+  const auto period = str.size();
+  if (period == 1)
+    return std::string(n, str.front());
+
+  std::string ret(str);
+  ret.reserve(period * n);
+  std::size_t m{2};
+  for (; m < n; m *= 2)
+    ret += ret;
+  ret.append(ret.c_str(), (n - (m / 2)) * period);
+  return ret;
+}
+
+std::string current_local_timestamp() {
+  std::time_t now = std::time(nullptr);
+  std::tm local_time = *std::localtime(&now);
+  const std::string format = "%Y-%m-%dT%H:%M:%S";
+  std::ostringstream oss;
+  oss << std::put_time(&local_time, format.c_str());
+  return oss.str();
+}
+
+std::string current_local_timestamp_no_colons() {
+  std::time_t now = std::time(nullptr);
+  std::tm local_time = *std::localtime(&now);
+  const std::string format = "%Y-%m-%dT%H-%M-%S";
+  std::ostringstream oss;
+  oss << std::put_time(&local_time, format.c_str());
+  return oss.str();
+}
+
+std::string current_isotimestamp() {
+  std::time_t now = std::time(nullptr);
+  std::tm utc_time = *std::gmtime(&now);
+  const std::string format = "%Y-%m-%dT%H:%M:%SZ";
+  std::ostringstream oss;
+  oss << std::put_time(&utc_time, format.c_str());
+  return oss.str();
+}
+
+std::string to_upper(const std::string& str) {
+  std::string new_str(str.size(), ' ');
+  std::transform(str.begin(), str.end(), new_str.begin(), ::toupper);
+  return new_str;
+}
+
+std::string to_lower(const std::string& str) {
+  std::string new_str(str.size(), ' ');
+  std::transform(str.begin(), str.end(), new_str.begin(), ::tolower);
+  return new_str;
 }
 }  // namespace str_util

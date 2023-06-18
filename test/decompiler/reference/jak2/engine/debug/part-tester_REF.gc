@@ -3,13 +3,13 @@
 
 ;; this file is debug only
 (declare-file (debug))
-(when *debug-segment*
+
 ;; failed to figure out what this is:
 (defpartgroup group-part-tester
   :id 127
   :flags (unk-4 unk-6)
   :bounds (static-bspherem 0 0 0 640)
-  :rotate ((degrees 2) (degrees 0) (degrees 0))
+  :rotate ((degrees 45) (degrees 0) (degrees 0))
   :parts ((sp-item 209))
   )
 
@@ -135,5 +135,3 @@
     )
   (none)
   )
-
-)

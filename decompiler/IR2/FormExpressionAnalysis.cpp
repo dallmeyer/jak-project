@@ -1,3 +1,6 @@
+#include <unordered_map>
+#include <unordered_set>
+
 #include "Form.h"
 #include "FormStack.h"
 #include "GenericElementMatcher.h"
@@ -3299,55 +3302,120 @@ void FunctionCallElement::update_from_stack(const Env& env,
           // lg::print("GOT: {}\n", pop->to_string(env));
           arg_forms.at(0) = pop;
           auto head = mr.maps.forms.at(1);
+          auto head_obj = head->to_form(env);
 
           // rewrite get-art-by-name-method calls to get-art-by-name, which is a macro that
           // will apply the appropriate cast.
           if (tp_type.kind == TP_Type::Kind::GET_ART_BY_NAME_METHOD) {
-            ASSERT(head->to_string(env) == "get-art-by-name-method");
+            ASSERT(head_obj.is_symbol("get-art-by-name-method"));
             head = pool.form<ConstantTokenElement>("get-art-by-name");
-          }
-
-          auto head_obj = head->to_form(env);
-          if (head_obj.is_symbol() && tp_type.method_from_type().base_type() == "setting-control" &&
-              arg_forms.at(0)->to_form(env).is_symbol("*setting-control*") &&
-              arg_forms.size() > 1) {
-            auto arg1_reg = get_form_reg_acc(arg_forms.at(1));
-            if (arg1_reg && arg1_reg->reg().is_s6()) {
-              std::string new_head;
-              if (head_obj.is_symbol("add-setting")) {
-                new_head = "add-setting!";
-              } else if (head_obj.is_symbol("set-setting")) {
-                new_head = "set-setting!";
-              } else if (head_obj.is_symbol("remove-setting")) {
-                new_head = "remove-setting!";
+          } else {
+            if (head_obj.is_symbol("set-subtask-hook!")) {
+              // change the integer argument to a constant.
+              auto arg2o = arg_forms.at(2)->to_form(env);
+              if (arg2o.is_int()) {
+                int hook = arg2o.as_int();
+                static const std::vector<std::string> hook_names = {
+                    "TASK_MANAGER_INIT_HOOK",     "TASK_MANAGER_CLEANUP_HOOK",
+                    "TASK_MANAGER_UPDATE_HOOK",   "TASK_MANAGER_CODE_HOOK",
+                    "TASK_MANAGER_COMPLETE_HOOK", "TASK_MANAGER_FAIL_HOOK",
+                    "TASK_MANAGER_EVENT_HOOK"};
+                if (hook >= 0 && hook < (int)hook_names.size()) {
+                  arg_forms.at(2) = pool.alloc_single_element_form<ConstantTokenElement>(
+                      arg_forms.at(2)->parent_element, hook_names.at(hook));
+                }
               }
-              if (!new_head.empty()) {
-                auto oldp = head->parent_element;
-                head = pool.form<ConstantTokenElement>(new_head);
-                head->parent_element = oldp;
-                arg_forms.erase(arg_forms.begin());
-                arg_forms.erase(arg_forms.begin());
-                if (arg_forms.size() > 3) {
-                  auto argi = arg_forms.at(3);
-                  auto argi_o = argi->to_form(env);
-                  if (argi_o.is_int()) {
+            } else if (head_obj.is_symbol() &&
+                       tp_type.method_from_type().base_type() == "setting-control" &&
+                       arg_forms.at(0)->to_form(env).is_symbol("*setting-control*") &&
+                       arg_forms.size() > 1) {
+              auto arg1_reg = get_form_reg_acc(arg_forms.at(1));
+              bool has_params = true;
+              if (arg1_reg && arg1_reg->reg().is_s6()) {
+                std::string new_head;
+                if (head_obj.is_symbol("add-setting")) {
+                  new_head = "add-setting!";
+                } else if (head_obj.is_symbol("set-setting")) {
+                  new_head = "set-setting!";
+                } else if (head_obj.is_symbol("remove-setting")) {
+                  new_head = "remove-setting!";
+                  has_params = false;
+                }
+                if (!new_head.empty()) {
+                  auto oldp = head->parent_element;
+                  head = pool.form<ConstantTokenElement>(new_head);
+                  head->parent_element = oldp;
+                  arg_forms.erase(arg_forms.begin());
+                  arg_forms.erase(arg_forms.begin());
+                  if (has_params) {
                     auto argset = arg_forms.at(0)->to_string(env);
-                    if (argset == "'process-mask") {
-                      auto en = env.dts->ts.try_enum_lookup("process-mask");
-                      if (en) {
-                        arg_forms.at(3) =
-                            cast_to_bitfield_enum(env.dts->ts.try_enum_lookup("process-mask"), pool,
-                                                  env, argi_o.as_int());
+                    argset = argset.substr(1);
+                    auto argsym = arg_forms.at(1)->to_string(env);
+                    // convert the float param
+                    if (env.version == GameVersion::Jak2) {
+                      static const std::unordered_set<std::string> use_degrees_settings = {
+                          "matrix-blend-max-angle",
+                          "fov",
+                      };
+                      static const std::unordered_set<std::string> use_meters_settings = {
+                          "string-spline-max-move",
+                          "string-spline-max-move-player",
+                          "string-spline-accel",
+                          "string-spline-accel-player",
+                          "string-max-length",
+                          "string-min-length",
+                          "string-max-height",
+                          "string-min-height",
+                          "gun-max-height",
+                          "gun-min-height",
+                          "head-offset",
+                          "foot-offset",
+                          "extra-follow-height",
+                          "target-height",
+                      };
+                      auto argf = arg_forms.at(2);
+                      arg_forms.at(2) = try_cast_simplify(argf, TypeSpec("float"), pool, env, true);
+                      if (argsym != "'rel") {
+                        if (use_degrees_settings.find(argset) != use_degrees_settings.end()) {
+                          arg_forms.at(2) = try_cast_simplify(arg_forms.at(2), TypeSpec("degrees"),
+                                                              pool, env, true);
+                        } else if (use_meters_settings.find(argset) != use_meters_settings.end()) {
+                          arg_forms.at(2) = try_cast_simplify(arg_forms.at(2), TypeSpec("meters"),
+                                                              pool, env, true);
+                        }
                       }
-                    } else if (argset == "'sound-flava") {
-                      auto en = env.dts->ts.try_enum_lookup("music-flava");
-                      if (en) {
-                        arg_forms.at(3) = cast_to_int_enum(
-                            env.dts->ts.try_enum_lookup("music-flava"), pool, env, argi_o.as_int());
+                      arg_forms.at(2)->parent_element = argf->parent_element;
+                    }
+                    // convert the int param
+                    static const std::unordered_map<std::string, std::string> use_bitenum_settings =
+                        {
+                            {"process-mask", "process-mask"},
+                            {"features", "game-feature"},
+                            {"slave-options", "cam-slave-options"},
+                            {"minimap", "minimap-flag"},
+                            {"task-mask", "task-mask"},
+                        };
+                    static const std::unordered_map<std::string, std::string> use_enum_settings = {
+                        {"sound-flava", "music-flava"},
+                        {"exclusive-task", "game-task"},
+                    };
+                    auto argi = arg_forms.at(3);
+                    auto argi_o = argi->to_form(env);
+                    if (argi_o.is_int()) {
+                      if (use_bitenum_settings.find(argset) != use_bitenum_settings.end()) {
+                        auto en = env.dts->ts.try_enum_lookup(use_bitenum_settings.at(argset));
+                        if (en) {
+                          arg_forms.at(3) = cast_to_bitfield_enum(en, pool, env, argi_o.as_int());
+                        }
+                      } else if (use_enum_settings.find(argset) != use_enum_settings.end()) {
+                        auto en = env.dts->ts.try_enum_lookup(use_enum_settings.at(argset));
+                        if (en) {
+                          arg_forms.at(3) = cast_to_int_enum(en, pool, env, argi_o.as_int());
+                        }
                       }
                     }
+                    arg_forms.at(3)->parent_element = argi->parent_element;
                   }
-                  arg_forms.at(3)->parent_element = argi->parent_element;
                 }
               }
             }
@@ -3507,8 +3575,8 @@ void FunctionCallElement::update_from_stack(const Env& env,
     auto temp_form = pool.alloc_single_form(nullptr, new_form);
     auto match_result = match(matcher, temp_form);
     if (match_result.matched) {
-      auto type_1 = match_result.maps.strings.at(type_for_method);
-      auto& name = match_result.maps.strings.at(method_name);
+      const auto type_1 = match_result.maps.strings.at(type_for_method);
+      const auto& name = match_result.maps.strings.at(method_name);
 
       if (name == "new" && type_1 == "object") {
         // calling the new method of object. This is a special case that turns into an (object-new
@@ -3608,7 +3676,7 @@ void FunctionCallElement::update_from_stack(const Env& env,
     auto temp_form = pool.alloc_single_form(nullptr, new_form);
     auto match_result = match(matcher, temp_form);
     if (match_result.matched) {
-      auto name = match_result.maps.strings.at(method_name);
+      const auto name = match_result.maps.strings.at(method_name);
       if (name != "new") {
         // only do these checks on non-new methods.  New methods are treated as functions because
         // they are never virtual and are never called like a method.
@@ -3621,35 +3689,95 @@ void FunctionCallElement::update_from_stack(const Env& env,
       }
 
       auto type_source_form = match_result.maps.forms.at(type_source);
+      auto type_source_obj = type_source_form->to_form(env);
 
-      if (name == "get-property-value-float" && type_source_form->to_string(env) == "res-lump") {
+      bool is_res_lump = type_source_obj.is_symbol("res-lump");
+      if (name == "get-property-value-float" && is_res_lump) {
         auto as_macro = handle_get_property_value_float(arg_forms, pool, env);
         if (as_macro) {
           result->push_back(as_macro);
           return;
         }
-      } else if (name == "get-property-data" && type_source_form->to_string(env) == "res-lump") {
+      } else if (name == "get-property-data" && is_res_lump) {
         auto as_macro = handle_get_property_data(arg_forms, pool, env);
         if (as_macro) {
           result->push_back(as_macro);
           return;
         }
-      } else if (name == "get-property-struct" && type_source_form->to_string(env) == "res-lump") {
+      } else if (name == "get-property-struct" && is_res_lump) {
         auto as_macro = handle_get_property_struct(arg_forms, pool, env);
         if (as_macro) {
           result->push_back(as_macro);
           return;
         }
-      } else if (name == "get-property-value" && type_source_form->to_string(env) == "res-lump") {
+      } else if (name == "get-property-value" && is_res_lump) {
         auto as_macro = handle_get_property_value(arg_forms, pool, env);
         if (as_macro) {
           result->push_back(as_macro);
           return;
         }
+      } else if (name == "eval!" && arg_forms.size() == 2 &&
+                 type_source_obj.is_symbol("script-context")) {
+        // jak 2 macro for eval'ing a "script"
+        auto arg_context = arg_forms.at(0);  // the script context
+        auto arg_script = arg_forms.at(1);   // the script itself
+        auto mr_new_script_context =
+            match(Matcher::op_fixed(FixedOperatorKind::NEW,
+                                    {Matcher::constant_token("'stack"),
+                                     Matcher::constant_token("'script-context"), Matcher::any(0),
+                                     Matcher::any(1), Matcher::any(2)}),
+                  arg_context);
+        if (mr_new_script_context.matched) {
+          // grab the arguments passed to the context alloc. nullptr = dont put in macro (uses
+          // defaults)
+          auto ctx_key = mr_new_script_context.maps.forms.at(0);  // a key given to the context
+          auto ctx_proc =
+              mr_new_script_context.maps.forms.at(1);  // the process the context's bound to
+          auto ctx_vector = mr_new_script_context.maps.forms.at(2);  // some vector for positioning
+
+          // default for arg is (process->ppointer self) [weird]
+          auto mr_ctx_key = match(
+              Matcher::op_fixed(FixedOperatorKind::PROCESS_TO_PPOINTER, {Matcher::s6()}), ctx_key);
+          if (mr_ctx_key.matched) {
+            ctx_key = nullptr;
+          }
+          // default for process arg is just self
+          auto mr_ctx_proc = match(Matcher::s6(), ctx_proc);
+          if (mr_ctx_proc.matched) {
+            ctx_proc = nullptr;
+          }
+          // default for vector is just #f
+          auto mr_ctx_vector = match(Matcher::cast("vector", Matcher::symbol("#f")), ctx_vector);
+          if (mr_ctx_vector.matched) {
+            ctx_vector = nullptr;
+          }
+
+          // build the macro!
+          std::vector<Form*> macro_args;
+
+          macro_args.push_back(arg_script);
+          if (ctx_key) {
+            macro_args.push_back(pool.form<ConstantTokenElement>(":key"));
+            macro_args.push_back(ctx_key);
+          }
+          if (ctx_proc) {
+            macro_args.push_back(pool.form<ConstantTokenElement>(":proc"));
+            macro_args.push_back(ctx_proc);
+          }
+          if (ctx_vector) {
+            macro_args.push_back(pool.form<ConstantTokenElement>(":vector"));
+            macro_args.push_back(ctx_vector);
+          }
+
+          result->push_back(pool.alloc_element<GenericElement>(
+              GenericOperator::make_function(pool.form<ConstantTokenElement>("script-eval")),
+              macro_args));
+          return;
+        }
       }
 
       // if the type is the exact type of the argument, we want to build it into a method call
-      if (type_source_form->to_string(env) == first_arg_type.base_type() && name != "new") {
+      if (type_source_obj.is_symbol(first_arg_type.base_type()) && name != "new") {
         if (env.dts->ts.should_use_virtual_methods(tp_type.method_from_type(),
                                                    tp_type.method_id())) {
           throw std::runtime_error(fmt::format(
@@ -3748,6 +3876,19 @@ ConstantTokenElement* DerefElement::try_as_art_const(const Env& env, FormPool& p
   return nullptr;
 }
 
+GenericElement* DerefElement::try_as_curtime(FormPool& pool) {
+  auto mr = match(Matcher::deref(Matcher::s6(), false,
+                                 {DerefTokenMatcher::string("clock"),
+                                  DerefTokenMatcher::string("frame-counter")}),
+                  this);
+  if (mr.matched) {
+    return pool.alloc_element<GenericElement>(
+        GenericOperator::make_function(pool.form<ConstantTokenElement>("current-time")));
+  }
+
+  return nullptr;
+}
+
 void DerefElement::update_from_stack(const Env& env,
                                      FormPool& pool,
                                      FormStack& stack,
@@ -3771,6 +3912,22 @@ void DerefElement::update_from_stack(const Env& env,
   auto as_art = try_as_art_const(env, pool);
   if (as_art) {
     result->push_back(as_art);
+    return;
+  }
+
+  auto as_simple_expr = m_base->try_as_element<SimpleExpressionElement>();
+  if (env.version == GameVersion::Jak2 && as_simple_expr && as_simple_expr->expr().is_identity() &&
+      as_simple_expr->expr().get_arg(0).is_sym_val() &&
+      as_simple_expr->expr().get_arg(0).get_str() == "*game-info*" && m_tokens.size() >= 2 &&
+      m_tokens.at(0).is_field_name("sub-task-list") && m_tokens.at(1).is_int()) {
+    m_tokens.at(1) = DerefToken::make_int_expr(cast_to_int_enum(
+        env.dts->ts.try_enum_lookup("game-task-node"), pool, env, m_tokens.at(1).int_constant()));
+  }
+
+  // current-time macro
+  auto as_curtime = try_as_curtime(pool);
+  if (as_curtime) {
+    result->push_back(as_curtime);
     return;
   }
 
@@ -4512,6 +4669,63 @@ FormElement* try_make_nonzero_logtest(Form* in, FormPool& pool) {
   return nullptr;
 }
 
+FormElement* try_make_focus_test_macro(Form* in, FormPool& pool) {
+  /*
+(defmacro focus-test? (pfoc &rest status)
+`(logtest? (-> (the process-focusable ,pfoc) focus-status) (focus-status ,@status)))
+
+pfoc first:
+(logtest? (-> self focus-status) (focus-status dead hit grabbed))
+
+enum first:
+(logtest? (focus-status mech) (-> a1-2 focus-status))
+  */
+  auto logtest_focus_matcher_pfoc = Matcher::op(
+      GenericOpMatcher::fixed(FixedOperatorKind::LOGTEST),
+      {Matcher::deref(Matcher::any(0), false, {DerefTokenMatcher::string("focus-status")}),
+       Matcher::op_with_rest(GenericOpMatcher::func(Matcher::constant_token("focus-status")), {})});
+  auto logtest_focus_matcher_enum = Matcher::op(
+      GenericOpMatcher::fixed(FixedOperatorKind::LOGTEST),
+      {
+          Matcher::op_with_rest(GenericOpMatcher::func(Matcher::constant_token("focus-status")),
+                                {}),
+          Matcher::deref(Matcher::any(0), false, {DerefTokenMatcher::string("focus-status")}),
+      });
+  auto mr_logtest_pfoc = match(logtest_focus_matcher_pfoc, in);
+  auto mr_logtest_enum = match(logtest_focus_matcher_enum, in);
+  if (mr_logtest_pfoc.matched) {
+    auto logtest_elt = dynamic_cast<GenericElement*>(in->at(0));
+    if (logtest_elt != nullptr) {
+      auto focus_form = logtest_elt->elts().at(1);
+      std::vector<Form*> macro;
+      macro.push_back(mr_logtest_pfoc.maps.forms.at(0));
+      auto* focus = dynamic_cast<GenericElement*>(focus_form->at(0));
+      if (focus) {
+        macro.insert(macro.end(), focus->elts().begin(), focus->elts().end());
+      }
+
+      return pool.alloc_element<GenericElement>(
+          GenericOperator::make_fixed(FixedOperatorKind::FOCUS_TEST), macro);
+    }
+  }
+  if (mr_logtest_enum.matched) {
+    auto logtest_elt = dynamic_cast<GenericElement*>(in->at(0));
+    if (logtest_elt != nullptr) {
+      auto focus_form = logtest_elt->elts().at(0);
+      std::vector<Form*> macro;
+      macro.push_back(mr_logtest_enum.maps.forms.at(0));
+      auto* focus = dynamic_cast<GenericElement*>(focus_form->at(0));
+      if (focus) {
+        macro.insert(macro.end(), focus->elts().begin(), focus->elts().end());
+      }
+
+      return pool.alloc_element<GenericElement>(
+          GenericOperator::make_fixed(FixedOperatorKind::FOCUS_TEST), macro);
+    }
+  }
+  return nullptr;
+}
+
 FormElement* try_make_logtest_cpad_macro(Form* in, FormPool& pool) {
   /*
 (defmacro cpad-pressed (pad-idx)
@@ -4620,10 +4834,17 @@ FormElement* ConditionElement::make_zero_check_generic(const Env& env,
     auto as_cpad_macro = try_make_logtest_cpad_macro(logtest_form, pool);
     if (as_cpad_macro) {
       logtest_form = pool.alloc_single_form(nullptr, as_cpad_macro);
+      return pool.alloc_element<GenericElement>(
+          GenericOperator::make_compare(IR2_Condition::Kind::FALSE), logtest_form);
     }
-    auto not_form = pool.alloc_element<GenericElement>(
+    auto focus_test_macro = try_make_focus_test_macro(logtest_form, pool);
+    if (focus_test_macro) {
+      logtest_form = pool.alloc_single_form(nullptr, focus_test_macro);
+      return pool.alloc_element<GenericElement>(
+          GenericOperator::make_compare(IR2_Condition::Kind::FALSE), logtest_form);
+    }
+    return pool.alloc_element<GenericElement>(
         GenericOperator::make_compare(IR2_Condition::Kind::FALSE), logtest_form);
-    return not_form;
   }
 
   return pool.alloc_element<GenericElement>(GenericOperator::make_compare(m_kind), source_forms);
@@ -4663,6 +4884,10 @@ FormElement* ConditionElement::make_nonzero_check_generic(const Env& env,
     auto as_cpad_macro = try_make_logtest_cpad_macro(logtest_form, pool);
     if (as_cpad_macro) {
       return as_cpad_macro;
+    }
+    auto focus_test_macro = try_make_focus_test_macro(logtest_form, pool);
+    if (focus_test_macro) {
+      return focus_test_macro;
     }
     return as_logtest;
   }
@@ -5833,8 +6058,33 @@ void ConditionalMoveFalseElement::push_to_stack(const Env& env, FormPool& pool, 
       auto as_cpad_macro = try_make_logtest_cpad_macro(logtest_form, pool);
       if (as_cpad_macro) {
         val = pool.alloc_single_form(nullptr, as_cpad_macro);
-      } else {
-        val = pool.alloc_single_form(nullptr, as_logtest);
+      }
+      if (!val) {
+        auto focus_test_macro = try_make_focus_test_macro(logtest_form, pool);
+        if (focus_test_macro) {
+          val = pool.alloc_single_form(nullptr, focus_test_macro);
+        } else {
+          val = pool.alloc_single_form(nullptr, as_logtest);
+        }
+      }
+    }
+  } else {
+    auto as_logtest = try_make_nonzero_logtest(popped.at(1), pool);
+    if (as_logtest) {
+      auto logtest_form = pool.alloc_single_form(nullptr, as_logtest);
+      auto not_form = pool.form<GenericElement>(
+          GenericOperator::make_compare(IR2_Condition::Kind::FALSE), logtest_form);
+      auto as_cpad_macro = try_make_logtest_cpad_macro(not_form, pool);
+      if (as_cpad_macro) {
+        val = pool.alloc_single_form(nullptr, as_cpad_macro);
+      }
+      if (!val) {
+        auto focus_test_macro = try_make_focus_test_macro(not_form, pool);
+        if (focus_test_macro) {
+          val = pool.alloc_single_form(nullptr, focus_test_macro);
+        } else {
+          val = not_form;
+        }
       }
     }
   }

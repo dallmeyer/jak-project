@@ -3,7 +3,7 @@
 #include <string>
 
 #include "common/common_types.h"
-#include "common/versions.h"
+#include "common/versions/versions.h"
 
 class Shader {
  public:
@@ -15,6 +15,7 @@ class Shader {
   u64 id() const { return m_program; }
 
  private:
+  std::string m_name;
   u64 m_frag_shader = 0;
   u64 m_vert_shader = 0;
   u64 m_program = 0;
@@ -48,6 +49,15 @@ enum class ShaderId {
   POST_PROCESSING = 22,
   DEPTH_CUE = 23,
   EMERC = 24,
+  GLOW_PROBE = 25,
+  GLOW_PROBE_READ = 26,
+  GLOW_PROBE_READ_DEBUG = 27,
+  GLOW_PROBE_DOWNSAMPLE = 28,
+  GLOW_DRAW = 29,
+  ETIE_BASE = 30,
+  ETIE = 31,
+  SHADOW2 = 32,
+  DIRECT_BASIC_TEXTURED_MULTI_UNIT = 33,
   MAX_SHADERS
 };
 

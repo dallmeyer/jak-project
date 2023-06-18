@@ -5,6 +5,7 @@
 #include <cstring>
 
 #include "common/common_types.h"
+#include "common/global_profiler/GlobalProfiler.h"
 #include "common/goal_constants.h"
 #include "common/log/log.h"
 #include "common/symbols.h"
@@ -80,9 +81,9 @@ u64 alloc_from_heap(u32 heap_symbol, u32 type, s32 size, u32 pp) {
   auto heap_ptr = Ptr<Symbol4<Ptr<kheapinfo>>>(heap_symbol)->value();
 
   s32 aligned_size = ((size + 0xf) / 0x10) * 0x10;
-  if ((((heap_symbol == s7.offset + FIX_SYM_GLOBAL_HEAP) ||
-        (heap_symbol == s7.offset + FIX_SYM_DEBUG)) ||
-       (heap_symbol == s7.offset + FIX_SYM_LOADING_LEVEL)) ||
+  if ((heap_symbol == s7.offset + FIX_SYM_GLOBAL_HEAP) ||
+      (heap_symbol == s7.offset + FIX_SYM_DEBUG) ||
+      (heap_symbol == s7.offset + FIX_SYM_LOADING_LEVEL) ||
       (heap_symbol == s7.offset + FIX_SYM_PROCESS_LEVEL_HEAP)) {
     if (!type) {  // no type given, just call it a global-object
       return kmalloc(heap_ptr, size, KMALLOC_MEMSET, "global-object").offset;
@@ -729,7 +730,6 @@ Ptr<Type> alloc_and_init_type(Ptr<Symbol4<Ptr<Type>>> sym,
 
   if (!force_global_type &&
       u32_in_fixed_sym(FIX_SYM_LOADING_LEVEL) != u32_in_fixed_sym(FIX_SYM_GLOBAL_HEAP)) {
-    printf("using level types!\n");  // added
     u32 type_list_ptr = LevelTypeList->value();
     if (type_list_ptr == 0) {
       // we don't have a type-list... just alloc on global
@@ -954,7 +954,6 @@ u64 new_type(u32 symbol, u32 parent, u64 flags) {
       MsgWarn("dkernel: loading-level init of type %s, but was interned global (this is okay)\n",
               sym_to_string(new_type_obj->symbol)->data());
     } else {
-      printf("case 2 for new_type level types\n");
       new_type_obj->memusage_method.offset = original_type_list_value;
     }
   }
@@ -1720,6 +1719,7 @@ int InitHeapAndSymbol() {
   // load kernel!
 
   if (MasterUseKernel) {
+    auto p = scoped_prof("load-kernel-dgo");
     *EnableMethodSet = *EnableMethodSet + 1;
     load_and_link_dgo_from_c("kernel", kglobalheap,
                              LINK_FLAG_OUTPUT_LOAD | LINK_FLAG_EXECUTE | LINK_FLAG_PRINT_LOGIN,
@@ -1749,7 +1749,10 @@ int InitHeapAndSymbol() {
   InitListener();
 
   // Do final initialization, including loading and initializing the engine.
-  InitMachineScheme();
+  {
+    auto p = scoped_prof("init-machine-scheme");
+    InitMachineScheme();
+  }
   kmemclose();
   return 0;
 }

@@ -11,6 +11,8 @@
 #include "game/graphics/opengl_renderer/loader/Loader.h"
 #include "game/graphics/texture/TexturePool.h"
 
+struct Fbo;
+
 struct LevelVis {
   bool valid = false;
   u8 data[2048];
@@ -45,10 +47,20 @@ struct SharedRenderState {
 
   void reset();
   bool has_pc_data = false;
-  LevelVis occlusion_vis[6];
+
+  // limit is arbitrary so let's go ham in case we want more levels in the future
+  LevelVis occlusion_vis[32];
 
   math::Vector4f camera_planes[4];
+
+  // including transformation, rotation, perspective
   math::Vector4f camera_matrix[4];
+
+  // including transformation, rotation
+  math::Vector4f camera_no_persp[4];
+
+  // just the perspective
+  math::Vector4f camera_persp[4];
   math::Vector4f camera_hvdf_off;
   math::Vector4f camera_fog;
   math::Vector4f camera_pos;
@@ -75,9 +87,15 @@ struct SharedRenderState {
   int draw_offset_x = 0;
   int draw_offset_y = 0;
 
+  // the FBO for blit buffer
+  const Fbo* back_fbo = nullptr;
+
   int bucket_for_vis_copy = 0;
   int num_vis_to_copy = 0;
   GameVersion version;
+  u64 frame_idx = 0;
+
+  bool stencil_dirty = false;
 };
 
 /*!
@@ -135,6 +153,17 @@ class EmptyBucketRenderer : public BucketRenderer {
 class SkipRenderer : public BucketRenderer {
  public:
   SkipRenderer(const std::string& name, int my_id);
+  void render(DmaFollower& dma, SharedRenderState* render_state, ScopedProfilerNode& prof) override;
+  bool empty() const override { return true; }
+  void draw_debug_window() override {}
+};
+
+/*!
+ * Renderer that ignores and prints all DMA transfers.
+ */
+class PrintRenderer : public BucketRenderer {
+ public:
+  PrintRenderer(const std::string& name, int my_id);
   void render(DmaFollower& dma, SharedRenderState* render_state, ScopedProfilerNode& prof) override;
   bool empty() const override { return true; }
   void draw_debug_window() override {}

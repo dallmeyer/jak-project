@@ -16,6 +16,7 @@
 
 #include "common/common_types.h"
 #include "common/util/BinaryReader.h"
+#include "common/util/string_util.h"
 #include "common/util/unicode_util.h"
 
 // This disables the use of PCLMULQDQ which is probably ok, but let's just be safe and disable it
@@ -111,24 +112,26 @@ std::string get_current_executable_path() {
 #endif
 }
 
+std::optional<std::string> try_get_project_path_from_path(const std::string& path) {
+  std::string::size_type pos =
+      std::string(path).rfind("jak-project");  // Strip file path down to /jak-project/ directory
+  if (pos == std::string::npos) {
+    return {};
+  }
+  return std::string(path).substr(
+      0, pos + 11);  // + 12 to include "/jak-project" in the returned filepath
+}
+
 /*!
  * See if the current executable is somewhere in jak-project/. If so, return the path to jak-project
  */
 std::optional<std::string> try_get_jak_project_path() {
-  std::string my_path = get_current_executable_path();
-
-  std::string::size_type pos =
-      std::string(my_path).rfind("jak-project");  // Strip file path down to /jak-project/ directory
-  if (pos == std::string::npos) {
-    return {};
-  }
-
-  return std::make_optional(std::string(my_path).substr(
-      0, pos + 11));  // + 12 to include "/jak-project" in the returned filepath
+  return try_get_project_path_from_path(get_current_executable_path());
 }
 
 std::optional<fs::path> try_get_data_dir() {
   fs::path my_path = get_current_executable_path();
+  lg::info("Current executable directory - {}", my_path.string());
   auto data_dir = my_path.parent_path() / "data";
   if (fs::exists(data_dir) && fs::is_directory(data_dir)) {
     return std::make_optional(data_dir);
@@ -143,9 +146,9 @@ bool setup_project_path(std::optional<fs::path> project_path_override) {
   }
 
   if (project_path_override) {
-    gFilePathInfo.path_to_data = *project_path_override;
+    gFilePathInfo.path_to_data = fs::absolute(project_path_override.value());
     gFilePathInfo.initialized = true;
-    lg::info("Using explicitly set project path: {}", project_path_override->string());
+    lg::info("Using explicitly set project path: {}", gFilePathInfo.path_to_data.string());
     return true;
   }
 
@@ -199,10 +202,12 @@ bool create_dir_if_needed(const fs::path& path) {
   return false;
 }
 
+// TODO - explodes if the file path is invalid
 bool create_dir_if_needed_for_file(const std::string& path) {
   return create_dir_if_needed_for_file(fs::path(path));
 }
 
+// TODO - explodes if the file path is invalid
 bool create_dir_if_needed_for_file(const fs::path& path) {
   return fs::create_directories(path.parent_path());
 }
@@ -211,6 +216,12 @@ void write_binary_file(const fs::path& name, const void* data, size_t size) {
   FILE* fp = file_util::open_file(name.string().c_str(), "wb");
   if (!fp) {
     throw std::runtime_error("couldn't open file " + name.string());
+  }
+
+  if (size == 0) {
+    // nothing to write, just 'touch' the file
+    fclose(fp);
+    return;
   }
 
   if (fwrite(data, size, 1, fp) != 1) {
@@ -273,6 +284,10 @@ std::vector<uint8_t> read_binary_file(const fs::path& path) {
                              " cannot be opened: " + std::string(strerror(errno)));
   fseek(fp, 0, SEEK_END);
   auto len = ftell(fp);
+  if (len == 0) {
+    fclose(fp);
+    return {};
+  }
   rewind(fp);
 
   std::vector<uint8_t> data;
@@ -362,6 +377,19 @@ std::string convert_to_unix_path_separators(const std::string& path) {
 #endif
 }
 
+/*!
+ * Convert an animation name to ISO name.
+ * The animation name is a bunch of dash separated words.
+ * The resulting ISO name has the same first two chars as the animation name, and one char from each
+ * remaining word. Once there are no more words but remaining chars in the ISO name, the ith extra
+ * char is the i+1 th char of the last word. A word ending in a number (or just a number) is turned
+ * into the number. The word "resolution" becomes z. The word "accept" becomes y. The word "reject"
+ * becomes n. Other words become the first char of the word. The result is uppercased and the file
+ * extension is STR Examples (animation name and disc file name, not ISO name):
+ *  green-sagecage-outro-beat-boss-enough-cells -> GRSOBBEC.STR
+ *  swamp-tetherrock-swamprockexplode-4 -> SWTS4.STR
+ *  minershort-resolution-1-orbs -> MIZ1ORBS.STR
+ */
 void ISONameFromAnimationName(char* dst, const char* src) {
   // The Animation Name is a bunch of words separated by dashes
 
@@ -398,11 +426,16 @@ void ISONameFromAnimationName(char* dst, const char* src) {
 
         // some special case words map to special letters (likely to avoid animation name conflicts)
         if (next_ptr - src_ptr == 10 && !memcmp(src_ptr, "resolution", 10)) {
+          // NOTE : jak 2 also allows "res" here but that doesn't work properly.
           char_to_add = 'z';
         } else if (next_ptr - src_ptr == 6 && !memcmp(src_ptr, "accept", 6)) {
           char_to_add = 'y';
         } else if (next_ptr - src_ptr == 6 && !memcmp(src_ptr, "reject", 6)) {
           char_to_add = 'n';
+        } else if (next_ptr - src_ptr == 5 && !memcmp(src_ptr, "keira", 5)) {
+          // NOTE : this was added in jak 2. it's safe to use in jak 1 since she was referred to as
+          // "assistant" there
+          char_to_add = 'i';
         } else {
           // not a special case, just take the first letter.
           char_to_add = *src_ptr;
@@ -441,6 +474,15 @@ void ISONameFromAnimationName(char* dst, const char* src) {
   strcpy(dst + 8, "STR");
 }
 
+/*!
+ * Convert file name to "ISO Name"
+ * ISO names are upper case and 12 bytes long.
+ * xxxxxxxxyyy0
+ *
+ * x - uppercase letter of file name, or space
+ * y - uppercase letter of file extension, or space
+ * 0 - null terminator (\0, not the character zero)
+ */
 void MakeISOName(char* dst, const char* src) {
   int i = 0;
   const char* src_ptr = src;
@@ -582,6 +624,33 @@ std::vector<fs::path> find_directories_in_dir(const fs::path& base_dir) {
     }
   }
   return dirs;
+}
+
+void copy_file(const fs::path& src, const fs::path& dst) {
+  // Check that the src path exists
+  if (!fs::exists(src)) {
+    throw std::runtime_error(fmt::format("Cannot copy '{}', path does not exist", src.string()));
+  }
+  // Ensure the directory can be copied into
+  if (!fs::exists(dst.parent_path()) && !create_dir_if_needed_for_file(dst)) {
+    throw std::runtime_error(fmt::format(
+        "Cannot copy '{}', couldn't make directory to copy into '{}'", src.string(), dst.string()));
+  }
+  fs::copy_file(src, dst, fs::copy_options::overwrite_existing);
+}
+
+std::string make_screenshot_filepath(const GameVersion game_version, const std::string& name) {
+  std::string file_name;
+  if (name.empty()) {
+    file_name = fmt::format("{}_{}.png", version_to_game_name(game_version),
+                            str_util::current_local_timestamp_no_colons());
+  } else {
+    file_name = fmt::format("{}_{}_{}.png", version_to_game_name(game_version), name,
+                            str_util::current_local_timestamp_no_colons());
+  }
+  const auto file_path = file_util::get_file_path({"screenshots", file_name});
+  file_util::create_dir_if_needed_for_file(file_path);
+  return file_path;
 }
 
 }  // namespace file_util

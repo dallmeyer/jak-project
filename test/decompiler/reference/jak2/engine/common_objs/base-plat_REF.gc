@@ -71,7 +71,7 @@ For example for an elevator pre-compute the distance between the first and last 
 and translate the platform via the `smush`
 @see [[smush-control]]"
   (activate! (-> obj smush) -1.0 60 150 1.0 1.0 (-> self clock))
-  (set! (-> obj bounce-time) (-> self clock frame-counter))
+  (set! (-> obj bounce-time) (current-time))
   (set! (-> obj bouncing) #t)
   (sound-play "plat-bounce" :position (-> obj root-override trans))
   (logclear! (-> obj mask) (process-mask sleep))
@@ -271,7 +271,7 @@ eco-door-event-handler
       (when (and *target* (and (>= (-> self open-distance)
                                    (vector-vector-distance (-> self root-override trans) (-> *target* control trans))
                                    )
-                               (zero? (logand (focus-status teleporting) (-> *target* focus-status)))
+                               (not (logtest? (focus-status teleporting) (-> *target* focus-status)))
                                )
                  )
         (lock-according-to-task! self)
@@ -323,7 +323,7 @@ eco-door-event-handler
   :virtual #t
   :event eco-door-event-handler
   :code (behavior ()
-    (set! (-> self state-time) (-> self clock frame-counter))
+    (set! (-> self state-time) (current-time))
     (process-entity-status! self (entity-perm-status subtask-complete) #t)
     (let ((prim (-> self root-override root-prim)))
       (set! (-> prim prim-core collide-as) (collide-spec))
@@ -343,7 +343,7 @@ eco-door-event-handler
                    (or (not *target*) (or (< (-> self close-distance)
                                              (vector-vector-distance (-> self root-override trans) (-> *target* control trans))
                                              )
-                                          (logtest? (focus-status teleporting) (-> *target* focus-status))
+                                          (focus-test? *target* teleporting)
                                           )
                        )
                    )

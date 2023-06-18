@@ -272,19 +272,20 @@
   (the-as (texture-anim-array texture-anim)
     (new 'static 'texture-anim-array :type texture-anim
       (new 'static 'texture-anim
-        :func 'texture-anim-alpha-ramp-clut-upload
-        :init-func 'texture-anim-alpha-ramp-clut-init
+        :func-id 'texture-anim-alpha-ramp-clut-upload
+        :init-func-id 'texture-anim-alpha-ramp-clut-init
         :tex #f
         :tex-name #f
         :extra (new 'static 'vector :x 28.0)
         :color (new 'static 'rgba :a #x80)
         :test (new 'static 'gs-test :ate #x1 :afail #x1 :zte #x1 :ztst (gs-ztest always))
         :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
+        :data (new 'static 'array texture-anim-layer 2)
         )
       (new 'static 'texture-anim
         :num-layers #x2
-        :func 'cloud-texture-anim-func
-        :init-func 'dest-texture-init
+        :func-id 'cloud-texture-anim-func
+        :init-func-id 'dest-texture-init
         :tex #f
         :tex-name #f
         :extra (new 'static 'vector :x 16.0 :y 8.0)
@@ -293,11 +294,57 @@
         :frame-mod 600.0
         :test (new 'static 'gs-test :ate #x1 :afail #x1 :zte #x1 :ztst (gs-ztest always))
         :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
+        :data (new 'static 'array texture-anim-layer 2
+          (new 'static 'texture-anim-layer
+            :extra (new 'static 'vector :x 16.0 :y 20.0 :z 28.0)
+            :func-id 'cloud-texture-anim-layer-func
+            :init-func-id 'noise-texture-init
+            :tex #f
+            :end-time 600.0
+            :tex-name #f
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          (new 'static 'texture-anim-layer
+            :extra (new 'static 'vector :x 16.0 :y 20.0 :z 28.0)
+            :func-id 'cloud-texture-anim-layer-func
+            :init-func-id 'noise-texture-init
+            :tex #f
+            :end-time 600.0
+            :tex-name #f
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          )
         )
       (new 'static 'texture-anim
         :num-layers #x2
-        :func 'cloud-texture-anim-func
-        :init-func 'dest-texture-init
+        :func-id 'cloud-texture-anim-func
+        :init-func-id 'dest-texture-init
         :tex #f
         :tex-name #f
         :extra (new 'static 'vector :x 32.0 :y 9.0)
@@ -306,11 +353,57 @@
         :frame-mod 300.0
         :test (new 'static 'gs-test :ate #x1 :afail #x1 :zte #x1 :ztst (gs-ztest always))
         :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
+        :data (new 'static 'array texture-anim-layer 2
+          (new 'static 'texture-anim-layer
+            :extra (new 'static 'vector :x 32.0 :y 20.0 :z 28.0)
+            :func-id 'cloud-texture-anim-layer-func
+            :init-func-id 'noise-texture-init
+            :tex #f
+            :end-time 300.0
+            :tex-name #f
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          (new 'static 'texture-anim-layer
+            :extra (new 'static 'vector :x 32.0 :y 20.0 :z 28.0)
+            :func-id 'cloud-texture-anim-layer-func
+            :init-func-id 'noise-texture-init
+            :tex #f
+            :end-time 300.0
+            :tex-name #f
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          )
         )
       (new 'static 'texture-anim
         :num-layers #x2
-        :func 'cloud-texture-anim-func
-        :init-func 'dest-texture-init
+        :func-id 'cloud-texture-anim-func
+        :init-func-id 'dest-texture-init
         :tex #f
         :tex-name #f
         :extra (new 'static 'vector :x 64.0 :y 10.0)
@@ -320,11 +413,57 @@
         :frame-mod 150.0
         :test (new 'static 'gs-test :ate #x1 :afail #x1 :zte #x1 :ztst (gs-ztest always))
         :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
+        :data (new 'static 'array texture-anim-layer 2
+          (new 'static 'texture-anim-layer
+            :extra (new 'static 'vector :x 64.0 :y 20.0 :z 28.0)
+            :func-id 'cloud-texture-anim-layer-func
+            :init-func-id 'noise-texture-init
+            :tex #f
+            :end-time 150.0
+            :tex-name #f
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          (new 'static 'texture-anim-layer
+            :extra (new 'static 'vector :x 64.0 :y 20.0 :z 28.0)
+            :func-id 'cloud-texture-anim-layer-func
+            :init-func-id 'noise-texture-init
+            :tex #f
+            :end-time 150.0
+            :tex-name #f
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          )
         )
       (new 'static 'texture-anim
         :num-layers #x2
-        :func 'cloud-texture-anim-func
-        :init-func 'dest-texture-init
+        :func-id 'cloud-texture-anim-func
+        :init-func-id 'dest-texture-init
         :tex #f
         :tex-name #f
         :extra (new 'static 'vector :x 128.0 :y 12.0)
@@ -334,43 +473,204 @@
         :frame-mod 75.0
         :test (new 'static 'gs-test :ate #x1 :afail #x1 :zte #x1 :ztst (gs-ztest always))
         :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
+        :data (new 'static 'array texture-anim-layer 2
+          (new 'static 'texture-anim-layer
+            :extra (new 'static 'vector :x 128.0 :y 20.0 :z 28.0)
+            :func-id 'cloud-texture-anim-layer-func
+            :init-func-id 'noise-texture-init
+            :tex #f
+            :end-time 75.0
+            :tex-name #f
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          (new 'static 'texture-anim-layer
+            :extra (new 'static 'vector :x 128.0 :y 20.0 :z 28.0)
+            :func-id 'cloud-texture-anim-layer-func
+            :init-func-id 'noise-texture-init
+            :tex #f
+            :end-time 75.0
+            :tex-name #f
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          )
         )
       (new 'static 'texture-anim
         :num-layers #x4
         :func #f
-        :init-func 'dest-texture-init
+        :init-func-id 'dest-texture-init
         :tex #f
         :tex-name #f
         :extra (new 'static 'vector :x 128.0 :y 20.0)
         :color (new 'static 'rgba :a #x80)
         :test (new 'static 'gs-test :ate #x1 :afail #x1 :zte #x1 :ztst (gs-ztest always))
         :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
+        :data (new 'static 'array texture-anim-layer 6
+          (new 'static 'texture-anim-layer
+            :extra (new 'static 'vector :x 16.0 :y 8.0)
+            :func-id 'default-texture-anim-layer-func
+            :init-func-id 'src-texture-init
+            :tex #f
+            :end-time 300.0
+            :tex-name #f
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 0.55)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          (new 'static 'texture-anim-layer
+            :extra (new 'static 'vector :x 32.0 :y 9.0)
+            :func-id 'default-texture-anim-layer-func
+            :init-func-id 'src-texture-init
+            :tex #f
+            :end-time 300.0
+            :tex-name #f
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 0.6)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          (new 'static 'texture-anim-layer
+            :extra (new 'static 'vector :x 64.0 :y 10.0)
+            :func-id 'default-texture-anim-layer-func
+            :init-func-id 'src-texture-init
+            :tex #f
+            :end-time 300.0
+            :tex-name #f
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 0.3)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          (new 'static 'texture-anim-layer
+            :extra (new 'static 'vector :x 128.0 :y 12.0)
+            :func-id 'default-texture-anim-layer-func
+            :init-func-id 'src-texture-init
+            :tex #f
+            :end-time 300.0
+            :tex-name #f
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 0.1)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          )
         )
       (new 'static 'texture-anim
         :num-layers #x1
         :func #f
-        :init-func 'texture-anim-change-mt8h-init
+        :init-func-id 'texture-anim-change-mt8h-init
         :tex #f
         :tex-name "cas-toxic-slime-dest"
         :extra (new 'static 'vector :x 28.0 :y 12.0 :z 128.0 :w 128.0)
         :color (new 'static 'rgba :a #x80)
         :test (new 'static 'gs-test :ate #x1 :afail #x1 :zte #x1 :ztst (gs-ztest always))
         :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
+        :data (new 'static 'array texture-anim-layer 2
+          (new 'static 'texture-anim-layer
+            :extra (new 'static 'vector :x 128.0 :y 20.0)
+            :func-id 'move-rg-to-ba-texture-anim-layer-func
+            :init-func-id 'src-texture-init
+            :tex #f
+            :end-time 300.0
+            :tex-name #f
+            :test (new 'static 'gs-test :ate #x1 :afail #x1 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          )
         )
       (new 'static 'texture-anim
-        :func 'texture-anim-slime-clut-upload
-        :init-func 'texture-anim-slime-clut-init
+        :func-id 'texture-anim-slime-clut-upload
+        :init-func-id 'texture-anim-slime-clut-init
         :tex #f
         :tex-name #f
         :extra (new 'static 'vector :x 28.0)
         :color (new 'static 'rgba :a #x80)
         :test (new 'static 'gs-test :ate #x1 :afail #x1 :zte #x1 :ztst (gs-ztest always))
         :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
+        :data (new 'static 'array texture-anim-layer 2)
         )
       (new 'static 'texture-anim
         :num-layers #x1
         :func #f
-        :init-func 'texture-anim-overide-size-init
+        :init-func-id 'texture-anim-overide-size-init
         :tex #f
         :tex-name "cas-toxic-slime-scroll-dest"
         :extra (new 'static 'vector :x 64.0 :y 64.0)
@@ -379,6 +679,29 @@
         :frame-mod 1200.0
         :test (new 'static 'gs-test :ate #x1 :afail #x1 :zte #x1 :ztst (gs-ztest always))
         :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
+        :data (new 'static 'array texture-anim-layer 2
+          (new 'static 'texture-anim-layer
+            :func-id 'default-texture-anim-layer-func
+            :init-func #f
+            :tex #f
+            :end-time 1200.0
+            :tex-name "cas-toxic-slime-dest"
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.0))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 1.0))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          )
         )
       )
     )
@@ -426,7 +749,7 @@
       (new 'static 'texture-anim
         :num-layers #x1
         :func #f
-        :init-func 'texture-anim-overide-size-init
+        :init-func-id 'texture-anim-overide-size-init
         :tex #f
         :tex-name "cas-conveyor-dest"
         :extra (new 'static 'vector :x 64.0 :y 32.0)
@@ -436,11 +759,34 @@
         :test (new 'static 'gs-test :ate #x1 :afail #x1 :zte #x1 :ztst (gs-ztest always))
         :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
         :clamp (new 'static 'gs-clamp :wms (gs-tex-wrap-mode clamp) :wmt (gs-tex-wrap-mode clamp))
+        :data (new 'static 'array texture-anim-layer 2
+          (new 'static 'texture-anim-layer
+            :func-id 'default-texture-anim-layer-func
+            :init-func #f
+            :tex #f
+            :end-time 300.0
+            :tex-name "cas-conveyor"
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.0))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 1.0))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          )
         )
       (new 'static 'texture-anim
         :num-layers #x1
         :func #f
-        :init-func 'texture-anim-overide-size-init
+        :init-func-id 'texture-anim-overide-size-init
         :tex #f
         :tex-name "cas-conveyor-dest-01"
         :extra (new 'static 'vector :x 64.0 :y 32.0)
@@ -450,11 +796,34 @@
         :test (new 'static 'gs-test :ate #x1 :afail #x1 :zte #x1 :ztst (gs-ztest always))
         :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
         :clamp (new 'static 'gs-clamp :wms (gs-tex-wrap-mode clamp) :wmt (gs-tex-wrap-mode clamp))
+        :data (new 'static 'array texture-anim-layer 2
+          (new 'static 'texture-anim-layer
+            :func-id 'default-texture-anim-layer-func
+            :init-func #f
+            :tex #f
+            :end-time 300.0
+            :tex-name "cas-conveyor"
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.0))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 1.0))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          )
         )
       (new 'static 'texture-anim
         :num-layers #x1
         :func #f
-        :init-func 'texture-anim-overide-size-init
+        :init-func-id 'texture-anim-overide-size-init
         :tex #f
         :tex-name "cas-conveyor-dest-02"
         :extra (new 'static 'vector :x 64.0 :y 32.0)
@@ -464,11 +833,34 @@
         :test (new 'static 'gs-test :ate #x1 :afail #x1 :zte #x1 :ztst (gs-ztest always))
         :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
         :clamp (new 'static 'gs-clamp :wms (gs-tex-wrap-mode clamp) :wmt (gs-tex-wrap-mode clamp))
+        :data (new 'static 'array texture-anim-layer 2
+          (new 'static 'texture-anim-layer
+            :func-id 'default-texture-anim-layer-func
+            :init-func #f
+            :tex #f
+            :end-time 300.0
+            :tex-name "cas-conveyor"
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.0))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 1.0))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          )
         )
       (new 'static 'texture-anim
         :num-layers #x1
         :func #f
-        :init-func 'texture-anim-overide-size-init
+        :init-func-id 'texture-anim-overide-size-init
         :tex #f
         :tex-name "cas-conveyor-dest-03"
         :extra (new 'static 'vector :x 64.0 :y 32.0)
@@ -478,6 +870,29 @@
         :test (new 'static 'gs-test :ate #x1 :afail #x1 :zte #x1 :ztst (gs-ztest always))
         :alpha (new 'static 'gs-alpha :b #x1 :d #x1)
         :clamp (new 'static 'gs-clamp :wms (gs-tex-wrap-mode clamp) :wmt (gs-tex-wrap-mode clamp))
+        :data (new 'static 'array texture-anim-layer 2
+          (new 'static 'texture-anim-layer
+            :func-id 'default-texture-anim-layer-func
+            :init-func #f
+            :tex #f
+            :end-time 300.0
+            :tex-name "cas-conveyor"
+            :test (new 'static 'gs-test :ate #x1 :afail #x3 :zte #x1 :ztst (gs-ztest always))
+            :alpha (new 'static 'gs-alpha :b #x2 :d #x1)
+            :start-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :start-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :start-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :start-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.0))
+            :start-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-color (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            :end-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 0.5))
+            :end-st-scale (new 'static 'vector2 :data (new 'static 'array float 2 1.0 1.0))
+            :end-st-offset (new 'static 'vector2 :data (new 'static 'array float 2 0.5 1.0))
+            :end-qs (new 'static 'vector :x 1.0 :y 1.0 :z 1.0 :w 1.0)
+            )
+          )
         )
       )
     )

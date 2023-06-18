@@ -1383,10 +1383,10 @@
       (new 'static 'continue-point
         :name "snow-gondola-foot"
         :level 'snow
-        :trans (new 'static 'vector :x 4061087.5000 :y 984268.1250 :z -14281175.0000 :w 1.0)
-        :quat (new 'static 'quaternion :y 0.7906 :w -0.6122)
-        :camera-trans (new 'static 'vector :x 4049683.5000 :y 1005266.3125 :z -14231613.0000 :w 1.0)
-        :camera-rot (new 'static 'array float 9 -0.9748 0.0000 -0.2229   0.0270 0.9926 -0.1182  0.2213 -0.1213 -0.9676)
+        :trans (new 'static 'vector :x 4049160.7500 :y 985297.7500 :z -14270541.00 :w 1.0)
+        :quat (new 'static 'quaternion :y -0.9162 :w -0.4005)
+        :camera-trans (new 'static 'vector :x 4016879.7500 :y 1003751.9375 :z -14240528.000 :w 1.0)
+        :camera-rot (new 'static 'array float 9 -0.6523 -0.0000 -0.7579  0.1098 0.9894 -0.0945  0.7499 -0.1448 -0.6454)
         :load-commands '()
         :vis-nick 'sno
         :lev0 'snow

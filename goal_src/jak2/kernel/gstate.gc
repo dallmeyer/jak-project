@@ -5,9 +5,7 @@
 ;; name in dgo: gstate
 ;; dgos: KERNEL
 
-;; DECOMP BEGINS
-
-#|
+#|@file
 Summary of state system:
 
 A process can be put into a state, using enter-state, or the go macro.
@@ -49,8 +47,9 @@ with the appropriate state type.
 
 The go-hook calls enter state and sets (-> proc next-state) for the given process.
 It type checks the arguments for the entry function.
-
 |#
+
+;; DECOMP BEGINS
 
 (defmacro go (next-state &rest args)
   "Change the state of the current process.
@@ -167,7 +166,7 @@ It type checks the arguments for the entry function.
       (set! *defstate-type-stack* '())
       ;; check for default handlers
       (let ((default-handlers (assoc defstate-type *default-state-handlers*)))
-          (when (not (null? default-handlers))
+          (when default-handlers
               ;;(fmt #t "found default-handlers for {}: {}\n" defstate-type default-handlers)
               ;; event
               (set! default-handlers (cadr default-handlers))
@@ -247,7 +246,7 @@ It type checks the arguments for the entry function.
                            &key (post #f))
   (let ((old (assoc proc *default-state-handlers*))
         (new (list proc (list event enter trans exit code post))))
-      (if (null? old)
+      (if (not old)
           (append!! *default-state-handlers* new) ;; add new set of default handlers
           (dolist (hnd *default-state-handlers*)  ;; replace old handlers with new ones
             (when (eq? (car hnd) old)
@@ -448,15 +447,10 @@ It type checks the arguments for the entry function.
          ;; but we don't because I don't have an easy way to find where to stick this.
          ;; I can't see how this makes a difference, as all non-main threads seem
          ;; temporary, but if this turns out to be false, we will need to change this.
-         (rlet ((temp)
-                (off :reg r15 :type uint :reset-here #t))
-           (.mov temp return-from-thread) ;; could probably just call this...
-           (.add temp off)
-           (.push temp)
-           (.ret)
-           #f ;; can't get here
-           )
+         (abandon-thread)
+         #f ;; can't get here
          )
+       #t
        )
       )
     )

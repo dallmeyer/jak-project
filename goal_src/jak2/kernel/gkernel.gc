@@ -200,7 +200,7 @@
   (let ((v0-0 (cond
                 ((-> parent-process top-thread)
                  ;; this is just a temporary thread, throw the thread on the bottom of the stack
-                 (the cpu-thread (&+ stack-top (- PROCESS_STACK_SIZE *gtype-basic-offset*)))
+                 (the cpu-thread (&+ stack-top (- PROCESS_STACK_SIZE) *gtype-basic-offset*))
                  )
                 (else
                   ;; this is the main thread, allocate it from the process heap.
@@ -506,6 +506,22 @@
     (.pop :color #f s1)
     (.pop :color #f s0)
     ;; return to the kernel function that called the user code
+    (.ret)
+    )
+  )
+
+(defmacro abandon-thread ()
+  ;; abandon this one too.
+  ;; NOTE - this is different from GOAL.
+  ;; GOAL installs this as the return address for this function and returns normally.
+  ;; but we don't because I don't have an easy way to find where to stick this.
+  ;; I can't see how this makes a difference, as all non-main threads seem
+  ;; temporary, but if this turns out to be false, we will need to change this.
+  `(rlet ((temp)
+        (off :reg r15 :type uint :reset-here #t))
+    (.mov temp return-from-thread) ;; could probably just call this...
+    (.add temp off)
+    (.push temp)
     (.ret)
     )
   )
@@ -2222,6 +2238,9 @@
              (shrink-heap (the dead-pool-heap (-> pp pool)) pp)
              )
            )
+          (('dead)
+           ;; died in init, this is fine.
+           )
           (else
            (format 0 "GOT UNKNOWN INIT: ~A~%" (-> pp status))
            )
@@ -2388,13 +2407,7 @@
         ;; then go back to the kernel dispatcher immediately.
         ((= (-> *kernel-context* current-process) obj)
          (set! (-> obj status) 'dead)
-         (let ((temp (the uint return-from-thread)))
-           (rlet ((off :reg r15 :type uint))
-                 (+! temp off)
-                 (.push temp)
-                 (.ret)
-                 )
-           )
+         (abandon-thread)
          )
         ;; if you deactivated yourself while initializing, we should go back to
         ;; the place where initialize was called in another process, not all the way back to the kernel.
@@ -2421,13 +2434,10 @@
 (kmemopen global "process-buffers")
 
 ;; set up the listener process to run functions sent from the REPL.
-(let ((v0-43 (new 'global 'process "listener" 2048)))
-  (set! *listener-process* v0-43)
-  (let ((gp-0 v0-43))
-    (set! (-> gp-0 status) 'ready)
-    (set! (-> gp-0 pid) 1)
-    (set! (-> gp-0 main-thread) (new 'process 'cpu-thread gp-0 'main 256 (&-> *dram-stack* 14336)))
-    )
+(let ((obj (define *listener-process* (new 'global 'process "listener" 2048))))
+  (set! (-> obj status) 'ready)
+  (set! (-> obj pid) 1)
+  (set! (-> obj main-thread) (new 'process 'cpu-thread obj 'main 256 *kernel-dram-stack*))
   )
 
 ;; an always dead process used as a placeholder
@@ -2449,7 +2459,7 @@
 (when *debug-segment*
   (define *debug-dead-pool* (new 'debug 'dead-pool-heap "*debug-dead-pool*" 768 #x100000))
   )
-(define *nk-dead-pool* (new 'global 'dead-pool-heap "*nk-dead-pool*" 768 #x181000))
+(define *nk-dead-pool* (new 'global 'dead-pool-heap "*nk-dead-pool*" PROCESS_HEAP_MAX PROCESS_HEAP_SIZE))
 ;; more special dead pools
 (define *default-dead-pool* (the-as dead-pool *nk-dead-pool*))
 (define *pickup-dead-pool* (the-as dead-pool *nk-dead-pool*))
@@ -2469,6 +2479,8 @@
 
 ;; categories within the active pool.
 (change-parent (define *display-pool* (new 'global 'process-tree "display-pool")) *active-pool*)
+(#when PC_PORT
+(change-parent (define *pc-pool* (new 'global 'process-tree "pc-pool")) *active-pool*))
 
 (change-parent (define *camera-pool* (new 'global 'process-tree "camera-pool")) *active-pool*)
 (set! (-> *camera-pool* mask) (process-mask freeze pause menu progress process-tree camera))

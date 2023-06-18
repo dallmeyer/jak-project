@@ -13,6 +13,7 @@ parser = argparse.ArgumentParser("update-gsrc-via-refs")
 parser.add_argument("--game", help="The name of the game", type=str)
 parser.add_argument("--decompiler", help="The path to the decompiler", type=str)
 parser.add_argument("--decompiler_config", help="The decomp config", type=str)
+parser.add_argument("--version", help="The decomp config version", type=str)
 parser.add_argument("--file_pattern", help="Provide a glob pattern to find files, instead of using git status. Relative to the reference test folder", type=str)
 args = parser.parse_args()
 
@@ -42,19 +43,23 @@ if args.file_pattern:
 else:
     file_names = get_files_via_git()
 
+all_names = str(file_names).replace("'", "\"").replace("{", "[").replace("}", "]");
+print("Decompiling - {}".format(all_names))
+# Decompile file
+subprocess.run(
+    [
+        args.decompiler,
+        "./decompiler/config/{}".format(args.decompiler_config),
+        "./iso_data",
+        "./decompiler_out",
+        "--version",
+        args.version,
+        "--config-override",
+        '{{"allowed_objects": {}}}'.format(all_names),
+    ]
+)
+
 for file_name in file_names:
-    print("Decompiling - {}".format(file_name))
-    # Decompile file
-    subprocess.run(
-        [
-            args.decompiler,
-            "./decompiler/config/{}".format(args.decompiler_config),
-            "./iso_data",
-            "./decompiler_out",
-            "--config-override",
-            '{{"allowed_objects": ["{}"]}}'.format(file_name),
-        ]
-    )
     print("Updating - {}".format(file_name))
     # Update gsrc
     os.system(

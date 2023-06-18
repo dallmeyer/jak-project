@@ -40,6 +40,7 @@ struct CompilationOptions {
 class Compiler {
  public:
   Compiler(GameVersion version,
+           const std::optional<REPL::Config> repl_config = {},
            const std::string& user_profile = "#f",
            std::unique_ptr<REPL::Wrapper> repl = nullptr);
   ~Compiler();
@@ -94,6 +95,9 @@ class Compiler {
                      std::vector<std::pair<std::string, replxx::Replxx::Color>> const& user_data);
   bool knows_object_file(const std::string& name);
   MakeSystem& make_system() { return m_make; }
+  std::set<std::string> lookup_symbol_infos_starting_with(const std::string& prefix) const;
+  std::vector<SymbolInfo>* lookup_exact_name_info(const std::string& name) const;
+  std::optional<TypeSpec> lookup_typespec(const std::string& symbol_name) const;
 
  private:
   GameVersion m_version;
@@ -105,9 +109,10 @@ class Compiler {
   listener::Listener m_listener;
   goos::Interpreter m_goos;
   Debugger m_debugger;
+  std::unordered_map<std::string, goos::ArgumentSpec> m_macro_specs;
   std::unordered_map<std::string, TypeSpec> m_symbol_types;
   std::unordered_map<goos::HeapObject*, goos::Object> m_global_constants;
-  std::unordered_map<goos::HeapObject*, LambdaVal*> m_inlineable_functions;
+  std::unordered_map<goos::HeapObject*, InlineableFunction> m_inlineable_functions;
   CompilerSettings m_settings;
   bool m_throw_on_define_extern_redefinition = false;
   std::unordered_set<std::string> m_allow_inconsistent_definition_symbols;
@@ -124,8 +129,6 @@ class Compiler {
   } m_debug_stats;
 
   void setup_goos_forms();
-  std::set<std::string> lookup_symbol_infos_starting_with(const std::string& prefix) const;
-  std::vector<SymbolInfo>* lookup_exact_name_info(const std::string& name) const;
   bool get_true_or_false(const goos::Object& form, const goos::Object& boolean);
   bool try_getting_macro_from_goos(const goos::Object& macro_name, goos::Object* dest);
   bool expand_macro_once(const goos::Object& src, goos::Object* out, Env* env);
@@ -210,6 +213,7 @@ class Compiler {
                         const std::function<void(const goos::Object&)>& f);
 
   goos::Arguments get_va(const goos::Object& form, const goos::Object& rest);
+  goos::Arguments get_va_no_named(const goos::Object& form, const goos::Object& rest);
   void va_check(const goos::Object& form,
                 const goos::Arguments& args,
                 const std::vector<std::optional<goos::ObjectType>>& unnamed,
@@ -337,7 +341,8 @@ class Compiler {
                                        const TypeSpec& result_type,
                                        RegVal* a,
                                        RegVal* b,
-                                       Env* env);
+                                       Env* env,
+                                       bool imm_divisor);
 
   Val* compile_format_string(const goos::Object& form,
                              Env* env,
@@ -608,14 +613,13 @@ class Compiler {
   Val* compile_reload(const goos::Object& form, const goos::Object& rest, Env* env);
   Val* compile_get_info(const goos::Object& form, const goos::Object& rest, Env* env);
   Val* compile_autocomplete(const goos::Object& form, const goos::Object& rest, Env* env);
-  Val* compile_add_macro_to_autocomplete(const goos::Object& form,
-                                         const goos::Object& rest,
-                                         Env* env);
+  Val* compile_update_macro_metadata(const goos::Object& form, const goos::Object& rest, Env* env);
   Val* compile_load_project(const goos::Object& form, const goos::Object& rest, Env* env);
   Val* compile_make(const goos::Object& form, const goos::Object& rest, Env* env);
   Val* compile_print_debug_compiler_stats(const goos::Object& form,
                                           const goos::Object& rest,
                                           Env* env);
+  Val* compile_gen_docs(const goos::Object& form, const goos::Object& rest, Env* env);
 
   // ControlFlow
   Condition compile_condition(const goos::Object& condition, Env* env, bool invert);
@@ -705,9 +709,11 @@ class Compiler {
                                          const goos::Object& rest,
                                          Env* env);
   Val* compile_go_hook(const goos::Object& form, const goos::Object& rest, Env* env);
+  Val* compile_gc_text(const goos::Object& form, const goos::Object& rest, Env* env);
 };
 
 extern const std::unordered_map<
     std::string,
-    Val* (Compiler::*)(const goos::Object& form, const goos::Object& rest, Env* env)>
+    std::pair<std::string,
+              Val* (Compiler::*)(const goos::Object& form, const goos::Object& rest, Env* env)>>
     g_goal_forms;

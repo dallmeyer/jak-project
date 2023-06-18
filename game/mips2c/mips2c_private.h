@@ -348,6 +348,7 @@ struct ExecutionContext {
     u64 args[8] = {gprs[a0].du64[0], gprs[a1].du64[0], gprs[a2].du64[0], gprs[a3].du64[0],
                    gprs[t0].du64[0], gprs[t1].du64[0], gprs[t2].du64[0], gprs[t3].du64[0]};
 #ifdef __linux__
+    ASSERT(addr);
     gprs[v0].du64[0] = _call_goal8_asm_linux(g_ee_main_mem + addr, args, 0, gprs[s6].du64[0],
                                              gprs[s7].du64[0], g_ee_main_mem);
 #elif _WIN32
@@ -700,6 +701,14 @@ struct ExecutionContext {
     auto t = gpr_src(rt);
     for (int i = 0; i < 8; i++) {
       gprs[dest].du16[i] = s.du16[i] + t.du16[i];
+    }
+  }
+
+  void psubh(int dest, int rs, int rt) {
+    auto s = gpr_src(rs);
+    auto t = gpr_src(rt);
+    for (int i = 0; i < 8; i++) {
+      gprs[dest].du16[i] = s.du16[i] - t.du16[i];
     }
   }
 
@@ -1331,6 +1340,15 @@ struct ExecutionContext {
     for (int i = 0; i < 4; i++) {
       if ((u64)mask & (1 << i)) {
         vfs[dst].ds32[i] = s.f[i];
+      }
+    }
+  }
+
+  void vftoi0_sat(DEST mask, int dst, int src) {
+    auto s = vf_src(src);
+    for (int i = 0; i < 4; i++) {
+      if ((u64)mask & (1 << i)) {
+        vfs[dst].ds32[i] = float_to_int_sat(s.f[i]);
       }
     }
   }

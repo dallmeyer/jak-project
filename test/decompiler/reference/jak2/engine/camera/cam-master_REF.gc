@@ -51,7 +51,7 @@
         (vector-reset! (-> self pitch-off))
         (set! (-> self upspeed) 0.0)
         (set! (-> self on-ground)
-              (zero? (logand (-> (the-as process-focusable gp-0) focus-status) (focus-status in-air)))
+              (not (logtest? (-> (the-as process-focusable gp-0) focus-status) (focus-status in-air)))
               )
         (set! (-> self on-pole) #f)
         (set! (-> self ease-t) 1.0)
@@ -59,13 +59,11 @@
         (set! (-> self string-max target z) (-> self settings string-max-length))
         (set! (-> self string-push-z) (fmax (-> self string-min value z) (-> *CAMERA-bank* default-string-push-z)))
         (cond
-          ((>= (- (-> self clock frame-counter) (get-notice-time (the-as process-focusable gp-0)))
-               (-> *CAMERA-bank* attack-timeout)
-               )
+          ((>= (- (current-time) (get-notice-time (the-as process-focusable gp-0))) (-> *CAMERA-bank* attack-timeout))
            (set! (-> self being-attacked) #f)
            )
           (else
-            (set! (-> self attack-start) (-> self clock frame-counter))
+            (set! (-> self attack-start) (current-time))
             (set! (-> self being-attacked) #t)
             (when (or (!= (-> last-try-to-look-at-data horz) 0.0) (!= (-> last-try-to-look-at-data vert) 0.0))
               (set! (-> self string-max target y) (fmax (-> self string-max target y) (-> last-try-to-look-at-data vert)))
@@ -75,7 +73,7 @@
             )
           )
         (cond
-          ((logtest? (-> (the-as process-focusable gp-0) focus-status) (focus-status under-water))
+          ((focus-test? (the-as process-focusable gp-0) under-water)
            (set! (-> self under-water) 2)
            )
           (else
@@ -117,14 +115,12 @@
         (gp-0
           (logior! (-> self master-options) (cam-master-options-u32 HAVE_TARGET))
           (cond
-            ((>= (- (-> self clock frame-counter) (get-notice-time (the-as target gp-0)))
-                 (-> *CAMERA-bank* attack-timeout)
-                 )
+            ((>= (- (current-time) (get-notice-time (the-as target gp-0))) (-> *CAMERA-bank* attack-timeout))
              (set! (-> self being-attacked) #f)
              )
             (else
               (if (not (-> self being-attacked))
-                  (set! (-> self attack-start) (-> self clock frame-counter))
+                  (set! (-> self attack-start) (current-time))
                   )
               (set! (-> self being-attacked) #t)
               (when (or (!= (-> last-try-to-look-at-data horz) 0.0) (!= (-> last-try-to-look-at-data vert) 0.0))
@@ -135,7 +131,7 @@
               )
             )
           (cond
-            ((logtest? (-> (the-as target gp-0) focus-status) (focus-status under-water))
+            ((focus-test? (the-as target gp-0) under-water)
              (set! (-> self under-water) 2)
              )
             ((> (-> self under-water) 0)
@@ -174,7 +170,7 @@
               (set! (-> self tpos-curr quad) (-> (get-trans (the-as target gp-0) 4) quad))
               )
             )
-          (when (logtest? (-> (the-as target gp-0) focus-status) (focus-status edge-grab))
+          (when (focus-test? (the-as target gp-0) edge-grab)
             (if *display-cam-los-debug*
                 (format *stdcon* "ride edge~%")
                 )
@@ -202,12 +198,12 @@
                 )
               )
             )
-          (set! (-> self on-ground) (zero? (logand (-> (the-as target gp-0) focus-status) (focus-status in-air))))
+          (set! (-> self on-ground) (not (logtest? (-> (the-as target gp-0) focus-status) (focus-status in-air))))
           (let ((s5-7 (new-stack-vector0)))
             0.0
             (cond
-              ((and (logtest? (-> (the-as target gp-0) focus-status) (focus-status in-air))
-                    (zero? (logand (focus-status halfpipe super) (-> (the-as target gp-0) focus-status)))
+              ((and (focus-test? (the-as target gp-0) in-air)
+                    (not (logtest? (focus-status halfpipe super) (-> (the-as target gp-0) focus-status)))
                     )
                (if *display-cam-los-debug*
                    (format *stdcon* "air tracking~%")
@@ -251,8 +247,8 @@
                 (vector-! s5-7 (-> self tpos-curr) (-> self tpos-old))
                 (let ((f0-34 (vector-dot s5-7 (-> self local-down))))
                   (cond
-                    ((and (logtest? (-> (the-as target gp-0) focus-status) (focus-status touch-water))
-                          (zero? (logand (focus-status mech) (-> (the-as target gp-0) focus-status)))
+                    ((and (focus-test? (the-as target gp-0) touch-water)
+                          (not (logtest? (focus-status mech) (-> (the-as target gp-0) focus-status)))
                           )
                      (set! (-> self upspeed) 0.0)
                      )
@@ -288,8 +284,8 @@
           (if (not (logtest? (-> self settings slave-options) (cam-slave-options JUMP_PITCHES)))
               (reset-follow)
               )
-          (when (and (logtest? (-> (the-as target gp-0) focus-status) (focus-status on-water under-water))
-                     (zero? (logand (focus-status mech) (-> (the-as target gp-0) focus-status)))
+          (when (and (focus-test? (the-as target gp-0) on-water under-water)
+                     (not (logtest? (focus-status mech) (-> (the-as target gp-0) focus-status)))
                      )
             (let ((f0-41 (- (get-water-height (the-as target gp-0)) (-> self settings target-height))))
               (if (< (-> self tpos-curr-adj y) f0-41)
@@ -936,7 +932,7 @@
                )
              )
             ((= v1-0 'part-water-drip)
-             (set! (-> self water-drip-time) (-> self clock frame-counter))
+             (set! (-> self water-drip-time) (current-time))
              (set! (-> self water-drip-mult) (the-as float (-> event param 0)))
              (set! (-> self water-drip-speed) (the-as float (-> event param 1)))
              )

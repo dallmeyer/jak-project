@@ -671,18 +671,18 @@
        (logior! (-> obj focus-status) (focus-status touch-water under-water))
        )
       (else
-        (when (logtest? (-> obj focus-status) (focus-status touch-water))
+        (when (focus-test? obj touch-water)
           (let ((s3-0 (new 'stack-no-clear 'water-info)))
             (water-info-init! (-> obj root-override2) s3-0 (collide-action solid semi-solid))
             (let ((v1-12 #f))
               (cond
                 ((not (logtest? (water-flags touch-water) (-> s3-0 flags)))
-                 (if (logtest? (-> obj focus-status) (focus-status under-water))
+                 (if (focus-test? obj under-water)
                      (set! v1-12 #t)
                      )
                  (logclear! (-> obj focus-status) (focus-status touch-water under-water))
                  )
-                ((logtest? (-> obj focus-status) (focus-status under-water))
+                ((focus-test? obj under-water)
                  (let* ((a0-18 (-> obj root-override2 root-prim prim-core))
                         (f0-1 (+ (-> a0-18 world-sphere y) (-> a0-18 world-sphere w)))
                         )
@@ -942,7 +942,7 @@
 (defmethod go-stare amphibian ((obj amphibian))
   (let ((s5-0 (-> obj focus aware)))
     (cond
-      ((or (and (-> obj enemy-info-override use-frustration) (logtest? (enemy-flag enemy-flag39) (-> obj enemy-flags)))
+      ((or (and (-> obj enemy-info-override use-frustration) (logtest? (enemy-flag not-frustrated) (-> obj enemy-flags)))
            (nav-enemy-method-163 obj)
            )
        (go-stare2 obj)
@@ -1148,8 +1148,8 @@
   :virtual #t
   :code (behavior ()
     (until #f
-      (set! (-> self state-time) (-> self clock frame-counter))
-      (until (>= (- (-> self clock frame-counter) (-> self state-time)) (seconds 1.067))
+      (set! (-> self state-time) (current-time))
+      (until (>= (- (current-time) (-> self state-time)) (seconds 1.067))
         (amphibian-method-187 self)
         (suspend)
         )
@@ -1209,7 +1209,7 @@
         0
         (nav-enemy-method-165 self)
         (ja-no-eval :num! (loop!))
-        (until (>= (- (-> self clock frame-counter) (-> self state-time)) (seconds 1.067))
+        (until (>= (- (current-time) (-> self state-time)) (seconds 1.067))
           (amphibian-method-187 self)
           (suspend)
           )
@@ -1807,7 +1807,7 @@
   :event (the-as (function process int symbol event-message-block object :behavior amphibian) enemy-event-handler)
   :enter (behavior ()
     ((-> (method-of-type nav-enemy hostile) enter))
-    (set! (-> self state-time) (-> self clock frame-counter))
+    (set! (-> self state-time) (current-time))
     (let ((v1-4 self))
       (set! (-> v1-4 enemy-flags) (the-as enemy-flag (logclear (-> v1-4 enemy-flags) (enemy-flag enemy-flag36))))
       (set! (-> v1-4 nav callback-info) *nav-enemy-null-callback-info*)
@@ -1834,7 +1834,7 @@
     (let ((v1-0 (-> self tongue-mode)))
       (cond
         ((zero? v1-0)
-         (when (>= (- (-> self clock frame-counter) (-> self state-time)) (seconds 0.8))
+         (when (>= (- (current-time) (-> self state-time)) (seconds 0.8))
            (set! (-> self tongue-mode) (the-as uint 1))
            (sound-play "tongue-attack")
            )

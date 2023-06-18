@@ -97,8 +97,8 @@
    (ride-timer                   time-frame                     :offset-assert 336)
    (sticky-player-last-ride-time time-frame                     :offset-assert 344)
    (elevator-status              elevator-status                :offset-assert 352)
-   (on-activate                  basic                          :offset-assert 360)
-   (on-deactivate                basic                          :offset-assert 364)
+   (on-activate                  pair                           :offset-assert 360)
+   (on-deactivate                pair                           :offset-assert 364)
    )
   :heap-base #xf0
   :method-count-assert 49
@@ -111,14 +111,14 @@
     (arrived () _type_ :state 37)
     (elevator-method-38 (_type_) none 38)
     (calc-dist-between-points! (_type_ int int) none 39)
-    (activate-elevator (_type_) none 40)
+    (activate-elevator (_type_) object 40)
     (init-defaults! (_type_) none 41)
     (set-ambient-sound! (_type_) none 42)
     (move-between-points (_type_ vector float float) symbol 43)
     (elevator-method-44 (_type_) symbol 44)
     (commited-to-ride? (_type_) symbol 45)
     (move-to-next-point! (_type_) none 46)
-    (find-closest-point-in-path! (_type_ vector path-step symbol symbol) symbol 47)
+    (find-closest-point-in-path! (_type_ vector (pointer float) symbol symbol) symbol 47)
     (elevator-method-48 (_type_) none 48)
     )
   )
@@ -294,14 +294,14 @@ which is obviously useful for an elevator."
         ((= evt-type 'ridden)
          (let ((proc-focus (handle->process (-> (the-as focus (-> event param 0)) handle))))
            (if (= (-> proc-focus type) target)
-               (set! (-> self sticky-player-last-ride-time) (-> self clock frame-counter))
+               (set! (-> self sticky-player-last-ride-time) (current-time))
                )
            )
          #t
          )
         ((= evt-type 'use-camera)
          (if (-> event param 0)
-             (set-setting! 'entity-name (-> event param 0) 0 0)
+             (set-setting! 'entity-name (-> event param 0) 0.0 0)
              (remove-setting! 'entity-name)
              )
          )
@@ -394,7 +394,7 @@ which is obviously useful for an elevator."
             (+ (-> self move-pos 0) (* (-> self path-pos) (- (-> self move-pos 1) (-> self move-pos 0))))
             )
            (('player-standing-on?)
-            (= (-> self sticky-player-last-ride-time) (-> self clock frame-counter))
+            (= (-> self sticky-player-last-ride-time) (current-time))
             )
            (('point-inside-shaft?)
             (move-between-points self (the-as vector (-> event param 1)) (-> self bottom-top 1) (-> self bottom-top 0))
@@ -422,7 +422,7 @@ which is obviously useful for an elevator."
     )
   )
 
-(defmethod find-closest-point-in-path! elevator ((obj elevator) (arg0 vector) (arg1 path-step) (arg2 symbol) (arg3 symbol))
+(defmethod find-closest-point-in-path! elevator ((obj elevator) (arg0 vector) (arg1 (pointer float)) (arg2 symbol) (arg3 symbol))
   "Finds and sets the provided [[path-step]]'s `next-pos` field to the vertex index in the path which is closest to
 the provided [[vector]]
 
@@ -459,7 +459,7 @@ the provided [[vector]]
         )
       )
     (when (!= point-idx-tracker -1.0)
-      (set! (-> arg1 next-pos) point-idx-tracker)
+      (set! (-> arg1 0) point-idx-tracker)
       #t
       )
     )
@@ -492,15 +492,13 @@ do so.
   (local-vars (zero float))
   (let ((target *target*))
     (when (and target
-               (zero? (logand (focus-status dead inactive in-air grabbed edge-grab pole pilot-riding pilot teleporting)
+               (not (logtest? (focus-status dead inactive in-air grabbed edge-grab pole pilot-riding pilot teleporting)
                               (-> target focus-status)
                               )
-                      )
+                    )
                )
       (set! zero (the-as float 0.0))
-      (when (and (find-closest-point-in-path! obj (get-trans target 0) (new 'stack-no-clear 'path-step) #t #t)
-                 (!= (-> obj move-pos 1) zero)
-                 )
+      (when (and (find-closest-point-in-path! obj (get-trans target 0) (& zero) #t #t) (!= (-> obj move-pos 1) zero))
         (set! (-> obj move-pos 0) (-> obj move-pos 1))
         (set! (-> obj move-pos 1) zero)
         (logior! (-> obj elevator-status) (elevator-status moving))
@@ -560,7 +558,7 @@ do so.
       )
     )
   :enter (behavior ()
-    (set! (-> self ride-timer) (-> self clock frame-counter))
+    (set! (-> self ride-timer) (current-time))
     (logclear! (-> self elevator-status) (elevator-status waiting-to-descend moving))
     (logior! (-> self mask) (process-mask actor-pause))
     (if (nonzero? (-> self sound))
@@ -571,16 +569,16 @@ do so.
   :trans (behavior ()
     (plat-trans)
     (when (not (logtest? (-> self elevator-status) (elevator-status waiting-to-descend)))
-      (set! (-> self ride-timer) (-> self clock frame-counter))
+      (set! (-> self ride-timer) (current-time))
       (-> self params)
       (if (and (logtest? (-> self params flags) (elevator-flags elevator-flags-0))
-               (zero? (logand (-> self params flags) (elevator-flags elevator-flags-3)))
+               (not (logtest? (-> self params flags) (elevator-flags elevator-flags-3)))
                )
           (move-to-next-point! self)
           )
       )
     (when (and (not (logtest? (-> self params flags) (elevator-flags elevator-flags-3)))
-               (>= (- (-> self clock frame-counter) (-> self ride-timer)) (seconds 1))
+               (>= (- (current-time) (-> self ride-timer)) (seconds 1))
                )
       (set! (-> self move-pos 0) (-> self move-pos 1))
       (set! (-> self move-pos 1) (-> self path-seq data (the int (-> self move-pos 1)) next-pos))
@@ -634,19 +632,10 @@ do so.
         )
       )
     (logclear! (-> self mask) (process-mask actor-pause))
-    (set-setting! 'board #f 0 0)
+    (set-setting! 'board #f 0.0 0)
     (let ((gp-0 (-> self on-activate)))
       (if gp-0
-          (eval!
-            (new
-              'stack
-              'script-context
-              (the-as basic (* (the int (-> self move-pos 0)) 8))
-              self
-              (-> self root-override trans)
-              )
-            (the-as pair gp-0)
-            )
+          (script-eval gp-0 :key (* (the int (-> self move-pos 0)) 8) :vector (-> self root-override trans))
           )
       )
     (set! (-> self path-pos) 0.0)
@@ -654,7 +643,7 @@ do so.
         (update-vol! (-> self sound) 0.0)
         )
     (when (logtest? (-> self params flags) (elevator-flags prevent-jump))
-      (set-setting! 'jump #f 0 0)
+      (set-setting! 'jump #f 0.0 0)
       (apply-settings *setting-control*)
       )
     (none)
@@ -701,7 +690,9 @@ do so.
       (seek!
         (-> self path-pos)
         (-> self path-dest)
-        (* (/ (-> self params move-rate) (-> self move-dist)) (-> self clock seconds-per-frame))
+        (* (/ (* (#if PC_PORT (if (eligible-for-fast-elevator? *pc-settings* self) 1.5 1.0)
+                              1.0)
+              (-> self params move-rate)) (-> self move-dist)) (-> self clock seconds-per-frame))
         )
       (let* ((f30-0 (-> self move-pos 0))
              (f28-0 (-> self move-pos 1))
@@ -720,7 +711,7 @@ do so.
   :event (behavior ((proc process) (arg1 int) (event-type symbol) (event event-message-block))
     (case event-type
       (('ridden)
-       (set! (-> self ride-timer) (-> self clock frame-counter))
+       (set! (-> self ride-timer) (current-time))
        (elevator-event proc arg1 event-type event)
        )
       (else
@@ -729,22 +720,13 @@ do so.
       )
     )
   :enter (behavior ()
-    (set! (-> self ride-timer) (-> self clock frame-counter))
+    (set! (-> self ride-timer) (current-time))
     (if (not (-> *setting-control* user-current jump))
         (remove-setting! 'jump)
         )
     (let ((gp-0 (-> self on-deactivate)))
       (if gp-0
-          (eval!
-            (new
-              'stack
-              'script-context
-              (the-as basic (* (the int (-> self move-pos 1)) 8))
-              self
-              (-> self root-override trans)
-              )
-            (the-as pair gp-0)
-            )
+          (script-eval gp-0 :key (* (the int (-> self move-pos 1)) 8) :vector (-> self root-override trans))
           )
       )
     (none)
@@ -752,12 +734,12 @@ do so.
   :trans (behavior ()
     (if (and (< (- (-> self ride-timer) (-> self sticky-player-last-ride-time)) (seconds 2))
              (begin *target* *target*)
-             (logtest? (-> *target* focus-status) (focus-status in-air))
+             (focus-test? *target* in-air)
              )
-        (set! (-> self ride-timer) (-> self clock frame-counter))
+        (set! (-> self ride-timer) (current-time))
         )
     (when (or (logtest? (-> self elevator-status) (elevator-status moving))
-              (>= (- (-> self clock frame-counter) (-> self ride-timer)) (seconds 0.5))
+              (>= (- (current-time) (-> self ride-timer)) (seconds 0.5))
               )
       (cond
         ((and (logtest? (-> self params flags) (elevator-flags elevator-flags-1))
@@ -816,16 +798,15 @@ For example for an elevator pre-compute the distance between the first and last 
   (the-as elevator ((the-as (function base-plat int base-plat) (find-parent-method elevator 7)) obj arg0))
   )
 
-;; WARN: Return type mismatch object vs none.
 (defmethod activate-elevator elevator ((obj elevator))
   "Puts the elevator initially into the correct state. This is typically based upon game completion"
   (if (logtest? (-> obj params flags) (elevator-flags elevator-flags-6))
       (go (method-of-object obj arrived))
       (go (method-of-object obj waiting))
       )
-  (none)
   )
 
+;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! elevator ((obj elevator) (entity entity-actor))
   "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
 This commonly includes things such as:
@@ -842,8 +823,8 @@ This commonly includes things such as:
   (update-transforms (-> obj root-override))
   (base-plat-method-32 obj)
   (init-defaults! obj)
-  (set! (-> obj on-activate) (res-lump-struct (-> obj entity) 'on-activate basic))
-  (set! (-> obj on-deactivate) (res-lump-struct (-> obj entity) 'on-deactivate basic))
+  (set! (-> obj on-activate) (res-lump-struct (-> obj entity) 'on-activate pair))
+  (set! (-> obj on-deactivate) (res-lump-struct (-> obj entity) 'on-deactivate pair))
   (set! (-> obj path) (new 'process 'path-control obj 'path 0.0 entity #f))
   (if (logtest? (-> obj path flags) (path-control-flag not-found))
       (go process-drawable-art-error "error in path")
@@ -881,7 +862,7 @@ This commonly includes things such as:
     )
   (if (not (and sv-40
                 (logtest? (-> obj params flags) (elevator-flags elevator-flags-4))
-                (find-closest-point-in-path! obj (get-trans sv-40 0) (the-as path-step (& sv-32)) #f #t)
+                (find-closest-point-in-path! obj (get-trans sv-40 0) (& sv-32) #f #t)
                 )
            )
       (set! sv-32 (-> obj params start-pos))

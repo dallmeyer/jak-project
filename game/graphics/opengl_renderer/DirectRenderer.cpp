@@ -9,6 +9,10 @@
 #include "third-party/fmt/core.h"
 #include "third-party/imgui/imgui.h"
 
+DirectRenderer::ScissorState DirectRenderer::m_scissor;
+
+constexpr PerGameVersion<int> game_height(448, 416);
+
 DirectRenderer::DirectRenderer(const std::string& name, int my_id, int batch_size)
     : BucketRenderer(name, my_id), m_prim_buffer(batch_size) {
   glGenBuffers(1, &m_ogl.vertex_buffer);
@@ -48,11 +52,29 @@ DirectRenderer::DirectRenderer(const std::string& name, int my_id, int batch_siz
 
   glEnableVertexAttribArray(3);
   glVertexAttribIPointer(
-      3,                                 // location 0 in the shader
+      3,                                 // location 3 in the shader
       4,                                 // 3 floats per vert
       GL_UNSIGNED_BYTE,                  // floats
       sizeof(Vertex),                    //
       (void*)offsetof(Vertex, tex_unit)  // offset in array (why is this a pointer...)
+  );
+
+  glEnableVertexAttribArray(4);
+  glVertexAttribIPointer(
+      4,                               // location 4 in the shader
+      1,                               // 3 floats per vert
+      GL_UNSIGNED_BYTE,                // floats
+      sizeof(Vertex),                  //
+      (void*)offsetof(Vertex, use_uv)  // offset in array (why is this a pointer...)
+  );
+
+  glEnableVertexAttribArray(5);
+  glVertexAttribPointer(5,                                // location 5 in the shader
+                        4,                                // 4 floats per vert
+                        GL_FLOAT,                         // floats
+                        GL_FALSE,                         // normalized, ignored,
+                        sizeof(Vertex),                   //
+                        (void*)offsetof(Vertex, scissor)  // offset in array
   );
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
@@ -69,6 +91,7 @@ DirectRenderer::~DirectRenderer() {
 void DirectRenderer::render(DmaFollower& dma,
                             SharedRenderState* render_state,
                             ScopedProfilerNode& prof) {
+  pre_render();
   // if we're rendering from a bucket, we should start off we a totally reset state:
   reset_state();
   setup_common_state(render_state);
@@ -91,6 +114,8 @@ void DirectRenderer::render(DmaFollower& dma,
   if (m_enabled) {
     flush_pending(render_state, prof);
   }
+  post_render();
+  glColorMaski(0, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 }
 
 void DirectRenderer::reset_state() {
@@ -135,6 +160,7 @@ void DirectRenderer::draw_debug_window() {
   ImGui::Text("  tex1: %d", m_stats.flush_from_tex_1);
   ImGui::Text("  zbuf: %d", m_stats.flush_from_zbuf);
   ImGui::Text("  test: %d", m_stats.flush_from_test);
+  ImGui::Text("  ta0: %d", m_stats.flush_from_ta0);
   ImGui::Text("  alph: %d", m_stats.flush_from_alpha);
   ImGui::Text("  clmp: %d", m_stats.flush_from_clamp);
   ImGui::Text("  prim: %d", m_stats.flush_from_prim);
@@ -216,6 +242,15 @@ void DirectRenderer::flush_pending(SharedRenderState* render_state, ScopedProfil
   glBufferData(GL_ARRAY_BUFFER, m_prim_buffer.vert_count * sizeof(Vertex),
                m_prim_buffer.vertices.data(), GL_STREAM_DRAW);
 
+  GLint current_shader;
+  GLint viewport_size[4];
+  glGetIntegerv(GL_CURRENT_PROGRAM, &current_shader);
+  glGetIntegerv(GL_VIEWPORT, viewport_size);
+  glUniform1i(glGetUniformLocation(current_shader, "scissor_enable"),
+              m_scissor_enable && !m_offscreen_mode);
+  glUniform4f(glGetUniformLocation(current_shader, "game_sizes"), 512.0f,
+              game_height[render_state->version], viewport_size[2], viewport_size[3]);
+
   int draw_count = 0;
   glDrawArrays(GL_TRIANGLES, 0, m_prim_buffer.vert_count);
   draw_count++;
@@ -251,6 +286,7 @@ void DirectRenderer::update_gl_prim(SharedRenderState* render_state) {
         case GsTest::AlphaTest::ALWAYS:
           break;
         case GsTest::AlphaTest::GEQUAL:
+        case GsTest::AlphaTest::GREATER:  // todo
           alpha_reject = m_test_state.aref / 128.f;
           break;
         case GsTest::AlphaTest::NEVER:
@@ -274,6 +310,12 @@ void DirectRenderer::update_gl_prim(SharedRenderState* render_state) {
                                      "fog_color"),
                 render_state->fog_color[0] / 255.f, render_state->fog_color[1] / 255.f,
                 render_state->fog_color[2] / 255.f, render_state->fog_intensity / 255);
+    glUniform1i(glGetUniformLocation(render_state->shaders[ShaderId::DIRECT_BASIC_TEXTURED].id(),
+                                     "offscreen_mode"),
+                m_offscreen_mode);
+    glUniform1f(
+        glGetUniformLocation(render_state->shaders[ShaderId::DIRECT_BASIC_TEXTURED].id(), "ta0"),
+        state.ta0 / 255.f);
 
   } else {
     render_state->shaders[ShaderId::DIRECT_BASIC].activate();
@@ -304,14 +346,9 @@ void DirectRenderer::update_gl_texture(SharedRenderState* render_state, int unit
   }
 
   if (!tex) {
-    // TODO Add back
-    if (state.texture_base_ptr >= 8160 && state.texture_base_ptr <= 8600) {
-      lg::warn("Failed to find texture at {}, using random (eye zone)", state.texture_base_ptr);
-      tex = render_state->texture_pool->get_placeholder_texture();
-    } else {
-      lg::warn("Failed to find texture at {}, using random", state.texture_base_ptr);
-      tex = render_state->texture_pool->get_placeholder_texture();
-    }
+    lg::warn("Failed to find texture at {}, using random (direct: {})", state.texture_base_ptr,
+             name_and_id());
+    tex = render_state->texture_pool->get_placeholder_texture();
   }
   ASSERT(tex);
 
@@ -359,6 +396,7 @@ void DirectRenderer::update_gl_blend() {
       // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
       glBlendEquation(GL_FUNC_ADD);
+
     } else if (state.a == GsAlpha::BlendMode::SOURCE &&
                state.b == GsAlpha::BlendMode::ZERO_OR_FIXED &&
                state.c == GsAlpha::BlendMode::SOURCE && state.d == GsAlpha::BlendMode::DEST) {
@@ -441,6 +479,12 @@ void DirectRenderer::update_gl_test() {
     glDepthMask(GL_TRUE);
   } else {
     glDepthMask(GL_FALSE);
+  }
+
+  if (state.write_rgb) {
+    glColorMaski(0, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+  } else {
+    glColorMaski(0, GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE);
   }
 }
 
@@ -527,6 +571,12 @@ void DirectRenderer::render_gif(const u8* data,
     ASSERT(size >= 16);
   }
 
+  if (m_blit_buf_state.expect == 5) {
+    ASSERT(m_blit_buf_state.qwc * 16 == size);
+    m_blit_buf_state.expect = 0;
+    return;
+  }
+
   bool eop = false;
 
   u32 offset = 0;
@@ -536,6 +586,7 @@ void DirectRenderer::render_gif(const u8* data,
     }
     GifTag tag(data + offset);
     offset += 16;
+    eop = tag.eop();
 
     // unpack registers.
     // faster to do it once outside of the nloop loop.
@@ -608,11 +659,17 @@ void DirectRenderer::render_gif(const u8* data,
           offset += 8;  // PACKED = quadwords
         }
       }
-    } else {
-      ASSERT(false);  // format not packed or reglist.
-    }
+    } else if (format == GifTag::Format::IMAGE) {
+      ASSERT(m_blit_buf_state.expect == 4);
+      m_blit_buf_state.expect++;
 
-    eop = tag.eop();
+      // dont support non-eop image transfers yet
+      ASSERT(eop);
+      // in IMAGE mode this is the amount of 2x64-bit (1 qword) we will transfer
+      m_blit_buf_state.qwc = tag.nloop();
+    } else {
+      ASSERT(false);  // format not packed or reglist or image
+    }
   }
 
   if (size != UINT32_MAX) {
@@ -658,7 +715,7 @@ void DirectRenderer::handle_ad(const u8* data,
       handle_tex1_1(value);
       break;
     case GsRegisterAddress::TEXA:
-      handle_texa(value);
+      handle_texa(value, render_state, prof);
       break;
     case GsRegisterAddress::TEXCLUT:
       // TODO
@@ -679,19 +736,137 @@ void DirectRenderer::handle_ad(const u8* data,
     case GsRegisterAddress::TEXFLUSH:
       break;
     case GsRegisterAddress::FRAME_1:
+      handle_frame(value, render_state, prof);
       break;
-    case GsRegisterAddress::RGBAQ:
-      // shadow scissor does this?
-      {
-        m_prim_building.rgba_reg[0] = data[0];
-        m_prim_building.rgba_reg[1] = data[1];
-        m_prim_building.rgba_reg[2] = data[2];
-        m_prim_building.rgba_reg[3] = data[3];
-        memcpy(&m_prim_building.Q, data + 4, 4);
-      }
+    case GsRegisterAddress::RGBAQ: {  // shadow scissor does this?
+      m_prim_building.rgba_reg[0] = data[0];
+      m_prim_building.rgba_reg[1] = data[1];
+      m_prim_building.rgba_reg[2] = data[2];
+      m_prim_building.rgba_reg[3] = data[3];
+      memcpy(&m_prim_building.Q, data + 4, 4);
+    } break;
+    case GsRegisterAddress::SCISSOR_1:
+      handle_scissor(value);
+      break;
+    case GsRegisterAddress::XYOFFSET_1:
+      ASSERT(render_state->version == GameVersion::Jak2);  // hardcoded jak 2 scissor vals in handle
+      handle_xyoffset(value);
+      break;
+    case GsRegisterAddress::COLCLAMP:
+      ASSERT(value == 1);
+      break;
+    case GsRegisterAddress::BITBLTBUF:
+      ASSERT(false);
+      handle_bitbltbuf(value);
+      break;
+    case GsRegisterAddress::TRXPOS:
+      ASSERT(false);
+      handle_trxpos(value);
+      break;
+    case GsRegisterAddress::TRXREG:
+      ASSERT(false);
+      handle_trxreg(value);
+      break;
+    case GsRegisterAddress::TRXDIR:
+      ASSERT(false);
+      handle_trxdir(value & 0x3, render_state, prof);
       break;
     default:
       ASSERT_MSG(false, fmt::format("Address {} is not supported", register_address_name(addr)));
+  }
+}
+
+void DirectRenderer::handle_frame(u64, SharedRenderState*, ScopedProfilerNode&) {}
+
+void DirectRenderer::handle_scissor(u64 val) {
+  m_scissor.scax0 = (val >> 0) & 0x7ff;
+  m_scissor.scax1 = (val >> 16) & 0x7ff;
+  m_scissor.scay0 = (val >> 32) & 0x7ff;
+  m_scissor.scay1 = (val >> 48) & 0x7ff;
+  m_scissor_enable = true;
+}
+
+void DirectRenderer::handle_xyoffset(u64 val) {
+  GsXYOffset xyo(val);
+  // :ofx #x7000 :ofy #x7300
+  float scale = -65536;
+  m_prim_buffer.x_off = scale * ((s32)xyo.ofx() - 0x7000) / float(UINT32_MAX);
+  m_prim_buffer.y_off = scale * ((s32)xyo.ofy() - 0x7300) / float(UINT32_MAX);
+}
+
+void DirectRenderer::handle_bitbltbuf(u64 val) {
+  ASSERT(m_blit_buf_state.expect == 0);
+  m_blit_buf_state.expect++;
+
+  m_blit_buf_state.sbp = (val >> 0) & 0x3fff;
+  m_blit_buf_state.sbw = (val >> 16) & 0x3f;
+  m_blit_buf_state.spsm = (val >> 24) & 0x3f;
+  m_blit_buf_state.dbp = (val >> 32) & 0x3fff;
+  m_blit_buf_state.dbw = (val >> 48) & 0x3f;
+  m_blit_buf_state.dpsm = (val >> 56) & 0x3f;
+}
+
+void DirectRenderer::handle_trxpos(u64 val) {
+  ASSERT(m_blit_buf_state.expect == 1);
+  m_blit_buf_state.expect++;
+
+  m_blit_buf_state.ssax = (val >> 0) & 0x7ff;
+  m_blit_buf_state.ssay = (val >> 16) & 0x7ff;
+  m_blit_buf_state.dsax = (val >> 32) & 0x7ff;
+  m_blit_buf_state.dsay = (val >> 48) & 0x7ff;
+  m_blit_buf_state.pixel_dir = (val >> 59) & 0x3;
+}
+
+void DirectRenderer::handle_trxreg(u64 val) {
+  ASSERT(m_blit_buf_state.expect == 2);
+  m_blit_buf_state.expect++;
+
+  m_blit_buf_state.width = (val >> 0) & 0xfff;
+  m_blit_buf_state.height = (val >> 32) & 0xfff;
+}
+
+void DirectRenderer::handle_trxdir(u64 dir,
+                                   SharedRenderState* render_state,
+                                   ScopedProfilerNode& /*prof*/) {
+  ASSERT(m_blit_buf_state.expect == 3);
+  m_blit_buf_state.expect++;
+
+  auto get_tex_func = [&render_state](const std::string& name, u16 tbp) {
+    auto result = render_state->texture_pool->lookup(tbp);
+    if (!result) {
+      fmt::print("{} tbp {} not found\n", name, tbp);
+    } else {
+      fmt::print("{} tbp {} found\n", name, tbp);
+    }
+    return result;
+  };
+  fmt::print("GS TEXTURE COPY --\n");
+  fmt::print("src w/psm: {}/{} dst w/psm: {}/{}\n", m_blit_buf_state.sbw, m_blit_buf_state.spsm,
+             m_blit_buf_state.dbw, m_blit_buf_state.dpsm);
+  switch (dir) {
+    case 0: {  // host->local
+      fmt::print("-- FROM EE\n");
+      auto dst_tex = get_tex_func("dst", m_blit_buf_state.dbp);
+      (void)dst_tex;
+      // ASSERT_MSG(false, "nyi trxdir host->local");
+    } break;
+    case 1: {  // local->host
+      fmt::print("-- FROM GS\n");
+      auto src_tex = get_tex_func("src", m_blit_buf_state.sbp);
+      (void)src_tex;
+      // ASSERT_MSG(false, "nyi trxdir local->host");
+    } break;
+    case 2: {  // local->local
+      fmt::print("-- GS <-> GS\n");
+      auto src_tex = get_tex_func("src", m_blit_buf_state.sbp);
+      auto dst_tex = get_tex_func("dst", m_blit_buf_state.dbp);
+      (void)src_tex;
+      (void)dst_tex;
+    } break;
+    case 3:  // disable
+      fmt::print("-- HUH???\n");
+      ASSERT_MSG(false, "nyi trxdir disable");
+      break;
   }
 }
 
@@ -750,17 +925,6 @@ void DirectRenderer::handle_tex0_1(u64 val) {
   // csm: assume they got it right
 }
 
-void DirectRenderer::handle_texa(u64 val) {
-  GsTexa reg(val);
-
-  // rgba16 isn't used so this doesn't matter?
-  // but they use sane defaults anyway
-  ASSERT(reg.ta0() == 0);
-  ASSERT(reg.ta1() == 0x80);  // note: check rgba16_to_rgba32 if this changes.
-
-  ASSERT(reg.aem() == false);
-}
-
 void DirectRenderer::handle_st_packed(const u8* data) {
   memcpy(&m_prim_building.st_reg.x(), data + 0, 4);
   memcpy(&m_prim_building.st_reg.y(), data + 4, 4);
@@ -773,7 +937,7 @@ void DirectRenderer::handle_uv_packed(const u8* data) {
   memcpy(&v, data + 4, 4);
   m_prim_building.st_reg.x() = u;
   m_prim_building.st_reg.y() = v;
-  m_prim_building.Q = 16.f;
+  m_prim_building.Q = 1;
 }
 
 void DirectRenderer::handle_rgbaq_packed(const u8* data) {
@@ -852,7 +1016,26 @@ void DirectRenderer::handle_test1(u64 val,
     m_prim_gl_state_needs_gl_update = true;
   }
 }
+void DirectRenderer::handle_texa(u64 val,
+                                 SharedRenderState* render_state,
+                                 ScopedProfilerNode& prof) {
+  GsTexa reg(val);
 
+  // rgba16 isn't used so this doesn't matter?
+  // but they use sane defaults anyway
+  // ASSERT(reg.ta0() == 0); TODO
+  if (m_prim_gl_state.ta0 != reg.ta0()) {
+    m_stats.flush_from_ta0++;
+    flush_pending(render_state, prof);
+    m_prim_gl_state.ta0 = reg.ta0();
+    m_test_state_needs_gl_update = true;
+    m_prim_gl_state_needs_gl_update = true;
+    m_blend_state_needs_gl_update = true;
+  }
+  ASSERT(reg.ta1() == 0x80);  // note: check rgba16_to_rgba32 if this changes.
+
+  ASSERT(reg.aem() == false);
+}
 void DirectRenderer::handle_alpha1(u64 val,
                                    SharedRenderState* render_state,
                                    ScopedProfilerNode& prof) {
@@ -965,6 +1148,10 @@ void DirectRenderer::handle_xyzf2_common(u32 x,
   bool tcc = m_buffered_tex_state[tex_unit].tcc;
   bool decal = m_buffered_tex_state[tex_unit].decal;
   bool fge = m_prim_gl_state.fogging_enable;
+  bool use_uv = m_prim_gl_state.use_uv;
+
+  math::Vector<float, 4> scissor(m_scissor.scax0, m_scissor.scax1, m_scissor.scay0,
+                                 m_scissor.scay1);
 
   switch (m_prim_building.kind) {
     case GsPrim::Kind::SPRITE: {
@@ -990,12 +1177,18 @@ void DirectRenderer::handle_xyzf2_common(u32 x,
         auto& corner3_rgba = corner2_rgba;
         auto& corner4_rgba = corner2_rgba;
 
-        m_prim_buffer.push(corner1_rgba, corner1_vert, corner1_stq, 0, tcc, decal, fge);
-        m_prim_buffer.push(corner3_rgba, corner3_vert, corner3_stq, 0, tcc, decal, fge);
-        m_prim_buffer.push(corner2_rgba, corner2_vert, corner2_stq, 0, tcc, decal, fge);
-        m_prim_buffer.push(corner2_rgba, corner2_vert, corner2_stq, 0, tcc, decal, fge);
-        m_prim_buffer.push(corner4_rgba, corner4_vert, corner4_stq, 0, tcc, decal, fge);
-        m_prim_buffer.push(corner1_rgba, corner1_vert, corner1_stq, 0, tcc, decal, fge);
+        m_prim_buffer.push(corner1_rgba, corner1_vert, corner1_stq, scissor, 0, tcc, decal, fge,
+                           use_uv);
+        m_prim_buffer.push(corner3_rgba, corner3_vert, corner3_stq, scissor, 0, tcc, decal, fge,
+                           use_uv);
+        m_prim_buffer.push(corner2_rgba, corner2_vert, corner2_stq, scissor, 0, tcc, decal, fge,
+                           use_uv);
+        m_prim_buffer.push(corner2_rgba, corner2_vert, corner2_stq, scissor, 0, tcc, decal, fge,
+                           use_uv);
+        m_prim_buffer.push(corner4_rgba, corner4_vert, corner4_stq, scissor, 0, tcc, decal, fge,
+                           use_uv);
+        m_prim_buffer.push(corner1_rgba, corner1_vert, corner1_stq, scissor, 0, tcc, decal, fge,
+                           use_uv);
         m_prim_building.building_idx = 0;
       }
     } break;
@@ -1011,7 +1204,8 @@ void DirectRenderer::handle_xyzf2_common(u32 x,
         if (advance) {
           for (int i = 0; i < 3; i++) {
             m_prim_buffer.push(m_prim_building.building_rgba[i], m_prim_building.building_vert[i],
-                               m_prim_building.building_stq[i], tex_unit, tcc, decal, fge);
+                               m_prim_building.building_stq[i], scissor, tex_unit, tcc, decal, fge,
+                               use_uv);
           }
         }
       }
@@ -1023,7 +1217,8 @@ void DirectRenderer::handle_xyzf2_common(u32 x,
         m_prim_building.building_idx = 0;
         for (int i = 0; i < 3; i++) {
           m_prim_buffer.push(m_prim_building.building_rgba[i], m_prim_building.building_vert[i],
-                             m_prim_building.building_stq[i], tex_unit, tcc, decal, fge);
+                             m_prim_building.building_stq[i], scissor, tex_unit, tcc, decal, fge,
+                             use_uv);
         }
       }
       break;
@@ -1039,7 +1234,8 @@ void DirectRenderer::handle_xyzf2_common(u32 x,
         }
         for (int i = 0; i < 3; i++) {
           m_prim_buffer.push(m_prim_building.building_rgba[i], m_prim_building.building_vert[i],
-                             m_prim_building.building_stq[i], tex_unit, tcc, decal, fge);
+                             m_prim_building.building_stq[i], scissor, tex_unit, tcc, decal, fge,
+                             use_uv);
         }
       }
     } break;
@@ -1064,18 +1260,71 @@ void DirectRenderer::handle_xyzf2_common(u32 x,
         math::Vector<u32, 4> di{d.x(), d.y(), d.z(), 0};
 
         // ACB:
-        m_prim_buffer.push(m_prim_building.building_rgba[0], ai, {}, 0, false, false, false);
-        m_prim_buffer.push(m_prim_building.building_rgba[0], ci, {}, 0, false, false, false);
-        m_prim_buffer.push(m_prim_building.building_rgba[1], bi, {}, 0, false, false, false);
+        m_prim_buffer.push(m_prim_building.building_rgba[0], ai, {}, scissor, 0, false, false,
+                           false, false);
+        m_prim_buffer.push(m_prim_building.building_rgba[0], ci, {}, scissor, 0, false, false,
+                           false, false);
+        m_prim_buffer.push(m_prim_building.building_rgba[1], bi, {}, scissor, 0, false, false,
+                           false, false);
         // b c d
-        m_prim_buffer.push(m_prim_building.building_rgba[1], bi, {}, 0, false, false, false);
-        m_prim_buffer.push(m_prim_building.building_rgba[0], ci, {}, 0, false, false, false);
-        m_prim_buffer.push(m_prim_building.building_rgba[1], di, {}, 0, false, false, false);
+        m_prim_buffer.push(m_prim_building.building_rgba[1], bi, {}, scissor, 0, false, false,
+                           false, false);
+        m_prim_buffer.push(m_prim_building.building_rgba[0], ci, {}, scissor, 0, false, false,
+                           false, false);
+        m_prim_buffer.push(m_prim_building.building_rgba[1], di, {}, scissor, 0, false, false,
+                           false, false);
         //
 
         m_prim_building.building_idx = 0;
       }
     } break;
+
+    case GsPrim::Kind::LINE_STRIP: {
+      if (m_prim_building.building_idx == 2) {
+        m_prim_building.building_idx = 0;
+      }
+
+      if (m_prim_building.tri_strip_startup < 2) {
+        m_prim_building.tri_strip_startup++;
+      }
+      if (m_prim_building.tri_strip_startup >= 2) {
+        if (advance) {
+          math::Vector<double, 3> pt0 = m_prim_building.building_vert[0].xyz().cast<double>();
+          math::Vector<double, 3> pt1 = m_prim_building.building_vert[1].xyz().cast<double>();
+          auto normal = (pt1 - pt0).normalized().cross(math::Vector<double, 3>{0, 0, 1});
+
+          double line_width = (1 << 19);
+          //        debug_print_vtx(m_prim_building.building_vert[0]);
+          //        debug_print_vtx(m_prim_building.building_vert[1]);
+
+          math::Vector<double, 3> a = pt0 + normal * line_width;
+          math::Vector<double, 3> b = pt1 + normal * line_width;
+          math::Vector<double, 3> c = pt0 - normal * line_width;
+          math::Vector<double, 3> d = pt1 - normal * line_width;
+          math::Vector<u32, 4> ai{a.x(), a.y(), a.z(), 0};
+          math::Vector<u32, 4> bi{b.x(), b.y(), b.z(), 0};
+          math::Vector<u32, 4> ci{c.x(), c.y(), c.z(), 0};
+          math::Vector<u32, 4> di{d.x(), d.y(), d.z(), 0};
+
+          // ACB:
+          m_prim_buffer.push(m_prim_building.building_rgba[0], ai, {}, scissor, 0, false, false,
+                             false, false);
+          m_prim_buffer.push(m_prim_building.building_rgba[0], ci, {}, scissor, 0, false, false,
+                             false, false);
+          m_prim_buffer.push(m_prim_building.building_rgba[1], bi, {}, scissor, 0, false, false,
+                             false, false);
+          // b c d
+          m_prim_buffer.push(m_prim_building.building_rgba[1], bi, {}, scissor, 0, false, false,
+                             false, false);
+          m_prim_buffer.push(m_prim_building.building_rgba[0], ci, {}, scissor, 0, false, false,
+                             false, false);
+          m_prim_buffer.push(m_prim_building.building_rgba[1], di, {}, scissor, 0, false, false,
+                             false, false);
+          //
+        }
+      }
+    } break;
+
     default:
       ASSERT_MSG(false, fmt::format("prim type {} is unsupported in {}.", (int)m_prim_building.kind,
                                     name_and_id()));
@@ -1138,21 +1387,27 @@ DirectRenderer::PrimitiveBuffer::PrimitiveBuffer(int max_triangles) {
 
 void DirectRenderer::PrimitiveBuffer::push(const math::Vector<u8, 4>& rgba,
                                            const math::Vector<u32, 4>& vert,
-                                           const math::Vector<float, 3>& st,
+                                           const math::Vector<float, 3>& stq,
+                                           const math::Vector<float, 4>& scissor,
                                            int unit,
                                            bool tcc,
                                            bool decal,
-                                           bool fog_enable) {
+                                           bool fog_enable,
+                                           bool use_uv) {
   auto& v = vertices[vert_count];
   v.rgba = rgba;
   v.xyzf[0] = (float)vert[0] / (float)UINT32_MAX;
+  v.xyzf[0] += x_off;
   v.xyzf[1] = (float)vert[1] / (float)UINT32_MAX;
+  v.xyzf[1] += y_off;
   v.xyzf[2] = (float)vert[2] / (float)0xffffff;
   v.xyzf[3] = (float)vert[3];
-  v.stq = st;
+  v.stq = stq;
   v.tex_unit = unit;
   v.tcc = tcc;
   v.decal = decal;
   v.fog_enable = fog_enable;
+  v.use_uv = use_uv;
+  v.scissor = scissor;
   vert_count++;
 }

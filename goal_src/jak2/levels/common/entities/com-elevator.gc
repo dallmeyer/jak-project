@@ -53,32 +53,27 @@
 
 (defmethod commited-to-ride? com-elevator ((obj com-elevator))
   "@returns if the target is considered within the elevator area enough to begin descending/ascending"
-  (with-pp
-    (let* ((s5-0 *target*)
-           (a0-2 (if (type? s5-0 process-focusable)
-                     s5-0
-                     )
-                 )
-           )
-      (and (when a0-2
-             (let* ((v1-2 (get-trans a0-2 0))
-                    (s5-2 (vector-! (new 'stack-no-clear 'vector) v1-2 (-> obj root-override trans)))
-                    )
-               (vector-inv-orient-by-quat! s5-2 s5-2 (-> obj root-override quat))
-               (and (< (fabs (-> s5-2 x)) 20480.0) (< 0.0 (-> s5-2 z)) (< (-> s5-2 z) 40960.0))
+  (let* ((s5-0 *target*)
+         (a0-2 (if (type? s5-0 process-focusable)
+                   s5-0
+                   )
                )
-             )
-           (let ((gp-1 (res-lump-struct (-> obj entity) 'on-notice structure)))
-             (not (if gp-1
-                      (eval!
-                        (new 'stack 'script-context (the-as basic (process->ppointer pp)) pp (the-as vector #f))
-                        (the-as pair gp-1)
-                        )
-                      )
+         )
+    (and (when a0-2
+           (let* ((v1-2 (get-trans a0-2 0))
+                  (s5-2 (vector-! (new 'stack-no-clear 'vector) v1-2 (-> obj root-override trans)))
                   )
+             (vector-inv-orient-by-quat! s5-2 s5-2 (-> obj root-override quat))
+             (and (< (fabs (-> s5-2 x)) 20480.0) (< 0.0 (-> s5-2 z)) (< (-> s5-2 z) 40960.0))
              )
            )
-      )
+         (let ((gp-1 (res-lump-struct (-> obj entity) 'on-notice structure)))
+           (not (if gp-1
+                    (script-eval (the-as pair gp-1))
+                    )
+                )
+           )
+         )
     )
   )
 
@@ -122,7 +117,7 @@
       )
     (com-elevator-method-49 self #t)
     (if (not (logtest? (-> self elevator-status) (elevator-status moving)))
-        (set-setting! 'allow-look-around #f 0 0)
+        (set-setting! 'allow-look-around #f 0.0 0)
         )
     (none)
     )
@@ -139,8 +134,8 @@
     (none)
     )
   :code (behavior ()
-    (let ((gp-0 (-> self clock frame-counter)))
-      (until (>= (- (-> self clock frame-counter) gp-0) (seconds 1))
+    (let ((gp-0 (current-time)))
+      (until (>= (- (current-time) gp-0) (seconds 1))
         (suspend)
         )
       )
@@ -171,7 +166,6 @@
     )
   )
 
-;; WARN: Return type mismatch object vs none.
 (defmethod activate-elevator com-elevator ((obj com-elevator))
   "Puts the elevator initially into the correct state. This is typically based upon game completion"
   (cond
@@ -185,7 +179,6 @@
       (go (method-of-object obj waiting))
       )
     )
-  (none)
   )
 
 (defmethod deactivate com-elevator ((obj com-elevator))
@@ -275,7 +268,7 @@ For example for an elevator pre-compute the distance between the first and last 
           )
       )
     (if (logtest? (-> self elevator-status) (elevator-status waiting-to-descend))
-        (set-setting! 'jump #f 0 0)
+        (set-setting! 'jump #f 0.0 0)
         )
     (none)
     )
@@ -293,8 +286,8 @@ For example for an elevator pre-compute the distance between the first and last 
     (none)
     )
   :code (behavior ()
-    (let ((gp-0 (-> self clock frame-counter)))
-      (until (>= (- (-> self clock frame-counter) gp-0) (seconds 1))
+    (let ((gp-0 (current-time)))
+      (until (>= (- (current-time) gp-0) (seconds 1))
         (suspend)
         )
       )

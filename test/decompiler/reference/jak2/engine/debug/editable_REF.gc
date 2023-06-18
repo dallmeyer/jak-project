@@ -3,7 +3,7 @@
 
 ;; this file is debug only
 (declare-file (debug))
-(when *debug-segment*
+
 ;; definition for method 0 of type editable-region
 (defmethod new editable-region ((allocation symbol) (type-to-make type))
   (let ((gp-0 (object-new allocation type-to-make (the-as int (-> type-to-make size)))))
@@ -124,7 +124,7 @@
         (s1-0 318)
         )
     (format (clear *temp-string*) "region-~D~%" (-> obj id))
-    (s3-0 s2-0 (the-as bucket-id s1-0) *temp-string* arg0 (font-color #dadada) sv-32)
+    (s3-0 s2-0 (the-as bucket-id s1-0) *temp-string* arg0 (font-color white) sv-32)
     )
   (+! (-> sv-32 y) 8)
   (when (>= arg1 1)
@@ -135,7 +135,7 @@
               (s1-1 318)
               )
           (format (clear *temp-string*) "(on-enter ~S)" s4-1)
-          (s3-1 s2-1 (the-as bucket-id s1-1) *temp-string* arg0 (font-color #dadada) sv-32)
+          (s3-1 s2-1 (the-as bucket-id s1-1) *temp-string* arg0 (font-color white) sv-32)
           )
         (+! (-> sv-32 y) 8)
         )
@@ -147,7 +147,7 @@
               (s1-2 318)
               )
           (format (clear *temp-string*) "(on-inside ~S)" s4-2)
-          (s3-2 s2-2 (the-as bucket-id s1-2) *temp-string* arg0 (font-color #dadada) sv-32)
+          (s3-2 s2-2 (the-as bucket-id s1-2) *temp-string* arg0 (font-color white) sv-32)
           )
         (+! (-> sv-32 y) 8)
         )
@@ -159,7 +159,7 @@
               (s2-3 318)
               )
           (format (clear *temp-string*) "(on-exit ~S)" s5-1)
-          (s4-3 s3-3 (the-as bucket-id s2-3) *temp-string* arg0 (font-color #dadada) sv-32)
+          (s4-3 s3-3 (the-as bucket-id s2-3) *temp-string* arg0 (font-color white) sv-32)
           )
         (+! (-> sv-32 y) 8)
         )
@@ -1022,7 +1022,7 @@
           (s3-1 318)
           )
       (format (clear *temp-string*) "~S~%" (-> obj name))
-      (s5-1 s4-1 (the-as bucket-id s3-1) *temp-string* (-> obj trans) (font-color #dadada) (the-as vector2h #f))
+      (s5-1 s4-1 (the-as bucket-id s3-1) *temp-string* (-> obj trans) (font-color white) (the-as vector2h #f))
       )
     )
   ((method-of-type editable-sphere editable-method-10) obj)
@@ -1274,8 +1274,8 @@
               *temp-string*
               (-> gp-0 s4-1)
               (if (logtest? (-> obj flags) (editable-flag orient))
-                  (font-color yellow-#f3f300)
-                  (font-color #dadada)
+                  (font-color yellow)
+                  (font-color white)
                   )
               (the-as vector2h #f)
               )
@@ -1451,7 +1451,7 @@
       )
     (when (< 0.0 (-> gp-0 z))
       (reverse-transform-point! gp-0 (edit-get-trans (-> obj vertex 0)) s5-0 arg0)
-      (let ((s3-1 (the-as object (new 'stack-no-clear 'inline-array 'vector 4))))
+      (let ((s3-1 (the-as object (new 'stack-no-clear 'matrix))))
         (dotimes (v1-6 4)
           (set! (-> (the-as (inline-array vector) s3-1) v1-6 quad) (the-as uint128 0))
           )
@@ -2196,5 +2196,3 @@
     (set! *editable-entity-region* v0-84)
     )
   )
-
-)

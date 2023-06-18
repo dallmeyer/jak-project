@@ -90,7 +90,72 @@
     :default-hit-points 4
     :gnd-collide-with (collide-spec backgnd)
     :overlaps-others-collide-with-filter (collide-spec jak bot player-list)
-    :penetrate-knocked #xffffffffffffffff
+    :penetrate-knocked (penetrate
+      touch
+      generic-attack
+      lunge
+      flop
+      punch
+      spin
+      roll
+      uppercut
+      bonk
+      tube
+      vehicle
+      flut-attack
+      board
+      mech
+      mech-punch
+      mech-bonk
+      dark-skin
+      dark-punch
+      dark-bomb
+      dark-giant
+      shield
+      explode
+      jak-yellow-shot
+      jak-red-shot
+      jak-blue-shot
+      jak-dark-shot
+      enemy-yellow-shot
+      enemy-dark-shot
+      eco-yellow
+      eco-red
+      eco-blue
+      eco-green
+      knocked
+      penetrate-33
+      penetrate-34
+      penetrate-35
+      penetrate-36
+      penetrate-37
+      penetrate-38
+      penetrate-39
+      penetrate-40
+      penetrate-41
+      penetrate-42
+      penetrate-43
+      penetrate-44
+      penetrate-45
+      penetrate-46
+      penetrate-47
+      penetrate-48
+      penetrate-49
+      penetrate-50
+      penetrate-51
+      penetrate-52
+      penetrate-53
+      penetrate-54
+      penetrate-55
+      penetrate-56
+      penetrate-57
+      penetrate-58
+      penetrate-59
+      penetrate-60
+      penetrate-61
+      penetrate-62
+      penetrate-63
+      )
     :movement-gravity (meters -100)
     :friction 0.6
     :attack-shove-back (meters 6)
@@ -401,7 +466,7 @@
   (let ((t9-0 (method-of-type nav-enemy in-aggro-range?)))
     (and (t9-0 obj arg0 arg1)
          (or (not (logtest? (-> obj fact-info-override enemy-options) (enemy-option user8)))
-             (and (not (logtest? (-> arg0 focus-status) (focus-status in-air)))
+             (and (not (focus-test? arg0 in-air))
                   (>= 4096.0 (fabs (- (-> (get-trans arg0 0) y) (-> obj root-override2 trans y))))
                   )
              )
@@ -484,7 +549,7 @@
           (vector+! (-> self target-next-pos) (-> self focus-dir) gp-0)
           (set! (-> self target-prev-pos quad) (-> gp-0 quad))
           )
-        (set! (-> self predict-timer) (the-as uint (-> self clock frame-counter)))
+        (set! (-> self predict-timer) (the-as uint (current-time)))
         )
       (else
         (set! (-> self target-next-pos quad) (-> self target-prev-pos quad))
@@ -542,10 +607,7 @@
       (logclear! (-> self enemy-flags) (enemy-flag auto-reset-penetrate))
       (let ((gp-0 (-> self on-notice)))
         (if gp-0
-            (eval!
-              (new 'stack 'script-context (the-as basic (process->ppointer self)) self (-> self root-override2 trans))
-              (the-as pair gp-0)
-              )
+            (script-eval (the-as pair gp-0) :vector (-> self root-override2 trans))
             )
         )
       )
@@ -631,9 +693,9 @@
   :virtual #t
   :event (the-as (function process int symbol event-message-block object :behavior rapid-gunner) enemy-event-handler)
   :enter (behavior ()
-    (set! (-> self state-time) (-> self clock frame-counter))
-    (set! (-> self predict-timer) (the-as uint (+ (-> self clock frame-counter) 1)))
-    (set! (-> self shot-timer) (the-as uint (-> self clock frame-counter)))
+    (set! (-> self state-time) (current-time))
+    (set! (-> self predict-timer) (the-as uint (+ (current-time) 1)))
+    (set! (-> self shot-timer) (the-as uint (current-time)))
     (let ((v1-7 self))
       (set! (-> v1-7 enemy-flags) (the-as enemy-flag (logclear (-> v1-7 enemy-flags) (enemy-flag enemy-flag36))))
       (set! (-> v1-7 nav callback-info) *nav-enemy-null-callback-info*)
@@ -652,7 +714,7 @@
       (set! (-> self attack-id) a0-6)
       )
     (when (logtest? (-> self status-flags) 2)
-      (set! (-> self spin-up-timer) (+ (-> self clock frame-counter) (seconds 2)))
+      (set! (-> self spin-up-timer) (+ (current-time) (seconds 2)))
       (set! (-> self status-flags) (logand -3 (-> self status-flags)))
       )
     (if (zero? (rand-vu-int-range 0 3))
@@ -681,7 +743,7 @@
           ((and (< f0-3 20480.0)
                 (and (< (fabs (- (-> s5-0 y) (-> self root-override2 trans y))) 6144.0)
                      gp-0
-                     (zero? (logand (-> (the-as process-focusable gp-0) focus-status) (focus-status disable dead ignore grabbed)))
+                     (not (logtest? (-> (the-as process-focusable gp-0) focus-status) (focus-status disable dead ignore grabbed)))
                      )
                 )
            (go-virtual spin-attack)
@@ -703,10 +765,10 @@
              )
            (go-virtual reload)
            )
-          ((>= (- (-> self clock frame-counter) (the-as int (-> self shot-timer))) (seconds 0.25))
+          ((>= (- (current-time) (the-as int (-> self shot-timer))) (seconds 0.25))
            (when (rapid-gunner-method-184 self 2184.5334)
              (let* ((a1-11 (-> self node-list data 18))
-                    (f30-0 (fmax 0.0 (the float (- (-> self spin-up-timer) (-> self clock frame-counter)))))
+                    (f30-0 (fmax 0.0 (the float (- (-> self spin-up-timer) (current-time)))))
                     (s5-1 (vector<-cspace! (new 'stack-no-clear 'vector) a1-11))
                     (s4-2
                       (vector+! (new 'stack-no-clear 'vector) (get-trans (the-as process-focusable gp-0) 0) (-> self focus-dir))
@@ -725,7 +787,7 @@
                )
              (+! (-> self shots-fired) 1)
              )
-           (set! (-> self shot-timer) (the-as uint (-> self clock frame-counter)))
+           (set! (-> self shot-timer) (the-as uint (current-time)))
            )
           )
         )
@@ -816,7 +878,7 @@
   :virtual #t
   :event (the-as (function process int symbol event-message-block object :behavior rapid-gunner) enemy-event-handler)
   :enter (behavior ()
-    (set! (-> self predict-timer) (the-as uint (-> self clock frame-counter)))
+    (set! (-> self predict-timer) (the-as uint (current-time)))
     (let ((v1-2 self))
       (if (not (logtest? (enemy-flag enemy-flag36) (-> v1-2 enemy-flags)))
           (set! (-> v1-2 enemy-flags) (the-as enemy-flag (logior (enemy-flag enemy-flag38) (-> v1-2 enemy-flags))))
@@ -947,7 +1009,7 @@
   :virtual #t
   :event (the-as (function process int symbol event-message-block object :behavior rapid-gunner) enemy-event-handler)
   :enter (behavior ()
-    (set! (-> self predict-timer) (the-as uint (-> self clock frame-counter)))
+    (set! (-> self predict-timer) (the-as uint (current-time)))
     (let ((v1-2 self))
       (set! (-> v1-2 enemy-flags) (the-as enemy-flag (logclear (-> v1-2 enemy-flags) (enemy-flag enemy-flag36))))
       (set! (-> v1-2 nav callback-info) *nav-enemy-null-callback-info*)
@@ -1025,13 +1087,13 @@
   :virtual #t
   :event (the-as (function process int symbol event-message-block object :behavior rapid-gunner) enemy-event-handler)
   :enter (behavior ()
-    (set! (-> self state-time) (-> self clock frame-counter))
+    (set! (-> self state-time) (current-time))
     (set! (-> self shots-fired) (the-as uint 0))
     0
     (none)
     )
   :trans (behavior ()
-    (if (>= (- (-> self clock frame-counter) (-> self state-time)) (seconds 0.5))
+    (if (>= (- (current-time) (-> self state-time)) (seconds 0.5))
         (go-hostile self)
         )
     (none)
@@ -1062,7 +1124,7 @@
   :virtual #t
   :event (the-as (function process int symbol event-message-block object :behavior rapid-gunner) enemy-event-handler)
   :enter (behavior ()
-    (set! (-> self predict-timer) (the-as uint (-> self clock frame-counter)))
+    (set! (-> self predict-timer) (the-as uint (current-time)))
     (set! (-> self shots-fired) (the-as uint 0))
     (let ((v1-2 self))
       (set! (-> v1-2 enemy-flags) (the-as enemy-flag (logclear (-> v1-2 enemy-flags) (enemy-flag enemy-flag36))))
@@ -1107,7 +1169,7 @@
           (t9-0)
           )
       )
-    (set! (-> self predict-timer) (the-as uint (-> self clock frame-counter)))
+    (set! (-> self predict-timer) (the-as uint (current-time)))
     (cond
       ((handle->process (-> self focus handle))
        (if (check-los? (-> self los) 0)
@@ -1138,7 +1200,7 @@
           (if (and (< f30-0 20480.0)
                    (and (< (fabs (- (-> s5-0 y) (-> self root-override2 trans y))) 6144.0)
                         gp-0
-                        (zero? (logand (-> (the-as process-focusable gp-0) focus-status) (focus-status disable dead ignore grabbed)))
+                        (not (logtest? (-> (the-as process-focusable gp-0) focus-status) (focus-status disable dead ignore grabbed)))
                         )
                    )
               (go-virtual spin-attack)
@@ -1160,7 +1222,7 @@
           )
         )
       )
-    (when (>= (- (-> self clock frame-counter) (-> self state-time)) (seconds 0.1))
+    (when (>= (- (current-time) (-> self state-time)) (seconds 0.1))
       (if (>= 1 (the-as int (-> self focus aware)))
           (go-virtual active)
           )
@@ -1223,7 +1285,7 @@
   :virtual #t
   :event (the-as (function process int symbol event-message-block object :behavior rapid-gunner) enemy-event-handler)
   :enter (behavior ()
-    (set! (-> self state-time) (-> self clock frame-counter))
+    (set! (-> self state-time) (current-time))
     (let ((v1-2 self))
       (set! (-> v1-2 enemy-flags) (the-as enemy-flag (logclear (-> v1-2 enemy-flags) (enemy-flag enemy-flag36))))
       (set! (-> v1-2 nav callback-info) *nav-enemy-null-callback-info*)
