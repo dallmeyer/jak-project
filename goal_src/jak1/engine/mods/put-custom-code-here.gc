@@ -23,8 +23,7 @@
 
     (defun runs-every-frame ()
       ;;(increase-power-cell-by-one) This is a call to increase-power-cell-by-one defined in define-custom-functions-here.gc
-      (let ((strip-eggs-region (region-lookup-by-id 9))
-            (strip-eggs-crane (process-by-ename "crane-1")))
+      (let ((strip-eggs-region (region-lookup-by-id 9)))
         (when (and strip-eggs-region strip-eggs-crane)
           (set! (-> strip-eggs-region on-enter) (the-as pair '(when #t (send-event "crane-1" 'notice))))
           )
