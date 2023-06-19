@@ -831,6 +831,7 @@
   (input-opts-binds-unset #x1614)
   (input-opts-binds-unknown #x1615)
   (progress-no-other-resolution-options #x1616)
+  (input-opts-controller-led-reflect-heat #x1617)
 
   (rolling-buzzer               #x1700)
   (baby-mode                    #x1701)  
