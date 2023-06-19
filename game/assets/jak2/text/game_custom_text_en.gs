@@ -41,3 +41,18 @@
   "Playing Metal Head Mash"
   "Playing Metal Head Mash"
   )
+
+(#x023d
+  "Grind : press <PAD_SQUARE> and <PAD_ANALOG_ANY_FIXED>"
+  "Grind : press <PAD_SQUARE> and <PAD_ANALOG_ANY_FIXED>"
+  )
+
+(#x023f
+  "Flip : press <PAD_X> then <PAD_R1> and <PAD_ANALOG_UP_DOWN_FIXED>"
+  "Flip : press <PAD_X> then <PAD_R1> and <PAD_ANALOG_UP_DOWN_FIXED>"
+  )
+
+(#x0240
+  "Trick : press <PAD_X> then <PAD_L1> and <PAD_ANALOG_ANY_FIXED>"
+  "Trick : press <PAD_X> then <PAD_L1> and <PAD_ANALOG_ANY_FIXED>"
+  )
