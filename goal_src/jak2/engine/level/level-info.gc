@@ -7476,13 +7476,13 @@
         :name "ctyfarma-burning-bush"
         :level 'ctyfarma
         :flags (continue-flags no-auto)
-        :trans (new 'static 'vector :x -236415.39 :y 32763.904 :z 389540.25 :w 1.0)
-        :quat (new 'static 'vector :y 0.9803 :w 0.1972)
-        :camera-trans (new 'static 'vector :x -258035.72 :y 53921.383 :z 436186.72 :w 1.0)
+        :trans (new 'static 'vector :x -1517668.5000 :y 36428.9492 :z 389282.8125 :w 1.0)
+        :quat (new 'static 'vector :y -0.6976 :w -0.7164)
+        :camera-trans (new 'static 'vector :x -1544719.8750 :y 57522.6914 :z 432749.9687 :w 1.0)
         :camera-rot (new 'static 'inline-array vector3s 3
-          (new 'static 'vector3s :data (new 'static 'array float 3 -0.9061 0.0 -0.423))
-          (new 'static 'vector3s :data (new 'static 'array float 3 0.0514 0.9925 -0.1102))
-          (new 'static 'vector3s :data (new 'static 'array float 3 0.4198 -0.1216 -0.8993))
+          (new 'static 'vector3s :data (new 'static 'array float 3 -0.8216 -0.0000 -0.5700))
+          (new 'static 'vector3s :data (new 'static 'array float 3  0.0655  0.9933 -0.0944))
+          (new 'static 'vector3s :data (new 'static 'array float 3  0.5662 -0.1149 -0.8161))
           )
         :on-goto #f
         :vis-nick 'ctyfarma

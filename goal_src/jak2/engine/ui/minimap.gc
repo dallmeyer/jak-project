@@ -688,7 +688,7 @@
                                  :color (new 'static 'rgba :r #xff :g #xff :b #xff :a #x80)
                                  )
                                (new 'static 'minimap-class-node
-                                 :default-position (new 'static 'vector :x -224952.31 :y 32768.0 :z 362332.16 :w 1.0)
+                                 :default-position (new 'static 'vector :x -1504174.1250 :y 65044.4804 :z 380108.8125 :w 1.0)
                                  :flags (minimap-flag bigmap city-only)
                                  :name "bbush-farma"
                                  :icon-xy (new 'static 'vector2ub :data (new 'static 'array uint8 2 #x2 #x3))

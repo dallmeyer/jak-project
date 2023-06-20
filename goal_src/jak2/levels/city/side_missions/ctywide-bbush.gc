@@ -2854,6 +2854,15 @@ This commonly includes things such as:
       (set! (-> info camera-rot 6) -0.0916) (set! (-> info camera-rot 7) -0.1224) (set! (-> info camera-rot 8) -0.9882)
       (set! (-> info time) 3250.0)
       )
+    ;; === ctyfarma (between bazaar and ctygen, with mountain/forest) ===
+    (((game-task city-burning-bush-get-to-8))  ;; on wall near sprinkler/ctygen exit
+      (set-vector-meters! (-> info trans) -143.22  17.9 197.69)  ;; on other sprinkler closer to mountain airlock (hover over)
+      (set-vector! (-> info camera-trans) -541217.5625 93706.0468 787718.6875 1.0)
+      (set! (-> info camera-rot 0)  0.3915) (set! (-> info camera-rot 1)  0.0000) (set! (-> info camera-rot 2) 0.9201)
+      (set! (-> info camera-rot 3) -0.1145) (set! (-> info camera-rot 4)  0.9922) (set! (-> info camera-rot 5) 0.0487)
+      (set! (-> info camera-rot 6) -0.9129) (set! (-> info camera-rot 7) -0.1245) (set! (-> info camera-rot 8) 0.3884)
+      (set! (-> info time) 4000.0)
+      )
     )
   (none)
   )

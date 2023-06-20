@@ -259,7 +259,10 @@
       (spawn-skill -36.61   25.2    938.81  #t "ctyfarmb-skill-6")  ;; in tree behind rock near bazaar
       )
     (('ctyfarma) ;; (b/w bazaar and ctygen, with mountain/forest exit)
-
+      (spawn-skill -42.7    16.5    166.7   #t "ctyfarma-skill-1")  ;; behind veggies in wooden trailer thing
+      (spawn-skill -398.55  31.28   227.29  #t "ctyfarma-skill-2")  ;; inside leaves on tree left of mountain airlock
+      (spawn-skill -310.01  19.5    372.75  #t "ctyfarma-skill-3")  ;; up/behind tree right before bazaar
+      (spawn-skill -398.8   31.34   -0.7    #t "ctyfarma-skill-4")  ;; up/behind tree right before ctygen on left wall
       )
     (('ctygena) ;; (canals near farm)
       (spawn-skill -311.7   24.6    -357.85 #t "ctygena-skill-1") ;; up on high ledge at first turn from farm, jump from zoomer ez
@@ -735,6 +738,10 @@
     (('burning-bush-16) ;; orbhunt - 
       (set-vector-meters! (-> arg0 extra trans) -383.08  23.40 -281.34) ;; awning near first turn from farm
       )
+    ;; === ctrfarma (between bazaar and ctygen, with mountain/forest exit) ===
+    (('burning-bush-10)
+      (set-vector-meters! (-> arg0 extra trans) -367.23  15.88  92.80) ;; atop sprinkler near ctygen
+      )
     ;; ====== BURNING BUSH / STADIUM ======
     ;; === stadium ===
     (('burning-bush-20)
@@ -806,7 +813,7 @@
   (prison-door-button-check "prison-part-378" "prsn-cell-door-5")
   ;; === stadiumb (class 3) ===
   (stdmb-hatch-check "stdmb-race-hatch-2")
-  
+
   ;; (move-actor-str-target-offset "ctyport-part-86" 0.0 1.5 0.0)  ;; jakpoop
 
   (none)

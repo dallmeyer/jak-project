@@ -4167,6 +4167,20 @@ This commonly includes things such as:
                           (('flop 'uppercut)  ;; flip open for certain attacks
                             (set! (-> self angle) 196608.0)
                             (set! (-> self rot) -655360.0)
+                            )     
+                          ;; (else
+                          ;;   (format 0 "lurker-pipe-lid attack event ~A ~A~%" event-type (-> event param 1))
+                          ;;   )
+                          )
+                        )
+                      )
+                    (('touch)
+                      (case (-> *target* state name)
+                        (('target-duck-high-jump 'target-duck-high-jump-jump)
+                          (when (> (- (-> self root trans y) (-> (target-pos 0) y)) (meters 0.5))
+                            ;; flip open if jumping from below
+                            (set! (-> self angle) 196608.0)
+                            (set! (-> self rot) -655360.0)
                             )
                           )
                         )

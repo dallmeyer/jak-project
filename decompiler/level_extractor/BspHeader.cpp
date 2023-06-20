@@ -1841,6 +1841,7 @@ std::unique_ptr<DrawableTree> make_drawable_tree(TypedRef ref,
   if (ref.type->get_name() == "drawable-tree-actor") {
     auto tree = std::make_unique<DrawableTreeActor>();
     tree->read_from_file(ref, dts, stats, version);
+    // merge with json for additions/overrides here?
     return tree;
   }
 
