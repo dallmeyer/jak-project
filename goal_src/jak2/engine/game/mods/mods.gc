@@ -259,17 +259,22 @@
       (spawn-skill -36.61   25.2    938.81  #t "ctyfarmb-skill-6")  ;; in tree behind rock near bazaar
       )
     (('ctyfarma) ;; (b/w bazaar and ctygen, with mountain/forest exit)
-      (spawn-skill -42.7    16.5    166.7   #t "ctyfarma-skill-1")  ;; behind veggies in wooden trailer thing
+      (spawn-skill -42.7    16.9    166.7   #t "ctyfarma-skill-1")  ;; behind veggies in wooden trailer thing
       (spawn-skill -398.55  31.28   227.29  #t "ctyfarma-skill-2")  ;; inside leaves on tree left of mountain airlock
       (spawn-skill -310.01  19.5    372.75  #t "ctyfarma-skill-3")  ;; up/behind tree right before bazaar
       (spawn-skill -398.8   31.34   -0.7    #t "ctyfarma-skill-4")  ;; up/behind tree right before ctygen on left wall
+      (spawn-skill -43.20   8.4     98.89   #t "ctyfarma-skill-5")  ;; in lurker pipe exit
       )
     (('ctygena) ;; (canals near farm)
       (spawn-skill -311.7   24.6    -357.85 #t "ctygena-skill-1") ;; up on high ledge at first turn from farm, jump from zoomer ez
       (spawn-skill -153.85  30.5    -386.54 #t "ctygena-skill-2") ;; up on high ledge near lurker pipe, jump from zoomer
+      (spawn-skill -180.5   8.4     -376.4  #t "ctygena-skill-3") ;; in lurker pipe exit
+      (spawn-skill -18.0    -9.0    -187.6  #t "ctygena-skill-4") ;; under ramp to canal
+      (spawn-skill -190.5   23.8    -301.8  #t "ctygena-skill-5") ;; on roof left of lurker exit
       )
     (('ctyport) ;; ===
-      (spawn-skill -260.0   5.7     1919.32 #t "ctyport-skill-1") ;; behind big circle things towards underport exit (boosted over)
+      (spawn-skill -260.0   5.7     1919.32 #t "ctyport-skill-1") ;; behind big sphere things next to underport exit (boosted over)
+      (spawn-skill 657.45   38.61   1834.80 #t "ctyport-skill-2") ;; opposite end of port from ^, on top of largest sphere (high jump outta car)
       )
     (('ctymarka) ;; (bazaar between ctyfarma/b, ctypal. brutter)) ===
       (spawn-skill -118.2   22.53   486.9   #f "ctymarka-skill-1")  ;; above fish on brutter kiosk
