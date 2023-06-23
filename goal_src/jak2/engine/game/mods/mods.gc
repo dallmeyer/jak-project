@@ -218,12 +218,25 @@
   (format 0 "spawning extra mod entities for level ~A~%" level)
   (case level
     ;; ====== ORBS / CITY ======
-    (('ctyslumb) ;; (near prison exit) ===
-      (spawn-skill 548.85   40.5    -0.73   #t "ctyslumb-skill-1")  ;; immediately up left from prison exit (can get back up ejecting from zoomer), grab then with jump + abbah bounce, or return with jetboard
-      (spawn-skill 501.0    9.1     -192.0  #t "ctyslumb-skill-2")  ;; behind burning can towards ctyslumc (water slums)
-      (spawn-skill 693.0    35.05   -310.3  #t "ctyslumb-skill-3")  ;; up high near billboards, jump from vehicle to pipes
-      (spawn-skill 430.0    9.3     -18.9   #t "ctyslumb-skill-4")  ;; inside end of pipe near green barrier
-      (spawn-skill 636.2    43.3    -172.4  #t "ctysluma-skill-2")  ;; climb pipe (first intersection after prison exit)
+    (('vinroom) ;; ===
+      (spawn-skill 1120.5   31.05   1120.6  #f "vinroom-skill-1") ;; in center hologram (jetboard lulz)
+      )
+    (('ctygena) ;; (canals near farm)
+      (spawn-skill -311.7   24.6    -357.85 #t "ctygena-skill-1") ;; up on high ledge at first turn from farm, jump from zoomer ez
+      (spawn-skill -153.85  30.5    -386.54 #t "ctygena-skill-2") ;; up on high ledge near lurker pipe, jump from zoomer
+      (spawn-skill -180.5   8.4     -376.4  #t "ctygena-skill-3") ;; in lurker pipe exit
+      (spawn-skill -18.0    -9.0    -187.6  #t "ctygena-skill-4") ;; under ramp to canal
+      (spawn-skill -190.5   23.8    -301.8  #t "ctygena-skill-5") ;; on roof left of lurker exit
+      (spawn-skill -15.69   27.5    -17.46  #t "ctygena-skill-6") ;; in crevice between buildings on non-canal path to ctygenb
+      )
+    (('ctygenb) ;; (canals connecting ctygena, ctyslumb, stadium, with palshaft entrance)
+      (spawn-skill 175.68   29.5    -183.14 #t "ctygenb-skill-1") ;; up/behind pipes near palshaft entrance
+      (spawn-skill 147.0    24.6    -125.2  #t "ctygenb-skill-2") ;; behind vents on roof near palshaft entrance
+      (spawn-skill 133.29   8.6     -260.96 #t "ctygenb-skill-3") ;; jak3 spot, behind pipe near canal tunnel
+      (spawn-skill 224.86   8.6     -203.92 #t "ctygenb-skill-4") ;; jak3 spot? behind pipe by canals towards stadium
+      
+      )
+    (('ctygenc) ;; ()
       )
     (('ctysluma) ;; (near hideout) ===
       (spawn-skill 833.8    34.5    13.9    #t "ctysluma-skill-1")  ;; in window above pipes in roundabout (swag can rocket to pipes)
@@ -231,24 +244,30 @@
       (spawn-skill 1113.96  26.7    349.47  #t "ctysluma-skill-3")  ;; above pipes/generators right before ctyindb
       (spawn-skill 1001.2   33.5    160.5   #t "ctysluma-skill-4")  ;; in KG neon sign
       )
+    (('ctyslumb) ;; (near prison exit) ===
+      (spawn-skill 548.85   40.5    -0.73   #t "ctyslumb-skill-1")  ;; immediately up left from prison exit (can get back up ejecting from zoomer), grab then with jump + abbah bounce, or return with jetboard
+      (spawn-skill 501.0    9.1     -192.0  #t "ctyslumb-skill-2")  ;; behind burning can towards ctyslumc (water slums)
+      (spawn-skill 693.0    35.05   -310.3  #t "ctyslumb-skill-3")  ;; up high near billboards, jump from vehicle to pipes
+      (spawn-skill 430.0    9.3     -18.9   #t "ctyslumb-skill-4")  ;; inside end of pipe near green barrier
+      (spawn-skill 636.2    43.3    -172.4  #t "ctysluma-skill-2")  ;; climb pipe (first intersection after prison exit)
+      )
     (('ctyslumc) ;; (water slums) ===
       (spawn-skill 656.25   27.3    -733.02 #t "ctyslumc-skill-1")  ;; in chimney exhaust on building right side of atoll entrance
       (spawn-skill 465.60   19.8    -757.27 #t "ctyslumc-skill-2")  ;; behind bent roof on building left side of atoll entrance
       (spawn-skill 707.35   50.6    -454.33 #f "ctyslumc-skill-3")  ;; top of oracle building - hover (can extended frontflip from top of adjacent roof)
       (spawn-skill 467.0    3.0     -314.9  #t "ctyslumc-skill-4")  ;; among building supports near water, immediate right from water slums entrance
       )
-    (('hideout) ;; ====
-      (spawn-skill 1199.4   4.25    52.6    #f "hideout-skill-1") ;; in furnace
-      (spawn-skill 1199.5   3.45    69.0    #t "hideout-skill-2") ;; behind fire right side
-      (spawn-skill 1184.95  5.25    65.5    #t "hideout-skill-3") ;; pillow on bed right side
+    (('ctyport) ;; ===
+      (spawn-skill -260.0   5.7     1919.32 #t "ctyport-skill-1") ;; behind big sphere things next to underport exit (boosted over)
+      (spawn-skill 657.45   38.61   1834.80 #t "ctyport-skill-2") ;; opposite end of port from ^, on top of largest sphere (high jump outta car)
+      
       )
-    (('vinroom) ;; ===
-      (spawn-skill 1120.5   31.05   1120.6  #f "vinroom-skill-1") ;; in center hologram (jetboard lulz)
-      )
-    (('hiphog) ;; ===
-      (spawn-skill -84.02   9.6     1308.33 #t "hiphog-skill-1")  ;; wrestling arena (jetboard lulz)
-      (spawn-skill -106.1   10.05   1289.6  #f "hiphog-skill-2")  ;; mirror orb
-      (spawn-skill -80.4    9.35    1324.90 #f "hiphog-skill-3")  ;; behind whack a mole
+    (('ctyfarma) ;; (b/w bazaar and ctygen, with mountain/forest exit)
+      (spawn-skill -42.7    16.9    166.7   #t "ctyfarma-skill-1")  ;; behind veggies in wooden trailer thing
+      (spawn-skill -398.55  31.28   227.29  #t "ctyfarma-skill-2")  ;; inside leaves on tree left of mountain airlock
+      (spawn-skill -310.01  19.5    372.75  #t "ctyfarma-skill-3")  ;; up/behind tree right before bazaar
+      (spawn-skill -398.8   31.34   -0.7    #t "ctyfarma-skill-4")  ;; up/behind tree right before ctygen on left wall
+      (spawn-skill -43.20   8.4     98.89   #t "ctyfarma-skill-5")  ;; in lurker pipe exit
       )
     (('ctyfarmb) ;; (b/t bazaar and port)
       (spawn-skill -167.32  30.5    935.36  #t "ctyfarmb-skill-1")  ;; atop pipes near sprinkler (jump from hose into abbah bounce against wall, then up and over)
@@ -258,34 +277,34 @@
       (spawn-skill -82.3    12.2    1031.47 #t "ctyfarmb-skill-5")  ;; in crack between rocks by yakows, bazaar side
       (spawn-skill -36.61   25.2    938.81  #t "ctyfarmb-skill-6")  ;; in tree behind rock near bazaar
       )
-    (('ctyfarma) ;; (b/w bazaar and ctygen, with mountain/forest exit)
-      (spawn-skill -42.7    16.9    166.7   #t "ctyfarma-skill-1")  ;; behind veggies in wooden trailer thing
-      (spawn-skill -398.55  31.28   227.29  #t "ctyfarma-skill-2")  ;; inside leaves on tree left of mountain airlock
-      (spawn-skill -310.01  19.5    372.75  #t "ctyfarma-skill-3")  ;; up/behind tree right before bazaar
-      (spawn-skill -398.8   31.34   -0.7    #t "ctyfarma-skill-4")  ;; up/behind tree right before ctygen on left wall
-      (spawn-skill -43.20   8.4     98.89   #t "ctyfarma-skill-5")  ;; in lurker pipe exit
+    (('ctyinda) ;; ()
       )
-    (('ctygena) ;; (canals near farm)
-      (spawn-skill -311.7   24.6    -357.85 #t "ctygena-skill-1") ;; up on high ledge at first turn from farm, jump from zoomer ez
-      (spawn-skill -153.85  30.5    -386.54 #t "ctygena-skill-2") ;; up on high ledge near lurker pipe, jump from zoomer
-      (spawn-skill -180.5   8.4     -376.4  #t "ctygena-skill-3") ;; in lurker pipe exit
-      (spawn-skill -18.0    -9.0    -187.6  #t "ctygena-skill-4") ;; under ramp to canal
-      (spawn-skill -190.5   23.8    -301.8  #t "ctygena-skill-5") ;; on roof left of lurker exit
-      )
-    (('ctyport) ;; ===
-      (spawn-skill -260.0   5.7     1919.32 #t "ctyport-skill-1") ;; behind big sphere things next to underport exit (boosted over)
-      (spawn-skill 657.45   38.61   1834.80 #t "ctyport-skill-2") ;; opposite end of port from ^, on top of largest sphere (high jump outta car)
+    (('ctyindb) ;; ()
       )
     (('ctymarka) ;; (bazaar between ctyfarma/b, ctypal. brutter)) ===
       (spawn-skill -118.2   22.53   486.9   #f "ctymarka-skill-1")  ;; above fish on brutter kiosk
       )
     (('ctymarkb) ;; (bazaar between ctypal and ctyind. overpass. onin. denfend ashelin) ===
       )
+    (('ctypal) ;; (bazaar between ctypal and ctyind. overpass. onin. denfend ashelin) ===
+      )
     (('onintent) ;; ===
       (spawn-skill 708.7    9.0     746.2   #t "onintent-skill-1")  ;; on left behind pole (need to crouch)
       )
     (('oracle) ;; ===
       (spawn-skill 698.0    6.5     -447.75 #t "oracle-skill-1")  ;; corner on right side
+      )
+    (('hideout) ;; ====
+      (spawn-skill 1199.4   4.25    52.6    #f "hideout-skill-1") ;; in furnace
+      (spawn-skill 1199.5   3.45    69.0    #t "hideout-skill-2") ;; behind fire right side
+      (spawn-skill 1184.95  5.25    65.5    #t "hideout-skill-3") ;; pillow on bed right side
+      )
+    (('hiphog) ;; ===
+      (spawn-skill -84.02   9.6     1308.33 #t "hiphog-skill-1")  ;; wrestling arena (jetboard lulz)
+      (spawn-skill -106.1   10.05   1289.6  #f "hiphog-skill-2")  ;; mirror orb
+      (spawn-skill -80.4    9.35    1324.90 #f "hiphog-skill-3")  ;; behind whack a mole
+      )
+    (('gungame) ;; (bazaar between ctypal and ctyind. overpass. onin. denfend ashelin) ===
       )
     ;; ====== ORBS / FORTRESS ======
     (('prison)  ;; (first 2 rooms) ===
