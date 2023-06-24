@@ -234,9 +234,11 @@
       (spawn-skill 147.0    24.6    -125.2  #t "ctygenb-skill-2") ;; behind vents on roof near palshaft entrance
       (spawn-skill 133.29   8.6     -260.96 #t "ctygenb-skill-3") ;; jak3 spot, behind pipe near canal tunnel
       (spawn-skill 224.86   8.6     -203.92 #t "ctygenb-skill-4") ;; jak3 spot? behind pipe by canals towards stadium
-      
+      (spawn-skill 273.13   8.6     -45.18  #t "ctygenb-skill-5") ;; tucked away in corner, path to slums
+      (spawn-skill 339.38   8.60    -4.60   #t "ctygenb-skill-6") ;; even more tucked away, right by slums, have to get over invis wall (infinite jump)
+      (spawn-skill   5.55   8.80    -159.25 #t "ctygenb-skill-7") ;; tucked in another corner, on path to ctygena (infin jump, or walk up this one)
       )
-    (('ctygenc) ;; ()
+    (('ctygenc) ;; (canals connecting ctygena and ctypal)
       )
     (('ctysluma) ;; (near hideout) ===
       (spawn-skill 833.8    34.5    13.9    #t "ctysluma-skill-1")  ;; in window above pipes in roundabout (swag can rocket to pipes)
