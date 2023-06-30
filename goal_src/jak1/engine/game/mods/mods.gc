@@ -590,7 +590,7 @@
   
   ;; failsafe for picking up scout flies on zoomer/flutflut
   (when (and (= (-> (ppointer->process (-> obj parent)) type) buzzer)
-               (logtest? (-> *target* control root-prim prim-core action) (collide-action ca-9 ca-14))
+               (logtest? (-> *target* control root-prim prim-core action) (collide-action racer flut))
                )
     (vector-copy-no-w! dst (-> *target* root trans))
     )

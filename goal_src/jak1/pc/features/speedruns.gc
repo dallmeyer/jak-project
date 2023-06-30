@@ -561,7 +561,7 @@
   ;; ensure `force actors` is not enabled
   (set! (-> *pc-settings* force-actors?) #f)
   ;; force FPS to `60`
-  (set-frame-rate! *pc-settings* 60)
+  (set-frame-rate! *pc-settings* 60 #t)
   ;; skip intro cutscene
   (close-specific-task! (game-task intro) (task-status need-resolution))
   (none)
