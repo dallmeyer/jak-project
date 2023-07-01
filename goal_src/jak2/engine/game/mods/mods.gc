@@ -124,28 +124,37 @@
 ;;   )
 
 (defmacro spawn-skill (x y z bob? name)
-  `(begin 
-    (format 0 "trying to spawn ~A~%" ,name)
-    (cond
-      ((process-by-name ,name *active-pool*)
-        (format 0 "~A is already spawned, skipping")
-        )
-      (#f ;; TODO track collection
-        (format 0 "~A is already collected, skipping")
-        )
-      (else
-        (let ((fax (new 'static 'fact-info)))
-          (set! (-> fax pickup-type) (pickup-type skill))
-          (set! (-> fax pickup-amount) 1.0)
-          (set! (-> fax pickup-spawn-amount) 1.0)
-          ;; make sure it doesn't timeout and disappear
-          (logior! (-> fax options) (actor-option fade-out))
-          (set! (-> fax fade-time) (the-as time-frame 0))
-          (when ,bob?
-            (logior! (-> fax options) (actor-option force-bob))
-            )
-          (let ((proc (ppointer->process (birth-pickup-at-point-named (static-vector-meters ,x ,y ,z) (pickup-type skill) 1.0 #t *active-pool* fax ,name))))
-            ;; (copy-string<-string (-> proc name) ,name) ;; lol this overwrote the "skill" string in the symbol table
+  `(spawn-skill-internal ,x ,y ,z ,bob? ,name 1.0)
+  )
+
+(defmacro spawn-gold-skill (x y z bob? name)
+  `(spawn-skill-internal ,x ,y ,z ,bob? ,name (-> *FACT-bank* super-skill-inc))
+  )
+
+(defun spawn-skill-internal ((x float) (y float) (z float) (bob? symbol) (name string) (amount float))
+  (format 0 "trying to spawn ~A~%" name)
+  (cond
+    ((process-by-name name *active-pool*)
+      (format 0 "~A is already spawned, skipping")
+      )
+    (#f ;; TODO track collection
+      (format 0 "~A is already collected, skipping")
+      )
+    (else
+      (let ((fax (new 'static 'fact-info)))
+        (set! (-> fax pickup-type) (pickup-type skill))
+        (set! (-> fax pickup-amount) amount)
+        (set! (-> fax pickup-spawn-amount) amount)
+        ;; make sure it doesn't timeout and disappear
+        (logior! (-> fax options) (actor-option fade-out))
+        (set! (-> fax fade-time) (the-as time-frame 0))
+        (when bob?
+          (logior! (-> fax options) (actor-option force-bob))
+          )
+        (let ((vec (new 'stack-no-clear 'vector)))
+          (set-vector-meters! vec x y z)
+          (let ((proc (ppointer->process (birth-pickup-at-point-named vec (pickup-type skill) amount #t *active-pool* fax name))))
+            ;; (copy-string<-string (-> proc name) ,name) ;; lol this overwrote the "skill" string for everyone
             (format 0 "spawned ~A~%" proc)
             )
           )
@@ -265,7 +274,14 @@
       )
     (('ctyport) ;; ===
       (spawn-skill -260.0   5.7     1919.32 #t "ctyport-skill-1") ;; behind big sphere things next to underport exit (boosted over)
-      (spawn-skill 657.45   38.61   1834.80 #t "ctyport-skill-2") ;; opposite end of port from ^, on top of largest sphere (high jump outta car)
+      (spawn-skill 657.45   38.61   1834.80 #t "ctyport-skill-2") ;; opposite end of port from ^, on top of largest sphere (high jump outta zoomer)
+      (spawn-skill 111.83   5.9     1326.67 #t "ctyport-skill-3") ;; behind big spheres in middle not far from hiphog (high jump outta zoomer)
+      (spawn-skill 401.11   27.8    1436.70 #t "ctyport-skill-4") ;; atop pipe above water, near gungame
+      (spawn-gold-skill -117.5   52.6    1399.3  #t "ctyport-skill-5") ;; way up on pipe, near hiphog (HOVER or boost zoomer jump during race)
+      (spawn-skill -225.22  8.3     1658.4  #t "ctyport-skill-6") ;; inside pipe opening to water, past hiphop
+      )
+    (('gungame)
+      (spawn-skill 456.60   23.0    1299.11 #t "gungame-skill-1") ;; up above pipes on right wall of lobby
       
       )
     (('ctyfarma) ;; (b/w bazaar and ctygen, with mountain/forest exit)
@@ -752,6 +768,18 @@
     ;; none
 
     ;; ====== BURNING BUSH / ORB HUNT ======
+    ;; === ctygena (canals near farm) ===
+    (('burning-bush-16) ;; orbhunt - 
+      (set-vector-meters! (-> arg0 extra trans) -383.08  23.40 -281.34) ;; awning near first turn from farm
+      )
+    ;; === ctygenb (canals connecting ctygena, ctyslumb, stadium, with palshaft entrance) ===
+    ;; (('burning-bush-) ;; orbhunt - 
+    ;;   (set-vector-meters! (-> arg0 extra trans) ) ;; 
+    ;;   )
+    ;; === ctygenc) canals connecting ctygena and ctypal) ===
+    ;; (('burning-bush-) ;; orbhunt - 
+    ;;   (set-vector-meters! (-> arg0 extra trans) ) ;; 
+    ;;   )
     ;; === ctysluma (near hideout) ===
     (('burning-bush-9)  ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
       (set-vector-meters! (-> arg0 extra trans) 1125.92   8.14 149.91) ;; near yellow barrier skip hidden by fruit
@@ -764,10 +792,13 @@
     (('burning-bush-11) ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
       (set-vector-meters! (-> arg0 extra trans) 440.0  19.87 -536.5)  ;; atop small building in corner
       )
-    ;; === ctygena (canals near farm) ===
-    (('burning-bush-16) ;; orbhunt - 
-      (set-vector-meters! (-> arg0 extra trans) -383.08  23.40 -281.34) ;; awning near first turn from farm
+    ;; === ctyport ===
+    (('burning-bush-8) ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
+      (set-vector-meters! (-> arg0 extra trans) 336.18   7.87 1721.80)  ;; jak 3 moment
+      ;; fix rotation. 2 is 'rotoffset. do this to display: (set-entity! *entity-debug-inspect* (entity-by-name "burning-bush-8"))
+      (set! (-> (the (pointer float) (get-tag-index-data arg0 2))) 32768.0) 
       )
+      
     ;; === ctrfarma (between bazaar and ctygen, with mountain/forest exit) ===
     (('burning-bush-10)
       (set-vector-meters! (-> arg0 extra trans) -367.23  15.88  92.80) ;; atop sprinkler near ctygen

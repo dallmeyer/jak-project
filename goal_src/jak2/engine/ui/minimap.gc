@@ -664,7 +664,7 @@
                                  :color (new 'static 'rgba :r #xff :g #xff :b #xff :a #x80)
                                  )
                                (new 'static 'minimap-class-node
-                                 :default-position (new 'static 'vector :x 2602066.0 :y 31662.08 :z 6453739.5 :w 1.0)
+                                 :default-position (new 'static 'vector :x 1377208.0000 :y 32207.0507 :z 7052545.50 :w 1.0) ;; burning-bush-8
                                  :flags (minimap-flag bigmap city-only)
                                  :name "bbush-port-3"
                                  :icon-xy (new 'static 'vector2ub :data (new 'static 'array uint8 2 #x2 #x3))

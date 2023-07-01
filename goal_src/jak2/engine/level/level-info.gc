@@ -7244,13 +7244,13 @@
         :name "ctyport-burning-bush-3"
         :level 'ctyport
         :flags (continue-flags no-auto)
-        :trans (new 'static 'vector :x 2568996.8 :y 31641.6 :z 6469675.5 :w 1.0)
-        :quat (new 'static 'vector :y 0.8877 :w 0.4602)
-        :camera-trans (new 'static 'vector :x 2526983.0 :y 52228.098 :z 6496139.0 :w 1.0)
+        :trans (new 'static 'vector :x 1376975.1250 :y 32241.5449 :z 7037166.0000 :w 1.0)
+        :quat (new 'static 'vector :y -0.0509 :w -0.9987)
+        :camera-trans (new 'static 'vector :x 1349934.6250 :y 64100.5781 :z 6996727.5000 :w 1.0)
         :camera-rot (new 'static 'inline-array vector3s 3
-          (new 'static 'vector3s :data (new 'static 'array float 3 -0.5353 0.0 -0.8446))
-          (new 'static 'vector3s :data (new 'static 'array float 3 0.1028 0.9925 -0.0651))
-          (new 'static 'vector3s :data (new 'static 'array float 3 0.8383 -0.1217 -0.5313))
+          (new 'static 'vector3s :data (new 'static 'array float 3 0.8345  0.0000 -0.5509))
+          (new 'static 'vector3s :data (new 'static 'array float 3 0.1762  0.9474  0.2670))
+          (new 'static 'vector3s :data (new 'static 'array float 3 0.5219 -0.3199  0.7906))
           )
         :on-goto #f
         :vis-nick 'ctyport

@@ -2827,6 +2827,15 @@ This commonly includes things such as:
 
 (defun mod-override-burning-bush-get-on! ((info burning-bush-get-on-info) (task game-task))
   (case task
+    ;; === ctygena (canals near farm) ===
+    (((game-task city-burning-bush-get-to-14))  ;; on awning near first turn from farm
+      (set-vector-meters! (-> info trans) -284.7  31.5 -273.8)  ;; in gap among billboards
+      (set-vector! (-> info camera-trans) -1147260.2500 148365.6562 -1051547.750 1.0)
+      (set! (-> info camera-rot 0) -0.9957) (set! (-> info camera-rot 1) -0.0000) (set! (-> info camera-rot 2) 0.0923)
+      (set! (-> info camera-rot 3) -0.0113) (set! (-> info camera-rot 4) 0.9924) (set! (-> info camera-rot 5) -0.1219)
+      (set! (-> info camera-rot 6) -0.0916) (set! (-> info camera-rot 7) -0.1224) (set! (-> info camera-rot 8) -0.9882)
+      (set! (-> info time) 3250.0)
+      )
     ;; === ctyslumb (near prison exit) ====
     (((game-task city-burning-bush-get-to-1))  ;; behind fruit stands near yellow barrier skip
       (set-vector-meters! (-> info trans) 891.46   0.8 351.41) ;; in trench closer to fortress, at ramp in middle
@@ -2853,15 +2862,6 @@ This commonly includes things such as:
       (set! (-> info camera-rot 6) -0.9254) (set! (-> info camera-rot 7) -0.2383) (set! (-> info camera-rot 8) -0.2944)
       (set! (-> info time) 4000.0)
       )
-    ;; === ctygena (canals near farm) ===
-    (((game-task city-burning-bush-get-to-14))  ;; on awning near first turn from farm
-      (set-vector-meters! (-> info trans) -284.7  31.5 -273.8)  ;; in gap among billboards
-      (set-vector! (-> info camera-trans) -1147260.2500 148365.6562 -1051547.750 1.0)
-      (set! (-> info camera-rot 0) -0.9957) (set! (-> info camera-rot 1) -0.0000) (set! (-> info camera-rot 2) 0.0923)
-      (set! (-> info camera-rot 3) -0.0113) (set! (-> info camera-rot 4) 0.9924) (set! (-> info camera-rot 5) -0.1219)
-      (set! (-> info camera-rot 6) -0.0916) (set! (-> info camera-rot 7) -0.1224) (set! (-> info camera-rot 8) -0.9882)
-      (set! (-> info time) 3250.0)
-      )
     ;; === ctyfarma (between bazaar and ctygen, with mountain/forest) ===
     (((game-task city-burning-bush-get-to-8))  ;; on wall near sprinkler/ctygen exit
       (set-vector-meters! (-> info trans) -143.22  17.9 197.69)  ;; on other sprinkler closer to mountain airlock (hover over)
@@ -2870,6 +2870,15 @@ This commonly includes things such as:
       (set! (-> info camera-rot 3) -0.1145) (set! (-> info camera-rot 4)  0.9922) (set! (-> info camera-rot 5) 0.0487)
       (set! (-> info camera-rot 6) -0.9129) (set! (-> info camera-rot 7) -0.1245) (set! (-> info camera-rot 8) 0.3884)
       (set! (-> info time) 4000.0)
+      )
+    ;; === ctyport ===
+    (((game-task city-burning-bush-get-to-3))  ;; jak 3 moment
+      (set-vector-meters! (-> info trans) 336.2  19.62 1729.20)
+      (set-vector! (-> info camera-trans) 1295809.2500 85190.6562 7002001.500 1.0)
+      (set! (-> info camera-rot 0) 0.5216) (set! (-> info camera-rot 1)  0.0000) (set! (-> info camera-rot 2) -0.8531)
+      (set! (-> info camera-rot 3) 0.2889) (set! (-> info camera-rot 4)  0.9409) (set! (-> info camera-rot 5)  0.1766)
+      (set! (-> info camera-rot 6) 0.8027) (set! (-> info camera-rot 7) -0.3386) (set! (-> info camera-rot 8)  0.4908)
+      (set! (-> info time) 1030.0)
       )
     )
   (none)
