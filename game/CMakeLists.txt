@@ -11,6 +11,7 @@ set(RUNTIME_SOURCE
         external/discord_jak2.cpp
         graphics/display.cpp
         graphics/gfx.cpp
+        graphics/gfx_test.cpp
         graphics/jak2_texture_remap.cpp
         graphics/opengl_renderer/background/background_common.cpp
         graphics/opengl_renderer/background/Shrub.cpp
@@ -58,6 +59,7 @@ set(RUNTIME_SOURCE
         graphics/opengl_renderer/sprite/Sprite3_Distort.cpp
         graphics/opengl_renderer/sprite/Sprite3_Glow.cpp
         graphics/opengl_renderer/sprite/Sprite3.cpp
+        graphics/opengl_renderer/TextureAnimator.cpp
         graphics/opengl_renderer/TextureUploadHandler.cpp
         graphics/opengl_renderer/VisDataHandler.cpp
         graphics/opengl_renderer/Warp.cpp
@@ -224,7 +226,7 @@ add_subdirectory(sound)
 # we build the runtime as a static library.
 add_library(runtime STATIC ${RUNTIME_SOURCE} "../third-party/glad/src/glad.c")
 
-target_link_libraries(runtime common fmt SDL2::SDL2 imgui discord-rpc sound stb_image libco SQLiteCpp)
+target_link_libraries(runtime common fmt SDL2::SDL2 imgui discord-rpc sound stb_image libco)
 if(WIN32)
     target_link_libraries(runtime mman)
 else()
