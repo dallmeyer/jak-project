@@ -598,7 +598,6 @@
 
 (defun speedrun-practice-temp-checkpoint ()
   (when (-> *tmp-continue-point* level)
-    (+! (-> *pc-settings* baby-mode-count) 1) ;; increment baby-mode-counter
     (cond
       (*tmp-flut?* (set! *practice-spawn-post-init* get-on-flutflut))
       (*tmp-zoomer?* (set! *practice-spawn-post-init* get-on-zoomer))

@@ -1977,8 +1977,6 @@
                (sound-play "cursor-options")
                (sound-volume-off)
                (set! (-> *game-info* mode) 'play)
-               ;; reset counter on new game, switch files and ur fucked
-               (set! (-> *pc-settings* baby-mode-count) 0)
                ;; Start a new game differently if speedrunning mode is active
                (cond ((-> *pc-settings* speedrunner-mode?)
                       (speedrun-start-full-game-run))
@@ -1998,8 +1996,6 @@
               (sound-play "start-options")
               (sound-volume-off)
               (set! (-> *game-info* mode) 'play)
-               ;; reset counter on new game, switch files and ur fucked
-               (set! (-> *pc-settings* baby-mode-count) 0)
               ;; Start a new game differently if speedrunning mode is active
               (cond ((-> *pc-settings* speedrunner-mode?)
                      (speedrun-start-full-game-run))
@@ -2089,8 +2085,6 @@
               (sound-play "start-options")
               (sound-volume-off)
               (set! (-> *game-info* mode) 'play)
-               ;; reset counter on new game, switch files and ur fucked
-               (set! (-> *pc-settings* baby-mode-count) 0)
               ;; Start a new game differently if speedrunning mode is active
               (cond ((-> *pc-settings* speedrunner-mode?)
                      (speedrun-start-full-game-run))

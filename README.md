@@ -131,7 +131,7 @@ Unfortunately you'll still need task runner on your local machine to run the gam
 Install packages and init repository:
 
 ```sh
-sudo apt install gcc make cmake build-essential g++ nasm clang-format libxrandr-dev libxinerama-dev libxcursor-dev libpulse-dev libxi-dev python
+sudo apt install gcc make cmake build-essential g++ nasm clang-format libxrandr-dev libxinerama-dev libxcursor-dev libpulse-dev libxi-dev python libgl1-mesa-dev
 sudo sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
 ```
 
@@ -239,7 +239,7 @@ Then build the entire project as `Windows Release (clang)`. You can also press C
 
 ### MacOS
 
-> NOTE: At this time you still cannot run the game on macOS due to OpenGL version limitations.  But you can build the project and use most of the tooling.
+> NOTE: At this time you can only run the game on macOS if you have an Intel processor.
 
 Ensure that you have Xcode command line tools installed (this installs things like Apple Clang).  If you don't, you can run the following command:
 
