@@ -500,6 +500,7 @@
       (new 'static 'continue-point
         :name "misty-boosted"
         :level 'misty
+        :flags (continue-flags speedrun)
         :trans (new 'static 'vector :x -163717.7968 :y 79327.6093 :z 3234115.2500 :w 1.0)
         :quat (new 'static 'quaternion :y -0.2339 :w 0.9722)
         :camera-trans (new 'static 'vector :x -132674.4218 :y 98359.8828 :z 3264539.2500 :w 1.0)
@@ -653,6 +654,7 @@
       (new 'static 'continue-point
         :name "village2-boulderskip"
         :level 'village2
+        :flags (continue-flags speedrun)
         :trans (new 'static 'vector :x 1232701.7500 :y 67588.7890 :z -7209268.5000 :w 1.0)
         :quat (new 'static 'quaternion :y 0.0258 :w 0.9996)
         :camera-trans (new 'static 'vector :x 1275964.7500 :y 87389.5156 :z -7226183.5000 :w 1.0)
@@ -751,6 +753,7 @@
       (new 'static 'continue-point
         :name "sunken-piggyback"
         :level 'sunken
+        :flags (continue-flags speedrun)
         :trans (new 'static 'vector :x 2646516.7500 :y -569343.9375 :z -7180494.5000 :w 1.0)
         :quat (new 'static 'quaternion :y 0.9936 :w 0.1124)
         :camera-trans (new 'static 'vector :x 2621825.2500 :y -552777.4375 :z -7204136.5000 :w 1.0)
@@ -765,6 +768,7 @@
       (new 'static 'continue-point
         :name "sunken-buttonskip"
         :level 'sunken
+        :flags (continue-flags speedrun)
         :trans (new 'static 'vector :x 2467021.7500 :y -533737.1875 :z -6954418.0000 :w 1.0)
         :quat (new 'static 'quaternion :y 0.9936 :w 0.1124)
         :camera-trans (new 'static 'vector :x 2478046.2500 :y -519084.4687 :z -6929727.5000 :w 1.0)
@@ -1186,6 +1190,7 @@
       (new 'static 'continue-point
         :name "village3-lts-old"
         :level 'village3
+        :flags (continue-flags speedrun)
         :trans (new 'static 'vector :x 5053280.5000 :y 190160.0312 :z -14606175.0000 :w 1.0)
         :quat (new 'static 'quaternion :y 0.6611 :w 0.7502)
         :camera-trans (new 'static 'vector :x 5090101.5000 :y 210733.9687 :z -14639035.0000 :w 1.0)
@@ -1200,6 +1205,7 @@
       (new 'static 'continue-point
         :name "village3-lts-new"
         :level 'village3
+        :flags (continue-flags speedrun)
         :trans (new 'static 'vector :x 4972425.5000 :y 188457.1406 :z -14397513.0000 :w 1.0)
         :quat (new 'static 'quaternion :y 0.6611 :w 0.7502)
         :camera-trans (new 'static 'vector :x 4957963.0000 :y 208968.0625 :z -14350719.0000 :w 1.0)
@@ -1369,6 +1375,7 @@
       (new 'static 'continue-point
         :name "snow-gondola-flut"
         :level 'snow
+        :flags (continue-flags speedrun)
         :trans (new 'static 'vector :x 4171535.2500 :y 981505.9375 :z -14309910.0000 :w 1.0)
         :quat (new 'static 'quaternion :y 0.7906 :w -0.6122)
         :camera-trans (new 'static 'vector :x 4117670.2500 :y 1006667.1875 :z -14330434.0000 :w 1.0)
@@ -1383,6 +1390,7 @@
       (new 'static 'continue-point
         :name "snow-gondola-foot"
         :level 'snow
+        :flags (continue-flags speedrun)
         :trans (new 'static 'vector :x 4049160.7500 :y 985297.7500 :z -14270541.00 :w 1.0)
         :quat (new 'static 'quaternion :y -0.9162 :w -0.4005)
         :camera-trans (new 'static 'vector :x 4016879.7500 :y 1003751.9375 :z -14240528.000 :w 1.0)
@@ -1649,6 +1657,7 @@
       (new 'static 'continue-point
         :name "lavatube-sfb"
         :level 'lavatube
+        :flags (continue-flags speedrun)
         :trans (new 'static 'vector :x 7062962.0000 :y 98502.6718 :z -13883344.0000 :w 1.0)
         :quat (new 'static 'quaternion :y -0.9589 :w -0.2836)
         :camera-trans (new 'static 'vector :x 7014518.5000 :y 119553.3671 :z -13867269.0000 :w 1.0)

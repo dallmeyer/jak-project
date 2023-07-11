@@ -1,7 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
-(define *speedrun-info* (new 'static 'speedrun-info-jak1 :should-display? #t :needs-post-blackout-setup? #f))
+(define *speedrun-info* (new 'static 'speedrun-info-jak1 :should-display? #t :should-display-deload-info? #f :needs-post-blackout-setup? #f))
 
 (define *last-speedrun-practice-option* (speedrun-practice-option none))
 (define *practice-spawn-post-init* (the-as (function none) #f))
@@ -433,6 +433,95 @@
   (start-speedrun (speedrun-category full-game))
   (none))
 
+(defun draw-deload-continue-info ()
+  (when (and (-> *speedrun-info* should-display-deload-info?)
+             (not (paused?)))
+    (let ((y-offset (if (-> *speedrun-info* should-display?) 8 4))
+          (backup-lvl
+            (case (-> *backup-load-state* vis-nick)
+              (('tra) training)
+              (('vi1) village1)
+              (('bea) beach)
+              (('jun) jungle)
+              (('jub) jungleb)
+              (('mis) misty)
+              (('fic) firecanyon)
+              (('vi2) village2)
+              (('sun) sunken)
+              (('sub) sunkenb)
+              (('swa) swamp)
+              (('rol) rolling)
+              (('ogr) ogre)
+              (('vi3) village3)
+              (('sno) snow)
+              (('mai) maincave)
+              (('dar) darkcave)
+              (('rob) robocave)
+              (('lav) lavatube)
+              (('cit) citadel)
+              (('fin) finalboss)
+              (('dem) demo)
+              (('tit) title)
+              (else (the-as level-load-info #f))
+              )
+            )
+          (continue_a (the-as continue-point #f))
+          (a_dist 0.0)
+          (continue_b (the-as continue-point #f))
+          (b_dist 0.0)
+          )
+      (when (and ;; (= (-> s4-1 status) 'active)  ;; backed up level might not be loaded, but will be if deload happens
+                 (null? (-> *level* load-commands)) ;; who cares
+                 ;;  (= (-> s4-1 nickname) (-> *load-state* vis-nick))  ;; no need to check this, we're choosing level based on this already
+                 (!= (-> backup-lvl name) (-> *game-info* current-continue level))
+                 (-> *level* border?)
+                 )
+        (let* ((s2-0 (target-pos 0))
+              (s4-2 (-> backup-lvl continues))
+              (s1-0 (the-as continue-point (car s4-2)))
+              )
+          (while (not (null? s4-2))
+            (when (zero? (-> s1-0 flags))
+              (let ((t_dist (vector-vector-distance s2-0 (-> s1-0 trans))))
+                (cond
+                  ((or (not continue_a) (< t_dist a_dist))
+                    ;; found new closest
+                    (set! continue_b continue_a)  ;; old best is now second best
+                    (set! b_dist a_dist)
+                    (set! continue_a s1-0)
+                    (set! a_dist t_dist)
+                    )
+                  ((or (not continue_b) (< t_dist b_dist))
+                    ;; well we're at least closer than the old continue_b
+                    (set! continue_b s1-0)
+                    (set! b_dist t_dist)
+                    )
+                  )
+                )
+              )
+              (set! s4-2 (cdr s4-2))
+              (set! s1-0 (the-as continue-point (car s4-2)))
+            )
+          )
+        )
+
+      (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
+                                        (bucket-id subtitle))
+        (draw-string-xy (string-format "Current continue: ~A ~%Backup level: ~A ~%Closest deload continue: ~A ~Mm~%2nd deload continue: ~A ~Mm"
+                                        (-> *game-info* current-continue name)
+                                        (-> backup-lvl name)
+                                        (-> continue_a name)
+                                        a_dist
+                                        (-> continue_b name)
+                                        b_dist
+                                        )
+                        buf 0 (- 220 (* 8 y-offset)) (font-color flat-yellow) (font-flags shadow kerning))
+        )
+      )
+    )
+  (none)
+  )
+
 (defun speedrun-draw-settings ()
   "Draw speedrun related settings in the bottom left corner"
   (when (and (-> *pc-settings* speedrunner-mode?)
@@ -440,7 +529,7 @@
              (-> *speedrun-info* should-display?))
     (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
                                       (bucket-id subtitle))
-      (draw-string-xy (string-format "Speedrunner Mode ~%OpenGOAL Version: ~S ~%Category: ~S ~%Cutscene Skips ~A"
+      (draw-string-xy (string-format "Speedrunner Mode ~%OpenGOAL Practice Mod ~S ~%Category: ~S ~%Cutscene Skips ~A"
                                      *pc-settings-built-sha*
                                      (enum->string speedrun-category (-> *speedrun-info* category))
                                      (-> *pc-settings* skip-movies?))
@@ -517,13 +606,20 @@
     )
 (define *tmp-flut?* #f)
 (define *tmp-zoomer?* #f)
+(define *full-hp?* #f)
+
+(defun custom-reset-multi-post-init ()
+  (when *full-hp?* (full-hp))
+  (cond
+    (*tmp-flut?* (get-on-flutflut))
+    (*tmp-zoomer?* (get-on-zoomer))
+    )
+  (none)
+  )
 
 (defun speedrun-practice-temp-checkpoint ()
   (when (-> *tmp-continue-point* level)
-    (cond
-      (*tmp-flut?* (set! *practice-spawn-post-init* get-on-flutflut))
-      (*tmp-zoomer?* (set! *practice-spawn-post-init* get-on-zoomer))
-      )
+    (set! *practice-spawn-post-init* custom-reset-multi-post-init)
     ;; fully reset game if r2 held too
     (if (cpad-hold? 0 r2)  
       (initialize! *game-info* 'game (the-as game-save #f) "default")
@@ -675,6 +771,10 @@
         (vector-copy! (-> *tmp-continue-point* camera-trans) (-> *camera-combiner* trans))
         (camera-rot-copy! *tmp-continue-point* (-> *camera-combiner* inv-camera-rot))
 
+        (set! *full-hp?* (and (!= *target* #f)
+                      (= (-> *target* fact-info-target health) 3.0)
+                      (= (-> *target* fact-info-target eco-pill) 50.0)
+                      ))
         (set! *tmp-flut?* #f)
         (set! *tmp-zoomer?* #f)
         (case (-> *target* state)
@@ -746,6 +846,7 @@
     ;; Update auto-splitter
     (update-autosplit-info-jak1)
     ;; Draw info to the screen
+    (draw-deload-continue-info)
     (speedrun-draw-settings)
     ;;Disable any active cheats
     (set! (-> *pc-settings* cheats) (the-as pc-cheats #x0))

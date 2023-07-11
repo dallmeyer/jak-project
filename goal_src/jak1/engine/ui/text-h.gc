@@ -830,6 +830,7 @@
   ;; practice mod additions
   (checkpoint-options           #x1681)
   (skip-options                 #x1682)
+  (deload-display               #x1683)
 
   (practice-lts-old             #x1700)
   (practice-lts-new             #x1701)

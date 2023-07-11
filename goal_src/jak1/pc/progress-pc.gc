@@ -117,11 +117,6 @@
     )
   )
 
-(define *practice-options* (new 'static 'boxed-array :type game-option
-    (new 'static 'game-option :option-type (game-option-type button) :name (text-id back) :scale #t)
-    )
-  )
-
 (define *checkpoint-options* (new 'static 'boxed-array :type game-option
     (new 'static 'game-option :option-type (game-option-type menu) :name (text-id hub1-options) :scale #t :param3 (game-option-menu hub1-options))
     (new 'static 'game-option :option-type (game-option-type menu) :name (text-id hub2-options) :scale #t :param3 (game-option-menu hub2-options))
@@ -403,6 +398,7 @@
     (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id discord-rpc) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id cutscene-skips) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id speedrunner-mode) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id deload-display) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (text-id back) :scale #t)
     )
   )
@@ -1109,6 +1105,7 @@
   (set! (-> *misc-options* 1 value-to-modify) (&-> *pc-settings* discord-rpc?))
   (set! (-> *misc-options* 2 value-to-modify) (&-> *pc-settings* skip-movies?))
   (set! (-> *misc-options* 3 value-to-modify) (&-> *pc-settings* speedrunner-mode?))
+  (set! (-> *misc-options* 4 value-to-modify) (&-> *speedrun-info* should-display-deload-info?))
 
   (set! (-> *camera-options* 0 value-to-modify) (&-> *pc-settings* first-camera-h-inverted?))
   (set! (-> *camera-options* 1 value-to-modify) (&-> *pc-settings* first-camera-v-inverted?))

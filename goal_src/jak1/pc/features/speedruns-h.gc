@@ -43,6 +43,7 @@
    (category speedrun-category)
    (needs-post-blackout-setup? symbol)
    (should-display? symbol)
+   (should-display-deload-info? symbol)
    )
   )
 
