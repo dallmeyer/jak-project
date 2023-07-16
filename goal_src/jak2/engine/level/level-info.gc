@@ -7754,16 +7754,16 @@
         :want-sound (new 'static 'array symbol 3 'ctywide1 'ctywide2 'ctywide3)
         )
       (new 'static 'continue-point
-        :name "ctyinda-burning-bush"
+        :name "ctyinda-burning-bush"  ;; burning-bush-5
         :level 'ctyinda
         :flags (continue-flags no-auto)
-        :trans (new 'static 'vector :x 3184090.0 :y 34360.934 :z 3365469.8 :w 1.0)
-        :quat (new 'static 'vector :y -0.9999 :w -0.0007)
-        :camera-trans (new 'static 'vector :x 3190731.2 :y 55454.926 :z 3416230.2 :w 1.0)
+        :trans (new 'static 'vector :x 3930790.0000 :y 99394.5468 :z 3691194.2500 :w 1.0)
+        :quat (new 'static 'vector :y -0.9998 :z -0.0016 :w 0.0156)
+        :camera-trans (new 'static 'vector :x 3929553.0000 :y 120426.7031 :z 3739260.250 :w 1.0)
         :camera-rot (new 'static 'inline-array vector3s 3
-          (new 'static 'vector3s :data (new 'static 'array float 3 -0.9917 0.0 0.1283))
-          (new 'static 'vector3s :data (new 'static 'array float 3 -0.0156 0.9925 -0.1207))
-          (new 'static 'vector3s :data (new 'static 'array float 3 -0.1274 -0.1217 -0.9843))
+          (new 'static 'vector3s :data (new 'static 'array float 3 -0.9999  0.0000 -0.0052))
+          (new 'static 'vector3s :data (new 'static 'array float 3  0.0006  0.9925 -0.1220))
+          (new 'static 'vector3s :data (new 'static 'array float 3  0.0052 -0.1220 -0.9925))
           )
         :on-goto #f
         :vis-nick 'ctyinda

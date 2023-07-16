@@ -704,7 +704,7 @@
                                  :color (new 'static 'rgba :r #xff :g #xff :b #xff :a #x80)
                                  )
                                (new 'static 'minimap-class-node
-                                 :default-position (new 'static 'vector :x 3178741.8 :y 32768.0 :z 3331031.0 :w 1.0)
+                                 :default-position (new 'static 'vector :x 3931136.0000 :y 102154.242 :z 3675996.250 :w 1.0)
                                  :flags (minimap-flag bigmap city-only)
                                  :name "bbush-inda"
                                  :icon-xy (new 'static 'vector2ub :data (new 'static 'array uint8 2 #x2 #x3))

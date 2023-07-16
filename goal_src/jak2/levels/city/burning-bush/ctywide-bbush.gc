@@ -2880,6 +2880,16 @@ This commonly includes things such as:
       (set! (-> info camera-rot 6) 0.8027) (set! (-> info camera-rot 7) -0.3386) (set! (-> info camera-rot 8)  0.4908)
       (set! (-> info time) 1030.0)
       )
+
+    ;; === ctyinda ===
+    (((game-task city-burning-bush-get-to-10)) ;; corner pocket by consite
+      (set-vector-meters! (-> info trans) 819.2  8.6 813.3)
+      (set-vector! (-> info camera-trans) 3348314.2500 66771.1562 3301103.0000 1.0)
+      (set! (-> info camera-rot 0)  0.9733) (set! (-> info camera-rot 1)  0.0000) (set! (-> info camera-rot 2) 0.2291)
+      (set! (-> info camera-rot 3) -0.1043) (set! (-> info camera-rot 4)  0.8902) (set! (-> info camera-rot 5) 0.4433)
+      (set! (-> info camera-rot 6) -0.2039) (set! (-> info camera-rot 7) -0.4555) (set! (-> info camera-rot 8) 0.8665)
+      (set! (-> info time) 3500.0)
+      )
     )
   (none)
   )

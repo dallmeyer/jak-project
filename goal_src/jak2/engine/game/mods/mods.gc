@@ -148,8 +148,9 @@
         ;; make sure it doesn't timeout and disappear
         (logior! (-> fax options) (actor-option fade-out))
         (set! (-> fax fade-time) (the-as time-frame 0))
-        (when bob?
+        (if bob?
           (logior! (-> fax options) (actor-option force-bob))
+          (logclear! (-> fax options) (actor-option force-bob))
           )
         (let ((vec (new 'stack-no-clear 'vector)))
           (set-vector-meters! vec x y z)
@@ -280,10 +281,6 @@
       (spawn-gold-skill -117.5   52.6    1399.3  #t "ctyport-skill-5") ;; way up on pipe, near hiphog (HOVER or boost zoomer jump during race)
       (spawn-skill -225.22  8.3     1658.4  #t "ctyport-skill-6") ;; inside pipe opening to water, past hiphop
       )
-    (('gungame)
-      (spawn-skill 456.60   23.0    1299.11 #t "gungame-skill-1") ;; up above pipes on right wall of lobby
-      
-      )
     (('ctyfarma) ;; (b/w bazaar and ctygen, with mountain/forest exit)
       (spawn-skill -42.7    16.9    166.7   #t "ctyfarma-skill-1")  ;; behind veggies in wooden trailer thing
       (spawn-skill -398.55  31.28   227.29  #t "ctyfarma-skill-2")  ;; inside leaves on tree left of mountain airlock
@@ -299,9 +296,22 @@
       (spawn-skill -82.3    12.2    1031.47 #t "ctyfarmb-skill-5")  ;; in crack between rocks by yakows, bazaar side
       (spawn-skill -36.61   25.2    938.81  #t "ctyfarmb-skill-6")  ;; in tree behind rock near bazaar
       )
-    (('ctyinda) ;; ()
+    (('ctyinda) ;; (port side)
+      (spawn-skill 936.0    28.5    808.4   #t "ctyinda-skill-1") ;; above pipes in corner - boosted from walkway or jump from zoomer
+      (spawn-skill 857.37   8.8     1160.71 #t "ctyinda-skill-2") ;; jak 3 crate spot, in corner before hallway to port
+      (spawn-skill 717.60   8.6     1166.99 #t "ctyinda-skill-3") ;; behind generators against wall, along hallway to port
+      (spawn-skill 796.8    35.0    1213.5  #f "ctyinda-skill-4") ;; other side of hallway from ^, abbah bounce off vent up high
+      (spawn-skill 809.30   8.65    1066.34 #t "ctyinda-skill-5") ;; in pocket next to ramp near hallway to port
+      (spawn-skill 1018.34  22.0    961.06  #t "ctyinda-skill-6") ;; behind some pipes in middle of map, visible from walkway (abbah from below)
+      (spawn-skill 1158.93  8.7     806.08  #t "ctyinda-skill-7") ;; jak3-esque corner spot, this one at dead end with vent
+      (spawn-skill 1116.5   33.0    817.15  #t "ctyinda-skill-8") ;; same area as ^, abbah bounce from vent or zoomer jump up 
+      (spawn-skill 1067.33  11.0    758.0   #t "ctyinda-skill-9") ;; deadend/hairpin turn onto ramp; behind pipe on left
+      (spawn-skill 1066.1   28.3    766.18  #t "ctyinda-skill-10")  ;; up above ^ skill-9
+      (spawn-skill 842.0    37.3    978.00  #f "ctyinda-skill-11")  ;; up above vent not far from consite (abbah on vent)
+      (spawn-gold-skill 956.61  45.62 1001.85 #t "ctyinda-skill-12")  ;; (HOVER) aim between pipe and wall
       )
     (('ctyindb) ;; ()
+      (spawn-skill 1067.76  8.6     494.14  #t "ctyindb-skill-1") ;; in corner above sewers entrance
       )
     (('ctymarka) ;; (bazaar between ctyfarma/b, ctypal. brutter)) ===
       (spawn-skill -118.2   22.53   486.9   #f "ctymarka-skill-1")  ;; above fish on brutter kiosk
@@ -326,7 +336,13 @@
       (spawn-skill -106.1   10.05   1289.6  #f "hiphog-skill-2")  ;; mirror orb
       (spawn-skill -80.4    9.35    1324.90 #f "hiphog-skill-3")  ;; behind whack a mole
       )
-    (('gungame) ;; (bazaar between ctypal and ctyind. overpass. onin. denfend ashelin) ===
+    (('gungame)
+      (spawn-skill 456.60   23.0    1299.11 #t "gungame-skill-1") ;; up above pipes on right wall of lobby
+      (spawn-skill 419.0    9.2     1302.0  #t "gungame-skill-2") ;; behind lockers in corner of lobby
+      (spawn-skill 410.50   21.2    1267.3  #t "gungame-skill-3") ;; up high in beginning of left path (nearby pillar is infin jump)
+      (spawn-skill 464.5    20.86   1200.4  #t "gungame-skill-4") ;; up behind pipes at last 90 turn (jump from pipes or infin jump pillar)
+      (spawn-skill 441.0    18.8    1252.8  #f "gungame-skill-5") ;; top of pipe towards end of path
+      (spawn-skill 437.95   18.0    1218.84 #t "gungame-skill-6") ;; up in corner of one of the closets where dummies spawn
       )
     ;; ====== ORBS / FORTRESS ======
     (('prison)  ;; (first 2 rooms) ===
@@ -798,10 +814,14 @@
       ;; fix rotation. 2 is 'rotoffset. do this to display: (set-entity! *entity-debug-inspect* (entity-by-name "burning-bush-8"))
       (set! (-> (the (pointer float) (get-tag-index-data arg0 2))) 32768.0) 
       )
-      
+
     ;; === ctrfarma (between bazaar and ctygen, with mountain/forest exit) ===
     (('burning-bush-10)
       (set-vector-meters! (-> arg0 extra trans) -367.23  15.88  92.80) ;; atop sprinkler near ctygen
+      )
+    ;; === ctyinda (near port) ===
+    (('burning-bush-5)
+      (set-vector-meters! (-> arg0 extra trans) 959.75  24.94 896.6) ;; atop walkway
       )
     ;; ====== BURNING BUSH / STADIUM ======
     ;; === stadium ===
