@@ -5,80 +5,80 @@
 (defun move-actor-str-target-offset ((actor-name string) (x float) (y float) (z float))
   (cond 
     ((entity-by-name actor-name)
-      (let* ((entity-actor (entity-by-name actor-name))
-            (actor (the process-drawable (-> entity-actor extra process)))
-            )
-        (when actor
-          (vector-copy! (-> actor root trans) (target-pos 0))
-          (+! (-> actor root trans x) (meters x))
-          (+! (-> actor root trans y) (meters y))
-          (+! (-> actor root trans z) (meters z))
-          (vector-copy! (-> entity-actor trans) (target-pos 0))
-          (+! (-> entity-actor trans x) (meters x))
-          (+! (-> entity-actor trans y) (meters y))
-          (+! (-> entity-actor trans z) (meters z))
-          (vector-copy! (-> entity-actor extra trans) (target-pos 0))
-          (+! (-> entity-actor extra trans x) (meters x))
-          (+! (-> entity-actor extra trans y) (meters y))
-          (+! (-> entity-actor extra trans z) (meters z))
-          )
-        )
-      )
-    )
-  (none)
-  )
+     (let* ((entity-actor (entity-by-name actor-name))
+            (actor (the process-drawable (-> entity-actor extra process))))
+            
+       (when actor
+         (vector-copy! (-> actor root trans) (target-pos 0))
+         (+! (-> actor root trans x) (meters x))
+         (+! (-> actor root trans y) (meters y))
+         (+! (-> actor root trans z) (meters z))
+         (vector-copy! (-> entity-actor trans) (target-pos 0))
+         (+! (-> entity-actor trans x) (meters x))
+         (+! (-> entity-actor trans y) (meters y))
+         (+! (-> entity-actor trans z) (meters z))
+         (vector-copy! (-> entity-actor extra trans) (target-pos 0))
+         (+! (-> entity-actor extra trans x) (meters x))
+         (+! (-> entity-actor extra trans y) (meters y))
+         (+! (-> entity-actor extra trans z) (meters z))))))
+          
+        
+      
+    
+  (none))
+  
 
 (defun move-actor-str ((actor-name string) (x float) (y float) (z float))
   (cond 
     ((string= actor-name "target")
-      (set-vector-meters! (-> *target* root trans) x y z)
-      )
+     (set-vector-meters! (-> *target* root trans) x y z))
+      
     ((entity-by-name actor-name)
-      (let* ((entity-actor (entity-by-name actor-name))
-            (actor (-> entity-actor extra process))
-            )
-        (when actor
-          (set-vector! (-> entity-actor trans) (meters x) (meters y) (meters z) 1.0)
-          (set-vector! (-> entity-actor extra trans) (meters x) (meters y) (meters z) 1.0)
-          ;; (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
-          )
-        )
-      )
-    )
-  (none)
-  )
+     (let* ((entity-actor (entity-by-name actor-name))
+            (actor (-> entity-actor extra process)))
+            
+       (when actor
+         (set-vector! (-> entity-actor trans) (meters x) (meters y) (meters z) 1.0)
+         (set-vector! (-> entity-actor extra trans) (meters x) (meters y) (meters z) 1.0)))))
+         ;; (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+          
+        
+      
+    
+  (none))
+  
 
 ;; prints the position (root trans) of a process-drawable
 (defmacro pd-pos-m (procname)
   `(let* ((obj (the process-drawable (process-by-ename ,procname)))
           (vec (-> obj root trans)))
     (format 0 "~m ~m ~m~%" (-> vec x) (-> vec y) (-> vec z) 4096.0)
-    (none)
-    )
-  )
+    (none)))
+    
+  
 
 (defmacro mod-copy-mesh-and-path (dst-name src-name)
   `(let ((dst (the nav-enemy (process-by-ename ,dst-name)))
-         (src (the nav-enemy (process-by-ename ,src-name)))
-         )
+         (src (the nav-enemy (process-by-ename ,src-name))))
+         
     (when (and src dst)
       (set! (-> dst nav mesh) (-> src nav mesh))
       (set! (-> dst path flags) (-> src path flags))
       (curve-copy! (-> dst path curve) (-> src path curve))
       (set! (-> dst path num-cverts) (-> src path num-cverts))
-      (set! (-> dst path cverts) (-> src path cverts))
-      )
-    )
-  )
+      (set! (-> dst path cverts) (-> src path cverts)))))
+      
+    
+  
 
 (defmacro mod-no-collectable-bob (collectablename height)
   `(begin
     (when (process-by-ename ,collectablename)
       (set! (-> (the collectable (process-by-ename ,collectablename)) bob-amount) 0.0)
-      (set! (-> (the collectable (process-by-ename ,collectablename)) root trans y) (meters ,height))
-      )
-    )
-  )
+      (set! (-> (the collectable (process-by-ename ,collectablename)) root trans y) (meters ,height)))))
+      
+    
+  
 
 ;; takes a path-control and xyz values to offsets every node in the path by
 ;; (defmacro shift-path! (path x y z)
@@ -98,20 +98,20 @@
 (defmacro move-pd-str (actor-name x y z)
   `(let ((pd (the process-drawable (process-by-ename ,actor-name))))
     (when pd
-      (set-vector-meters! (-> pd root trans) ,x ,y ,z)
-      )
-    (none)
-    )
-  )
+      (set-vector-meters! (-> pd root trans) ,x ,y ,z))
+      
+    (none)))
+    
+  
 
 (defmacro set-pd-quat (actor-name x y z w)
   `(let ((pd (the process-drawable (process-by-ename ,actor-name))))
     (when pd
-      (set-vector! (-> pd root quat) ,x ,y ,z ,w)
-      )
-    (none)
-    )
-  )
+      (set-vector! (-> pd root quat) ,x ,y ,z ,w))
+      
+    (none)))
+    
+  
 
 ;; (defun mod-override-plat-path ((obj plat) (arg0 entity-actor))
 ;;   (case (-> obj name) :comp name=
@@ -124,22 +124,22 @@
 ;;   )
 
 (defmacro spawn-skill (x y z bob? name)
-  `(spawn-skill-internal ,x ,y ,z ,bob? ,name 1.0)
-  )
+  `(spawn-skill-internal ,x ,y ,z ,bob? ,name 1.0))
+  
 
 (defmacro spawn-gold-skill (x y z bob? name)
-  `(spawn-skill-internal ,x ,y ,z ,bob? ,name (-> *FACT-bank* super-skill-inc))
-  )
+  `(spawn-skill-internal ,x ,y ,z ,bob? ,name (-> *FACT-bank* super-skill-inc)))
+  
 
 (defun spawn-skill-internal ((x float) (y float) (z float) (bob? symbol) (name string) (amount float))
   (format 0 "trying to spawn ~A~%" name)
   (cond
     ((process-by-name name *active-pool*)
-      (format 0 "~A is already spawned, skipping")
-      )
+     (format 0 "~A is already spawned, skipping"))
+      
     (#f ;; TODO track collection
-      (format 0 "~A is already collected, skipping")
-      )
+      (format 0 "~A is already collected, skipping"))
+      
     (else
       (let ((fax (new 'static 'fact-info)))
         (set! (-> fax pickup-type) (pickup-type skill))
@@ -150,19 +150,19 @@
         (set! (-> fax fade-time) (the-as time-frame 0))
         (if bob?
           (logior! (-> fax options) (actor-option force-bob))
-          (logclear! (-> fax options) (actor-option force-bob))
-          )
+          (logclear! (-> fax options) (actor-option force-bob)))
+          
         (let ((vec (new 'stack-no-clear 'vector)))
           (set-vector-meters! vec x y z)
           (let ((proc (ppointer->process (birth-pickup-at-point-named vec (pickup-type skill) amount #t *active-pool* fax name))))
             ;; (copy-string<-string (-> proc name) ,name) ;; lol this overwrote the "skill" string for everyone
-            (format 0 "spawned ~A~%" proc)
-            )
-          )
-        )
-      )
-    )
-  )
+            (format 0 "spawned ~A~%" proc)))))))
+            
+          
+        
+      
+    
+  
 
 (define *baby-mode-orb-dist* (the-as float #f))
 (defun baby-mode-find-closest-orb ()
@@ -176,453 +176,453 @@
             (dotimes (s2-0 (-> s3-0 length))
               (let* ((s0-0 (-> s3-0 data s2-0 entity))
                      (s1-0 (-> s0-0 extra trans))
-                     (proc (-> s0-0 extra process))
-                     )
+                     (proc (-> s0-0 extra process)))
+                     
                 (when (and proc (type-type? (-> proc type) skill)) ;; open orbs
                   (let ((dist (vector-vector-distance 
                                 (target-pos 0) 
                                 (-> (the process-drawable (-> s0-0 extra process)) root trans))))
                     (if (or (= *baby-mode-orb-dist* #f) (< dist *baby-mode-orb-dist*))
-                      (set! *baby-mode-orb-dist* dist)
-                      )
-                    )
-                  )
-                )
-              )
-            )
+                      (set! *baby-mode-orb-dist* dist)))))))))))
+                      
+                    
+                  
+                
+              
+            
           ;; TODO check skills spawned the hacky way too
-          )
-        )
-      )
-    )
-  (none)
-  )
+          
+        
+      
+    
+  (none))
+  
 
 (defun draw-baby-mode ()
   (when (and (pause-allowed?) (-> *pc-settings* baby-mode?))
     (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
-                                      (bucket-id debug-no-zbuf1))
+                                 (bucket-id debug-no-zbuf1))
       (if (= *baby-mode-orb-dist* #f)
         (draw-string-xy (string-format "Closest Orb: N/A")
                         buf 5 395 (font-color transparent) (font-flags kerning shadow))
         ;; color based on distance
         (let ((fc (cond
-                  ((< *baby-mode-orb-dist* (meters 10.0)) (font-color orange))
-                  ((< *baby-mode-orb-dist* (meters 20.0)) (font-color progress-old-yellow))
-                  ((< *baby-mode-orb-dist* (meters 30.0)) (font-color flat-yellow))
-                  ((< *baby-mode-orb-dist* (meters 40.0)) (font-color progress-old-blue))
-                  ((< *baby-mode-orb-dist* (meters 50.0)) (font-color cyan))
-                  (else (font-color blue))
-                  )))
+                   ((< *baby-mode-orb-dist* (meters 10.0)) (font-color orange))
+                   ((< *baby-mode-orb-dist* (meters 20.0)) (font-color progress-old-yellow))
+                   ((< *baby-mode-orb-dist* (meters 30.0)) (font-color flat-yellow))
+                   ((< *baby-mode-orb-dist* (meters 40.0)) (font-color progress-old-blue))
+                   ((< *baby-mode-orb-dist* (meters 50.0)) (font-color cyan))
+                   (else (font-color blue)))))
+                  
           (draw-string-xy (string-format "Closest Orb: ~Mm"
                                          *baby-mode-orb-dist*)
-                          buf 5 395 fc (font-flags kerning shadow))
-          )
-        )
-      )
-    )
-  (none)
-  )
+                          buf 5 395 fc (font-flags kerning shadow))))))
+          
+        
+      
+    
+  (none))
+  
 
 (defun mod-spawn-new-entities ((level symbol))
   (format 0 "spawning extra mod entities for level ~A~%" level)
   (case level
     ;; ====== ORBS / CITY ======
     (('vinroom) ;; ===
-      (spawn-skill 1120.5   31.05   1120.6  #f "vinroom-skill-1") ;; in center hologram (jetboard lulz)
-      )
+     (spawn-skill 1120.5   31.05   1120.6  #f "vinroom-skill-1")) ;; in center hologram (jetboard lulz)
+      
     (('ctygena) ;; (canals near farm)
-      (spawn-skill -311.7   24.6    -357.85 #t "ctygena-skill-1") ;; up on high ledge at first turn from farm, jump from zoomer ez
-      (spawn-skill -153.85  30.5    -386.54 #t "ctygena-skill-2") ;; up on high ledge near lurker pipe, jump from zoomer
-      (spawn-skill -180.5   8.4     -376.4  #t "ctygena-skill-3") ;; in lurker pipe exit
-      (spawn-skill -18.0    -9.0    -187.6  #t "ctygena-skill-4") ;; under ramp to canal
-      (spawn-skill -190.5   23.8    -301.8  #t "ctygena-skill-5") ;; on roof left of lurker exit
-      (spawn-skill -15.69   27.5    -17.46  #t "ctygena-skill-6") ;; in crevice between buildings on non-canal path to ctygenb
-      )
+     (spawn-skill -311.7   24.6    -357.85 #t "ctygena-skill-1") ;; up on high ledge at first turn from farm, jump from zoomer ez
+     (spawn-skill -153.85  30.5    -386.54 #t "ctygena-skill-2") ;; up on high ledge near lurker pipe, jump from zoomer
+     (spawn-skill -180.5   8.4     -376.4  #t "ctygena-skill-3") ;; in lurker pipe exit
+     (spawn-skill -18.0    -9.0    -187.6  #t "ctygena-skill-4") ;; under ramp to canal
+     (spawn-skill -190.5   23.8    -301.8  #t "ctygena-skill-5") ;; on roof left of lurker exit
+     (spawn-skill -15.69   27.5    -17.46  #t "ctygena-skill-6")) ;; in crevice between buildings on non-canal path to ctygenb
+      
     (('ctygenb) ;; (canals connecting ctygena, ctyslumb, stadium, with palshaft entrance)
-      (spawn-skill 175.68   29.5    -183.14 #t "ctygenb-skill-1") ;; up/behind pipes near palshaft entrance
-      (spawn-skill 147.0    24.6    -125.2  #t "ctygenb-skill-2") ;; behind vents on roof near palshaft entrance
-      (spawn-skill 133.29   8.6     -260.96 #t "ctygenb-skill-3") ;; jak3 spot, behind pipe near canal tunnel
-      (spawn-skill 224.86   8.6     -203.92 #t "ctygenb-skill-4") ;; jak3 spot? behind pipe by canals towards stadium
-      (spawn-skill 273.13   8.6     -45.18  #t "ctygenb-skill-5") ;; tucked away in corner, path to slums
-      (spawn-skill 339.38   8.60    -4.60   #t "ctygenb-skill-6") ;; dev picture (another corner with infinite jump)
-      (spawn-skill 5.55     8.80    -159.25 #t "ctygenb-skill-7") ;; tucked in another corner, on path to ctygena (infin jump, or walk up this one)
-      (spawn-skill 287.9    14.5    -108.6  #t "ctygenb-skill-8") ;; not far from slums, behind pipe at 
-      )
+     (spawn-skill 175.68   29.5    -183.14 #t "ctygenb-skill-1") ;; up/behind pipes near palshaft entrance
+     (spawn-skill 147.0    24.6    -125.2  #t "ctygenb-skill-2") ;; behind vents on roof near palshaft entrance
+     (spawn-skill 133.29   8.6     -260.96 #t "ctygenb-skill-3") ;; jak3 spot, behind pipe near canal tunnel
+     (spawn-skill 224.86   8.6     -203.92 #t "ctygenb-skill-4") ;; jak3 spot? behind pipe by canals towards stadium
+     (spawn-skill 273.13   8.6     -45.18  #t "ctygenb-skill-5") ;; tucked away in corner, path to slums
+     (spawn-skill 339.38   8.60    -4.60   #t "ctygenb-skill-6") ;; dev picture (another corner with infinite jump)
+     (spawn-skill 5.55     8.80    -159.25 #t "ctygenb-skill-7") ;; tucked in another corner, on path to ctygena (infin jump, or walk up this one)
+     (spawn-skill 287.9    14.5    -108.6  #t "ctygenb-skill-8")) ;; not far from slums, behind pipe at 
+      
     (('ctygenc) ;; (canals connecting ctygena and ctypal)
-      (spawn-skill 247.14   35.0    380.7   #t "ctygenc-skill-1") ;; up in tree towards ctypal, launch jump from zoomer on trunk
-      (spawn-skill 163.22   26.5    172.25  #t "ctygenc-skill-2") ;; roof of central area, in corner behind bush
-      (spawn-skill 52.3     27.7    390.5   #t "ctygenc-skill-3") ;; on grassy area near ctypal in corner
-      )
+     (spawn-skill 247.14   35.0    380.7   #t "ctygenc-skill-1") ;; up in tree towards ctypal, launch jump from zoomer on trunk
+     (spawn-skill 163.22   26.5    172.25  #t "ctygenc-skill-2") ;; roof of central area, in corner behind bush
+     (spawn-skill 52.3     27.7    390.5   #t "ctygenc-skill-3")) ;; on grassy area near ctypal in corner
+      
     (('ctysluma) ;; (near hideout) ===
-      (spawn-skill 833.8    34.5    13.9    #t "ctysluma-skill-1")  ;; in window above pipes in roundabout (swag can rocket to pipes)
-      (spawn-skill 1127.95  32.72   -16.0   #t "ctysluma-skill-2")  ;; rooftops near hideout (hover)
-      (spawn-skill 1113.96  26.7    349.47  #t "ctysluma-skill-3")  ;; above pipes/generators right before ctyindb
-      (spawn-skill 1001.2   33.5    160.5   #t "ctysluma-skill-4")  ;; in KG neon sign
-      )
+     (spawn-skill 833.8    34.5    13.9    #t "ctysluma-skill-1")  ;; in window above pipes in roundabout (swag can rocket to pipes)
+     (spawn-skill 1127.95  32.72   -16.0   #t "ctysluma-skill-2")  ;; rooftops near hideout (hover)
+     (spawn-skill 1113.96  26.7    349.47  #t "ctysluma-skill-3")  ;; above pipes/generators right before ctyindb
+     (spawn-skill 1001.2   33.5    160.5   #t "ctysluma-skill-4"))  ;; in KG neon sign
+      
     (('ctyslumb) ;; (near prison exit) ===
-      (spawn-skill 548.85   40.5    -0.73   #t "ctyslumb-skill-1")  ;; immediately up left from prison exit (can get back up ejecting from zoomer), grab then with jump + abbah bounce, or return with jetboard
-      (spawn-skill 501.0    9.1     -192.0  #t "ctyslumb-skill-2")  ;; behind burning can towards ctyslumc (water slums)
-      (spawn-skill 693.0    35.05   -310.3  #t "ctyslumb-skill-3")  ;; up high near billboards, jump from vehicle to pipes
-      (spawn-skill 430.0    9.3     -18.9   #t "ctyslumb-skill-4")  ;; inside end of pipe near green barrier
-      (spawn-skill 636.2    43.3    -172.4  #t "ctysluma-skill-2")  ;; climb pipe (first intersection after prison exit)
-      )
+     (spawn-skill 548.85   40.5    -0.73   #t "ctyslumb-skill-1")  ;; immediately up left from prison exit (can get back up ejecting from zoomer), grab then with jump + abbah bounce, or return with jetboard
+     (spawn-skill 501.0    9.1     -192.0  #t "ctyslumb-skill-2")  ;; behind burning can towards ctyslumc (water slums)
+     (spawn-skill 693.0    35.05   -310.3  #t "ctyslumb-skill-3")  ;; up high near billboards, jump from vehicle to pipes
+     (spawn-skill 430.0    9.3     -18.9   #t "ctyslumb-skill-4")  ;; inside end of pipe near green barrier
+     (spawn-skill 636.2    43.3    -172.4  #t "ctysluma-skill-2"))  ;; climb pipe (first intersection after prison exit)
+      
     (('ctyslumc) ;; (water slums) ===
-      (spawn-skill 656.25   27.3    -733.02 #t "ctyslumc-skill-1")  ;; in chimney exhaust on building right side of atoll entrance
-      (spawn-skill 465.60   19.8    -757.27 #t "ctyslumc-skill-2")  ;; behind bent roof on building left side of atoll entrance
-      (spawn-skill 707.35   50.6    -454.33 #f "ctyslumc-skill-3")  ;; top of oracle building - hover (can extended frontflip from top of adjacent roof)
-      (spawn-skill 467.0    3.0     -314.9  #t "ctyslumc-skill-4")  ;; among building supports near water, immediate right from water slums entrance
-      )
+     (spawn-skill 656.25   27.3    -733.02 #t "ctyslumc-skill-1")  ;; in chimney exhaust on building right side of atoll entrance
+     (spawn-skill 465.60   19.8    -757.27 #t "ctyslumc-skill-2")  ;; behind bent roof on building left side of atoll entrance
+     (spawn-skill 707.35   50.6    -454.33 #f "ctyslumc-skill-3")  ;; top of oracle building - hover (can extended frontflip from top of adjacent roof)
+     (spawn-skill 467.0    3.0     -314.9  #t "ctyslumc-skill-4"))  ;; among building supports near water, immediate right from water slums entrance
+      
     (('ctyport) ;; ===
-      (spawn-skill -260.0   5.7     1919.32 #t "ctyport-skill-1") ;; behind big sphere things next to underport exit (boosted over)
-      (spawn-skill 657.45   38.61   1834.80 #t "ctyport-skill-2") ;; opposite end of port from ^, on top of largest sphere (high jump outta zoomer)
-      (spawn-skill 111.83   5.9     1326.67 #t "ctyport-skill-3") ;; behind big spheres in middle not far from hiphog (high jump outta zoomer)
-      (spawn-skill 401.11   27.8    1436.70 #t "ctyport-skill-4") ;; atop pipe above water, near gungame
-      (spawn-gold-skill -117.5   52.6    1399.3  #t "ctyport-skill-5") ;; way up on pipe, near hiphog (HOVER or boost zoomer jump during race)
-      (spawn-skill -225.22  8.3     1658.4  #t "ctyport-skill-6") ;; inside pipe opening to water, past hiphop
-      )
+     (spawn-skill -260.0   5.7     1919.32 #t "ctyport-skill-1") ;; behind big sphere things next to underport exit (boosted over)
+     (spawn-skill 657.45   38.61   1834.80 #t "ctyport-skill-2") ;; opposite end of port from ^, on top of largest sphere (high jump outta zoomer)
+     (spawn-skill 111.83   5.9     1326.67 #t "ctyport-skill-3") ;; behind big spheres in middle not far from hiphog (high jump outta zoomer)
+     (spawn-skill 401.11   27.8    1436.70 #t "ctyport-skill-4") ;; atop pipe above water, near gungame
+     (spawn-gold-skill -117.5   52.6    1399.3  #t "ctyport-skill-5") ;; way up on pipe, near hiphog (HOVER or boost zoomer jump during race)
+     (spawn-skill -225.22  8.3     1658.4  #t "ctyport-skill-6")) ;; inside pipe opening to water, past hiphop
+      
     (('ctyfarma) ;; (b/w bazaar and ctygen, with mountain/forest exit)
-      (spawn-skill -42.7    16.9    166.7   #t "ctyfarma-skill-1")  ;; behind veggies in wooden trailer thing
-      (spawn-skill -398.55  31.28   227.29  #t "ctyfarma-skill-2")  ;; inside leaves on tree left of mountain airlock
-      (spawn-skill -310.01  19.5    372.75  #t "ctyfarma-skill-3")  ;; up/behind tree right before bazaar
-      (spawn-skill -398.8   31.34   -0.7    #t "ctyfarma-skill-4")  ;; up/behind tree right before ctygen on left wall
-      (spawn-skill -43.20   8.4     98.89   #t "ctyfarma-skill-5")  ;; in lurker pipe exit
-      )
+     (spawn-skill -42.7    16.9    166.7   #t "ctyfarma-skill-1")  ;; behind veggies in wooden trailer thing
+     (spawn-skill -398.55  31.28   227.29  #t "ctyfarma-skill-2")  ;; inside leaves on tree left of mountain airlock
+     (spawn-skill -310.01  19.5    372.75  #t "ctyfarma-skill-3")  ;; up/behind tree right before bazaar
+     (spawn-skill -398.8   31.34   -0.7    #t "ctyfarma-skill-4")  ;; up/behind tree right before ctygen on left wall
+     (spawn-skill -43.20   8.4     98.89   #t "ctyfarma-skill-5"))  ;; in lurker pipe exit
+      
     (('ctyfarmb) ;; (b/t bazaar and port)
-      (spawn-skill -167.32  30.5    935.36  #t "ctyfarmb-skill-1")  ;; atop pipes near sprinkler (jump from hose into abbah bounce against wall, then up and over)
-      (spawn-skill -404.64  9.2     1155.76 #t "ctyfarmb-skill-2")  ;; in center pumpkin near port
-      (spawn-skill -444.33  12.3    1195.2  #t "ctyfarmb-skill-3")  ;; in corner crack near port
-      (spawn-skill -371.36  9.6     920.16  #t "ctyfarmb-skill-4")  ;; inside lurker escape pipe
-      (spawn-skill -82.3    12.2    1031.47 #t "ctyfarmb-skill-5")  ;; in crack between rocks by yakows, bazaar side
-      (spawn-skill -36.61   25.2    938.81  #t "ctyfarmb-skill-6")  ;; in tree behind rock near bazaar
-      )
+     (spawn-skill -167.32  30.5    935.36  #t "ctyfarmb-skill-1")  ;; atop pipes near sprinkler (jump from hose into abbah bounce against wall, then up and over)
+     (spawn-skill -404.64  9.2     1155.76 #t "ctyfarmb-skill-2")  ;; in center pumpkin near port
+     (spawn-skill -444.33  12.3    1195.2  #t "ctyfarmb-skill-3")  ;; in corner crack near port
+     (spawn-skill -371.36  9.6     920.16  #t "ctyfarmb-skill-4")  ;; inside lurker escape pipe
+     (spawn-skill -82.3    12.2    1031.47 #t "ctyfarmb-skill-5")  ;; in crack between rocks by yakows, bazaar side
+     (spawn-skill -36.61   25.2    938.81  #t "ctyfarmb-skill-6"))  ;; in tree behind rock near bazaar
+      
     (('ctyinda) ;; (port side)
-      (spawn-skill 936.0    28.5    808.4   #t "ctyinda-skill-1") ;; above pipes in corner - boosted from walkway or jump from zoomer
-      (spawn-skill 857.37   8.8     1160.71 #t "ctyinda-skill-2") ;; jak 3 crate spot, in corner before hallway to port
-      (spawn-skill 717.60   8.6     1166.99 #t "ctyinda-skill-3") ;; behind generators against wall, along hallway to port
-      (spawn-skill 796.8    35.0    1213.5  #f "ctyinda-skill-4") ;; other side of hallway from ^, abbah bounce off vent up high
-      (spawn-skill 809.30   8.65    1066.34 #t "ctyinda-skill-5") ;; in pocket next to ramp near hallway to port
-      (spawn-skill 1018.34  22.0    961.06  #t "ctyinda-skill-6") ;; behind some pipes in middle of map, visible from walkway (abbah from below)
-      (spawn-skill 1158.93  8.7     806.08  #t "ctyinda-skill-7") ;; jak3-esque corner spot, this one at dead end with vent
-      (spawn-skill 1116.5   33.0    817.15  #t "ctyinda-skill-8") ;; same area as ^, abbah bounce from vent or zoomer jump up 
-      (spawn-skill 1067.33  11.0    758.0   #t "ctyinda-skill-9") ;; deadend/hairpin turn onto ramp; behind pipe on left
-      (spawn-skill 1066.1   28.3    766.18  #t "ctyinda-skill-10")  ;; up above ^ skill-9
-      (spawn-skill 842.0    37.3    978.00  #f "ctyinda-skill-11")  ;; up above vent not far from consite (abbah on vent)
-      (spawn-gold-skill 956.61  45.62 1001.85 #t "ctyinda-skill-12")  ;; (HOVER) aim between pipe and wall
-      )
+     (spawn-skill 936.0    28.5    808.4   #t "ctyinda-skill-1") ;; above pipes in corner - boosted from walkway or jump from zoomer
+     (spawn-skill 857.37   8.8     1160.71 #t "ctyinda-skill-2") ;; jak 3 crate spot, in corner before hallway to port
+     (spawn-skill 717.60   8.6     1166.99 #t "ctyinda-skill-3") ;; behind generators against wall, along hallway to port
+     (spawn-skill 796.8    35.0    1213.5  #f "ctyinda-skill-4") ;; other side of hallway from ^, abbah bounce off vent up high
+     (spawn-skill 809.30   8.65    1066.34 #t "ctyinda-skill-5") ;; in pocket next to ramp near hallway to port
+     (spawn-skill 1018.34  22.0    961.06  #t "ctyinda-skill-6") ;; behind some pipes in middle of map, visible from walkway (abbah from below)
+     (spawn-skill 1158.93  8.7     806.08  #t "ctyinda-skill-7") ;; jak3-esque corner spot, this one at dead end with vent
+     (spawn-skill 1116.5   33.0    817.15  #t "ctyinda-skill-8") ;; same area as ^, abbah bounce from vent or zoomer jump up 
+     (spawn-skill 1067.33  11.0    758.0   #t "ctyinda-skill-9") ;; deadend/hairpin turn onto ramp; behind pipe on left
+     (spawn-skill 1066.1   28.3    766.18  #t "ctyinda-skill-10")  ;; up above ^ skill-9
+     (spawn-skill 842.0    37.3    978.00  #f "ctyinda-skill-11")  ;; up above vent not far from consite (abbah on vent)
+     (spawn-gold-skill 956.61  45.62 1001.85 #t "ctyinda-skill-12"))  ;; (HOVER) aim between pipe and wall
+      
     (('ctyindb) ;; (between slums/bazaar/ctyinda)
-      (spawn-skill 1067.76  8.6     494.14  #t "ctyindb-skill-1") ;; in corner above sewers entrance
-      (spawn-skill 842.1    8.6     465.7   #t "ctyindb-skill-2") ;; between ramp and wall near bazaar
-      (spawn-skill 1151.34  10.8    714.0   #t "ctyindb-skill-3") ;; behind pipes couple turns past sewers towards path to port
-      (spawn-skill 896.9    16.4    408.6   #f "ctyindb-skill-4") ;; atop ctyindb-part-52 (one of the lights within walkway pillars, in corner you never visit)
-      (spawn-skill 1100.6   13.7    518.44  #t "ctyindb-skill-5") ;; between generator/pipes in deload-into-sewers corner by ctyslum
-      )
+     (spawn-skill 1067.76  8.6     494.14  #t "ctyindb-skill-1") ;; in corner above sewers entrance
+     (spawn-skill 842.1    8.6     465.7   #t "ctyindb-skill-2") ;; between ramp and wall near bazaar
+     (spawn-skill 1151.34  10.8    714.0   #t "ctyindb-skill-3") ;; behind pipes couple turns past sewers towards path to port
+     (spawn-skill 896.9    16.4    408.6   #f "ctyindb-skill-4") ;; atop ctyindb-part-52 (one of the lights within walkway pillars, in corner you never visit)
+     (spawn-skill 1100.6   13.7    518.44  #t "ctyindb-skill-5")) ;; between generator/pipes in deload-into-sewers corner by ctyslum
+      
     (('ctymarka) ;; (bazaar between ctyfarma/b, ctypal. brutter)) ===
-      (spawn-skill -118.2   22.53   486.9   #f "ctymarka-skill-1")  ;; above fish on brutter kiosk
-      )
-    (('ctymarkb) ;; (bazaar between ctypal and ctyind. overpass. onin. denfend ashelin) ===
-      )
-    (('ctypal) ;; (bazaar between ctypal and ctyind. overpass. onin. denfend ashelin) ===
-      )
+     (spawn-skill -118.2   22.53   486.9   #f "ctymarka-skill-1"))  ;; above fish on brutter kiosk
+      
+    (('ctymarkb)) ;; (bazaar between ctypal and ctyind. overpass. onin. denfend ashelin) ===
+      
+    (('ctypal)) ;; (bazaar between ctypal and ctyind. overpass. onin. denfend ashelin) ===
+      
     (('onintent) ;; ===
-      (spawn-skill 708.7    9.0     746.2   #t "onintent-skill-1")  ;; on left behind pole (need to crouch)
-      )
+     (spawn-skill 708.7    9.0     746.2   #t "onintent-skill-1"))  ;; on left behind pole (need to crouch)
+      
     (('oracle) ;; ===
-      (spawn-skill 698.0    6.5     -447.75 #t "oracle-skill-1")  ;; corner on right side
-      )
+     (spawn-skill 698.0    6.5     -447.75 #t "oracle-skill-1"))  ;; corner on right side
+      
     (('hideout) ;; ====
-      (spawn-skill 1199.4   4.25    52.6    #f "hideout-skill-1") ;; in furnace
-      (spawn-skill 1199.5   3.45    69.0    #t "hideout-skill-2") ;; behind fire right side
-      (spawn-skill 1184.95  5.25    65.5    #t "hideout-skill-3") ;; pillow on bed right side
-      )
+     (spawn-skill 1199.4   4.25    52.6    #f "hideout-skill-1") ;; in furnace
+     (spawn-skill 1199.5   3.45    69.0    #t "hideout-skill-2") ;; behind fire right side
+     (spawn-skill 1184.95  5.25    65.5    #t "hideout-skill-3")) ;; pillow on bed right side
+      
     (('hiphog) ;; ===
-      (spawn-skill -84.02   9.6     1308.33 #t "hiphog-skill-1")  ;; wrestling arena (jetboard lulz)
-      (spawn-skill -106.1   10.05   1289.6  #f "hiphog-skill-2")  ;; mirror orb
-      (spawn-skill -80.4    9.35    1324.90 #f "hiphog-skill-3")  ;; behind whack a mole
-      )
+     (spawn-skill -84.02   9.6     1308.33 #t "hiphog-skill-1")  ;; wrestling arena (jetboard lulz)
+     (spawn-skill -106.1   10.05   1289.6  #f "hiphog-skill-2")  ;; mirror orb
+     (spawn-skill -80.4    9.35    1324.90 #f "hiphog-skill-3"))  ;; behind whack a mole
+      
     (('gungame)
-      (spawn-skill 456.60   23.0    1299.11 #t "gungame-skill-1") ;; up above pipes on right wall of lobby
-      (spawn-skill 419.0    9.2     1302.0  #t "gungame-skill-2") ;; behind lockers in corner of lobby
-      (spawn-skill 410.50   21.2    1267.3  #t "gungame-skill-3") ;; up high in beginning of left path (nearby pillar is infin jump)
-      (spawn-skill 464.5    20.86   1200.4  #t "gungame-skill-4") ;; up behind pipes at last 90 turn (jump from pipes or infin jump pillar)
-      (spawn-skill 441.0    18.8    1252.8  #f "gungame-skill-5") ;; top of pipe towards end of path
-      (spawn-skill 437.95   18.0    1218.84 #t "gungame-skill-6") ;; up in corner of one of the closets where dummies spawn
-      )
+     (spawn-skill 456.60   23.0    1299.11 #t "gungame-skill-1") ;; up above pipes on right wall of lobby
+     (spawn-skill 419.0    9.2     1302.0  #t "gungame-skill-2") ;; behind lockers in corner of lobby
+     (spawn-skill 410.50   21.2    1267.3  #t "gungame-skill-3") ;; up high in beginning of left path (nearby pillar is infin jump)
+     (spawn-skill 464.5    20.86   1200.4  #t "gungame-skill-4") ;; up behind pipes at last 90 turn (jump from pipes or infin jump pillar)
+     (spawn-skill 441.0    18.8    1252.8  #f "gungame-skill-5") ;; top of pipe towards end of path
+     (spawn-skill 437.95   18.0    1218.84 #t "gungame-skill-6")) ;; up in corner of one of the closets where dummies spawn
+      
     ;; ====== ORBS / FORTRESS ======
     (('prison)  ;; (first 2 rooms) ===
-      (spawn-skill 485.36   4.0     91.0    #t "prison-skill-1") ;; under platform dax comes up on 
-      (spawn-skill 463.0    26.78   54.1    #t "prison-skill-2") ;; above warpgate
-      (spawn-skill 528.85   22.5    129.86  #t "prison-skill-3") ;; up/behind pipes on right before 2nd room
-      (spawn-skill 546.2    14.8    199.95  #t "prison-skill-4") ;; on shelf in 2nd room
-      (spawn-skill 497.5    31.5    138.3   #t "prison-skill-5") ;; up high in corner, abbah bounce on vault handle in 2nd room
-      (spawn-skill 531.59   30.2    171.46  #t "prison-skill-6") ;; above pipes in 2nd room (extended, maybe boosted)
-      (spawn-skill 510.29   8.3     59.07   #t "prison-skill-7") ;; inside 3rd cell
-      )
+     (spawn-skill 485.36   4.0     91.0    #t "prison-skill-1") ;; under platform dax comes up on 
+     (spawn-skill 463.0    26.78   54.1    #t "prison-skill-2") ;; above warpgate
+     (spawn-skill 528.85   22.5    129.86  #t "prison-skill-3") ;; up/behind pipes on right before 2nd room
+     (spawn-skill 546.2    14.8    199.95  #t "prison-skill-4") ;; on shelf in 2nd room
+     (spawn-skill 497.5    31.5    138.3   #t "prison-skill-5") ;; up high in corner, abbah bounce on vault handle in 2nd room
+     (spawn-skill 531.59   30.2    171.46  #t "prison-skill-6") ;; above pipes in 2nd room (extended, maybe boosted)
+     (spawn-skill 510.29   8.3     59.07   #t "prison-skill-7")) ;; inside 3rd cell
+      
     (('forexita) ;; (3rd room until shooting you from below)
-      (spawn-skill 561.5    95.0    126.05  #t "forexita-skill-1") ;; way up between pipes on left where you learn to crouch jump (boosted from nearby pipe climb)
-      (spawn-skill 586.0    77.0    91.48   #t "forexita-skill-2") ;; against wall above machines near first guard (jump off small pipe)
-      (spawn-skill 689.9    93.0    111.55  #t "forexita-skill-3") ;; way up on pipes above swingpole
-      (spawn-skill 725.33   57.0    180.1   #t "forexita-skill-4") ;; in pit below where original orb is, but behind metal tubing on right
-      (spawn-skill 750.21   91.3    167.9   #t "forexita-skill-5") ;; end of hallway before next section, way up on pipes
-      (spawn-skill 676.46   99.24   169.99  #t "forexita-skill-6") ;; farther up from ^ and then backtrack
-      )
+     (spawn-skill 561.5    95.0    126.05  #t "forexita-skill-1") ;; way up between pipes on left where you learn to crouch jump (boosted from nearby pipe climb)
+     (spawn-skill 586.0    77.0    91.48   #t "forexita-skill-2") ;; against wall above machines near first guard (jump off small pipe)
+     (spawn-skill 689.9    93.0    111.55  #t "forexita-skill-3") ;; way up on pipes above swingpole
+     (spawn-skill 725.33   57.0    180.1   #t "forexita-skill-4") ;; in pit below where original orb is, but behind metal tubing on right
+     (spawn-skill 750.21   91.3    167.9   #t "forexita-skill-5") ;; end of hallway before next section, way up on pipes
+     (spawn-skill 676.46   99.24   169.99  #t "forexita-skill-6")) ;; farther up from ^ and then backtrack
+      
     (('forexitb) ;; (shooting you from below to city exit) ===
-      (spawn-skill 740.8    78.0    24.3    #t "forexitb-skill-1") ;; room with chains, up in far right corner (infin jump on chain, uppercut to pipes)
-      (spawn-skill 601.25   4.71    42.9    #f "forexitb-skill-2") ;; underwater in corner with debris
-      (spawn-skill 537.70   27.3    33.21   #t "forexitb-skill-3") ;; on backside of first cylinder thing on ceiling
-      (spawn-skill 523.80   27.9    51.82   #t "forexitb-skill-4") ;; follow from ^, on pipes in back of room
-      (spawn-skill 551.6    27.3    76.18   #t "forexitb-skill-5") ;; on JakPiss sewer pipe
-      (spawn-skill 743.39   83.5    92.92   #t "forexitb-skill-6") ;; above pipe when getting shot from below (uppercut from valve on wall)
-      )
+     (spawn-skill 740.8    78.0    24.3    #t "forexitb-skill-1") ;; room with chains, up in far right corner (infin jump on chain, uppercut to pipes)
+     (spawn-skill 601.25   4.71    42.9    #f "forexitb-skill-2") ;; underwater in corner with debris
+     (spawn-skill 537.70   27.3    33.21   #t "forexitb-skill-3") ;; on backside of first cylinder thing on ceiling
+     (spawn-skill 523.80   27.9    51.82   #t "forexitb-skill-4") ;; follow from ^, on pipes in back of room
+     (spawn-skill 551.6    27.3    76.18   #t "forexitb-skill-5") ;; on JakPiss sewer pipe
+     (spawn-skill 743.39   83.5    92.92   #t "forexitb-skill-6")) ;; above pipe when getting shot from below (uppercut from valve on wall)
+      
     (('fordumpa) ;; (tank pt 1) ===
-      (spawn-skill 746.19   8.5     261.65  #t "fordumpa-skill-1")  ;; immediate left corner in tank section
-      (spawn-skill 697.79   19.3    295.74  #t "fordumpa-skill-2")  ;; up/behind pipe in first tank room
-      (spawn-skill 728.28   6.5     303.2   #t "fordumpa-skill-3")  ;; on vent under platforms in first tank room, avoid death plane
-      (spawn-skill 521.12   8.5     346.27  #t "fordumpa-skill-4")  ;; secret area on ground level in room with 2 rotating platforms, behind boxes
-      )
+     (spawn-skill 746.19   8.5     261.65  #t "fordumpa-skill-1")  ;; immediate left corner in tank section
+     (spawn-skill 697.79   19.3    295.74  #t "fordumpa-skill-2")  ;; up/behind pipe in first tank room
+     (spawn-skill 728.28   6.5     303.2   #t "fordumpa-skill-3")  ;; on vent under platforms in first tank room, avoid death plane
+     (spawn-skill 521.12   8.5     346.27  #t "fordumpa-skill-4"))  ;; secret area on ground level in room with 2 rotating platforms, behind boxes
+      
     (('fordumpb) ;; (guards after tank) ===
-      (spawn-skill 404.74   25.0    319.0   #t "fordumpb-skill-1")  ;; behind boxes before first spiky floor
-      (spawn-skill 459.35   38.3    365.09  #t "fordumpb-skill-2")  ;; above fence right near first barrier you groundpound through
-      (spawn-skill 494.91   21.9    386.68  #t "fordumpb-skill-3")  ;; on boxes on right above first flat escalator
-      (spawn-skill 534.04   42.6    373.68  #t "fordumpb-skill-4")  ;; in arms of crane before fortdumpc
-      )
+     (spawn-skill 404.74   25.0    319.0   #t "fordumpb-skill-1")  ;; behind boxes before first spiky floor
+     (spawn-skill 459.35   38.3    365.09  #t "fordumpb-skill-2")  ;; above fence right near first barrier you groundpound through
+     (spawn-skill 494.91   21.9    386.68  #t "fordumpb-skill-3")  ;; on boxes on right above first flat escalator
+     (spawn-skill 534.04   42.6    373.68  #t "fordumpb-skill-4"))  ;; in arms of crane before fortdumpc
+      
     (('fordumpc) ;; (final tank section) ===
-      (spawn-skill 646.5    50.6    383.4   #t "fordumpc-skill-1")  ;; behind boxes/barrels up right
-      (spawn-skill 632.0    72.0    321.8   #t "fordumpc-skill-2")  ;; way up left boxes
-      (spawn-skill 738.62   50.0    333.60  #t "fordumpc-skill-3")  ;; top of pipes left of exit
-      (spawn-skill 696.0    60.7    353.05  #t "fordumpc-skill-4")  ;; top of do rocket off rocket before tank blows them up
-      (spawn-skill 736.52   54.3    322.04  #t "fordumpc-skill-5")  ;; corner behind boxes on upper ledge above exit, abbah bounce on computer/pipes
-      )
+     (spawn-skill 646.5    50.6    383.4   #t "fordumpc-skill-1")  ;; behind boxes/barrels up right
+     (spawn-skill 632.0    72.0    321.8   #t "fordumpc-skill-2")  ;; way up left boxes
+     (spawn-skill 738.62   50.0    333.60  #t "fordumpc-skill-3")  ;; top of pipes left of exit
+     (spawn-skill 696.0    60.7    353.05  #t "fordumpc-skill-4")  ;; top of do rocket off rocket before tank blows them up
+     (spawn-skill 736.52   54.3    322.04  #t "fordumpc-skill-5"))  ;; corner behind boxes on upper ledge above exit, abbah bounce on computer/pipes
+      
     (('forresca) ;; (rescue friends) ===
-      (spawn-skill 693.65   46.0    199.09  #t "forresca-skill-1")  ;; way up behind cylinder in right corner (computer > HJ from lil pipe to left pipe > DEEP extended to right pipes > standpoint on cylinder > higher on pipes > GG)
-      )
+     (spawn-skill 693.65   46.0    199.09  #t "forresca-skill-1"))  ;; way up behind cylinder in right corner (computer > HJ from lil pipe to left pipe > DEEP extended to right pipes > standpoint on cylinder > higher on pipes > GG)
+      
     ;; ====== ORBS / STADIUM ======
     (('garage)  ;; keira garage
-      (spawn-skill 126.4    12.5    -442.7  #f "garage-skill-1")  ;; in box inside barrel in back of garage
-      (spawn-skill 105.5    24.5    -407.7  #t "garage-skill-2")  ;; above lamp
-      )
+     (spawn-skill 126.4    12.5    -442.7  #f "garage-skill-1")  ;; in box inside barrel in back of garage
+     (spawn-skill 105.5    24.5    -407.7  #t "garage-skill-2"))  ;; above lamp
+      
     (('stadium)
-      (spawn-skill 171.35   31.00   -511.70 #t "stadium-skill-1") ;; outside, up behind sculpture's head on left side
-      )
+     (spawn-skill 171.35   31.00   -511.70 #t "stadium-skill-1")) ;; outside, up behind sculpture's head on left side
+      
     (('skatea)
-      (spawn-skill  12.5    12.0    -692.6  #t "skatea-skill-1")  ;; behind glass wall at start, go around or over
-      (spawn-skill  -72.35  -6.99   -465.50 #t "skatea-skill-2")  ;; behind some ramps and things against wall opposite entrance
-      )
-    (('stadiumb)
-      )
-    (('stadiumc)
-      )
-    (('stadiumd)
-      )
+     (spawn-skill  12.5    12.0    -692.6  #t "skatea-skill-1")  ;; behind glass wall at start, go around or over
+     (spawn-skill  -72.35  -6.99   -465.50 #t "skatea-skill-2"))  ;; behind some ramps and things against wall opposite entrance
+      
+    (('stadiumb))
+      
+    (('stadiumc))
+      
+    (('stadiumd))
+      
     ;; ====== ORBS / PALACE ======
     (('palcab) ;; (cable bridge to palace) ===
-      (spawn-skill 223.5    385.13  149.0   #t "palcab-skill-1")  ;; left side of rotating hexagons
-      )
-    (('palroof) ;; palboss ===
-      (spawn-skill 166.12   442.99  532.45  #t "palroof-skill-1") ;; high corner above glass, abbah bounce in corner over invis wall for next orb
-      (spawn-skill 159.16   445.43  571.50  #t "palroof-skill-2") ;; on wall above glass ceiling, follow from ^ and abbah bounce again
-      (spawn-skill 173.6    463.6   563.65  #t "palroof-skill-3") ;; another abbah bounce up from ^, walk along edge
-      (spawn-skill 180.7    460.2   526.0   #t "palroof-skill-4") ;; follow from ^ to next roof, boosted from corner to corner
-      (spawn-skill 219.53   426.8   534.36  #t "palroof-skill-5") ;; on roof in praxis 1st phase, spin cancel jump on slant to get up
-      )
-    (('throne)
-      (spawn-skill 122.92   340.6   531.25  #t "throne-skill-1")  ;; in gap under walkway to throne
-      (spawn-skill 103.0    374.5   499.15  #t "throne-skill-2")  ;; window above throne (abbah duh)
-      (spawn-skill 183.74   345.5   549.98  #t "throne-skill-3")  ;; corner before drop down to palent
-      )
-    (('palent)  ;; palace interior with guards
+     (spawn-skill 223.5    385.13  149.0   #t "palcab-skill-1"))  ;; left side of rotating hexagons
       
-      )
+    (('palroof) ;; palboss ===
+     (spawn-skill 166.12   442.99  532.45  #t "palroof-skill-1") ;; high corner above glass, abbah bounce in corner over invis wall for next orb
+     (spawn-skill 159.16   445.43  571.50  #t "palroof-skill-2") ;; on wall above glass ceiling, follow from ^ and abbah bounce again
+     (spawn-skill 173.6    463.6   563.65  #t "palroof-skill-3") ;; another abbah bounce up from ^, walk along edge
+     (spawn-skill 180.7    460.2   526.0   #t "palroof-skill-4") ;; follow from ^ to next roof, boosted from corner to corner
+     (spawn-skill 219.53   426.8   534.36  #t "palroof-skill-5")) ;; on roof in praxis 1st phase, spin cancel jump on slant to get up
+      
+    (('throne)
+     (spawn-skill 122.92   340.6   531.25  #t "throne-skill-1")  ;; in gap under walkway to throne
+     (spawn-skill 103.0    374.5   499.15  #t "throne-skill-2")  ;; window above throne (abbah duh)
+     (spawn-skill 183.74   345.5   549.98  #t "throne-skill-3"))  ;; corner before drop down to palent
+      
+    (('palent))  ;; palace interior with guards
+      
+      
     ;; ====== ORBS / CASTLE ======
     (('caspad)  ;; landing pad connecting atoll, dig, castle
-      (spawn-skill 301.1    43.2    -1700.2   #t "caspad-skill-1")  ;; up above tree/rock near dig entrance
-      (spawn-skill 218.02   34.14   -1724.96  #t "caspad-skill-2")  ;; in crack of rocks between dig/castle
-      (spawn-skill 236.98   48.8    -1709.0   #t "caspad-skill-3")  ;; up & right from skill-2 (abbah)
-      (spawn-skill 209.75   45.8    -1730.5   #t "caspad-skill-4")  ;; up & left from skill-2 (abbah)
-      (spawn-skill 190.1    58.8    -1713.6   #t "caspad-skill-5")  ;; up & left from skill-4 (or maybe abbah?)
-      (spawn-skill 127.4    66.2    -1698.9   #t "caspad-skill-6")  ;; atop tall rock towards castle entrance (abbah)
-      (spawn-skill 83.42    75.16   -1704.72  #t "caspad-skill-7")  ;; atop rocks right right outside castle entrance (abbah)
-      (spawn-skill 216.53   37.08   -1570.87  #t "caspad-skill-8")  ;; in crack in rocks between castle and atoll
-      (spawn-skill 203.31   53.4    -1568.01  #t "caspad-skill-9")  ;; up/right from skill-8
-      (spawn-skill 189.67   72.7    -1554.08  #t "caspad-skill-10") ;; up from skill-9 (abbah)
-      (spawn-skill 202.31   83.6    -1546.70  #t "caspad-skill-11") ;; low-poly leaves are solid, free orb near skill-10
-      (spawn-skill 79.62    121.5   -1519.64  #t "caspad-skill-12") ;; low-poly leaves, way in the back towards castle
-      )
-    (('castle)  ;; 
-      )
-    ;; ====== ORBS / RUINS ======
-    (('ruins)
-      )
-    (('sagehut)
-      (spawn-skill 1054.7   38.8    -545.0    #t "sagehut-skill-1") ;; near keira transpad
-      (spawn-skill 1041.0   32.5    -527.5    #t "sagehut-skill-2") ;; below wooden platforms (for portal)
-      (spawn-skill 1070.6   50.9    -568.6    #t "sagehut-skill-3") ;; left of jak 1 warp gate
-      (spawn-skill 1086.58  38.5    -569.07   #t "sagehut-skill-3") ;; behind planters on lower back edge (just go around lol)
-      )
-    ;; ====== ORBS / ATOLL ======
-    (('atoll  'atoll-ext)
+     (spawn-skill 301.1    43.2    -1700.2   #t "caspad-skill-1")  ;; up above tree/rock near dig entrance
+     (spawn-skill 218.02   34.14   -1724.96  #t "caspad-skill-2")  ;; in crack of rocks between dig/castle
+     (spawn-skill 236.98   48.8    -1709.0   #t "caspad-skill-3")  ;; up & right from skill-2 (abbah)
+     (spawn-skill 209.75   45.8    -1730.5   #t "caspad-skill-4")  ;; up & left from skill-2 (abbah)
+     (spawn-skill 190.1    58.8    -1713.6   #t "caspad-skill-5")  ;; up & left from skill-4 (or maybe abbah?)
+     (spawn-skill 127.4    66.2    -1698.9   #t "caspad-skill-6")  ;; atop tall rock towards castle entrance (abbah)
+     (spawn-skill 83.42    75.16   -1704.72  #t "caspad-skill-7")  ;; atop rocks right right outside castle entrance (abbah)
+     (spawn-skill 216.53   37.08   -1570.87  #t "caspad-skill-8")  ;; in crack in rocks between castle and atoll
+     (spawn-skill 203.31   53.4    -1568.01  #t "caspad-skill-9")  ;; up/right from skill-8
+     (spawn-skill 189.67   72.7    -1554.08  #t "caspad-skill-10") ;; up from skill-9 (abbah)
+     (spawn-skill 202.31   83.6    -1546.70  #t "caspad-skill-11") ;; low-poly leaves are solid, free orb near skill-10
+     (spawn-skill 79.62    121.5   -1519.64  #t "caspad-skill-12")) ;; low-poly leaves, way in the back towards castle
       
-      )
+    (('castle))  ;; 
+      
+    ;; ====== ORBS / RUINS ======
+    (('ruins))
+      
+    (('sagehut)
+     (spawn-skill 1054.7   38.8    -545.0    #t "sagehut-skill-1") ;; near keira transpad
+     (spawn-skill 1041.0   32.5    -527.5    #t "sagehut-skill-2") ;; below wooden platforms (for portal)
+     (spawn-skill 1070.6   50.9    -568.6    #t "sagehut-skill-3") ;; left of jak 1 warp gate
+     (spawn-skill 1086.58  38.5    -569.07   #t "sagehut-skill-3")) ;; behind planters on lower back edge (just go around lol)
+      
+    ;; ====== ORBS / ATOLL ======
+    (('atoll  'atoll-ext))
+      
+      
     ;; ====== ORBS / SEWER ======
-    (('sewer 'sewerb)
-      )
-    (('sewesc 'sewescb)
-      )
+    (('sewer 'sewerb))
+      
+    (('sewesc 'sewescb))
+      
     ;; ====== ORBS / STRIP ======
-    (('strip)
-      )
+    (('strip))
+      
     ;; ====== ORBS / MOUNTAIN ======
-    (('mountain 'mtnext)
-      )
-    (('mincan)  ;; little area where they put all the precursor crap together
-      )
+    (('mountain 'mtnext))
+      
+    (('mincan))  ;; little area where they put all the precursor crap together
+      
     ;; ====== ORBS / FOREST ======
-    (('forest)   ;; entrance side?
-      )
-    (('forestb)   ;; sage/tree side?
-      )
+    (('forest))   ;; entrance side?
+      
+    (('forestb))   ;; sage/tree side?
+      
     ;; ====== ORBS / DRILL ======
-    (('drill) ;; eggs section?
-      )
-    (('drillmtn) ;; background???
-      )
-    (('drillmid) ;; gun on rails section?
-      )
-    (('drillb)  ;; mech suit area
-      )
+    (('drill)) ;; eggs section?
+      
+    (('drillmtn)) ;; background???
+      
+    (('drillmid)) ;; gun on rails section?
+      
+    (('drillb))  ;; mech suit area
+      
     ;; ====== ORBS / TOMB ======
-    (('tomba) ;; central chamber
-      )
-    (('tombb) ;; left tomb
-      )
-    (('tombc) ;; right tomb
-      )
-    (('tombd) ;; entrance
-      )
-    (('tombe) ;; daxter spider chase
-      )
-    (('tombboss) ;; praxis 2
+    (('tomba)) ;; central chamber
+      
+    (('tombb)) ;; left tomb
+      
+    (('tombc)) ;; right tomb
+      
+    (('tombd)) ;; entrance
+      
+    (('tombe)) ;; daxter spider chase
+      
+    (('tombboss)) ;; praxis 2
     ;; 255.85 -69.420 1411.91)) ;; where daxter exits chase in boss room (tomb-boss-door changed to open if boss completed)
-      )
+      
     ;; ====== ORBS / DIG ======
     (('dig1)  ;; with guards and explosive barrels
-      (spawn-skill 233.26 -69.1 -1831.89 #t "dig1-skill-1") ;; left once in main room, extended over lava under cage
-      )
-    (('dig3a) ;; first room with metalheads and totem
-      )
-    (('dig3b) ;; back room with metalheads and buttons
-      )
+     (spawn-skill 233.26 -69.1 -1831.89 #t "dig1-skill-1")) ;; left once in main room, extended over lava under cage
+      
+    (('dig3a)) ;; first room with metalheads and totem
+      
+    (('dig3b)) ;; back room with metalheads and buttons
+      
     ;; ====== ORBS / CANYON ======
     ;; fake level - see MOUNTAIN
     ;; ====== ORBS / CONSITE ======
-    (('consite 'consiteb)
-      )
+    (('consite 'consiteb))
+      
     ;; ====== ORBS / UNDER ======
-    (('under 'underb)
-      )
+    (('under 'underb))
+      
     ;; ====== ORBS / NEST ======
-    (('nest)  ;; outside
-      )
-    (('nestb) ;; inside
-      )
+    (('nest))  ;; outside
+      
+    (('nestb)) ;; inside
+      
     ;; ====== ORBS / DEFAULT ======
     (('village1) ;; ===
-      (spawn-skill -26.5    22.0    -83.7   #t "village1-skill-1")  ;; top of farmers hut
-      (spawn-skill -30.3    8.7     -68.4   #t "village1-skill-2")  ;; tucked under farmers hut roof
-      (spawn-skill 6.5      23.2    -108.3  #t "village1-skill-3")  ;; tree towards fire canyon
-      (spawn-skill 84.6     28.0    30.0    #t "village1-skill-4")  ;; ledge above oracle
-      (spawn-skill 79.7     18.0    -41.5   #t "village1-skill-5")  ;; outer ledge on path to oracle
-      (spawn-skill -25.5    4.7     -66.6   #t "village1-skill-6")  ;; fireplace in farmers hut
-      (spawn-skill 88.18    18.57   18.87   #t "village1-skill-7")  ;; behind oracle mouth
-      (spawn-skill -107.9   35.0    219.7   #t "village1-skill-8")  ;; behind samos hut
-      (spawn-skill -182.85  32.9    213.01  #t "village1-skill-9")  ;; on rocks/ferns near samos hut, need to come from behind
-      (spawn-skill -90.6    49.90   34.6    #t "village1-skill-10") ;; on honeycomb on mayor windmill (abbah; replacement for on pillars supporting samos hut)
-      (spawn-skill -72.2    25.5    141.4   #t "village1-skill-11") ;; in tree coming from samos hut
-      (spawn-skill -75.5    1.8     109.7   #t "village1-skill-12") ;; in broken boat
-      (spawn-skill -125.0   21.5    42.7    #t "village1-skill-13") ;; mayors roof in the back
-      (spawn-skill -58.0    15.6    -34.2   #t "village1-skill-14") ;; in cage in bird ladys house
-      (spawn-skill -50.3    11.5    36.9    #t "village1-skill-15") ;; by uncles bed
-      (spawn-skill -63.5    16.3    71.5    #t "village1-skill-16") ;; in net in fishermans
-      (spawn-skill 13.8     12.2    20.5    #t "village1-skill-17") ;; near blue eco spawn
-      (spawn-skill 74.9     6.5     25.0    #t "village1-skill-18") ;; below oracle
-      (spawn-skill -141.4   9.8     -13.5   #t "village1-skill-19") ;; behind sculptors house
-      (spawn-skill -103.6   1.5     -38.5   #t "village1-skill-20") ;; corner by stairs to beach
-      (spawn-skill 117.1    7.8     -51.2   #t "village1-skill-21") ;; upper corner ledge in water between yakows/oracle
-      (spawn-skill 73.5     14.5    -169.0  #t "village1-skill-22") ;; ledge in crop field
-      (spawn-skill 48.6     20.5    -85.1   #t "village1-skill-23") ;; ledge above yakows towards oracle
-      (spawn-skill 134.4    12.0    -20.3   #t "village1-skill-24") ;; behind sculptors rock (replacement for under fishermans boat)
-      (spawn-skill -43.7    3.7     25.5    #t "village1-skill-25") ;; behind uncle house
-      (spawn-skill -157.0   14.8    -87.8   #t "village1-skill-26") ;; high ledge towards beach
-      (spawn-skill 123.5    21.8    -52.74  #t "village1-skill-27") ;; abbah bounce up to ledge above skill-21 (replacement for high ledge towards beach 2)
-      (spawn-skill -126.2   12.5    -96.0   #t "village1-skill-28") ;; high ledge towards beach 3
-      (spawn-skill -101.5   11.8    -73.0   #t "village1-skill-29") ;; corner ledge towards beach
-      (spawn-skill -121.87  12.05   49.9    #f "village1-skill-30") ;; back left room of mayors house
-      (spawn-skill -146.2   35.0    211.5   #t "village1-skill-31") ;; near keira
-      (spawn-skill -118.0   46.5    208.0   #t "village1-skill-32") ;; in samos hut, left of warp gate
-      (spawn-skill -105.4   13.3    73.15   #f "village1-skill-33") ;; in fountain
-      (spawn-skill -122.1   19.0    14.5    #t "village1-skill-34") ;; tree by mayor/sculptor
-      (spawn-skill 207.5    12.2    -122.0  #t "village1-skill-35") ;; near mirrors
-      )
-    )
-  (none)
-  )
+     (spawn-skill -26.5    22.0    -83.7   #t "village1-skill-1")  ;; top of farmers hut
+     (spawn-skill -30.3    8.7     -68.4   #t "village1-skill-2")  ;; tucked under farmers hut roof
+     (spawn-skill 6.5      23.2    -108.3  #t "village1-skill-3")  ;; tree towards fire canyon
+     (spawn-skill 84.6     28.0    30.0    #t "village1-skill-4")  ;; ledge above oracle
+     (spawn-skill 79.7     18.0    -41.5   #t "village1-skill-5")  ;; outer ledge on path to oracle
+     (spawn-skill -25.5    4.7     -66.6   #t "village1-skill-6")  ;; fireplace in farmers hut
+     (spawn-skill 88.18    18.57   18.87   #t "village1-skill-7")  ;; behind oracle mouth
+     (spawn-skill -107.9   35.0    219.7   #t "village1-skill-8")  ;; behind samos hut
+     (spawn-skill -182.85  32.9    213.01  #t "village1-skill-9")  ;; on rocks/ferns near samos hut, need to come from behind
+     (spawn-skill -90.6    49.90   34.6    #t "village1-skill-10") ;; on honeycomb on mayor windmill (abbah; replacement for on pillars supporting samos hut)
+     (spawn-skill -72.2    25.5    141.4   #t "village1-skill-11") ;; in tree coming from samos hut
+     (spawn-skill -75.5    1.8     109.7   #t "village1-skill-12") ;; in broken boat
+     (spawn-skill -125.0   21.5    42.7    #t "village1-skill-13") ;; mayors roof in the back
+     (spawn-skill -58.0    15.6    -34.2   #t "village1-skill-14") ;; in cage in bird ladys house
+     (spawn-skill -50.3    11.5    36.9    #t "village1-skill-15") ;; by uncles bed
+     (spawn-skill -63.5    16.3    71.5    #t "village1-skill-16") ;; in net in fishermans
+     (spawn-skill 13.8     12.2    20.5    #t "village1-skill-17") ;; near blue eco spawn
+     (spawn-skill 74.9     6.5     25.0    #t "village1-skill-18") ;; below oracle
+     (spawn-skill -141.4   9.8     -13.5   #t "village1-skill-19") ;; behind sculptors house
+     (spawn-skill -103.6   1.5     -38.5   #t "village1-skill-20") ;; corner by stairs to beach
+     (spawn-skill 117.1    7.8     -51.2   #t "village1-skill-21") ;; upper corner ledge in water between yakows/oracle
+     (spawn-skill 73.5     14.5    -169.0  #t "village1-skill-22") ;; ledge in crop field
+     (spawn-skill 48.6     20.5    -85.1   #t "village1-skill-23") ;; ledge above yakows towards oracle
+     (spawn-skill 134.4    12.0    -20.3   #t "village1-skill-24") ;; behind sculptors rock (replacement for under fishermans boat)
+     (spawn-skill -43.7    3.7     25.5    #t "village1-skill-25") ;; behind uncle house
+     (spawn-skill -157.0   14.8    -87.8   #t "village1-skill-26") ;; high ledge towards beach
+     (spawn-skill 123.5    21.8    -52.74  #t "village1-skill-27") ;; abbah bounce up to ledge above skill-21 (replacement for high ledge towards beach 2)
+     (spawn-skill -126.2   12.5    -96.0   #t "village1-skill-28") ;; high ledge towards beach 3
+     (spawn-skill -101.5   11.8    -73.0   #t "village1-skill-29") ;; corner ledge towards beach
+     (spawn-skill -121.87  12.05   49.9    #f "village1-skill-30") ;; back left room of mayors house
+     (spawn-skill -146.2   35.0    211.5   #t "village1-skill-31") ;; near keira
+     (spawn-skill -118.0   46.5    208.0   #t "village1-skill-32") ;; in samos hut, left of warp gate
+     (spawn-skill -105.4   13.3    73.15   #f "village1-skill-33") ;; in fountain
+     (spawn-skill -122.1   19.0    14.5    #t "village1-skill-34") ;; tree by mayor/sculptor
+     (spawn-skill 207.5    12.2    -122.0  #t "village1-skill-35"))) ;; near mirrors
+      
+    
+  (none))
+  
 
 (defun prison-door-button-check ((button-name string) (door-name string))
   (when *target*
     (case (-> *target* state name)
       ;; if target is attacking...
       (('target-attack 'target-running-attack 'target-attack-uppercut-jump 'target-attack-air 'target-flop)
-        (let ((button (the part-spawner (process-by-ename button-name)))
-              (door (process-by-ename door-name))
-              )
-          ;; ... and button and door both exist, and player is close enough ...
-          (when (and button door (-> button root) (-> button root trans))
-            (let ((button-vec (-> button root trans)))
-              (when (<= (vector-vector-xz-distance (-> *target* root trans) button-vec) (meters 2.0))
-                ;; ... then we (try to) open door ...
-                (when (send-event door 'open)
-                  ;; ... if successful we play sounds and turn off lights
-                  (sound-play "smack-surface")
-                  (sound-play "timer-warn")
-                  (set! (-> button part data 0 flags) (the sp-launch-state-flags 0))
-                  (set! (-> button part data 1 flags) (the sp-launch-state-flags 0))
-                  (set! (-> button part data 2 flags) (the sp-launch-state-flags 0))
-                  )
-                )
-              )
-            )
-          )
-        )
-      )
-    )
-  (none)
-  )
+       (let ((button (the part-spawner (process-by-ename button-name)))
+             (door (process-by-ename door-name)))
+              
+         ;; ... and button and door both exist, and player is close enough ...
+         (when (and button door (-> button root) (-> button root trans))
+           (let ((button-vec (-> button root trans)))
+             (when (<= (vector-vector-xz-distance (-> *target* root trans) button-vec) (meters 2.0))
+               ;; ... then we (try to) open door ...
+               (when (send-event door 'open)
+                 ;; ... if successful we play sounds and turn off lights
+                 (sound-play "smack-surface")
+                 (sound-play "timer-warn")
+                 (set! (-> button part data 0 flags) (the sp-launch-state-flags 0))
+                 (set! (-> button part data 1 flags) (the sp-launch-state-flags 0))
+                 (set! (-> button part data 2 flags) (the sp-launch-state-flags 0))))))))))
+                  
+                
+              
+            
+          
+        
+      
+    
+  (none))
+  
 
 (defun stdmb-hatch-check ((stdmb-hatch string))
   (when *target*
     (case (-> *target* state name)
       ;; if target is attacking...
       (('target-attack 'target-running-attack 'target-attack-uppercut-jump 'target-attack-air 'target-flop)
-        (let ((hatch (the process-drawable (process-by-ename stdmb-hatch)))
-              )
-          ;; ... and hatch exists, and player is close enough ...
-          (when (and hatch (-> hatch root) (-> hatch root trans))
-            (let ((hatch-vec (-> hatch root trans)))
-              (when (<= (vector-vector-xz-distance (-> *target* root trans) hatch-vec) (meters 4.0))
-                ;; ... then we (try to) open hatch ...
-                (when (send-event hatch 'open)
-                  ;; ... if successful we play sound
-                  (sound-play "timer-warn")
-                  )
-                )
-              )
-            )
-          )
-        )
-      )
-    )
-  (none)
-  )
+       (let ((hatch (the process-drawable (process-by-ename stdmb-hatch))))
+              
+         ;; ... and hatch exists, and player is close enough ...
+         (when (and hatch (-> hatch root) (-> hatch root trans))
+           (let ((hatch-vec (-> hatch root trans)))
+             (when (<= (vector-vector-xz-distance (-> *target* root trans) hatch-vec) (meters 4.0))
+               ;; ... then we (try to) open hatch ...
+               (when (send-event hatch 'open)
+                 ;; ... if successful we play sound
+                 (sound-play "timer-warn")))))))))
+                  
+                
+              
+            
+          
+        
+      
+    
+  (none))
+  
 
 (defun mod-override-init-position ((obj process-drawable) (arg0 entity-actor))
   (case (-> obj name) :comp name=
@@ -790,8 +790,8 @@
     ;; ====== BURNING BUSH / ORB HUNT ======
     ;; === ctygena (canals near farm) ===
     (('burning-bush-16) ;; orbhunt - 
-      (set-vector-meters! (-> arg0 extra trans) -383.08  23.40 -281.34) ;; awning near first turn from farm
-      )
+     (set-vector-meters! (-> arg0 extra trans) -383.08  23.40 -281.34)) ;; awning near first turn from farm
+      
     ;; === ctygenb (canals connecting ctygena, ctyslumb, stadium, with palshaft entrance) ===
     ;; (('burning-bush-) ;; orbhunt - 
     ;;   (set-vector-meters! (-> arg0 extra trans) ) ;; 
@@ -802,36 +802,41 @@
     ;;   )
     ;; === ctysluma (near hideout) ===
     (('burning-bush-9)  ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
-      (set-vector-meters! (-> arg0 extra trans) 1125.92   8.14 149.91) ;; near yellow barrier skip hidden by fruit
-      )
+     (set-vector-meters! (-> arg0 extra trans) 1125.92   8.14 149.91)) ;; near yellow barrier skip hidden by fruit
+      
     ;; === ctyslumb (near prison exit) ===
     (('burning-bush-17)  ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
-      (set-vector-meters! (-> arg0 extra trans) 827.57  24.6  56.04) ;; atop roundabout building towards ctysluma
-      )
+     (set-vector-meters! (-> arg0 extra trans) 827.57  24.6  56.04)) ;; atop roundabout building towards ctysluma
+      
     ;; === ctyslumc (water slums) ===
     (('burning-bush-11) ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
-      (set-vector-meters! (-> arg0 extra trans) 440.0  19.87 -536.5)  ;; atop small building in corner
-      )
+     (set-vector-meters! (-> arg0 extra trans) 440.0  19.87 -536.5))  ;; atop small building in corner
+      
     ;; === ctyport ===
     (('burning-bush-8) ;; orbhunt - more related overrides in mod-override-burning-bush-get-on!
-      (set-vector-meters! (-> arg0 extra trans) 336.18   7.87 1721.80)  ;; jak 3 moment
+     (set-vector-meters! (-> arg0 extra trans) 336.18   7.87 1721.80)  ;; jak 3 moment
       ;; fix rotation. 2 is 'rotoffset. do this to display: (set-entity! *entity-debug-inspect* (entity-by-name "burning-bush-8"))
-      (set! (-> (the (pointer float) (get-tag-index-data arg0 2))) 32768.0) 
-      )
+     (set! (-> (the (pointer float) (get-tag-index-data arg0 2))) 32768.0)) 
+      
 
     ;; === ctrfarma (between bazaar and ctygen, with mountain/forest exit) ===
     (('burning-bush-10)
-      (set-vector-meters! (-> arg0 extra trans) -367.23  15.88  92.80) ;; atop sprinkler near ctygen
-      )
+     (set-vector-meters! (-> arg0 extra trans) -367.23  15.88  92.80)) ;; atop sprinkler near ctygen
+      
     ;; === ctyinda (near port) ===
     (('burning-bush-5)
-      (set-vector-meters! (-> arg0 extra trans) 959.75  24.94 896.6) ;; atop walkway
-      )
+     (set-vector-meters! (-> arg0 extra trans) 959.75  24.94 896.6)) ;; atop walkway
+
+    ;; === ctyindb ===
+    (('burning-bush-21)
+     (set-vector-meters! (-> arg0 extra trans) 1055.40   9.89 684.95))  ;; between generators midway thru level
+     
+      
     ;; ====== BURNING BUSH / STADIUM ======
     ;; === stadium ===
     (('burning-bush-20)
-      (set-vector-meters! (-> arg0 extra trans) 44.40  12.01 -433.91)  ;; end of hallway to keira garage
-      )
+     (set-vector-meters! (-> arg0 extra trans) 44.40  12.01 -433.91))  ;; end of hallway to keira garage
+      
 
     ;; ====== MISC ======
     ;; === prison ===
@@ -847,25 +852,25 @@
     (('crate-954) (set-vector-meters! (-> arg0 extra trans) 548.87  26.69   64.18))  ;; health - moved to cylinder from ceiling for fortexitb-skill-5
     ;; === cty-sluma (near hideout) === 
     (('cty-fruit-stand-1)
-      (set-vector-meters! (-> arg0 extra trans) 1132.0   8.2 163.0) ;; 
-      (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
-      )
+     (set-vector-meters! (-> arg0 extra trans) 1132.0   8.2 163.0) ;; 
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0))
+      
     (('cty-fruit-stand-2)
-      (set-vector-meters! (-> arg0 extra trans) 1132.0   10.2 160.0) ;; 
-      (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
-      )
+     (set-vector-meters! (-> arg0 extra trans) 1132.0   10.2 160.0) ;; 
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0))
+      
     (('cty-fruit-stand-3)
-      (set-vector-meters! (-> arg0 extra trans) 1132.0   12.2 157.0) ;; 
-      (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
-      )
+     (set-vector-meters! (-> arg0 extra trans) 1132.0   12.2 157.0) ;; 
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0))
+      
     (('cty-fruit-stand-4)
-      (set-vector-meters! (-> arg0 extra trans) 1132.0   14.2 154.0) ;; 
-      (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
-      )
+     (set-vector-meters! (-> arg0 extra trans) 1132.0   14.2 154.0) ;; 
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0))
+      
     (('cty-fruit-stand-5)
-      (set-vector-meters! (-> arg0 extra trans) 1132.0   16.2 151.0) ;;
-      (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
-      )
+     (set-vector-meters! (-> arg0 extra trans) 1132.0   16.2 151.0) ;;
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0))
+      
     ;; (('cty-fruit-stand-6)
     ;;   (set-vector-meters! (-> arg0 extra trans) 803.61   13.26 161.12) ;;
     ;;   (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)
@@ -877,17 +882,17 @@
     ;; village1
     (('crate-665) (set-vector-meters! (-> arg0 extra trans) -82.0 21.5 -10.3))      ;; high ledge between bridges
     (('crate-666) (set-vector-meters! (-> arg0 extra trans) 32.5 12.5 -132.7))      ;; on tree 
-    (('crate-667) (set-vector-meters! (-> arg0 extra trans) -132.6 11.9 32.3))      ;; behind mayors
-    )
-  (none)
-  )
+    (('crate-667) (set-vector-meters! (-> arg0 extra trans) -132.6 11.9 32.3)))      ;; behind mayors
+    
+  (none))
+  
 
 (defun mod-turbo-jetboard? () 
   (or (= (level-status *level* 'stadiumb) 'active)
       (= (level-status *level* 'stadiumc) 'active)
-      (= (level-status *level* 'stadiumd) 'active)
-      )
-  )
+      (= (level-status *level* 'stadiumd) 'active)))
+      
+  
 
 (defun mod-run-each-frame ()
   ;; === prison (first 2 rooms) ===
@@ -901,5 +906,5 @@
 
   ;; (move-actor-str-target-offset "ctyport-part-86" 0.0 1.5 0.0)  ;; jakpoop
 
-  (none)
-  )
+  (none))
+  

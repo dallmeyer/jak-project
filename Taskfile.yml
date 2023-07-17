@@ -71,7 +71,7 @@ tasks:
       - sh: test -f {{.GOALC_BIN_RELEASE_DIR}}/goalc{{.EXE_FILE_EXTENSION}}
         msg: "Couldn't locate compiler executable in '{{.GOALC_BIN_RELEASE_DIR}}/goalc'"
     cmds:
-      - "{{.GOALC_BIN_RELEASE_DIR}}/goalc --user-auto --game {{.GAME}}"
+      - "{{.GOALC_BIN_RELEASE_DIR}}/goalc --user-auto --game {{.GAME}} --port 8181"
   format:
     desc: "Format code"
     cmds:
