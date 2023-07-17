@@ -310,8 +310,12 @@
       (spawn-skill 842.0    37.3    978.00  #f "ctyinda-skill-11")  ;; up above vent not far from consite (abbah on vent)
       (spawn-gold-skill 956.61  45.62 1001.85 #t "ctyinda-skill-12")  ;; (HOVER) aim between pipe and wall
       )
-    (('ctyindb) ;; ()
+    (('ctyindb) ;; (between slums/bazaar/ctyinda)
       (spawn-skill 1067.76  8.6     494.14  #t "ctyindb-skill-1") ;; in corner above sewers entrance
+      (spawn-skill 842.1    8.6     465.7   #t "ctyindb-skill-2") ;; between ramp and wall near bazaar
+      (spawn-skill 1151.34  10.8    714.0   #t "ctyindb-skill-3") ;; behind pipes couple turns past sewers towards path to port
+      (spawn-skill 896.9    16.4    408.6   #f "ctyindb-skill-4") ;; atop ctyindb-part-52 (one of the lights within walkway pillars, in corner you never visit)
+      (spawn-skill 1100.6   13.7    518.44  #t "ctyindb-skill-5") ;; between generator/pipes in deload-into-sewers corner by ctyslum
       )
     (('ctymarka) ;; (bazaar between ctyfarma/b, ctypal. brutter)) ===
       (spawn-skill -118.2   22.53   486.9   #f "ctymarka-skill-1")  ;; above fish on brutter kiosk
