@@ -2899,6 +2899,15 @@ This commonly includes things such as:
       (set! (-> info camera-rot 6)  0.5570) (set! (-> info camera-rot 7) 0.7270) (set! (-> info camera-rot 8)  0.4014)
       (set! (-> info time) 4850.0)))
       
+    ;; === ctymarka ===
+    ;; (((game-task city-burning-bush-get-to-)) ;; 
+    ;;  (set-vector-meters! (-> info trans) 1071.0  46.48 547.96)
+    ;;  (set-vector! (-> info camera-trans) 4288069.5000 57702.9648 2245457.000 1.0)
+    ;;  (set! (-> info camera-rot 0)   0.5846) (set! (-> info camera-rot 1) 0.0000) (set! (-> info camera-rot 2) -0.8113)
+    ;;   (set! (-> info camera-rot 3) -0.5898) (set! (-> info camera-rot 4) 0.6866) (set! (-> info camera-rot 5) -0.4250)
+    ;;   (set! (-> info camera-rot 6)  0.5570) (set! (-> info camera-rot 7) 0.7270) (set! (-> info camera-rot 8)  0.4014)
+    ;;   (set! (-> info time) 4850.0)))
+      
     
   (none))
   

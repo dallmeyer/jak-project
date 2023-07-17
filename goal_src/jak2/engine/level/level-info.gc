@@ -8180,6 +8180,14 @@
                                 (new 'static 'vector3s :data (new 'static 'array float 3 0.998 0.0 0.0631))
                                 (new 'static 'vector3s :data (new 'static 'array float 3 -0.0076 0.9926 0.1208))
                                 (new 'static 'vector3s :data (new 'static 'array float 3 -0.0626 -0.121 0.9906)))
+                  ;; need to fix racepoint-1 first before get-to-12
+                  ;;  :trans (new 'static 'vector :x -1065474.6250 :y 37354.6992 :z 2874588.75 :w 1.0)))
+                  ;;  :quat (new 'static 'vector :x -0.004 :y 0.0250 :z -0.0000 :w 0.9996)
+                  ;;  :camera-trans (new 'static 'vector :x -1024287.0000 :y 58523.8046 :z 2844634.0 :w 1.0)
+                  ;;  :camera-rot (new 'static 'inline-array vector3s 3
+                  ;;               (new 'static 'vector3s :data (new 'static 'array float 3  0.6306 -0.0000 0.7760))
+                  ;;               (new 'static 'vector3s :data (new 'static 'array float 3 -0.0893  0.9933 0.0726))
+                  ;;               (new 'static 'vector3s :data (new 'static 'array float 3 -0.7709 -0.1151 0.6264)))
           
                    :on-goto #f
                    :vis-nick 'ctymarka
