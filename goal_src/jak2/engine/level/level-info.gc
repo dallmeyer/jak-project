@@ -8873,6 +8873,7 @@
     :activate-func 'race-level-activate
     :deactivate-func 'race-level-deactivate
     :kill-func #f
+    :borrow-size (new 'static 'array uint16 2 160 0) ;; added
     :borrow-level (new 'static 'array symbol 2 #f #f)
     :borrow-display? (new 'static 'array symbol 2 #f #f)
     :texture-anim-tfrag #f
@@ -9072,6 +9073,7 @@
     :activate-func 'race-level-activate
     :deactivate-func 'race-level-deactivate
     :kill-func #f
+    :borrow-size (new 'static 'array uint16 2 160 0) ;; added
     :borrow-level (new 'static 'array symbol 2 #f #f)
     :borrow-display? (new 'static 'array symbol 2 #f #f)
     :texture-anim-tfrag #f
@@ -9247,6 +9249,7 @@
     :activate-func 'race-level-activate
     :deactivate-func 'race-level-deactivate
     :kill-func #f
+    :borrow-size (new 'static 'array uint16 2 160 0) ;; added
     :borrow-level (new 'static 'array symbol 2 #f #f)
     :borrow-display? (new 'static 'array symbol 2 #f #f)
     :texture-anim-tfrag #f

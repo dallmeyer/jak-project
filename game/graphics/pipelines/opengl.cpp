@@ -326,7 +326,7 @@ GLDisplay::GLDisplay(SDL_Window* window, SDL_GLContext gl_context, bool is_main)
   m_display_manager->set_input_manager(m_input_manager);
   // Register commands
   m_input_manager->register_command(CommandBinding::Source::KEYBOARD,
-                                    CommandBinding(SDLK_F12, [&]() {
+                                    CommandBinding(Gfx::g_debug_settings.hide_imgui_key, [&]() {
                                       if (!Gfx::g_debug_settings.ignore_hide_imgui) {
                                         set_imgui_visible(!is_imgui_visible());
                                       }
@@ -697,7 +697,7 @@ void gl_texture_upload_now(const u8* tpage, int mode, u32 s7_ptr) {
     // just pass it to the texture pool.
     // the texture pool will take care of locking.
     // we don't want to lock here for the entire duration of the conversion.
-    g_gfx_data->texture_pool->handle_upload_now(tpage, mode, g_ee_main_mem, s7_ptr);
+    g_gfx_data->texture_pool->handle_upload_now(tpage, mode, g_ee_main_mem, s7_ptr, false);
   }
 }
 
