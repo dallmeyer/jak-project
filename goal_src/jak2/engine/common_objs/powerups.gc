@@ -965,7 +965,7 @@
     ((logtest? (-> self game features) (game-feature unk-game-feature-03))
      (when *time-of-day-fast*
        (set! *time-of-day-fast* #f)
-       (send-event (ppointer->process *time-of-day*) 'change 'ratio #x3f800000)
+       (send-event (ppointer->process *time-of-day*) 'change 'ratio 1.0)
        )
      (cond
        ((cpad-hold? (-> self control cpad number) r1)
@@ -995,7 +995,7 @@
     ((logtest? (-> self game features) (game-feature unk-game-feature-05))
      (when *time-of-day-fast*
        (set! *time-of-day-fast* #f)
-       (send-event (ppointer->process *time-of-day*) 'change 'ratio #x3f800000)
+       (send-event (ppointer->process *time-of-day*) 'change 'ratio 1.0)
        )
      (cond
        ((cpad-hold? (-> self control cpad number) r1)
@@ -1022,6 +1022,25 @@
         )
        )
      )
+    )
+  (#when PC_PORT
+    ;; time cheats (doesn't work properly)
+    (cond
+      ((movie?)
+        )
+      ((pc-cheats? (-> *pc-settings* cheats) slow-speed)
+        ;(update-rates! (-> *display* entity-clock) (* 0.3 (-> *display* entity-clock clock-ratio)))
+        ;(update-rates! (-> *display* target-clock) (* 0.5 (-> *display* target-clock clock-ratio)))
+        )
+      ((pc-cheats? (-> *pc-settings* cheats) fast-speed)
+        ;(update-rates! (-> *display* entity-clock) (* 60.0 (-> *display* entity-clock clock-ratio)))
+        ;(update-rates! (-> *display* target-clock) (* 2.0 (-> *display* target-clock clock-ratio)))
+        )
+      ((logtest? (-> self game features) (game-feature unk-game-feature-01 unk-game-feature-03 unk-game-feature-05))
+        )
+      (else
+        )
+      )
     )
   (target-eco-process)
   (target-color-effect-process)

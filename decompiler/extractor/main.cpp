@@ -8,6 +8,7 @@
 #include "common/util/FileUtil.h"
 #include "common/util/json_util.h"
 #include "common/util/read_iso_file.h"
+#include "common/util/term_util.h"
 #include "common/util/unicode_util.h"
 
 #include "decompiler/Disasm/OpcodeInfo.h"
@@ -109,7 +110,7 @@ void decompile(const fs::path& iso_data_path, const std::string& data_subfolder)
                                        fmt::format("{}_config.jsonc", version_info.game_name),
                                    version_info.decomp_config_version);
 
-  std::vector<fs::path> dgos, objs;
+  std::vector<fs::path> dgos, objs, tex_strs;
 
   // grab all DGOS we need (level + common)
   // TODO - Jak 2 - jak 1 specific code?
@@ -133,8 +134,12 @@ void decompile(const fs::path& iso_data_path, const std::string& data_subfolder)
     }
   }
 
+  for (const auto& str_name : config.str_texture_file_names) {
+    tex_strs.push_back(iso_data_path / str_name);
+  }
+
   // set up objects
-  ObjectFileDB db(dgos, fs::path(config.obj_file_name_map_file), objs, {}, config);
+  ObjectFileDB db(dgos, fs::path(config.obj_file_name_map_file), objs, {}, tex_strs, config);
 
   // save object files
   auto out_folder = file_util::get_jak_project_dir() / "decompiler_out" / data_subfolder;
@@ -163,7 +168,7 @@ void decompile(const fs::path& iso_data_path, const std::string& data_subfolder)
   auto textures_out = out_folder / "textures";
   file_util::create_dir_if_needed(textures_out);
   file_util::write_text_file(textures_out / "tpage-dir.txt",
-                             db.process_tpages(tex_db, textures_out));
+                             db.process_tpages(tex_db, textures_out, config));
   // texture replacements
   auto replacements_path = file_util::get_jak_project_dir() / "texture_replacements";
   if (fs::exists(replacements_path)) {
@@ -183,8 +188,8 @@ void decompile(const fs::path& iso_data_path, const std::string& data_subfolder)
     auto level_out_path =
         file_util::get_jak_project_dir() / "out" / game_version_names[config.game_version] / "fr3";
     file_util::create_dir_if_needed(level_out_path);
-    extract_all_levels(db, tex_db, config.levels_to_extract, "GAME.CGO", config.hacks,
-                       config.rip_levels, config.extract_collision, level_out_path);
+    extract_all_levels(db, tex_db, config.levels_to_extract, "GAME.CGO", config, config.rip_levels,
+                       config.extract_collision, level_out_path);
   }
 }
 
@@ -254,6 +259,7 @@ int main(int argc, char** argv) {
   app.add_flag("-c,--compile", flag_compile, "Compile the game");
   app.add_flag("-p,--play", flag_play, "Play the game");
   app.add_flag("-f,--folder", flag_folder, "Extract from folder");
+  define_common_cli_arguments(app);
   app.validate_positionals();
   CLI11_PARSE(app, argc, argv);
 
@@ -292,7 +298,10 @@ int main(int argc, char** argv) {
   }
 
   try {
-    lg::set_file(file_util::get_file_path({"log", "extractor.log"}));
+    lg::set_file("extractor");
+    if (_cli_flag_disable_ansi) {
+      lg::disable_ansi_colors();
+    }
   } catch (const std::exception& e) {
     lg::error("Failed to setup logging: {}", e.what());
     return 1;
