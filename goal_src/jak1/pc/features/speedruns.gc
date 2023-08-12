@@ -709,7 +709,7 @@
   ;; disable hints (this seems to be overriden by your slot 1 save though)
   (set! (-> *setting-control* default play-hints) #f)
   ;; ensure `force actors` is not enabled
-  (set! (-> *pc-settings* force-actors?) #f)
+  (set! (-> *pc-settings* ps2-actor-vis?) #t)
   ;; force FPS to `60`
   (set-frame-rate! *pc-settings* 60 #t)
   ;; skip intro cutscene
@@ -870,11 +870,12 @@
   (set! (-> dst vis-nick) (-> src vis-nick))
   (when (-> *level* level0)
     (set! (-> dst lev0) (-> *level* level0 name))
-    (set! (-> dst disp0) 'display)
+    (set! (-> dst lev0) (-> *level* level0 name))
+    (set! (-> dst disp0) (-> *level* level0 display?))
     )
   (when (-> *level* level1)
     (set! (-> dst lev1) (-> *level* level1 name))
-    (set! (-> dst disp1) 'display)
+    (set! (-> dst disp1) (-> *level* level1 display?))
     )
   (none)
   )
