@@ -36,9 +36,12 @@ struct TestDefinition {
 };
 
 std::vector<TestDefinition> get_test_definitions(const fs::path& file_path) {
+  std::vector<TestDefinition> tests;
   // Read in the file, and run the test
   const auto contents = str_util::split(file_util::read_text_file(file_path));
-  std::vector<TestDefinition> tests;
+  if (contents.empty() || (contents.size() == 1 && contents.at(0).empty())) {
+    return tests;
+  }
   TestDefinition curr_test;
   size_t i = 0;
   while (i < contents.size()) {
@@ -119,27 +122,31 @@ bool run_tests(const fs::path& file_path, const bool only_important_tests) {
 }
 
 bool find_and_run_tests() {
-  // Enumerate test files
-  const auto test_files = file_util::find_files_recursively(
-      file_util::get_file_path({"test/common/formatter/corpus"}), std::regex("^.*\.test.gc$"));
-  bool failed = false;
-  // First do a pass to see if any tests are meant to be prioritized for debugging
-  bool only_important_tests = false;
-  for (const auto& file : test_files) {
-    only_important_tests = has_important_tests(file);
-    if (only_important_tests) {
-      break;
+  try {
+    // Enumerate test files
+    const auto test_files = file_util::find_files_recursively(
+        file_util::get_file_path({"test/common/formatter/corpus"}), std::regex("^.*\\.test.gc$"));
+    bool failed = false;
+    // First do a pass to see if any tests are meant to be prioritized for debugging
+    bool only_important_tests = false;
+    for (const auto& file : test_files) {
+      only_important_tests = has_important_tests(file);
+      if (only_important_tests) {
+        break;
+      }
     }
-  }
-  for (const auto& file : test_files) {
-    // don't fail fast, but any failure means we return false
-    if (failed) {
-      run_tests(file, only_important_tests);
-    } else {
-      failed = run_tests(file, only_important_tests);
+    for (const auto& file : test_files) {
+      // don't fail fast, but any failure means we return false
+      if (failed) {
+        run_tests(file, only_important_tests);
+      } else {
+        failed = run_tests(file, only_important_tests);
+      }
     }
+    return !failed;
+  } catch (std::exception& e) {
+    return false;
   }
-  return !failed;
 }
 
 TEST(Formatter, FormatterTests) {

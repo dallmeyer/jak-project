@@ -188,9 +188,8 @@ GlowRenderer::GlowRenderer() {
                GL_UNSIGNED_BYTE, nullptr);
   glGenRenderbuffers(1, &m_ogl.probe_fbo_zbuf_rb);
   glBindRenderbuffer(GL_RENDERBUFFER, m_ogl.probe_fbo_zbuf_rb);
-  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_ogl.probe_fbo_w,
-                        m_ogl.probe_fbo_h);
-  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER,
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_ogl.probe_fbo_w, m_ogl.probe_fbo_h);
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER,
                             m_ogl.probe_fbo_zbuf_rb);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
                          m_ogl.probe_fbo_rgba_tex, 0);
@@ -242,7 +241,9 @@ void copy_to_vertex(GlowRenderer::Vertex* vtx, const Vector4f& xyzw) {
   vtx->x = xyzw.x();
   vtx->y = xyzw.y();
   vtx->z = xyzw.z();
-  vtx->w = xyzw.w();
+  // ignore the w computed by the game, and just use 1. The game's VU program ignores this value,
+  // and we need to set w = 1 to get the correct opengl clipping behavior
+  vtx->w = 1;
 }
 }  // namespace
 
@@ -469,23 +470,23 @@ void GlowRenderer::blit_depth(SharedRenderState* render_state) {
     glBindTexture(GL_TEXTURE_2D, 0);
 
     glBindRenderbuffer(GL_RENDERBUFFER, m_ogl.probe_fbo_zbuf_rb);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_ogl.probe_fbo_w,
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_ogl.probe_fbo_w,
                           m_ogl.probe_fbo_h);
   }
 
   glBindFramebuffer(GL_READ_FRAMEBUFFER, render_state->render_fb);
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_ogl.probe_fbo);
 
-  glBlitFramebuffer(render_state->render_fb_x,                              // srcX0
-                    render_state->render_fb_y,                              // srcY0
-                    render_state->render_fb_x + render_state->render_fb_w,  // srcX1
-                    render_state->render_fb_y + render_state->render_fb_h,  // srcY1
-                    0,                                                      // dstX0
-                    0,                                                      // dstY0
-                    m_ogl.probe_fbo_w,                                      // dstX1
-                    m_ogl.probe_fbo_h,                                      // dstY1
-                    GL_DEPTH_BUFFER_BIT,                                    // mask
-                    GL_NEAREST                                              // filter
+  glBlitFramebuffer(0,                          // srcX0
+                    0,                          // srcY0
+                    render_state->render_fb_w,  // srcX1
+                    render_state->render_fb_h,  // srcY1
+                    0,                          // dstX0
+                    0,                          // dstY0
+                    m_ogl.probe_fbo_w,          // dstX1
+                    m_ogl.probe_fbo_h,          // dstY1
+                    GL_DEPTH_BUFFER_BIT,        // mask
+                    GL_NEAREST                  // filter
   );
 }
 

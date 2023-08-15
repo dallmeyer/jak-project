@@ -3,6 +3,12 @@
 #include <algorithm>
 #include <functional>
 
+#ifndef __aarch64__
+#include "xmmintrin.h"
+#else
+#include "third-party/sse2neon/sse2neon.h"
+#endif
+
 #include "common/util/Assert.h"
 
 namespace tfrag3 {
@@ -166,6 +172,7 @@ std::array<math::Vector3f, 3> tie_normal_transform_v2(const std::array<math::Vec
   // vmadday.xyzw acc, vf25, vf18
   // vmaddz.xyzw vf12, vf26, vf18
   result[2] = vf18;
+
   return result;
   //
   // sqc2 vf10, -112(t8)
@@ -199,6 +206,22 @@ u32 unpack_tie_normal(const std::array<math::Vector3f, 3>& mat, s8 nx, s8 ny, s8
   return pack_to_gl_normal(as_int.x(), as_int.y(), as_int.z());
 }
 
+/*
+void tie_normal_v3(__m128* out, const std::array<math::Vector4f, 4>& in) {
+  math::Vector3f x_row = in[0].xyz();
+  math::Vector3f y_row = in[1].xyz();
+  math::Vector3f z_row = in[2].xyz();
+
+  x_row.normalize();
+  y_row = x_row.cross(y_row.cross(x_row)).normalized();
+  z_row = x_row.cross(y_row);
+
+  out[0] = _mm_setr_ps(x_row[0], x_row[1], x_row[2], 0);
+  out[1] = _mm_setr_ps(y_row[0], y_row[1], y_row[2], 0);
+  out[2] = _mm_setr_ps(z_row[0], z_row[1], z_row[2], 0);
+}
+ */
+
 void TieTree::unpack() {
   unpacked.vertices.resize(packed_vertices.color_indices.size());
   size_t i = 0;
@@ -222,24 +245,53 @@ void TieTree::unpack() {
       }
     } else {
       const auto& mat = packed_vertices.matrices[grp.matrix_idx];
-      auto nmat = tie_normal_transform_v2(mat);
 
-      for (u32 src_idx = grp.start_vert; src_idx < grp.end_vert; src_idx++) {
-        auto& vtx = unpacked.vertices[i];
-        vtx.color_index = packed_vertices.color_indices[i];
-        const auto& proto_vtx = packed_vertices.vertices[src_idx];
-        auto temp = mat[0] * proto_vtx.x + mat[1] * proto_vtx.y + mat[2] * proto_vtx.z + mat[3];
-        vtx.x = temp.x();
-        vtx.y = temp.y();
-        vtx.z = temp.z();
-        vtx.s = proto_vtx.s;
-        vtx.t = proto_vtx.t;
-        vtx.nor = unpack_tie_normal(nmat, proto_vtx.nx, proto_vtx.ny, proto_vtx.nz);
-        vtx.r = proto_vtx.r;
-        vtx.g = proto_vtx.g;
-        vtx.b = proto_vtx.b;
-        vtx.a = proto_vtx.a;
-        i++;
+      __m128 mat0 = _mm_loadu_ps(mat[0].data());
+      __m128 mat1 = _mm_loadu_ps(mat[1].data());
+      __m128 mat2 = _mm_loadu_ps(mat[2].data());
+      __m128 mat3 = _mm_loadu_ps(mat[3].data());
+
+      if (grp.has_normals) {
+        auto nmat = tie_normal_transform_v2(mat);
+        for (u32 src_idx = grp.start_vert; src_idx < grp.end_vert; src_idx++) {
+          auto& vtx = unpacked.vertices[i];
+          vtx.color_index = packed_vertices.color_indices[i];
+          const auto& proto_vtx = packed_vertices.vertices[src_idx];
+          // auto temp = mat[0] * proto_vtx.x + mat[1] * proto_vtx.y + mat[2] * proto_vtx.z +
+          // mat[3];
+          __m128 transformed = mat3;
+          transformed = _mm_add_ps(transformed, _mm_mul_ps(_mm_set1_ps(proto_vtx.x), mat0));
+          transformed = _mm_add_ps(transformed, _mm_mul_ps(_mm_set1_ps(proto_vtx.y), mat1));
+          transformed = _mm_add_ps(transformed, _mm_mul_ps(_mm_set1_ps(proto_vtx.z), mat2));
+          _mm_storeu_ps(&vtx.x, transformed);
+          vtx.s = proto_vtx.s;
+          vtx.t = proto_vtx.t;
+          vtx.nor = unpack_tie_normal(nmat, proto_vtx.nx, proto_vtx.ny, proto_vtx.nz);
+          vtx.r = proto_vtx.r;
+          vtx.g = proto_vtx.g;
+          vtx.b = proto_vtx.b;
+          vtx.a = proto_vtx.a;
+          i++;
+        }
+      } else {
+        for (u32 src_idx = grp.start_vert; src_idx < grp.end_vert; src_idx++) {
+          auto& vtx = unpacked.vertices[i];
+          vtx.color_index = packed_vertices.color_indices[i];
+          const auto& proto_vtx = packed_vertices.vertices[src_idx];
+          __m128 transformed = mat3;
+          transformed = _mm_add_ps(transformed, _mm_mul_ps(_mm_set1_ps(proto_vtx.x), mat0));
+          transformed = _mm_add_ps(transformed, _mm_mul_ps(_mm_set1_ps(proto_vtx.y), mat1));
+          transformed = _mm_add_ps(transformed, _mm_mul_ps(_mm_set1_ps(proto_vtx.z), mat2));
+          _mm_storeu_ps(&vtx.x, transformed);
+          vtx.s = proto_vtx.s;
+          vtx.t = proto_vtx.t;
+          vtx.nor = 0;
+          vtx.r = proto_vtx.r;
+          vtx.g = proto_vtx.g;
+          vtx.b = proto_vtx.b;
+          vtx.a = proto_vtx.a;
+          i++;
+        }
       }
     }
   }
@@ -385,6 +437,17 @@ void Texture::serialize(Serializer& ser) {
   ser.from_ptr(&load_to_pool);
 }
 
+void IndexTexture::serialize(Serializer& ser) {
+  ser.from_ptr(&w);
+  ser.from_ptr(&h);
+  ser.from_ptr(&combo_id);
+  ser.from_pod_vector(&index_data);
+  ser.from_ptr(&color_table);
+  ser.from_str(&name);
+  ser.from_str(&tpage_name);
+  ser.from_string_vector(&level_names);
+}
+
 void CollisionMesh::serialize(Serializer& ser) {
   ser.from_pod_vector(&vertices);
 }
@@ -494,6 +557,15 @@ void Level::serialize(Serializer& ser) {
     textures.resize(ser.load<size_t>());
   }
   for (auto& tex : textures) {
+    tex.serialize(ser);
+  }
+
+  if (ser.is_saving()) {
+    ser.save<size_t>(index_textures.size());
+  } else {
+    index_textures.resize(ser.load<size_t>());
+  }
+  for (auto& tex : index_textures) {
     tex.serialize(ser);
   }
 
@@ -639,8 +711,16 @@ void Texture::memory_usage(MemoryUsageTracker* tracker) const {
   tracker->add(MemoryUsageCategory::TEXTURE, data.size() * sizeof(u32));
 }
 
+void IndexTexture::memory_usage(MemoryUsageTracker* tracker) const {
+  tracker->add(MemoryUsageCategory::SPECIAL_TEXTURE, index_data.size());
+  tracker->add(MemoryUsageCategory::SPECIAL_TEXTURE, 256 * 4);  // clut
+}
+
 void Level::memory_usage(MemoryUsageTracker* tracker) const {
   for (const auto& texture : textures) {
+    texture.memory_usage(tracker);
+  }
+  for (const auto& texture : index_textures) {
     texture.memory_usage(tracker);
   }
   for (const auto& tftk : tfrag_trees) {
@@ -667,6 +747,7 @@ void print_memory_usage(const tfrag3::Level& lev, int uncompressed_data_size) {
 
   std::vector<std::pair<std::string, int>> known_categories = {
       {"texture", mem_use.data[tfrag3::MemoryUsageCategory::TEXTURE]},
+      {"special-texture", mem_use.data[tfrag3::MemoryUsageCategory::SPECIAL_TEXTURE]},
       {"tie-deinst-vis", mem_use.data[tfrag3::MemoryUsageCategory::TIE_DEINST_VIS]},
       {"tie-deinst-idx", mem_use.data[tfrag3::MemoryUsageCategory::TIE_DEINST_INDEX]},
       {"tie-inst-vis", mem_use.data[tfrag3::MemoryUsageCategory::TIE_INST_VIS]},
