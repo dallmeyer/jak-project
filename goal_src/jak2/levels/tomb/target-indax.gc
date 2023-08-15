@@ -691,7 +691,8 @@
           )
         )
       (ja-no-eval :group! (-> self draw art-group data 417) :num! (identity f26-0) :dist 13107.2)
-      (ja-no-eval :chan 1 :group! (-> self draw art-group data 423) :num! (identity f26-0) :dist 12697.6)
+      ;; (ja-no-eval :chan 1 :group! (-> self draw art-group data 423) :num! (identity f26-0) :dist 12697.6)  ;; no look-back (423)
+      (ja-no-eval :chan 1 :group! (-> self draw art-group data 417) :num! (identity f26-0) :dist 12697.6) ;; just run (417) instead
       (let ((a0-25 (-> self skel root-channel 2)))
         (let ((f0-12 (- 1.0 f30-0)))
           (set! (-> a0-25 frame-interp 1) f0-12)

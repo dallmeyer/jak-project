@@ -131,7 +131,7 @@
                 (if (nonzero? (-> obj shadow-values))
                     (send-event (ppointer->process s4-0) 'shadow-values (* (-> obj shadow-values) 8))
                     )
-                (if (and s4-0 (not (logtest? (-> obj flags) 1)) (nonzero? (-> (the-as process-drawable (-> s4-0 0)) draw)))
+                (if (or s3-0 (and s4-0 (not (logtest? (-> obj flags) 1)) (nonzero? (-> (the-as process-drawable (-> s4-0 0)) draw))))
                     (logior! (-> (the-as process-drawable (-> s4-0 0)) draw status) (draw-control-status no-draw-bounds))
                     )
                 (if (-> obj shadow-volume-joint)

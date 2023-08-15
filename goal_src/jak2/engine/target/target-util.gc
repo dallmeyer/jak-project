@@ -1855,7 +1855,7 @@
   (local-vars (v0-0 vector))
   (let ((v1-0 (-> obj control)))
     (cond
-      ((zero? arg0)
+      ((or (zero? arg0) (focus-test? obj indax))
        (-> v1-0 trans)
        )
       ((= arg0 1)
