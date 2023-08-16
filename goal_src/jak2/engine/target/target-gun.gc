@@ -242,7 +242,7 @@
           )
         )
     (cond
-      ((focus-test? self pilot-riding)
+      ((focus-test? self pilot-riding indax)
        (case (-> self gun gun-type)
          (((pickup-type eco-yellow))
           (push-anim-to-targ
@@ -383,7 +383,7 @@
             )
        (sound-play "gun-putaway")
        (cond
-         ((focus-test? self pilot-riding)
+         ((focus-test? self pilot-riding indax)
           (case (-> self gun gun-type)
             (((pickup-type eco-yellow))
              (push-anim-to-targ
@@ -714,7 +714,7 @@
       (quat<-gun! (the-as quaternion (-> self gun top-anim-twist-targ)) (the-as quaternion arg0))
       (set! (-> self skel top-anim frame-post-blend) 0.1333333)
       (cond
-        ((focus-test? self pilot-riding)
+        ((focus-test? self pilot-riding indax)
          (let ((v1-164 arg0))
            (cond
              ((and (= s5-0 (pickup-type eco-red)) (= v1-164 4))
@@ -1094,6 +1094,7 @@
          (set! s5-0 4)
          )
         )
+        (format 0 "target-gun-marking-3menu ~D " s5-0)
       (when (and (nonzero? s5-0)
                  (and (logtest? (the-as game-feature (ash 1 (+ s5-0 5)))
                                 (logand (-> arg0 game features) (-> *setting-control* user-current features))
@@ -1116,6 +1117,7 @@
                         )
                       )
                  )
+        (format 0 " inner ")
         (cond
           ((using-gun? arg0)
            (sound-play "select-option")
@@ -1126,6 +1128,7 @@
            )
           )
         )
+        (format 0 "~%")
       )
     )
   0
@@ -1394,7 +1397,7 @@
 
 (defbehavior target-top-anim-base-mode target ((arg0 int))
   (cond
-    ((focus-test? self pilot-riding)
+    ((focus-test? self pilot-riding indax)
      (case (-> self gun gun-type)
        (((pickup-type eco-yellow))
         (push-anim-to-targ
@@ -1719,7 +1722,7 @@
             (and (nonzero? (-> self gun turn-fast-hold-time)) (< (current-time) (-> self gun turn-fast-hold-time)))
             (and (logtest? (-> self gun track?) 1) (logtest? (-> self gun track?) 4))
             (or (logtest? (surface-flag gun-strafe) (-> self control current-surface flags))
-                (focus-test? self pilot-riding)
+                (focus-test? self pilot-riding indax)
                 )
             )
         (seek! (-> self upper-body twist z) 0.0 (* 65536.0 (-> self clock seconds-per-frame)))
@@ -1879,7 +1882,7 @@
   (local-vars (gp-0 art-element))
   (target-gun-joint-pre0)
   (cond
-    ((focus-test? self pilot-riding)
+    ((focus-test? self pilot-riding indax)
      (let ((v1-3 (-> self gun gun-type)))
        (set! (-> self skel top-anim base-anim) (cond
                                                  ((= v1-3 (pickup-type eco-yellow))
@@ -2102,15 +2105,15 @@
 (defbehavior target-gun-joint-points target ()
   (when (-> self gun gun)
     (set! (-> self gun gun-daxter)
-          (if (and (focus-test? self pilot-riding)
-                   (nonzero? (-> self skel float-channels))
-                   (= (-> (get-channel (-> self skel top-anim) (the-as int (+ (-> self skel float-channels) -1))) frame-interp 1)
-                      1.0
-                      )
-                   )
+          ;; (if (and (focus-test? self pilot-riding)
+          ;;          (nonzero? (-> self skel float-channels))
+          ;;          (= (-> (get-channel (-> self skel top-anim) (the-as int (+ (-> self skel float-channels) -1))) frame-interp 1)
+          ;;             1.0
+          ;;             )
+          ;;          )
               1.0
-              0.0
-              )
+              ;; 0.0
+              ;; )
           )
     (cond
       ((using-gun? self)
@@ -2328,7 +2331,7 @@
          (case (-> gp-0 gun-type)
            (((pickup-type eco-blue))
             (cond
-              ((focus-test? self pilot-riding)
+              ((focus-test? self pilot-riding indax)
                (let ((v1-15 (get-channel (-> self skel top-anim) 0)))
                  (when (not (or (= (-> self skel top-anim frame-group) (-> self draw art-group data 206))
                                 (and v1-15 (= (-> v1-15 frame-group) (-> self draw art-group data 206)))
@@ -2395,7 +2398,7 @@
             )
            (((pickup-type eco-yellow))
             (cond
-              ((focus-test? self pilot-riding)
+              ((focus-test? self pilot-riding indax)
                (push-anim-to-targ
                  (-> self skel top-anim)
                  (the-as art-joint-anim (-> self draw art-group data 223))
@@ -2443,7 +2446,7 @@
                          )
                   )
               (cond
-                ((focus-test? self pilot-riding)
+                ((focus-test? self pilot-riding indax)
                  (push-anim-to-targ
                    (-> self skel top-anim)
                    (the-as art-joint-anim (-> self draw art-group data 222))
@@ -2530,7 +2533,7 @@
             (target-gun-fire-red)
             )
            (((pickup-type eco-dark))
-            (if (focus-test? self pilot-riding)
+            (if (focus-test? self pilot-riding indax)
                 (push-anim-to-targ
                   (-> self skel top-anim)
                   (the-as art-joint-anim (-> self draw art-group data 224))
@@ -2584,7 +2587,7 @@
   (when (using-gun? self)
     (let ((gp-0 (-> self gun)))
       (cond
-        ((and (focus-test? self pilot-riding) (nonzero? (-> self skel float-channels)))
+        ((and (focus-test? self pilot-riding indax) (nonzero? (-> self skel float-channels)))
          (set! (-> self skel top-anim interp-select 0) (the-as uint #x800000))
          (set! (-> self skel top-anim interp-select 1) (the-as uint 0))
          0
@@ -2705,7 +2708,7 @@
              (set! (-> self gun top-anim-blue-cycle) f0-24)
              (push-anim-to-targ
                (-> self skel top-anim)
-               (the-as art-joint-anim (if (focus-test? self pilot-riding)
+               (the-as art-joint-anim (if (focus-test? self pilot-riding indax)
                                           (-> self draw art-group data 206)
                                           (-> self draw art-group data 257)
                                           )

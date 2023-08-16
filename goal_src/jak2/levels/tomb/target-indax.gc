@@ -44,7 +44,7 @@
 
 
 (let ((v1-2 (copy *walk-mods* 'loading-level)))
-  (set! (-> v1-2 flags) (surface-flag gun-off gun-fast-exit))
+  ;; (set! (-> v1-2 flags) (surface-flag gun-off gun-fast-exit))
   (set! (-> v1-2 target-speed) 32768.0)
   (set! (-> v1-2 transv-max) 32768.0)
   (set! *indax-walk-mods* v1-2)
@@ -99,7 +99,7 @@
              ((begin (set! a0-10 'falling) (= v1-5 a0-10))
               (go target-indax-falling a0-10)
               )
-            ((or (= v1-5 'turret) (= v1-5 'board) (= v1-5 'pilot) (= v1-5 'mech))
+            ((or (= v1-5 'turret) (= v1-5 'board) (= v1-5 'pilot) (= v1-5 'mech) (= v1-5 'gun))
               (target-standard-event-handler arg0 arg1 arg2 arg3)
               )
              )

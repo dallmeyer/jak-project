@@ -1170,6 +1170,9 @@
             'target-board-trickx
             'target-board-turn-to
             'target-board-wall-kick
+            ;; guns
+            'target-gun-stance
+            'target-gun-walk
             ;; mech
             'target-mech-carry-drag
             'target-mech-carry-drop

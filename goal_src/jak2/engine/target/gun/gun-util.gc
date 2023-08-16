@@ -329,18 +329,18 @@
         ;; hide if both jak and dax hidden
         (logior! (-> self draw status) (draw-control-status no-draw))
         ;; otherwise, show/hide based on state
-        (case (-> (the-as target gp-0) state name)
-          (('target-pilot-stance
-            'target-pilot-get-off
-            'target-pilot-hit
-            'target-pilot-impact)
-            ;; only show guns while driving (dax shooting)
-            (logclear! (-> self draw status) (draw-control-status no-draw))
-            )
-          (else
-            (logior! (-> self draw status) (draw-control-status no-draw))
-            )
-          )
+        ;; (case (-> (the-as target gp-0) state name)
+        ;;   (('target-pilot-stance
+        ;;     'target-pilot-get-off
+        ;;     'target-pilot-hit
+        ;;     'target-pilot-impact)
+        ;;     ;; only show guns while driving (dax shooting)
+        ;;     (logclear! (-> self draw status) (draw-control-status no-draw))
+        ;;     )
+        ;;   (else
+        ;;     (logior! (-> self draw status) (draw-control-status no-draw))
+        ;;     )
+        ;;   )
       )
     (if (logtest? (-> (the-as target gp-0) draw status) (draw-control-status force-fade))
         (logior! (-> self draw status) (draw-control-status force-fade))
