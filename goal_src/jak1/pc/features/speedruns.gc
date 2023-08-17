@@ -680,7 +680,6 @@
   )
 
 (defun get-on-flutflut ()
-  (generic-post-init)
   (case (-> *target* state)
     ((target-flut-stance target-racing)
       (send-event *target* 'end-mode)
@@ -693,7 +692,6 @@
   )
 
 (defun get-on-zoomer ()
-  (generic-post-init)
   (case (-> *target* state)
     ((target-flut-stance target-racing)
       (send-event *target* 'end-mode)
@@ -745,6 +743,7 @@
 (define *full-hp?* #f)
 
 (defun custom-reset-multi-post-init ()
+  (generic-post-init)
   (when *full-hp?* (full-hp))
   (cond
     (*tmp-flut?* (get-on-flutflut))
