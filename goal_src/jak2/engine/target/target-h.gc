@@ -331,7 +331,7 @@
     (target-indax-jump float float surface)
     target-indax-running-attack
     target-indax-stance
-    (target-indax-start handle)
+    (target-indax-start symbol)
     target-indax-trip
     target-indax-walk
     (target-jump float float surface)

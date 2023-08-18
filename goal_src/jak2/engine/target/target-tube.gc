@@ -507,7 +507,7 @@
                 )
               )
             (('indax)
-              (go target-indax-start (process->handle (the-as process (-> event param 1))))
+              (go target-indax-start #f)
               )
             )
            )

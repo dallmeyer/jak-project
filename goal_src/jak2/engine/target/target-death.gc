@@ -344,7 +344,7 @@
          )
        )
       ((logtest? (continue-flags indax) (-> arg0 flags))
-       (go target-indax-start (the-as handle #f))
+       (go target-indax-start #f)
        )
       ((logtest? (continue-flags record-path) (-> arg0 flags))
        )

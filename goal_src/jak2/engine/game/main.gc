@@ -1140,10 +1140,12 @@
             'target-flop
             'target-flop-hit-ground
             'target-hit-ground
-            'target-falling
-            'target-slide-down
             'target-duck-high-jump
             'target-duck-high-jump-jump
+            ;; misc
+            'target-slide-down
+            'target-falling
+            'target-attack-air
             ;; also used for daxter driving
             'target-pilot-edge-grab
             'target-pilot-get-on
@@ -1175,8 +1177,8 @@
             'target-board-turn-to
             'target-board-wall-kick
             ;; guns
-            'target-gun-stance
-            'target-gun-walk
+            ;; 'target-gun-stance
+            ;; 'target-gun-walk
             ;; mech
             'target-mech-carry-drag
             'target-mech-carry-drop
