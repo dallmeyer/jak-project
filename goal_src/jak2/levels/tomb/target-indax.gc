@@ -449,6 +449,11 @@
 
 (defstate target-indax-start (target)
   :event target-standard-event-handler
+  :enter (behavior ()
+    (when (and (cpad-pressed? (-> self control cpad number) circle) (can-feet? #f))
+      (go target-indax-attack-air #f)
+      )
+    )
   :code (behavior ((arg0 handle))
     (target-indax-init)
     (go target-indax-stance)
@@ -854,7 +859,6 @@
     )
   :trans (behavior ()
     ((-> target-indax-falling trans))
-    (mod-var-jump #t #t (cpad-hold? (-> self control cpad number) x) (-> self control transv))
     (if (and (cpad-pressed? (-> self control cpad number) x)
              (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv)) 12288.0)
              (and (< -61440.0 (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))
@@ -868,6 +872,33 @@
           (-> *TARGET-bank* indax-double-jump-height-max)
           )
         )
+    (if (and (cpad-pressed? (-> self control cpad number) square)
+             (and ;; (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv))
+                  ;;    (* 26624.0 (-> self darkjak-giant-interp) (-> self darkjak-giant-interp))
+                  ;;    )
+                  (< -61440.0 (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))
+                  (and (>= (- (current-time) (-> self control last-time-of-stuck))
+                           (the-as time-frame (-> *TARGET-bank* stuck-timeout))
+                           )
+                       (not (logtest? (-> self state-flags) (state-flags prevent-attack)))
+                       (not (logtest? (-> self control current-surface flags) (surface-flag no-attack no-hands)))
+                       (not (and (not (using-gun? self)) (!= (-> self skel top-anim interp) 0.0)))
+                       )
+                  )
+             )
+        (go
+          target-flop
+          65502.96
+          -163840.0
+          (the-as float (if (= (-> *cpad-list* cpads (-> self control cpad number) stick0-speed) 0.0)
+                            0
+                            #x47866666
+                            )
+                  )
+          )
+        )
+    (mod-var-jump #t #t (cpad-hold? (-> self control cpad number) x) (-> self control transv))
+    
     (none)
     )
   :code (behavior ((arg0 float) (arg1 float) (arg2 surface))
@@ -929,7 +960,32 @@
     )
   :exit (-> target-indax-jump exit)
   :trans (behavior ()
-    ((-> target-indax-falling trans))
+    ((-> target-indax-falling trans))    
+    (if (and (cpad-pressed? (-> self control cpad number) square)
+             (and ;; (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv))
+                  ;;    (* 26624.0 (-> self darkjak-giant-interp) (-> self darkjak-giant-interp))
+                  ;;    )
+                  (< -61440.0 (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))
+                  (and (>= (- (current-time) (-> self control last-time-of-stuck))
+                           (the-as time-frame (-> *TARGET-bank* stuck-timeout))
+                           )
+                       (not (logtest? (-> self state-flags) (state-flags prevent-attack)))
+                       (not (logtest? (-> self control current-surface flags) (surface-flag no-attack no-hands)))
+                       (not (and (not (using-gun? self)) (!= (-> self skel top-anim interp) 0.0)))
+                       )
+                  )
+             )
+        (go
+          target-flop
+          65502.96
+          -163840.0
+          (the-as float (if (= (-> *cpad-list* cpads (-> self control cpad number) stick0-speed) 0.0)
+                            0
+                            #x47866666
+                            )
+                  )
+          )
+        )
     (mod-var-jump #t #t (cpad-hold? (-> self control cpad number) x) (-> self control transv))
     (none)
     )

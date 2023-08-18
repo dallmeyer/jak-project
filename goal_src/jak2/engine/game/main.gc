@@ -1116,7 +1116,7 @@
     (while *run*
       
       (when *target*
-        (case (-> *target* next-state name)
+        (case (-> *target* state name)
           (('target-indax-attack
             'target-indax-attack-air 
             'target-indax-death
@@ -1136,6 +1136,14 @@
             'target-pole-flip-forward-jump
             'target-pole-flip-up
             'target-pole-flip-up-jump
+            ;; give daxter a ground pound attack
+            'target-flop
+            'target-flop-hit-ground
+            'target-hit-ground
+            'target-falling
+            'target-slide-down
+            'target-duck-high-jump
+            'target-duck-high-jump-jump
             ;; also used for daxter driving
             'target-pilot-edge-grab
             'target-pilot-get-on
@@ -1199,7 +1207,6 @@
             )
             ;; do nothing
             )
-          
           (else
             ;; force to indax mode
             (when (not (logtest? (-> *kernel-context* prevent-from-run) (process-mask movie)))

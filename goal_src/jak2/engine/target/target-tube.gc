@@ -506,7 +506,10 @@
                 #t
                 )
               )
-             )
+            (('indax)
+              (go target-indax-start (process->handle (the-as process (-> event param 1))))
+              )
+            )
            )
           (('end-mode)
            (cond
