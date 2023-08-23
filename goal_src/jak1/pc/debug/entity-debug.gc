@@ -31,8 +31,26 @@
   (set! *display-actor-anim* (the string (and (-> inspect-info show-actor-info) name)))
   ;; draw trans
   (add-debug-x #t (bucket-id debug-no-zbuf) (-> e trans) (static-rgba 255 255 0 128))
-  (if (or (not (-> inspect-info show-actor-info)) (!= (-> e type) entity-actor) (and (= (-> e type) entity-actor) (not (-> (the entity-actor e) extra process))))
-      (add-debug-text-3d #t (bucket-id debug-no-zbuf) name (-> e trans) (font-color red) (new 'static 'vector2h :y 8)))
+  (when (or (not (-> inspect-info show-actor-info)) (!= (-> e type) entity-actor) (and (= (-> e type) entity-actor) (not (-> (the entity-actor e) extra process))))
+    (add-debug-text-3d #t (bucket-id debug-no-zbuf) name (-> e trans) (font-color red) (new 'static 'vector2h :y 8))
+    (let* ((begin-y (- 16 (* (-> inspect-info scroll-y) 8))) (cur-y begin-y) (y-adv 8)
+            (actor (-> (the entity-actor e) extra process)))
+      (with-dma-buffer-add-bucket ((debug-buf (-> (current-frame) debug-buf))
+                                  (bucket-id debug-no-zbuf))
+        (if actor
+          ;; actor state
+          (draw-string-xy
+              (string-format "~3L~A~0L ~A~%state: ~S ~%R1/L1 scroll L3 toggle display-actor-info~%--------------------" (-> actor type) name (-> actor state name))
+              debug-buf 352 cur-y (font-color default) (font-flags shadow kerning middle))
+          ;; actor is #f
+          (draw-string-xy
+              (string-format "~3L#f~0L ~A~%state: (suspended) ~%R1/L1 scroll L3 toggle display-actor-info~%--------------------" name)
+              debug-buf 352 cur-y (font-color default) (font-flags shadow kerning middle))
+          )
+        )
+      )
+    (return (the object #f))
+    )
 
   ;; start writing text
   (let* ((begin-y (- 16 (* (-> inspect-info scroll-y) 8))) (cur-y begin-y) (y-adv 8))
