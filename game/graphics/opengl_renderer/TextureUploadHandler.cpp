@@ -26,6 +26,9 @@ void TextureUploadHandler::render(DmaFollower& dma,
   // this is the data we get from the PC Port modification.
   m_upload_count = 0;
   std::vector<TextureUpload> uploads;
+  if (m_direct) {
+    m_direct->reset_state();
+  }
   // loop through all data, grabbing buckets
   while (dma.current_tag_offset() != render_state->next_bucket) {
     auto dma_tag = dma.current_tag();
@@ -46,7 +49,7 @@ void TextureUploadHandler::render(DmaFollower& dma,
                                                      render_state->frame_idx);
         if (m_direct) {
           m_direct->lookup_textures_again(render_state);
-          m_direct->reinit_hack();
+          m_direct->reinitialize_gl_state();
         }
       }
     }
@@ -112,4 +115,7 @@ void TextureUploadHandler::flush_uploads(std::vector<TextureUpload>& uploads,
 void TextureUploadHandler::draw_debug_window() {
   ImGui::Checkbox("Fake Uploads", &m_fake_uploads);
   ImGui::Text("Uploads: %d", m_upload_count);
+  if (m_direct) {
+    m_direct->draw_debug_window();
+  }
 }

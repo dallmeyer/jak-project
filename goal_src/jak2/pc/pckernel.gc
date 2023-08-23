@@ -83,7 +83,7 @@
 
 (defmethod initialize pc-settings-jak2 ((obj pc-settings-jak2))
   "initial initialize method to be run after allocating"
-  
+
   (set! (-> obj music-unlocked) (new 'global 'bit-array (-> *music-player-tracks* length)))
   ((method-of-type pc-settings initialize) obj)
   obj)
@@ -225,6 +225,7 @@
               'ctygena 'ctygenb 'ctygenc 'ctyport
               'ctymarka 'ctymarkb 'ctyfarma 'ctyfarmb
               'ctyinda 'ctyindb 'stadium) #t)
+            ;; also allow in forest
             (('forest) #t #|(not (task-node-open? (game-task-node forest-scouts-pegasus)))|#)))
       (set-setting! 'string-spline-max-move 'abs (* (-> *pc-cheat-state* turbo-board-speed) (meters 2)) 0)
       (set-setting! 'string-spline-accel 'abs (* (-> *pc-cheat-state* turbo-board-speed) (meters 0.045)) 0)
@@ -240,7 +241,7 @@
       (clear-cheat-state-flag! turbo-board)
       )
     )
-  
+
   (pc-set-gfx-hack (pc-gfx-hack no-tex) (pc-cheats? (-> obj cheats) no-textures))
 
   ;; run cheats end!!!
@@ -258,7 +259,7 @@
       (set-bit (-> obj music-unlocked) i)
       )
     )
-  
+
   (true! (-> obj flava-unlocked 0)) ;; default always unlocked
   (if (task-node-closed? (game-task-node city-red-gun-training-resolution)) (true! (-> obj flava-unlocked 1))) ;; gun
   (if (task-node-closed? (game-task-node forest-scouts-resolution)) (true! (-> obj flava-unlocked 2))) ;; board
@@ -308,6 +309,7 @@
     (("fast-airlock?") (set! (-> obj fast-airlock?) (file-stream-read-symbol file)))
     (("fast-elevator?") (set! (-> obj fast-elevator?) (file-stream-read-symbol file)))
     (("fast-progress?") (set! (-> obj fast-progress?) (file-stream-read-symbol file)))
+    (("smooth-minimap?") (set! (-> obj smooth-minimap?) (file-stream-read-symbol file)))
     (("text-language") (set! (-> obj text-language) (the-as pc-language (file-stream-read-int file))))
     (("cheats") (set! (-> obj cheats) (the-as pc-cheats (file-stream-read-int file))))
     (("cheats-revealed") (set! (-> obj cheats-revealed) (the-as pc-cheats (file-stream-read-int file))))
@@ -327,12 +329,13 @@
 
 (defmethod handle-output-settings pc-settings-jak2 ((obj pc-settings-jak2) (file file-stream))
   "handle the text writing output for the 'settings' group"
-  
+
   ((method-of-type pc-settings handle-output-settings) obj file)
   (format file "  (jetboard-trick-text? ~A)~%" (-> obj jetboard-trick-text?))
   (format file "  (fast-airlock? ~A)~%" (-> obj fast-airlock?))
   (format file "  (fast-elevator? ~A)~%" (-> obj fast-elevator?))
   (format file "  (fast-progress? ~A)~%" (-> obj fast-progress?))
+  (format file "  (smooth-minimap? ~A)~%" (-> obj smooth-minimap?))
   (format file "  (text-language ~D)~%" (-> obj text-language))
   (format file "  (cheats #x~x)~%" (-> obj cheats))
   (format file "  (cheats-revealed #x~x)~%" (-> obj cheats-revealed))
@@ -365,12 +368,18 @@
 
 (defun draw-build-revision ()
   (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
-                                     (bucket-id debug-no-zbuf1))
-          (draw-string-xy *pc-settings-built-sha*
-                          buf
-                          512 14
-                          (font-color flat-yellow)
-                          (font-flags right shadow kerning))))
+                               (bucket-id debug-no-zbuf1))
+    ;; reset bucket settings prior to drawing - font won't do this for us, and
+    ;; draw-raw-image can sometimes mess them up.
+    (dma-buffer-add-gs-set-flusha buf
+                                  (alpha-1 (new 'static 'gs-alpha :b #x1 :d #x1))
+                                  (tex1-1 (new 'static 'gs-tex1 :mmag #x1 :mmin #x1))
+                                  )
+    (draw-string-xy *pc-settings-built-sha*
+                    buf
+                    512 14
+                    (font-color flat-yellow)
+                    (font-flags right shadow kerning))))
 
 
 

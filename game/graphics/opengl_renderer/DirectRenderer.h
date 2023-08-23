@@ -51,11 +51,6 @@ class DirectRenderer : public BucketRenderer {
   void reset_state();
 
   /*!
-   * If you don't use the render interface, call this first to set up OpenGL.
-   */
-  void setup_common_state(SharedRenderState* render_state);
-
-  /*!
    * If you don't use the render interface, call this at the very end.
    */
   void flush_pending(SharedRenderState* render_state, ScopedProfilerNode& prof);
@@ -86,7 +81,11 @@ class DirectRenderer : public BucketRenderer {
   void handle_rgbaq(u64 val);
   void handle_xyzf2(u64 val, SharedRenderState* render_state, ScopedProfilerNode& prof);
   void lookup_textures_again(SharedRenderState* render_state);
-  void reinit_hack() { m_prim_gl_state_needs_gl_update = true; }
+  void reinitialize_gl_state() {
+    m_prim_gl_state_needs_gl_update = true;
+    m_test_state_needs_gl_update = true;
+    m_blend_state_needs_gl_update = true;
+  }
 
  protected:
   virtual void handle_frame(u64 val, SharedRenderState* render_state, ScopedProfilerNode& prof);
