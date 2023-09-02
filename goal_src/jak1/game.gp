@@ -1638,9 +1638,9 @@
 ;; Set up the build system to build the level geometry
 ;; this path is relative to the custom_levels/ folder
 ;; it should point to the .jsonc file that specifies the level.
-(build-custom-level "test-zone")
-;; the DGO file
-(custom-level-cgo "TSZ.DGO" "test-zone/testzone.gd")
+;; (build-custom-level "test-zone")
+;; ;; the DGO file
+;; (custom-level-cgo "TSZ.DGO" "test-zone/testzone.gd")
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Game Engine Code
