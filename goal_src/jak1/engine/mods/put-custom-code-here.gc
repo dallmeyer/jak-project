@@ -24,6 +24,11 @@
     (defun runs-every-frame ()
       ;;(increase-power-cell-by-one) This is a call to increase-power-cell-by-one defined in define-custom-functions-here.gc
 
+      (if (-> *speedrun-info* show-input-display?)
+        (input-display-on)
+        (input-display-off)
+        )
+
       (none)
       )
 

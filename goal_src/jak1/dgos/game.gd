@@ -202,6 +202,7 @@
   "speedruns.o" ;; added
   "pckernel-common.o" ;; added
   "pckernel.o" ;; added
+  "input-display.o" ;;added
   "mood-tables.o"
   "mood.o"
   "weather-part.o"
@@ -343,7 +344,10 @@
   "plat-button.o"
   "plat-eco.o"
   "ropebridge.o"
-  "ticky.o"
+  "ticky.o"  
+  "mods-settings.o" ;; added
+  "define-custom-functions-here.o" ;; added
+  "put-custom-code-here.o" ;; added
   "hud-classes-pc.o" ;; added
   ;; keep zoomer stuff loaded
   "target-racer-h.o"

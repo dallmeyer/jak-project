@@ -44,6 +44,7 @@
    (needs-post-blackout-setup? symbol)
    (should-display? symbol)
    (should-display-deload-info? symbol)
+   (show-input-display? symbol)
    )
   )
 

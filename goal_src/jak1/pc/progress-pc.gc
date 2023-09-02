@@ -399,6 +399,7 @@
     (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id cutscene-skips) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id speedrunner-mode) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id deload-display) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id input-display) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (text-id back) :scale #t)
     )
   )
@@ -1106,6 +1107,7 @@
   (set! (-> *misc-options* 2 value-to-modify) (&-> *pc-settings* skip-movies?))
   (set! (-> *misc-options* 3 value-to-modify) (&-> *pc-settings* speedrunner-mode?))
   (set! (-> *misc-options* 4 value-to-modify) (&-> *speedrun-info* should-display-deload-info?))
+  (set! (-> *misc-options* 5 value-to-modify) (&-> *speedrun-info* show-input-display?))
 
   (set! (-> *camera-options* 0 value-to-modify) (&-> *pc-settings* first-camera-h-inverted?))
   (set! (-> *camera-options* 1 value-to-modify) (&-> *pc-settings* first-camera-v-inverted?))

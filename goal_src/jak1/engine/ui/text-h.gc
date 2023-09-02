@@ -831,6 +831,7 @@
   (checkpoint-options           #x1681)
   (skip-options                 #x1682)
   (deload-display               #x1683)
+  (input-display                #x1684)
 
   (practice-lts-old             #x1700)
   (practice-lts-new             #x1701)
@@ -918,6 +919,12 @@
   (citadel-elevator 				    #x1846)
   (finalboss-start 					    #x1847)
   (finalboss-fight 					    #x1848)
+
+  ;; mod text
+  (pad-triangle #x2000)
+  (pad-circle #x2001)
+  (pad-x #x2002)
+  (pad-square #x2003)
 ;; GAME-TEXT-ID ENUM ENDS
   )
 
