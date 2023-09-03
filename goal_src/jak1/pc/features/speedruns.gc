@@ -999,7 +999,7 @@
       (set! *practice-spawn-post-init* #f)
       )
 
-    (when (cpad-hold? 0 l2)
+    (when (or (cpad-hold? 0 l2) (cpad-pressed? 0 l2))
       ;; Check for fast reset combo
       (when (cpad-pressed? 0 up)
         (format #t "player triggered reset combo~%")
