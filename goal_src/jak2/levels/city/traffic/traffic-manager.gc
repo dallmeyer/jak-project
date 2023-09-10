@@ -240,10 +240,10 @@
                       (logtest? (-> s0-0 flags) (traffic-type-flags trtflags-3))
                       (< v1-21 (-> s0-0 want-count)))
                   (logclear! (-> spawn-params flags) (traffic-spawn-flags dark-guard))
-                  (when (and (= (-> spawn-params object-type) (traffic-type crimson-guard-1))
-                             (> (-> obj dark-guard-ratio) 0)
-                             (zero? (mod v1-21 (-> obj dark-guard-ratio))))
-                    (logior! (-> spawn-params flags) (traffic-spawn-flags dark-guard)))
+                  ;; (when (and (= (-> spawn-params object-type) (traffic-type crimson-guard-1))
+                  ;;            (> (-> obj dark-guard-ratio) 0)
+                  ;;            (zero? (mod v1-21 (-> obj dark-guard-ratio))))
+                    (logior! (-> spawn-params flags) (traffic-spawn-flags dark-guard))
                   (let ((traffic-obj (traffic-object-spawn obj spawn-params)))
                     (cond
                       (traffic-obj
@@ -344,11 +344,8 @@
       (((traffic-type metalhead-flitter))
        (set! v0-0 (citizen-spawn arg0 metalhead-flitter arg1))
        )
-      (((traffic-type crimson-guard-1) (traffic-type citizen-norm-1) (traffic-type citizen-chick) (traffic-type citizen-fat) (traffic-type citizen-norm-2))
-       (set! (-> arg1 object-type) (traffic-type crimson-guard-1))
-       (set! v0-0 (citizen-spawn arg0 crimson-guard arg1))
-       )
-      (((traffic-type crimson-guard-0))
+      (((traffic-type crimson-guard-0) (traffic-type crimson-guard-1) (traffic-type citizen-norm-1) (traffic-type citizen-chick) (traffic-type citizen-fat) (traffic-type citizen-norm-2))
+       (set! (-> arg1 object-type) (traffic-type crimson-guard-0))
        (set! v0-0 (citizen-spawn arg0 crimson-guard arg1))
        )
       )
@@ -473,10 +470,10 @@
       )
     (set! (-> params id) (the-as uint 1))
     )
-  (set! (-> obj dark-guard-ratio) (if (task-node-closed? (game-task-node tomb-boss-resolution))
+  (set! (-> obj dark-guard-ratio) ;;(if (task-node-closed? (game-task-node tomb-boss-resolution))
                                       5
-                                      0
-                                      )
+                                    ;;  0
+                                      ;;)
         )
   (restore-default-settings (-> obj traffic-engine))
   (set! *traffic-manager* obj)
