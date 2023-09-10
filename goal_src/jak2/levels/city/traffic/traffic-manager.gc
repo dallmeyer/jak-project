@@ -327,41 +327,13 @@
 (defun traffic-object-spawn ((arg0 process) (arg1 traffic-object-spawn-params))
   (let ((v0-0 (the-as process-drawable #f)))
     (case (-> arg1 object-type)
-      (((traffic-type bikea))
-       (set! v0-0 (vehicle-spawn arg0 bikea arg1))
-       )
-      (((traffic-type bikeb))
-       (set! v0-0 (vehicle-spawn arg0 bikeb arg1))
-       )
-      (((traffic-type bikec))
-       (set! v0-0 (vehicle-spawn arg0 bikec arg1))
-       )
-      (((traffic-type cara))
-       (set! v0-0 (vehicle-spawn arg0 cara arg1))
-       )
-      (((traffic-type carb))
-       (set! v0-0 (vehicle-spawn arg0 carb arg1))
-       )
-      (((traffic-type carc))
-       (set! v0-0 (vehicle-spawn arg0 carc arg1))
-       )
-      (((traffic-type guard-bike))
+      (((traffic-type guard-bike) (traffic-type bikea) (traffic-type bikeb) (traffic-type bikec))
+       (set! (-> arg1 object-type) (traffic-type guard-bike))
        (set! v0-0 (vehicle-spawn arg0 guard-bike arg1))
        )
-      (((traffic-type hellcat))
+      (((traffic-type hellcat) (traffic-type cara) (traffic-type carb) (traffic-type carc))
+       (set! (-> arg1 object-type) (traffic-type hellcat))
        (set! v0-0 (vehicle-spawn arg0 hellcat arg1))
-       )
-      (((traffic-type citizen-norm-1))
-       (set! v0-0 (citizen-spawn arg0 citizen-norm arg1))
-       )
-      (((traffic-type citizen-chick))
-       (set! v0-0 (citizen-spawn arg0 citizen-chick arg1))
-       )
-      (((traffic-type citizen-fat))
-       (set! v0-0 (citizen-spawn arg0 citizen-fat arg1))
-       )
-      (((traffic-type citizen-norm-2))
-       (set! v0-0 (citizen-spawn arg0 citizen-norm arg1))
        )
       (((traffic-type metalhead-predator))
        (set! v0-0 (citizen-spawn arg0 metalhead-predator arg1))
@@ -372,7 +344,8 @@
       (((traffic-type metalhead-flitter))
        (set! v0-0 (citizen-spawn arg0 metalhead-flitter arg1))
        )
-      (((traffic-type crimson-guard-1))
+      (((traffic-type crimson-guard-1) (traffic-type citizen-norm-1) (traffic-type citizen-chick) (traffic-type citizen-fat) (traffic-type citizen-norm-2))
+       (set! (-> arg1 object-type) (traffic-type crimson-guard-1))
        (set! v0-0 (citizen-spawn arg0 crimson-guard arg1))
        )
       (((traffic-type crimson-guard-0))
@@ -453,25 +426,25 @@
 
 (defmethod init-params traffic-manager ((obj traffic-manager))
   (let ((traffic-want-counts (new 'stack-no-clear 'array 'int8 21)))
-    (set! (-> traffic-want-counts 11) 8)
-    (set! (-> traffic-want-counts 12) 8)
-    (set! (-> traffic-want-counts 13) 8)
-    (set! (-> traffic-want-counts 14) 7)
-    (set! (-> traffic-want-counts 15) 7)
-    (set! (-> traffic-want-counts 16) 7)
-    (set! (-> traffic-want-counts 18) 4)
-    (set! (-> traffic-want-counts 19) 3)
-    (set! (-> traffic-want-counts 20) 0)
-    (set! (-> traffic-want-counts 0) 15)
-    (set! (-> traffic-want-counts 1) 15)
-    (set! (-> traffic-want-counts 2) 14)
-    (set! (-> traffic-want-counts 3) 1)
-    (set! (-> traffic-want-counts 4) 1)
-    (set! (-> traffic-want-counts 6) 9)
-    (set! (-> traffic-want-counts 7) 0)
-    (set! (-> traffic-want-counts 8) 14)
-    (set! (-> traffic-want-counts 9) 14)
-    (set! (-> traffic-want-counts 10) 14)
+    (set! (-> traffic-want-counts 0) 15)  ;; citizen-norm-1
+    (set! (-> traffic-want-counts 1) 15)  ;; citizen-chick
+    (set! (-> traffic-want-counts 2) 14)  ;; citizen-fat
+    (set! (-> traffic-want-counts 3) 1)   ;; citizen-norm-2
+    (set! (-> traffic-want-counts 4) 1)   ;; crimson-guard-0
+    (set! (-> traffic-want-counts 6) 9)   ;; crimson-guard-1
+    (set! (-> traffic-want-counts 7) 0)   ;; crimson-guard-2
+    (set! (-> traffic-want-counts 8) 14)  ;; metalhead-grunt
+    (set! (-> traffic-want-counts 9) 14)  ;; metalhead-flitter
+    (set! (-> traffic-want-counts 10) 14) ;; metalhead-predator
+    (set! (-> traffic-want-counts 11) 8)  ;; bikea
+    (set! (-> traffic-want-counts 12) 8)  ;; bikeb
+    (set! (-> traffic-want-counts 13) 8)  ;; bikec
+    (set! (-> traffic-want-counts 14) 7)  ;; cara
+    (set! (-> traffic-want-counts 15) 7)  ;; carb
+    (set! (-> traffic-want-counts 16) 7)  ;; carc
+    (set! (-> traffic-want-counts 18) 4)  ;; guard-bike
+    (set! (-> traffic-want-counts 19) 3)  ;; hellcat
+    (set! (-> traffic-want-counts 20) 0)  ;; ?
     (set! (-> obj fast-spawn) *traffic-fast-spawn*)
     (reset-and-init obj)
     (let ((v1-20 (-> obj traffic-engine)))
