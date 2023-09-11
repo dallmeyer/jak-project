@@ -843,6 +843,8 @@
   (practice-buttonskip          #x1707)
   (practice-gondola-flut        #x1708)
   (practice-gondola-foot        #x1709)
+  (practice-lavawalk-2          #x170a)
+  (practice-lavawalk-3          #x170b)
   
   (hub1-options                 #x17fc)
   (hub2-options                 #x17fd)

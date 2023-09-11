@@ -843,6 +843,20 @@
   (none)
   )
 
+(defun speedrun-practice-lavawalk-2-start-run ()
+  (initialize! *game-info* 'game (the-as game-save #f) "ogre-LW-test-2")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "ogre-LW-test-2"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+
+(defun speedrun-practice-lavawalk-3-start-run ()
+  (initialize! *game-info* 'game (the-as game-save #f) "ogre-LW-test-3")
+  (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "ogre-LW-test-3"))
+  (speedrun-reset-common-settings)
+  (none)
+  )
+
 (defun give-seven-flies ((lvl-idx int))
   ;; based on 'buzzer branch of (defmethod adjust game-info)
   (let* ((ctrl (get-task-control (-> *level-task-data* lvl-idx task-info (-> *level-task-data* lvl-idx buzzer-task-index) task-id)))
@@ -967,6 +981,12 @@
       )
     (((speedrun-practice-option gondola-foot))
       (speedrun-practice-gondola-foot-start-run)
+      )
+    (((speedrun-practice-option lavawalk-2))
+      (speedrun-practice-lavawalk-2-start-run)
+      )
+    (((speedrun-practice-option lavawalk-3))
+      (speedrun-practice-lavawalk-3-start-run)
       )
     (else
       (speedrun-practice-temp-checkpoint)
