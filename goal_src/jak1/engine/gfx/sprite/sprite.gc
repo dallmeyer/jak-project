@@ -345,7 +345,10 @@
   (set! (-> data basis-x x) (- (-> *math-camera* perspective vector 0 x)))
   (with-pc
     (when (pc-cheats? (-> *pc-settings* cheats) mirror)
-        (*! (-> data basis-x x) -1.0)))
+        (*! (-> data basis-x x) -1.0))
+    (when (pc-cheats? (-> *pc-settings* cheats) mirror-v)
+        (*! (-> data basis-y y) -1.0))
+        )
   (set! (-> data basis-y quad) (the-as uint128 0))
   (set! (-> data basis-y y) (- (-> *math-camera* perspective vector 1 y)))
   (set! (-> data min-scale) (sqrtf (* (/ 1.0 (-> data basis-x x)) (/ 1.0 (-> data basis-y y)))))
@@ -568,6 +571,11 @@
               (*! f1-0 -1.0)
               (*! f0-1 -1.0)
               )
+          (when (pc-cheats? (-> *pc-settings* cheats) mirror-v)
+              (*! f2-0 -1.0)
+              ;; (*! f0-1 -1.0)
+              )
+          
            )
          (set-vector! (-> mtx2 vector 0) f0-1 0.0 0.0 0.0)
          (set-vector! (-> mtx2 vector 1) 0.0 (- (* (/ f2-0 f1-0) f0-1)) 0.0 0.0)
