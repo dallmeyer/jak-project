@@ -837,6 +837,8 @@
   (jakup-rolling  #x2008)
   (jakup-swamp    #x2009)
   (jakup-ogre     #x200a)
+
+  (jakup-flutegg  #x2100)
 ;; GAME-TEXT-ID ENUM ENDS
   )
 

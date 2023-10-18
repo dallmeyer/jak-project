@@ -381,7 +381,7 @@
          (new 'static 'level-tasks-info
               :level-name-id (text-id beach-level-name)
               :text-group-index 1
-              :nb-of-tasks 2
+              :nb-of-tasks 3
               :buzzer-task-index 1
               :task-info
               (new 'static 'array task-info-data 8
@@ -402,6 +402,16 @@
                              (text-id beach-buzzer)
                              (text-id beach-buzzer)
                              (text-id beach-buzzer)
+                             (text-id zero)
+                             )
+                        )
+                   (new 'static 'task-info-data
+                        :task-id (game-task jakup-flutegg)
+                        :task-name
+                        (new 'static 'array text-id 4
+                             (text-id jakup-flutegg)
+                             (text-id jakup-flutegg)
+                             (text-id jakup-flutegg)
                              (text-id zero)
                              )
                         )

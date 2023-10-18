@@ -264,6 +264,26 @@
         (camera-look-at (the-as pair *target*) (the-as uint 0))
         (send-event *camera* 'blend-from-as-fixed)
         (camera-change-to (the-as string 'base) 75 #f)
+
+        (let ((cell-x (ppointer->process (birth-pickup-at-point
+                                            (target-pos 0)
+                                            (pickup-type fuel-cell)
+                                            (the float (game-task jakup-flutegg))
+                                            #f
+                                            *entity-pool*
+                                            (the-as fact-info #f)
+                                            )
+                                                 )))
+          (cond
+            (cell-x
+              (send-event cell-x 'pickup (target-pos 0))
+              )
+            (else
+              (format #t "ERROR<GMJ>: ~S no cell spawned~%" (-> self name))
+              (send-event *target* 'get-pickup 6 (the float (game-task jakup-flutegg)))
+              )
+            )
+          )
         (none)
         )
       :to self
