@@ -11,7 +11,7 @@
 
 DirectRenderer::ScissorState DirectRenderer::m_scissor;
 
-constexpr PerGameVersion<int> game_height(448, 416);
+constexpr PerGameVersion<int> game_height(448, 416, 416);
 
 DirectRenderer::DirectRenderer(const std::string& name, int my_id, int batch_size)
     : BucketRenderer(name, my_id), m_prim_buffer(batch_size) {
@@ -1048,7 +1048,7 @@ void DirectRenderer::handle_xyz2_packed(const u8* data,
   handle_xyzf2_common(x << 16, y << 16, z, 0, render_state, prof, !adc);
 }
 
-PerGameVersion<u32> normal_zbp = {448, 304};
+PerGameVersion<u32> normal_zbp = {448, 304, 304};
 void DirectRenderer::handle_zbuf1(u64 val,
                                   SharedRenderState* render_state,
                                   ScopedProfilerNode& prof) {
@@ -1234,8 +1234,8 @@ void DirectRenderer::handle_xyzf2_common(u32 x,
         auto& corner2_stq = m_prim_building.building_stq[1];
 
         // should use most recent vertex z.
-        math::Vector<u32, 4> corner3_vert{corner1_vert[0], corner2_vert[1], corner2_vert[2]};
-        math::Vector<u32, 4> corner4_vert{corner2_vert[0], corner1_vert[1], corner2_vert[2]};
+        math::Vector<u32, 4> corner3_vert{corner1_vert[0], corner2_vert[1], corner2_vert[2], 0};
+        math::Vector<u32, 4> corner4_vert{corner2_vert[0], corner1_vert[1], corner2_vert[2], 0};
         math::Vector<float, 3> corner3_stq{corner1_stq[0], corner2_stq[1], corner2_stq[2]};
         math::Vector<float, 3> corner4_stq{corner2_stq[0], corner1_stq[1], corner2_stq[2]};
 

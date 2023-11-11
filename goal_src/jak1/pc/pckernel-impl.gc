@@ -67,6 +67,7 @@
   (icelandic 16)
   (korean 17)
   (russian 18)
+  (polish 19)
 
   (custom 999) ;; temp
   )
@@ -161,11 +162,11 @@
   (set! (-> obj skip-movies?) #t)
   (set! (-> obj subtitles?) *debug-segment*)
   (cond
-    ((and (= *jak1-territory* GAME_TERRITORY_SCEE) (= (-> obj text-language) (pc-language english)))
+    ((and (= *default-territory* GAME_TERRITORY_SCEE) (= (-> obj text-language) (pc-language english)))
       (set! (-> obj text-language) (pc-language uk-english))
       ;(set! (-> obj subtitle-language) (pc-language uk-english))
       )
-    ((= *jak1-territory* GAME_TERRITORY_SCEI)
+    ((= *default-territory* GAME_TERRITORY_SCEI)
       (set! (-> obj text-language) (pc-language japanese))
       ;(set! (-> obj subtitle-language) (pc-language japanese))
       )
@@ -209,4 +210,15 @@
 
 
 (defun get-video-params () *video-parms*)
+
+
+;; for debugging
+(defenum pc-pat-skip-hack
+  :bitfield #t
+  (noentity 0)
+  (nocamera 1)
+  (noedge   2)
+  (nolineofsight 12)
+  (unknowncamera 13)
+  )
 

@@ -7,14 +7,8 @@
 
 ;; DECOMP BEGINS
 
-(import "goal_src/jak1/import/ef-plane-ag.gc")
-
 (deftype blocking-plane (process-drawable)
   ()
-  :heap-base #x40
-  :method-count-assert 20
-  :size-assert         #xb0
-  :flag-assert         #x14004000b0
   (:states
     blocking-plane-idle
     )
@@ -33,7 +27,6 @@
       (logior! (-> self mask) (process-mask sleep))
       (suspend)
       )
-    (none)
     )
   )
 

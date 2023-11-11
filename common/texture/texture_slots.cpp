@@ -38,10 +38,18 @@ std::vector<std::string> jak2_slots = {
     "fort-roboscreen-dest",
     "squid-env-rim-dest",
     "krew-holo-dest",
+    "cas-toxic-slime-dest",
+    "cas-toxic-slime-scroll-dest",
 };
 
-}
+std::vector<std::string> jak3_slots = {};
+
+}  // namespace
 
 const std::vector<std::string>& jak2_animated_texture_slots() {
   return jak2_slots;
+}
+
+const std::vector<std::string>& jak3_animated_texture_slots() {
+  return jak3_slots;
 }
