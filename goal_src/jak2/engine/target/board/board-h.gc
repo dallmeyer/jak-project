@@ -260,7 +260,7 @@
                 )
            (-> self board latch?)
            )
-       (not (focus-test? self dead hit grabbed in-head edge-grab pole board pilot mech dark))
+       (not (focus-test? self dead hit grabbed in-head edge-grab pole board pilot mech))
        (or (zero? (-> self board)) (time-elapsed? (-> self board board-time) (seconds 0.5)))
        (not (logtest? (state-flags prevent-board) (-> self state-flags)))
        (< (-> self board board-time) (-> self control list-time-on-ground))
