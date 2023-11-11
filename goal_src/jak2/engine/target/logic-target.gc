@@ -2455,7 +2455,7 @@
   (set! (-> self control tongue-counter) 0)
   (cond
     ((focus-test? self indax)
-      (target-gun-joint-points) ;; 
+      ;; (target-gun-joint-points) ;; 
      )
     (else
       (target-gun-joint-points)

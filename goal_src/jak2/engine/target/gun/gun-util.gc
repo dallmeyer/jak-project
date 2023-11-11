@@ -316,9 +316,9 @@
             )
           (else
             ;; only show if gun active
-            (if (focus-test? self gun)
+            ;; (if (not (focus-test? self gun))
               (logior! (-> self draw status) (draw-control-status no-draw))
-              )
+              ;; )
             )
           )
       )
