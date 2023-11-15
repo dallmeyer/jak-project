@@ -139,7 +139,7 @@
                                       (not (logtest? (focus-status teleporting) (-> *target* focus-status)))
                                       )
                         )
-                   (not (focus-test? *target* in-head pole board mech dark))
+                   (not (focus-test? *target* in-head pole board mech))
                    (can-display-query? self (the-as string #f) -99.0)
                    (-> *setting-control* user-current pilot)
                    )

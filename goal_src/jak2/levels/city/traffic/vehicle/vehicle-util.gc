@@ -209,7 +209,7 @@ This commonly includes things such as:
                        (< -81920.0 (-> s5-0 floats 2))
                        (< (-> s5-0 floats 2) 20480.0)
                        *target*
-                       (not (focus-test? *target* dead grabbed in-head under-water pole flut tube pilot dark))
+                       (not (focus-test? *target* dead grabbed in-head under-water pole flut tube pilot))
                        (or (not (focus-test? *target* edge-grab))
                            (logtest? (-> this flags) (rigid-body-object-flag player-edge-grabbing))
                            )
