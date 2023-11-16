@@ -1388,7 +1388,7 @@ Touching it flips the `play?` field which will trigger the cutscene"
          )
        )
       (('touch 'attack)
-       (when (and (not (-> self play?)) *target* (not (logtest? (focus-status dark) (-> *target* focus-status))))
+       (when (and (not (-> self play?)) *target*) ;;(not (logtest? (focus-status dark) (-> *target* focus-status))))
          (set! (-> self play?) #t)
          (process-spawn scene-player :init scene-player-init "ruins-tower-victory" #t #f)
          )

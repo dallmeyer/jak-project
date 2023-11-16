@@ -71,11 +71,10 @@
     ((or (= arg0 'debug) (= arg0 'level))
      )
     ((logtest? (-> *game-info* secrets) (game-secrets hero-mode))
-     (set! (-> *game-info* features) (game-feature gun gun-yellow gun-red gun-blue gun-dark))
+      (logior! (-> *game-info* features) (game-feature board darkjak darkjak-bomb0 darkjak-bomb1 darkjak-invinc darkjak-giant gun gun-yellow gun-red gun-blue gun-dark))
      )
     (else
-      (set! (-> *game-info* features) (game-feature))
-      0
+      (set! (-> *game-info* features) (game-feature darkjak))
       )
     )
   (let ((s5-0 (the-as connection-pers (-> *minimap* engine alive-list))))
@@ -169,7 +168,9 @@
           )
         )
       )
-    (logior! (-> *game-info* features) (-> *game-info* debug-features))
+    (when *debug-segment*
+      (logior! (-> *game-info* features) (-> *game-info* debug-features))
+      )
     (borrow-eval (-> *setting-control* user-current borrow))
     )
   (add-borrow-levels *load-state*)

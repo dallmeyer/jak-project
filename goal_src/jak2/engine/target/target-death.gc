@@ -300,7 +300,7 @@
         ;; TODO - there might be a better way to do this, the way hero-mode is set kinda feels like a side-effect
         ;; `update-task-masks` gets called during the `intro-start-hero` via `setting-control::apply-settings`
         ;; Which runs the following line if hero-mode is enabled
-        (set! (-> *game-info* features) (game-feature gun gun-yellow gun-red gun-blue gun-dark)))
+        (set! (-> *game-info* features) (game-feature board darkjak darkjak-bomb0 darkjak-bomb1 darkjak-invinc darkjak-giant gun gun-yellow gun-red gun-blue gun-dark)))
        (case *kernel-boot-message*
          (('kiosk)
           (let ((s5-5 (ppointer->handle (auto-save-command 'restore 0 0 *default-pool* #f))))
@@ -994,9 +994,9 @@
       )
     (when (and (focus-test? self dark) (nonzero? (-> self darkjak)))
       (set! (-> sv-32 damage) (fmax 1.0 (ceil (* 0.5 (-> sv-32 damage)))))
-      (if (< (- (-> self fact health) (-> sv-32 damage)) 1.0)
-          (set! (-> sv-32 damage) (+ -1.0 (-> self fact health)))
-          )
+      ;; (if (< (- (-> self fact health) (-> sv-32 damage)) 1.0)
+      ;;     (set! (-> sv-32 damage) (+ -1.0 (-> self fact health)))
+      ;;     )
       )
     (set! (-> sv-36 quad) (-> sv-32 vector quad))
     (let ((f0-20 (vector-dot
@@ -1243,9 +1243,9 @@
     (set! (-> self control mod-surface) *smack-mods*)
     (target-hit-setup-anim sv-32)
     (target-hit-move sv-32 (target-hit-orient sv-32 sv-36) target-falling-anim-trans 1.0)
-    (if (and (and (focus-test? self dark) (nonzero? (-> self darkjak))) (>= 1.0 (-> self fact health)))
-        (go target-darkjak-get-off)
-        )
+    ;; (if (and (and (focus-test? self dark) (nonzero? (-> self darkjak))) (>= 1.0 (-> self fact health)))
+    ;;     (go target-darkjak-get-off)
+    ;;     )
     (if (and (= (-> self game mode) 'play) (>= 0.0 (-> self fact health)))
         (go target-death (-> sv-32 mode))
         )

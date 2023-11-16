@@ -355,9 +355,9 @@
     (('game)
      (+! (-> this task-counter) 1)
      (reset! (-> *display* total-game-clock))
-     (set! (-> this features) (game-feature sidekick gun gun-yellow gun-red gun-blue gun-dark board darkjak darkjak-bomb0 darkjak-bomb1 darkjak-invinc darkjak-giant))
+     (set! (-> this features) (game-feature sidekick darkjak))
      (set! (-> this debug-features) (game-feature sidekick gun gun-yellow gun-red gun-blue gun-dark board darkjak darkjak-bomb0 darkjak-bomb1 darkjak-invinc darkjak-giant))
-     (set! (-> this secrets) (game-secrets endless-ammo endless-dark))
+     (set! (-> this secrets) (game-secrets endless-dark))
      (set! (-> this purchase-secrets) (game-secrets))
      (set-continue!
        this
