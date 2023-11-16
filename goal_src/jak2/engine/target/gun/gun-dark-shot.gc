@@ -142,6 +142,9 @@
   "Init relevant settings for the [[projectile]] such as gravity, speed, timeout, etc"
   (set! (-> this attack-mode) 'eco-dark)
   (vector-normalize! (-> this root transv) (+ 225280.0 (* 225280.0 (-> this charge-level))))
+  ;; (when (and (focus-test? *target* dark) (nonzero? (-> *target* darkjak)) (logtest? (-> *target* darkjak stage) (darkjak-stage giant)))
+  ;;   (set! (-> *part-id-table* 218 init-specs 2 initial-valuef) (lerp 409.6 8192.0 5.0))
+  ;;   )
   (set! (-> this part) (create-launch-control (-> *part-group-id-table* 72) this))
   (set! (-> this blast-radius) 40960.0)
   (set! (-> this size-t) 0.0)
@@ -207,7 +210,7 @@
     (until #f
       (cond
         ((or (and *target*
-                  (focus-test? *target* dead grabbed under-water pole flut board mech dark carry indax teleporting)
+                  (focus-test? *target* dead grabbed under-water pole flut board mech carry indax teleporting)
                   )
              (and *target* (not (logtest? (focus-status in-head gun) (-> *target* focus-status))))
              (and *target* (not (-> self start-pilot?)) (focus-test? *target* pilot))
