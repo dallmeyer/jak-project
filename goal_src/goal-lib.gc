@@ -17,6 +17,14 @@
       )
   )
 
+(defmacro mda (file &rest path)
+  "Make Debug Asm Only: make + print disassembly (asm-only mode) for a file"
+  (if (null? path)
+      `(asm-file ,file :color :write :disassemble :disasm-code-only)
+      `(asm-file ,file :color :write :disassemble ,(first path) :disasm-code-only)
+      )
+  )
+
 (defmacro ml (file)
   "Make Load: make and load the file through the listener"
   `(asm-file ,file :color :load :write)
@@ -284,6 +292,22 @@
        )
   )
 
+(defmacro defun-debug-recursive (name return-type bindings &rest body)
+  `(begin
+    (define-extern ,name
+        (function ,@(apply (lambda (x)
+                             (if (pair? x)
+                                 (second x)
+                                 'object)
+                             )
+                           bindings)
+                  ,return-type))
+    (if *debug-segment*
+        (defun-debug ,name ,bindings ,@body)
+        (define :no-typecheck #t ,name nothing))
+    )
+  )
+
 (defmacro define-once (name value)
   "define once. Does not set the symbol if it already has a value. It must have been at least forward-declared first!"
   `(begin
@@ -461,7 +485,7 @@
 
   (with-gensyms (sw)
     ;; save the switch to a variable (only evaluated once)
-    `(let ((sw ,switch))
+    `(let ((,sw ,switch))
         ;; build the cond construct with each case
         (cond ,@(apply
                   (lambda (x) `(
@@ -476,11 +500,11 @@
                             )
                           ;; if the list is made up of a single condition
                           ( (= (length conditions) 1)
-                            `((,comp sw ,(first conditions)) ,@body)
+                            `((,comp ,sw ,(first conditions)) ,@body)
                             )
                           ;; otherwise it is made up of multiple conditions, or them together!
                           (#t
-                            `((or ,@(apply (lambda (c) `(,comp sw ,c)) conditions)) ,@body)
+                            `((or ,@(apply (lambda (c) `(,comp ,sw ,c)) conditions)) ,@body)
                             )
                           )
 
@@ -509,6 +533,28 @@
       )
   )
 
+
+(defmacro the-as-safe (type obj)
+  (with-gensyms (temp)
+    `(let ((,temp ,obj))
+        (if (type? ,temp ,type)
+            (the-as ,type ,temp))
+        )
+    )
+  )
+
+(defmacro symbol-member? (sym lst)
+  "is sym present in lst? uses or, so it short circuits."
+  (with-gensyms (sym-var)
+  (fmt #t "{}" lst)
+  `(let ((,sym-var ,sym))
+                                                      ;; TODO fix this bug
+    (or ,@(apply (lambda (x) `(= ,sym-var (quote ,x))) (second lst))))
+    )
+  )
+
+
+
 ;;;;;;;;;;;;;;;;;;;
 ;; Math Macros
 ;;;;;;;;;;;;;;;;;;;
@@ -529,6 +575,10 @@
   `(+! ,place 1)
   )
 
+(defmacro inc! (place)
+  `(+! ,place 1)
+  )
+
 (defmacro 1- (var)
   `(+ ,var -1)
   )
@@ -542,6 +592,10 @@
   )
 
 (defmacro 1-! (place)
+  `(-! ,place 1)
+  )
+
+(defmacro dec! (place)
   `(-! ,place 1)
   )
 
@@ -663,7 +717,7 @@
   )
 
 (defmacro /-0-guard (a b)
-  "same as divide but returns -1 when divisor is zero (EE-like)."
+  "same as divide but returns -1 when divisor is zero (EE-like, DIVU)."
   `(let ((divisor ,b))
       (if (zero? divisor)
           -1
@@ -671,12 +725,44 @@
       )
   )
 
+(defmacro /-signed-0-guard (a b)
+  "same as divide but handles overflow and divide by zero like the EE's DIV instruction."
+  `(let ((divisor ,b)
+         (dividend ,a))
+      (cond
+        ((and (= dividend -2147483648) (= divisor -1))
+          ;; overflow case
+          -2147483648)
+        ((zero? divisor)
+          (if (< dividend 0) 1 -1))
+        (else
+          (/ dividend divisor))
+        )
+      )
+  )
+
 (defmacro mod-0-guard (a b)
-  "same as modulo but returns the dividend when divisor is zero (EE-like)."
+  "same as modulo but returns the dividend when divisor is zero (EE-like, DIVU)."
   `(let ((divisor ,b))
       (if (zero? divisor)
           ,a
           (mod ,a divisor))
+      )
+  )
+
+(defmacro mod-signed-0-guard (a b)
+  "same as modulo but handles overflow and divide by zero like the EE's DIV instruction."
+  `(let ((divisor ,b)
+         (dividend ,a))
+      (cond
+        ((and (= dividend -2147483648) (= divisor -1))
+          ;; overflow case
+          0)
+        ((zero? divisor)
+          dividend)
+        (else
+          (mod dividend divisor))
+        )
       )
   )
 
@@ -906,6 +992,11 @@
   `(make-group "text")
   )
 
+;; the default territory the game was built for. overriden in extractor.
+;; this just fetches the goos constant with the same name (TODO fix this)
+(defmacro __get_default_territory () *default-territory*)
+(defconstant *default-territory* (__get_default_territory))
+
 ;;;;;;;;;;;;;;;;;;;
 ;; enum stuff
 ;;;;;;;;;;;;;;;;;;;
@@ -987,10 +1078,6 @@
 ;;;; user stuf
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmacro get-user ()
-  `(quote ,*user*)
-  )
-
 (defmacro user? (&rest users)
   (cond
     ((null? users)            #f)
@@ -1035,6 +1122,38 @@
     )
   ;; define a constant for it!
   `(defconstant ,name (-> self draw art-group data ,idx))
+  )
+
+(defmacro def-joint-node (jg name idx)
+  "define a new joint node for a joint geo. adds it to a global map stored in goos."
+  ;; grab data about the joint geo
+  (let* ((jg-string (symbol->string jg))
+         (name-string name)
+         (jg-info-lookup (hash-table-try-ref *jg-info* jg-string))
+         (jg-info-exists (car jg-info-lookup))
+         (jg-info (cdr jg-info-lookup))
+         )
+    ;; no joint geo was found, make a new one and add it.
+    (when (not jg-info-exists)
+      (set! jg-info (make-string-hash-table))
+      (hash-table-set! *jg-info* jg-string jg-info)
+      )
+    ;; lookup name in our joint geo
+    (let* ((joint-name-lookup (hash-table-try-ref jg-info name-string))
+           (joint-name-exists (car joint-name-lookup))
+           (joint-new (list name idx))) ;; this is the format of the individual entries
+      ;; found, check if valid
+      (if (and joint-name-exists (not (eq? (cdr joint-name-lookup) joint-new)))
+          (fmt #t "error redefining joint. data mismatch: {}\n" joint-new)
+          #f)
+      ;; not found. add to the joint geo.
+      (when (not joint-name-exists)
+        (hash-table-set! jg-info name-string joint-new)
+        )
+      )
+    )
+  ;; `(defconstant ,name (-> self node-list data ,idx))
+  `(empty)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

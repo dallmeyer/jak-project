@@ -352,6 +352,9 @@ TexturePage read_texture_page(ObjectFileData& data,
     case GameVersion::Jak2:
       ASSERT(tpage.info.major_version == versions::jak2::TX_PAGE_VERSION);
       break;
+    case GameVersion::Jak3:
+      ASSERT(tpage.info.major_version == versions::jak3::TX_PAGE_VERSION);
+      break;
     default:
       ASSERT(false);
   }
@@ -433,7 +436,8 @@ TexturePage read_texture_page(ObjectFileData& data,
 TPageResultStats process_tpage(ObjectFileData& data,
                                TextureDB& texture_db,
                                const fs::path& output_path,
-                               const std::unordered_set<std::string>& animated_textures) {
+                               const std::unordered_set<std::string>& animated_textures,
+                               bool save_pngs) {
   TPageResultStats stats;
   auto& words = data.linked_data.words_by_seg.at(0);
   const auto& level_names = data.dgo_names;
@@ -596,8 +600,10 @@ TPageResultStats process_tpage(ObjectFileData& data,
       }
 
       // write texture to a PNG.
-      file_util::write_rgba_png(texture_dump_dir / fmt::format("{}.png", tex.name), out.data(),
-                                tex.w, tex.h);
+      if (save_pngs) {
+        file_util::write_rgba_png(texture_dump_dir / fmt::format("{}.png", tex.name), out.data(),
+                                  tex.w, tex.h);
+      }
       texture_db.add_texture(texture_page.id, tex_id, out, tex.w, tex.h, tex.name,
                              texture_page.name, level_names, tex.num_mips, tex.dest[0]);
       stats.successful_textures++;
@@ -639,8 +645,10 @@ TPageResultStats process_tpage(ObjectFileData& data,
       }
 
       // write texture to a PNG.
-      file_util::write_rgba_png(texture_dump_dir / fmt::format("{}.png", tex.name), out.data(),
-                                tex.w, tex.h);
+      if (save_pngs) {
+        file_util::write_rgba_png(texture_dump_dir / fmt::format("{}.png", tex.name), out.data(),
+                                  tex.w, tex.h);
+      }
       texture_db.add_texture(texture_page.id, tex_id, out, tex.w, tex.h, tex.name,
                              texture_page.name, level_names, tex.num_mips, tex.dest[0]);
       stats.successful_textures++;
@@ -664,8 +672,10 @@ TPageResultStats process_tpage(ObjectFileData& data,
       }
 
       // write texture to a PNG.
-      file_util::write_rgba_png(texture_dump_dir / fmt::format("{}.png", tex.name), out.data(),
-                                tex.w, tex.h);
+      if (save_pngs) {
+        file_util::write_rgba_png(texture_dump_dir / fmt::format("{}.png", tex.name), out.data(),
+                                  tex.w, tex.h);
+      }
       texture_db.add_texture(texture_page.id, tex_id, out, tex.w, tex.h, tex.name,
                              texture_page.name, level_names, tex.num_mips, tex.dest[0]);
       stats.successful_textures++;
@@ -705,8 +715,10 @@ TPageResultStats process_tpage(ObjectFileData& data,
       }
 
       // write texture to a PNG.
-      file_util::write_rgba_png(texture_dump_dir / fmt::format("{}.png", tex.name), out.data(),
-                                tex.w, tex.h);
+      if (save_pngs) {
+        file_util::write_rgba_png(texture_dump_dir / fmt::format("{}.png", tex.name), out.data(),
+                                  tex.w, tex.h);
+      }
       texture_db.add_texture(texture_page.id, tex_id, out, tex.w, tex.h, tex.name,
                              texture_page.name, level_names, tex.num_mips, tex.dest[0]);
       stats.successful_textures++;
@@ -746,8 +758,10 @@ TPageResultStats process_tpage(ObjectFileData& data,
       }
 
       // write texture to a PNG.
-      file_util::write_rgba_png(texture_dump_dir / fmt::format("{}.png", tex.name), out.data(),
-                                tex.w, tex.h);
+      if (save_pngs) {
+        file_util::write_rgba_png(texture_dump_dir / fmt::format("{}.png", tex.name), out.data(),
+                                  tex.w, tex.h);
+      }
       texture_db.add_texture(texture_page.id, tex_id, out, tex.w, tex.h, tex.name,
                              texture_page.name, level_names, tex.num_mips, tex.dest[0]);
       stats.successful_textures++;
@@ -771,8 +785,10 @@ TPageResultStats process_tpage(ObjectFileData& data,
       }
 
       // write texture to a PNG.
-      file_util::write_rgba_png(texture_dump_dir / fmt::format("{}.png", tex.name), out.data(),
-                                tex.w, tex.h);
+      if (save_pngs) {
+        file_util::write_rgba_png(texture_dump_dir / fmt::format("{}.png", tex.name), out.data(),
+                                  tex.w, tex.h);
+      }
       texture_db.add_texture(texture_page.id, tex_id, out, tex.w, tex.h, tex.name,
                              texture_page.name, level_names, tex.num_mips, tex.dest[0]);
       stats.successful_textures++;

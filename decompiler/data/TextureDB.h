@@ -12,6 +12,7 @@
 
 namespace decompiler {
 struct TextureDB {
+  TextureDB();
   struct TextureData {
     u16 w, h;
     std::string name;
@@ -29,6 +30,9 @@ struct TextureDB {
   std::map<u32, tfrag3::IndexTexture> index_textures_by_combo_id;
 
   std::unordered_map<std::string, u32> animated_tex_output_to_anim_slot;
+
+  static constexpr int kPlaceholderWhiteTexturePage = INT16_MAX;
+  static constexpr int kPlaceholderWhiteTextureId = 0;
 
   void add_texture(u32 tpage,
                    u32 texid,
@@ -51,6 +55,7 @@ struct TextureDB {
                          const std::string& tpage_name,
                          const std::vector<std::string>& level_names);
 
+  void merge_textures(const fs::path& base_path);
   void replace_textures(const fs::path& path);
 
   std::string generate_texture_dest_adjustment_table() const;

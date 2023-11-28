@@ -9,6 +9,10 @@ on:
       cachePrefix:
         required: true
         type: string
+      uploadArtifacts:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -26,7 +30,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install NASM
         # TODO - Simplify this with just the first command once choco 2.0 rolls out everywhere
@@ -45,6 +49,13 @@ jobs:
 
       - uses: ilammy/msvc-dev-cmd@v1
 
+      # https://github.com/actions/runner-images/issues/5459
+      # Causes binaries to be built differently, get rid of this garbage
+      - name: Remove Strawberry Perl from PATH
+        run: |
+          $env:PATH = $env:PATH -replace "C:\\Strawberry\\c\\bin;", ""
+          "PATH=$env:PATH" | Out-File -FilePath $env:GITHUB_ENV -Append
+
       - name: CMake Generation
         shell: cmd
         run: cmake -B build --preset=${{ inputs.cmakePreset }} -DCMAKE_C_COMPILER_LAUNCHER=${{ github.workspace }}/buildcache/bin/buildcache.exe -DCMAKE_CXX_COMPILER_LAUNCHER=${{ github.workspace }}/buildcache/bin/buildcache.exe .
@@ -61,6 +72,7 @@ jobs:
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
+        if: ${{ inputs.uploadArtifacts }}
         with:
           name: opengoal-windows-${{ inputs.cachePrefix }}
           if-no-files-found: error

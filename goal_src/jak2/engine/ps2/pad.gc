@@ -15,7 +15,6 @@ The cpad-set-buzz! function can be used for vibration.
 (define-extern get-current-time (function time-frame))
 (define-extern get-integral-current-time (function uint))
 (define-extern get-current-language (function language-enum))
-(define-extern add-debug-cursor (function symbol bucket-id int int int none))
 
 
 (defenum pad-buttons
@@ -57,21 +56,42 @@ The cpad-set-buzz! function can be used for vibration.
   (namco-gun 6)
   )
 
+
+(defenum mouse-buttons
+    :bitfield #t
+    :type uint32
+    (left)
+    (right)
+    (middle)
+    )
+
+(define-extern add-debug-cursor (function symbol bucket-id int int mouse-buttons int))
+
+
+(#when PC_PORT
+
+;; redefined from C kernel
+(define *debug-territory* GAME_TERRITORY_SCEA)
+(defun scf-get-territory ()
+  "redefined from C kernel for convenience"
+  (if *debug-segment*
+      *debug-territory*
+      *default-territory*)
+  )
+)
+
 ;; decomp begins
 
 (deftype scf-time (structure)
-  ((stat   uint8  :offset-assert   0)
-   (second uint8  :offset-assert   1)
-   (minute uint8  :offset-assert   2)
-   (hour   uint8  :offset-assert   3)
-   (week   uint8  :offset-assert   4)
-   (day    uint8  :offset-assert   5)
-   (month  uint8  :offset-assert   6)
-   (year   uint8  :offset-assert   7)
+  ((stat    uint8)
+   (second  uint8)
+   (minute  uint8)
+   (hour    uint8)
+   (week    uint8)
+   (day     uint8)
+   (month   uint8)
+   (year    uint8)
    )
-  :method-count-assert 9
-  :size-assert         #x8
-  :flag-assert         #x900000008
   )
 
 (define-extern scf-get-time (function scf-time none))
@@ -83,59 +103,53 @@ The cpad-set-buzz! function can be used for vibration.
 (deftype hw-cpad (basic)
   (;; BASIC CONTROLLER data
    ;; status = 0x40 | (data length / 2)
-   (valid   uint8     :offset-assert 4) ;; 0 if success, 255 if fail
-   (status  uint8     :offset-assert 5) ;; depends on controller
-   (button0 uint16    :offset-assert 6) ;; binary button states!
+   (valid   uint8) ;; 0 if success, 255 if fail
+   (status  uint8) ;; depends on controller
+   (button0 uint16) ;; binary button states!
    ;; DUALSHOCK or JOYSTICK data
    ;; status (dualshock) = 0x70 | (data length / 2)
    ;; status (joystick)  = 0x50 | (data length / 2)
-   (rightx  uint8     :offset-assert 8) ;; right stick xdir
-   (righty  uint8     :offset-assert 9) ;; right stick ydir
-   (leftx   uint8     :offset-assert 10) ;; left stick xdir
-   (lefty   uint8     :offset-assert 11) ;; left stick ydir
+   (rightx  uint8) ;; right stick xdir
+   (righty  uint8) ;; right stick ydir
+   (leftx   uint8) ;; left stick xdir
+   (lefty   uint8) ;; left stick ydir
    ;; DUALSHOCK 2 data
    ;; status = 0x70 | (data length / 2)
-   (abutton uint8  12 :offset-assert 12) ;; pressure sensitivity information
+   (abutton uint8  12) ;; pressure sensitivity information
 
    ;; pad buffer needs to be 32 bytes large.
-   (dummy   uint8  12 :offset-assert 24)
+   (dummy   uint8  12)
    )
-  :method-count-assert 9
-  :size-assert         #x24
-  :flag-assert         #x900000024
   )
 
 ;; data from hardware + additional info calculated here.
 (deftype cpad-info (hw-cpad)
-  ((number             int32         :offset-assert  36)
-   (cpad-file          int32         :offset-assert  40)
-   (button0-abs        pad-buttons 3 :offset-assert  44)
-   (button0-shadow-abs pad-buttons 1 :offset-assert  56)
-   (button0-rel        pad-buttons 3 :offset-assert  60)
-   (stick0-dir         float         :offset-assert  72)
-   (stick0-speed       float         :offset-assert  76)
-   (new-pad            int32         :offset-assert  80)
-   (state              int32         :offset-assert  84)
-   (align              uint8       6 :offset-assert  88)
-   (direct             uint8       6 :offset-assert  94)
-   (buzz-val           uint8       2 :offset-assert 100)
-   (buzz-pause-val     uint8       1 :offset-assert 102)
-   (buzz-pause-time    uint8         :offset-assert 103)
-   (buzz-time          time-frame  2 :offset-assert 104)
-   (buzz               basic         :offset-assert 120)
-   (buzz-act           int32         :offset-assert 124)
-   (change-time        time-frame    :offset-assert 128)
-   (old-rightx         uint8       2 :offset-assert 136)
-   (old-righty         uint8       2 :offset-assert 138)
-   (old-leftx          uint8       2 :offset-assert 140)
-   (old-lefty          uint8       2 :offset-assert 142)
+  ((number              int32)
+   (cpad-file           int32)
+   (button0-abs         pad-buttons  3)
+   (button0-shadow-abs  pad-buttons  1)
+   (button0-rel         pad-buttons  3)
+   (stick0-dir          float)
+   (stick0-speed        float)
+   (new-pad             int32)
+   (state               int32)
+   (align               uint8        6)
+   (direct              uint8        6)
+   (buzz-val            uint8        2)
+   (buzz-pause-val      uint8        1)
+   (buzz-pause-time     uint8)
+   (buzz-time           time-frame   2)
+   (buzz                basic)
+   (buzz-act            int32)
+   (change-time         time-frame)
+   (old-rightx          uint8        2)
+   (old-righty          uint8        2)
+   (old-leftx           uint8        2)
+   (old-lefty           uint8        2)
    )
-  :method-count-assert 10
-  :size-assert         #x90
-  :flag-assert         #xa00000090
   (:methods
-    (new (symbol type int) _type_ 0)
-    (adjust-to-screen-flip (_type_) int 9)
+    (new (symbol type int) _type_)
+    (adjust-to-screen-flip (_type_) int)
     )
   )
 
@@ -194,14 +208,11 @@ The cpad-set-buzz! function can be used for vibration.
 
 ;; List of controllers. It always has 2 controllers.
 (deftype cpad-list (basic)
-  ((num-cpads int32       :offset-assert   4)
-   (cpads     cpad-info 2 :offset-assert   8)
+  ((num-cpads  int32)
+   (cpads      cpad-info  2)
    )
-  :method-count-assert 9
-  :size-assert         #x10
-  :flag-assert         #x900000010
   (:methods
-    (new (symbol type) _type_ 0)
+    (new (symbol type) _type_)
     )
   )
 
@@ -241,6 +252,43 @@ The cpad-set-buzz! function can be used for vibration.
         )
       )
     )
+  )
+
+;; og:preserve-this macros
+(defmacro analog-input-horizontal-first (in offset center-val max-val out-range)
+  "Same as analog-input but respects First-Person Horizontal camera control setting."
+  `(#if PC_PORT ;; first-person horizontal is NOT inverted in original game
+        (* (if (-> *pc-settings* first-camera-h-inverted?) -1.0 1.0)
+           (analog-input ,in ,offset ,center-val ,max-val ,out-range))
+        (analog-input ,in ,offset ,center-val ,max-val ,out-range)
+        )
+  )
+
+(defmacro analog-input-vertical-first (in offset center-val max-val out-range)
+  "Same as analog-input but respects First-Person Vertical camera control setting."
+  `(#if PC_PORT ;; first-person vertical is already inverted in original game
+        (* (if (-> *pc-settings* first-camera-v-inverted?) 1.0 -1.0)
+           (analog-input ,in ,offset ,center-val ,max-val ,out-range))
+        (analog-input ,in ,offset ,center-val ,max-val ,out-range)
+        )
+  )
+
+(defmacro analog-input-horizontal-third (in offset center-val max-val out-range)
+  "Same as analog-input but respects Third-Person Horizontal camera control setting."
+  `(#if PC_PORT ;; third-person horizontal is already inverted in original game
+        (* (if (-> *pc-settings* third-camera-h-inverted?) 1.0 -1.0)
+           (analog-input ,in ,offset ,center-val ,max-val ,out-range))
+        (analog-input ,in ,offset ,center-val ,max-val ,out-range)
+        )
+  )
+
+(defmacro analog-input-vertical-third (in offset center-val max-val out-range)
+  "Same as analog-input but respects Third-Person Vertical camera control setting."
+  `(#if PC_PORT ;; third-person vertical is already inverted in original game
+        (* (if (-> *pc-settings* third-camera-v-inverted?) 1.0 -1.0)
+           (analog-input ,in ,offset ,center-val ,max-val ,out-range))
+        (analog-input ,in ,offset ,center-val ,max-val ,out-range)
+        )
   )
 
 (defun cpad-set-buzz! ((arg0 cpad-info) (arg1 int) (arg2 int) (arg3 time-frame))
@@ -435,7 +483,7 @@ The cpad-set-buzz! function can be used for vibration.
                (cond
                  ((or (= v1-123 (language-enum japanese)) (= v1-123 (language-enum korean)))
                   (case (scf-get-territory)
-                    ((2 3)
+                    ((GAME_TERRITORY_SCEI GAME_TERRITORY_SCEK)
                      (if (logtest? buttons-pushed (pad-buttons circle))
                          (set! buttons-pushed (logior (pad-buttons confirm) buttons-pushed))
                          )
@@ -448,7 +496,7 @@ The cpad-set-buzz! function can be used for vibration.
                     )
                   )
                  ((let ((v1-135 (scf-get-territory)))
-                    (or (= v1-135 2) (= v1-135 3))
+                    (or (= v1-135 GAME_TERRITORY_SCEI) (= v1-135 GAME_TERRITORY_SCEK))
                     )
                   (if (logtest? buttons-pushed (pad-buttons circle x))
                       (set! buttons-pushed (logior (pad-buttons confirm) buttons-pushed))
@@ -543,32 +591,29 @@ The cpad-set-buzz! function can be used for vibration.
   )
 
 (deftype mouse-info (basic)
-  ((active             symbol               :offset-assert   4)
-   (cursor             basic                :offset-assert   8)
-   (valid              symbol               :offset-assert  12)
-   (id                 uint8                :offset-assert  16)
-   (status             uint16               :offset-assert  18)
-   (button0            uint16               :offset-assert  20)
-   (deltax             int8                 :offset-assert  22)
-   (deltay             int8                 :offset-assert  23)
-   (wheel              uint8                :offset-assert  24)
-   (change-time        time-frame           :offset-assert  32)
-   (button0-abs        uint32     3         :offset-assert  40)
-   (button0-shadow-abs uint32     1         :offset-assert  52)
-   (button0-rel        uint32     3         :offset-assert  56)
-   (pos                vector     2 :inline :offset-assert  80)
-   (posx               float                :offset         80)
-   (posy               float                :offset         84)
-   (oldposx            float                :offset         96)
-   (oldposy            float                :offset        100)
-   (speedx             float                :offset         92)
-   (speedy             float                :offset        108)
+  ((active              symbol)
+   (cursor              basic)
+   (valid               symbol)
+   (id                  uint8)
+   (status              uint16)
+   (button0             uint16)
+   (deltax              int8)
+   (deltay              int8)
+   (wheel               uint8)
+   (change-time         time-frame)
+   (button0-abs         mouse-buttons  3)
+   (button0-shadow-abs  mouse-buttons  1)
+   (button0-rel         mouse-buttons  3)
+   (pos                 vector         2 :inline)
+   (posx                float          :overlay-at (-> pos 0 data 0))
+   (posy                float          :overlay-at (-> pos 0 data 1))
+   (oldposx             float          :offset  96)
+   (oldposy             float          :offset 100)
+   (speedx              float          :overlay-at (-> pos 0 data 3))
+   (speedy              float          :offset 108)
    )
-  :method-count-assert 9
-  :size-assert         #x70
-  :flag-assert         #x900000070
   (:methods
-    (new (symbol type) _type_ 0)
+    (new (symbol type) _type_)
     )
   )
 
@@ -599,7 +644,7 @@ The cpad-set-buzz! function can be used for vibration.
     (set! (-> gp-0 button0-abs 1) (-> gp-0 button0-shadow-abs 0))
     (set! (-> gp-0 button0-rel 2) (-> gp-0 button0-rel 1))
     (set! (-> gp-0 button0-rel 1) (-> gp-0 button0-rel 0))
-    (set! (-> gp-0 button0-rel 0) (the-as uint 0))
+    (set! (-> gp-0 button0-rel 0) (mouse-buttons))
     (set! (-> gp-0 speedx) 0.0)
     (set! (-> gp-0 speedy) 0.0)
     (cond
@@ -616,22 +661,80 @@ The cpad-set-buzz! function can be used for vibration.
        (set! (-> gp-0 posx) (fmax -256.0 (fmin 256.0 (+ (-> gp-0 posx) (-> gp-0 speedx)))))
        (set! (-> gp-0 posy) (fmax -208.0 (fmin 208.0 (+ (-> gp-0 posy) (-> gp-0 speedy)))))
        (let ((v1-22 (-> gp-0 button0)))
-         (set! (-> gp-0 button0-shadow-abs 0) v1-22)
-         (set! (-> gp-0 button0-abs 0) v1-22)
+         (set! (-> gp-0 button0-shadow-abs 0) (the-as mouse-buttons v1-22))
+         (set! (-> gp-0 button0-abs 0) (the-as mouse-buttons v1-22))
          )
        (set! (-> gp-0 button0-rel 0) (logclear (-> gp-0 button0-abs 0) (-> gp-0 button0-abs 1)))
        )
       )
 
-    ;; (if (and (-> gp-0 active) (-> gp-0 valid) (-> gp-0 cursor) (#if PC_PORT (not *disable-mouse*) #t))
-    ;;     (add-debug-cursor
-    ;;       #t
-    ;;       (bucket-id debug-no-zbuf2)
-    ;;       (+ (the int (-> gp-0 posx)) 256)
-    ;;       (+ (the int (-> gp-0 posy)) 208)
-    ;;       (the-as int (-> gp-0 button0-abs 0))
-    ;;       )
-    ;;     )
+    (if (and (-> gp-0 active) (-> gp-0 valid) (-> gp-0 cursor) (#if PC_PORT (not *disable-mouse*) #t))
+        (add-debug-cursor
+          #t
+          (bucket-id debug-no-zbuf2)
+          (+ (the int (-> gp-0 posx)) 256)
+          (+ (the int (-> gp-0 posy)) 208)
+          (-> gp-0 button0-abs 0)
+          )
+        )
     )
   (none)
   )
+
+(defmacro mouse-pressed ()
+  `(-> *mouse* button0-rel 0)
+  )
+
+(defmacro mouse-hold ()
+  `(-> *mouse* button0-abs 0)
+  )
+
+(defmacro mouse-pressed? (&rest buttons)
+  `(logtest? (mouse-pressed) (mouse-buttons ,@buttons))
+  )
+
+(defmacro mouse-hold? (&rest buttons)
+  `(logtest? (mouse-hold) (mouse-buttons ,@buttons))
+  )
+
+(defmacro mouse-clear! (&rest buttons)
+  `(begin
+      (logclear! (mouse-pressed) (mouse-buttons ,@buttons))
+      (logclear! (mouse-hold) (mouse-buttons ,@buttons))
+      )
+  )
+
+
+(defmacro check-cheat-code (cheat-var pad-idx buttons &rest body)
+  "execute body when a cheat code made up of sequential inputs has been inputted"
+
+  `(when (nonzero? (cpad-pressed ,pad-idx)) ;; only check when some button has been pressed
+    (case ,cheat-var
+      ,@(apply-i
+          (lambda (x i)
+            `((,i)
+              (if (cpad-pressed? ,pad-idx ,x)
+                ,(if (< i (- (length buttons) 1))
+                    `(1+! ,cheat-var)
+
+                    `(begin ,@body (set! ,cheat-var 0))
+                    )
+
+                (set! ,cheat-var 0)
+                )
+              )
+            )
+        buttons)
+      )
+    )
+  )
+
+(defmacro cheats-sound-play (cheat?)
+  "play the appropriate sound for inputting a cheat code"
+
+  `(if ,cheat?
+      (sound-play-by-spec (static-sound-spec "menu-pick" :fo-curve 1) (new-sound-id) (the-as vector #t))
+      (sound-play-by-spec (static-sound-spec "menu-back" :fo-curve 1) (new-sound-id) (the-as vector #t))
+      )
+  )
+

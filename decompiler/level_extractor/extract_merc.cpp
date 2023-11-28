@@ -181,20 +181,6 @@ MercCtrl extract_merc_ctrl(const LinkedObjectFile& file,
   return ctrl;
 }
 
-/*!
- * Find the word indices for the merc ctrls (the type tags)
- */
-std::vector<int> find_merc_ctrls(const LinkedObjectFile& file) {
-  std::vector<int> result;
-  for (size_t i = 0; i < file.words_by_seg.at(0).size(); i++) {
-    const auto& word = file.words_by_seg[0][i];
-    if (word.kind() == LinkedWord::TYPE_PTR && word.symbol_name() == "merc-ctrl") {
-      result.push_back(i);
-    }
-  }
-  return result;
-}
-
 namespace {
 /*!
  * Merc models tend to have strange texture ids. I don't really understand why.
@@ -745,9 +731,22 @@ s32 find_or_add_texture_to_level(tfrag3::Level& out,
     // not added to level, add it
     auto tex_it = tex_db.textures.find(pc_combo_tex_id);
     if (tex_it == tex_db.textures.end()) {
-      lg::error("merc failed to find texture: 0x{:x} for {}. Should be in tpage {}",
-                pc_combo_tex_id, debug_name, pc_combo_tex_id >> 16);
-      idx_in_level_texture = 0;
+      if (pc_combo_tex_id == 0 && debug_name == "yakow-lod0") {
+        // this texture is missing in the real game, and it ends up using an invalid texture
+        // configuration, making it completely black. Instead of that, just pick a similar-ish
+        // yakow fur texture. It's not perfect, but it's better than nothing.
+        for (size_t i = 0; i < out.textures.size(); i++) {
+          auto& existing = out.textures[i];
+          if (existing.debug_name == "yak-medfur-end") {
+            idx_in_level_texture = i;
+            break;
+          }
+        }
+      } else {
+        lg::error("merc failed to find texture: 0x{:x} for {}. Should be in tpage {}",
+                  pc_combo_tex_id, debug_name, pc_combo_tex_id >> 16);
+        idx_in_level_texture = 0;
+      }
     } else {
       idx_in_level_texture = out.textures.size();
       auto& new_tex = out.textures.emplace_back();
@@ -843,7 +842,8 @@ ConvertedMercEffect convert_merc_effect(const MercEffect& input_effect,
         u32 tidx = (env >> 8) & 0b1111'1111'1111;
         tex_combo = (((u32)tpage) << 16) | tidx;
       } break;
-      case GameVersion::Jak2: {
+      case GameVersion::Jak2:
+      case GameVersion::Jak3: {
         u32 tpage = 0x1f;
         u32 tidx = 2;
         tex_combo = (((u32)tpage) << 16) | tidx;
@@ -878,7 +878,8 @@ ConvertedMercEffect convert_merc_effect(const MercEffect& input_effect,
 
   bool use_alpha_blend = false;
   bool depth_write = true;
-  if (version == GameVersion::Jak2) {
+  // TODO check jak 3
+  if (version >= GameVersion::Jak2) {
     constexpr int kWaterTexture = 4;
     constexpr int kAlphaTexture = 3;
     if (input_effect.texture_index == kAlphaTexture) {
@@ -1355,8 +1356,8 @@ void create_modifiable_vertex_data(
   // index into a per-effect modifiable vertex buffer, not the giant per-FR3 merc vertex buffer.
 
   // some stats
-  int num_tris = 0;  // all triangles
-  int mod_tris = 0;  // triangles in mod draws
+  [[maybe_unused]] int num_tris = 0;  // all triangles
+  [[maybe_unused]] int mod_tris = 0;  // triangles in mod draws
 
   // loop over models added from this art-group
   for (size_t mi = first_out_model; mi < out.models.size(); mi++) {
@@ -1601,7 +1602,7 @@ void extract_merc(const ObjectFileData& ag_data,
     file_util::create_dir_if_needed(file_util::get_file_path({"debug_out/merc"}));
   }
   // find all merc-ctrls in the object file
-  auto ctrl_locations = find_merc_ctrls(ag_data.linked_data);
+  auto ctrl_locations = find_objects_with_type(ag_data.linked_data, "merc-ctrl");
 
   // extract them. this does very basic unpacking of data, as done by the VIF/DMA on PS2.
   std::vector<MercCtrl> ctrls;

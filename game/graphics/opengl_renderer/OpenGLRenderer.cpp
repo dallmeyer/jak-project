@@ -37,7 +37,7 @@
 #endif
 
 namespace {
-std::string g_current_render;
+std::string g_current_renderer;
 }
 
 /*!
@@ -51,16 +51,16 @@ void GLAPIENTRY opengl_error_callback(GLenum source,
                                       const GLchar* message,
                                       const void* /*userParam*/) {
   if (severity == GL_DEBUG_SEVERITY_NOTIFICATION) {
-    lg::debug("[{}] OpenGL notification 0x{:X} S{:X} T{:X}: {}", g_current_render, id, source, type,
-              message);
+    lg::debug("[{}] OpenGL notification 0x{:X} S{:X} T{:X}: {}", g_current_renderer, id, source,
+              type, message);
   } else if (severity == GL_DEBUG_SEVERITY_LOW) {
-    lg::info("[{}] OpenGL message 0x{:X} S{:X} T{:X}: {}", g_current_render, id, source, type,
+    lg::info("[{}] OpenGL message 0x{:X} S{:X} T{:X}: {}", g_current_renderer, id, source, type,
              message);
   } else if (severity == GL_DEBUG_SEVERITY_MEDIUM) {
-    lg::warn("[{}] OpenGL warn 0x{:X} S{:X} T{:X}: {}", g_current_render, id, source, type,
+    lg::warn("[{}] OpenGL warn 0x{:X} S{:X} T{:X}: {}", g_current_renderer, id, source, type,
              message);
   } else if (severity == GL_DEBUG_SEVERITY_HIGH) {
-    lg::error("[{}] OpenGL error 0x{:X} S{:X} T{:X}: {}", g_current_render, id, source, type,
+    lg::error("[{}] OpenGL error 0x{:X} S{:X} T{:X}: {}", g_current_renderer, id, source, type,
               message);
     // ASSERT(false);
   }
@@ -72,10 +72,10 @@ OpenGLRenderer::OpenGLRenderer(std::shared_ptr<TexturePool> texture_pool,
     : m_render_state(texture_pool, loader, version),
       m_collide_renderer(version),
       m_version(version) {
-  // setup OpenGL errors
-  glEnable(GL_DEBUG_OUTPUT);
   // requires OpenGL 4.3
 #ifndef __APPLE__
+  // setup OpenGL errors
+  glEnable(GL_DEBUG_OUTPUT);
   glDebugMessageCallback(opengl_error_callback, nullptr);
   // disable specific errors
   const GLuint gl_error_ignores_api_other[1] = {0x20071};
@@ -126,7 +126,8 @@ void OpenGLRenderer::init_bucket_renderers_jak2() {
 
   // 0
   init_bucket_renderer<VisDataHandler>("vis", BucketCategory::OTHER, BucketId::BUCKET_2);
-  init_bucket_renderer<BlitDisplays>("blit", BucketCategory::OTHER, BucketId::BUCKET_3);
+  m_blit_displays =
+      init_bucket_renderer<BlitDisplays>("blit", BucketCategory::OTHER, BucketId::BUCKET_3);
   init_bucket_renderer<TextureUploadHandler>("tex-lcom-sky-pre", BucketCategory::TEX,
                                              BucketId::TEX_LCOM_SKY_PRE, m_texture_animator);
   init_bucket_renderer<DirectRenderer>("sky-draw", BucketCategory::OTHER, BucketId::SKY_DRAW, 1024);
@@ -282,17 +283,17 @@ void OpenGLRenderer::init_bucket_renderers_jak2() {
   init_bucket_renderer<TextureUploadHandler>("tex-all-warp", BucketCategory::TEX,
                                              BucketId::TEX_ALL_WARP, m_texture_animator);
   init_bucket_renderer<Warp>("warp", BucketCategory::GENERIC, BucketId::GMERC_WARP, m_generic2);
-  init_bucket_renderer<DirectRenderer>("debug-no-zbuf1", BucketCategory::OTHER,
-                                       BucketId::DEBUG_NO_ZBUF1, 0x8000);
+  init_bucket_renderer<TextureUploadHandler>("debug-no-zbuf1", BucketCategory::OTHER,
+                                             BucketId::DEBUG_NO_ZBUF1, m_texture_animator, true);
   init_bucket_renderer<TextureUploadHandler>("tex-all-map", BucketCategory::TEX,
-                                             BucketId::TEX_ALL_MAP, m_texture_animator);
+                                             BucketId::TEX_ALL_MAP, m_texture_animator, true);
   // 320
   init_bucket_renderer<ProgressRenderer>("progress", BucketCategory::OTHER, BucketId::PROGRESS,
                                          0x1000);
   init_bucket_renderer<DirectRenderer>("screen-filter", BucketCategory::OTHER,
                                        BucketId::SCREEN_FILTER, 256);
-  init_bucket_renderer<DirectRenderer>("subtitle", BucketCategory::OTHER, BucketId::SUBTITLE,
-                                       0x1000);
+  init_bucket_renderer<TextureUploadHandler>("subtitle", BucketCategory::OTHER, BucketId::SUBTITLE,
+                                             m_texture_animator, true);
   init_bucket_renderer<DirectRenderer>("debug2", BucketCategory::OTHER, BucketId::DEBUG2, 0x8000);
   init_bucket_renderer<DirectRenderer>("debug-no-zbuf2", BucketCategory::OTHER,
                                        BucketId::DEBUG_NO_ZBUF2, 0x8000);
@@ -645,34 +646,9 @@ Fbo make_fbo(int w, int h, int msaa, bool make_zbuf_and_stencil) {
 }  // namespace
 
 void OpenGLRenderer::blit_display() {
-  auto& back = m_fbo_state.resources.back_buffer;
-  if (!back.valid || !back.matches(*m_fbo_state.render_fbo)) {
-    back.clear();
-    back = make_fbo(m_fbo_state.render_fbo->width, m_fbo_state.render_fbo->height, 1, false);
+  if (m_blit_displays) {
+    m_blit_displays->do_copy_back(&m_render_state);
   }
-
-  Fbo* window_blit_src = nullptr;
-  if (m_fbo_state.resources.resolve_buffer.valid) {
-    // since this is called after do_pcrtc_effects, the resolve buffer is already made
-    window_blit_src = &m_fbo_state.resources.resolve_buffer;
-  } else {
-    window_blit_src = m_fbo_state.render_fbo;
-  }
-
-  glBindFramebuffer(GL_READ_FRAMEBUFFER, window_blit_src->fbo_id);
-  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, back.fbo_id);
-  glBlitFramebuffer(0,                        // srcX0
-                    0,                        // srcY0
-                    window_blit_src->width,   // srcX1
-                    window_blit_src->height,  // srcY1
-                    0,                        // dstX0
-                    0,                        // dstY0
-                    back.width,               // dstX1
-                    back.height,              // dstY1
-                    GL_COLOR_BUFFER_BIT,      // mask
-                    GL_LINEAR                 // filter
-  );
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 /*!
@@ -685,6 +661,7 @@ void OpenGLRenderer::render(DmaFollower dma, const RenderOptions& settings) {
   m_render_state.offset_of_s7 = offset_of_s7();
 
   {
+    g_current_renderer = "frame-setup";
     auto prof = m_profiler.root()->make_scoped_child("frame-setup");
     setup_frame(settings);
     if (settings.gpu_sync) {
@@ -693,6 +670,7 @@ void OpenGLRenderer::render(DmaFollower dma, const RenderOptions& settings) {
   }
 
   {
+    g_current_renderer = "loader";
     auto prof = m_profiler.root()->make_scoped_child("loader");
     if (m_last_pmode_alp == 0 && settings.pmode_alp_register != 0 && m_enable_fast_blackout_loads) {
       // blackout, load everything and don't worry about frame rate
@@ -714,8 +692,16 @@ void OpenGLRenderer::render(DmaFollower dma, const RenderOptions& settings) {
     }
   }
 
+  // blit framebuffer so that it can be used as a texture by the game later
+  {
+    g_current_renderer = "blit-display";
+    auto prof = m_profiler.root()->make_scoped_child("blit-display");
+    blit_display();
+  }
+
   // apply effects done with PCRTC registers
   {
+    g_current_renderer = "pcrtc";
     auto prof = m_profiler.root()->make_scoped_child("pcrtc");
     do_pcrtc_effects(settings.pmode_alp_register, &m_render_state, prof);
     if (settings.gpu_sync) {
@@ -723,15 +709,10 @@ void OpenGLRenderer::render(DmaFollower dma, const RenderOptions& settings) {
     }
   }
 
-  // blit framebuffer so that it can be used as a texture by the game later
-  {
-    auto prof = m_profiler.root()->make_scoped_child("blit-display");
-    blit_display();
-  }
-
   m_last_pmode_alp = settings.pmode_alp_register;
 
   if (settings.save_screenshot) {
+    g_current_renderer = "screenshot";
     auto prof = m_profiler.root()->make_scoped_child("screenshot");
     int read_buffer;
     int x, y, w, h, fbo_id;
@@ -764,6 +745,7 @@ void OpenGLRenderer::render(DmaFollower dma, const RenderOptions& settings) {
   }
 
   if (settings.draw_render_debug_window) {
+    g_current_renderer = "render-window";
     auto prof = m_profiler.root()->make_scoped_child("render-window");
     draw_renderer_selection_window();
     // add a profile bar for the imgui stuff
@@ -774,6 +756,7 @@ void OpenGLRenderer::render(DmaFollower dma, const RenderOptions& settings) {
   }
 
   if (settings.draw_loader_window) {
+    g_current_renderer = "loader-window";
     m_render_state.loader->draw_debug_window();
   }
 
@@ -784,10 +767,12 @@ void OpenGLRenderer::render(DmaFollower dma, const RenderOptions& settings) {
   //  }
 
   if (settings.draw_profiler_window) {
+    g_current_renderer = "profiler-window";
     m_profiler.draw();
   }
 
   if (settings.draw_small_profiler_window) {
+    g_current_renderer = "small-profiler-window";
     SmallProfilerStats stats;
     stats.draw_calls = m_profiler.root()->stats().draw_calls;
     stats.triangles = m_profiler.root()->stats().triangles;
@@ -798,6 +783,7 @@ void OpenGLRenderer::render(DmaFollower dma, const RenderOptions& settings) {
   }
 
   if (settings.draw_subtitle_editor_window) {
+    g_current_renderer = "subtitle-editor-window";
     if (m_subtitle_editor == nullptr) {
       m_subtitle_editor = new SubtitleEditor();
     }
@@ -805,11 +791,16 @@ void OpenGLRenderer::render(DmaFollower dma, const RenderOptions& settings) {
   }
 
   if (settings.draw_filters_window) {
+    g_current_renderer = "filters-window";
     m_filters_menu.draw_window();
   }
+
   if (settings.gpu_sync) {
+    g_current_renderer = "gpu-sync";
     glFinish();
   }
+
+  g_current_renderer = "end";
 }
 
 /*!
@@ -910,24 +901,27 @@ void OpenGLRenderer::setup_frame(const RenderOptions& settings) {
 
   ASSERT_MSG(!m_fbo_state.render_fbo->is_window, "window fbo");
 
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
-  glViewport(0, 0, m_fbo_state.resources.window.width, m_fbo_state.resources.window.height);
-  glClearColor(0.0, 0.0, 0.0, 0.0);
-  glClearDepth(0.0);
-  glDepthMask(GL_TRUE);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-  glDisable(GL_BLEND);
+  if (m_version == GameVersion::Jak1) {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, m_fbo_state.resources.window.width, m_fbo_state.resources.window.height);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearDepth(0.0);
+    glDepthMask(GL_TRUE);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    glDisable(GL_BLEND);
 
-  glBindFramebuffer(GL_FRAMEBUFFER, m_fbo_state.render_fbo->fbo_id);
-  glClearColor(0.0, 0.0, 0.0, 0.0);
-  glClearDepth(0.0);
-  glClearStencil(0);
-  glDepthMask(GL_TRUE);
-  // Note: could rely on sky renderer to clear depth and color, but this causes problems with
-  // letterboxing
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-  glDisable(GL_BLEND);
-  m_render_state.stencil_dirty = false;
+    glBindFramebuffer(GL_FRAMEBUFFER, m_fbo_state.render_fbo->fbo_id);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearDepth(0.0);
+    glClearStencil(0);
+    glDepthMask(GL_TRUE);
+    // Note: could rely on sky renderer to clear depth and color, but this causes problems with
+    // letterboxing
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    glDisable(GL_BLEND);
+    m_render_state.stencil_dirty = false;
+  }
+  // jak 2 does the clear in BlitDisplays.cpp
 
   // setup the draw region to letterbox later
   m_render_state.draw_region_w = settings.draw_region_width;
@@ -940,7 +934,6 @@ void OpenGLRenderer::setup_frame(const RenderOptions& settings) {
       (settings.window_framebuffer_height - m_render_state.draw_region_h) / 2;
 
   m_render_state.render_fb = m_fbo_state.render_fbo->fbo_id;
-  m_render_state.back_fbo = &m_fbo_state.resources.back_buffer;
 
   if (m_render_state.draw_region_w <= 0 || m_render_state.draw_region_h <= 0) {
     // trying to draw to 0 size region... opengl doesn't like this.
@@ -994,15 +987,15 @@ void OpenGLRenderer::dispatch_buckets_jak1(DmaFollower dma,
   for (size_t bucket_id = 0; bucket_id < m_bucket_renderers.size(); bucket_id++) {
     auto& renderer = m_bucket_renderers[bucket_id];
     auto bucket_prof = prof.make_scoped_child(renderer->name_and_id());
-    g_current_render = renderer->name_and_id();
-    // lg::info("Render: {} start", g_current_render);
+    g_current_renderer = renderer->name_and_id();
+    // lg::info("Render: {} start", g_current_renderer);
     renderer->render(dma, &m_render_state, bucket_prof);
     if (sync_after_buckets) {
       auto pp = scoped_prof("finish");
       glFinish();
     }
 
-    // lg::info("Render: {} end", g_current_render);
+    // lg::info("Render: {} end", g_current_renderer);
     //  should have ended at the start of the next chain
     ASSERT(dma.current_tag_offset() == m_render_state.next_bucket);
     m_render_state.next_bucket += 16;
@@ -1015,7 +1008,6 @@ void OpenGLRenderer::dispatch_buckets_jak1(DmaFollower dma,
       m_collide_renderer.render(&m_render_state, p);
     }
   }
-  g_current_render = "";
 
   // TODO ending data.
 }
@@ -1035,15 +1027,15 @@ void OpenGLRenderer::dispatch_buckets_jak2(DmaFollower dma,
   for (size_t bucket_id = 0; bucket_id < m_bucket_renderers.size(); bucket_id++) {
     auto& renderer = m_bucket_renderers[bucket_id];
     auto bucket_prof = prof.make_scoped_child(renderer->name_and_id());
-    g_current_render = renderer->name_and_id();
-    // lg::info("Render: {} start", g_current_render);
+    g_current_renderer = renderer->name_and_id();
+    // lg::info("Render: {} start", g_current_renderer);
     renderer->render(dma, &m_render_state, bucket_prof);
     if (sync_after_buckets) {
       auto pp = scoped_prof("finish");
       glFinish();
     }
 
-    // lg::info("Render: {} end", g_current_render);
+    // lg::info("Render: {} end", g_current_renderer);
     //  should have ended at the start of the next chain
     ASSERT(dma.current_tag_offset() == m_render_state.next_bucket);
     m_render_state.next_bucket += 16;
@@ -1068,6 +1060,8 @@ void OpenGLRenderer::dispatch_buckets_jak2(DmaFollower dma,
 void OpenGLRenderer::dispatch_buckets(DmaFollower dma,
                                       ScopedProfilerNode& prof,
                                       bool sync_after_buckets) {
+  g_current_renderer = "dispatch-buckets pre";
+
   m_render_state.version = m_version;
   m_render_state.frame_idx++;
   switch (m_version) {
@@ -1080,6 +1074,8 @@ void OpenGLRenderer::dispatch_buckets(DmaFollower dma,
     default:
       ASSERT(false);
   }
+
+  g_current_renderer = "dispatch-buckets post";
 }
 
 #ifdef _WIN32
@@ -1200,7 +1196,7 @@ void OpenGLRenderer::finish_screenshot(const std::string& output_name,
   glReadBuffer(read_buffer);
   glReadPixels(x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer.data());
 
-  // set alpha. For some reason, image viewers do weird stuff with alpha.
+  // set alpha. our renderers mess this up in a way that isn't relevant to the final framebuffer.
   for (auto& px : buffer) {
     px |= 0xff000000;
   }
@@ -1212,6 +1208,7 @@ void OpenGLRenderer::finish_screenshot(const std::string& output_name,
   }
 #else
   (void)quick_screenshot;
+  lg::error("screenshot to clipboard NYI non-Windows");
 #endif
 
   // flip upside down in place

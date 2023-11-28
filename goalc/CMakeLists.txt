@@ -5,18 +5,26 @@ add_library(compiler
         emitter/ObjectGenerator.cpp
         emitter/Register.cpp
         debugger/disassemble.cpp
-        build_level/build_level.cpp
-        build_level/collide_bvh.cpp
-        build_level/collide_drawable.cpp
-        build_level/collide_pack.cpp
-        build_level/color_quantization.cpp
-        build_level/Entity.cpp
-        build_level/FileInfo.cpp
-        build_level/gltf_mesh_extract.cpp
-        build_level/LevelFile.cpp
-        build_level/ResLump.cpp
-        build_level/Tfrag.cpp
-        build_level/drawable_ambient.cpp
+        build_level/common/build_level.cpp
+        build_level/jak1/build_level.cpp
+        build_level/jak2/build_level.cpp
+        build_level/collide/jak1/collide_bvh.cpp
+        build_level/collide/jak1/collide_drawable.cpp
+        build_level/collide/jak1/collide_pack.cpp
+        build_level/collide/jak2/collide.cpp
+        build_level/common/color_quantization.cpp
+        build_level/common/Entity.cpp
+        build_level/jak1/Entity.cpp
+        build_level/jak2/Entity.cpp
+        build_level/common/FileInfo.cpp
+        build_level/jak1/FileInfo.cpp
+        build_level/jak2/FileInfo.cpp
+        build_level/common/gltf_mesh_extract.cpp
+        build_level/jak1/LevelFile.cpp
+        build_level/jak2/LevelFile.cpp
+        build_level/common/ResLump.cpp
+        build_level/common/Tfrag.cpp
+        build_level/jak1/ambient.cpp
         compiler/Compiler.cpp
         compiler/Env.cpp
         compiler/Val.cpp
@@ -56,7 +64,7 @@ add_library(compiler
         regalloc/Allocator_v2.cpp
         compiler/docs/DocTypes.cpp)
 
-target_link_libraries(compiler common Zydis tiny_gltf)
+target_link_libraries(compiler common Zydis tiny_gltf decomp)
 
 if (WIN32)
     target_link_libraries(compiler mman)
@@ -65,6 +73,9 @@ endif ()
 add_executable(goalc main.cpp)
 add_executable(goalc-simple simple_main.cpp)
 
+add_executable(build_level build_level/main.cpp)
+
 target_link_libraries(goalc common Zydis compiler)
 target_link_libraries(goalc-simple common Zydis compiler)
+target_link_libraries(build_level common Zydis compiler)
 

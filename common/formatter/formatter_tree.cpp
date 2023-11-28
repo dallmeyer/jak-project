@@ -2,8 +2,6 @@
 
 #include "common/util/string_util.h"
 
-#include "config/rule_config.h"
-
 #include "third-party/fmt/core.h"
 
 std::string get_source_code(const std::string& source, const TSNode& node) {
@@ -96,6 +94,11 @@ void FormatterTree::construct_formatter_tree_recursive(const std::string& source
     // Strings are a special case, they are literals and essentially tokens but the grammar can
     // detect formatter identifiers, this is useful for semantic highlighting but doesn't matter for
     // formatting So for strings, we treat them as if they should be a single token
+    tree_node.refs.push_back(FormatterTreeNode(source, curr_node));
+    return;
+  } else if (curr_node_type == "quoting_lit") {
+    // same story for quoted symbols
+    // TODO - expect to have to add more here
     tree_node.refs.push_back(FormatterTreeNode(source, curr_node));
     return;
   }

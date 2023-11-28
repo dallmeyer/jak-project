@@ -251,23 +251,21 @@
   
 
 (deftype race-ring (process-drawable)
-  ((last-target-pos       vector        :inline :offset-assert 208)
-   (keep-part-track-alive symbol                :offset-assert 224)
-   (part-track            handle                :offset-assert 232)
-   (rot-y                 float                 :offset-assert 240)
-   (cyl                   cylinder-flat :inline :offset-assert 256))
-   
-  :heap-base #xb0
-  :method-count-assert 24
-  :size-assert         #x128
-  :flag-assert         #x1800b00128
+  ((last-target-pos        vector         :inline)
+   (keep-part-track-alive  symbol)
+   (part-track             handle)
+   (rot-y                  float)
+   (cyl                    cylinder-flat  :inline)
+   )
+  (:state-methods
+    idle
+    die
+    )
   (:methods
-    (idle () _type_ :state 20)
-    (die () _type_ :state 21)
-    (race-ring-method-22 (_type_) none 22)
-    (race-ring-method-23 (_type_) none 23)))
-    
-  
+    (race-ring-method-22 (_type_) none)
+    (race-ring-method-23 (_type_) none)
+    )
+  )
 
 
 (defun race-ring-set-particle-rotation-callback ((arg0 part-tracker))
@@ -289,193 +287,188 @@
 (defstate idle (race-ring)
   :virtual #t
   :enter (behavior ()
-          (let ((gp-0 (get-process *default-dead-pool* part-tracker #x4000)))
-            (set! (-> self part-track)
-                  (ppointer->handle
-                    (when gp-0
-                      (let ((t9-1 (method-of-type part-tracker activate)))
-                        (t9-1 (the-as part-tracker gp-0) self (symbol->string (-> part-tracker symbol)) (the-as pointer #x70004000)))
-                  
-                      (let ((t9-2 run-function-in-process)
-                            (a0-2 gp-0)
-                            (a1-2 part-tracker-init)
-                            (a2-4 (-> *part-group-id-table* 1054))
-                            (a3-1 0)
-                            (t0-0 race-ring-set-particle-rotation-callback)
-                            (t1-0 (-> self ppointer))
-                            (t2-0 #f)
-                            (t3-0 *launch-matrix*))
-                      
-                        (set! (-> t3-0 trans quad) (-> self root trans quad))
-                        ((the-as (function object object object object object object object object none) t9-2)
-                         a0-2
-                         a1-2
-                         a2-4
-                         a3-1
-                         t0-0
-                         t1-0
-                         t2-0
-                         t3-0))
-                   
-                  
-                      (-> gp-0 ppointer)))))
-                
-              
-            
-      
-          (none))
-    
+    (let ((gp-0 (get-process *default-dead-pool* part-tracker #x4000)))
+      (set! (-> self part-track)
+            (ppointer->handle
+              (when gp-0
+                (let ((t9-1 (method-of-type part-tracker activate)))
+                  (t9-1 (the-as part-tracker gp-0) self (symbol->string (-> part-tracker symbol)) (the-as pointer #x70004000))
+                  )
+                (let ((t9-2 run-function-in-process)
+                      (a0-2 gp-0)
+                      (a1-2 part-tracker-init)
+                      (a2-4 (-> *part-group-id-table* 1054))
+                      (a3-1 0)
+                      (t0-0 race-ring-set-particle-rotation-callback)
+                      (t1-0 (-> self ppointer))
+                      (t2-0 #f)
+                      (t3-0 *launch-matrix*)
+                      )
+                  (set! (-> t3-0 trans quad) (-> self root trans quad))
+                  ((the-as (function object object object object object object object object none) t9-2)
+                   a0-2
+                   a1-2
+                   a2-4
+                   a3-1
+                   t0-0
+                   t1-0
+                   t2-0
+                   t3-0
+                   )
+                  )
+                (-> gp-0 ppointer)
+                )
+              )
+            )
+      )
+    )
   :exit (behavior ()
-         (let ((a0-1 (handle->process (-> self part-track))))
-           (if a0-1
-               (deactivate a0-1)))
-          
-      
-         (let ((gp-0 (get-process *default-dead-pool* part-tracker #x4000)))
-           (set! (-> self part-track)
-                 (ppointer->handle
-                   (when gp-0
-                     (let ((t9-2 (method-of-type part-tracker activate)))
-                       (t9-2 (the-as part-tracker gp-0) self (symbol->string (-> part-tracker symbol)) (the-as pointer #x70004000)))
-                  
-                     (let ((t9-3 run-function-in-process)
-                           (a0-6 gp-0)
-                           (a1-3 part-tracker-init)
-                           (a2-4 (-> *part-group-id-table* 1055))
-                           (a3-1 0)
-                           (t0-0 race-ring-set-particle-rotation-callback)
-                           (t1-0 (-> self ppointer))
-                           (t2-0 #f)
-                           (t3-0 *launch-matrix*))
-                      
-                       (set! (-> t3-0 trans quad) (-> self root trans quad))
-                       ((the-as (function object object object object object object object object none) t9-3)
-                        a0-6
-                        a1-3
-                        a2-4
-                        a3-1
-                        t0-0
-                        t1-0
-                        t2-0
-                        t3-0))
-                   
-                  
-                     (-> gp-0 ppointer)))))
-                
-              
-            
-      
-         (none))
-    
+    (let ((a0-1 (handle->process (-> self part-track))))
+      (if a0-1
+          (deactivate a0-1)
+          )
+      )
+    (let ((gp-0 (get-process *default-dead-pool* part-tracker #x4000)))
+      (set! (-> self part-track)
+            (ppointer->handle
+              (when gp-0
+                (let ((t9-2 (method-of-type part-tracker activate)))
+                  (t9-2 (the-as part-tracker gp-0) self (symbol->string (-> part-tracker symbol)) (the-as pointer #x70004000))
+                  )
+                (let ((t9-3 run-function-in-process)
+                      (a0-6 gp-0)
+                      (a1-3 part-tracker-init)
+                      (a2-4 (-> *part-group-id-table* 1055))
+                      (a3-1 0)
+                      (t0-0 race-ring-set-particle-rotation-callback)
+                      (t1-0 (-> self ppointer))
+                      (t2-0 #f)
+                      (t3-0 *launch-matrix*)
+                      )
+                  (set! (-> t3-0 trans quad) (-> self root trans quad))
+                  ((the-as (function object object object object object object object object none) t9-3)
+                   a0-6
+                   a1-3
+                   a2-4
+                   a3-1
+                   t0-0
+                   t1-0
+                   t2-0
+                   t3-0
+                   )
+                  )
+                (-> gp-0 ppointer)
+                )
+              )
+            )
+      )
+    )
   :trans (behavior ()
-          (cond
-            ((handle->process (-> self part-track))
-             (if (-> self keep-part-track-alive)
-                 (set! (-> (the-as part-tracker (-> self part-track process 0)) start-time) (current-time))))
-           
-       
-            (else
-              (let ((gp-0 (get-process *default-dead-pool* part-tracker #x4000)))
-                (set! (-> self part-track)
-                      (ppointer->handle
-                        (when gp-0
-                          (let ((t9-1 (method-of-type part-tracker activate)))
-                            (t9-1 (the-as part-tracker gp-0) self (symbol->string (-> part-tracker symbol)) (the-as pointer #x70004000)))
-                      
-                          (let ((t9-2 run-function-in-process)
-                                (a0-9 gp-0)
-                                (a1-3 part-tracker-init)
-                                (a2-4 (-> *part-group-id-table* 1053))
-                                (a3-1 0)
-                                (t0-0 race-ring-set-particle-rotation-callback)
-                                (t1-0 (-> self ppointer))
-                                (t2-0 #f)
-                                (t3-0 *launch-matrix*))
-                          
-                            (set! (-> t3-0 trans quad) (-> self root trans quad))
-                            ((the-as (function object object object object object object object object none) t9-2)
-                             a0-9
-                             a1-3
-                             a2-4
-                             a3-1
-                             t0-0
-                             t1-0
-                             t2-0
-                             t3-0))
-                       
-                      
-                          (-> gp-0 ppointer)))))
-                    
-                  
-                
-          
-              (set! (-> self keep-part-track-alive) #t)))
-        
-      
-          (let ((v1-17 *target*)
-                (gp-1 (new 'stack-no-clear 'vector)))
-          
-            (when v1-17
-              (set! (-> gp-1 quad) (-> v1-17 control trans quad))
-              (set! (-> gp-1 w) 4096.0)
-              (when (focus-test? v1-17 pilot)
-                (let ((a1-8 (handle->process (-> v1-17 pilot vehicle))))
-                  (set! (-> gp-1 quad) (-> (the-as process-focusable a1-8) root root-prim prim-core world-sphere quad))))
-            
-          
-              (when (>= (ray-flat-cyl-intersect
-                          (-> self cyl)
-                          (-> self last-target-pos)
-                          (vector-! (new 'stack-no-clear 'vector) gp-1 (-> self last-target-pos)))
-                    
-                        0.0)
-                  
-                (+! (-> *game-info* counter) -1.0)
-                (sound-play "ring-pickup")
-                (go-virtual die))
-          
-              (set! (-> self last-target-pos quad) (-> gp-1 quad))))
-        
-      
-          (none))
-    
+    (cond
+      ((handle->process (-> self part-track))
+       (if (-> self keep-part-track-alive)
+           (set-time! (-> (the-as part-tracker (-> self part-track process 0)) start-time))
+           )
+       )
+      (else
+        (let ((gp-0 (get-process *default-dead-pool* part-tracker #x4000)))
+          (set! (-> self part-track)
+                (ppointer->handle
+                  (when gp-0
+                    (let ((t9-1 (method-of-type part-tracker activate)))
+                      (t9-1 (the-as part-tracker gp-0) self (symbol->string (-> part-tracker symbol)) (the-as pointer #x70004000))
+                      )
+                    (let ((t9-2 run-function-in-process)
+                          (a0-9 gp-0)
+                          (a1-3 part-tracker-init)
+                          (a2-4 (-> *part-group-id-table* 1053))
+                          (a3-1 0)
+                          (t0-0 race-ring-set-particle-rotation-callback)
+                          (t1-0 (-> self ppointer))
+                          (t2-0 #f)
+                          (t3-0 *launch-matrix*)
+                          )
+                      (set! (-> t3-0 trans quad) (-> self root trans quad))
+                      ((the-as (function object object object object object object object object none) t9-2)
+                       a0-9
+                       a1-3
+                       a2-4
+                       a3-1
+                       t0-0
+                       t1-0
+                       t2-0
+                       t3-0
+                       )
+                      )
+                    (-> gp-0 ppointer)
+                    )
+                  )
+                )
+          )
+        (set! (-> self keep-part-track-alive) #t)
+        )
+      )
+    (let ((v1-17 *target*)
+          (gp-1 (new 'stack-no-clear 'vector))
+          )
+      (when v1-17
+        (set! (-> gp-1 quad) (-> v1-17 control trans quad))
+        (set! (-> gp-1 w) 4096.0)
+        (when (focus-test? v1-17 pilot)
+          (let ((a1-8 (handle->process (-> v1-17 pilot vehicle))))
+            (set! (-> gp-1 quad) (-> (the-as process-focusable a1-8) root root-prim prim-core world-sphere quad))
+            )
+          )
+        (when (>= (ray-flat-cyl-intersect
+                    (-> self cyl)
+                    (-> self last-target-pos)
+                    (vector-! (new 'stack-no-clear 'vector) gp-1 (-> self last-target-pos))
+                    )
+                  0.0
+                  )
+          (+! (-> *game-info* counter) -1.0)
+          (sound-play "ring-pickup")
+          (go-virtual die)
+          )
+        (set! (-> self last-target-pos quad) (-> gp-1 quad))
+        )
+      )
+    )
   :code (behavior ()
-         (until #f
-           (suspend))
-      
-         #f
-         (none))
-    
-  :post (the-as (function none :behavior race-ring) ja-post))
-  
+    (until #f
+      (suspend)
+      )
+    #f
+    )
+  :post ja-post
+  )
 
 (defstate die (race-ring)
   :virtual #t
   :code (behavior ()
-         (while (-> self child)
-           (suspend))
-      
-         (cleanup-for-death self)
-         (none)))
-    
-  
+    (while (-> self child)
+      (suspend)
+      )
+    (cleanup-for-death self)
+    )
+  )
 
-(defmethod race-ring-method-22 race-ring ((obj race-ring))
-  (set! (-> obj root) (new 'process 'trsqv))
+(defmethod race-ring-method-22 ((this race-ring))
+  (set! (-> this root) (new 'process 'trsqv))
   0
   (none))
   
 
-(defmethod race-ring-method-23 race-ring ((obj race-ring))
-  (add-icon! *minimap* obj (the-as uint 15) (the-as int #f) (the-as vector #t) 0)
-  (set! (-> obj keep-part-track-alive) #f)
-  (set! (-> obj part-track) (the-as handle #f))
-  (set! (-> obj rot-y) (+ 16384.0 (quaternion-y-angle (-> obj root quat))))
-  (set! (-> obj last-target-pos quad) (-> (target-pos 0) quad))
-  (set-vector! (-> obj cyl axis) (cos (-> obj rot-y)) 0.0 (- (sin (-> obj rot-y))) 1.0)
-  (vector+float*! (the-as vector (-> obj cyl)) (-> obj root trans) (-> obj cyl axis) -2048.0)
-  (set! (-> obj cyl radius) 24576.0)
-  (set! (-> obj cyl length) 4096.0)
+(defmethod race-ring-method-23 ((this race-ring))
+  (add-icon! *minimap* this (the-as uint 15) (the-as int #f) (the-as vector #t) 0)
+  (set! (-> this keep-part-track-alive) #f)
+  (set! (-> this part-track) (the-as handle #f))
+  (set! (-> this rot-y) (+ 16384.0 (quaternion-y-angle (-> this root quat))))
+  (set! (-> this last-target-pos quad) (-> (target-pos 0) quad))
+  (set-vector! (-> this cyl axis) (cos (-> this rot-y)) 0.0 (- (sin (-> this rot-y))) 1.0)
+  (vector+float*! (the-as vector (-> this cyl)) (-> this root trans) (-> this cyl axis) -2048.0)
+  (set! (-> this cyl radius) 24576.0)
+  (set! (-> this cyl length) 4096.0)
   0
   (none))
   
@@ -504,15 +497,12 @@
   
 
 (deftype bb-ring-info (structure)
-  ((time      time-frame                          :offset-assert   0)
-   (start-pos vector                      :inline :offset-assert  16)
-   (rotation  float                               :offset-assert  32)
-   (rings     (array city-race-ring-info)         :offset-assert  36))
-   
-  :method-count-assert 9
-  :size-assert         #x28
-  :flag-assert         #x900000028)
-  
+  ((time       time-frame)
+   (start-pos  vector  :inline)
+   (rotation   float)
+   (rings      (array city-race-ring-info))
+   )
+  )
 
 
 (define *bb-ring-info* (new 'static 'boxed-array :type bb-ring-info
@@ -1486,15 +1476,15 @@
                  (set! (-> self slave 0) (process->handle a0-14))
                  (set! (-> self time-limit) (the-as time-frame (if (zero? (-> self sub-state))
                                                                    4500
-                                                                   (the-as int (-> *bb-ring-info* (-> self info index) time)))))
-                                                                   
-                                                    
-                       
-                 (set! (-> self start-time) (current-time))
-                 (+! (-> self sub-state) 1))))
-                 
-               
-             
+                                                                   (the-as int (-> *bb-ring-info* (-> self info index) time))
+                                                                   )
+                                                    )
+                       )
+                 (set-time! (-> self start-time))
+                 (+! (-> self sub-state) 1)
+                 )
+               )
+             )
             (else
               (go-virtual complete))))))
               
@@ -1512,13 +1502,14 @@
   TASK_MANAGER_CODE_HOOK
   (lambda :behavior task-manager
     ()
-    (while (< (- (current-time) (-> self state-time)) (seconds 5))
-      (suspend))
-      
-    (none)))
-    
-  
+    (while (not (time-elapsed? (-> self state-time) (seconds 5)))
+      (suspend)
+      )
+    (none)
+    )
+  )
 
+;; og:preserve-this
 ;; this is unnecessary. the task manager can close the task.
 (set-subtask-hook!
   *game-info*
@@ -1635,25 +1626,23 @@
               
 
 (deftype bush-collect (process-drawable)
-  ((minimap   connection-minimap  :offset-assert 200)
-   (trans-y   float               :offset-assert 204)
-   (beep-time float               :offset-assert 208))
-   
-  :heap-base #x60
-  :method-count-assert 24
-  :size-assert         #xd4
-  :flag-assert         #x18006000d4
+  ((minimap    connection-minimap)
+   (trans-y    float)
+   (beep-time  float)
+   )
+  (:state-methods
+    idle
+    die
+    )
   (:methods
-    (idle () _type_ :state 20)
-    (die () _type_ :state 21)
-    (bush-collect-method-22 (_type_) none 22)
-    (bush-collect-method-23 (_type_) none 23)))
-    
-  
+    (bush-collect-method-22 (_type_) none)
+    (bush-collect-method-23 (_type_) none)
+    )
+  )
 
 
-(defmethod bush-collect-method-22 bush-collect ((obj bush-collect))
-  (let ((s5-0 (new 'process 'collide-shape-moving obj (collide-list-enum usually-hit-by-player))))
+(defmethod bush-collect-method-22 ((this bush-collect))
+  (let ((s5-0 (new 'process 'collide-shape-moving this (collide-list-enum usually-hit-by-player))))
     (set! (-> s5-0 dynam) (copy *standard-dynamics* 'process))
     (set! (-> s5-0 reaction) cshape-reaction-default)
     (set! (-> s5-0 no-reaction)
@@ -1671,113 +1660,94 @@
     (set! (-> s5-0 nav-radius) (* 0.75 (-> s5-0 root-prim local-sphere w)))
     (let ((v1-10 (-> s5-0 root-prim)))
       (set! (-> s5-0 backup-collide-as) (-> v1-10 prim-core collide-as))
-      (set! (-> s5-0 backup-collide-with) (-> v1-10 prim-core collide-with)))
-      
-    (set! (-> obj root) s5-0))
-    
+      (set! (-> s5-0 backup-collide-with) (-> v1-10 prim-core collide-with))
+      )
+    (set! (-> this root) s5-0)
+    )
   0
   (none))
   
 
-(defmethod bush-collect-method-23 bush-collect ((obj bush-collect))
+(defmethod bush-collect-method-23 ((this bush-collect))
   0
   (none))
   
 
 (defstate idle (bush-collect)
   :virtual #t
-  :event (behavior ((proc process) (arg1 int) (event-type symbol) (event event-message-block))
-          (case event-type
-            (('touch 'attack)
-             (sound-play "homeing-pickup")
-             (go-virtual die))))
-       
-      
-    
+  :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
+    (case message
+      (('touch 'attack)
+       (sound-play "homeing-pickup")
+       (go-virtual die)
+       )
+      )
+    )
   :enter (behavior ()
-          '()
-          (none))
-    
+    '()
+    )
   :exit (behavior ()
-         '()
-         (none))
-    
+    '()
+    )
   :trans (behavior ()
-          (let ((f30-0 (+ (* 0.0033333334 (the float (current-time))) (* 0.1 (the float (-> self pid))))))
-            (when (< (-> self beep-time) f30-0)
-              (sound-play "homeing-beep")
-              (set! (-> self beep-time) (+ 1.0 f30-0)))
-        
-            (set! (-> self root trans y) (+ (-> self trans-y) (* 4096.0 (* 0.5 (cos (* 21845.334 f30-0))))))
-            (quaternion-vector-angle! (-> self root quat) *up-vector* (* 14563.556 f30-0))
-            (let ((gp-1 (matrix<-transformq+world-trans!
-                          (new 'stack-no-clear 'matrix)
-                          (the-as transformq (-> self root trans))
-                          (new 'static 'vector :y 2048.0 :w 1.0))))
-                    
-                  
-            
-              (when (nonzero? (-> self part))
-                (spawn-with-matrix (-> self part) gp-1)
-                (let ((gp-2 (vector-matrix*!
-                              (new 'stack-no-clear 'vector)
-                              (vector-rotate-around-y!
-                                (new 'stack-no-clear 'vector)
-                                (new 'static 'vector :x 1228.8 :y 2252.8 :w 1.0)
-                                (* 145635.56 f30-0))
-                          
-                              gp-1)))
-                        
-                      
-                
-                  (let ((t9-8 sp-launch-particles-var)
-                        (a0-8 *sp-particle-system-2d*)
-                        (a1-6 (-> *part-id-table* 4593))
-                        (a2-5 *launch-matrix*))
-                  
-                    (set! (-> a2-5 trans quad) (-> gp-2 quad))
-                    (t9-8 a0-8 a1-6 a2-5 (the-as sparticle-launch-state #f) (the-as sparticle-launch-control #f) 1.0))
-              
-                  (let ((t9-9 sp-launch-particles-var)
-                        (a0-9 *sp-particle-system-2d*)
-                        (a1-7 (-> *part-id-table* 4594))
-                        (a2-6 *launch-matrix*))
-                  
-                    (set! (-> a2-6 trans quad) (-> gp-2 quad))
-                    (t9-9 a0-9 a1-7 a2-6 (the-as sparticle-launch-state #f) (the-as sparticle-launch-control #f) 1.0))))))
-              
-            
-          
-        
-      
-          (none))
-    
-  :code (the-as (function none :behavior bush-collect) sleep-code)
+    (let ((f30-0 (+ (* 0.0033333334 (the float (current-time))) (* 0.1 (the float (-> self pid))))))
+      (when (< (-> self beep-time) f30-0)
+        (sound-play "homeing-beep")
+        (set! (-> self beep-time) (+ 1.0 f30-0))
+        )
+      (set! (-> self root trans y) (+ (-> self trans-y) (* 4096.0 (* 0.5 (cos (* 21845.334 f30-0))))))
+      (quaternion-vector-angle! (-> self root quat) *up-vector* (* 14563.556 f30-0))
+      (let ((gp-1 (matrix<-transformq+world-trans!
+                    (new 'stack-no-clear 'matrix)
+                    (the-as transformq (-> self root trans))
+                    (new 'static 'vector :y 2048.0 :w 1.0)
+                    )
+                  )
+            )
+        (when (nonzero? (-> self part))
+          (spawn-with-matrix (-> self part) gp-1)
+          (let ((gp-2 (vector-matrix*!
+                        (new 'stack-no-clear 'vector)
+                        (vector-rotate-around-y!
+                          (new 'stack-no-clear 'vector)
+                          (new 'static 'vector :x 1228.8 :y 2252.8 :w 1.0)
+                          (* 145635.56 f30-0)
+                          )
+                        gp-1
+                        )
+                      )
+                )
+            (launch-particles (-> *part-id-table* 4593) gp-2)
+            (launch-particles (-> *part-id-table* 4594) gp-2)
+            )
+          )
+        )
+      )
+    )
+  :code sleep-code
   :post (behavior ()
-         (ja-post)
-         (none)))
-    
-  
+    (ja-post)
+    )
+  )
 
 (defstate die (bush-collect)
   :virtual #t
   :code (behavior ()
-         (cleanup-for-death self)
-         (none)))
-    
-  
+    (cleanup-for-death self)
+    )
+  )
 
 ;; WARN: Return type mismatch entity-perm-status vs none.
-(defmethod init-from-entity! bush-collect ((obj bush-collect) (arg0 entity-actor))
+(defmethod init-from-entity! ((this bush-collect) (arg0 entity-actor))
   "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
 This commonly includes things such as:
 - stack size
 - collision information
 - loading the skeleton group / bones
 - sounds"
-  (process-entity-status! obj (entity-perm-status dead) #t)
-  (none))
-  
+  (process-entity-status! this (entity-perm-status dead) #t)
+  (none)
+  )
 
 ;; WARN: Return type mismatch object vs none.
 (defbehavior bush-collect-init-by-other bush-collect ((arg0 vector))
@@ -1842,35 +1812,29 @@ This commonly includes things such as:
   
 
 (deftype burning-bush-collection-info (structure)
-  ((pos     vector             :inline :offset-assert   0)
-   (handle  handle                     :offset-assert  16)
-   (minimap connection-minimap         :offset-assert  24))
-   
-  :method-count-assert 10
-  :size-assert         #x1c
-  :flag-assert         #xa0000001c
+  ((pos      vector  :inline)
+   (handle   handle)
+   (minimap  connection-minimap)
+   )
   (:methods
-    (burning-bush-collection-info-method-9 (_type_ object) none 9)))
-    
-  
+    (burning-bush-collection-info-method-9 (_type_ object) none)
+    )
+  )
 
 
-(defmethod burning-bush-collection-info-method-9 burning-bush-collection-info ((obj burning-bush-collection-info) (arg0 object))
+(defmethod burning-bush-collection-info-method-9 ((this burning-bush-collection-info) (arg0 object))
   (format arg0 "(static-burning-bush-collection-info~%")
-  (format arg0 "     :pos (~4,,2M ~4,,2M ~4,,2M)~%)~%" (-> obj pos x) (-> obj pos y) (-> obj pos z))
+  (format arg0 "     :pos (~4,,2M ~4,,2M ~4,,2M)~%)~%" (-> this pos x) (-> this pos y) (-> this pos z))
   0
   (none))
   
 
 (deftype bb-collection-info (structure)
-  ((user-data uint32                                :offset-assert   0)
-   (time      time-frame                            :offset-assert   8)
-   (colls     (array burning-bush-collection-info)  :offset-assert  16))
-   
-  :method-count-assert 9
-  :size-assert         #x14
-  :flag-assert         #x900000014)
-  
+  ((user-data  uint32)
+   (time       time-frame)
+   (colls      (array burning-bush-collection-info))
+   )
+  )
 
 
 (define *bb-collection-info*
@@ -2634,17 +2598,17 @@ This commonly includes things such as:
              
             (else
               (set! (-> gp-0 colls s5-3 handle) (ppointer->handle (bush-collect-spawn self (-> gp-0 colls s5-3 pos))))
-              (set! (-> gp-0 colls s5-3 minimap) #f)))))
-              
-            
-          
-        
-      (set! (-> self start-time) (current-time))
-      (set! (-> self time-limit) (-> gp-0 time)))
-      
-    (none)))
-    
-  
+              (set! (-> gp-0 colls s5-3 minimap) #f)
+              )
+            )
+          )
+        )
+      (set-time! (-> self start-time))
+      (set! (-> self time-limit) (-> gp-0 time))
+      )
+    (none)
+    )
+  )
 
 (set-subtask-hook!
   *game-info*
@@ -2682,10 +2646,10 @@ This commonly includes things such as:
   *game-info*
   (game-task-node city-burning-bush-collection-1-resolution)
   TASK_MANAGER_CODE_HOOK
-  (lambda :behavior task-manager () (set! (-> self state-time) (current-time)) (none)))
-  
+  (lambda :behavior task-manager () (set-time! (-> self state-time)) (none))
+  )
 
-;; PC PORT NOTE : added complete hook for collection bbush tasks where we wait for the hud to die first
+;; og:preserve-this added complete hook for collection bbush tasks where we wait for the hud to die first
 (set-subtask-hook! *game-info* (game-task-node city-burning-bush-collection-1-resolution)
   TASK_MANAGER_COMPLETE_HOOK
   (lambda :behavior task-manager ()
@@ -2703,16 +2667,13 @@ This commonly includes things such as:
   
 
 (deftype burning-bush-get-on-info (structure)
-  ((trans        vector     :inline :offset-assert   0)
-   (quat         quaternion :inline :offset-assert  16)
-   (camera-trans vector     :inline :offset-assert  32)
-   (camera-rot   float      9       :offset-assert  48)
-   (time         float              :offset-assert  84))
-   
-  :method-count-assert 9
-  :size-assert         #x58
-  :flag-assert         #x900000058)
-  
+  ((trans         vector      :inline)
+   (quat          quaternion  :inline)
+   (camera-trans  vector      :inline)
+   (camera-rot    float       9)
+   (time          float)
+   )
+  )
 
 
 (define *burning-bush-get-on-info*
@@ -2988,11 +2949,11 @@ This commonly includes things such as:
       (+! (-> a0-3 y) 4096.0)
       (set! (-> self slave 0)
             (ppointer->handle
-              (birth-pickup-at-point a0-3 (pickup-type skill) (-> *FACT-bank* super-skill-inc) #t self t1-1))))
-              
-            
-      
-    (set! (-> self start-time) (current-time))
+              (birth-pickup-at-point a0-3 (pickup-type skill) (-> *FACT-bank* super-skill-inc) #t self t1-1)
+              )
+            )
+      )
+    (set-time! (-> self start-time))
     (set! (-> self time-limit)
           (the-as time-frame (the int (+ 300.0 (-> *burning-bush-get-on-info* (-> self info index) time)))))
           
@@ -3029,10 +2990,10 @@ This commonly includes things such as:
       (send-event *camera* 'teleport-to-transformq gp-0))
       
     (let ((gp-1 (current-time)))
-      (until (>= (- (current-time) gp-1) (seconds 3))
-        (suspend)))
-        
-      
+      (until (time-elapsed? gp-1 (seconds 3))
+        (suspend)
+        )
+      )
     (remove-setting! 'minimap)
     (set! (-> *ACTOR-bank* birth-max) 1000)
     (persist-with-delay *setting-control* 'interp-time (seconds 0.05) 'interp-time 'abs 0.0 0)
@@ -3141,111 +3102,111 @@ This commonly includes things such as:
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
   
 
-(defmethod draw hud-homing-beacon ((obj hud-homing-beacon))
+(defmethod draw ((this hud-homing-beacon))
   (set-hud-piece-position!
-    (the-as hud-sprite (-> obj sprites))
-    (the int (+ 457.0 (* 130.0 (-> obj offset))))
-    160)
-    
-  (set! (-> obj sprites 0 scale-x) 1.0)
-  (set! (-> obj sprites 0 scale-y) 1.0)
-  (set! (-> obj sprites 0 flags) (the-as uint 4))
-  (set! (-> obj strings 0 scale) 0.5)
-  (set! (-> obj strings 0 flags) (font-flags kerning middle large))
-  (format (clear (-> obj strings 0 text)) "~D" (-> obj values 0 current))
-  (set-as-offset-from! (the-as hud-sprite (-> obj strings 0 pos)) (the-as vector4w (-> obj sprites)) -16 60)
-  ((method-of-type hud draw) obj)
+    (the-as hud-sprite (-> this sprites))
+    (the int (+ 457.0 (* 130.0 (-> this offset))))
+    160
+    )
+  (set! (-> this sprites 0 scale-x) 1.0)
+  (set! (-> this sprites 0 scale-y) 1.0)
+  (set! (-> this sprites 0 flags) (the-as uint 4))
+  (set! (-> this strings 0 scale) 0.5)
+  (set! (-> this strings 0 flags) (font-flags kerning middle large))
+  (format (clear (-> this strings 0 text)) "~D" (-> this values 0 current))
+  (set-as-offset-from! (the-as hud-sprite (-> this strings 0 pos)) (the-as vector4w (-> this sprites)) -16 60)
+  ((method-of-type hud draw) this)
   0
   (none))
   
 
-(defmethod update-values hud-homing-beacon ((obj hud-homing-beacon))
-  (set! (-> obj values 0 target) (the int (-> *game-info* counter)))
-  ((method-of-type hud update-values) obj)
+(defmethod update-values ((this hud-homing-beacon))
+  (set! (-> this values 0 target) (the int (-> *game-info* counter)))
+  ((method-of-type hud update-values) this)
   0
   (none))
   
 
-(defmethod init-callback hud-homing-beacon ((obj hud-homing-beacon))
-  (set! (-> obj level) (level-get *level* 'lbbush))
-  (set! (-> obj gui-id)
-        (add-process *gui-control* obj (gui-channel hud-middle-right) (gui-action hidden) (-> obj name) 81920.0 0))
-        
-  (logior! (-> obj flags) (hud-flags show))
-  (set! (-> obj sprites 0 tex) (lookup-texture-by-id (new 'static 'texture-id :page #xd89)))
-  (alloc-string-if-needed obj 0)
+(defmethod init-callback ((this hud-homing-beacon))
+  (set! (-> this level) (level-get *level* 'lbbush))
+  (set! (-> this gui-id)
+        (add-process *gui-control* this (gui-channel hud-middle-right) (gui-action hidden) (-> this name) 81920.0 0)
+        )
+  (logior! (-> this flags) (hud-flags show))
+  (set! (-> this sprites 0 tex) (lookup-texture-by-id (new 'static 'texture-id :page #xd89)))
+  (alloc-string-if-needed this 0)
   0
   (none))
   
 
-(defmethod draw hud-dark-eco-pickup ((obj hud-dark-eco-pickup))
+(defmethod draw ((this hud-dark-eco-pickup))
   (set-hud-piece-position!
-    (the-as hud-sprite (-> obj sprites))
-    (the int (+ 457.0 (* 130.0 (-> obj offset))))
-    180)
-    
-  (set! (-> obj sprites 0 scale-x) 1.0)
-  (set! (-> obj sprites 0 scale-y) 1.0)
-  (set! (-> obj sprites 0 flags) (the-as uint 4))
-  (set! (-> obj strings 0 flags) (font-flags kerning middle large))
-  (set! (-> obj strings 0 scale) 0.5)
-  (format (clear (-> obj strings 0 text)) "~D" (-> obj values 0 current))
-  (set-as-offset-from! (the-as hud-sprite (-> obj strings 0 pos)) (the-as vector4w (-> obj sprites)) -16 26)
-  ((method-of-type hud draw) obj)
+    (the-as hud-sprite (-> this sprites))
+    (the int (+ 457.0 (* 130.0 (-> this offset))))
+    180
+    )
+  (set! (-> this sprites 0 scale-x) 1.0)
+  (set! (-> this sprites 0 scale-y) 1.0)
+  (set! (-> this sprites 0 flags) (the-as uint 4))
+  (set! (-> this strings 0 flags) (font-flags kerning middle large))
+  (set! (-> this strings 0 scale) 0.5)
+  (format (clear (-> this strings 0 text)) "~D" (-> this values 0 current))
+  (set-as-offset-from! (the-as hud-sprite (-> this strings 0 pos)) (the-as vector4w (-> this sprites)) -16 26)
+  ((method-of-type hud draw) this)
   0
   (none))
   
 
-(defmethod update-values hud-dark-eco-pickup ((obj hud-dark-eco-pickup))
-  (set! (-> obj values 0 target) (the int (-> *game-info* counter)))
-  ((method-of-type hud update-values) obj)
+(defmethod update-values ((this hud-dark-eco-pickup))
+  (set! (-> this values 0 target) (the int (-> *game-info* counter)))
+  ((method-of-type hud update-values) this)
   0
   (none))
   
 
-(defmethod init-callback hud-dark-eco-pickup ((obj hud-dark-eco-pickup))
-  (set! (-> obj gui-id)
-        (add-process *gui-control* obj (gui-channel hud-middle-right) (gui-action hidden) (-> obj name) 81920.0 0))
-        
-  (logior! (-> obj flags) (hud-flags show))
-  (set! (-> obj sprites 0 tex) (lookup-texture-by-id (new 'static 'texture-id :index #x46 :page #x67a)))
-  (alloc-string-if-needed obj 0)
+(defmethod init-callback ((this hud-dark-eco-pickup))
+  (set! (-> this gui-id)
+        (add-process *gui-control* this (gui-channel hud-middle-right) (gui-action hidden) (-> this name) 81920.0 0)
+        )
+  (logior! (-> this flags) (hud-flags show))
+  (set! (-> this sprites 0 tex) (lookup-texture-by-id (new 'static 'texture-id :index #x46 :page #x67a)))
+  (alloc-string-if-needed this 0)
   0
   (none))
   
 
-(defmethod draw hud-green-eco-pickup ((obj hud-green-eco-pickup))
+(defmethod draw ((this hud-green-eco-pickup))
   (set-hud-piece-position!
-    (the-as hud-sprite (-> obj sprites))
-    (the int (+ 457.0 (* 130.0 (-> obj offset))))
-    180)
-    
-  (set! (-> obj sprites 0 scale-x) 1.0)
-  (set! (-> obj sprites 0 scale-y) 1.0)
-  (set! (-> obj sprites 0 flags) (the-as uint 4))
-  (set! (-> obj strings 0 flags) (font-flags kerning middle large))
-  (set! (-> obj strings 0 scale) 0.5)
-  (format (clear (-> obj strings 0 text)) "~D" (-> obj values 0 current))
-  (set-as-offset-from! (the-as hud-sprite (-> obj strings 0 pos)) (the-as vector4w (-> obj sprites)) -16 26)
-  ((method-of-type hud draw) obj)
+    (the-as hud-sprite (-> this sprites))
+    (the int (+ 457.0 (* 130.0 (-> this offset))))
+    180
+    )
+  (set! (-> this sprites 0 scale-x) 1.0)
+  (set! (-> this sprites 0 scale-y) 1.0)
+  (set! (-> this sprites 0 flags) (the-as uint 4))
+  (set! (-> this strings 0 flags) (font-flags kerning middle large))
+  (set! (-> this strings 0 scale) 0.5)
+  (format (clear (-> this strings 0 text)) "~D" (-> this values 0 current))
+  (set-as-offset-from! (the-as hud-sprite (-> this strings 0 pos)) (the-as vector4w (-> this sprites)) -16 26)
+  ((method-of-type hud draw) this)
   0
   (none))
   
 
-(defmethod update-values hud-green-eco-pickup ((obj hud-green-eco-pickup))
-  (set! (-> obj values 0 target) (the int (-> *game-info* counter)))
-  ((method-of-type hud update-values) obj)
+(defmethod update-values ((this hud-green-eco-pickup))
+  (set! (-> this values 0 target) (the int (-> *game-info* counter)))
+  ((method-of-type hud update-values) this)
   0
   (none))
   
 
-(defmethod init-callback hud-green-eco-pickup ((obj hud-green-eco-pickup))
-  (set! (-> obj gui-id)
-        (add-process *gui-control* obj (gui-channel hud-middle-right) (gui-action hidden) (-> obj name) 81920.0 0))
-        
-  (logior! (-> obj flags) (hud-flags show))
-  (set! (-> obj sprites 0 tex) (lookup-texture-by-id (new 'static 'texture-id :index #x47 :page #x67a)))
-  (alloc-string-if-needed obj 0)
+(defmethod init-callback ((this hud-green-eco-pickup))
+  (set! (-> this gui-id)
+        (add-process *gui-control* this (gui-channel hud-middle-right) (gui-action hidden) (-> this name) 81920.0 0)
+        )
+  (logior! (-> this flags) (hud-flags show))
+  (set! (-> this sprites 0 tex) (lookup-texture-by-id (new 'static 'texture-id :index #x47 :page #x67a)))
+  (alloc-string-if-needed this 0)
   0
   (none))
   

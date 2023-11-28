@@ -311,7 +311,8 @@
                  )
            )
       (when (< v1-1 32)
-        (let* ((a3-1 (the-as int (-> pp clock integral-frame-counter)))
+        ;; og:preserve-this high fps fix
+        (let* ((a3-1 (the int (* DISPLAY_FPS_RATIO (-> pp clock integral-frame-counter))))
                (a2-3 (-> a1-1 time-factor))
                (t0-2 (+ (ash 1 a2-3) -1))
                )
@@ -590,6 +591,9 @@
               )
             )
           )
+    (#when PC_PORT
+      (if (not (-> *pc-settings* ps2-shadow?))
+          (set! dist 0.0)))
     (let ((t1-5 (-> shadow-settings flags)))
       (-> draw-ctrl cur-lod)
       (when (not (logtest? t1-5 (shadow-flags disable-fade)))
@@ -971,6 +975,7 @@
   (update-verts 0)
   (disable-fog 1)
   (pc-blerc 2)
+  (disable-envmap 3)
   )
 
 (deftype pc-merc-flags (structure)
@@ -1084,6 +1089,9 @@
               )
             (when (logtest? (-> dc status) (draw-control-status disable-fog))
               (logior! (-> flags bit-flags) (pc-merc-bits disable-fog))
+              )
+            (when (logtest? (-> dc global-effect) (draw-control-global-effect disable-envmap))
+              (logior! (-> flags bit-flags) (pc-merc-bits disable-envmap))
               )
             (set! (-> flags enable-mask) enable-mask)
             (set! (-> flags ignore-alpha-mask) ignore-alpha-mask)
