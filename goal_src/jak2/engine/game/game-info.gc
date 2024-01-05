@@ -355,7 +355,7 @@
     (('game)
      (+! (-> this task-counter) 1)
      (reset! (-> *display* total-game-clock))
-     (set! (-> this features) (game-feature sidekick))
+     (set! (-> this features) (game-feature sidekick board))
      (set! (-> this debug-features) (game-feature))
      (set! (-> this secrets) (game-secrets))
      (set! (-> this purchase-secrets) (game-secrets))
