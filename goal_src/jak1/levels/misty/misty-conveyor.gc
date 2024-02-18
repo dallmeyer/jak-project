@@ -537,7 +537,7 @@
   (set! (-> self root quat vec quad) (-> arg0 root quat vec quad))
   (set! (-> self root scale quad) (-> arg0 root scale quad))
   (initialize-skeleton self *keg-conveyor-paddle-sg* '())
-  (setup-params! (-> self sync) (the-as uint 4800) 0.0 0.15 0.15)
+  (setup-params! (-> self sync) (the-as uint 1600) 0.0 0.15 0.15)
   (logclear! (-> self mask) (process-mask actor-pause enemy))
   (set! (-> self object-on-paddle) (the-as (pointer bouncing-float) #f))
   (go keg-conveyor-paddle-idle)
