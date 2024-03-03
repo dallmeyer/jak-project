@@ -149,7 +149,7 @@
     (new 'static 'game-option :option-type (game-option-type menu) :name (text-id game-resolution) :scale #t :param3 (game-option-menu resolution))
     (new 'static 'game-option :option-type (game-option-type display-mode) :name (text-id display-mode) :scale #t)
     (new 'static 'game-option :option-type (game-option-type menu) :name (text-id display) :scale #t :param3 (game-option-menu monitor)
-      :option-disabled-func (lambda () (= (-> *pc-settings* display-mode) 'windowed)))
+      :option-disabled-func (lambda () (= (pc-get-display-mode) 'windowed)))
     (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id vsync) :scale #t)
     (new 'static 'game-option :option-type (game-option-type menu) :name (text-id aspect-ratio) :scale #t :param3 (game-option-menu aspect-ratio))
     (new 'static 'game-option :option-type (game-option-type msaa) :name (text-id msaa) :scale #t)
