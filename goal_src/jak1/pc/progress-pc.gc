@@ -1610,7 +1610,7 @@
                ;; resolution button. change resolution!
                (let ((newx (the int (-> options (-> obj option-index) param1)))
                      (newy (the int (-> options (-> obj option-index) param2))))
-                   (set-size! *pc-settings* newx newy #t))
+                   (set-window-size! *pc-settings* newx newy))
                (cpad-clear! 0 x)
                (cpad-clear! 0 circle)
                (sound-play "cursor-options")
@@ -1829,6 +1829,7 @@
                 )
                (((game-option-type display-mode))
                 ;; same thing.
+                ;; TODO - fix
                 (case (-> *progress-carousell* int-backup)
                   ((0) (set-display-mode! *pc-settings* 'windowed #t))
                   ((1) (set-display-mode! *pc-settings* 'fullscreen #t))
