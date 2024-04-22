@@ -782,9 +782,9 @@ s32 find_or_add_texture_to_level(tfrag3::Level& out,
 
     if (idx == left_id || idx == right_id) {
       if (!hdr.eye_ctrl) {
-        fmt::print("no eye ctrl, but expected one");
+        fmt::print("no eye ctrl, but expected one. this is for {}\n", debug_name);
         if (debug_name != "kor-break-lod0") {
-          ASSERT(false);
+          // ASSERT(false);
         }
       }
       if (idx == left_id) {

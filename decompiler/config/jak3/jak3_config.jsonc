@@ -116,7 +116,7 @@
   ////////////////////////////
 
   // turn this on to extract level background graphics data as .fr3 files in out/<game>/fr3
-  "levels_extract": false,
+  "levels_extract": true,
   // turn this on if you want extracted levels to be saved out as .glb files in glb_out/<game>
   "rip_levels": false,
   // should we also extract collision meshes to the .fr3 files?
