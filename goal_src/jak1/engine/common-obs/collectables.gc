@@ -1544,7 +1544,19 @@
       (set! (-> s2-1 quad) (-> this process root trans quad))
       (+! (-> s2-1 y) 12288.0)
       (let ((s1-1 (new 'stack-no-clear 'collide-tri-result)))
-        (if (>= (fill-and-probe-using-y-probe *collide-cache*
+        (case (-> this process type symbol)
+          (('my-breakable-rock)
+            ;; customize position of dropped pickup here
+            (set! (-> s2-1 quad) (-> this process root trans quad)))
+            (+! (-> s2-1 x) (meters -1.0)) ;; shift to side by 1m
+            )
+          (('my-breakable-tree)
+            ;; customize position of dropped pickup here
+            (set! (-> s2-1 quad) (-> this process root trans quad)))
+            (+! (-> s2-1 y) (meters 2.0)  ;; move up by 2m
+            )
+          (else
+            (if (>= (fill-and-probe-using-y-probe *collide-cache*
                                               s2-1
                                               (the-as float 81920.0)
                                               (collide-kind background)
@@ -1552,8 +1564,11 @@
                                               s1-1
                                               (new 'static 'pat-surface :noentity #x1))
                 0.0)
-          (set! (-> s2-1 quad) (-> s1-1 intersect quad))
-          (set! (-> s2-1 quad) (-> this process root trans quad))))
+              (set! (-> s2-1 quad) (-> s1-1 intersect quad))
+              (set! (-> s2-1 quad) (-> this process root trans quad)))
+            )
+          )
+        )
       (if (= (the-as int s3-0) 6) (+! (-> s2-1 y) 6144.0))
       (birth-pickup-at-point s2-1 (the-as pickup-type s3-0) f30-0 arg0 arg1 this))))
 
