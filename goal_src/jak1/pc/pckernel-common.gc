@@ -185,16 +185,13 @@
   (update-from-os obj)
   (update-to-os obj)
   (update-discord-rpc obj)
-
   ;; barg hack to spawn test actor
-  (when (and *target* (not (process-by-name "my-actor-1" *entity-pool*)))
+  (when (and *target* (not (process-by-name "my-actor-1" *active-pool*)))
     (let ((trans (new-stack-vector0))
-          (quat (new-stack-vector0)))
+          (quat (new-stack-quaternion0)))
       (set-vector! trans (meters -155.37) (meters 34.5) (meters 184.14) 1.0)
-      (set-vector! quat -0.0000 0.6625 0.0000 -0.7490)
-      (process-spawn my-actor trans quat :to *entity-pool* :name "my-actor-1"))
-    )
-
+      (quaternion-set! quat -0.0000 0.6625 0.0000 -0.7490)
+      (process-spawn my-actor trans quat :name "my-actor-1")))
   ;; update auto-splitter info
   (update-speedrun obj)
   (when (not (-> obj use-vis?))
