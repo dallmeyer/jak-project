@@ -11,6 +11,8 @@
   "village1-part.o"
   "village1-part2.o"
   "sequence-a-village1.o"
+  "my-actor.o"
+  "my-actor-ag.go"
   "tpage-398.go"
   "tpage-400.go"
   "tpage-399.go"

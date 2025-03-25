@@ -201,6 +201,7 @@
   "autosplit-h.o" ;; added
   "autosplit.o" ;; added
   "speedruns.o" ;; added
+  "my-actor.o"
   "pckernel-common.o" ;; added
   "pckernel.o" ;; added
   "mood-tables.o"
@@ -327,6 +328,7 @@
   "sidekick-ag.go"
   "deathcam-ag.go"
   "game-cnt.go"
+  "my-actor-ag.go"
   "rigid-body-h.o"
   "water-anim.o"
   "dark-eco-pool.o"

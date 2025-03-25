@@ -1663,6 +1663,8 @@
 ;; to also generate a collide-mesh, add :gen-mesh #t
 (build-actor "test-actor" :gen-mesh #t)
 
+(build-actor "my-actor" :gen-mesh #t)
+
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Game Engine Code
 ;;;;;;;;;;;;;;;;;;;;;
@@ -2091,7 +2093,8 @@
 (goal-src "pc/pckernel-h.gc" "dma-buffer")
 (goal-src "pc/pckernel-impl.gc" "pckernel-h" "pc-cheats")
 (goal-src "pc/util/pc-anim-util.gc" "target-h")
-(goal-src "pc/pckernel-common.gc" "pckernel-impl" "pc-anim-util" "settings" "video" "target-h" "autosplit-h" "speedruns-h")
+(goal-src "pc/my-actor.gc" "process-drawable")
+(goal-src "pc/pckernel-common.gc" "$OUT/obj/my-actor.o" "pckernel-impl" "pc-anim-util" "settings" "video" "target-h" "autosplit-h" "speedruns-h")
 (goal-src "pc/pckernel.gc" "pckernel-common")
 (goal-src "pc/subtitle.gc" "text" "pckernel" "hint-control" "loader-h" "gsound" "ambient")
 (goal-src "pc/progress-pc.gc" "progress" "pckernel")

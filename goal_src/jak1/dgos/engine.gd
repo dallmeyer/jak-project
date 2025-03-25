@@ -205,6 +205,7 @@
   "autosplit-h.o" ;; added
   "autosplit.o" ;; added
   "speedruns.o" ;; added
+  "my-actor.o"
   "pckernel-common.o" ;; added
   "pckernel.o" ;; added
   "mood-tables.o"
