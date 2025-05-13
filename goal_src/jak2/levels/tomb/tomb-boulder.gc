@@ -347,6 +347,40 @@
     )
   )
 
+(defun get-boulder-mode ()
+  (when (process-by-ename "tomb-boulder-4")
+    (return (the int (-> (the tomb-boulder (process-by-ename "tomb-boulder-4")) mode)))
+    )
+  -1
+  )
+
+(defun get-boulder-sub-mode ()
+  (when (process-by-ename "tomb-boulder-4")
+    (return (the int (-> (the tomb-boulder (process-by-ename "tomb-boulder-4")) sub-mode)))
+    )
+  -1
+  )
+
+(defun get-boulder-anim-name ()
+  (when (and (process-by-ename "tomb-boulder-4") (nonzero? (-> (the tomb-boulder (process-by-ename "tomb-boulder-4")) anim)))
+    (return (-> (the tomb-boulder (process-by-ename "tomb-boulder-4")) anim name))
+    )
+  "n/a"
+  )
+
+(defun get-boulder-gui-id ()
+  (when (process-by-ename "tomb-boulder-4")
+    (return (the int (-> (the tomb-boulder (process-by-ename "tomb-boulder-4")) gui-id)))
+    )
+  -1
+  )
+
+(defun get-boulder-speed ()
+  (when (process-by-ename "tomb-boulder-4")
+    (return (-> (the tomb-boulder (process-by-ename "tomb-boulder-4")) current-speed))
+    )
+  -1.0
+  )
 
 (defstate idle (tomb-boulder)
   :virtual #t
@@ -510,6 +544,7 @@
        v0-0
        )
       (('mode)
+       (format 0 "event told me to set mode to ~D~%" (the-as uint v0-0))
        (set! v0-0 (command-get-int (-> block param 0) 0))
        (set! (-> self mode) (the-as uint v0-0))
        v0-0
@@ -699,12 +734,14 @@
     (process-entity-status! self (entity-perm-status no-kill) #f)
     )
   :code (behavior ((arg0 spool-anim))
+    (format 0 "top of code block for boulder chase ~%")
     (play-clean #f)
     (set! (-> self gui-id)
           (add-process *gui-control* self (gui-channel art-load-next) (gui-action queue) (-> self anim name) -1.0 0)
           )
     (while (!= (get-status *gui-control* (-> self gui-id)) (gui-status ready))
       (set-blackout-frames (seconds 0.1))
+      (format 0 "looping waiting for gui-status ready~%")
       (suspend)
       )
     (let ((v1-7 (lookup-gui-connection
@@ -720,6 +757,7 @@
           (set! (-> v1-7 channel) (gui-channel art-load))
           )
       )
+    (format 0 "before ja-play-spooled in code block for boulder chase ~%")
     (ja-play-spooled-anim
       (-> self anim)
       (if (string= (the-as string (-> self anim anim-name)) "tomb-spider-chase-0")
@@ -732,12 +770,14 @@
           )
       (the-as (function process-drawable symbol) false-func)
       )
+    (format 0 "after ja-play-spooled in code block for boulder chase ~%")
     (case (-> self mode)
       ((2)
        (set-blackout-frames (seconds 0.1))
        (ja-channel-set! 0)
        (let ((gp-3 (ppointer->handle (process-spawn scene-player :init scene-player-init "tomb-spider-scare" #t #f))))
          (while (handle->process (the-as handle gp-3))
+           (format 0 "looping in mode 2 waiting for tomb-spider-scare to end")
            (suspend)
            )
          )
