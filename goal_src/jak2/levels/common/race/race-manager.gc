@@ -205,6 +205,15 @@
     (let ((s5-0 (new 'stack-no-clear 'matrix3)))
       (-> arg0 info)
       (let ((v1-2 (handle->process (-> this racer))))
+        (when (or (= (-> this rider) 0) (= (-> this rider) 2))
+           (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug-no-zbuf1))
+            (let ((font-ctx (new 'stack 'font-context *font-default-matrix* 69 420 0.0 (font-color red) (font-flags shadow kerning large))))
+              (draw-string-adv 
+                (string-format "lap-quadrant: ~D ~%lap-dist: ~m" (-> this lap-quadrant) (-> this lap-dist))
+                buf font-ctx)
+              )
+            )
+          )
         (cond
           (v1-2
             (if (focus-test? (the-as process-focusable v1-2) dead inactive)
