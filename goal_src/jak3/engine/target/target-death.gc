@@ -936,6 +936,7 @@
       ((or (= v1-32 'endlessfall) (= v1-32 'instant-death) (= v1-32 'crush) (= v1-32 'tentacle))
        )
       ((begin
+         (format 0 "target-hit-effect invuln1, time: ~D ~%" (current-time))
          (target-timed-invulnerable (-> arg0 invinc-time) self 1)
          (cpad-set-buzz! (-> *cpad-list* cpads 0) 0 255 (seconds 0.5))
          (focus-test? self indax)
@@ -1633,12 +1634,14 @@
             )
           )
          (else
+           (format 0 "target-hit else ~A~%" (-> sv-32 mode))
            (pickup-collectable! (-> self fact) (pickup-type health) (- (-> sv-32 damage)) (the-as handle #f))
            )
          )
        (target-hit-effect sv-32)
        )
       (else
+        (format 0 "target-hit not an 'attack ~A ~A~%" arg0 (-> sv-32 mode))
         (case (-> sv-32 mode)
           (('burn 'burnup)
            (sound-play "get-burned")
@@ -1669,6 +1672,9 @@
       )
     )
   :post target-post
+  :enter (behavior ((arg0 symbol) (arg1 attack-info))
+    (format 0 "target-hit enter ~A ~A ~%" arg0 (-> arg1 mode))
+    )
   )
 
 (define *death-spool-array*
@@ -2137,6 +2143,7 @@
           )
     (set! (-> self neck flex-blend) 0.0)
     (logior! (-> self control pat-ignore-mask) (new 'static 'pat-surface :noendlessfall #x1))
+    (format 0 "target-death invuln off~%")
     (target-timed-invulnerable-off self 0)
     (let ((s5-0 (-> self child)))
       (while s5-0

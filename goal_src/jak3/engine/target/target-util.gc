@@ -1633,6 +1633,13 @@
      (set! (-> arg1 control invul2-off-time) arg0)
      )
     )
+  (format 0 "target-timed-invulnerable ON ~D : invuln1 ~D-~D / invuln2 ~D-~D~%"
+          arg2
+          (-> arg1 control invul1-on-time)
+          (-> arg1 control invul1-off-time)
+          (-> arg1 control invul2-on-time)
+          (-> arg1 control invul2-off-time)
+          )
   (modify-collide-as! (-> arg1 control) 2 (collide-spec jak-vulnerable) (collide-spec))
   (logior! (-> arg1 focus-status) (focus-status ignore))
   0
@@ -1653,6 +1660,7 @@
        )
       )
     )
+  (format 0 "target-timed-invulnerable OFF ~D ~D~%" arg1 (current-time))
   (when (not (logtest? (target-flags tinvuln1 tinvuln2) (-> arg0 target-flags)))
     (logclear! (-> arg0 draw status) (draw-control-status no-draw-bounds))
     (modify-collide-as! (-> arg0 control) 2 (collide-spec) (collide-spec jak-vulnerable))
@@ -1662,27 +1670,44 @@
   )
 
 (defbehavior target-log-attack target ((arg0 attack-info) (arg1 symbol))
-  (if (and (= arg1 'background) (= (-> arg0 id) 2))
+  (when (and (= arg1 'background) (= (-> arg0 id) 2))
+      (format 0 "target-log-attack earliest return #t~%")
       (return #t)
       )
-  (let ((a3-0 (the-as object (-> self attack-info-old))))
+  (let ((most-recent-attack (the-as object (-> self attack-info-old))))
     (dotimes (a2-2 8)
-      (let ((v1-9 (-> self attack-info-old a2-2)))
-        (when (= (-> arg0 id) (-> v1-9 id))
-          (if (not (time-elapsed? (-> v1-9 attack-time) (-> *TARGET-bank* same-attack-invulnerable-timeout)))
+      (let ((attack-old-tmp (-> self attack-info-old a2-2)))
+        (when (= (-> arg0 id) (-> attack-old-tmp id))
+          ;; recent attack with same ID - exit early
+          (when (not (time-elapsed? (-> attack-old-tmp attack-time) (-> *TARGET-bank* same-attack-invulnerable-timeout)))
+              (format 0 "target-log-attack same-attack-invulnerable-timeout! ID: ~D last-attack: ~D VS ~D (current-time: ~D + invuln timeout ~D) -> ~D ticks of invuln remaining ~%"
+                      (-> attack-old-tmp id)
+                      (-> attack-old-tmp attack-time)
+                      (+ (-> attack-old-tmp attack-time) (-> *TARGET-bank* same-attack-invulnerable-timeout))
+                      (current-time)
+                      (-> *TARGET-bank* same-attack-invulnerable-timeout)
+                      (- (+ (-> attack-old-tmp attack-time) (-> *TARGET-bank* same-attack-invulnerable-timeout)) (current-time))
+                      )
               (return #f)
               )
+          ;; same ID attack, but invuln timeout has passed
           (cond
             ((= arg1 'test)
              )
             (else
-              (mem-copy! (the-as pointer v1-9) (the-as pointer arg0) 168)
+              (mem-copy! (the-as pointer attack-old-tmp) (the-as pointer arg0) 168) ;; found matching ID - copy that back up
               )
             )
+          (format 0 "target-log-attack early return #t from ID match ~%")
           (return #t)
           )
-        (if (< (-> v1-9 attack-time) (-> (the-as attack-info a3-0) attack-time))
-            (set! a3-0 v1-9)
+        (when (< (-> attack-old-tmp attack-time) (-> (the-as attack-info most-recent-attack) attack-time))
+            (format 0 "target-log-attack updating most recent attack (no ID match) ~D -> ~D ~%"
+              (-> attack-old-tmp id)
+              (-> (the-as attack-info most-recent-attack) attack-time)
+              (-> attack-old-tmp attack-time)
+              )
+            (set! most-recent-attack attack-old-tmp)
             )
         )
       )
@@ -1690,10 +1715,11 @@
       (('test)
        )
       (else
-        (mem-copy! (the-as pointer a3-0) (the-as pointer arg0) 168)
+        (mem-copy! (the-as pointer most-recent-attack) (the-as pointer arg0) 168) ;; no matching ID - copy most recent attack info back up
         )
       )
     )
+  (format 0 "target-log-attack final return #t~%")
   #t
   )
 
@@ -1763,7 +1789,8 @@
     (logior! (-> this mask) (attack-mask attacker))
     )
   (when (not (logtest? (-> this mask) (attack-mask attack-time)))
-    (set! (-> this attack-time) (-> *display* base-clock frame-counter))
+    (format 0 "setting attack-time to ~D (or should it be ~D ?)~%" (-> *display* base-clock frame-counter) (current-time))
+    (set! (-> this attack-time) (-> *display* base-clock frame-counter)) ;; THIS IS THE BUG!!!
     (logior! (-> this mask) (attack-mask attack-time))
     )
   (if (not (logtest? (attack-mask damage) (-> this mask)))

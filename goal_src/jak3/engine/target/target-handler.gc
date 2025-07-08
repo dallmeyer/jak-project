@@ -59,6 +59,7 @@
               )
         (s2-0 arg0)
         )
+    (format 0 "target-attacked ~A ~A ~D ~%" s2-0 s4-0 (current-time))
     (when (or (and (not (focus-test? self hit)) (not (logtest? (target-flags disable-attacks) (-> self target-flags))))
               (= s4-0 'endlessfall)
               )
@@ -91,6 +92,7 @@
                       )
                  )
              )
+         (format 0 "  target-attacked detected some kinda invuln / light shield / etc...~%")
          (case arg0
            (('attack-or-shove)
             )
@@ -98,6 +100,7 @@
             (set! arg0 'attack)
             )
            (else
+             (format 0 "  target-attacked return #f ~A~%" arg0)
              (return #f)
              )
            )
@@ -113,7 +116,7 @@
       (mem-copy! (the-as pointer (-> self attack-info-rec)) (the-as pointer arg1) 168)
       (compute-intersect-info (-> self attack-info-rec) arg1 self arg2 arg3)
       (when (not (focus-test? self mech))
-        (if (and (not (target-log-attack (-> self attack-info-rec) (if (logtest? (attack-mask test) (-> arg1 mask))
+        (when (and (not (target-log-attack (-> self attack-info-rec) (if (logtest? (attack-mask test) (-> arg1 mask))
                                                                        'test
                                                                        'log
                                                                        )
@@ -121,6 +124,7 @@
                       )
                  (!= s2-0 'attack-invinc)
                  )
+            (format 0 "  target-attacked log said to return #f~%")
             (return #f)
             )
         )
@@ -166,6 +170,7 @@
              (part-tracker-spawn part-tracker :to self :group (-> *part-group-id-table* 10))
              )
            )
+         (format 0 "target-attacked invuln1~%")
          (target-timed-invulnerable
            (if (logtest? (-> self attack-info-rec mask) (attack-mask invinc-time))
                (-> self attack-info-rec invinc-time)
@@ -243,6 +248,7 @@
             (logior! (-> self focus-status) (focus-status dead))
             (logior! (-> self target-flags) (target-flags disable-attacks))
             )
+          (format 0 "target-attacked go ~A ~A~%" (-> arg4 name) arg0)
           (go arg4 arg0 (-> self attack-info-rec))
           )
         )
@@ -1138,6 +1144,7 @@
      v0-0
      )
     (('invulnerable)
+     (format 0 "target-generic-event-handler 'invulnerable invuln2~%")
      (target-timed-invulnerable (the-as time-frame (-> arg3 param 0)) self 2)
      #t
      )
@@ -1172,6 +1179,7 @@
                        (set! (-> self attack-info-rec attacker) (process->handle arg0))
                        (logior! (-> self attack-info-rec mask) (attack-mask attacker))
                        )
+                     (format 0 "go target-hit from target-standard-event-handler~%")
                      (go target-hit 'shove (-> self attack-info-rec))
                      )
               )
@@ -1781,6 +1789,7 @@
                       (not (logtest? (-> self focus-status) (focus-status dead hit)))
                       )
              (vector-copy! (-> self control last-trans-any-surf) (-> self control trans))
+             (format 0 "target-bonk invuln1~%")
              (target-timed-invulnerable (seconds 0.1) self 1)
              (go target-jump (-> *TARGET-bank* jump-height-min) (-> *TARGET-bank* jump-height-max) (the-as surface #f))
              )

@@ -1357,6 +1357,7 @@
           (the-as handle #f)
           )
         )
+      (format 0 "target-hit-gruond-hard invuln1~%")
       (target-timed-invulnerable (-> *TARGET-bank* hit-invulnerable-timeout) self 1)
       )
     (cond
