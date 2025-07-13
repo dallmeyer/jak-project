@@ -898,7 +898,7 @@
         )
       )
     (cond
-      ((not (logtest? (-> *game-info* features) (game-feature board)))
+      (#f ;; (not (logtest? (-> *game-info* features) (game-feature board)))
        (if (!= (-> self hud-score) #f)
            (send-event (handle->process (-> self hud-score)) 'force-hide)
            )
@@ -1004,7 +1004,7 @@
         (set! (-> self challenge-done) #f)
         (set! (-> self combo-done?) #f)
         (set-time! (-> self hint-time))
-        (while (and (not (-> self challenge-done)) (logtest? (-> *game-info* features) (game-feature board)))
+        (while (and (not (-> self challenge-done)) #t) ;; (logtest? (-> *game-info* features) (game-feature board)))
           (suspend)
           )
         (send-event (handle->process gp-1) 'die)
@@ -1161,7 +1161,7 @@
         )
       )
     (cond
-      ((not (logtest? (-> *game-info* features) (game-feature board)))
+      (#f ;; (not (logtest? (-> *game-info* features) (game-feature board)))
        (if (!= (-> self hud-score) #f)
            (send-event (handle->process (-> self hud-score)) 'force-hide)
            )
@@ -1271,7 +1271,7 @@
     #f
     )
   :post (behavior ()
-    (if (not (logtest? (-> *game-info* features) (game-feature board)))
+    (if #f ;; (not (logtest? (-> *game-info* features) (game-feature board)))
         (go-virtual wait-for-pickup-training)
         )
     )
@@ -1537,7 +1537,7 @@
     #f
     )
   :post (behavior ()
-    (if (logtest? (-> *game-info* features) (game-feature board))
+    (if #t ;; (logtest? (-> *game-info* features) (game-feature board))
         (send-event self 'close)
         (send-event self 'open)
         )
@@ -1599,7 +1599,7 @@
   (ja-channel-push! 1 0)
   (cond
     ((and (not (task-node-open? (game-task-node stadium-board1-training-judge)))
-          (logtest? (-> *game-info* features) (game-feature board))
+          #t ;; (logtest? (-> *game-info* features) (game-feature board))
           )
      (let ((a0-15 (-> this skel root-channel 0)))
        (set! (-> a0-15 frame-group) (the-as art-joint-anim (-> this draw art-group data 2)))

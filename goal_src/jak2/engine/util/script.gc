@@ -1476,7 +1476,7 @@
   (set! (-> v1-79 func)
         (lambda ((arg0 script-context)) (case (-> arg0 param 1)
                                           (('board)
-                                           (logtest? (-> *game-info* features) (game-feature board))
+                                           #t ;; (logtest? (-> *game-info* features) (game-feature board))
                                            )
                                           (else
                                             (format 0 "ERROR: SCRIPT: unknown feature type ~A~%" (-> arg0 param 1))

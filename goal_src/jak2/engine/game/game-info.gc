@@ -734,7 +734,7 @@
           (logclear! (-> this features) (game-feature board))
           )
          )
-       (if (logtest? (-> this features) (game-feature board))
+       (if #t ;; (logtest? (-> this features) (game-feature board))
            1.0
            0.0
            )

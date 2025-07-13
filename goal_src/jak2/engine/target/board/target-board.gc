@@ -1106,7 +1106,7 @@
                     (not *pause-lock*)
                     )
                (logtest? (state-flags prevent-board) (-> self state-flags))
-               (not (logtest? (-> *game-info* features) (game-feature board)))
+               #f ;; (not (logtest? (-> *game-info* features) (game-feature board)))
                )
            (and (time-elapsed? (-> self board board-get-on-time) (seconds 1))
                 (< (-> self board board-get-on-time)
