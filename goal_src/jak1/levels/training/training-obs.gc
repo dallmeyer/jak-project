@@ -497,6 +497,11 @@
                             (the-as touching-shapes-entry (-> block param 0))
                             (the-as collide-shape-moving (-> self root))
                             (the-as uint -1))))
+               (format 0 "scarecrow idle->hit: attack ~A jump flag? ~A onsurf? ~A ~%" 
+                          message
+                          (logtest? (-> (the-as target proc) control unknown-surface00 flags) (surface-flags jump)) 
+                          (logtest? (-> (the-as target proc) control status) (cshape-moving-flags onsurf))
+                          )
                (go-virtual hit
                            f30-0
                            (if a0-24 (get-middle-of-bsphere-overlap a0-24 (-> self intersection)) (target-pos 0))
