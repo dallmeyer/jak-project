@@ -636,6 +636,19 @@
         (when a2-2
           (let ((a3-0 (new 'stack-no-clear 'vector)))
             (vector+! a3-0 (-> this root trans) (-> this draw bounds))
-            (set! (-> this sound) (new 'process 'ambient-sound a2-2 a3-0)))))))
+            (let ((spec (new 'stack 'sound-spec)))
+              ;; make a copy of the static sound-spec
+              (set! (-> spec mask) (-> a2-2 mask))
+              (set! (-> spec num) (-> a2-2 num))
+              (set! (-> spec group) (-> a2-2 group))
+              (set! (-> spec sound-name) (-> a2-2 sound-name))
+              ;; skipping (-> spec trans) since this isn't set in static-sound-spec anyway
+              (set! (-> spec volume) (-> a2-2 volume))
+              (set! (-> spec pitch-mod) (-> a2-2 pitch-mod))
+              (set! (-> spec bend) (-> a2-2 bend))
+              (set! (-> spec fo-min) (res-lump-value (-> this entity) 'fo-min int :default (-> a2-2 fo-min))) ;; allow override from res-lump
+              (set! (-> spec fo-max) (res-lump-value (-> this entity) 'fo-max int :default (-> a2-2 fo-max))) ;; allow override from res-lump
+              (set! (-> spec fo-curve) (-> a2-2 fo-curve))
+              (set! (-> this sound) (new 'process 'ambient-sound spec a3-0))))))))
   (ja-post)
   (none))
