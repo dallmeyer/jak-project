@@ -774,6 +774,7 @@
 
 
 (defbehavior ja-play-spooled-anim process-drawable ((arg0 spool-anim) (arg1 art-joint-anim) (arg2 art-joint-anim) (arg3 (function process-drawable symbol)))
+  (format 0 "ja-play-spooled-anim ~A ~%" (-> arg0 name))
   (local-vars (v0-59 int) (sv-176 int))
   (let ((s2-0 arg2)
         (s1-0 arg3)
@@ -1086,6 +1087,7 @@
   )
 
 (defbehavior ja-abort-spooled-anim process-drawable ((arg0 spool-anim) (arg1 art-joint-anim) (arg2 int))
+  (format 0 "ja-abort-spooled-anim ~A !!!!~%" (-> arg0 name))
   (let ((s3-0 (new 'static 'sound-id)))
     (let ((v1-1
             (lookup-gui-connection *gui-control* self (gui-channel art-load) (-> arg0 name) (new 'static 'sound-id))

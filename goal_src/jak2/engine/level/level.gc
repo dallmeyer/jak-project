@@ -2498,6 +2498,7 @@ into 7 sections, which might explain the weird sizes in the center.
             ;; we have a level that we should start loading!
             ;; loading only starts if we're not busy - there's a strange exception that if we have no levels at all,
             ;; and dgo is busy, we at least start the load.
+            (format 0 "want-level-idx-to-load ~A ~%" (-> this want want-lev-idx-to-load name))
             (when (and (or no-levels-at-all (not (check-busy *load-dgo-rpc*))) (not (load-in-progress? *level*)))
               (format 0 "Adding level ~A~%" (-> this want want-lev-idx-to-load name))
 
@@ -2601,7 +2602,8 @@ into 7 sections, which might explain the weird sizes in the center.
         (when (= (-> a2-32 status) 'active)
           ;; take any level that we're inside of, and has continue points
           (when (and (-> a2-32 inside-boxes) (not (null? (-> a2-32 info continues))))
-            (if (= (-> a2-32 name) (-> this vis-nick))
+            (when (= (-> a2-32 name) (-> this vis-nick))
+                ;; (format 0 "inside level that matches our vis-nick ~A~%" (-> this vis-nick))
                 (goto cfg-125)
                 )
             (set! lev-for-vis a2-32)
@@ -2610,7 +2612,8 @@ into 7 sections, which might explain the weird sizes in the center.
           )
         )
       )
-    (if (and (>= num-vis-levs 1) (!= (-> lev-for-vis name) (-> this vis-nick)))
+    (when (and (>= num-vis-levs 1) (!= (-> lev-for-vis name) (-> this vis-nick)))
+        (format 0 "inside a level ~A that isnt vis-nick level ~A~%" (-> lev-for-vis name) (-> this vis-nick))
         (want-vis-level this (-> lev-for-vis name))
         )
     )
@@ -2730,6 +2733,7 @@ into 7 sections, which might explain the weird sizes in the center.
                    (not (null? (-> s4-1 info continues)))
                    (-> *setting-control* user-current allow-continue)
                    )
+          (format 0 "LOAD STATE VIS-NICK LEVEL DOESNT MATCH ")
           (let ((s3-0 (car (-> s4-1 info continues))))
             (let* ((s2-0 (target-pos 0))
                    (s4-2 (-> s4-1 info continues))
@@ -2849,7 +2853,40 @@ into 7 sections, which might explain the weird sizes in the center.
     (when *display-level-border*
       (format
         *stdcon*
-        "  want: ~A ~A/~A   ~A ~A/~A~%"
+        "  *backup-load-state* want: ~A ~A/~A   ~A ~A/~A"
+        (-> *backup-load-state* want 0 name)
+        (-> *backup-load-state* want 0 display?)
+        (-> *backup-load-state* want 0 force-vis?)
+        (-> *backup-load-state* want 1 name)
+        (-> *backup-load-state* want 1 display?)
+        (-> *backup-load-state* want 1 force-vis?)
+        )
+      (format
+        *stdcon*
+        "   ~A ~A/~A   ~A ~A/~A"
+        (-> *backup-load-state* want 2 name)
+        (-> *backup-load-state* want 2 display?)
+        (-> *backup-load-state* want 2 force-vis?)
+        (-> *backup-load-state* want 3 name)
+        (-> *backup-load-state* want 3 display?)
+        (-> *backup-load-state* want 3 force-vis?)
+        )
+      (format
+        *stdcon*
+        "   ~A ~A/~A   ~A ~A/~A~%"
+        (-> *backup-load-state* want 4 name)
+        (-> *backup-load-state* want 4 display?)
+        (-> *backup-load-state* want 4 force-vis?)
+        (-> *backup-load-state* want 5 name)
+        (-> *backup-load-state* want 5 display?)
+        (-> *backup-load-state* want 5 force-vis?)
+        )
+      
+      (format *stdcon*
+        "  vis-nick ~A ~%~%" (-> *backup-load-state* vis-nick))
+      (format
+        *stdcon*
+        "  *load-state*        want: ~A ~A/~A   ~A ~A/~A"
         (-> *load-state* want 0 name)
         (-> *load-state* want 0 display?)
         (-> *load-state* want 0 force-vis?)
@@ -2857,9 +2894,29 @@ into 7 sections, which might explain the weird sizes in the center.
         (-> *load-state* want 1 display?)
         (-> *load-state* want 1 force-vis?)
         )
+      (format
+        *stdcon*
+        "   ~A ~A/~A   ~A ~A/~A"
+        (-> *load-state* want 2 name)
+        (-> *load-state* want 2 display?)
+        (-> *load-state* want 2 force-vis?)
+        (-> *load-state* want 3 name)
+        (-> *load-state* want 3 display?)
+        (-> *load-state* want 3 force-vis?)
+        )
+      (format
+        *stdcon*
+        "   ~A ~A/~A   ~A ~A/~A~%"
+        (-> *load-state* want 4 name)
+        (-> *load-state* want 4 display?)
+        (-> *load-state* want 4 force-vis?)
+        (-> *load-state* want 5 name)
+        (-> *load-state* want 5 display?)
+        (-> *load-state* want 5 force-vis?)
+        )
       (let ((t9-18 format)
             (a0-86 *stdcon*)
-            (a1-30 "  nick ~A cur ~S  cont ~A~%~%")
+            (a1-30 "  vis-nick ~A ~%~%") ;; "  cur ~S  cont ~A~%")
             (a2-6 (-> *load-state* vis-nick))
             (v1-147 (and *target* (-> *target* current-level) (-> *target* current-level name)))
             )
@@ -2867,10 +2924,10 @@ into 7 sections, which might explain the weird sizes in the center.
           a0-86
           a1-30
           a2-6
-          (if v1-147
-              (symbol->string (the-as symbol v1-147))
-              )
-          (-> *game-info* current-continue name)
+          ;; (if v1-147
+          ;;     (symbol->string (the-as symbol v1-147))
+          ;;     )
+          ;; (-> *game-info* current-continue name)
           )
         )
       )
