@@ -1956,7 +1956,7 @@
                 (< (-> this miss-count) 10)
                 (or (= (-> this info index) 1) (< (+ (-> this point-queue) (-> this score)) 7000))
                 )
-           (task-manager-wascity-gungame-method-35 this)
+           (task-manager-wascity-gungame-method-34 this)
            )
        )
       (else
