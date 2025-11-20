@@ -224,6 +224,12 @@
 (defstate active (task-manager-desert-oasis-defense)
   :virtual #t
   :trans (behavior ()
+    ;; call parent task-manager trans first
+    (let ((t9-0 (-> (method-of-type task-manager active) trans)))
+      (if t9-0
+          (t9-0)
+          )
+      )
     ;; put debug text drawing stuff here
     )
   :code (behavior ()
