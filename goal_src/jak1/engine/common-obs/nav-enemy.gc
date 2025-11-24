@@ -330,21 +330,7 @@ nav-enemy-default-event-handler
             (nav-enemy-test-point-near-nav-mesh? (-> *target* control shadow-pos)))))
 
 (defbehavior nav-enemy-notice-player? nav-enemy ()
-  (let ((gp-0 #f))
-    (cond
-      ((logtest? (-> self nav-enemy-flags) (nav-enemy-flags navenmf0))
-       (when (time-elapsed? (-> self notice-time) (-> self reaction-time))
-         (set! gp-0 #t)
-         (logclear! (-> self nav-enemy-flags) (nav-enemy-flags navenmf0))))
-      (else
-       (when (or (target-in-range? self (-> self nav-info notice-distance))
-                 (and (-> self nav-info use-proximity-notice)
-                      *target*
-                      (>= (-> self nav-info proximity-notice-distance)
-                          (vector-vector-distance (-> self collide-info trans) (-> *target* control trans)))))
-         (logior! (-> self nav-enemy-flags) (nav-enemy-flags navenmf0))
-         (set-time! (-> self notice-time)))))
-    gp-0))
+  #t)
 
 (defbehavior nav-enemy-facing-direction? nav-enemy ((arg0 vector) (arg1 float))
   (let ((s4-0 (vector-z-quaternion! (new 'stack-no-clear 'vector) (-> self collide-info quat)))
