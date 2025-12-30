@@ -590,26 +590,27 @@
       ((-> (method-of-type fleeing-nav-enemy nav-enemy-chase) enter)))
   :trans
     (behavior ()
-      (let ((s3-0 (new 'stack-no-clear 'vector))
-            (s4-0 (new 'stack-no-clear 'vector))
-            (gp-0 (new 'stack-no-clear 'vector)))
+      (let ((mole-to-hole-vector (new 'stack-no-clear 'vector))
+            (jak-to-mole-vector (new 'stack-no-clear 'vector))
+            (jak-to-hole-vector (new 'stack-no-clear 'vector)))
         0.0
         0.0
-        (let ((f30-0 (vector-vector-distance (-> self collide-info trans) (target-pos 0))))
+        (let ((jak-mole-dist (vector-vector-distance (-> self collide-info trans) (target-pos 0))))
           0.0
           0.0
-          (let ((s5-1 (new 'stack-no-clear 'vector)))
-            (vector-! s3-0 *lightning-mole-hole* (-> self collide-info trans))
-            (vector-! s4-0 (-> self collide-info trans) (target-pos 0))
-            (vector-! gp-0 *lightning-mole-hole* (target-pos 0))
-            (let ((f26-0 (vector-normalize-ret-len! s3-0 1.0))
-                  (f28-0 (vector-normalize-ret-len! s4-0 1.0)))
-              (vector-normalize! gp-0 1.0)
-              (set! (-> s5-1 quad) (-> *camera* tgt-face-mat vector 2 quad))
-              (set! (-> s5-1 y) 0.0)
-              (vector-normalize! s5-1 1.0)
-              (let ((f24-0 (vector-dot s5-1 s4-0)))
-                (when (< f26-0 61440.0)
+          (let ((camera-xz-dir (new 'stack-no-clear 'vector)))
+            (vector-! mole-to-hole-vector *lightning-mole-hole* (-> self collide-info trans))
+            (vector-! jak-to-mole-vector (-> self collide-info trans) (target-pos 0))
+            (vector-! jak-to-hole-vector *lightning-mole-hole* (target-pos 0))
+            (let ((mole-hole-dist (vector-normalize-ret-len! mole-to-hole-vector 1.0))
+                  (jak-mole-dist2 (vector-normalize-ret-len! jak-to-mole-vector 1.0)))
+              (vector-normalize! jak-to-hole-vector 1.0)
+              (set! (-> camera-xz-dir quad) (-> *camera* tgt-face-mat vector 2 quad))
+              (set! (-> camera-xz-dir y) 0.0)
+              (vector-normalize! camera-xz-dir 1.0)
+              (let ((cam-vs-jak-mole-angle (vector-dot camera-xz-dir jak-to-mole-vector)))
+                ;; hide peeper in hole if mole is within 15m
+                (when (< mole-hole-dist (meters 15))
                   (let ((a1-7 (new 'stack-no-clear 'event-message-block)))
                     (set! (-> a1-7 from) self)
                     (set! (-> a1-7 num-params) 0)
@@ -617,12 +618,13 @@
                     (let ((t9-8 send-event-function)
                           (v1-10 (-> self alt-actor)))
                       (t9-8 (if v1-10 (-> v1-10 extra process)) a1-7))))
-                (if (and (< 40960.0 f26-0)
-                         (< f26-0 81920.0)
-                         (< f30-0 204800.0)
-                         (< (+ 20480.0 f26-0) f28-0)
-                         (< (cos 7281.778) (vector-dot s5-1 gp-0))
-                         (< (cos 7281.778) f24-0))
+                ;; send mole to hole if all conditions met
+                (if (and (< (meters 10) mole-hole-dist) ;; mole at least 10m AWAY from hole
+                         (< mole-hole-dist (meters 20)) ;; mole no more than 20m away from hole
+                         (< jak-mole-dist (meters 50)) ;; jak no more than 50m from mole
+                         (< (+ (meters 5) mole-hole-dist) jak-mole-dist2) ;; jak not too close to mole, relative to how close mole is to hole
+                         (< (cos 7281.778) (vector-dot camera-xz-dir jak-to-hole-vector)) ;; camera angle is mostly aligned to jak's angle towards hole
+                         (< (cos 7281.778) cam-vs-jak-mole-angle)) ;; camera angle is mostly aligned to jak's angle towards mole
                   (go lightning-mole-head-for-hole)))))))
       ((-> (method-of-type fleeing-nav-enemy nav-enemy-chase) trans)))
   :code lightning-mole-run-code
