@@ -1301,7 +1301,8 @@
 (defmethod task-manager-method-26 ((this task-manager-desert-glide))
   (with-pp
     (task-manager-desert-glide-method-35 this)
-    (if (glider-too-low? (target-pos 0) (the-as int (-> this reset-too-low?)))
+    (when (glider-too-low? (target-pos 0) (the-as int (-> this reset-too-low?)))
+        (format 0 "GLIDER TOO LOW!!~%")
         (desert-glide-task-done)
         )
     (when (and (zero? (-> this whistle-sound)) (time-elapsed? (-> this start-time) (seconds 0.2)))
