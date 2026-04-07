@@ -1853,8 +1853,8 @@
                    (+! (-> fnt origin y) 29.0)
                    (set-scale! fnt 0.55))
                  (when (not (memcard-unlocked-secrets? #f #f))
-                   (draw-highlight-bar progress fnt (the int (+ 23.0 (-> fnt origin y))) 23 alpha)
-                   (+! (-> fnt origin y) 23.0)
+                   (draw-highlight-bar progress fnt (the int (+ 29.0 (-> fnt origin y))) 23 alpha)
+                   (+! (-> fnt origin y) 29.0)
                    (set-scale! fnt 0.60))
                  (cond
                    ((-> choice 0)
