@@ -14,6 +14,24 @@ This gives us more freedom to write code how we want.
     :options (new 'static 'boxed-array :type menu-option
       (new 'static 'menu-sub-menu-option
         :name (text-id progress-title-new-game)
+        :offset-y 0.24
+        :next-state 'select-save-title
+        )
+      (new 'static 'menu-sub-menu-option :name (text-id progress-load-save) :offset-y 0.39 :next-state 'select-load)
+      (new 'static 'menu-sub-menu-option :name (text-id progress-options) :offset-y 0.54 :next-state 'title-options)
+      (new 'static 'menu-exit-game-option :name (text-id progress-quit) :offset-y 0.69)
+      )
+    )
+  )
+
+(define *title-secrets-pc*
+  (new 'static 'menu-option-list
+    :y-center #xc6
+    :y-space 15
+    :scale 0.82
+    :options (new 'static 'boxed-array :type menu-option
+      (new 'static 'menu-sub-menu-option
+        :name (text-id progress-title-new-game)
         :offset-y 0.15
         :next-state 'select-save-title
         )
