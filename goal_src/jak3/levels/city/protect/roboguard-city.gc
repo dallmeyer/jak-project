@@ -2321,9 +2321,7 @@
 
 ;; WARN: Return type mismatch object vs none.
 (defmethod go-from-behavior ((this roboguard-city) (arg0 traffic-object-spawn-params))
-  (if (= (-> arg0 guard-type) 7)
-      (init-draw-params this)
-      )
+  (init-draw-params this)
   (case (-> arg0 behavior)
     ((6)
      (vector-copy! (-> this root trans) (-> arg0 position))
