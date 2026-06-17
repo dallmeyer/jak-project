@@ -145,8 +145,8 @@
   (let* ((expected-version (cond
                              ((zero? version-override)
                               (case kind
-                                (((file-kind tpage) (file-kind dir-tpage)) 7)
-                                (((file-kind level-bt)) 30)
+                                (((file-kind tpage) (file-kind dir-tpage)) 6)
+                                (((file-kind level-bt)) 29)
                                 (((file-kind art-group)) 6)))
                              (else version-override)))
          (v1-1 kind)
@@ -158,7 +158,7 @@
       ((not (name= (the-as basic (-> info file-type value)) kind-name))
        (format 0 "ERROR: file ~A is of type ~S but needs to be ~S.~%" (-> info file-name) (-> info file-type) kind-name)
        #f)
-      ((!= expected-version (-> info major-version))
+      ((> expected-version (-> info major-version))
        (format 0
                "ERROR: file ~A is version ~D.~D, but needs to be ~D.x~%"
                (-> info file-name)

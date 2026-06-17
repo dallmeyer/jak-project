@@ -138,12 +138,18 @@
   "Get the permanent storage for a game-task"
   (-> this task-perm-list data arg0))
 
+(define *game-counts* (the-as game-count-info #f))
+
 (defmethod initialize! ((this game-info) (cause symbol) (save-to-load game-save) (continue-point-override string))
   "Initialize the game-info.
     The cause can be 'dead if you die, or 'game to reset everything.
     If save-to-load is not #f will load data from that.
     If continue-point-override is not #f, will use that."
   (local-vars (v0-0 int))
+
+  (set! (-> *game-counts* data 16 money-count) (the-as int 69))
+  (set! (-> *game-counts* data 16 buzzer-count) (the-as int 0))
+
   (case cause
     (('dead)
      ;; reload game-info because we died.  Increase death counts
@@ -177,7 +183,7 @@
                     (cond
                       (continue-point-override (empty) continue-point-override)
                       ((!= *kernel-boot-message* 'play) "demo-start")
-                      (*debug-segment* "village1-hut")
+                      (*debug-segment* "yosemite-start")
                       (else "title-start")))
      (set! (-> this auto-save-count) 0)
      (set! (-> *setting-control* default auto-save) #f)

@@ -167,7 +167,7 @@
     (set! (-> this particles 14 init-pos y) (the float (+ s4-0 214)))
     (let ((s2-0 0))
       (let ((a1-8 (-> v1-2 buzzer-task-index)))
-        (if (!= a1-8 -1) (set! s2-0 (buzzer-count *game-info* (-> v1-2 task-info a1-8 task-id)))))
+        (if (!= a1-8 -1) (set! s2-0 (if (= arg0 16) 0 (buzzer-count *game-info* (-> v1-2 task-info a1-8 task-id))))))
       (let ((s4-1 (new 'stack
                        'font-context
                        *font-default-matrix*

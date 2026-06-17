@@ -1315,7 +1315,7 @@
   (if (>= max-page-kind 3)
     (let ((alpha-dir-entry (texture-page-login (-> id-array 3) texture-page-common-allocate loading-level)))
       (if alpha-dir-entry (set! (-> level texture-page 3) (-> alpha-dir-entry page)))))
-  (if (>= max-page-kind 4)
+  (if (and (>= max-page-kind 4) (!= (-> level name) 'yosemite))
     (let ((water-dir-entry (texture-page-login (-> id-array 4) texture-page-common-allocate loading-level)))
       (if water-dir-entry (set! (-> level texture-page 4) (-> water-dir-entry page)))))
   ;; check with no prints first

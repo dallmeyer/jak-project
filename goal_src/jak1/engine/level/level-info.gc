@@ -87,7 +87,7 @@
              'continue-point
              :name "game-start"
              :level 'training
-             :flags (continue-flags warp game-start)
+             :flags (continue-flags warp)
              :trans
              (new 'static 'vector :x -5393740.5 :y 28259.533 :z 4360945.5 :w 1.0)
              :quat
@@ -1808,6 +1808,64 @@
        '("common" "maincave")
        :wait-for-load #t))
 
+(define yosemite
+  (new 'static 'level-load-info
+    :index 27
+    :name 'yosemite
+    :visname 'yosemite-vis
+    :nickname 'yos
+    :packages '(yosemite)
+    :sound-banks '(misty)
+    :music-bank 'finalboss
+    :ambient-sounds '()
+    :mood '*village1-mood*
+    :mood-func 'update-mood-default
+    :ocean #f
+    :sky #t
+    :continues '(
+        (new 'static 'continue-point
+        :name "yosemite-foyer"
+        :level 'yosemite
+        :trans (new 'static 'vector :x (meters 1092.6768) :y (meters 44.5061) :z (meters -3688.8183) :w 1.0)
+        :quat (new 'static 'quaternion :y 1.0 :w 0.0)
+        :camera-trans (new 'static 'vector :x (meters 1091.7294) :y (meters 49.2593) :z (meters -3677.8872) :w 1.0)
+        :camera-rot (new 'static 'array float 9 -0.9962 0.0000 -0.0860 0.0112 0.9914 -0.1301 0.0853 -0.1306 -0.9877)
+        :load-commands '()
+        :vis-nick #f
+        :lev0 'yosemite
+        :disp0 'display
+        :lev1 'village3
+        :disp1 #f
+        )
+        (new 'static 'continue-point
+        :name "yosemite-start"
+        :level 'yosemite
+        :flags (continue-flags game-start)
+        :trans (new 'static 'vector :x (meters 1099.0443) :y (meters 47.9808) :z (meters -3783.6479) :w 1.0)
+        :quat (new 'static 'quaternion :y 1.0 :w 0.0)
+        :camera-trans (new 'static 'vector :x (meters 1098.1092) :y (meters 53.1290) :z (meters -3771.1843) :w 1.0)
+        :camera-rot (new 'static 'array float 9 -0.9972 -0.0000 -0.0737 0.0089 0.9925 -0.1212 0.0732 -0.1216 -0.9898)
+        :load-commands '()
+        :vis-nick #f
+        :lev0 'yosemite
+        :disp0 'display
+        :lev1 'village3
+        :disp1 #f
+        )
+        )
+    :tasks '()
+    :priority 100
+    :load-commands '()
+    :alt-load-commands '()
+    :bsp-mask #xffffffffffffffff
+    :bsphere (new 'static 'sphere)
+    :buzzer 85 ;; wrong but yolo
+    :bottom-height (meters -20)
+    :run-packages '("common")
+    :wait-for-load #f
+    )
+  )
+
 (define lavatube
   (new 'static
        'level-load-info
@@ -2526,3 +2584,4 @@
        :wait-for-load #t))
 
 (cons! *level-load-list* 'test-zone)
+(cons! *level-load-list* 'yosemite)

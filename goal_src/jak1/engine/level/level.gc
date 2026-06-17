@@ -713,7 +713,9 @@
   "Is arg0 visible? Note that this will return #f if the visibility data is not loaded."
   ;; og:preserve-this pc port added option to show every actor regardless
   (with-pc
-    (if (not (-> *pc-settings* ps2-actor-vis?)) (return #t)))
+    (if (not (-> *pc-settings* ps2-actor-vis?)) (return #t))
+    (if (= (-> this name) 'yosemite) (return #t))
+    )
   ;; check the vis bits!
   (let* (;; lwu v1, 388(a0)
          (vis-data (-> this vis-bits))

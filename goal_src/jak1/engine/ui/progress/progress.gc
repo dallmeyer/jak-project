@@ -217,7 +217,7 @@
             (set! total-orbs (+ total-orbs (-> *game-counts* data s5-0 money-count)))
             (let ((v1-20 (-> s4-0 buzzer-task-index)))
               (when (!= v1-20 -1)
-                (set! current-buzzers (+ current-buzzers (buzzer-count *game-info* (-> s4-0 task-info v1-20 task-id))))
+                (set! current-buzzers (+ current-buzzers (if (= s5-0 16) 0 (buzzer-count *game-info* (-> s4-0 task-info v1-20 task-id)))))
                 (set! total-buzzers (+ total-buzzers (-> *game-counts* data s5-0 buzzer-count)))))))))
     (when the-progress
       (set! (-> the-progress total-nb-of-power-cells) total-cells)

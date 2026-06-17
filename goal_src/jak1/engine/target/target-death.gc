@@ -137,7 +137,7 @@
         (let ((a0-64 (-> *level* level v1-124))) (if (= (-> a0-64 status) 'active) (set! (-> a0-64 all-visible?) 'loading))))
       (let ((s5-2 (level-get *level* (-> arg0 level))))
         ;; vis info check added for PC, don't bother waiting for vis if the level doesn't have it.
-        (when (and s5-2 (-> s5-2 vis-info 0))
+        (when (and s5-2 (-> s5-2 vis-info 0) (!= (-> s5-2 name) 'yosemite))
           (while (and (= (-> s5-2 all-visible?) 'loading) (-> *level* vis?))
             (suspend))))
       (set! *spawn-actors* #t)

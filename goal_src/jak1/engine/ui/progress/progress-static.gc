@@ -277,7 +277,8 @@
   (cave 13)
   (lavatube 14)
   (citadel 15)
-  (max 16))
+  (yosemite 16)
+  (max 17))
 
 ;; maps level-info indices to the appropriate offset in *level-task-data*
 (define *level-task-data-remap*
@@ -304,10 +305,14 @@
        (level-task-data-index cave) ;; robocave?
        (level-task-data-index cave) ;; darkcave?
        (level-task-data-index lavatube)
-       (level-task-data-index citadel) ;; citadel?
-       (level-task-data-index citadel) ;; finalboss?
-       (level-task-data-index misty) ;; demo?
-       (level-task-data-index misty) ;; intro?
+       (level-task-data-index citadel) ;; citadel 20
+       (level-task-data-index citadel) ;; finalboss 21
+       (level-task-data-index misty) ;; intro 22
+       (level-task-data-index misty) ;; demo 23
+       (level-task-data-index village1) ;; title 24
+       (level-task-data-index village1) ;; halfpipe 25
+       (level-task-data-index village1) ;; default 26
+       (level-task-data-index yosemite) ;; yosemite 27
        ))
 
 ;; maps goal language ID to its name string ID
@@ -1396,9 +1401,16 @@
                       'task-info-data
                       :task-id (game-task citadel-buzzer)
                       :task-name
-                      (new 'static 'array text-id 4 (text-id citadel-buzzer) (text-id citadel-buzzer) (text-id citadel-buzzer) (text-id zero)))))))
+                      (new 'static 'array text-id 4 (text-id citadel-buzzer) (text-id citadel-buzzer) (text-id citadel-buzzer) (text-id zero)))))
+       (new 'static 'level-tasks-info
+              :level-name-id (text-id village3-poi-yosemite)
+              :text-group-index 1
+              :nb-of-tasks 0
+              :buzzer-task-index 0
+              :task-info
+              (new 'static 'array task-info-data 8))))
 
 ;; goes down by 24 or 23 every time
 (define *task-egg-starting-x* (new 'static 'boxed-array :type int32 218 194 171 147 124 100 77 53 30))
 
-(define *game-counts* (the-as game-count-info #f))
+;; (define *game-counts* (the-as game-count-info #f))

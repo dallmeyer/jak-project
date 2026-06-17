@@ -49,7 +49,8 @@
    ;; Version Info (it's so far down because it was an after thought!)
    (version-major                uint16)
    (version-minor                uint16)
-   (padding-stats                uint8 164) ;; padding for future growth
+   (yosemite-num-orbs            uint8)
+   (padding-stats                uint8 163) ;; padding for future growth
    ;; loading/cutscene/control related info
    (game-hash                    uint32)
    (in-cutscene?                 symbol)

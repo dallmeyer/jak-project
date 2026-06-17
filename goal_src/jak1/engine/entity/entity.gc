@@ -816,7 +816,8 @@
   ;;   (return this)
   ;;   )
   ;;(birth-log "call to birth! on ~A~%" this)
-  (let* ((entity-type (-> this etype))
+  (let* ((entity-type-orig (-> this etype))
+         (entity-type (if (= (-> entity-type-orig symbol) 'plainbox) crate entity-type-orig))
          (info (entity-info-lookup entity-type))
          (entity-process (get-process *default-dead-pool* entity-type (if info (-> info heap-size) #x4000))))
     (cond
@@ -869,7 +870,7 @@
   ;; so it gets spread over multiple frames later.
   (when (nonzero? (-> this actors))
     (dotimes (birth-idx (-> this actors length))
-      (let* ((idx-to-birth (-> this actor-birth-order birth-idx))
+      (let* ((idx-to-birth (if (nonzero? (-> this actor-birth-order)) (-> this actor-birth-order birth-idx) birth-idx))
              (actor-to-birth (-> this actors data (logand idx-to-birth #xffff) actor)))
         (add-to-level! actor-to-birth *level* (-> this level) (the-as actor-id (-> actor-to-birth aid))))))
   (let ((existing-amb-count (if (nonzero? (-> this ambients)) (-> this ambients length) 0)))
@@ -1089,7 +1090,7 @@
                        (else
                         (if (and (-> s1-1 process) (not (logtest? (-> s1-1 perm status) (entity-perm-status bit-3)))) (kill! (-> s1-1 entity)))))))))
               (*vis-actors*
-               (when (not (and (-> s4-2 vis-info 0) (-> s4-2 all-visible?)))
+               (when (or (not (and (-> s4-2 vis-info 0) (-> s4-2 all-visible?))) (= (-> s4-2 name) 'yosemite))
                  (let* ((s3-5 (-> s4-2 entity))
                         (s2-4 (-> s3-5 length))
                         (s0-1 #f))

@@ -1093,8 +1093,10 @@
          (let ((lvl-idx (-> *level-task-data-remap* (+ (-> *target* current-level info index) -1))))
            ;; show flies collected/total this level
            (draw-string-xy-scaled (string-format " ~D~% /~D"
-                                                 (buzzer-count *game-info*
-                                                               (-> *level-task-data* lvl-idx task-info (-> *level-task-data* lvl-idx buzzer-task-index) task-id))
+                                                 (if (= lvl-idx 16) 
+                                                        0
+                                                        (buzzer-count *game-info*
+                                                               (-> *level-task-data* lvl-idx task-info (-> *level-task-data* lvl-idx buzzer-task-index) task-id)))
                                                  (-> *game-counts* data lvl-idx buzzer-count))
                                   buf
                                   string-x
