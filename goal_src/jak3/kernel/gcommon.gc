@@ -137,6 +137,11 @@
 
 (define format _format)
 
+(define-extern ORB_HUNT_DEBUG? symbol)
+(defmacro dbg-format (&rest args)
+  `(when (and *debug-segment* (cpad-hold? 0 l2) ORB_HUNT_DEBUG?) (format ,@args))
+  )
+
 (deftype vec4s (uint128)
   "Vector of four floats, packed into a 128-bit integer as bitfields.
 This behaves like a value type.
@@ -523,6 +528,62 @@ This is the main vector type."
    so it should almost never be used at runtime."
   (let ((a3-0 (delete-car! (car new-obj) list)))
     (cons new-obj a3-0)
+    )
+  )
+
+(defun print-arr ((arr (array int)))
+  (dotimes (i (length arr))
+    (format 0 " ~D " (-> arr i))
+    )
+  (format 0 "~%")
+  (none)
+  )
+
+(defun qs-swap ((arr (array int)) (i int) (j int))
+  (let ((tmp (-> arr i)))
+    (set! (-> arr i) (-> arr j))
+    (set! (-> arr j) tmp)
+    )
+  (none)
+  )
+
+(defun qs-partition ((arr (array int)) (lo int) (hi int))
+  ;; (format 0 "partition before   ")
+  ;; (print-arr arr)
+  (let ((pivot (-> arr hi))
+        (i (- lo 1)) ;; idx of smaller element and indicates the right position of pivot found so far
+        (j lo))
+    ;; traverse arr[low..high] and move smaller elements to left side
+    ;; elements from lo to i are smaller after every iteration
+    (while (< j hi)
+      (when (< (-> arr j) pivot)
+        (+! i 1)
+        (qs-swap arr i j)
+        )
+      (+! j 1)
+      )
+    ;; move pivot after smaller elements and return its position
+    (qs-swap arr (+ i 1) hi)
+    ;; (format 0 "partition after   ")
+    ;; (print-arr arr)
+    (+ i 1)
+    )
+  )
+
+(define-extern qs-sort-internal (function (array int) int int none))
+(defun qs-sort-internal ((arr (array int)) (lo int) (hi int))
+  (when (< lo hi)
+    (let ((pivot (qs-partition arr lo hi)))
+      (qs-sort-internal arr lo (- pivot 1))
+      (qs-sort-internal arr (+ pivot 1) hi)
+      )
+    )
+  (none)
+  )
+
+(defun qs-sort ((arr (array int)))
+  (let ((n (length arr)))
+    (qs-sort-internal arr 0 (- n 1))
     )
   )
 

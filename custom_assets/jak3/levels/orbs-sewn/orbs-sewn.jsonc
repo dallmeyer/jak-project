@@ -1,0 +1,227 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-sewn",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O45",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o45", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-sewn/orbs-sewn.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 145000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    // {
+    //   "trans": [ -99.5121, -177.7608, -291.5945], // under waterfall  
+    //   "etype": "skill",
+    //   "game_task": 0,
+    //   "quat": [0, 0, 0, 1],
+    //   "bsphere": [ -99.5121, -177.7608, -291.5945, 10],
+    //   "lump": {
+    //     "name":"sewn-skill-YYY",
+    //     "author": "blahpy"
+    //   }
+    // },
+    // {
+    //   "trans": [ -125.7779, -174.9591, -360.9212], // under waterfall  
+    //   "etype": "skill",
+    //   "game_task": 0,
+    //   "quat": [0, 0, 0, 1],
+    //   "bsphere": [ -125.7779, -174.9591, -360.9212, 10],
+    //   "lump": {
+    //     "name":"sewn-skill-YYY",
+    //     "author": "blahpy"
+    //   }
+    // },
+    // {
+    //   "trans": [ -100.3644, -174.9591, -361.4221], // under waterfall  
+    //   "etype": "skill",
+    //   "game_task": 0,
+    //   "quat": [0, 0, 0, 1],
+    //   "bsphere": [ -100.3644, -174.9591, -361.4221, 10],
+    //   "lump": {
+    //     "name":"sewn-skill-YYY",
+    //     "author": "blahpy"
+    //   }
+    // },
+    {
+      "trans": [ -166.5887, -173.8658, -243.5641], // in corner on left after grindrail that lowers 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -166.5887, -173.8658, -243.5641, 10],
+      "lump": {
+        "name":"sewn-skill-01",
+        "author": "blahpy"
+      }
+    },
+    {
+      "trans": [ -225.7689, -120.8427, -340.3771], // up on corner of arch at start of highest section 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -225.7689, -120.8427, -340.3771, 10],
+      "lump": {
+        "name":"sewn-skill-02",
+        "author": "blahpy"
+      }
+    },
+    {
+      "trans": [ -256.8773, -161.6654, -329.0837], // in corner ground level of big room 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -256.8773, -161.6654, -329.0837, 10],
+      "lump": {
+        "name":"sewn-skill-03",
+        "author": "blahpy"
+      }
+    },
+    {
+      "trans": [ -150.6597, -126.4999, -298.0838], // top of arch in whirlpool room with fans 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -150.6597, -126.4999, -298.0838, 10],
+      "lump": {
+        "name":"sewn-skill-04",
+        "author": "blahpy"
+      }
+    },
+    {
+      "trans": [ -151.7015, -126.5226, -324.4059], //  top of other arch in whirlpool room with fans 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -151.7015, -126.5226, -324.4059, 10],
+      "lump": {
+        "name":"sewn-skill-05",
+        "author": "blahpy"
+      }
+    },
+    {
+      "trans": [ -225.4528, -161.7322, -255.7293], // in corner near whirlpool by useless grindrail 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -225.4528, -161.7322, -255.7293, 10],
+      "lump": {
+        "name":"sewn-skill-06",
+        "author": "blahpy"
+      }
+    },
+    {
+      "trans": [ -114.9572, -152.6760, -299.9615], // up on corner above/out from rail that lowers
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -114.9572, -152.6760, -299.9615, 10],
+      "lump": {
+        "name":"sewn-skill-07"
+      }
+    },
+    {
+      "trans": [ 33.3342, -147.6251, -293.4623], // on side ledge of snaking slide
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 33.3342, -147.6251, -293.4623, 10],
+      "lump": {
+        "name":"sewn-skill-08"
+      }
+    },
+    {
+      "trans": [ -73.0795, -180.2200, -332.9335], // right underside of snaking silde, overhanging water vol 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -73.0795, -180.2200, -332.9335, 10],
+      "lump": {
+        "name":"sewn-skill-09"
+      }
+    },
+    {
+      "trans": [ -84.7477, -153.6342, -357.5455], // up high in corner of room at end of slide, (either triple sideflip from fans or triangle cancel launch ->) L2 left/up trick cancel to L1 R1 extended ff over invis wall  
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -84.7477, -153.6342, -357.5455, 10],
+      "lump": {
+        "name":"sewn-skill-10"
+      }
+    },
+    {
+      "trans": [ -85.6116, -177.8356, -366.4783], // behind invis wall in corner of room at end of slide, follow from ^ 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -85.6116, -177.8356, -366.4783, 10],
+      "lump": {
+        "name":"sewn-skill-11"
+      }
+    }//,
+    
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

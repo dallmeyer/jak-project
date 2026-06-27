@@ -399,13 +399,27 @@
     ;; og:preserve-this fix infinite loop when this state is entered while debug hovering
     ; (while (and *target* (not (logtest? (-> *target* focus-status) (focus-status dead))))
     (when (and *target* (not (focus-test? *target* dead)))
-      (send-event
-        *target*
-        'attack-invinc
-        #f
-        (static-attack-info
-          :mask (vehicle-impulse-factor)
-          ((id (new-attack-id)) (damage 2.0) (vehicle-damage-factor 1.0) (vehicle-impulse-factor 1.0) (mode 'tentacle))
+      (cond
+        ((= (-> *target* next-state name) 'target-float)
+          ;; player debug hovered, stop attacking and reset some settings
+          (remove-setting! 'dive)
+          (remove-setting! 'board)
+          (remove-setting! 'gun)
+          (remove-setting! 'jump)
+          (remove-setting! 'double-jump)
+          (go-virtual wait)
+          )
+        (else
+          ;; not debug hovering, vanilla
+          (send-event
+            *target*
+            'attack-invinc
+            #f
+            (static-attack-info
+              :mask (vehicle-impulse-factor)
+              ((id (new-attack-id)) (damage 2.0) (vehicle-damage-factor 1.0) (vehicle-impulse-factor 1.0) (mode 'tentacle))
+              )
+            )
           )
         )
       )

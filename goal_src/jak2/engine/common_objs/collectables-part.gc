@@ -1377,3 +1377,38 @@
     (:rotate-y (degrees 0))
     )
   )
+
+;; og:orb hunt
+(defun sparticle-track-root-skill ((arg0 sparticle-system) (arg1 sparticle-cpuinfo) (arg2 vector))
+  (let ((v1-1 (-> arg1 key proc)))
+    (let ((v1-3 (-> (the-as process-drawable v1-1) root trans)))
+      (set! (-> arg2 x) (-> v1-3 x))
+      (set! (-> arg2 y) (+ 2048.0 (-> v1-3 y)))
+      (set! (-> arg2 z) (-> v1-3 z))
+      )
+    )
+  0
+  (none)
+  )
+
+(defpart 5508
+  :init-specs ((:texture (new 'static 'texture-id :index #x29 :page #xc))
+    (:num 1.0)
+    (:scale-x (meters 1.1))
+    (:rot-z (degrees 0))
+    (:scale-y (meters 1.3))
+    (:r 192.0)
+    (:g 192.0)
+    (:b 0.0 128.0)
+    (:a 32.0)
+    (:rotvel-z (degrees -0.4))
+    (:timer (seconds 12))
+    (:flags (sp-cpuinfo-flag-2 sp-cpuinfo-flag-3))
+    (:func 'sparticle-track-root-skill)
+    )
+  )
+
+(defpartgroup group-skill-starburst
+  :id 1295
+  :bounds (static-bspherem 0 0.5 0 1.5)
+  :parts ((sp-item 5508))) 

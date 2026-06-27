@@ -1,0 +1,146 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-vinroom",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O42",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o42", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-vinroom/orbs-vinroom.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 142000,
+
+  "custom_models": ["arcade"],
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": ["warp-gate-ag", "vin-effect-ag"],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [ 1128.9082, 25.5000, 1124.1481 ], // 
+      "etype": "arcade",
+      "game_task": 0, 
+      "quat" : [ 0.0000, 0.9812, 0.0000, 0.1925],
+      "bsphere": [ 1128.9082, 25.5000, 1124.1481 , 10],
+      "lump": {
+        "name": "vinroom-arcade-1",
+        "scale": ["float", 0.75]
+      }
+    },
+    {
+      "trans": [ 1129.89,  25.50,  1120.49 ], // 
+      "etype": "warp-gate",
+      "game_task": 0, 
+      "quat" : [ 0.0000, 0.9479, 0.0000, -0.3183],
+      "bsphere": [ 1129.89,  25.50,  1120.49 , 10],
+      "lump": {
+        "name": "vinroom-warp-gate-1",
+        "distance": ["float", 8096.0] // 2m
+      }
+    },
+
+    {
+      "trans": [ 1120.5,   31.05,   1120.6  ], // in center hologram (jetboard lulz)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [1120.5,   31.05,   1120.6, 10],
+      "lump": {
+        "name": "vinroom-skill-1",
+        "bob-scale": ["float", -1.0] // no bob
+      }
+    },
+
+    // CRATES
+    {
+      "trans": [ 1123.1926, 25.4899, 1147.2973 ], // near warp gate (beam reflexor, nuke, etc)
+      "etype": "skill-crate",
+      "game_task": 0, 
+      "quat" : [  -0.0001, -0.7142, -0.0000, 0.6999],
+      "bsphere": [  1123.1926, 25.4899, 1147.2973 , 10],
+      "lump": {
+        "name": "vinroom-crate-01",
+        "crate-type": "iron",
+        "light-index": ["int32", 10],
+        "eco-info": [
+          "int32",
+          24, // (pickup-type skill)
+          1 // amount
+        ]
+      }
+    },
+        
+    {
+      "trans": [ 1110.3145, 20.2299, 1124.9311], // vin hologhost
+      "etype": "vin-npc",
+      "game_task": 0, 
+      "quat" : [ 0.0000, 0.8341, 0.0000, 0.5515],
+      "bsphere": [ 1110.3145, 20.2299, 1124.9311, 6.928242206573486 ],
+      "lump": {
+        "name": "vinroom-vin-npc",
+        "task-actor": ["int32", 61],
+        "scale": ["float", 3.0]
+      }
+    },
+    {
+      "trans": [  1110.4700, 31.4199, 1124.8675], // 
+      "etype": "fuel-cell",
+      "game_task": 0, 
+      "quat" : [ 0.0, 0.21679742634296417, 0.0, 0.9762166142463684],
+      "bsphere": [  1110.4700, 31.4199, 1124.8675, 6.928242206573486 ],
+      "lump": {
+        "name": "vinroom-fuel-cell",
+        "level-idx": ["int32", 44],
+        "alt-actor": "vinroom-vin-npc",
+        "vag": "vin116"
+      }
+    },
+
+    // GHOSTS
+    {
+      "trans": [ 1120.5,   31.05,   1120.6  ], // in center hologram (jetboard lulz)
+      "etype":"skill-ghost",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [1120.5,   31.05,   1120.6, 10],
+      "lump": {
+        "name":"vinroom-skill-ghost-1",
+        "alt-actor":"vinroom-skill-1",
+        "bob-scale": ["float", -1.0] // no bob
+      }
+    }
+    
+  ]
+}

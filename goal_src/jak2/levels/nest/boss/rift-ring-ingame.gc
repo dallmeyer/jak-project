@@ -1,0 +1,230 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+;; name: metalkor-extras.gc
+;; name in dgo: metalkor-extras
+;; dgos: NEB
+
+;; DECOMP BEGINS
+
+(defskelgroup skel-rift-ring-ingame rift-ring-in-game rift-ring-in-game-lod0-jg rift-ring-in-game-idle-ja
+              ((rift-ring-in-game-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 0 0 40)
+              )
+
+(deftype rift-ring-ingame (process-drawable)
+  ((anim-speed          delayed-rand-float  :inline)
+   (stutter             symbol)
+   (spin-sound          sound-id)
+   (spin-sound-playing  symbol)
+   )
+  (:state-methods
+    idle
+    )
+  )
+
+
+(defstate idle (rift-ring-ingame)
+  :virtual #t
+  :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
+    (case message
+      (('stutter)
+       (set! (-> self stutter) (the-as symbol (-> block param 0)))
+       (set-params! (-> self anim-speed) 3 15 0.25)
+       (reset! (-> self anim-speed))
+       (set! (-> self anim-speed value) -0.25)
+       )
+      )
+    )
+  :trans (behavior ()
+    (if (and (movie?) (name= (-> self name) "village1-rift-ring-ingame-01"))
+      (logior! (-> self draw status) (draw-control-status no-draw)) ;; hide
+      (logclear! (-> self draw status) (draw-control-status no-draw)) ;; show
+      )
+    (cond
+      ((-> self stutter)
+       (update! (-> self anim-speed))
+       (ja :num! (loop! (+ 0.125 (-> self anim-speed value))))
+       )
+      (else
+        (ja :num! (loop!))
+        )
+      )
+    (sound-play "warp-ring" :id (-> self spin-sound) :position (-> self root trans))
+    (set! (-> self spin-sound-playing) #t)
+    )
+  :code sleep-code
+  :post (behavior ()
+    (spawn (-> self part) (-> self root trans))
+    (ja-post)
+    )
+  )
+
+(defmethod deactivate ((this rift-ring-ingame))
+  (if (-> this spin-sound-playing)
+      (sound-stop (-> this spin-sound))
+      )
+  ((method-of-type process-drawable deactivate) this)
+  (none)
+  )
+
+
+;; max defpart in vanilla is 5487, jump to 5500 to be safe
+
+(defpart 5507
+  :init-specs ((:texture (new 'static 'texture-id :index #xc9 :page #xc))
+    (:num 1.0 1.0)
+    (:x (meters 30))
+    (:y (meters 10))
+    (:scale-x (meters 0.25) (meters 0.25))
+    (:rot-x 4)
+    (:scale-y :copy scale-x)
+    (:r 64.0)
+    (:g 0.0)
+    (:b 128.0)
+    (:a 8.0)
+    (:omega (degrees 0.0225) (degrees 0.0225))
+    (:vel-x (meters -0.36666667))
+    (:vel-y (meters -0.123333335))
+    (:fade-r 0.32)
+    (:fade-g 0.64)
+    (:fade-b 0.0)
+    (:fade-a 0.32)
+    (:friction 0.95)
+    (:timer (seconds 0.667))
+    (:flags (sp-cpuinfo-flag-2 sp-cpuinfo-flag-3))
+    (:func 'sparticle-motion-blur)
+    (:rotate-y (degrees 0) (degrees 3600))
+    )
+  )
+
+(defpart 5505
+  :init-specs ((:texture (new 'static 'texture-id :index #xca :page #xc))
+    (:num 1.0)
+    (:scale-x (meters 5))
+    (:rot-x (degrees 45))
+    (:scale-y :copy scale-x)
+    (:r 255.0)
+    (:g 255.0)
+    (:b 255.0)
+    (:a 6.0 4.0)
+    (:timer (seconds 0.017))
+    (:flags (sp-cpuinfo-flag-2 sp-cpuinfo-flag-3))
+    (:userdata 819.2)
+    )
+  )
+
+(defpart 5506
+  :init-specs ((:texture (new 'static 'texture-id :index #xca :page #xc))
+    (:num 1.0)
+    (:scale-x (meters 48))
+    (:rot-x (degrees 45))
+    (:scale-y :copy scale-x)
+    (:r 64.0)
+    (:g 0.0)
+    (:b 128.0)
+    (:a 6.0 0.0)
+    (:timer (seconds 0.017))
+    (:flags (sp-cpuinfo-flag-2 sp-cpuinfo-flag-3))
+    (:userdata 65536.0)
+    )
+  )
+
+(defpart 5501
+  :init-specs ((:texture (new 'static 'texture-id :page #xc))
+    (:num 0.0 0.1)
+    (:z (meters 0.2))
+    (:scale-x (meters 1) (meters 8))
+    (:scale-y :copy scale-x)
+    (:r 196.0)
+    (:g 255.0)
+    (:b 196.0)
+    (:a 0.0)
+    (:fade-a 0.2 0.2)
+    (:timer (seconds 1.067))
+    (:flags (sp-cpuinfo-flag-0 sp-cpuinfo-flag-2 sp-cpuinfo-flag-3 sp-cpuinfo-flag-14 left-multiply-quat))
+    (:next-time (seconds 0.267))
+    (:next-launcher 5502)
+    (:rotate-y (degrees 0) (degrees 3600))
+    )
+  )
+
+(defpart 5502
+  :init-specs ((:fade-a 0.0) (:next-time (seconds 0.535)) (:next-launcher 5503))
+  )
+
+(defpart 5503
+  :init-specs ((:fade-a -0.8))
+  )
+
+(defpart 5504
+  :init-specs ((:texture (new 'static 'texture-id :page #xc))
+    (:num 8.0)
+    (:x (meters 12))
+    (:scale-x (meters 3) (meters 3))
+    (:scale-y :copy scale-x)
+    (:r 0.0 196.0)
+    (:g 0.0)
+    (:b 128.0 128.0)
+    (:a 2.0 2.0)
+    (:omega (degrees 0.045) (degrees 0.045))
+    (:vel-x (meters -0.10666667))
+    (:fade-r -0.42666668 0.6533333)
+    (:fade-g 0.42666668)
+    (:fade-b 0.0 -0.21333334)
+    (:friction 0.96)
+    (:timer (seconds 1))
+    (:flags (sp-cpuinfo-flag-2 sp-cpuinfo-flag-3))
+    (:func 'sparticle-motion-blur)
+    (:rotate-y (degrees 0) (degrees 3600))
+    )
+  )
+
+;; max defpartgroup in vanill ais 1294, jump to 1300 to be safe
+(defpartgroup group-nestb-rift-ring-faint
+  :id 1301
+  :duration (seconds 0.017)
+  :linger-duration (seconds 1.5)
+  :flags (unk-4 unk-6)
+  :bounds (static-bspherem 0 0 0 128)
+  :rotate ((degrees 90) (degrees 0) (degrees 0))
+  :parts ((sp-item 5501 :flags (is-3d bit6 bit7)) ;; cloudy white background glow
+    (sp-item 5504 :flags (bit7))  ;; faint vacuum suck effect
+    (sp-item 5505 :flags (bit6))  ;; dull glow in center
+    (sp-item 5506 :flags (bit6))  ;; ?
+    (sp-item 5507 :flags (bit7))  ;; stars flying to center effect
+    )
+  )
+
+;; WARN: Return type mismatch object vs none.
+(defmethod init-from-entity! ((this rift-ring-ingame) (arg0 entity-actor))
+  "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (set! (-> this root) (new 'process 'trsqv))
+  (process-drawable-from-entity! this arg0)
+  (initialize-skeleton
+    this
+    (the-as skeleton-group (art-group-get-by-name *level* "skel-rift-ring-ingame" (the-as (pointer uint32) #f)))
+    (the-as pair 0)
+    )
+  (case-str (-> this name)
+    (("forresca-rift-ring-ingame-01" "dig1-rift-ring-ingame-01" "dig3a-rift-ring-ingame-01" "sewer-rift-ring-ingame-01" "sewesc-rift-ring-ingame-01"
+      "skatea-rift-ring-ingame-01" "stadiumb-rift-ring-ingame-01" "stadiumc-rift-ring-ingame-01" "stadiumd-rift-ring-ingame-01")
+      (set-vector! (-> this root scale) 0.16 0.16 0.16 0.16)  ;; mini rift ring
+      (set! (-> this part) (create-launch-control (-> *part-group-id-table* 1301) this))  ;; less intense particles
+      )
+    (else
+      (set! (-> this part) (create-launch-control (-> *part-group-id-table* 1236) this)) 
+      )
+    )
+  (set! (-> this draw light-index) (the-as uint 10))
+  (set! (-> this stutter) #f)
+  (set! (-> this spin-sound) (new-sound-id))
+  (set! (-> this spin-sound-playing) #f)
+  (go (method-of-object this idle))
+  (none)
+  )

@@ -491,6 +491,7 @@
    "village_common/oracle.gc"
 
    "common/blocking-plane.gc"
+   "common/blocking-plane-b.gc" ;; mod-base-change
    "common/launcherdoor.gc"
    "common/battlecontroller.gc"
 
@@ -504,6 +505,11 @@
    "flut_common/flut-part.gc"
    "flut_common/flutflut.gc"
    "flut_common/target-flut.gc"
+
+   ;; TFL note: added
+   "tfl_common/super-eco-crystal.gc"
+   "tfl_common/tfl-hint-data.gc"
+   "tfl_common/tfl-hint.gc"
    )
 
 
@@ -1653,31 +1659,23 @@
 ;; Set up the build system to build the level geometry
 ;; this path is relative to the custom_assets/jak1/levels/ folder
 ;; it should point to the .jsonc file that specifies the level.
-;; options:
-;; - force-run: when #t, always forces a rebuild of the level instead of checking the "last modified" timestamp.
-;; - gen-fr3: when #f, does not generate the .fr3 file for the level. useful for temporarily skipping the slow fr3 build process when
-;; there's many custom levels that include extra art groups.
-(build-custom-level "test-zone")
-;; the DGO file
-(custom-level-cgo "TSZ.DGO" "test-zone/testzone.gd")
+;; (build-custom-level "test-zone")
+;; ;; the DGO file
+;; (custom-level-cgo "TSZ.DGO" "test-zone/testzone.gd")
 
-;; generate the art group for a custom actor.
-;; requires a .glb model file in custom_assets/jak1/models/custom_levels
-;; options:
-;; - gen-mesh: when #t, generates a collision mesh for this actor.
-;; - force-run: when #t, always forces a rebuild of the actor instead of checking the "last modified" timestamp.
-;; - texture-bucket: sets the "texture-level" of the actor, which determines the level bucket to draw the actor in, affecting
-;; the draw order. default is 0, which sets texture-level 0. if set to #f, no "texture-level" lump will be added to the
-;; art group, defaulting to level 1. for example, actors that are in texture-level 1 will be drawn after shadows, meaning that
-;; no shadows will be cast on them. the default value of 0 avoids this.
-;; - framerate: set the framerate for custom animations, if available. defaults to 60.
-;; - master-art-group: the name of the art group to link custom animations to. this can be used to
-;; give existing art groups custom animations if there are enough empty slots left over.
-;; - master-ag-map: a list of pairs of (anim-name master-art-group-idx), linking the animation with the given name
-;; to the given index in the master art group.
-;; - joint-channel: how many joint channels the actor should have. defaults to 6.
-;; more complicated actors like jak that make a lot of use of animation blending can have 24+ channels.
-(build-actor "test-actor" :gen-mesh #t)
+;; TFL note: TFL level build files:
+
+;; Crystal cave level :
+(build-custom-level "crystalc")
+(custom-level-cgo "CRC.DGO" "crystalc/crystalc.gd")
+
+;; Crescent Top level :
+(build-custom-level "crescent")
+(custom-level-cgo "CST.DGO" "crescent/crescent.gd")
+
+;; Energy Bay level :
+(build-custom-level "energbay")
+(custom-level-cgo "ENB.DGO" "energbay/energbay.gd")
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Game Engine Code
@@ -1764,7 +1762,7 @@
  :deps
  ("$OUT/obj/display.o"
   "$OUT/obj/decomp-h.o")
- 
+
  "engine/connect.gc"
  "ui/text-h.gc"
  "game/settings-h.gc"
@@ -1969,12 +1967,16 @@
 
 (goal-src "engine/common-obs/generic-obs.gc" "pc-anim-util" "assert")
 
+;; TFL note: added
+(goal-src "levels/tfl_common/tfl-music-player.gc" "level")
+
 (goal-src-sequence
  ;; prefix
  "engine/"
 
  :deps
- ("$OUT/obj/generic-obs.o")
+ ;; TFL note: added music player dep
+ ("$OUT/obj/generic-obs.o" "$OUT/obj/tfl-music-player.o")
  "target/target-util.gc"
  "target/target-part.gc"
  "target/collide-reaction-target.gc"
@@ -1995,7 +1997,8 @@
  "gfx/hw/video.gc"
  )
 
-(goal-src "engine/game/main.gc" "pckernel" "video")
+;; TFL note: added dep
+(goal-src "engine/game/main.gc" "pckernel" "video" "tfl-music-player")
 
 (goal-src-sequence
  ;; prefix
@@ -2062,6 +2065,7 @@
  "common-obs/plat.gc"
  "common-obs/plat-button.gc"
  "common-obs/plat-eco.gc"
+ "common-obs/linear-plat.gc"
  "common-obs/ropebridge.gc"
  "common-obs/ticky.gc"
  )
@@ -2115,12 +2119,81 @@
 (goal-src "pc/subtitle.gc" "text" "pckernel" "hint-control" "loader-h" "gsound" "ambient")
 (goal-src "pc/progress-pc.gc" "progress" "pckernel")
 (goal-src "pc/hud-classes-pc.gc" "pckernel" "hud" "battlecontroller" "generic-obs")
+
+(goal-src-sequence
+  "engine/"
+   :deps ;; no idea what these depend on, make it depend on the whole engine
+   ("$OUT/obj/ticky.o"
+    "$OUT/obj/jungle-mirrors.o"
+    "$OUT/obj/plant-boss.o"
+    "$OUT/obj/plat-flip.o"
+    "$OUT/obj/pelican.o"
+    "$OUT/obj/mistycannon.o"
+    "$OUT/obj/rolling-race-ring.o"
+    "$OUT/obj/sun-exit-chamber.o")
+   "game/mods/mods_training.gc"
+   "game/mods/mods_village1.gc"
+   "game/mods/mods_jungle.gc"
+   "game/mods/mods_beach.gc"
+   "game/mods/mods_misty.gc"
+   "game/mods/mods_firecanyon.gc"
+   "game/mods/mods_village2.gc"
+   "game/mods/mods_sunken.gc"
+   "game/mods/mods_swamp.gc"
+   "game/mods/mods_rolling.gc"
+   "game/mods/mods_ogre.gc"
+   "game/mods/mods_village3.gc"
+   "game/mods/mods_snowy.gc"
+   "game/mods/mods_cave.gc"
+   "game/mods/mods_lavatube.gc"
+   "game/mods/mods_citadel.gc"
+   "game/mods/mods_crystalcave.gc"
+   "game/mods/mods.gc"
+  )
+  
 (goal-src "pc/debug/anim-tester-x.gc" "pckernel" "gstring" "joint" "process-drawable" "art-h" "effect-control")
 (goal-src "pc/debug/entity-debug.gc" "debug" "main-h" "entity" "pckernel" "font")
 (goal-src "pc/debug/default-menu-pc.gc" "anim-tester-x" "part-tester" "entity-debug")
 (goal-src "pc/debug/pc-debug-common.gc" "pckernel-impl" "entity-h" "game-info-h" "level-h" "settings-h" "gsound-h" "target-util")
 (goal-src "pc/debug/pc-debug-methods.gc" "pc-debug-common")
-(goal-src "levels/test-zone/test-zone-obs.gc" "process-drawable")
+
+(goal-src "engine/mods/input-display.gc")
+(goal-src "engine/mods/orb-placer-h.gc")
+(goal-src "engine/mods/orb-placer.gc" "orb-placer-h")
+
+
+(goal-src-sequence
+ ;; prefix
+ "engine/"
+ :deps ("$OUT/obj/battlecontroller.o" "$OUT/obj/snow-bunny.o" "$OUT/obj/baby-spider.o" "$OUT/obj/sage-village3.o" "$OUT/obj/sage-finalboss.o" "$OUT/obj/assistant-citadel.o" "$OUT/obj/assistant-lavatube.o" "$OUT/obj/robocave-part.o" "$OUT/obj/driller-lurker.o" "$OUT/obj/training-part.o" "$OUT/obj/rolling-race-ring.o" "$OUT/obj/beach-part.o" "$OUT/obj/sculptor.o" "$OUT/obj/sunken-fish.o" "$OUT/obj/billy.o" "$OUT/obj/sidekick-human.o" "$OUT/obj/flying-lurker.o" "$OUT/obj/target-racer-h.o" "$OUT/obj/firecanyon-obs.o" "$OUT/obj/target-flut.o" "$OUT/obj/hud-classes-pc.o" "$OUT/obj/collide-reaction-racer.o" "$OUT/obj/plant-boss.o" "$OUT/obj/beach-obs.o" "$OUT/obj/sunken-elevator.o" "$OUT/obj/jungle-part.o" "$OUT/obj/sequence-a-village1.o" "$OUT/obj/ticky.o")
+ "mods/mod-settings.gc"
+ "mods/mod-common-functions.gc"
+ "mods/mod-custom-code.gc"
+ "mods/mod-debug.gc"
+)
+
+;; TFL note: Custom part and obs file for the levels
+
+(goal-src-sequence
+ "levels/crystalc/"
+ :deps ("$OUT/obj/ticky.o")
+ "crystalc-obs.gc"
+ "crystalc-part.gc"
+ )
+
+(goal-src-sequence
+ "levels/crescent/"
+ :deps ("$OUT/obj/ticky.o")
+ "crescent-obs.gc"
+ "crescent-part.gc"
+ )
+
+(goal-src-sequence
+ "levels/energybay/"
+ :deps ("$OUT/obj/ticky.o")
+ "energybay-obs.gc"
+ "energybay-part.gc"
+ )
 
 (group-list "all-code"
   `(,@(reverse *all-gc*))

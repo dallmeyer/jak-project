@@ -1,0 +1,252 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-rubblec",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O04",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o04", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-rubblec/orbs-rubblec.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 104000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+ "art_groups": [ ],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [  279.4039, 6.5397, 326.6859], // hint for infinite jump wall near final barrier
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  279.4039, 6.5397, 326.6859, 10],
+      "lump": {
+        "name":"rubblec-skill-01",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  244.97,  46.62,  391.98 ], // up on top of wall leading to subrails, follow from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 244.97,  46.62,  391.98 , 10],
+      "lump": {
+        "name":"rubblec-skill-02"
+      }
+    },
+    {
+      "trans": [  345.45,  10.49,  311.77 ], // in gap on wall in corner left of final barrier
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 345.45,  10.49,  311.77 , 10],
+      "lump": {
+        "name":"rubblec-skill-03"
+      }
+    },
+    {
+      "trans": [ 340.88,  44.60,  280.38  ], // up on slippery wall left of final barrier (extendo ff from top of ij wall nearby)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [340.88,  44.60,  280.38  , 10],
+      "lump": {
+        "name":"rubblec-skill-04"
+      }
+    },
+    {
+      "trans": [  388.87,  36.5,  301.41 ], // on lamp near breakable wall on left facing final barrier
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 388.87,  36.5,  301.41 , 10],
+      "lump": {
+        "name":"rubblec-skill-05"
+      }
+    },
+    {
+      "trans": [ 391.63,  48.58,  282.50  ], // up from ^ on standpoint of upper wall, left of final barrier
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [391.63,  48.58,  282.50 , 10],
+      "lump": {
+        "name":"rubblec-skill-06"
+      }
+    },
+    {
+      "trans": [  380.2308, 26.0101, 166.0575], // in crevice on east wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 380.2308, 26.0101, 166.0575, 10],
+      "lump": {
+        "name":"rubblec-skill-07"
+      }
+    },
+    {
+      "trans": [  380.9652, 29.3589, 81.6573], // on slippery edge of east wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  380.9652, 29.3589, 81.6573, 10],
+      "lump": {
+        "name":"rubblec-skill-08"
+      }
+    },
+    {
+      "trans": [ 379.52,  40.41,  58.38 ], // up from ^ on lamp 
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 379.52,  40.41,  58.38  , 10],
+      "lump": {
+        "name":"rubblec-skill-09"
+      }
+    },
+    {
+      "trans": [  336.2201, 26.9570, 280.4707], // on inner slippery wall crevice, east side
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  336.2201, 26.9570, 280.4707 , 10],
+      "lump": {
+        "name":"rubblec-skill-10"
+      }
+    },
+    {
+      "trans": [ 385.95,  16.26,  232.70 ], // east wall, just behind fallen beam
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 385.95,  16.26,  232.70  , 10],
+      "lump": {
+        "name":"rubblec-skill-11",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 387.26,  37.05,  210.65 ], // abah from ^, east wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 387.26,  37.05,  210.65 , 10],
+      "lump": {
+        "name":"rubblec-skill-12"
+      }
+    },
+    {
+      "trans": [ 355.43,  17.94,  40.59 ], // NE corner
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 355.43,  17.94,  40.59  , 10],
+      "lump": {
+        "name":"rubblec-skill-13",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 356.32,  31.95,  40.92 ], // abah from ^, NE corner
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 356.32,  31.95,  40.92  , 10],
+      "lump": {
+        "name":"rubblec-skill-14",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 343.71,  47.97,  39.50 ], // NE corner standpoint up high, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 343.71,  47.97,  39.50 , 10],
+      "lump": {
+        "name":"rubblec-skill-15"
+      }
+    },
+    {
+      "trans": [ 345.64,  93.66,  57.93 ], // NE corner standpoint up high, up from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 345.64,  93.66,  57.93  , 10],
+      "lump": {
+        "name":"rubblec-skill-16"
+      }
+    },
+    {
+      "trans": [ 368.48,  110.15,  60.68 ], // NE corner standpoint up high, up from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 368.48,  110.15,  60.68 , 10],
+      "lump": {
+        "name":"rubblec-skill-17"
+      }
+    }//,
+    
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

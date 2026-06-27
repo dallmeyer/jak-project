@@ -338,6 +338,20 @@
   (with-gensyms (vec)
     `(let ((,vec ,v)) (set! (-> ,vec x) ,xv) (set! (-> ,vec y) ,yv) (set! (-> ,vec z) ,zv) (set! (-> ,vec w) ,wv) ,vec)))
 
+(defmacro set-vector-meters! (dst x y z)
+  `(set-vector! ,dst (meters ,x) (meters ,y) (meters ,z) (-> ,dst w)))
+
+(defmacro static-vector-meters (x y z)
+  `(new 'static 'vector :x (meters ,x) :y (meters ,y) :z (meters ,z) :w 1.0))
+
+(defmacro static-vector-meters-wz (x y z)
+  `(new 'static 'vector :x (meters ,x) :y (meters ,y) :z (meters ,z) :w 0.0))
+
+(defun vector-copy-no-w! ((dst vector) (src vector))
+  (set! (-> dst x) (-> src x))
+  (set! (-> dst y) (-> src y))
+  (set! (-> dst z) (-> src z)))
+
 (defmacro set-vector-xyz! (v xv yv zv)
   "Set xyz fields in a vector"
   (with-gensyms (vec)
@@ -510,6 +524,9 @@
 
 (defmacro print-vector4m (vec &key (dst #t))
   `(format ,dst "~m ~m ~m ~m~%" (-> ,vec x) (-> ,vec y) (-> ,vec z) (-> ,vec w)))
+
+(defmacro print-vector3m (vec &key (dst #t))
+  `(format ,dst "~m ~m ~m~%" (-> ,vec x) (-> ,vec y) (-> ,vec z)))
 
 (define *zero-vector* (new 'static 'vector :x 0. :y 0. :z 0. :w 0.))
 

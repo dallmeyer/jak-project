@@ -1,4 +1,4 @@
-;;-*-Lisp-*-
+  ;;-*-Lisp-*-
 (in-package goal)
 
 ;; name: ctywide-bbush.gc
@@ -14,11 +14,11 @@
   :linger-duration (seconds 0)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 4578 :fade-after (meters 100) :falloff-to (meters 100))
-    (sp-item 4579 :fade-after (meters 80))
-    (sp-item 4580 :flags (is-3d))
-    (sp-item 4581 :flags (is-3d))
-    )
-  )
+          (sp-item 4579 :fade-after (meters 80))
+          (sp-item 4580 :flags (is-3d))
+          (sp-item 4581 :flags (is-3d))))
+    
+  
 
 (defpart 4578
   :init-specs ((:texture (starflash effects))
@@ -101,10 +101,10 @@
   :linger-duration (seconds 0.47)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 4582 :fade-after (meters 100) :falloff-to (meters 100))
-    (sp-item 4583 :flags (is-3d))
-    (sp-item 4584 :flags (is-3d))
-    )
-  )
+          (sp-item 4583 :flags (is-3d))
+          (sp-item 4584 :flags (is-3d))))
+    
+  
 
 (defpart 4582
   :init-specs ((:texture (starflash effects))
@@ -130,13 +130,13 @@
 
 (defpart 4585
   :init-specs ((:r 64.0 1 64.0)
-    (:g 0.0)
-    (:b 64.0 1 64.0)
-    (:a 0.0 63 1.0)
-    (:next-time (seconds 0.067) (seconds 0.065))
-    (:next-launcher 4585)
-    )
-  )
+               (:g 0.0)
+               (:b 64.0 1 64.0)
+               (:a 0.0 63 1.0)
+               (:next-time (seconds 0.067) (seconds 0.065))
+               (:next-launcher 4585)))
+    
+  
 
 (defpart 4583
   :init-specs ((:texture (water-ring effects))
@@ -161,13 +161,13 @@
 
 (defpart 4586
   :init-specs ((:r 128.0 1 127.0)
-    (:g 0.0)
-    (:b 128.0 1 127.0)
-    (:a 32.0 32.0)
-    (:next-time (seconds 0.017))
-    (:next-launcher 4586)
-    )
-  )
+               (:g 0.0)
+               (:b 128.0 1 127.0)
+               (:a 32.0 32.0)
+               (:next-time (seconds 0.017))
+               (:next-launcher 4586)))
+    
+  
 
 (defpart 4584
   :init-specs ((:texture (middot effects))
@@ -192,21 +192,21 @@
 
 (defpart 4587
   :init-specs ((:r 128.0 1 127.0)
-    (:g 0.0)
-    (:b 128.0 1 127.0)
-    (:a 32.0 32.0)
-    (:next-time (seconds 0.017))
-    (:next-launcher 4587)
-    )
-  )
+               (:g 0.0)
+               (:b 128.0 1 127.0)
+               (:a 32.0 32.0)
+               (:next-time (seconds 0.017))
+               (:next-launcher 4587)))
+    
+  
 
 (defpartgroup group-rolling-explode-ring
   :id 1055
   :duration (seconds 0.017)
   :linger-duration (seconds 0.5)
   :bounds (static-bspherem 0 0 0 8)
-  :parts ((sp-item 4588 :fade-after (meters 100) :falloff-to (meters 100)) (sp-item 4589 :flags (is-3d)))
-  )
+  :parts ((sp-item 4588 :fade-after (meters 100) :falloff-to (meters 100)) (sp-item 4589 :flags (is-3d))))
+  
 
 (defpart 4588
   :init-specs ((:texture (starflash effects))
@@ -278,11 +278,11 @@
     (set! (-> *part-id-table* 4583 init-specs 4 initial-valuef) f0-0)
     (set! (-> *part-id-table* 4584 init-specs 4 initial-valuef) f0-0)
     (set! (-> *part-id-table* 4588 init-specs 16 initial-valuef) f0-0)
-    (set! (-> *part-id-table* 4589 init-specs 4 initial-valuef) f0-0)
-    )
+    (set! (-> *part-id-table* 4589 init-specs 4 initial-valuef) f0-0))
+    
   0
-  (none)
-  )
+  (none))
+  
 
 (defstate idle (race-ring)
   :virtual #t
@@ -456,8 +456,8 @@
 (defmethod race-ring-method-22 ((this race-ring))
   (set! (-> this root) (new 'process 'trsqv))
   0
-  (none)
-  )
+  (none))
+  
 
 (defmethod race-ring-method-23 ((this race-ring))
   (add-icon! *minimap* this (the-as uint 15) (the-as int #f) (the-as vector #t) 0)
@@ -470,8 +470,8 @@
   (set! (-> this cyl radius) 24576.0)
   (set! (-> this cyl length) 4096.0)
   0
-  (none)
-  )
+  (none))
+  
 
 ;; WARN: Return type mismatch object vs none.
 (defbehavior race-ring-init-by-other race-ring ((arg0 city-race-ring-info))
@@ -482,19 +482,19 @@
   (set-vector! (-> self root scale) 3.0 3.0 3.0 1.0)
   (race-ring-method-23 self)
   (go-virtual idle)
-  (none)
-  )
+  (none))
+  
 
 (defun race-ring-spawn ((arg0 task-manager) (arg1 city-race-ring-info))
   (let ((gp-0 (the-as process #f)))
     (let ((v1-1 (process-spawn race-ring arg1 :to arg0)))
       (if v1-1
-          (set! gp-0 (-> v1-1 0))
-          )
-      )
-    gp-0
-    )
-  )
+          (set! gp-0 (-> v1-1 0))))
+          
+      
+    gp-0))
+    
+  
 
 (deftype bb-ring-info (structure)
   ((time       time-frame)
@@ -506,397 +506,399 @@
 
 
 (define *bb-ring-info* (new 'static 'boxed-array :type bb-ring-info
+                         ;; ctyslumb / burning-bush-1 / city-burning-bush-ring-3
                          (new 'static 'bb-ring-info
-                           :time (seconds 8)
-                           :start-pos (new 'static 'vector :x 2920693.8 :y 40960.0 :z -333086.72 :w 1.0)
+                           :time (seconds 11.25)
+                           :start-pos (new 'static 'vector :x (meters 736.10)  :y (meters  24.70)  :z (meters -274.62)   :w 1.0)
                            :rings (new 'static 'boxed-array :type city-race-ring-info
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3070796.2 :y 43205.02 :z -289035.47 :w 8995.472)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3351872.0 :y 42851.125 :z 86396.11 :w 14760.418)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3540834.8 :y 72001.54 :z 367432.5 :w 4834.5728)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3950253.8 :y 43052.24 :z 800616.06 :w 5659.835)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4657052.5 :y 42684.414 :z 806750.6 :w 8782.443)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4643791.5 :y 70061.67 :z 1225949.6 :w -7646.1035)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4473472.0 :y 46644.84 :z 1626665.4 :w 1340.4115)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4650624.0 :y 62401.332 :z 1927367.1 :w 32186.242)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4236069.5 :y 109972.69 :z 1854959.2 :w -13605.638)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3701647.0 :y 113170.84 :z 1698812.8 :w -2880.9443)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3724027.5 :y 111864.22 :z 2344453.0 :w 11307.618)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4235592.5 :y 109263.26 :z 2386389.0 :w 16874.646)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4495594.5 :y 101352.66 :z 2342717.5 :w 19199.955)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4557376.5 :y 44639.848 :z 2683306.0 :w -17726.906)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4011281.2 :y 72860.47 :z 2645215.8 :w -4971.9067)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3543313.2 :y 47093.76 :z 2577456.0 :w -16974.389)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3204822.2 :y 74465.28 :z 2832405.8 :w 1022.9805)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3519941.5 :y 115895.09 :z 3035037.8 :w 3764.133)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3583739.5 :y 112346.32 :z 3433880.0 :w 15266.283)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3925602.0 :y 115456.82 :z 3560821.2 :w 12493.182)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4214438.5 :y 109173.15 :z 3710432.5 :w 3543.022)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4292878.5 :y 113903.62 :z 4136553.8 :w 13073.904)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4557998.5 :y 108473.14 :z 4093858.2 :w 32527.1)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4457908.0 :y 44532.94 :z 3678150.8 :w -16948.848)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3962912.0 :y 42423.09 :z 3524606.0 :w 24137.527)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4440953.0 :y 42390.734 :z 3293434.8 :w 31590.809)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             )
-                           )
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 766.04)  :y (meters  27.07)  :z (meters -182.42)   :w 1226.6175)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 691.68)  :y (meters  14.06)  :z (meters -118.97)   :w -1451.0982)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 827.60)  :y (meters  31.11)  :z (meters  55.86)   :w 6852.4609)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info  ;; by neon sign
+                                     :pos (new 'static 'vector :x (meters 996.96)  :y (meters  23.85)  :z (meters 169.19)    :w 9462.2841)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info  ;; in northern trench by hideout
+                                     :pos (new 'static 'vector :x (meters 1074.19)  :y (meters   1.31)  :z (meters  78.47)    :w -13772.8076)
+                                    ;;  :pos (new 'static 'vector :x (meters 943.52)  :y (meters   2.16)  :z (meters 346.16)    :w 16075.2041)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info  ;; to east of middle trench
+                                     :pos (new 'static 'vector :x (meters 1159.87)  :y (meters  10.49)  :z (meters 200.48)   :w -29876.1445)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info ;; pipes near ctyindb
+                                     :pos (new 'static 'vector :x (meters 1107.20)  :y (meters  19.00)  :z (meters 356.05)    :w -976.8892)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 1153.17)  :y (meters  11.45)  :z (meters 468.04)   :w -246.9142)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 1044.26)  :y (meters  26.67)  :z (meters 418.03)   :w -20887.5976)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 1029.07)  :y (meters  26.52)  :z (meters 514.05)   :w 8166.2543)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 1132.04)  :y (meters  28.15)  :z (meters 623.12)   :w 660.7589)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info ;; pipes near ctyindb bbush
+                                     :pos (new 'static 'vector :x (meters 1061.94)  :y (meters  13.64)  :z (meters 667.54)  :w -29122.3613)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info ;; overpass ramp
+                                     :pos (new 'static 'vector :x (meters 788.25)  :y (meters  10.71)  :z (meters 667.19)    :w -5705.1386)
+                                     :boost 1.0
+                                     :dist 819200.0)
+
+                                   (new 'static 'city-race-ring-info ;; on overpass loop
+                                     :pos (new 'static 'vector :x (meters 936.17)  :y (meters  27.10)  :z (meters 637.14)   :w 8167.6054)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info ;; drop off overpass loop near ctyinda bbush
+                                     :pos (new 'static 'vector :x (meters 922.47)  :y (meters  26.41)  :z (meters 851.39)   :w 10165.9882)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 1041.31)  :y (meters  10.84)  :z (meters 960.23)   :w 2167.6699)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 1128.02)  :y (meters  12.27)  :z (meters 1084.67)   :w -15366.7285)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 1036.04)  :y (meters   9.96)  :z (meters 1154.38)   :w -15342.0556)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 907.54)  :y (meters  12.90)  :z (meters 994.26)   :w -23745.4062)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 818.90)  :y (meters  18.35)  :z (meters 1076.04)   :w 16563.1054)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 847.41)  :y (meters  27.47)  :z (meters 1014.80)   :w -23520.2792)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 962.00)  :y (meters  27.94)  :z (meters 872.01)   :w 24501.4726)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 1079.88)  :y (meters  11.15)  :z (meters 776.50)   :w 16651.4765)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 984.40)  :y (meters  11.82)  :z (meters 893.44)    :w 15852.0927)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 1118.42)  :y (meters  16.71)  :z (meters 806.76)    :w 17292.8046)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 1070.30)  :y (meters  30.29)  :z (meters 1070.37)   :w -22559.1054)
+                                     :boost 1.0
+                                     :dist 819200.0)))
+                               
+                             
+                         ;; ctyslumb / burning-bush-1 / city-burning-bush-ring-1
                          (new 'static 'bb-ring-info
-                           :time (seconds 8)
-                           :start-pos (new 'static 'vector :x 2920693.8 :y 40960.0 :z -333086.72 :w 1.0)
+                           :time (seconds 11)
+                           :start-pos (new 'static 'vector :x (meters 729.1546) :y (meters 25.8) :z (meters -289.3666) :w 1.0)
                            :rings (new 'static 'boxed-array :type city-race-ring-info
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3139584.0 :y 44933.12 :z -241909.77 :w 11339.948)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3277373.5 :y 43704.32 :z 74997.76 :w 912.3522)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3299614.8 :y 44154.88 :z 331161.6 :w 10465.48)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3607593.0 :y 43499.52 :z 518348.8 :w 10608.295)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3971440.8 :y 43663.36 :z 760791.06 :w 13600.504)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4258160.5 :y 70328.32 :z 666501.1 :w -27694.55)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4070359.0 :y 47759.36 :z 576512.0 :w -14751.389)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3680379.0 :y 44564.48 :z 557219.8 :w -23942.902)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3503718.5 :y 69386.24 :z 223313.92 :w -30764.584)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3272827.0 :y 45301.76 :z -13557.76 :w -31219.184)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3041034.2 :y 44195.84 :z -319651.84 :w -23914.998)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3087073.2 :y 76062.72 :z -667197.44 :w 30212.334)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 2988114.0 :y 108503.04 :z -1128489.0 :w -27177.633)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 2576220.2 :y 45916.16 :z -1328578.5 :w -20707.338)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 2293514.2 :y 43048.96 :z -887357.44 :w 4091.8494)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 2675425.2 :y 81305.6 :z -856965.1 :w 26134.191)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 2693283.8 :y 45096.96 :z -1273528.4 :w -14476.319)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 2442444.8 :y 115056.64 :z -1190461.5 :w -8945.955)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             )
-                           )
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 626.83)  :y (meters  10.04)  :z (meters -323.90)   :w -22646.9296)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 601.47)  :y (meters  13.00)  :z (meters -268.51) :w 17392.1660)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 676.64)  :y (meters  20.32)  :z (meters -271.09)   :w -3069.5947)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 570.77)  :y (meters  14.0)  :z (meters -228.81)   :w -17064.6386)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 400.14)  :y (meters  24.5)  :z (meters -147.30)   :w -28735.6582)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 460.47)  :y (meters   1.96)  :z (meters -298.17)     :w 13620.4101)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 483.14)  :y (meters   3.07)  :z (meters -367.96)   :w -27646.4511)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 423.84)  :y (meters   1.96)  :z (meters -479.81)   :w 30107.3554)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 546.72)  :y (meters   3.18)  :z (meters -576.03)   :w 21368.4453)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 656.96)  :y (meters   1.93)  :z (meters -529.62)   :w 14343.3710)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 783.73)  :y (meters  10.05)  :z (meters -455.50)   :w -2.9476)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 688.60)  :y (meters  1.93)  :z (meters -431.20)   :w -22940.0625)  ;; back of oracle
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 753.44)  :y (meters  13.8)  :z (meters -602.65)   :w 26557.5800)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 765.91)  :y (meters  25.00)  :z (meters -624.55)   :w 30859.7656)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 754.27)  :y (meters   4.04)  :z (meters -703.72)   :w -18397.0214)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 650.36)  :y (meters  26.63)  :z (meters -730.03)   :w -20020.2070)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 558.22)  :y (meters  15.74)  :z (meters -779.34)   :w -12873.2519)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 466.33)  :y (meters  24.23)  :z (meters -770.16)   :w -14754.0263)
+                                     :boost 1.0
+                                     :dist 819200.0)))
+                               
+                             
+                           ;; ctyport / city-burning-bush-ring-2 / burning-bush-6
                          (new 'static 'bb-ring-info
-                           :time (seconds 8)
-                           :start-pos (new 'static 'vector :x -370606.1 :y 40960.0 :z 5572239.5 :w 1.0)
+                           :time (seconds 11)
+                           :start-pos (new 'static 'vector :x (meters  49.54)  :y (meters  10.58)  :z (meters 1275.16)  :w 1.0)
                            :rotation 5461.3335
                            :rings (new 'static 'boxed-array :type city-race-ring-info
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x -280739.84 :y 47308.8 :z 5591818.0 :w 17184.613)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 69754.88 :y 13557.76 :z 5583257.5 :w 17541.584)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 576348.2 :y 49766.4 :z 5611397.0 :w 18388.31)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 895426.56 :y 59064.32 :z 5211177.0 :w -32356.96)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 691732.5 :y 30965.76 :z 4855562.0 :w -30837.783)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 763248.6 :y 46817.28 :z 4489339.0 :w -28816.58)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 416481.28 :y 44072.96 :z 4337705.0 :w -25147.764)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 425902.1 :y 45178.88 :z 3870433.2 :w 30427.8)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 703938.56 :y 71966.72 :z 3478118.5 :w 24663.018)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 932904.94 :y 47472.64 :z 3203932.2 :w 21617.414)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 1308098.5 :y 105881.6 :z 3228221.5 :w 15657.807)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 1547509.8 :y 76431.36 :z 2849013.8 :w 24128.59)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 1756979.2 :y 34570.24 :z 2779422.8 :w 17599.62)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 1975337.0 :y 34406.4 :z 2847703.0 :w 5692.511)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 2331156.5 :y 59473.92 :z 3134095.2 :w 14885.848)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 2582814.8 :y 34406.4 :z 2942525.5 :w -28780.717)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 2701680.8 :y 60620.8 :z 2638069.8 :w 17277.092)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 2992455.8 :y 39731.2 :z 2504335.2 :w 31740.521)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 2741084.2 :y 90112.0 :z 2380021.8 :w -20174.584)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 2684067.8 :y 95887.36 :z 2128937.0 :w -32377.205)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 2793758.8 :y 100024.32 :z 1767751.6 :w 17577.355)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3154288.8 :y 45711.36 :z 1753169.9 :w 13975.443)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3440558.0 :y 47349.76 :z 2188411.0 :w 12108.886)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3902546.0 :y 44523.52 :z 2269511.8 :w 19725.771)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3993600.0 :y 46407.68 :z 2011054.1 :w 31902.232)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4441415.5 :y 72171.52 :z 1879900.1 :w 10530.943)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4650066.0 :y 86835.2 :z 1856430.1 :w -32374.768)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 4532306.0 :y 87572.48 :z 1644830.8 :w -29740.656)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             )
-                           )
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters  49.86)  :y (meters  11.12)  :z (meters 1297.63)  :w 2653.0776)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 160.22)  :y (meters  33.26)  :z (meters 1388.26)   :w 17541.584)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 262.24)  :y (meters   7.65)  :z (meters 1383.83)   :w 30091.4882)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 343.14)  :y (meters   3.02)  :z (meters 1330.86)   :w 20894.3554)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 428.51)  :y (meters  11.98)  :z (meters 1407.04)   :w 10127.4072)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 466.80)  :y (meters  16.54)  :z (meters 1486.28)   :w 9217.9921)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 653.59)  :y (meters  11.26)  :z (meters 1657.88)   :w 3838.6264)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 585.81)  :y (meters   3.01)  :z (meters 1798.66)   :w -14335.6796)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 410.22)  :y (meters  -1.61)  :z (meters 1695.71)   :w -24199.4687)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 313.31)  :y (meters   3.88)  :z (meters 1679.38)   :w -9997.4697)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters 157.09)  :y (meters   2.63)  :z (meters 1747.85)   :w -2584.5888)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters  48.66)  :y (meters  19.45)  :z (meters 1772.92)   :w -15493.2763)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -183.45)  :y (meters   3.58)  :z (meters 1789.00)   :w -8958.4716)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -214.47)  :y (meters   7.89)  :z (meters 1913.12)   :w -11745.0302)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -253.84)  :y (meters  16.78)  :z (meters 1657.84)   :w 32445.3476)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -252.87)  :y (meters  40.50)  :z (meters 1650.53)   :w 30517.7753)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -233.49)  :y (meters  10.70)  :z (meters 1577.48)   :w 29548.4804)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -261.90)  :y (meters  17.78)  :z (meters 1437.46)   :w -20735.2148)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -347.73)  :y (meters  14.72)  :z (meters 1437.57)   :w -22038.3398)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -382.42)  :y (meters  14.77)  :z (meters 1286.29)   :w -32753.0820)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -443.73)  :y (meters  14.90)  :z (meters 1131.53)   :w -32444.9179)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -416.26)  :y (meters  11.24)  :z (meters 1090.19)   :w 18710.1562)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -418.61)  :y (meters  15.00)  :z (meters 959.23)   :w -25487.0156)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -351.87)  :y (meters  13.15)  :z (meters 922.04)   :w 17304.3437)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -224.32)  :y (meters  12.67)  :z (meters 937.82)   :w 16220.4501)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -192.16)  :y (meters  10.09)  :z (meters 1009.15)   :w -4108.1542)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -278.64)  :y (meters  15.14)  :z (meters 1168.89)   :w 3533.2504)
+                                     :boost 1.0
+                                     :dist 819200.0)
+                               
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x (meters -272.62)  :y (meters  35.32)  :z (meters 1188.83)   :w 4359.2441)
+                                     :boost 1.0
+                                     :dist 819200.0)))
+                               
+                             
+                           
                          (new 'static 'bb-ring-info
                            :time (seconds 8)
                            :rings (new 'static 'boxed-array :type city-race-ring-info
-                             (new 'static 'city-race-ring-info
-                               :pos (new 'static 'vector :x 3139584.0 :y 44933.12 :z -241909.77 :w 11339.948)
-                               :boost 1.0
-                               :dist 819200.0
-                               )
-                             )
-                           )
-                         )
-        )
+                                   (new 'static 'city-race-ring-info
+                                     :pos (new 'static 'vector :x 3139584.0 :y 44933.12 :z -241909.77 :w 11339.948)
+                                     :boost 1.0
+                                     :dist 819200.0)))))
+                               
+                             
+                           
+                         
+        
 
 (define *city-race-ring-edit-info* (new 'static 'array int32 512
                                      0
@@ -1410,9 +1412,9 @@
                                      0
                                      0
                                      0
-                                     0
-                                     )
-        )
+                                     0))
+                                     
+        
 
 (set-subtask-hook!
   *game-info*
@@ -1424,8 +1426,8 @@
     (set-setting! 'airlock #f 0.0 0)
     (set-setting! 'exclusive-task #f 0.0 (-> self node-info task))
     (let ((s5-0 *traffic-manager*)
-          (gp-0 (new 'stack 'traffic-object-spawn-params))
-          )
+          (gp-0 (new 'stack 'traffic-object-spawn-params)))
+          
       (set! (-> gp-0 position quad) (-> *bb-ring-info* (-> self info index) start-pos quad))
       (quaternion-axis-angle! (-> gp-0 rotation) 0.0 1.0 0.0 (-> *bb-ring-info* (-> self info index) rotation))
       (set! (-> gp-0 object-type) (traffic-type bikea))
@@ -1434,23 +1436,23 @@
       (set! (-> gp-0 proc) #f)
       (send-event s5-0 'spawn-object gp-0)
       (if (-> gp-0 proc)
-          (set! (-> self slave 1) (process->handle (-> gp-0 proc)))
-          )
-      )
+          (set! (-> self slave 1) (process->handle (-> gp-0 proc)))))
+          
+      
     (set! (-> self start-time) 0)
     (set! (-> self sub-state) (the-as uint 0))
     (set! (-> self count) 0)
     (set! (-> self max-count) (-> *bb-ring-info* (-> self info index) rings length))
-    (none)
-    )
-  )
+    (none)))
+    
+  
 
 (set-subtask-hook!
   *game-info*
   (game-task-node city-burning-bush-ring-1-resolution)
   TASK_MANAGER_CLEANUP_HOOK
-  (lambda :behavior task-manager () (send-event *traffic-manager* 'restore-default-settings) (none))
-  )
+  (lambda :behavior task-manager () (send-event *traffic-manager* 'restore-default-settings) (none)))
+  
 
 (set-subtask-hook!
   *game-info*
@@ -1462,16 +1464,16 @@
     (cond
       ((and (handle->process (-> self slave 0))
             (-> self slave 0 process 0 next-state)
-            (= (-> self slave 0 process 0 next-state name) 'idle)
-            )
-       )
+            (= (-> self slave 0 process 0 next-state name) 'idle)))
+            
+       
       (else
         (let ((v1-15 (-> self sub-state)))
           (cond
             ((< v1-15 (the-as uint (-> self max-count)))
              (let* ((a1-2 (-> *bb-ring-info* (-> self info index) rings v1-15))
-                    (a0-14 (race-ring-spawn self a1-2))
-                    )
+                    (a0-14 (race-ring-spawn self a1-2)))
+                    
                (when a0-14
                  (set! (-> self slave 0) (process->handle a0-14))
                  (set! (-> self time-limit) (the-as time-frame (if (zero? (-> self sub-state))
@@ -1486,15 +1488,15 @@
                )
              )
             (else
-              (go-virtual complete)
-              )
-            )
-          )
-        )
-      )
-    (none)
-    )
-  )
+              (go-virtual complete))))))
+              
+            
+          
+        
+      
+    (none)))
+    
+  
 
 (set-subtask-hook!
   *game-info*
@@ -1515,18 +1517,18 @@
   *game-info*
   (game-task-node city-burning-bush-ring-1-resolution)
   TASK_MANAGER_COMPLETE_HOOK
-  (lambda :behavior task-manager () (close! (-> self node-info) 'event) (none))
-  )
+  (lambda :behavior task-manager () (close! (-> self node-info) 'event) (none)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-ring-2-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-ring-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-ring-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-ring-3-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-ring-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-ring-1-resolution)))
+  
 
 (defpartgroup group-bush-collect
   :id 1056
@@ -1534,9 +1536,9 @@
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 4590 :fade-after (meters 220) :period (seconds 0.5) :length (seconds 0.25))
-    (sp-item 4591 :fade-after (meters 100))
-    )
-  )
+          (sp-item 4591 :fade-after (meters 100))))
+    
+  
 
 (defpart 4591
   :init-specs ((:texture (peacemaker-plasma effects))
@@ -1562,8 +1564,8 @@
   )
 
 (defpart 4592
-  :init-specs ((:fade-a -0.32))
-  )
+  :init-specs ((:fade-a -0.32)))
+  
 
 (defpart 4590
   :init-specs ((:texture (glow effects))
@@ -1622,8 +1624,8 @@
 
 (defskelgroup skel-homing-beacon homing-beacon homing-beacon-lod0-jg homing-beacon-idle-ja
               ((homing-beacon-lod0-mg (meters 999999)))
-              :bounds (static-spherem 0 1 0 3)
-              )
+              :bounds (static-spherem 0 1 0 3))
+              
 
 (deftype bush-collect (process-drawable)
   ((minimap    connection-minimap)
@@ -1646,8 +1648,8 @@
     (set! (-> s5-0 dynam) (copy *standard-dynamics* 'process))
     (set! (-> s5-0 reaction) cshape-reaction-default)
     (set! (-> s5-0 no-reaction)
-          (the-as (function collide-shape-moving collide-query vector vector object) nothing)
-          )
+          (the-as (function collide-shape-moving collide-query vector vector object) nothing))
+          
     (set! (-> s5-0 penetrated-by) (the-as penetrate -1))
     (let ((v1-7 (new 'process 'collide-shape-prim-sphere s5-0 (the-as uint 0))))
       (set! (-> v1-7 prim-core collide-as) (collide-spec collectable))
@@ -1655,8 +1657,8 @@
       (set! (-> v1-7 transform-index) 3)
       (set-vector! (-> v1-7 local-sphere) 0.0 2048.0 0.0 16384.0)
       (set! (-> s5-0 total-prims) (the-as uint 1))
-      (set! (-> s5-0 root-prim) v1-7)
-      )
+      (set! (-> s5-0 root-prim) v1-7))
+      
     (set! (-> s5-0 nav-radius) (* 0.75 (-> s5-0 root-prim local-sphere w)))
     (let ((v1-10 (-> s5-0 root-prim)))
       (set! (-> s5-0 backup-collide-as) (-> v1-10 prim-core collide-as))
@@ -1665,13 +1667,13 @@
     (set! (-> this root) s5-0)
     )
   0
-  (none)
-  )
+  (none))
+  
 
 (defmethod bush-collect-method-23 ((this bush-collect))
   0
-  (none)
-  )
+  (none))
+  
 
 (defstate idle (bush-collect)
   :virtual #t
@@ -1759,8 +1761,8 @@
   (bush-collect-method-23 self)
   (set! (-> self part) (create-launch-control group-bush-collect self))
   (go-virtual idle)
-  (none)
-  )
+  (none))
+  
 
 ;; WARN: Return type mismatch object vs none.
 (defbehavior bush-collect-dark-eco-init-by-other bush-collect ((arg0 vector))
@@ -1772,8 +1774,8 @@
   (bush-collect-method-23 self)
   (set! (-> self part) (create-launch-control group-eco-dark-pill self))
   (go-virtual idle)
-  (none)
-  )
+  (none))
+  
 
 ;; WARN: Return type mismatch object vs none.
 (defbehavior bush-collect-homing-beacon-init-by-other bush-collect ((arg0 vector))
@@ -1793,23 +1795,23 @@
     )
   (set! (-> self part) (create-launch-control group-bush-collect self))
   (go-virtual idle)
-  (none)
-  )
+  (none))
+  
 
 ;; WARN: Return type mismatch (pointer process) vs (pointer bush-collect).
 (defun bush-collect-spawn ((arg0 task-manager) (arg1 vector))
-  (process-spawn bush-collect arg1 :to arg0)
-  )
+  (process-spawn bush-collect arg1 :to arg0))
+  
 
 ;; WARN: Return type mismatch (pointer process) vs (pointer bush-collect).
 (defun bush-collect-homing-beacon-spawn ((arg0 task-manager) (arg1 vector))
-  (process-spawn bush-collect :init bush-collect-homing-beacon-init-by-other arg1 :to arg0)
-  )
+  (process-spawn bush-collect :init bush-collect-homing-beacon-init-by-other arg1 :to arg0))
+  
 
 ;; WARN: Return type mismatch (pointer process) vs (pointer bush-collect).
 (defun bush-collect-dark-eco-spawn ((arg0 task-manager) (arg1 vector))
-  (process-spawn bush-collect :init bush-collect-dark-eco-init-by-other arg1 :to arg0)
-  )
+  (process-spawn bush-collect :init bush-collect-dark-eco-init-by-other arg1 :to arg0))
+  
 
 (deftype burning-bush-collection-info (structure)
   ((pos      vector  :inline)
@@ -1826,8 +1828,8 @@
   (format arg0 "(static-burning-bush-collection-info~%")
   (format arg0 "     :pos (~4,,2M ~4,,2M ~4,,2M)~%)~%" (-> this pos x) (-> this pos y) (-> this pos z))
   0
-  (none)
-  )
+  (none))
+  
 
 (deftype bb-collection-info (structure)
   ((user-data  uint32)
@@ -1839,139 +1841,146 @@
 
 (define *bb-collection-info*
   (new 'static 'boxed-array :type bb-collection-info
-    (new 'static 'bb-collection-info
+    (new 'static 'bb-collection-info  ;; green eco collection in ctygenc
       :user-data #x2
+      :time (seconds 261)
+      :colls (new 'static 'boxed-array :type burning-bush-collection-info
+
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 200.55)  :y (meters   9.05)  :z (meters  16.03)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 153.91)  :y (meters   14.7)  :z (meters  33.69)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  75.88)  :y (meters  10.48)  :z (meters   8.78)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  61.19)  :y (meters   9.80)  :z (meters  91.81)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  41.93)  :y (meters  10.26)  :z (meters 164.76)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  57.67)  :y (meters   8.59)  :z (meters 223.12)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  95.64)  :y (meters  15.55)  :z (meters 205.32)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 160.70)  :y (meters  16.18)  :z (meters 183.92)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 192.00)  :y (meters  17.90)  :z (meters 136.29)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 230.96)  :y (meters  15.53)  :z (meters 179.46)  ))
+
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 337.37)  :y (meters  10.29)  :z (meters 233.82)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 340.51)  :y (meters  10.37)  :z (meters 272.34)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 334.37)  :y (meters   9.69)  :z (meters 377.89)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 264.43)  :y (meters  10.60)  :z (meters 367.32)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 223.77)  :y (meters  18.42)  :z (meters 367.99)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 146.16)  :y (meters  18.42)  :z (meters 404.85)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters   7.91)  :y (meters  23.81)  :z (meters 402.50)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  48.02)  :y (meters  21.45)  :z (meters 530.37)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  53.69)  :y (meters  24.38)  :z (meters 599.56)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  30.38)  :y (meters  27.04)  :z (meters 727.24)  ))
+
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  75.11)  :y (meters  18.42)  :z (meters 792.76)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 142.70)  :y (meters  16.36)  :z (meters 737.81)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 182.12)  :y (meters   9.60)  :z (meters 828.02)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 115.98)  :y (meters   8.80)  :z (meters 910.68)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 117.76)  :y (meters  15.41)  :z (meters 994.82)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  95.79)  :y (meters   9.03)  :z (meters 1064.41)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 191.92)  :y (meters  13.85)  :z (meters 1052.38)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 280.72)  :y (meters   9.59)  :z (meters 1045.69)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 309.06)  :y (meters   9.44)  :z (meters 978.23)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 305.09)  :y (meters  18.07)  :z (meters 866.48)  ))
+
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 228.55)  :y (meters  17.72)  :z (meters 838.14)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 228.00)  :y (meters   9.59)  :z (meters 741.15)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 289.66)  :y (meters  18.41)  :z (meters 751.85)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 380.68)  :y (meters  18.41)  :z (meters 791.90)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 372.63)  :y (meters  21.45)  :z (meters 648.20)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 366.79)  :y (meters  17.35)  :z (meters 585.00)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 372.43)  :y (meters  21.46)  :z (meters 503.81)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 370.59)  :y (meters  17.17)  :z (meters 404.86)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 283.63)  :y (meters  17.38)  :z (meters 466.17)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 194.44)  :y (meters  26.23)  :z (meters 466.76)  ))
+
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  63.50)  :y (meters  29.16)  :z (meters 671.76)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -19.23)  :y (meters  17.61)  :z (meters 667.14)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -130.17)  :y (meters  13.11)  :z (meters 674.25) ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -26.50)  :y (meters   8.85)  :z (meters 715.39)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 157.43)  :y (meters  11.37)  :z (meters 1162.58)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 192.07)  :y (meters   8.34)  :z (meters 1314.17)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 231.67)  :y (meters   4.97)  :z (meters 1248.69)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 237.56)  :y (meters   8.47)  :z (meters 1150.89)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 393.53)  :y (meters  22.91)  :z (meters 712.78)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 536.49)  :y (meters  25.11)  :z (meters 705.89)  ))
+
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 519.23)  :y (meters  25.05)  :z (meters 596.97)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 493.47)  :y (meters  27.43)  :z (meters 682.28)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 573.38)  :y (meters  25.05)  :z (meters 617.87)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 666.56)  :y (meters  21.16)  :z (meters 579.94)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 742.12)  :y (meters  10.67)  :z (meters 412.22)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 750.61)  :y (meters  10.43)  :z (meters 450.64)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 399.58)  :y (meters  20.68)  :z (meters 685.29)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 288.45)  :y (meters  15.94)  :z (meters 205.43)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 372.97)  :y (meters  17.41)  :z (meters 305.23)  ))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -89.12)  :y (meters   8.97)  :z (meters 728.82)  ))
+              ))
+        
+      
+    (new 'static 'bb-collection-info ;; beacon collection in ctygenb
       :time (seconds 120)
       :colls (new 'static 'boxed-array :type burning-bush-collection-info
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 859463.7 :y 49111.04 :z 957480.94))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 856719.4 :y 49111.04 :z 1022689.25))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 786554.9 :y 49111.04 :z 1024983.06))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 714874.9 :y 49111.04 :z 1021788.2))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 713564.2 :y 49111.04 :z 938434.56))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1050419.2 :y 32727.04 :z 25354.24))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1188495.4 :y 32727.04 :z 34160.64))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1165312.0 :y 32768.0 :z 183787.52))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1141841.9 :y 41738.24 :z 322560.0))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1080647.6 :y 41738.24 :z 326451.2))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1037516.8 :y 47431.68 :z 359628.8))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1036288.0 :y 47513.6 :z 415621.12))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1083433.0 :y 47513.6 :z 470876.16))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1141719.0 :y 47513.6 :z 469401.6))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1182679.0 :y 41738.24 :z 564674.56))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1182105.6 :y 41738.24 :z 612229.1))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1180590.1 :y 41738.24 :z 671784.94))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1181040.6 :y 41738.24 :z 738508.8))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1180999.6 :y 41738.24 :z 799375.4))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1147084.8 :y 47308.8 :z 842096.6))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1108582.4 :y 47513.6 :z 839270.4))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 941260.8 :y 37560.32 :z 871137.25))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 857661.44 :y 49111.04 :z 868597.75))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 791306.25 :y 49111.04 :z 870359.06))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 719298.56 :y 49111.04 :z 874414.06))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 923566.06 :y 41738.24 :z 326983.7))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 869212.2 :y 41738.24 :z 326123.53))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 816087.06 :y 47472.64 :z 360980.47))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 817192.94 :y 47595.52 :z 423075.84))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 869130.25 :y 41738.24 :z 461168.62))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 923934.75 :y 41738.24 :z 461660.16))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 975544.3 :y 32727.04 :z 571514.9))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 864911.4 :y 49111.04 :z 685342.75))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 844226.56 :y 56442.88 :z 557096.94))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 775290.9 :y 56401.92 :z 560660.5))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 711720.94 :y 56442.88 :z 559063.06))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 491069.44 :y 47554.56 :z 529530.9))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 429056.0 :y 47595.52 :z 531415.06))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 391495.7 :y 41738.24 :z 622305.25))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 391127.03 :y 41738.24 :z 709754.9))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 426557.44 :y 47431.68 :z 841850.9))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 492339.2 :y 47267.84 :z 840089.6))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 390635.53 :y 41738.24 :z 947363.8))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 392110.1 :y 41738.24 :z 1002045.44))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 392192.0 :y 41738.24 :z 1055293.5))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 427991.03 :y 47513.6 :z 1109975.0))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 489431.03 :y 47513.6 :z 1108828.1))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 569917.44 :y 41738.24 :z 1179689.0))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 618168.3 :y 41738.24 :z 1180057.6))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 705249.25 :y 32727.04 :z 1093468.1))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 771686.4 :y 32727.04 :z 1091665.9))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 854138.9 :y 32727.04 :z 1091911.6))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1047756.8 :y 41738.24 :z 1057177.6))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1047592.94 :y 41738.24 :z 1002127.4))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1047019.5 :y 41738.24 :z 950026.25))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1083678.8 :y 47554.56 :z 901365.75))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1146224.6 :y 47595.52 :z 901529.6))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1183539.2 :y 41738.24 :z 415744.0))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1143234.5 :y 47595.52 :z 530145.25))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1085972.5 :y 47554.56 :z 529817.6))
-        )
-      )
-    (new 'static 'bb-collection-info
-      :time (seconds 120)
-      :colls (new 'static 'boxed-array :type burning-bush-collection-info
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 691732.5 :y 45015.04 :z -1437450.2))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 871710.75 :y 45670.4 :z -1238425.6))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1036943.4 :y 46571.52 :z -1118904.4))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1275166.8 :y 11960.32 :z -1024819.2))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1465712.6 :y 11182.08 :z -1191649.2))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1366507.5 :y 69017.6 :z -1411809.2))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1456455.6 :y 69017.6 :z -1106370.5))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 1171660.8 :y 69017.6 :z -998727.7))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 692592.6 :y 11878.4 :z -1012572.2))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 457277.44 :y 11141.12 :z -1011015.7))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 222494.72 :y 69795.84 :z -1272504.4))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 54886.4 :y 44154.88 :z -1290649.6))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -710656.0 :y 44687.36 :z -1403945.0))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -435036.16 :y 13189.12 :z -805724.2))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -248176.64 :y 12083.2 :z -807444.5))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -193986.56 :y 45629.44 :z -536125.44))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -229335.05 :y 44851.2 :z -162201.6))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 125132.8 :y 43991.04 :z -190423.05))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 323952.62 :y 44851.2 :z -226344.95))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x 460636.16 :y 44851.2 :z -615424.0))
-        )
-      )
-    (new 'static 'bb-collection-info
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 281.16)  :y (meters  17.60)  :z (meters -353.69)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 350.25)  :y (meters  11.59)  :z (meters -438.71)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 287.68)  :y (meters  13.70)  :z (meters -405.16)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 149.54)  :y (meters  13.95)  :z (meters -423.66)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 222.62)  :y (meters  10.03)  :z (meters -490.01)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 205.58)  :y (meters  13.97)  :z (meters -585.56)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  96.01)  :y (meters  12.61)  :z (meters -695.83)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 218.70)  :y (meters  11.59)  :z (meters -760.16)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 329.20)  :y (meters  11.59)  :z (meters -646.00)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 300.46)  :y (meters   9.82)  :z (meters -517.10)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 363.84)  :y (meters  14.85)  :z (meters -370.40)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 308.07)  :y (meters  12.06)  :z (meters -203.53)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 264.47)  :y (meters   8.60)  :z (meters -312.85)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 204.38)  :y (meters   8.60)  :z (meters -184.65)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 113.06)  :y (meters  14.32)  :z (meters -170.26)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  57.21)  :y (meters   8.60)  :z (meters -194.70)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  13.28)  :y (meters  15.97)  :z (meters -243.24)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 359.77)  :y (meters   1.45)  :z (meters -312.40)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters  95.27)  :y (meters  11.04)  :z (meters -247.97)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters 170.29)  :y (meters   9.57)  :z (meters -371.03)))))
+        
+      
+    (new 'static 'bb-collection-info  ;; dark eco collection in ctyfarma
       :user-data #x1
-      :time (seconds 120)
+      :time (seconds 110)
       :colls (new 'static 'boxed-array :type burning-bush-collection-info
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -330792.97 :y 32727.04 :z 371630.1))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -508354.56 :y 32727.04 :z 307732.47))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -655319.06 :y 32727.04 :z 377487.38))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -803061.75 :y 32727.04 :z 384081.9))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -993525.75 :y 32768.0 :z 355614.72))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -1122959.4 :y 34529.28 :z 395960.3))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -1239449.6 :y 43335.68 :z 485335.03))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -1460142.1 :y 44359.68 :z 482385.9))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -1555906.5 :y 55050.24 :z 245186.56))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -1204838.4 :y 33792.0 :z 216104.95))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -929832.94 :y 40099.84 :z 488529.9))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -707215.4 :y 45629.44 :z 493977.6))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -385269.75 :y 37355.52 :z 557301.75))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -186859.52 :y 32727.04 :z 551116.8))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -148971.52 :y 32727.04 :z 776560.6))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -188252.16 :y 32727.04 :z 931758.06))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -178462.72 :y 32727.04 :z 1082941.5))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -183541.77 :y 32727.04 :z 1230561.2))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -220323.84 :y 32727.04 :z 1405296.6))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -520888.3 :y 32727.04 :z 1353277.5))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -713482.25 :y 32727.04 :z 1093181.5))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -652206.06 :y 32727.04 :z 846848.0))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -746332.2 :y 51077.12 :z 664862.75))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -890961.94 :y 32768.0 :z 809164.8))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -971325.44 :y 32768.0 :z 766279.7))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -1154621.5 :y 34652.16 :z 780083.2))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -1280532.5 :y 32727.04 :z 830218.25))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -1423810.5 :y 34570.24 :z 839475.2))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -1557504.0 :y 35348.48 :z 732938.25))
-        (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x -1410908.1 :y 47472.64 :z 679485.44))
-        )
-      )
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -373.37)  :y (meters 11.74)  :z (meters 92.11)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -379.35)  :y (meters  16.05)  :z (meters  42.60)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -401.85)  :y (meters  13.78)  :z (meters   0.09)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -328.39)  :y (meters   8.49)  :z (meters -13.25)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -328.17)  :y (meters  10.95)  :z (meters  87.98)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -309.78)  :y (meters  11.17)  :z (meters 110.63)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -262.88)  :y (meters  12.93)  :z (meters  89.82)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -222.35)  :y (meters  17.92)  :z (meters  92.06)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -230.60)  :y (meters  19.94)  :z (meters  46.76)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -147.87)  :y (meters  13.35)  :z (meters 101.88)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -39.71)  :y (meters   8.28)  :z (meters  96.14)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -41.73)  :y (meters   8.59)  :z (meters 166.43)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -26.05)  :y (meters  20.15)  :z (meters 316.52)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -106.78)  :y (meters   8.59)  :z (meters 335.10)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -170.76)  :y (meters   7.75)  :z (meters 358.36)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -241.07)  :y (meters   8.47)  :z (meters 342.40)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -309.86)  :y (meters   8.83)  :z (meters 372.03)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -338.63)  :y (meters   9.03)  :z (meters 329.98)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -327.5569)  :y (meters 16.4761)  :z (meters 279.9313)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -363.51)  :y (meters   8.59)  :z (meters 222.04)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -395.78)  :y (meters  24.46)  :z (meters 154.80)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -264.17)  :y (meters  11.27)  :z (meters 177.16)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -246.59)  :y (meters  10.97)  :z (meters 200.28)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -226.94)  :y (meters  13.02)  :z (meters 169.86)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -207.44)  :y (meters  10.83)  :z (meters 193.40)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -142.64)  :y (meters  13.70)  :z (meters 200.30)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -117.10)  :y (meters  11.00)  :z (meters 195.39)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -413.91)  :y (meters  26.35)  :z (meters 218.54)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -124.51)  :y (meters  16.29)  :z (meters 274.91)))
+              (new 'static 'burning-bush-collection-info :pos (new 'static 'vector :x (meters -187.24)  :y (meters  19.99)  :z (meters 263.89)))))
+        
+      
     (new 'static 'bb-collection-info
       :time (seconds 120)
-      :colls (new 'static 'boxed-array :type burning-bush-collection-info (new 'static 'burning-bush-collection-info))
-      )
-    )
-  )
+      :colls (new 'static 'boxed-array :type burning-bush-collection-info (new 'static 'burning-bush-collection-info)))))
+      
+    
+  
 
 (define *city-bb-collection-edit-info* (new 'static 'array int32 512
                                          0
@@ -2485,9 +2494,9 @@
                                          0
                                          0
                                          0
-                                         0
-                                         )
-        )
+                                         0))
+                                         
+        
 
 (set-subtask-hook!
   *game-info*
@@ -2499,13 +2508,13 @@
       (dotimes (a0-1 (-> v1-4 colls length))
         (when (and (-> v1-4 colls a0-1 minimap) (nonzero? (-> v1-4 colls a0-1 minimap)))
           (logior! (-> v1-4 colls a0-1 minimap flags) (minimap-flag fade-out))
-          (set! (-> v1-4 colls a0-1 minimap) #f)
-          )
-        )
-      )
-    (none)
-    )
-  )
+          (set! (-> v1-4 colls a0-1 minimap) #f))))
+          
+        
+      
+    (none)))
+    
+  
 
 (set-subtask-hook!
   *game-info*
@@ -2520,82 +2529,82 @@
         (cond
           ((zero? v1-9)
            (set! (-> self hud-counter)
-                 (ppointer->handle (process-spawn hud-homing-beacon :init hud-init-by-other :to *target*))
-                 )
-           )
+                 (ppointer->handle (process-spawn hud-homing-beacon :init hud-init-by-other :to *target*))))
+                 
+           
           ((= v1-9 1)
            (set! (-> self hud-counter)
-                 (ppointer->handle (process-spawn hud-dark-eco-pickup :init hud-init-by-other :to *target*))
-                 )
-           )
+                 (ppointer->handle (process-spawn hud-dark-eco-pickup :init hud-init-by-other :to *target*))))
+                 
+           
           ((= v1-9 2)
            (set! (-> self hud-counter)
-                 (ppointer->handle (process-spawn hud-green-eco-pickup :init hud-init-by-other :to *target*))
-                 )
-           )
-          )
-        )
+                 (ppointer->handle (process-spawn hud-green-eco-pickup :init hud-init-by-other :to *target*))))))
+                 
+           
+          
+        
       (dotimes (s5-3 (-> gp-0 colls length))
         (let ((v1-32 (-> gp-0 user-data)))
           (cond
             ((zero? v1-32)
              (set! (-> gp-0 colls s5-3 handle)
-                   (ppointer->handle (bush-collect-homing-beacon-spawn self (-> gp-0 colls s5-3 pos)))
-                   )
+                   (ppointer->handle (bush-collect-homing-beacon-spawn self (-> gp-0 colls s5-3 pos))))
+                   
              (set! (-> gp-0 colls s5-3 minimap) (add-icon!
                                                   *minimap*
                                                   (handle->process (-> gp-0 colls s5-3 handle))
                                                   (the-as uint 16)
                                                   (the-as int #f)
                                                   (the-as vector #t)
-                                                  0
-                                                  )
-                   )
-             )
+                                                  0)))
+                                                  
+                   
+             
             ((= v1-32 1)
-             (let ((t1-3 (new 'stack 'fact-info self (pickup-type eco-pill-random) (-> *FACT-bank* default-eco-pill-green-inc)))
-                   )
+             (let ((t1-3 (new 'stack 'fact-info self (pickup-type eco-pill-random) (-> *FACT-bank* default-eco-pill-green-inc))))
+                   
                (new 'stack-no-clear 'vector)
                (logior! (-> t1-3 options) (actor-option fade-out no-distance-check-fadeout))
                (set! (-> t1-3 fade-time) (-> gp-0 time))
                (set! (-> gp-0 colls s5-3 handle)
                      (ppointer->handle
-                       (birth-pickup-at-point (-> gp-0 colls s5-3 pos) (pickup-type eco-pill-dark) 1.0 #t self t1-3)
-                       )
-                     )
-               )
+                       (birth-pickup-at-point (-> gp-0 colls s5-3 pos) (pickup-type eco-pill-dark) 1.0 #t self t1-3))))
+                       
+                     
+               
              (set! (-> gp-0 colls s5-3 minimap) (add-icon!
                                                   *minimap*
                                                   (handle->process (-> gp-0 colls s5-3 handle))
                                                   (the-as uint 16)
                                                   (the-as int #f)
                                                   (the-as vector #t)
-                                                  0
-                                                  )
-                   )
-             )
+                                                  0)))
+                                                  
+                   
+             
             ((= v1-32 2)
-             (let ((t1-5 (new 'stack 'fact-info self (pickup-type eco-pill-random) (-> *FACT-bank* default-eco-pill-green-inc)))
-                   )
+             (let ((t1-5 (new 'stack 'fact-info self (pickup-type eco-pill-random) (-> *FACT-bank* default-eco-pill-green-inc))))
+                   
                (new 'stack-no-clear 'vector)
                (logior! (-> t1-5 options) (actor-option fade-out no-distance-check-fadeout))
                (set! (-> t1-5 fade-time) (-> gp-0 time))
                (set! (-> gp-0 colls s5-3 handle)
                      (ppointer->handle
-                       (birth-pickup-at-point (-> gp-0 colls s5-3 pos) (pickup-type eco-pill-green) 1.0 #t self t1-5)
-                       )
-                     )
-               )
+                       (birth-pickup-at-point (-> gp-0 colls s5-3 pos) (pickup-type eco-pill-green) 1.0 #t self t1-5))))
+                       
+                     
+               
              (set! (-> gp-0 colls s5-3 minimap) (add-icon!
                                                   *minimap*
                                                   (handle->process (-> gp-0 colls s5-3 handle))
                                                   (the-as uint 16)
                                                   (the-as int #f)
                                                   (the-as vector #t)
-                                                  0
-                                                  )
-                   )
-             )
+                                                  0)))
+                                                  
+                   
+             
             (else
               (set! (-> gp-0 colls s5-3 handle) (ppointer->handle (bush-collect-spawn self (-> gp-0 colls s5-3 pos))))
               (set! (-> gp-0 colls s5-3 minimap) #f)
@@ -2618,29 +2627,29 @@
     ()
     (check-time self)
     (let ((a0-2 (-> *bb-collection-info* (-> self info index)))
-          (v1-6 0)
-          )
+          (v1-6 0))
+          
       (dotimes (a1-0 (-> a0-2 colls length))
         (cond
           ((and (nonzero? (-> a0-2 colls a1-0 handle)) (handle->process (-> a0-2 colls a1-0 handle)))
-           (+! v1-6 1)
-           )
+           (+! v1-6 1))
+           
           (else
             (when (-> a0-2 colls a1-0 minimap)
               (logior! (-> a0-2 colls a1-0 minimap flags) (minimap-flag fade-out))
-              (set! (-> a0-2 colls a1-0 minimap) #f)
-              )
-            )
-          )
-        )
+              (set! (-> a0-2 colls a1-0 minimap) #f)))))
+              
+            
+          
+        
       (set! (-> *game-info* counter) (the float v1-6))
       (if (zero? v1-6)
-          (go-virtual complete)
-          )
-      )
-    (none)
-    )
-  )
+          (go-virtual complete)))
+          
+      
+    (none)))
+    
+  
 
 (set-subtask-hook!
   *game-info*
@@ -2658,13 +2667,13 @@
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-collection-2-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-collection-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-collection-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-collection-3-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-collection-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-collection-1-resolution)))
+  
 
 (deftype burning-bush-get-on-info (structure)
   ((trans         vector      :inline)
@@ -2683,108 +2692,249 @@
       :quat (new 'static 'quaternion :y -0.6321 :w 0.7748)
       :camera-trans (new 'static 'vector :x -1503602.2 :y 62047.027 :z 2475579.5 :w 1.0)
       :camera-rot (new 'static 'array float 9 0.689 0.0 0.7247 -0.3328 0.8882 0.3164 -0.6437 -0.4592 0.612)
-      :time 6000.0
-      )
+      :time 6000.0)
+      
     (new 'static 'burning-bush-get-on-info
       :trans (new 'static 'vector :x 4318766.0 :y 2145.8943 :z 808666.3 :w 1.0)
       :quat (new 'static 'quaternion :y -0.9999 :w -0.0115)
       :camera-trans (new 'static 'vector :x 4387209.0 :y 39837.285 :z 818740.44 :w 1.0)
       :camera-rot (new 'static 'array float 9 -0.1641 0.0 0.9864 -0.4679 0.8803 -0.0778 -0.8683 -0.4744 -0.1444)
-      :time 6000.0
-      )
+      :time 6000.0)
+      
     (new 'static 'burning-bush-get-on-info
       :trans (new 'static 'vector :x 3322434.0 :y 99432.445 :z 3684668.2 :w 1.0)
       :quat (new 'static 'quaternion :y -0.9923 :w 0.1235)
       :camera-trans (new 'static 'vector :x 3332904.2 :y 134062.48 :z 3737897.0 :w 1.0)
       :camera-rot (new 'static 'array float 9 -0.9774 0.0 0.2113 -0.0762 0.9325 -0.3528 -0.197 -0.361 -0.9114)
-      :time 6000.0
-      )
+      :time 6000.0)
+      
     (new 'static 'burning-bush-get-on-info
       :trans (new 'static 'vector :x 663325.5 :y 17938.842 :z 4885086.0 :w 1.0)
       :quat (new 'static 'quaternion :y -0.4768 :w -0.879)
       :camera-trans (new 'static 'vector :x 730486.4 :y 66763.164 :z 4933765.0 :w 1.0)
       :camera-rot (new 'static 'array float 9 -0.5022 0.0 0.8647 -0.3772 0.8998 -0.2191 -0.7781 -0.4362 -0.4518)
-      :time 10500.0
-      )
+      :time 10500.0)
+      
     (new 'static 'burning-bush-get-on-info
       :trans (new 'static 'vector :x 570983.6 :y 94438.6 :z 4240269.0 :w 1.0)
       :quat (new 'static 'quaternion :y 0.9299 :w -0.3677)
       :camera-trans (new 'static 'vector :x 493339.44 :y 129311.945 :z 4223747.0 :w 1.0)
       :camera-rot (new 'static 'array float 9 0.1785 0.0 -0.9839 0.4944 0.8645 0.0897 0.8506 -0.5025 0.1543)
-      :time 12000.0
-      )
+      :time 12000.0)
+      
     (new 'static 'burning-bush-get-on-info
       :trans (new 'static 'vector :x -168806.81 :y 48443.8 :z 3844239.8 :w 1.0)
       :quat (new 'static 'quaternion :y 0.9837 :w 0.1795)
       :camera-trans (new 'static 'vector :x -151019.92 :y 94520.12 :z 3768899.2 :w 1.0)
       :camera-rot (new 'static 'array float 9 0.9513 0.0 0.3082 -0.1497 0.874 0.4621 -0.2694 -0.4858 0.8314)
-      :time 9000.0
-      )
+      :time 9000.0)
+      
     (new 'static 'burning-bush-get-on-info
       :trans (new 'static 'vector :x -622166.8 :y 38157.105 :z 788430.44 :w 1.0)
       :quat (new 'static 'quaternion :y 0.9294 :w -0.3688)
       :camera-trans (new 'static 'vector :x -655421.44 :y 38743.246 :z 755565.4 :w 1.0)
       :camera-rot (new 'static 'array float 9 0.7391 0.0 -0.6735 -0.1633 0.9701 -0.1792 0.6534 0.2424 0.717)
-      :time 6000.0
-      )
+      :time 6000.0)
+      
     (new 'static 'burning-bush-get-on-info
       :trans (new 'static 'vector :x -981622.4 :y 32762.266 :z -1378460.9 :w 1.0)
       :quat (new 'static 'quaternion :y -0.9881 :w -0.1537)
       :camera-trans (new 'static 'vector :x -1001924.2 :y 76537.445 :z -1419026.9 :w 1.0)
       :camera-rot (new 'static 'array float 9 0.8637 0.0 -0.5039 0.2989 0.8051 0.5122 0.4057 -0.5931 0.6953)
-      :time 6000.0
-      )
+      :time 6000.0)
+      
     (new 'static 'burning-bush-get-on-info
       :trans (new 'static 'vector :x 1437632.9 :y 41757.082 :z -1262564.5 :w 1.0)
       :quat (new 'static 'quaternion :y 0.409 :w -0.9125)
       :camera-trans (new 'static 'vector :x 1451820.2 :y 44497.305 :z -1328512.2 :w 1.0)
       :camera-rot (new 'static 'array float 9 0.9983 0.0 0.0578 0.0045 0.9969 -0.0777 -0.0576 0.0778 0.9952)
-      :time 6000.0
-      )
+      :time 6000.0)
+      
     (new 'static 'burning-bush-get-on-info
       :trans (new 'static 'vector :x 783885.1 :y 40796.16 :z -705780.5 :w 1.0)
       :quat (new 'static 'quaternion :y -0.6938 :w 0.7201)
       :camera-trans (new 'static 'vector :x 741225.7 :y 46757.887 :z -776107.2 :w 1.0)
       :camera-rot (new 'static 'array float 9 0.9057 0.0 -0.4238 -0.0939 0.9751 -0.2007 0.4132 0.2216 0.8832)
-      :time 6000.0
-      )
+      :time 6000.0)
+      
     (new 'static 'burning-bush-get-on-info
       :trans (new 'static 'vector :x 2180319.2 :y -443.1872 :z -2409681.2 :w 1.0)
       :quat (new 'static 'quaternion :y -0.8512 :w 0.5248)
       :camera-trans (new 'static 'vector :x 2186967.0 :y 4454.8096 :z -2441144.2 :w 1.0)
       :camera-rot (new 'static 'array float 9 0.9628 0.0 0.2698 0.02 0.9972 -0.0715 -0.2691 0.0743 0.9602)
-      :time 6000.0
-      )
+      :time 6000.0)
+      
     (new 'static 'burning-bush-get-on-info
       :trans (new 'static 'vector :x 609418.06 :y 32768.0 :z -1476082.9 :w 1.0)
       :quat (new 'static 'quaternion :y -0.9919 :w 0.1265)
       :camera-trans (new 'static 'vector :x 600542.8 :y 37365.35 :z -1515416.8 :w 1.0)
       :camera-rot (new 'static 'array float 9 0.9811 0.0 -0.1932 -0.0172 0.996 -0.0875 0.1924 0.0892 0.9772)
-      :time 9000.0
-      )
+      :time 9000.0)
+      
     (new 'static 'burning-bush-get-on-info
       :trans (new 'static 'vector :x 2543148.8 :y 37827.38 :z 3158161.5 :w 1.0)
       :quat (new 'static 'quaternion :y -0.9581 :w 0.2863)
       :camera-trans (new 'static 'vector :x 2513162.2 :y 68558.03 :z 3066508.5 :w 1.0)
       :camera-rot (new 'static 'array float 9 0.9036 0.0 -0.4281 0.1063 0.9686 0.2244 0.4147 -0.2483 0.8753)
-      :time 9000.0
-      )
+      :time 9000.0)
+      
     (new 'static 'burning-bush-get-on-info
       :trans (new 'static 'vector :x 1663103.0 :y 34921.266 :z 2111440.0 :w 1.0)
       :quat (new 'static 'quaternion :y 0.562 :w 0.8271)
       :camera-trans (new 'static 'vector :x 1741256.8 :y 131765.86 :z 2247819.8 :w 1.0)
       :camera-rot (new 'static 'array float 9 -0.9324 0.0 0.3611 -0.1247 0.9384 -0.322 -0.3389 -0.3453 -0.8751)
-      :time 7500.0
-      )
+      :time 7500.0)
+      
     (new 'static 'burning-bush-get-on-info
       :trans (new 'static 'vector :x 4012071.2 :y 102169.805 :z 3209066.5 :w 1.0)
       :quat (new 'static 'quaternion :y 0.6466 :w 0.7627)
       :camera-trans (new 'static 'vector :x 4028088.8 :y 103657.47 :z 3221753.8 :w 1.0)
       :camera-rot (new 'static 'array float 9 -0.449 0.0 0.8934 0.2339 0.9651 0.1175 -0.8623 0.2617 -0.4334)
-      :time 7500.0
-      )
+      :time 7500.0)))
+      
+    
+  
+
+(defun mod-override-burning-bush-get-on! ((info burning-bush-get-on-info) (task game-task))
+  (case task
+    ;; === ctygena (canals near farm) ===
+    (((game-task city-burning-bush-get-to-14))  ;; on awning near first turn from farm
+      (set-vector-meters! (-> info trans) -284.7  31.5 -273.8)  ;; in gap among billboards
+      (set-vector! (-> info camera-trans) -1147260.2500 148365.6562 -1051547.750 1.0)
+      (set! (-> info camera-rot 0) -0.9957) (set! (-> info camera-rot 1) -0.0000) (set! (-> info camera-rot 2) 0.0923)
+      (set! (-> info camera-rot 3) -0.0113) (set! (-> info camera-rot 4) 0.9924) (set! (-> info camera-rot 5) -0.1219)
+      (set! (-> info camera-rot 6) -0.0916) (set! (-> info camera-rot 7) -0.1224) (set! (-> info camera-rot 8) -0.9882)
+      (set! (-> info time) 3250.0))
+      
+    (((game-task city-burning-bush-get-to-11))  ;; on rooftop above normal position, towards ctygenb
+      (set-vector-meters! (-> info trans) -128.62  14.94 -290.43  )  ;; on doorframe near turret and lurker escape pipe
+      (set-vector! (-> info camera-trans) (meters -120.3722) (meters 19.6301) (meters -300.1393) 1.0)
+      (set! (-> info camera-rot 0)  0.7515) (set! (-> info camera-rot 1) -0.0000) (set! (-> info camera-rot 2) 0.6596)
+      (set! (-> info camera-rot 3) -0.0754) (set! (-> info camera-rot 4)  0.9934) (set! (-> info camera-rot 5) 0.0859)
+      (set! (-> info camera-rot 6) -0.6553) (set! (-> info camera-rot 7) -0.1144) (set! (-> info camera-rot 8) 0.7466)
+      (set! (-> info time) 4050.0))
+
+    ;; === ctygenb (canals near farm) ===
+    (((game-task city-burning-bush-get-to-9))  ;; burning-bush-15 ;; near entrance to stadium
+     (set-vector-meters! (-> info trans) 171.61  20.60 -366.81)  ;; over doorway in useless loop, near leftover OOB parking-spot
+     (set-vector! (-> info camera-trans) (meters 173.0084) (meters 25.1557) (meters -351.0474) 1.0)
+     (set! (-> info camera-rot 0)   -0.9858) (set! (-> info camera-rot 1)  -0.0000) (set! (-> info camera-rot 2)  0.1677)
+      (set! (-> info camera-rot 3)  -0.0204) (set! (-> info camera-rot 4)   0.9925) (set! (-> info camera-rot 5)  -0.1203)
+      (set! (-> info camera-rot 6)  -0.1664) (set! (-> info camera-rot 7)  -0.1220) (set! (-> info camera-rot 8)  -0.9784)
+      (set! (-> info time) 3600.0))
+      
+    ;; === ctyslumb (near prison exit) ====
+    (((game-task city-burning-bush-get-to-1))  ;; behind fruit stands near yellow barrier skip
+     (set-vector-meters! (-> info trans) 891.46   0.8 351.41) ;; in trench closer to fortress, at ramp in middle
+     (set-vector! (-> info camera-trans) 3607523.7500  22645.5039 1377616.7500 1.0)
+     (set! (-> info camera-rot 0) 0.6236) (set! (-> info camera-rot 1) 0.0000) (set! (-> info camera-rot 2) -0.7816)
+      (set! (-> info camera-rot 3) 0.0934) (set! (-> info camera-rot 4) 0.9928) (set! (-> info camera-rot 5) 0.0745)
+      (set! (-> info camera-rot 6) 0.7760) (set! (-> info camera-rot 7) -0.1195) (set! (-> info camera-rot 8) 0.6192)
+      (set! (-> info time) 5600.0))
+      
+    (((game-task city-burning-bush-get-to-13)) ;; atop roundabout building towards ctysluma
+     (set-vector-meters! (-> info trans) 761.9  32.0 -278.9)  ;; balcony near roundabout farther into ctyslumb
+     (set-vector! (-> info camera-trans) 3110917.2500 136020.1250 -1186875.5000 1.0)
+     (set! (-> info camera-rot 0) 0.9980) (set! (-> info camera-rot 1) 0.0000) (set! (-> info camera-rot 2) 0.0630)
+      (set! (-> info camera-rot 3) -0.0139) (set! (-> info camera-rot 4) 0.9753) (set! (-> info camera-rot 5) 0.2202)
+      (set! (-> info camera-rot 6) -0.0614) (set! (-> info camera-rot 7) -0.2206) (set! (-> info camera-rot 8) 0.9734)
+      (set! (-> info time) 6600.0))
+      
+    ;; === ctyslumc (waterslums)
+    (((game-task city-burning-bush-get-to-4)) ;; atop small building in corner 
+     (set-vector-meters! (-> info trans) 409.79  24.03 -403.63)  ;; atop small building towards entrance
+     (set-vector! (-> info camera-trans) 1740262.5000 107883.6562 -1635763.6250 1.0)
+     (set! (-> info camera-rot 0) -0.3031) (set! (-> info camera-rot 1) -0.0000) (set! (-> info camera-rot 2) 0.9529)
+      (set! (-> info camera-rot 3) -0.2271) (set! (-> info camera-rot 4) 0.9711) (set! (-> info camera-rot 5) -0.0722)
+      (set! (-> info camera-rot 6) -0.9254) (set! (-> info camera-rot 7) -0.2383) (set! (-> info camera-rot 8) -0.2944)
+      (set! (-> info time) 4000.0))
+      
+    ;; === ctyfarma (between bazaar and ctygen, with mountain/forest) ===
+    (((game-task city-burning-bush-get-to-8))  ;; on wall near sprinkler/ctygen exit ;; 'burning-bush-10
+     (set-vector-meters! (-> info trans) -143.22  17.9 197.69)  ;; on other sprinkler closer to mountain airlock (hover over)
+     (set-vector! (-> info camera-trans) -541217.5625 93706.0468 787718.6875 1.0)
+     (set! (-> info camera-rot 0)  0.3915) (set! (-> info camera-rot 1)  0.0000) (set! (-> info camera-rot 2) 0.9201)
+      (set! (-> info camera-rot 3) -0.1145) (set! (-> info camera-rot 4)  0.9922) (set! (-> info camera-rot 5) 0.0487)
+      (set! (-> info camera-rot 6) -0.9129) (set! (-> info camera-rot 7) -0.1245) (set! (-> info camera-rot 8) 0.3884)
+      (set! (-> info time) 4300.0))
+
+    ;; === ctyfarmb ===
+    (((game-task city-burning-bush-get-to-5))  ;; behind rock near trees opposite yakows ;; 'burning-bush-14
+     (set-vector-meters! (-> info trans) -425.94  22.44 1131.63  )  ;; on overhang jutting out from wall near ctyport
+     (set-vector! (-> info camera-trans) (meters -415.6073) (meters 26.5192) (meters 1134.5544) 1.0)
+     (set! (-> info camera-rot 0)   -0.4068) (set! (-> info camera-rot 1) -0.0000) (set! (-> info camera-rot 2) 0.9135)
+      (set! (-> info camera-rot 3)  -0.1282) (set! (-> info camera-rot 4)  0.9901) (set! (-> info camera-rot 5) -0.0571)
+      (set! (-> info camera-rot 6)  -0.9044) (set! (-> info camera-rot 7) -0.1403) (set! (-> info camera-rot 8) -0.4028)
+      (set! (-> info time) 6300.0))
+      
+    ;; === ctyport ===
+    (((game-task city-burning-bush-get-to-3))  ;; jak 3 moment
+     (set-vector-meters! (-> info trans) 336.2  19.62 1729.20)
+     (set-vector! (-> info camera-trans) 1295809.2500 85190.6562 7002001.500 1.0)
+     (set! (-> info camera-rot 0) 0.5216) (set! (-> info camera-rot 1)  0.0000) (set! (-> info camera-rot 2) -0.8531)
+      (set! (-> info camera-rot 3) 0.2889) (set! (-> info camera-rot 4)  0.9409) (set! (-> info camera-rot 5)  0.1766)
+      (set! (-> info camera-rot 6) 0.8027) (set! (-> info camera-rot 7) -0.3386) (set! (-> info camera-rot 8)  0.4908)
+      (set! (-> info time) 1030.0))
+    
+    ;; === ctyinda ===
+    (((game-task city-burning-bush-get-to-10)) ;; corner pocket by consite
+     (set-vector-meters! (-> info trans) 819.2  8.6 813.3)
+     (set-vector! (-> info camera-trans) 3348314.2500 66771.1562 3301103.0000 1.0)
+     (set! (-> info camera-rot 0)  0.9733) (set! (-> info camera-rot 1)  0.0000) (set! (-> info camera-rot 2) 0.2291)
+      (set! (-> info camera-rot 3) -0.1043) (set! (-> info camera-rot 4)  0.8902) (set! (-> info camera-rot 5) 0.4433)
+      (set! (-> info camera-rot 6) -0.2039) (set! (-> info camera-rot 7) -0.4555) (set! (-> info camera-rot 8) 0.8665)
+      (set! (-> info time) 3500.0))
+      
+    ;; === ctyindb ===
+    (((game-task city-burning-bush-get-to-2)) ;; gap in billboard, corner near sewers entrance
+     (set-vector-meters! (-> info trans) 1071.0  46.48 547.96)
+     (set-vector! (-> info camera-trans) 4288069.5000 57702.9648 2245457.000 1.0)
+     (set! (-> info camera-rot 0)   0.5846) (set! (-> info camera-rot 1) 0.0000) (set! (-> info camera-rot 2) -0.8113)
+      (set! (-> info camera-rot 3) -0.5898) (set! (-> info camera-rot 4) 0.6866) (set! (-> info camera-rot 5) -0.4250)
+      (set! (-> info camera-rot 6)  0.5570) (set! (-> info camera-rot 7) 0.7270) (set! (-> info camera-rot 8)  0.4014)
+      (set! (-> info time) 4850.0))
+      
+    ;; === ctymarka ===
+    (((game-task city-burning-bush-get-to-12)) ;; 
+     (set-vector-meters! (-> info trans)-340.94    8.5  400.43)
+     (set-vector-meters! (-> info camera-trans) -326.7774  14.0925  406.8686)
+     (set! (-> info camera-rot 0)  -0.5997) (set! (-> info camera-rot 1) 0.0000) (set! (-> info camera-rot 2)   0.8001)
+      (set! (-> info camera-rot 3) -0.1062) (set! (-> info camera-rot 4) 0.9911) (set! (-> info camera-rot 5)  -0.0796)
+      (set! (-> info camera-rot 6) -0.7931) (set! (-> info camera-rot 7) -0.1328) (set! (-> info camera-rot 8) -0.5944)
+      (set! (-> info time) 5000.0))
+
+    ;; === ctymarkb ===
+    (((game-task city-burning-bush-get-to-6)) ;; burning-bush-13 / bbush-markb-2
+     (set-vector-meters! (-> info trans) 703.45  9.0 635.12 )
+     (set-vector-meters! (-> info camera-trans) 710.0449  20.6847  628.7670)
+     (set! (-> info camera-rot 0)   0.4471) (set! (-> info camera-rot 1)   0.0000) (set! (-> info camera-rot 2)  0.8944)
+      (set! (-> info camera-rot 3) -0.5937) (set! (-> info camera-rot 4)   0.7479) (set! (-> info camera-rot 5)  0.2968)
+      (set! (-> info camera-rot 6) -0.6689) (set! (-> info camera-rot 7)  -0.6637) (set! (-> info camera-rot 8)  0.3344)
+      (set! (-> info time) 4200.0))
+
+    (((game-task city-burning-bush-get-to-7)) ;; burning-bush-12 / bbush-markb
+     (set-vector-meters! (-> info trans) 523.52   8.00 584.92  )
+     (set-vector-meters! (-> info camera-trans) 526.5274  11.5800  588.8538)
+     (set! (-> info camera-rot 0)  -0.8044) (set! (-> info camera-rot 1) -0.0000) (set! (-> info camera-rot 2)  0.5940)
+      (set! (-> info camera-rot 3) -0.1805) (set! (-> info camera-rot 4)  0.9526) (set! (-> info camera-rot 5)  -0.2445)
+      (set! (-> info camera-rot 6) -0.5659) (set! (-> info camera-rot 7) -0.3039) (set! (-> info camera-rot 8)  -0.7663)
+      (set! (-> info time) 4000.0))
+
+    ;; === ctypal ===
+    (((game-task city-burning-bush-get-to-15)) ;; burning-bush-19 / bbush-pal
+    ;; 135.90  28.5  1045.38
+     (set-vector-meters! (-> info trans) 135.3  28.7616  1044.8)
+     (set-vector-meters! (-> info camera-trans) 153.5768  52.8440  1024.9290)
+     (set! (-> info camera-rot 0)   0.7094) (set! (-> info camera-rot 1)  0.0000) (set! (-> info camera-rot 2)   0.7047)
+      (set! (-> info camera-rot 3) -0.3554) (set! (-> info camera-rot 4)  0.8635) (set! (-> info camera-rot 5)   0.3578)
+      (set! (-> info camera-rot 6) -0.6085) (set! (-> info camera-rot 7) -0.5043) (set! (-> info camera-rot 8)   0.6126)
+      (set! (-> info time) 8800.0))
+
     )
-  )
+      
+    
+  (none))
+  
 
 (set-subtask-hook!
   *game-info*
@@ -2794,16 +2944,16 @@
     ()
     (set-setting! 'airlock #f 0.0 0)
     (set-setting! 'exclusive-task #f 0.0 (-> self node-info task))
-    (none)
-    )
-  )
+    (none)))
+    
+  
 
 (set-subtask-hook!
   *game-info*
   (game-task-node city-burning-bush-get-to-1-resolution)
   TASK_MANAGER_UPDATE_HOOK
-  (lambda :behavior task-manager () (none))
-  )
+  (lambda :behavior task-manager () (none)))
+  
 
 (set-subtask-hook!
   *game-info*
@@ -2813,19 +2963,19 @@
     ()
     (let ((a0-1 (handle->process (-> self slave 0))))
       (if a0-1
-          (deactivate a0-1)
-          )
-      )
-    (none)
-    )
-  )
+          (deactivate a0-1)))
+          
+      
+    (none)))
+    
+  
 
 (set-subtask-hook!
   *game-info*
   (game-task-node city-burning-bush-get-to-1-resolution)
   TASK_MANAGER_COMPLETE_HOOK
-  (lambda :behavior task-manager () (close! (-> self node-info) 'event) (none))
-  )
+  (lambda :behavior task-manager () (close! (-> self node-info) 'event) (none)))
+  
 
 (set-subtask-hook!
   *game-info*
@@ -2834,11 +2984,11 @@
   (lambda :behavior task-manager
     ()
     (if (and *target* (focus-test? *target* grabbed))
-        (process-release? *target*)
-        )
-    (none)
-    )
-  )
+        (process-release? *target*))
+        
+    (none)))
+    
+  
 
 (set-subtask-hook!
   *game-info*
@@ -2848,15 +2998,16 @@
     ()
     (set-setting! 'minimap 'clear 0.0 (minimap-flag minimap))
     (while (not (process-grab? *target* #f))
-      (suspend)
-      )
+      (suspend))
+      
     (let ((t1-1 (new 'stack 'fact-info self (pickup-type eco-pill-random) (-> *FACT-bank* default-eco-pill-green-inc)))
-          (a0-3 (new 'stack-no-clear 'vector))
-          )
+          (a0-3 (new 'stack-no-clear 'vector)))
+          
+      (mod-override-burning-bush-get-on! (-> *burning-bush-get-on-info* (-> self info index)) (-> self node-info task))
       (logior! (-> t1-1 options) (actor-option fade-out))
       (set! (-> t1-1 fade-time)
-            (the-as time-frame (the int (-> *burning-bush-get-on-info* (-> self info index) time)))
-            )
+            (the-as time-frame (the int (-> *burning-bush-get-on-info* (-> self info index) time))))
+            
       (set! (-> a0-3 quad) (-> *burning-bush-get-on-info* (-> self info index) trans quad))
       (+! (-> a0-3 y) 4096.0)
       (set! (-> self slave 0)
@@ -2867,8 +3018,8 @@
       )
     (set-time! (-> self start-time))
     (set! (-> self time-limit)
-          (the-as time-frame (the int (+ 300.0 (-> *burning-bush-get-on-info* (-> self info index) time))))
-          )
+          (the-as time-frame (the int (+ 300.0 (-> *burning-bush-get-on-info* (-> self info index) time)))))
+          
     (suspend)
     (send-event (handle->process (-> self slave 0)) 'get-notify self)
     (set-setting! 'interp-time 'abs 0.0 0)
@@ -2877,8 +3028,8 @@
     (suspend)
     (let ((gp-0 (new 'stack 'transformq)))
       (let ((v1-45 (-> *burning-bush-get-on-info* (-> self info index)))
-            (a1-16 (new 'stack-no-clear 'matrix))
-            )
+            (a1-16 (new 'stack-no-clear 'matrix)))
+            
         (set! (-> gp-0 trans quad) (-> v1-45 camera-trans quad))
         (set-vector! (-> gp-0 scale) 1.0 1.0 1.0 1.0)
         (set! (-> a1-16 vector 0 x) (-> v1-45 camera-rot 0))
@@ -2909,15 +3060,15 @@
     (remove-setting! 'interp-time)
     (remove-setting! 'mode-name)
     (while (not (process-release? *target*))
-      (suspend)
-      )
+      (suspend))
+      
     (until #f
       (check-time self)
-      (suspend)
-      )
-    #f
-    )
-  )
+      (suspend))
+      
+    #f))
+    
+  
 
 (set-subtask-hook!
   *game-info*
@@ -2929,87 +3080,87 @@
       (('notify)
        (case (-> arg3 param 0)
          (('pickup)
-          (go-virtual complete)
-          )
+          (go-virtual complete))
+          
          (('die)
-          (go-virtual fail)
-          )
-         )
-       )
-      )
-    (none)
-    )
-  )
+          (go-virtual fail)))))
+          
+         
+       
+      
+    (none)))
+    
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-2-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-3-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-4-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-5-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-6-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-7-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-8-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-9-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-10-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-11-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-12-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-13-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-14-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
+  
 
 (copy-hooks!
   (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-15-resolution))
-  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution))
-  )
+  (-> *game-info* sub-task-list (game-task-node city-burning-bush-get-to-1-resolution)))
+  
 
 (defmethod draw ((this hud-homing-beacon))
   (set-hud-piece-position! (-> this sprites 0) (the int (+ 457.0 (* 130.0 (-> this offset)))) 160)
@@ -3022,15 +3173,15 @@
   (set-as-offset-from! (the-as hud-sprite (-> this strings 0 pos)) (-> this sprites 0 pos) -16 60)
   ((method-of-type hud draw) this)
   0
-  (none)
-  )
+  (none))
+  
 
 (defmethod update-values ((this hud-homing-beacon))
   (set! (-> this values 0 target) (the int (-> *game-info* counter)))
   ((method-of-type hud update-values) this)
   0
-  (none)
-  )
+  (none))
+  
 
 (defmethod init-callback ((this hud-homing-beacon))
   (set! (-> this level) (level-get *level* 'lbbush))
@@ -3041,8 +3192,8 @@
   (set! (-> this sprites 0 tex) (lookup-texture-by-id (new 'static 'texture-id :page #xd89)))
   (alloc-string-if-needed this 0)
   0
-  (none)
-  )
+  (none))
+  
 
 (defmethod draw ((this hud-dark-eco-pickup))
   (set-hud-piece-position! (-> this sprites 0) (the int (+ 457.0 (* 130.0 (-> this offset)))) 180)
@@ -3055,15 +3206,15 @@
   (set-as-offset-from! (the-as hud-sprite (-> this strings 0 pos)) (-> this sprites 0 pos) -16 26)
   ((method-of-type hud draw) this)
   0
-  (none)
-  )
+  (none))
+  
 
 (defmethod update-values ((this hud-dark-eco-pickup))
   (set! (-> this values 0 target) (the int (-> *game-info* counter)))
   ((method-of-type hud update-values) this)
   0
-  (none)
-  )
+  (none))
+  
 
 (defmethod init-callback ((this hud-dark-eco-pickup))
   (set! (-> this gui-id)
@@ -3073,8 +3224,8 @@
   (set! (-> this sprites 0 tex) (get-texture hud-darkeco-pickup-01 level-default-minimap))
   (alloc-string-if-needed this 0)
   0
-  (none)
-  )
+  (none))
+  
 
 (defmethod draw ((this hud-green-eco-pickup))
   (set-hud-piece-position! (-> this sprites 0) (the int (+ 457.0 (* 130.0 (-> this offset)))) 180)
@@ -3087,15 +3238,15 @@
   (set-as-offset-from! (the-as hud-sprite (-> this strings 0 pos)) (-> this sprites 0 pos) -16 26)
   ((method-of-type hud draw) this)
   0
-  (none)
-  )
+  (none))
+  
 
 (defmethod update-values ((this hud-green-eco-pickup))
   (set! (-> this values 0 target) (the int (-> *game-info* counter)))
   ((method-of-type hud update-values) this)
   0
-  (none)
-  )
+  (none))
+  
 
 (defmethod init-callback ((this hud-green-eco-pickup))
   (set! (-> this gui-id)
@@ -3105,5 +3256,5 @@
   (set! (-> this sprites 0 tex) (get-texture hud-green-eco-pickup-01 level-default-minimap))
   (alloc-string-if-needed this 0)
   0
-  (none)
-  )
+  (none))
+  

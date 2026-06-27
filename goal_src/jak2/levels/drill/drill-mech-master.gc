@@ -166,7 +166,7 @@
       (suspend)
       )
     (talker-spawn-func (-> *talker-speech* 183) *entity-pool* (target-pos 0) (the-as region #f))
-    (set-setting! 'pilot #f 0.0 0)
+    (set-setting! 'pilot #f 0.0 0) ;; TODO - maybe allow exit in underport?
     (let ((v1-20 *target*))
       (if v1-20
           (send-event (handle->process (-> v1-20 mech hud 0)) 'hide-and-die)

@@ -282,6 +282,10 @@
    )
   )
 
+(deftype menu-orb-counts-option (menu-missions-option)
+  ()
+  )
+
 
 (deftype menu-highscores-option (paged-menu-option)
   ((last-move  time-frame)

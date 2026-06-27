@@ -783,10 +783,12 @@
       (new 'static 'sky-color-hour :snapshot2 1 :morph-end 0.5)
       (new 'static 'sky-color-hour :snapshot2 1 :morph-start 0.5 :morph-end 0.75)
       (new 'static 'sky-color-hour :snapshot2 1 :morph-start 0.75 :morph-end 0.99)
-      (new 'static 'sky-color-hour :snapshot1 2 :snapshot2 1 :morph-start 0.99 :morph-end 0.5)
-      (new 'static 'sky-color-hour :snapshot1 2 :snapshot2 1 :morph-start 0.5)
-      (new 'static 'sky-color-hour :snapshot1 2 :snapshot2 3 :morph-end 0.5)
-      (new 'static 'sky-color-hour :snapshot1 2 :snapshot2 3 :morph-start 0.5 :morph-end 0.99)
+      ;; 10:00
+      (new 'static 'sky-color-hour :snapshot2 1 :morph-start 0.99 :morph-end 0.5)
+      (new 'static 'sky-color-hour :snapshot2 1 :morph-start 0.5)
+      (new 'static 'sky-color-hour :snapshot2 3 :morph-end 0.5)
+      (new 'static 'sky-color-hour :snapshot2 3 :morph-start 0.5 :morph-end 0.99)
+      ;; 14:00
       (new 'static 'sky-color-hour :snapshot1 4 :snapshot2 3 :morph-start 0.99 :morph-end 0.84)
       (new 'static 'sky-color-hour :snapshot1 4 :snapshot2 3 :morph-start 0.84 :morph-end 0.66)
       (new 'static 'sky-color-hour :snapshot1 4 :snapshot2 3 :morph-start 0.66 :morph-end 0.5)

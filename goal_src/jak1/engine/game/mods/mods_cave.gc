@@ -1,0 +1,396 @@
+;;-*-Lisp-*-
+(in-package goal)
+(defmacro mod-cave-run-each-frame ()
+  `(begin
+    ;; maincave
+    (mod-no-money-bob "money-3491")
+    (mod-no-money-bob "money-3498")
+    (mod-no-money-bob "money-3509")
+    (mod-no-money-bob "money-3510")
+    (mod-no-money-bob "money-3519")
+    (mod-move-ecovent "ecovent-252" (static-vector-meters 1080.19 25.94 -3269.64)) ;; yellow - moved to center island in entrance so you can reach secret cell in sage hut
+    (mod-move-ecovent "ecovent-253" (static-vector-meters 1101.6214 48.3155 -3093.8352)) ;; yellow - in flames atop wooden structure
+    (mod-move-ecovent "ecovent-254" (static-vector-meters 1009.97 44.65 -2979.19)) ;; yellow - orig dark crystal on path to darkcave
+    ;; robocave
+    (mod-no-money-bob "money-4246")
+    (mod-no-money-bob "money-4247")
+    (mod-no-money-bob "money-4273")
+    (mod-no-money-bob "money-4285")
+    (mod-no-money-bob "money-4287")
+    (mod-no-money-bob "money-4289")
+    (mod-no-money-bob "money-4291")
+    (mod-no-money-bob "money-4294")
+    (mod-no-money-bob "money-4807")
+    (mod-no-money-bob "money-4809")
+    (mod-no-money-bob "money-4810")
+    (mod-move-ecovent "ecovent-255" (static-vector-meters 1378.59 -23.95 -2813.06)) ;; yellow (blocked) - in rock below orig poles cell
+    (mod-move-eco "eco-192" (static-vector-meters 1361.50 34.31 -2779.51)) ;; blue - above final poles to top of robot
+    (mod-move-eco "eco-193" (static-vector-meters 1324.52 36.53 -2775.87)) ;; blue - poles before final poles to top of robot
+    (mod-move-eco "eco-194" (static-vector-meters 1324.52 30.80 -2753.71)) ;; blue - poles before final poles to top of robot
+    (mod-move-eco "eco-195" (static-vector-meters 1393.39 12.9 -2781.63)) ;; blue - near circling plats, for launcher on top of stone support
+    (mod-move-eco "eco-199" (static-vector-meters 1269.56 -24.79 -2857.69)) ;; blue - middle spiderweb to spidertunnel
+    (mod-move-eco "eco-200" (static-vector-meters 1377.44 20.9 -2817.04)) ;; blue - ecoplat down from orig poles cell
+    (mod-move-eco "eco-146" (static-vector-meters 1412.29 -21.8 -2785.63)) ;; yellow - bottom stone support  
+    (mod-move-eco "eco-147" (static-vector-meters 1413.03 -8.37 -2774.22)) ;; yellow - middle layer of stone support
+    (mod-move-eco "eco-148" (static-vector-meters 1400.87 0.8 -2757.35)) ;; yellow - middle scaffolding near circling plat
+    (mod-move-eco "eco-149" (static-vector-meters 1275.69 -28.36 -2838.37)) ;; yellow - on strip of land in dark eco before spidertunnel
+    (mod-move-eco "eco-150" (static-vector-meters 1365.69 14.5 -2801.72)) ;; yellow - scaffolding trapdoors between orig cells
+    (mod-move-eco "eco-178" (static-vector-meters 1373.70 14.5 -2801.72)) ;; yellow - scaffolding trapdoors between orig cells
+    (mod-move-eco "eco-177" (static-vector-meters 1415.38 2.5 -2788.55)) ;; yellow - on rock overlooking poles
+    ;; darkcave
+    ))
+
+(defmacro mod-cave-override-init-position (obj arg0)
+  `(case (-> obj name)
+    :comp
+    name=
+    ;; ORBS
+    ;; maincave
+    (('money-3488) (set-vector-meters! (-> arg0 extra trans) 1071.8 14.7 -3223.7)) ;; behind crystals near entrance
+    (('money-3489) (set-vector-meters! (-> arg0 extra trans) 1079.3 18.0 -3261.4)) ;; below steps in entrance (slippery jump or just uppercut)
+    (('money-3490) (set-vector-meters! (-> arg0 extra trans) 1060.95 10.7 -3181.05)) ;; among shrooms, turn right from entrance
+    (('money-3491) (set-vector-meters! (-> arg0 extra trans) 1100.28 18.7 -3172.1)) ;; on stalagmite on left from entrance
+    (('money-3492) (set-vector-meters! (-> arg0 extra trans) 1039.25 17.0 -3167.0)) ;; on rock jutting out in dark eco chasm, right from entrance
+    (('money-3493) (set-vector-meters! (-> arg0 extra trans) 1039.59 13.4 -3084.44)) ;; phallic rock islands in dark eco, back corner
+    (('money-3494) (set-vector-meters! (-> arg0 extra trans) 1044.49 18.1 -3079.59)) ;; ^
+    (('money-3495) (set-vector-meters! (-> arg0 extra trans) 1051.49 13.7 -3077.41)) ;; ^
+    (('money-3496) (set-vector-meters! (-> arg0 extra trans) 1055.90 14.5 -3079.85)) ;; ^
+    (('money-3497) (set-vector-meters! (-> arg0 extra trans) 1053.35 29.0 -3107.37)) ;; high jump spin from phallic rock on land
+    (('money-3498) (set-vector-meters! (-> arg0 extra trans) 1147.09 32.6 -3112.15)) ;; stalactite @ orig scoutfly towards robocave
+    (('money-3499) (set-vector-meters! (-> arg0 extra trans) 1089.8 34.7 -3087.5)) ;; corner on mid wooden platform with gnawer
+    (('money-3500) (set-vector-meters! (-> arg0 extra trans) 1089.0 43.8 -3088.8)) ;; under highest wooden platform with gnawer - high jump spin from below
+    (('money-3506) (set-vector-meters! (-> arg0 extra trans) 1133.6 49.5 -3122.5)) ;; up high on slippery rock, GP from plat-97 ez
+    (('money-3507) (set-vector-meters! (-> arg0 extra trans) 1155.4 43.5 -3144.1)) ;; slippery rock, jump from crystal where fly crate-2689 is, or by gnawer
+    (('money-3508) (set-vector-meters! (-> arg0 extra trans) 1084.08 43.5 -3074.73)) ;; under highest wooden platform with gnawer, tricky jump between plats
+    (('money-3509) (set-vector-meters! (-> arg0 extra trans) 1143.85 49.6 -3189.18)) ;; stalactite left of fly crate on crystal, boosted from ledge
+    (('money-3510) (set-vector-meters! (-> arg0 extra trans) 1159.0 26.5 -3166.4)) ;; stalactite by plats, left from entrance
+    (('money-3511) (set-vector-meters! (-> arg0 extra trans) 1040.93 53.83 -3067.43)) ;; crystal rocket before path to dark cave
+    (('money-3512) (set-vector-meters! (-> arg0 extra trans) 1029.96 58.2 -3073.95)) ;; on crystals, boosted into ceiling jump from money-3511 rocket^
+    (('money-3513) (set-vector-meters! (-> arg0 extra trans) 1024.0 44.5 -3019.8)) ;; stalactite over dark eco on path to dark cave
+    (('money-3514) (set-vector-meters! (-> arg0 extra trans) 948.76 20.2 -3049.89)) ;; @ orig underwater dark-crystal-5
+    (('money-3515) (set-vector-meters! (-> arg0 extra trans) 920.5 19.0 -3026.0)) ;; @ orig underwater dark-crystal-5
+    (('money-3516) (set-vector-meters! (-> arg0 extra trans) 924.7 35.7 -3042.1)) ;; floating in water behind stalactite @ ^
+    (('money-3517) (set-vector-meters! (-> arg0 extra trans) 1019.6 55.0 -2979.5)) ;; behind stalac @ orig dark-cystal-4 on path to dark cave
+    (('money-3518) (set-vector-meters! (-> arg0 extra trans) 1065.11 63.0 -3069.3)) ;; boosted towards dark cave around stalag from orig dark-crystal-1 on wooden plats
+    (('money-3519) (set-vector-meters! (-> arg0 extra trans) 1129.2 47.2 -3096.35)) ;; stalactite, boosted from highest wooden plat towards robocave
+    (('money-3520) (set-vector-meters! (-> arg0 extra trans) 967.2 45.5 -2988.5)) ;; behind stalac at end of dark eco pool towards darkcave
+    (('money-3521) (set-vector-meters! (-> arg0 extra trans) 1136.2 22.5 -3045.2)) ;; in crevice up high on right wall, jump off small rock
+    (('money-3522) (set-vector-meters! (-> arg0 extra trans) 1158.33 9.6 -3008.18)) ;; on small rock in first dark eco pool towards robocave
+    (('money-3523) (set-vector-meters! (-> arg0 extra trans) 1179.1 11.05 -3012.2)) ;; behind shrooms in first room on path to robocave
+    (('money-3524) (set-vector-meters! (-> arg0 extra trans) 1146.99 11.86 -2990.7)) ;; behind shrooms @ orig dark-crystal-3(?) on path to robocave
+    (('money-3525) (set-vector-meters! (-> arg0 extra trans) 1183.70 12.4 -2992.15)) ;; on stalag in dark eco pool on path to robocave
+    (('money-3526) (set-vector-meters! (-> arg0 extra trans) 1188.37 16.6 -2992.81)) ;; ^
+    (('money-3527) (set-vector-meters! (-> arg0 extra trans) 1197.65 17.99 -2998.3)) ;; ^
+    (('money-3528) (set-vector-meters! (-> arg0 extra trans) 1204.0 9.5 -2979.3)) ;; on small rock in eco pool on path to robocave
+    (('crate-3207) (set-vector-meters! (-> arg0 extra trans) 1011.74 22.65 -3116.58)) ;; lower/middle level of rocks, back of "alley" 
+    (('crate-3208) (set-vector-meters! (-> arg0 extra trans) 1146.25 25.65 -3121.35)) ;; @ orig scoutfly towards robocave
+    (('crate-3209) (set-vector-meters! (-> arg0 extra trans) 1112.9 29.24 -3148.5)) ;; on crystals on wall above entrance spiderwebs
+    (('crate-3210) (set-vector-meters! (-> arg0 extra trans) 1060.89 56.87 -3102.38)) ;; @ orig dark crystal on wooden platform
+    ;; robocave
+    (('money-4243) (set-vector-meters! (-> arg0 extra trans) 1269.5 12.1 -2883.4)) ;; on rocks under bridge coming into robocave
+    (('money-4244) (set-vector-meters! (-> arg0 extra trans) 1243.1 8.8 -2857.6)) ;; robocave entrance/above spider tunnel, under rocks at end of dark eco pool
+    (('money-4245) (set-vector-meters! (-> arg0 extra trans) 1249.98 23.9 -2859.51)) ;; top of shroom/phallic rock above spider tunnel
+    (('crate-2752) (set-vector-meters! (-> arg0 extra trans) 1244.63 13.18 -2864.73)) ;; jump off to get to ^
+    (('crate-2753) (set-vector-meters! (-> arg0 extra trans) 1244.63 15.18 -2864.73)) ;; jump off to get to ^
+    (('money-4246) (set-vector-meters! (-> arg0 extra trans) 1253.17 26.1 -2838.82)) ;; hanging from stalac, zoomwalk / extended from money-4245 
+    (('money-4247) (set-vector-meters! (-> arg0 extra trans) 1252.58 29.6 -2869.61)) ;; hanging from stalac, jump from money-4245
+    (('money-4248) (set-vector-meters! (-> arg0 extra trans) 1286.5 8.1 -2873.2)) ;; under bridge coming into robocave
+    (('money-4249) (set-vector-meters! (-> arg0 extra trans) 1257.3 -28.17 -2841.5)) ;; left of spider tunnel entrance, at edge before dark eco
+    (('money-4250) (set-vector-meters! (-> arg0 extra trans) 1252.3 -23.9 -2833.5)) ;; left of spider tunnel entrance, among crystals/shrooms
+    (('money-4251) (set-vector-meters! (-> arg0 extra trans) 1357.38 -9.2 -2850.81)) ;; robocave entrance end of steps - atop slippery wall
+    (('money-4252) (set-vector-meters! (-> arg0 extra trans) 1365.05 -9.7 -2836.15)) ;; further along from ^
+    (('money-4253) (set-vector-meters! (-> arg0 extra trans) 1251.48 -25.8 -2894.08)) ;; first spidervent
+    (('money-4254) (set-vector-meters! (-> arg0 extra trans) 1235.5 -13.0 -2875.7)) ;; behind stalac, jump off left crystal at start 
+    (('money-4255) (set-vector-meters! (-> arg0 extra trans) 1254.20 -13.0 -2887.92)) ;; behind stalc, jump off right crystal at start
+    (('money-4256) (set-vector-meters! (-> arg0 extra trans) 1221.55 -25.2 -2900.23)) ;; second spidervent
+    (('money-4257) (set-vector-meters! (-> arg0 extra trans) 1212.5 -25.1 -2926.5)) ;; third spidervent
+    (('money-4258) (set-vector-meters! (-> arg0 extra trans) 1229.26 -24.9 -2944.7)) ;; fourth spidervent
+    (('money-4259) (set-vector-meters! (-> arg0 extra trans) 1232.8 -13.5 -2923.5)) ;; up on crystals mid spidertunnel, jump off crate
+    (('money-4260) (set-vector-meters! (-> arg0 extra trans) 1217.5 -25.1 -2955.7)) ;; fifth spidervent
+    (('money-4261) (set-vector-meters! (-> arg0 extra trans) 1215.81 -24.5 -2971.8)) ;; right spidervent at end of tunnel
+    (('money-4262) (set-vector-meters! (-> arg0 extra trans) 1196.7 -25.4 -2988.61)) ;; middle spidervent at end of tunnel
+    (('money-4263) (set-vector-meters! (-> arg0 extra trans) 1184.9 -25.04 -2970.25)) ;; left spidervent at end of tunnel
+    (('money-4264) (set-vector-meters! (-> arg0 extra trans) 1398.1 -23.5 -2777.42)) ;; between stone and wood support at bottom
+    (('money-4269) (set-vector-meters! (-> arg0 extra trans) 1417.58 -20.7 -2778.69)) ;; behind stalac on bottom stone support
+    (('money-4270) (set-vector-meters! (-> arg0 extra trans) 1411.2 -18.5 -2765.05)) ;; behind stalac on bottom stone support
+    (('money-4271) (set-vector-meters! (-> arg0 extra trans) 1412.30 -11.3 -2779.51)) ;; crevice in middle layer of stone support
+    (('money-4272) (set-vector-meters! (-> arg0 extra trans) 1367.91 22.0 -2828.65)) ;; on shroom(?) left/above orig poles cell
+    (('money-4273) (set-vector-meters! (-> arg0 extra trans) 1354.0 26.7 -2831.0)) ;; hanging from stalac, uppercut from ^
+    (('money-4275) (set-vector-meters! (-> arg0 extra trans) 1373.0 1.6 -2769.9)) ;; in gap next to robot's left arm
+    (('money-4276) (set-vector-meters! (-> arg0 extra trans) 1436.88 -27.21 -2732.38)) ;; far back corner on bottom, drop and hang
+    (('money-4277) (set-vector-meters! (-> arg0 extra trans) 1351.9 8.5 -2776.8)) ;; mosquito
+    (('money-4278) (set-vector-meters! (-> arg0 extra trans) 1374.0 -12.0 -2764.3)) ;; robot left hand from bottom
+    (('money-4279) (set-vector-meters! (-> arg0 extra trans) 1379.4 -27.7 -2740.5)) ;; on slippery death rock in back, do extended from the side
+    (('money-4280) (set-vector-meters! (-> arg0 extra trans) 1355.5 -22.2 -2779.35)) ;; behind shrooms bottom center of robot room
+    (('money-4281) (set-vector-meters! (-> arg0 extra trans) 1369.8 20.6 -2778.2)) ;; behind robot head
+    (('money-4282) (set-vector-meters! (-> arg0 extra trans) 1352.3 -28.76 -2735.85)) ;; on stalag in void in back (extended)
+    (('money-4283) (set-vector-meters! (-> arg0 extra trans) 1412.46 -28.0 -2733.68)) ;; on stalag in void in back (extended)
+    (('money-4285) (set-vector-meters! (-> arg0 extra trans) 1263.36 34.55 -2845.58)) ;; hanging from stalac, zoomwalk/extended from money-4245
+    (('money-4287) (set-vector-meters! (-> arg0 extra trans) 1367.15 -4.9 -2831.99)) ;; hanging from stalac, zoomwalk/jump from money-4252
+    (('money-4288) (set-vector-meters! (-> arg0 extra trans) 1370.4 -23.5 -2797.2)) ;; below right robot arm
+    (('money-4289) (set-vector-meters! (-> arg0 extra trans) 1415.5 -38.5 -2813.82)) ;; on stalag near launcher below poles
+    (('money-4290) (set-vector-meters! (-> arg0 extra trans) 1438.8 -34.5 -2821.0)) ;; on slippery rock next to launcher below poles
+    (('money-4291) (set-vector-meters! (-> arg0 extra trans) 1311.6 19.8 -2794.93)) ;; hanging from stalac, jump from top scaffolding towards spidertunnel
+    (('money-4293) (set-vector-meters! (-> arg0 extra trans) 1316.5 6.0 -2857.5)) ;; shroomrock near entrance, where wooden steps go down 
+    (('money-4294) (set-vector-meters! (-> arg0 extra trans) 1259.05 32.0 -2923.74)) ;; hanging from stalac on entrance bridge, above flame (jump from top of pole)
+    (('money-4274) (set-vector-meters! (-> arg0 extra trans) 1405.261525 13.0728 -2819.4477)) ;; 6 - poles
+    (('money-4286) (set-vector-meters! (-> arg0 extra trans) 1407.33245 13.0728 -2819.4477)) ;; 6 - poles
+    (('money-4284) (set-vector-meters! (-> arg0 extra trans) 1409.403375 13.0728 -2819.4477)) ;; 6 - poles
+    (('money-4292) (set-vector-meters! (-> arg0 extra trans) 1403.1906 11.004575 -2819.4477)) ;; 6 - poles
+    (('money-4295) (set-vector-meters! (-> arg0 extra trans) 1403.1906 8.93635 -2819.4477)) ;; 6 - poles
+    (('money-4296) (set-vector-meters! (-> arg0 extra trans) 1403.1906 6.868125 -2819.4477)) ;; 6 - poles
+    (('money-4297) (set-vector-meters! (-> arg0 extra trans) 1405.261525 4.7999 -2819.4477)) ;; 6 - poles
+    (('money-4408) (set-vector-meters! (-> arg0 extra trans) 1407.33245 4.7999 -2819.4477)) ;; 6 - poles
+    (('money-4409) (set-vector-meters! (-> arg0 extra trans) 1409.403375 4.7999 -2819.4477)) ;; 6 - poles
+    (('money-4410) (set-vector-meters! (-> arg0 extra trans) 1403.1906 2.685175 -2819.4477)) ;; 6 - poles
+    (('money-4411) (set-vector-meters! (-> arg0 extra trans) 1403.1906 0.61695 -2819.4477)) ;; 6 - poles
+    (('money-4412) (set-vector-meters! (-> arg0 extra trans) 1403.1906 -1.451275 -2819.4477)) ;; 6 - poles
+    (('money-4413) (set-vector-meters! (-> arg0 extra trans) 1411.4743 2.685175 -2819.4477)) ;; 6 - poles
+    (('money-4414) (set-vector-meters! (-> arg0 extra trans) 1411.4743 0.61695 -2819.4477)) ;; 6 - poles
+    (('money-4415) (set-vector-meters! (-> arg0 extra trans) 1411.4743 -1.451275 -2819.4477)) ;; 6 - poles
+    (('money-4416) (set-vector-meters! (-> arg0 extra trans) 1405.261525 -3.5195 -2819.4477)) ;; 6 - poles
+    (('money-4417) (set-vector-meters! (-> arg0 extra trans) 1407.33245 -3.5195 -2819.4477)) ;; 6 - poles
+    (('money-4418) (set-vector-meters! (-> arg0 extra trans) 1409.403375 -3.5195 -2819.4477)) ;; 6 - poles
+    (('money-4419) (set-vector-meters! (-> arg0 extra trans) 1421.7584 13.0728 -2819.4477)) ;; 9 - poles
+    (('money-4420) (set-vector-meters! (-> arg0 extra trans) 1423.755 13.0728 -2819.4477)) ;; 9 - poles
+    (('money-4421) (set-vector-meters! (-> arg0 extra trans) 1425.7516 13.0728 -2819.4477)) ;; 9 - poles
+    (('money-4422) (set-vector-meters! (-> arg0 extra trans) 1419.7618 11.004575 -2819.4477)) ;; 9 - poles
+    (('money-4423) (set-vector-meters! (-> arg0 extra trans) 1419.7618 8.93635 -2819.4477)) ;; 9 - poles
+    (('money-4424) (set-vector-meters! (-> arg0 extra trans) 1419.7618 6.868125 -2819.4477)) ;; 9 - poles
+    (('money-4425) (set-vector-meters! (-> arg0 extra trans) 1427.7482 11.004575 -2819.4477)) ;; 9 - poles
+    (('money-4426) (set-vector-meters! (-> arg0 extra trans) 1427.7482 8.93635 -2819.4477)) ;; 9 - poles
+    (('money-4427) (set-vector-meters! (-> arg0 extra trans) 1427.7482 6.868125 -2819.4477)) ;; 9 - poles
+    (('money-4428) (set-vector-meters! (-> arg0 extra trans) 1421.7584 4.7999 -2819.4477)) ;; 9 - poles
+    (('money-4429) (set-vector-meters! (-> arg0 extra trans) 1423.755 4.7999 -2819.4477)) ;; 9 - poles
+    (('money-4430) (set-vector-meters! (-> arg0 extra trans) 1425.7516 4.7999 -2819.4477)) ;; 9 - poles
+    (('money-4431) (set-vector-meters! (-> arg0 extra trans) 1427.7482 2.685175 -2819.4477)) ;; 9 - poles
+    (('money-4432) (set-vector-meters! (-> arg0 extra trans) 1427.7482 0.61695 -2819.4477)) ;; 9 - poles
+    (('money-4433) (set-vector-meters! (-> arg0 extra trans) 1427.7482 -1.451275 -2819.4477)) ;; 9 - poles
+    (('money-4434) (set-vector-meters! (-> arg0 extra trans) 1421.7584 -3.5195 -2819.4477)) ;; 9 - poles
+    (('money-4435) (set-vector-meters! (-> arg0 extra trans) 1423.755 -3.5195 -2819.4477)) ;; 9 - poles
+    (('money-4436) (set-vector-meters! (-> arg0 extra trans) 1425.7516 -3.5195 -2819.4477)) ;; 9 - poles
+    (('money-4807) (set-vector-meters! (-> arg0 extra trans) 1354.85 -16.55 -2860.2)) ;; stalac near bottom of ramp into robocave 
+    (('money-4808) (set-vector-meters! (-> arg0 extra trans) 1320.91 -28.0 -2783.84)) ;; in corner of pit right side towards baby spider cave
+    (('money-4809) (set-vector-meters! (-> arg0 extra trans) 1245.9251 20.5099 -2944.1530)) ;; in torch start of hallway to robocave
+    (('money-4810) (set-vector-meters! (-> arg0 extra trans) 1238.1 18.8 -2966.75)) ;; stalac in corner start of hallway to robocave
+    (('crate-2770) (set-vector-meters! (-> arg0 extra trans) 1326.22 -26.0 -2862.5)) ;; left corner, end of entrance wooden platform 
+    (('crate-2771) (set-vector-meters! (-> arg0 extra trans) 1359.9 -25.49 -2838.07)) ;; under end of entrance wooden platform
+    (('crate-2772) (set-vector-meters! (-> arg0 extra trans) 1283.0 -30.6 -2864.3)) ;; in dark eco by spiderwebs, use blue eco for pickup
+    (('crate-2773) (set-vector-meters! (-> arg0 extra trans) 1302.92 -30.6 -2814.5)) ;; in dark eco before spiderwebs, use blue eco for pickup
+    (('crate-2774) (set-vector-meters! (-> arg0 extra trans) 1190.86 -24.05 -2981.27)) ;; in place of cell at end of spidertunnel
+    (('crate-2775) (set-vector-meters! (-> arg0 extra trans) 1328.85 -24.07 -2801.94)) ;; under ramp at start of robot scaffolding
+    (('crate-2776) (set-vector-meters! (-> arg0 extra trans) 1454.49 -23.95 -2753.28)) ;; against wall in back corner
+    (('crate-2780) (set-vector-meters! (-> arg0 extra trans) 1401.38 -7.65 -2791.84)) ;; on rock on middle layer of stone support
+    (('crate-2781) (set-vector-meters! (-> arg0 extra trans) 1316.22 7.5 -2793.7)) ;; on shroom(?) on wall near scaffolding corner by entrance
+    (('crate-2782) (set-vector-meters! (-> arg0 extra trans) 1383.61 20.38 -2819.50)) ;; @ orig poles cell plat
+    (('crate-2783) (set-vector-meters! (-> arg0 extra trans) 1393.77 12.03 -2758.27)) ;; on top-level scaffolding near circling plats
+    (('crate-3203) (set-vector-meters! (-> arg0 extra trans) 1330.12 -24.00 -2733.89)) ;; on bottom-most scaffolding in corner
+    (('crate-3204) (set-vector-meters! (-> arg0 extra trans) 1413.8 -0.11 -2731.6)) ;; on mid-level scaffolding between flamepots
+    ;; ;; darkcave
+    (('money-4855) (set-vector-meters! (-> arg0 extra trans) 924.30 99.0 -2932.58)) ;; atop tall rock at top of dark cave (jump off crate)
+    (('crate-3019) (set-vector-meters! (-> arg0 extra trans) 919.37 88.68 -2943.28)) ;; green - top of dark cave, use to get to ^
+    (('money-4856) (set-vector-meters! (-> arg0 extra trans) 894.78 90.9 -2930.36)) ;; jump out from ^ onto central tall rocks
+    (('money-4857) (set-vector-meters! (-> arg0 extra trans) 854.0 52.5 -2829.5)) ;; behind stalac in water section
+    (('money-4858) (set-vector-meters! (-> arg0 extra trans) 874.70 48.0 -2855.76)) ;; in left corner before water section
+    (('money-4859) (set-vector-meters! (-> arg0 extra trans) 920.2 44.0 -2907.6)) ;; top of slippery stalag near second crystal
+    ;; FLIES
+    ;; ;; maincave
+    (('crate-2685) (set-vector-meters! (-> arg0 extra trans) 1068.0 11.5 -3192.5)) ;; slightly "oob" near entrance, need to use yellow eco
+    (('crate-2689) (set-vector-meters! (-> arg0 extra trans) 1164.5 43.42 -3166.3)) ;; boosted to random crystal thats coded as ground, above plats left from entrance
+    (('crate-2697) (set-vector-meters! (-> arg0 extra trans) 1082.93 55.88 -3143.14)) ;; @ orig quad jump
+    (('crate-3018) (set-vector-meters! (-> arg0 extra trans) 934.75 18.62 -3034.77)) ;; @ orig underwater dark-crystal-5, use yellow eco
+    ;; ;; robocave
+    (('crate-2779) (set-vector-meters! (-> arg0 extra trans) 1213.5 -13.5 -2964.91)) ;; behind stalac end of spidertunnel, uppercut off crystal
+    (('crate-2985) (set-vector-meters! (-> arg0 extra trans) 1417.33 -22.19 -2771.68)) ;; in low baby cave in stone support, use blue or yellow eco
+    ;; darkcave
+    (('crate-3022) (set-vector-meters! (-> arg0 extra trans) 860.35 23.78 -2840.46)) ;; @ orig underwater dark crystal, bring yellow eco from maincave
+    ;; CELLS
+    ;; maincave
+    (('fuel-cell-60) (set-vector-meters! (-> arg0 extra trans) 1075.8 41.7 -3206.5)) ;; above entrance, boosted from bridge with orig fly crate
+    ;; gnawer-11
+    ;; gnawer-12
+    ;; gnawer-13
+    ;; gnawer-14
+    ;; gnawer-15
+    ;; gnawer-16
+    ;; gnawer-17
+    ;; gnawer-18
+    ;; gnawer-19
+    (('dark-crystal-1) (set-vector-meters! (-> arg0 extra trans) 1063.2 59.0 -3188.7)) ;; up high in wall opposite wooden structure, use yellow eco
+    (('dark-crystal-3) (set-vector-meters! (-> arg0 extra trans) 1167.48 7.00 -2973.9)) ;; in dark eco pool on path to robocave
+    (('dark-crystal-4) (set-vector-meters! (-> arg0 extra trans) 1068.5 19.0 -3075.8)) ;; midway up wall between wooden structure and path to darkcave
+    (('dark-crystal-5) (set-vector-meters! (-> arg0 extra trans) 959.0 36.42 -3013.9)) ;; in dark eco on right at end of pool towards darkcave, use yellow eco
+    ;; robocave
+    (('fuel-cell-56) (override-fuel-cell-position arg0 1412.4 41.2 -2775.9)) ;; above circling plats, use blue eco launcher
+    (('launcher-117) (set-vector-meters! (-> arg0 extra trans) 1412.16 -0.25 -2776.13)) ;; under 4 crates top of stone support (need for fuel-cell-56)
+    (('fuel-cell-57) (override-fuel-cell-position arg0 1350.4 28.0 -2812.6)) ;; blue eco boosted before final poles to top of robot (or maybe top of robot?)
+    (('fuel-cell-58) (override-fuel-cell-position arg0 1297.36 4.7 -2801.27)) ;; zoomwalk / extended from crate-2781
+    ;; darkcave
+    (('fuel-cell-59) (override-fuel-cell-position arg0 919.8 105.0 -2957.78)) ;; very top of second elevator, extended from tall rock opposite
+    (('dark-crystal-2) (set-vector-meters! (-> arg0 extra trans) 864.91 84.0 -2940.96)) ;; very top of first elevator, yellow eco or boosted from upper circling plat 
+    ;; MISC
+    ;; maincave
+    (('crate-2686)
+     (set-vector-meters! (-> arg0 extra trans) 1071.48 22.20 -3248.2)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel 
+    (('crate-2687)
+     (set-vector-meters! (-> arg0 extra trans) 1069.48 22.91 -3248.2)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-2688)
+     (set-vector-meters! (-> arg0 extra trans) 1067.48 23.88 -3248.2)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-2690)
+     (set-vector-meters! (-> arg0 extra trans) 1067.48 23.86 -3246.4)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-2691)
+     (set-vector-meters! (-> arg0 extra trans) 1069.48 22.94 -3246.4)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-2692)
+     (set-vector-meters! (-> arg0 extra trans) 1071.48 22.28 -3246.4)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-2693)
+     (set-vector-meters! (-> arg0 extra trans) 1071.48 22.23 -3244.6)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel 
+    (('crate-2698)
+     (set-vector-meters! (-> arg0 extra trans) 1069.48 22.88 -3244.6)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-2699)
+     (set-vector-meters! (-> arg0 extra trans) 1067.48 23.67 -3244.6)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-2700)
+     (set-vector-meters! (-> arg0 extra trans) 1067.48 23.42 -3242.8)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-2701)
+     (set-vector-meters! (-> arg0 extra trans) 1069.48 22.75 -3242.8)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-2702)
+     (set-vector-meters! (-> arg0 extra trans) 1071.48 22.26 -3242.8)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-2703)
+     (set-vector-meters! (-> arg0 extra trans) 1067.48 23.42 -3241.0)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-2704)
+     (set-vector-meters! (-> arg0 extra trans) 1069.48 22.75 -3241.0)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-3003)
+     (set-vector-meters! (-> arg0 extra trans) 1071.48 22.26 -3241.0)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-3004)
+     (set-vector-meters! (-> arg0 extra trans) 1068.23 20.86 -3238.19)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-3005)
+     (set-vector-meters! (-> arg0 extra trans) 1071.00 20.81 -3238.22)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-3006)
+     (set-vector-meters! (-> arg0 extra trans) 1068.65 19.90 -3236.20)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-3007)
+     (set-vector-meters! (-> arg0 extra trans) 1071.48 20.08 -3236.52)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-3008)
+     (set-vector-meters! (-> arg0 extra trans) 1068.48 19.14 -3234.42)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    (('crate-3009)
+     (set-vector-meters! (-> arg0 extra trans) 1071.69 19.07 -3234.64)
+     (set-vector! (-> arg0 quat) 0.0 0.0 0.0 0.0)) ;; green - spider entrance tunnel
+    ;; crate-3010
+    ;; crate-3011
+    ;; crate-3012
+    ;; crate-3013
+    ;; crate-3014
+    ;; crate-3015
+    ;; crate-3016
+    ;; crate-3017
+    ;; crate-3119
+    ;; crate-3120
+    ;; crate-3179
+    ;; crate-3180
+    ;; plat-92 ;; turn left and go up in beginning
+    ;; plat-93
+    ;; plat-94
+    ;; plat-95
+    ;; plat-114 ;; dark eco pool towards dark cave
+    ;; plat-115
+    ;; plat-116
+    ;; plat-117
+    ;; robocave
+    ;; crate-2752
+    ;; crate-2753
+    ;; crate-2754
+    ;; crate-2755
+    ;; crate-2759
+    ;; crate-2758
+    ;; crate-2760
+    ;; crate-2761
+    ;; crate-2762
+    ;; crate-2763
+    ;; crate-2764
+    ;; crate-2765
+    ;; crate-2766
+    ;; crate-2767
+    ;; crate-2768
+    ;; crate-2769
+    ;; crate-2947
+    ;; crate-2948
+    ;; crate-2949
+    ;; crate-2995
+    ;; crate-3154
+    ;; crate-3155
+    ;; crate-3156
+    (('crate-2777) (set-vector-meters! (-> arg0 extra trans) 1340.51 -12.4 -2782.48)) ;; mid scaffolding next to initial ramp
+    (('crate-2778) (set-vector-meters! (-> arg0 extra trans) 1342.51 -12.4 -2782.48)) ;; mid scaffolding next to initial ramp
+    (('crate-3157) (set-vector-meters! (-> arg0 extra trans) 1344.51 -12.4 -2782.48)) ;; mid scaffolding next to initial ramp
+    (('crate-3158) (set-vector-meters! (-> arg0 extra trans) 1338.51 -12.4 -2782.48)) ;; mid scaffolding next to initial ramp
+    ;; crate-3159
+    ;; crate-3160
+    ;; crate-3161
+    ;; crate-3162
+    ;; crate-3163
+    ;; crate-3164
+    ;; crate-3165
+    ;; crate-3166
+    ;; crate-3167
+    ;; crate-3168
+    ;; crate-3205  ;; green
+    (('crate-3206) (set-vector-meters! (-> arg0 extra trans) 1378.64 24.2 -2779.24)) ;; big green - @ orig robot cell
+    ;; spider-egg-1
+    ;; spider-egg-2
+    ;; spider-egg-3
+    ;; spider-egg-4
+    ;; spider-egg-5
+    ;; spider-egg-6
+    ;; spider-egg-7
+    ;; spider-egg-8
+    ;; spider-egg-9
+    ;; spider-egg-10
+    ;; spider-egg-11
+    ;; spider-egg-12
+    ;; spider-egg-13
+    ;; spider-egg-14
+    ;; spider-egg-15
+    ;; spider-egg-16
+    ;; spider-egg-17
+    ;; spider-egg-18
+    ;; spider-egg-19
+    ;; spider-egg-20
+    ;; spider-egg-21
+    ;; spider-egg-22
+    ;; spider-egg-23
+    ;; spider-egg-24
+    ;; spider-egg-25
+    ;; plat-eco-63
+    ;; plat-eco-64
+    ;; darkcave
+    ;; crate-3021  ;; green 
+    ;; crate-3023  ;; green 
+    (('mother-spider-7) (set-vector-meters! (-> arg0 extra trans) 933.73 34.57 -2911.99)) ;; pulled forwards slightly before cave-crystal-2
+    ;; (('cavecrystal-1) (set-vector-meters! (-> arg0 extra trans) )) ;; left alone since it has extra collision baked into level >_<
+    (('cavecrystal-2) (set-vector-meters! (-> arg0 extra trans) 939.01 34.57 -2908.01)) ;; moved back slightly so spider can drop first >:)
+    (('cavecrystal-3) (set-vector-meters! (-> arg0 extra trans) 928.48 35.3 -2869.6)) ;; blocking normal route jumping between plats
+    (('cavecrystal-4) (set-vector-meters! (-> arg0 extra trans) 854.9 54.11 -2868.0)) ;; on rock on wall near water cave
+    (('cavecrystal-5) (set-vector-meters! (-> arg0 extra trans) 846.0 49.5 -2904.9)) ;; down on lower rock, can extended from/to circling plat
+    (('cavecrystal-6)
+     (set-vector-meters! (-> arg0 extra trans) 848.06 74.0 -2972.86)
+     (set! (-> (the-as vector (-> arg0 quat)) z) -0.5)) ;; 
+    (('cavecrystal-7) (set-vector-meters! (-> arg0 extra trans) 897.9 78.0 -2978.5)) ;; moved to shroomrock near orig position
+    ))

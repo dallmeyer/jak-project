@@ -986,7 +986,7 @@ it returns a triangle and normal direction to push in.
     (if (< (-> arg0 poly-angle) -0.2)
         (logior! sv-56 (collide-status touch-ceiling))
         )
-    (let ((sv-96 (< (fabs (-> arg0 surface-angle)) (-> *pat-mode-info* (-> arg0 cur-pat mode) wall-angle))))
+    (let ((sv-96 (< (fabs (-> arg0 surface-angle)) (-> (get-active-pat-mode-info) (-> arg0 cur-pat mode) wall-angle))))
       ;; if we hit this function, we hit some surface
       (logior! sv-56 (collide-status touch-surface))
       ;; if the thing we hit is spheres, it's not water or background.
@@ -1132,7 +1132,7 @@ it returns a triangle and normal direction to push in.
                        (set! (-> this prev-status) ((-> this reaction) (the-as control-info this) s5-0 arg0 arg1))
                        ;; debug draw
                        (when *display-collision-marks*
-                         (let ((t1-0 (-> *pat-mode-info* (-> s5-0 best-other-tri pat mode) hilite-color)))
+                         (let ((t1-0 (-> (get-active-pat-mode-info) (-> s5-0 best-other-tri pat mode) hilite-color)))
                            (add-debug-outline-triangle
                              #t
                              (bucket-id debug-no-zbuf1)
@@ -1165,7 +1165,7 @@ it returns a triangle and normal direction to push in.
                                (-> s5-0 best-other-tri intersect)
                                (-> this surface-normal)
                                (meters 0.5)
-                               (-> *pat-mode-info* (-> this cur-pat mode) hilite-color)
+                               (-> (get-active-pat-mode-info) (-> this cur-pat mode) hilite-color)
                                )
                              )
                          )

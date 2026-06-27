@@ -70,7 +70,14 @@
 (defstate arrived (fac-elevator-a)
   :virtual #t
   :code (behavior ()
-    (go-virtual dormant)
+    (suspend-for (seconds 1))
+    (ja-no-eval :group! fac-elevator-a-gate_down-ja :num! (seek!) :frame-num 0.0)
+    (until (ja-done? 0)
+      (suspend)
+      (ja :num! (seek!))
+      )
+    (suspend-for (seconds 3))
+    (go-virtual waiting)
     )
   )
 

@@ -117,6 +117,37 @@
     )
   )
 
+;; orb hunt: mini-bigmap
+(defmacro init-mini-bigmap-buffers (buf-sizes)
+  `(begin
+    ,@(apply-i (lambda (x i)
+                 `(begin
+                    (set! (-> this bigmap-images ,i)
+                      (new 'global 'external-art-buffer 0
+                        (lambda ((buf external-art-buffer))
+                          (kheap-alloc (-> buf heap) (* ,x 1024))
+                          (none)
+                          )
+                        #f
+                        )
+                      )
+                    ((-> this bigmap-images ,i init-heap) (-> this bigmap-images ,i))
+                    (set! (-> this bigmap-images ,i status) 'inactive)
+                    )
+                 )
+        buf-sizes)
+     )
+  )
+
+(defconstant WOMAP_CHUNK_COUNT 24)
+
+(deftype mini-bigmap (bigmap)
+  ((bigmap-images external-art-buffer WOMAP_CHUNK_COUNT)
+   )
+  )
+
+(define-extern *mini-bigmap* mini-bigmap)
+
 ;; DECOMP ENDS
 
 (define-extern *bigmap* bigmap)

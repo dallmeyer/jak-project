@@ -876,6 +876,9 @@
          (set-alert-duration gp-0 (seconds 6048000))
          (set! *traffic-alert-level-force* #t)
          )
+        (else
+          (format 0 "ERR: lwide-activate called for unknown lwide ~A~%" (-> arg0 name))
+          )
         )
       )
     )

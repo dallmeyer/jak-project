@@ -410,6 +410,288 @@
 (goal-src "levels/test-zone/test-zone-obs.gc" "process-focusable")
 (custom-level-cgo "TSZ.DGO" "test-zone/testzone.gd")
 
+(build-custom-level "orbs-rubblea")
+(custom-level-cgo "O01.DGO" "orbs-rubblea/orbs-rubblea.gd")
+
+(build-custom-level "orbs-rubblea2")
+(custom-level-cgo "O02.DGO" "orbs-rubblea2/orbs-rubblea2.gd")
+
+(build-custom-level "orbs-rubbleb")
+(custom-level-cgo "O03.DGO" "orbs-rubbleb/orbs-rubbleb.gd")
+
+(build-custom-level "orbs-rubblec")
+(custom-level-cgo "O04.DGO" "orbs-rubblec/orbs-rubblec.gd")
+
+(build-custom-level "orbs-rublcst")
+(custom-level-cgo "O05.DGO" "orbs-rublcst/orbs-rublcst.gd")
+
+(build-custom-level "orbs-precurd")
+(custom-level-cgo "O06.DGO" "orbs-precurd/orbs-precurd.gd")
+
+(build-custom-level "orbs-precurc")
+(custom-level-cgo "O07.DGO" "orbs-precurc/orbs-precurc.gd")
+
+(build-custom-level "orbs-precurb")
+(custom-level-cgo "O08.DGO" "orbs-precurb/orbs-precurb.gd")
+
+(build-custom-level "orbs-precura")
+(custom-level-cgo "O09.DGO" "orbs-precura/orbs-precura.gd")
+
+(build-custom-level "orbs-minec")
+(custom-level-cgo "O10.DGO" "orbs-minec/orbs-minec.gd")
+
+(build-custom-level "orbs-mineb")
+(custom-level-cgo "O11.DGO" "orbs-mineb/orbs-mineb.gd")
+
+(build-custom-level "orbs-minea")
+(custom-level-cgo "O12.DGO" "orbs-minea/orbs-minea.gd")
+
+(build-custom-level "orbs-mined")
+(custom-level-cgo "O13.DGO" "orbs-mined/orbs-mined.gd")
+
+(build-custom-level "orbs-freehq")
+(custom-level-cgo "O14.DGO" "orbs-freehq/orbs-freehq.gd")
+
+(build-custom-level "orbs-lfacrm1")
+(custom-level-cgo "O15.DGO" "orbs-lfacrm1/orbs-lfacrm1.gd")
+
+(build-custom-level "orbs-wasdoors")
+(custom-level-cgo "O16.DGO" "orbs-wasdoors/orbs-wasdoors.gd")
+
+(build-custom-level "orbs-gungame")
+(custom-level-cgo "O17.DGO" "orbs-gungame/orbs-gungame.gd")
+
+(build-custom-level "orbs-halfpipe")
+(custom-level-cgo "O18.DGO" "orbs-halfpipe/orbs-halfpipe.gd")
+
+(build-custom-level "orbs-foresta")
+(custom-level-cgo "O19.DGO" "orbs-foresta/orbs-foresta.gd")
+
+(build-custom-level "orbs-forestb")
+(custom-level-cgo "O20.DGO" "orbs-forestb/orbs-forestb.gd")
+
+(build-custom-level "orbs-ctyindb")
+(custom-level-cgo "O21.DGO" "orbs-ctyindb/orbs-ctyindb.gd")
+
+(build-custom-level "orbs-ctyinda")
+(custom-level-cgo "O22.DGO" "orbs-ctyinda/orbs-ctyinda.gd")
+
+(build-custom-level "orbs-ctygenb")
+(custom-level-cgo "O23.DGO" "orbs-ctygenb/orbs-ctygenb.gd")
+
+(build-custom-level "orbs-mhcityb")
+(custom-level-cgo "O24.DGO" "orbs-mhcityb/orbs-mhcityb.gd")
+
+(build-custom-level "orbs-mhcitya")
+(custom-level-cgo "O25.DGO" "orbs-mhcitya/orbs-mhcitya.gd")
+
+(build-custom-level "orbs-towerb")
+(custom-level-cgo "O26.DGO" "orbs-towerb/orbs-towerb.gd")
+
+(build-custom-level "orbs-ltowera")
+(custom-level-cgo "O27.DGO" "orbs-ltowera/orbs-ltowera.gd")
+
+(build-custom-level "orbs-ltowerb")
+(custom-level-cgo "O28.DGO" "orbs-ltowerb/orbs-ltowerb.gd")
+
+(build-custom-level "orbs-nsta")
+(custom-level-cgo "O29.DGO" "orbs-nsta/orbs-nsta.gd")
+
+(build-custom-level "orbs-nstb")
+(custom-level-cgo "O30.DGO" "orbs-nstb/orbs-nstb.gd")
+
+(build-custom-level "orbs-templea")
+(custom-level-cgo "O31.DGO" "orbs-templea/orbs-templea.gd")
+
+(build-custom-level "orbs-templex")
+(custom-level-cgo "O32.DGO" "orbs-templex/orbs-templex.gd")
+
+(build-custom-level "orbs-templec")
+(custom-level-cgo "O33.DGO" "orbs-templec/orbs-templec.gd")
+
+(build-custom-level "orbs-templed")
+(custom-level-cgo "O34.DGO" "orbs-templed/orbs-templed.gd")
+
+(build-custom-level "orbs-templeb")
+(custom-level-cgo "O35.DGO" "orbs-templeb/orbs-templeb.gd")
+
+(build-custom-level "orbs-hiphog")
+(custom-level-cgo "O36.DGO" "orbs-hiphog/orbs-hiphog.gd")
+
+(build-custom-level "orbs-ctyslumc")
+(custom-level-cgo "O37.DGO" "orbs-ctyslumc/orbs-ctyslumc.gd")
+
+(build-custom-level "orbs-ctyslumb")
+(custom-level-cgo "O38.DGO" "orbs-ctyslumb/orbs-ctyslumb.gd")
+
+(build-custom-level "orbs-powergd")
+(custom-level-cgo "O40.DGO" "orbs-powergd/orbs-powergd.gd")
+
+(build-custom-level "orbs-ctyport")
+(custom-level-cgo "O41.DGO" "orbs-ctyport/orbs-ctyport.gd")
+
+(build-custom-level "orbs-vinroom")
+(custom-level-cgo "O42.DGO" "orbs-vinroom/orbs-vinroom.gd")
+
+(build-custom-level "orbs-sewl")
+(custom-level-cgo "O43.DGO" "orbs-sewl/orbs-sewl.gd")
+
+(build-custom-level "orbs-sewm")
+(custom-level-cgo "O44.DGO" "orbs-sewm/orbs-sewm.gd")
+
+(build-custom-level "orbs-sewn")
+(custom-level-cgo "O45.DGO" "orbs-sewn/orbs-sewn.gd")
+
+(build-custom-level "orbs-sewo")
+(custom-level-cgo "O46.DGO" "orbs-sewo/orbs-sewo.gd")
+
+(build-custom-level "orbs-sewk")
+(custom-level-cgo "O47.DGO" "orbs-sewk/orbs-sewk.gd")
+
+(build-custom-level "orbs-sewg")
+(custom-level-cgo "O48.DGO" "orbs-sewg/orbs-sewg.gd")
+
+(build-custom-level "orbs-sewh")
+(custom-level-cgo "O49.DGO" "orbs-sewh/orbs-sewh.gd")
+
+(build-custom-level "orbs-sewi")
+(custom-level-cgo "O50.DGO" "orbs-sewi/orbs-sewi.gd")
+
+(build-custom-level "orbs-sewj")
+(custom-level-cgo "O51.DGO" "orbs-sewj/orbs-sewj.gd")
+
+(build-custom-level "orbs-sewb")
+(custom-level-cgo "O52.DGO" "orbs-sewb/orbs-sewb.gd")
+
+(build-custom-level "orbs-sewc")
+(custom-level-cgo "O53.DGO" "orbs-sewc/orbs-sewc.gd")
+
+(build-custom-level "orbs-sewd")
+(custom-level-cgo "O54.DGO" "orbs-sewd/orbs-sewd.gd")
+
+(build-custom-level "orbs-sewe")
+(custom-level-cgo "O55.DGO" "orbs-sewe/orbs-sewe.gd")
+
+(build-custom-level "orbs-ctysluma")
+(custom-level-cgo "O57.DGO" "orbs-ctysluma/orbs-ctysluma.gd")
+
+(build-custom-level "orbs-wascitya")
+(custom-level-cgo "O58.DGO" "orbs-wascitya/orbs-wascitya.gd")
+
+(build-custom-level "orbs-wascityb")
+(custom-level-cgo "O59.DGO" "orbs-wascityb/orbs-wascityb.gd")
+
+(build-custom-level "orbs-wasstada")
+(custom-level-cgo "O60.DGO" "orbs-wasstada/orbs-wasstada.gd")
+
+(build-custom-level "orbs-waspala")
+(custom-level-cgo "O61.DGO" "orbs-waspala/orbs-waspala.gd")
+
+(build-custom-level "orbs-stadium")
+(custom-level-cgo "O62.DGO" "orbs-stadium/orbs-stadium.gd")
+
+(build-custom-level "orbs-stadiumb")
+(custom-level-cgo "O63.DGO" "orbs-stadiumb/orbs-stadiumb.gd")
+
+(build-custom-level "orbs-comba")
+(custom-level-cgo "O64.DGO" "orbs-comba/orbs-comba.gd")
+
+(build-custom-level "orbs-combn")
+(custom-level-cgo "O65.DGO" "orbs-combn/orbs-combn.gd")
+
+(build-custom-level "orbs-combb")
+(custom-level-cgo "O66.DGO" "orbs-combb/orbs-combb.gd")
+
+(build-custom-level "orbs-combc")
+(custom-level-cgo "O67.DGO" "orbs-combc/orbs-combc.gd")
+
+(build-custom-level "orbs-combd")
+(custom-level-cgo "O68.DGO" "orbs-combd/orbs-combd.gd")
+
+(build-custom-level "orbs-combe")
+(custom-level-cgo "O69.DGO" "orbs-combe/orbs-combe.gd")
+
+(build-custom-level "orbs-railx")
+(custom-level-cgo "O70.DGO" "orbs-railx/orbs-railx.gd")
+
+(build-custom-level "orbs-railb")
+(custom-level-cgo "O71.DGO" "orbs-railb/orbs-railb.gd")
+
+(build-custom-level "orbs-railb2")
+(custom-level-cgo "O72.DGO" "orbs-railb2/orbs-railb2.gd")
+
+(build-custom-level "orbs-railc")
+(custom-level-cgo "O73.DGO" "orbs-railc/orbs-railc.gd")
+
+(build-custom-level "orbs-raild")
+(custom-level-cgo "O74.DGO" "orbs-raild/orbs-raild.gd")
+
+(build-custom-level "orbs-raile")
+(custom-level-cgo "O75.DGO" "orbs-raile/orbs-raile.gd")
+
+(build-custom-level "orbs-railf")
+(custom-level-cgo "O76.DGO" "orbs-railf/orbs-railf.gd")
+
+(build-custom-level "orbs-deswalk")
+(custom-level-cgo "O77.DGO" "orbs-deswalk/orbs-deswalk.gd")
+
+(build-custom-level "orbs-wasstadb")
+(custom-level-cgo "O78.DGO" "orbs-wasstadb/orbs-wasstadb.gd")
+
+(build-custom-level "orbs-volcanoa")
+(custom-level-cgo "O79.DGO" "orbs-volcanoa/orbs-volcanoa.gd")
+
+(build-custom-level "orbs-volcanox")
+(custom-level-cgo "O80.DGO" "orbs-volcanox/orbs-volcanox.gd")
+
+(build-custom-level "orbs-lfacrm2")
+(custom-level-cgo "O81.DGO" "orbs-lfacrm2/orbs-lfacrm2.gd")
+
+(build-custom-level "orbs-factoryd")
+(custom-level-cgo "O82.DGO" "orbs-factoryd/orbs-factoryd.gd")
+
+(build-custom-level "orbs-factoryb")
+(custom-level-cgo "O83.DGO" "orbs-factoryb/orbs-factoryb.gd")
+
+(build-custom-level "orbs-factoryc")
+(custom-level-cgo "O84.DGO" "orbs-factoryc/orbs-factoryc.gd")
+
+(build-custom-level "orbs-desert")
+(custom-level-cgo "O85.DGO" "orbs-desert/orbs-desert.gd")
+
+(build-custom-level "orbs-desertd")
+(custom-level-cgo "O86.DGO" "orbs-desertd/orbs-desertd.gd")
+
+(build-custom-level "orbs-desertb")
+(custom-level-cgo "O87.DGO" "orbs-desertb/orbs-desertb.gd")
+
+(build-custom-level "orbs-deserta")
+(custom-level-cgo "O88.DGO" "orbs-deserta/orbs-deserta.gd")
+
+(build-custom-level "orbs-desertf")
+(custom-level-cgo "O89.DGO" "orbs-desertf/orbs-desertf.gd")
+
+(build-custom-level "orbs-deserth")
+(custom-level-cgo "O90.DGO" "orbs-deserth/orbs-deserth.gd")
+
+(build-custom-level "orbs-desertg")
+(custom-level-cgo "O91.DGO" "orbs-desertg/orbs-desertg.gd")
+
+(build-custom-level "orbs-deserte")
+(custom-level-cgo "O92.DGO" "orbs-deserte/orbs-deserte.gd")
+
+(build-custom-level "orbs-desertc")
+(custom-level-cgo "O93.DGO" "orbs-desertc/orbs-desertc.gd")
+
+(build-custom-level "orbs-sewf")
+(custom-level-cgo "O94.DGO" "orbs-sewf/orbs-sewf.gd")
+
+(build-custom-level "orbs-ctyfarma")
+(custom-level-cgo "O95.DGO" "orbs-ctyfarma/orbs-ctyfarma.gd")
+
+(build-custom-level "orbs-ctyfarmb")
+(custom-level-cgo "O96.DGO" "orbs-ctyfarmb/orbs-ctyfarmb.gd")
+
 ;; generate the art group for a custom actor.
 ;; requires a .glb model file in custom_assets/jak3/models/custom_levels
 ;; options:
@@ -426,6 +708,8 @@
 ;; - joint-channel: how many joint channels the actor should have. defaults to 6.
 ;; more complicated actors like jak that make a lot of use of animation blending can have 24+ channels.
 (build-actor "test-actor" :gen-mesh #t)
+
+(build-actor "arcade" :gen-mesh #t)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; ANIMATIONS

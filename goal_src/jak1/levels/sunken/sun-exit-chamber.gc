@@ -505,7 +505,12 @@
     (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
       (local-vars (v0-1 object))
       (case message
-        (('trigger) (go exit-chamber-rise) (return #t) v0-1)
+        (('trigger)
+         (if (not (handle->process (-> self fcell-handle))) ;; only rise if cell collected, otherwise reset button
+           (go exit-chamber-rise)
+           (send-event (ppointer->process (-> self button)) 'untrigger))
+         (return #t)
+         v0-1)
         (('notify)
          (when (and (= (-> proc type) fuel-cell) (= (-> block param 0) 'pickup))
            (let ((a0-5 (handle->process (-> self fcell-handle))))
@@ -513,7 +518,8 @@
                (let ((v1-10 (new 'stack-no-clear 'vector)))
                  (set-vector! v1-10 0.0 64102.4 0.0 1.0)
                  (vector+! v1-10 v1-10 (-> self last-pos))
-                 (send-event a0-5 'set-movie-pos v1-10))))))))
+                 ;;  (send-event a0-5 'set-movie-pos v1-10)
+                 )))))))
   :exit
     (behavior ()
       (logclear! (-> self draw status) (draw-status hidden)))
@@ -527,7 +533,13 @@
         (if (>= 214228270000.0 (vector-vector-distance-squared (camera-pos) (-> self root trans)))
           (logclear! (-> self draw status) (draw-status hidden))
           (logior! (-> self draw status) (draw-status hidden)))
-        (suspend))))
+        (suspend)))
+  :trans
+    (behavior ()
+      (if (and (-> self button) (handle->process (-> self fcell-handle)))
+        (send-event (ppointer->process (-> self button)) 'untrigger) ;; reset button if we haven't collected fuel cell
+        )
+      (none)))
 
 (defstate exit-chamber-rise (exit-chamber)
   :enter
@@ -630,7 +642,8 @@
                (let ((v1-8 (new 'stack-no-clear 'vector)))
                  (set-vector! v1-8 0.0 64102.4 0.0 1.0)
                  (vector+! v1-8 v1-8 (-> self last-pos))
-                 (send-event a0-5 'set-movie-pos v1-8))))))))
+                 ;;  (send-event a0-5 'set-movie-pos v1-8)
+                 )))))))
   :enter
     (behavior ((arg0 symbol))
       (logior! (-> self mask) (process-mask platform))

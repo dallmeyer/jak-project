@@ -950,7 +950,7 @@
     (if (< (-> arg0 poly-angle) -0.2)
         (logior! sv-56 (collide-status touch-ceiling))
         )
-    (let ((sv-96 (< (fabs (-> arg0 surface-angle)) (-> *pat-mode-info* (-> arg0 cur-pat mode) wall-angle))))
+    (let ((sv-96 (< (fabs (-> arg0 surface-angle)) (-> (get-active-pat-mode-info) (-> arg0 cur-pat mode) wall-angle))))
       (logior! sv-56 (collide-status touch-surface))
       (if (-> arg1 best-other-prim)
           (logior! sv-56 (collide-status touch-actor))
@@ -1070,7 +1070,7 @@
                            )
                        (set! (-> this prev-status) ((-> this reaction) (the-as control-info this) s5-0 arg0 arg1))
                        (when *display-collision-marks*
-                         (let ((t1-0 (-> *pat-mode-info* (-> s5-0 best-other-tri pat mode) hilite-color)))
+                         (let ((t1-0 (-> (get-active-pat-mode-info) (-> s5-0 best-other-tri pat mode) hilite-color)))
                            (add-debug-outline-triangle
                              #t
                              (bucket-id debug-no-zbuf1)
@@ -1103,7 +1103,7 @@
                                (-> s5-0 best-other-tri intersect)
                                (-> this surface-normal)
                                (meters 0.5)
-                               (-> *pat-mode-info* (-> this cur-pat mode) hilite-color)
+                               (-> (get-active-pat-mode-info) (-> this cur-pat mode) hilite-color)
                                )
                              )
                          )
@@ -2181,6 +2181,24 @@
   0
   (none)
   )
+
+(defun clear-collide-with-as ((obj collide-shape))
+  (set! (-> obj root-prim collide-with) (collide-spec))
+  (set! (-> obj root-prim prim-core collide-as) (collide-spec))
+  0
+  (none))
+
+(defun backup-collide-with-as ((obj collide-shape))
+  (set! (-> obj backup-collide-with) (-> obj root-prim collide-with))
+  (set! (-> obj backup-collide-as) (-> obj root-prim prim-core collide-as))
+  0
+  (none))
+
+(defun restore-collide-with-as ((obj collide-shape))
+  (set! (-> obj root-prim collide-with) (-> obj backup-collide-with))
+  (set! (-> obj root-prim prim-core collide-as) (-> obj backup-collide-as))
+  0
+  (none))
 
 (defmethod set-collide-as! ((this collide-shape) (arg0 collide-spec))
   (let ((v1-0 (-> this root-prim)))

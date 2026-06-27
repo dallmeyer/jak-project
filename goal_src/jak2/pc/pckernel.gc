@@ -6,7 +6,7 @@
   This file runs the game-specific version of the pckernel.
   See pckernel-common.gc for the bulk of the pckernel.
 
- |#
+|#
 
 (define-extern get-active-mission-description (function discord-info string))
 
@@ -50,46 +50,48 @@
     ((or  (not (task-node-closed? (game-task-node sewer-board-introduction)))
           (not (aif (level-get-target-inside *level*) (= (-> it name) 'sewer)))
           (aif (get-continue-by-name *game-info* "sewer-start") (< (vector-vector-distance (target-pos 0) (-> it trans)) (meters 20))))
-      (set! (-> *pc-cheat-state* sewer-valve-on) #b000)
+      (set! (-> *pc-cheat-state* sewer-valve-on) #b0000)
       (set! (-> *pc-cheat-state* sewer-valve-start-time) 0)
       (set! (-> *pc-cheat-state* sewer-valve-end-time) 0)
       #f)
-    ;; during sewer valve task
-    ((not (task-node-closed? (game-task-node sewer-board-resolution)))
-      (set! (-> *pc-cheat-state* sewer-valve-end-time) (get-current-time))
-      (when (= (get-base-height *ocean-map*) -216498.17)
+    
+    ;; during sewer valve task (vanilla logic)
+    ;; ((not (task-node-closed? (game-task-node sewer-board-resolution)))
+    
+    (else ;; anytime in sewers (orb hunt)
+      (when (= (get-base-height *ocean-map*) -216498.17) ;; update start time constantly until we start draining
         (set! (-> *pc-cheat-state* sewer-valve-start-time) (get-current-time))
+        )
+      (if (!= #b1111 (-> *pc-cheat-state* sewer-valve-on)) ;; update end time unless we finished
+        (set! (-> *pc-cheat-state* sewer-valve-end-time) (get-current-time))
         )
 
       ;; no cheating!
-      (cond
-        ((task-node-open? (game-task-node sewer-board-drain))
-          (aif  (process-by-ename "sew-valve-6")
-                (if (and (= 'turn (-> it next-state name)) (= (-> *pc-cheat-state* sewer-valve-on) #b000))
-                    (logior! (-> *pc-cheat-state* sewer-valve-on) #b001)))
-          (aif  (process-by-ename "sew-valve-7")
-                (if (and (= 'turn (-> it next-state name)) (= (-> *pc-cheat-state* sewer-valve-on) #b001))
-                    (logior! (-> *pc-cheat-state* sewer-valve-on) #b010)))
-          )
-        ((and (task-node-closed? (game-task-node sewer-board-drain)) (= (-> *pc-cheat-state* sewer-valve-on) #b011))
-          (logior! (-> *pc-cheat-state* sewer-valve-on) #b100))
-        )
+      (aif  (process-by-ename "sew-valve-6")
+            (if (and (= 'turn (-> it next-state name)) (= (-> *pc-cheat-state* sewer-valve-on) #b0000))
+                (logior! (-> *pc-cheat-state* sewer-valve-on) #b0001)))
+      (aif  (process-by-ename "sew-valve-7")
+            (if (and (= 'turn (-> it next-state name)) (= (-> *pc-cheat-state* sewer-valve-on) #b0001))
+                (logior! (-> *pc-cheat-state* sewer-valve-on) #b0010)))
+      (aif  (process-by-ename "sew-valve-5")
+            (if (and (= 'turn (-> it next-state name)) (= (-> *pc-cheat-state* sewer-valve-on) #b0011))
+                (logior! (-> *pc-cheat-state* sewer-valve-on) #b0100)))
+      (aif (the process-drawable (process-by-ename "sew-mar-statue-1"))
+            (when (and (< (vector-vector-distance (target-pos 0) (-> it root trans)) (meters 20)) (= (-> *pc-cheat-state* sewer-valve-on) #b0111))
+                (logior! (-> *pc-cheat-state* sewer-valve-on) #b1000)
+                ))
 
       (when (and (= *cheat-mode* 'debug) (!= (-> *pc-cheat-state* sewer-valve-end-time) (-> *pc-cheat-state* sewer-valve-start-time)))
         (format *stdcon* "sewer-valve time: ~0e/~D v: ~3B~%" (- (-> *pc-cheat-state* sewer-valve-end-time) (-> *pc-cheat-state* sewer-valve-start-time))
                                                              (-> *pc-cheat-state* sewer-valve-target-seconds)
                                                              (-> *pc-cheat-state* sewer-valve-on))
         )
-      #f)
-    ;; sewer valve task done!
-    (else
-      (let (
-        (time-taken (- (-> *pc-cheat-state* sewer-valve-end-time) (-> *pc-cheat-state* sewer-valve-start-time))))
-
-          (and  (< 0 time-taken)
-                (< time-taken (seconds (-> *pc-cheat-state* sewer-valve-target-seconds)))
-                (= #b111 (-> *pc-cheat-state* sewer-valve-on)))
-          )
+      
+      (let ((time-taken (- (-> *pc-cheat-state* sewer-valve-end-time) (-> *pc-cheat-state* sewer-valve-start-time))))
+        (and  (< 0 time-taken)
+              (< time-taken (seconds (-> *pc-cheat-state* sewer-valve-target-seconds)))
+              (= #b1111 (-> *pc-cheat-state* sewer-valve-on)))
+        )
       )
     ))
 
@@ -332,30 +334,30 @@
 (defmethod set-game-setting! ((obj pc-settings-jak2) (setting symbol) (value symbol))
   (case setting
     (('video-mode)
-      (set! (-> *setting-control* user-current video-mode) #f)
-      (set! (-> *setting-control* user-default video-mode) value)
-      )
+     (set! (-> *setting-control* user-current video-mode) #f)
+     (set! (-> *setting-control* user-default video-mode) value))
+      
     (('aspect-ratio)
-      (set! (-> *setting-control* user-default aspect-ratio) value)
-      )
+     (set! (-> *setting-control* user-default aspect-ratio) value))
+      
     (else
-      (format #t "unknown setting  ~A (~A) to set-game-setting!" setting value))
-    )
-  )
+      (format #t "unknown setting  ~A (~A) to set-game-setting!" setting value))))
+    
+  
 
 (defmethod get-game-setting ((obj pc-settings-jak2) (setting symbol))
   (case setting
     (('video-mode)
-      (-> *setting-control* user-default video-mode)
-      )
+     (-> *setting-control* user-default video-mode))
+      
     (('aspect-ratio)
-      (-> *setting-control* user-default aspect-ratio)
-      )
+     (-> *setting-control* user-default aspect-ratio))
+      
     (else
       (format #t "unknown setting  ~A to get-game-setting" setting)
-      #f)
-    )
-  )
+      #f)))
+    
+  
 
 (defmethod set-game-language! ((obj pc-settings-jak2) (lang language-enum))
   (set! (-> *setting-control* user-default language) lang)
@@ -398,11 +400,11 @@
            (and *progress-process*
                 (= 'title (-> *progress-process* 0 state-stack 0))))
         ;; in title screen.
-        (set! (-> info level) (symbol->string 'title))
-        (set! (-> info status) "In title screen"))
+       (set! (-> info level) (symbol->string 'title))
+       (set! (-> info status) "In title screen"))
       (else
-        (set! (-> info level) (aif (-> *load-state* vis-nick) (symbol->string it) "unknown")))
-      )
+        (set! (-> info level) (aif (-> *load-state* vis-nick) (symbol->string it) "unknown"))))
+      
     (set! (-> info cutscene?) (real-movie?))
     (set! (-> info time-of-day) (-> *time-of-day-context* time))
     (set! (-> info percent-complete) (calculate-percentage *game-info*))
@@ -424,15 +426,15 @@
   "update the graphics hacks used for the progress menu. ugh."
 
   (set! (-> (get-video-params) relative-x-scale) (-> obj aspect-ratio-reciprocal))
-  (set! (-> (get-video-params) relative-x-scale-reciprical) (-> obj aspect-ratio-scale))
-  )
+  (set! (-> (get-video-params) relative-x-scale-reciprical) (-> obj aspect-ratio-scale)))
+  
 
 
 (defmethod eligible-for-fast-elevator? ((obj pc-settings-jak2) (proc process))
   "is this a valid process for a fast elevator?"
   (and (-> obj fast-elevator?) (not (or (string= (-> proc name) "drill-lift-1")
-                                        (string= (-> proc name) "drill-lift-2"))))
-  )
+                                        (string= (-> proc name) "drill-lift-2")))))
+  
 
 (defmethod get-airlock-speed ((obj pc-settings-jak2))
   "return the current speed modifier for airlocks"
@@ -595,7 +597,9 @@
                     ctymarka  ctymarkb
                     ctyfarma  ctyfarmb
                     ctyinda   ctyindb
-                    ctypal    ctyport   stadium)))
+                    ctypal    ctyport   stadium
+                    hiphog    hideout   onintent    garage    vinroom ;; added orbhunt for minimap
+                    )))
 
 
 (defmethod update-cheats ((obj pc-settings-jak2))
@@ -949,3 +953,222 @@
 
 (defmacro adjust-game-x-int (x-float)
   `(the int (adjust-game-x-centered CENTER_X (the float ,x-float))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; mod-settings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun reset-mod-save-file ((obj mod-settings-jak2) (save-idx int))
+  (dbg-format 0 "resetting mod save file #~D~%" save-idx)
+  (dotimes (lvl-idx LEVEL_ID_LEN)
+    (set! (-> obj save-data save-idx orb-counts lvl-idx) 0)
+    )
+  (none)
+  )
+
+(defun copy-mod-save-file ((obj mod-settings-jak2) (src-save-idx int) (dest-save-idx int))
+  (dbg-format 0 "copying mod save file #~D to #~D~%" src-save-idx dest-save-idx)
+  (dotimes (lvl-idx LEVEL_ID_LEN)
+    (set! (-> obj save-data dest-save-idx orb-counts lvl-idx) (-> obj save-data src-save-idx orb-counts lvl-idx))
+    )
+  (none)
+  )
+
+(defmethod reset mod-settings-jak2 ((obj mod-settings-jak2) (call-handlers symbol))
+  "Set the default settings for mod settings"
+
+  (format 0 "resetting mod settings~%")
+
+  ;; reset per-save fields here
+  (dotimes (save-idx 4)
+    (reset-mod-save-file obj save-idx)
+    )
+
+  (set! (-> obj orb-autosave?) #t)
+  (set! (-> obj skill-starburst?) #f)
+  (set! (-> obj orb-ghosts?) #f)
+  (set! (-> obj closest-orb?) #f)
+  (set! (-> obj orb-map-icons?) #f)
+  (set! (-> obj pseudo-savestates?) #f)
+  (set! (-> obj easy-abah?) #f)
+  (set! (-> obj collision-renderer-toggle?) #f)
+  (set! (-> obj hover-restriction?) #f)
+  (set! (-> obj slip-assist) (slip-assist-mode normal))
+
+  0)
+
+(defmethod read-from-file mod-settings-jak2 ((obj mod-settings-jak2) (filename string))
+  "read mod settings from a file"
+
+  (if (not filename)
+    (return #f))
+
+  (let ((file (new 'stack 'file-stream filename 'read)))
+    (when (not (file-stream-valid? file))
+      (return #f))
+
+    (let ((version PC_KERNEL_VERSION))
+      (with-settings-scope (file)
+        (case-str (file-stream-read-word file)
+          (("settings")
+            (set! version (the pckernel-version (file-stream-read-int file)))
+            (cond
+              ((and (= (-> version major) PC_KERNEL_VER_MAJOR)
+                    (= (-> version minor) PC_KERNEL_VER_MINOR))
+                ;; minor or no difference
+                )
+              (else
+                ;; major difference
+                (format 0 "PC kernel version mismatch! Got ~D.~D vs ~D.~D~%" PC_KERNEL_VER_MAJOR PC_KERNEL_VER_MINOR (-> version major) (-> version minor))
+                (file-stream-close file)
+                (return #f)
+                )
+              )
+            (dosettings (file)
+              (handle-input-settings obj file)
+              )
+            ;; upgrade settings if minor changes
+            ;; remember to delete this when major changes to the version number are made
+            (when (and (= PC_KERNEL_VER_MAJOR 1)
+                       (= PC_KERNEL_VER_MINOR 10)
+                       (or (> 3 (-> version build))
+                           (and (= 3 (-> version build)) (> 1 (-> version revision)))))
+                )
+            )
+          )
+        )
+
+      )
+
+    (file-stream-close file)
+    )
+
+  (format 0 "mod settings file read: ~A~%" filename)
+
+  #t
+  )
+
+(defmethod handle-input-settings mod-settings-jak2 ((obj mod-settings-jak2) (file file-stream))
+  "handle the text parsing input for the 'settings' group"
+
+  (case-str *pc-temp-string*
+    ;; handle per-save fields here
+    (("orb-counts")
+      (dotimes (save-idx 4)
+        (dotimes (lvl-idx LEVEL_ID_LEN)
+          (set! (-> obj save-data save-idx orb-counts lvl-idx) (file-stream-read-int file))
+          )
+        )
+      )
+
+    (("orb-autosave?") (set! (-> obj orb-autosave?) (file-stream-read-symbol file)))
+    (("skill-starburst?") (set! (-> obj skill-starburst?) (file-stream-read-symbol file)))
+    (("orb-ghosts?") (set! (-> obj orb-ghosts?) (file-stream-read-symbol file)))
+    (("closest-orb?") (set! (-> obj closest-orb?) (file-stream-read-symbol file)))
+    (("orb-map-icons?") (set! (-> obj orb-map-icons?) (file-stream-read-symbol file)))
+    (("pseudo-savestates?") (set! (-> obj pseudo-savestates?) (file-stream-read-symbol file)))
+    (("easy-abah?") (set! (-> obj easy-abah?) (file-stream-read-symbol file)))
+    (("collision-renderer-toggle?") (set! (-> obj collision-renderer-toggle?) (file-stream-read-symbol file)))
+    (("hover-restriction?") (set! (-> obj hover-restriction?) (file-stream-read-symbol file)))
+    (("slip-assist") (set! (-> obj slip-assist) (the-as slip-assist-mode (file-stream-read-int file))))
+
+    (else
+      (format 0 "Unrecognized field ~S when trying to parse mod-settings~%" *pc-temp-string*)
+      )
+    )
+  0)
+
+(defmethod handle-output-settings mod-settings-jak2 ((obj mod-settings-jak2) (file file-stream))
+  "handle the text writing output for the 'settings' group"
+
+  ;; handle per-save fields here
+  (format file "  (orb-counts")
+  (dotimes (save-idx 4)
+    (format file "~%    ")
+    (dotimes (lvl-idx LEVEL_ID_LEN)
+      (format file " ~D" (-> obj save-data save-idx orb-counts lvl-idx))
+      )
+    )
+  (format file ")~%")
+
+  (format file "  (orb-autosave? ~A)~%" (-> obj orb-autosave?))
+  (format file "  (skill-starburst? ~A)~%" (-> obj skill-starburst?))
+  (format file "  (orb-ghosts? ~A)~%" (-> obj orb-ghosts?))
+  (format file "  (closest-orb? ~A)~%" (-> obj closest-orb?))
+  (format file "  (orb-map-icons? ~A)~%" (-> obj orb-map-icons?))
+  (format file "  (pseudo-savestates? ~A)~%" (-> obj pseudo-savestates?))
+  (format file "  (easy-abah? ~A)~%" (-> obj easy-abah?))
+  (format file "  (collision-renderer-toggle? ~A)~%" (-> obj collision-renderer-toggle?))
+  (format file "  (hover-restriction? ~A)~%" (-> obj hover-restriction?))
+  (format file "  (slip-assist ~D)~%" (-> obj slip-assist))
+
+  0)
+
+(defmethod write-to-file mod-settings-jak2 ((obj mod-settings-jak2) (filename string))
+  "write settings to a file"
+
+  (if (not filename)
+    (return #f))
+
+  (let ((file (new 'stack 'file-stream filename 'write)))
+    (if (not (file-stream-valid? file))
+      (return #f))
+
+    (format file "(settings #x~X~%" PC_KERNEL_VERSION)
+
+    (handle-output-settings obj file)
+
+    (format file "  )~%")
+    (file-stream-close file)
+    )
+
+  (format 0 "mod settings file write: ~A~%" filename)
+
+  #t
+  )
+
+(defmethod commit-to-file mod-settings-jak2 ((obj mod-settings-jak2))
+  "commits the current mod settings to the file"
+  (format (clear *pc-temp-string-1*) "~S/~S" *pc-settings-folder* *mod-settings-filename*)
+  (pc-mkdir-file-path *pc-temp-string-1*)
+  (write-to-file obj *pc-temp-string-1*)
+  (none))
+
+(defmethod load-settings mod-settings-jak2 ((obj mod-settings-jak2))
+  "load"
+  (format (clear *pc-temp-string-1*) "~S/~S" *pc-settings-folder* *mod-settings-filename*)
+  (cond
+    ((pc-filepath-exists? *pc-temp-string-1*)
+      (format 0 "[PC] Mod Settings found at '~S'...loading!~%" *pc-temp-string-1*)
+      (unless (read-from-file obj *pc-temp-string-1*)
+        (format 0 "[PC] Mod Settings found at '~S' but could not be loaded, using defaults!~%" *pc-temp-string-1*)
+        (reset obj #t)
+        )
+      )
+    (else
+      (format 0 "[PC] Mod Settings not found at '~S'...initializing with defaults!~%" *pc-temp-string-1*)
+      (reset obj #t)
+      )
+    )
+  0)
+
+(defmethod initialize mod-settings-jak2 ((obj mod-settings-jak2))
+  "initial initialize method to be run after allocating"
+  ;; load defaults not covered by the file
+  (reset obj #f)
+  ;; if saved settings are corrupted or not found, the object will be fully reset to use all defaults
+  (load-settings obj)
+  ;; any post-operations that need to be done after loading
+
+  ;; return obj
+  obj)
+
+(defmethod new mod-settings-jak2 ((allocation symbol) (type-to-make type))
+  "make a new mod-settings-jak2"
+  (let ((obj (object-new allocation type-to-make (the-as int (-> type-to-make size)))))
+    (initialize obj)
+    (inspect obj)
+    obj))
+
+(define-once *mod-settings* (new 'global 'mod-settings-jak2))

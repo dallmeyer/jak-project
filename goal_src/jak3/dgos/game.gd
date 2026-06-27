@@ -176,6 +176,7 @@
   "spatial-hash-h.o"
   "actor-hash-h.o"
   "rigid-body-h.o"
+  "damage-number.o"
   "load-dgo.o"
   "ramdisk.o"
   "gsound.o"
@@ -444,6 +445,7 @@
   "tpage-12.go"
   "texture-finish.o"
   "collectables-ag.go"
+  "pre-artifact-d-ag.go" ;; added orbhunt
   "crate-ag.go"
   "talk-box-ag.go"
   "scenecamera-ag.go"
@@ -488,5 +490,13 @@
   "ragdoll-test.o"
   "debris.o"
   "shield-sphere.o"
+  "yakow.o"
   "entity-debug.o" ;; added
+  "orb-placer-h.o"  ;; added
+  "mod-settings.o" ;; added ;;mod-base-change
+  "mod-common-functions.o" ;; added
+  "mods.o"
+  "orb-placer.o"  ;; added
+  "mod-custom-code.o"  ;; added
+  "mod-debug.o" ;; added 
  ))

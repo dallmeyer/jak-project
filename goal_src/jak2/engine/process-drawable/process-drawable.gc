@@ -972,7 +972,7 @@
       ((or (zero? (-> s5-0 active-channels))
            (zero? arg1)
            (when (>= (+ (-> s5-0 active-channels) (-> s5-0 float-channels) arg0) (-> s5-0 allocated-length))
-             (format
+             (dbg-format
                0
                "WARNING: ~A could not do (ja-channel-push! ~D) because it has ~D/~D channels.~%"
                self
@@ -1057,7 +1057,7 @@
 (defbehavior ja-channel-float! process-drawable ((arg0 art-joint-anim) (arg1 float) (arg2 float) (arg3 float))
   (cond
     ((>= (+ (-> self skel active-channels) (-> self skel float-channels)) (-> self skel allocated-length))
-     (format
+     (dbg-format
        0
        "WARNING: ~A could not do (ja-channel-float! ~D) because it has ~D/~D channels.~%"
        self

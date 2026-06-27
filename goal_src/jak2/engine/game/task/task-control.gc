@@ -344,7 +344,8 @@
        '("sewer-c-connect-door.mb")
        (not (and (task-complete? *game-info* (game-task sewer-enemy))
                  (task-node-closed? (game-task-node sewer-board-introduction))
-                 (not (task-complete? *game-info* (game-task sewer-board)))
+                 (or (= (-> this name) 'sewer) (= (-> this name) 'sewerb))  ;; hide door in sewer, show in sewesc
+                ;;  (not (task-complete? *game-info* (game-task sewer-board)))
                  )
             )
        )
@@ -352,17 +353,24 @@
        '("sewer-hover-door.mb")
        (and (task-complete? *game-info* (game-task sewer-enemy))
             (task-node-closed? (game-task-node sewer-board-introduction))
-            (not (task-complete? *game-info* (game-task sewer-board)))
+            #f
+            ;; (not (task-complete? *game-info* (game-task sewer-board)))
             )
        )
      (cond
-       ((= arg0 'debug)
+       ((or (= arg0 'debug) (= arg0 'event))
         )
-       ((task-complete? *game-info* (game-task sewer-board))
+       ((or (name= (-> *game-info* current-continue name) 'tmp)
+            (name= (-> *game-info* current-continue name) 'default))
+        ;; reloading tmp checkpoint/debug spawning, don't change water level
+        )
+       ;; low water for sewesc[b]
+       ((or (= (-> this name) 'sewesc) (= (-> this name) 'sewescb)) ;; (task-complete? *game-info* (game-task sewer-board))
         (set! *ocean-height-hack* (ocean-height-hack sewer-lo))
         (set-height! *ocean-map-sewer* -368050.2)
         )
-       ((not (task-node-closed? (game-task-node sewer-board-drain)))
+       ;; high water for sewer[b]
+       (else ;; ((not (task-node-closed? (game-task-node sewer-board-drain)))
         (set! *ocean-height-hack* (ocean-height-hack zero))
         (set-height! *ocean-map-sewer* -216498.17)
         )
@@ -533,7 +541,7 @@
     (when restart?
       (let ((gp-1 0))
         (let ((cur-lev (level-get-target-inside *level*)))
-          (when (and cur-lev (not (logtest? (-> cur-lev info level-flags) 1)))
+          (when (and cur-lev (not (logtest? (-> cur-lev info level-flags) (level-load-flags city))))
             (let ((game-nodes (-> *game-info* sub-task-list)))
               (dotimes (i (-> game-nodes length))
                 (when (nonzero? i)
@@ -713,7 +721,11 @@
                (mgr-handle (if mgr-info (-> mgr-info manager) (the-as handle #f))))
           ;; if we are not in a valid task level, just return.
           (when (= task-level-idx 0)
-            (return (lookup-text! *common-text* (text-id discord-rpc-not-in-mission) #f))
+            ;; (return (lookup-text! *common-text* (text-id discord-rpc-not-in-mission) #f))
+            (if *debug-segment*
+              (return (lookup-text! *common-text* (text-id discord-rpc-hiding-orba) #f))
+              (return (lookup-text! *common-text* (text-id discord-rpc-hunting-for-orbs) #f))
+              )
             )
           ;; check for onin-game
           (when (and (= (-> level name) 'onintent)
@@ -780,7 +792,10 @@
           )
         )
       )
-      (lookup-text! *common-text* (text-id discord-rpc-not-in-mission) #f)
+    (if *debug-segment*
+      (lookup-text! *common-text* (text-id discord-rpc-hiding-orba) #f)
+      (lookup-text! *common-text* (text-id discord-rpc-hunting-for-orbs) #f)
+      )
     )
   )
 
@@ -2092,7 +2107,7 @@
     (and (or (not (logtest? (-> this node-info flags) (game-task-node-flag city-wait)))
              (let ((a0-2 (level-get-target-inside *level*)))
                (cond
-                 ((not (and a0-2 (logtest? (-> a0-2 info level-flags) 1)))
+                 ((not (and a0-2 (logtest? (-> a0-2 info level-flags) (level-load-flags city))))
                   (set-time! (-> this intro-time))
                   #f
                   )

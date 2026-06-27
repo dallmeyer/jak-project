@@ -7,6 +7,15 @@
 (require "engine/target/logic-target.gc")
 (require "engine/game/effect-control.gc")
 
+;; TFL note: added constants
+(defconstant SUPER_ECO_RED_BOOST_SPEED (meters 45))
+
+(defconstant SUPER_ECO_RED_BOOST_DURATION (seconds 0.8))
+
+(defconstant SUPER_ECO_RED_BOOST_RADIUS (meters 3.5))
+
+(defconstant SUPER_ECO_RED_BOOST_RAMP_UP (seconds 0.5))
+
 ;; DECOMP BEGINS
 
 (define *racer-mods*
@@ -192,7 +201,9 @@
          (f0-13 (- 1.0 (* (- 1.0 f1-12) (-> *display* time-adjust-ratio)))))
     (set! f0-13
           (cond
-            ((and (not (and (= (-> self fact eco-type) (pickup-type eco-yellow)) (>= (-> self fact eco-level) 1.0)))
+            ;; TFL note: added super eco case
+            ((and (not (and (or (= (-> self fact eco-type) (pickup-type eco-yellow)) (target-powerup? super-eco-yellow))
+                            (>= (-> self fact eco-level) 1.0)))
                   (cpad-hold? (-> self control unknown-cpad-info00 number) square))
              (if (and (cpad-hold? (-> self control unknown-cpad-info00 number) x)
                       (not (-> self racer stick-lock))
@@ -351,7 +362,7 @@
                 :position
                 (the-as symbol (-> self control trans))))
   (cond
-    ((and (!= (-> self current-level name) 'ogre) (!= (-> self current-level name) 'lavatube)) #f)
+    ((and (vanilla-level? (-> self current-level name)) (!= (-> self current-level name) 'ogre) (!= (-> self current-level name) 'lavatube)) #f)
     ((or (logtest? (-> self control status) (cshape-moving-flags onground))
          (< 12288.0 (vector-length (-> self control transv))))
      (let ((v0-5 (the-as object (current-time)))) (set! (-> self racer unstuck-time) (the-as time-frame v0-5)) v0-5))
@@ -706,11 +717,96 @@
   0
   (none))
 
+(defbehavior target-racing-super-red-boost target ()
+  ;; TFL note: added super red eco boost attack
+  (when (and (not (nmember (-> self next-state name) '(target-racing-get-off target-racing-get-on)))
+             (time-elapsed? (-> self racer super-red-boost-time) SUPER_ECO_RED_BOOST_COOLDOWN)
+             (target-powerup? super-eco-red)
+             (cpad-hold? 0 circle))
+    (sound-play "zoom-boost")
+    (set-time! (-> self racer super-red-boost-time))
+    (true! (-> self racer super-red-boost?))
+    (let ((ttracker (process-spawn touch-tracker
+                                   :init
+                                   touch-tracker-init
+                                   (-> self control trans)
+                                   4096.0
+                                   SUPER_ECO_RED_BOOST_DURATION
+                                   :to
+                                   self)))
+      (send-event (ppointer->process ttracker) 'event 'attack 'racer-red-boost)
+      (send-event (ppointer->process ttracker)
+                  'exit
+                  (lambda :behavior touch-tracker ()
+                    (let ((vec (-> self root trans)))
+                      (vector-matrix*! vec (new 'static 'vector :y (meters 5) :z (meters 10) :w 1.0) (-> *target* control unknown-matrix01))
+                      (vector-float*! vec vec 0.5)
+                      (vector+! vec vec (-> *target* control trans))
+                      (let ((tail (vector<-cspace! (new-stack-vector0) (-> *target* manipy 0 node-list data 7))))
+                        (process-spawn part-tracker
+                                       :init
+                                       part-tracker-init
+                                       (-> *part-group-id-table* 958) ;; Defined in collectables-part.gc
+                                       -1
+                                       #f
+                                       #f
+                                       #f
+                                       tail
+                                       :to
+                                       *entity-pool*)))
+                    (not (time-elapsed? (-> self state-time) (-> self duration)))))
+      (send-event (ppointer->process ttracker)
+                  'eval
+                  (lambda :behavior touch-tracker ()
+                    ;; TFL TODO check what stuff we want to collide with
+                    (set! (-> self root root-prim collide-with) (collide-kind cak-1 cak-2 cak-3 wall-object))
+                    (none)))
+      (send-event (ppointer->process ttracker)
+                  'function
+                  (lambda ((t target))
+                    (set! (-> t control root-prim local-sphere w) SUPER_ECO_RED_BOOST_RADIUS)))))
+  (if (time-elapsed? (-> self racer super-red-boost-time) SUPER_ECO_RED_BOOST_DURATION)
+    (false! (-> self racer super-red-boost?)))
+  (if (-> self racer super-red-boost?)
+    (let ((dir (-> *target* control unknown-matrix01 vector 2))
+          (time-boosting (- (current-time) (-> self racer super-red-boost-time)))
+          (wish-vel (new-stack-vector0)))
+      (cond
+        ((<= time-boosting SUPER_ECO_RED_BOOST_RAMP_UP)
+         (set-vector! wish-vel
+                      (* (-> dir x) SUPER_ECO_RED_BOOST_SPEED)
+                      (-> self control transv y)
+                      (* (-> dir z) SUPER_ECO_RED_BOOST_SPEED)
+                      1.0)
+         (vector-lerp! (-> self control transv) (-> self control transv) wish-vel 0.1)
+         ;; (format 0 "ramp up time-boosting ~D " time-boosting)
+         (let ((xz-vel (new-stack-vector0))
+               (y-vel (vector-dot (-> *target* control dynam gravity-normal) (-> *target* control transv))))
+           (vector-! xz-vel (-> *target* control transv) (vector-float*! xz-vel (-> *target* control dynam gravity-normal) y-vel))
+           ;; (format 0 "xz-vel: ~f~%" (/ (vector-length xz-vel) 4096.0))
+           ))
+        (else
+         (set-vector! (-> self control transv)
+                      (* (-> dir x) SUPER_ECO_RED_BOOST_SPEED)
+                      (-> self control transv y)
+                      (* (-> dir z) SUPER_ECO_RED_BOOST_SPEED)
+                      1.0)
+         ;; (format 0 "full boost ")
+         (let ((xz-vel (new-stack-vector0))
+               (y-vel (vector-dot (-> *target* control dynam gravity-normal) (-> *target* control transv))))
+           (vector-! xz-vel (-> *target* control transv) (vector-float*! xz-vel (-> *target* control dynam gravity-normal) y-vel))
+           ;; (format 0 "xz-vel: ~f~%" (/ (vector-length xz-vel) 4096.0))
+           ))))))
+
 (defbehavior target-racing-post target ()
   (set! (-> self control reaction) racer-collision-reaction)
   (set! (-> self control surf) *race-track-surface*)
   (set! (-> self racer transv-max)
-        (+ (-> self control current-surface transv-max) (-> self racer boost-output) (-> self racer hill-boost)))
+        ;; TFL note: added super eco case
+        (if (and (not (target-powerup? super-eco-red))
+                 (time-elapsed? (-> self racer super-red-boost-time) SUPER_ECO_RED_BOOST_COOLDOWN))
+          (+ (-> self control current-surface transv-max) (-> self racer boost-output) (-> self racer hill-boost))
+          SUPER_ECO_RED_BOOST_SPEED))
   (let ((gp-0 (the int (-> *display* time-ratio))))
     (set-time-ratios *display* 1.0)
     (countdown (s5-0 gp-0)
@@ -863,5 +959,6 @@
   (set! (-> self racer bike-scale quad) (-> self control scale quad))
   (let ((v1-240 (-> *target-shadow-control* settings shadow-dir quad)))
     (set! (-> *racer-shadow-control* settings shadow-dir quad) v1-240))
+  (target-racing-super-red-boost) ;; TFL note: added call for super red eco attack
   0
   (none))

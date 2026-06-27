@@ -46,6 +46,7 @@
    The decompressed result will be stored in (-> this bit-mask data).
    If it was never compressed, the data will be set to 0."
 
+  (dbg-format 0 " decompress-current-masks! ~%")
   (let ((compressed-mask-data (-> this compressed-masks (-> this mask-index))))
     ;; mark compressed data as invalid as we will remove the compressed data after decompression.
     (set! (-> this compressed-masks (-> this mask-index)) (the-as (pointer int8) #f))
@@ -101,6 +102,7 @@
 
 (defmethod compress-current-masks! ((this bigmap))
   "Take the current (-> this bit-mask data), and store it in the compressed layer buffer."
+  (dbg-format 0 "compress-current-masks!~%")
   ;; store at the end of the buffer
   (let* ((compressed-data-dest (+ (-> this compressed-next-index) 0 (-> this compressed-data)))
          ;; compress!
@@ -390,7 +392,6 @@
 
 (defmethod draw-city-map ((this bigmap) (arg0 dma-buffer))
   "Generate DMA to draw the city map. This has only 2 layers, but has scrolling."
-
   (let ((s4-0 (the-as (pointer uint32) (-> this bigmap-image art-group))))
     ;; og:preserve-this
     ; (texture-upload-dma this arg0 (the-as (pointer uint32) (+ (+ (-> s4-0 0) 16) (the-as uint s4-0))) 0 16 16 (gs-psm ct32))
@@ -471,12 +472,13 @@
         (set! (-> arg1 last-world-pos quad) (-> (the-as vector (-> arg1 position)) quad))
         )
       )
-    (let ((f0-0 (-> arg1 class scale))
+    (let* ((bigmap-scale (/ (the float (- (-> this y1) (-> this y0))) 416.0)) ;; ydelta/416
+          (f0-0 (* (-> arg1 class scale) bigmap-scale))
           (a1-5 (-> arg1 class color))
           (a3-0 (new 'stack-no-clear 'vector4w))
-          (a2-1 (new-stack-vector0))
-          (a0-23 (new-stack-vector0))
-          (v1-21 (new-stack-vector0))
+          (icon-center (new-stack-vector0))
+          (icon-topleft (new-stack-vector0)) ;; icon x0/y0
+          (icon-botright (new-stack-vector0)) ;; icon x1/y1
           )
       (let ((f1-0 (-> *video-params* relative-x-scale)))
         (-> arg1 class)
@@ -493,15 +495,18 @@
         (if (-> *blit-displays-work* horizontal-flip-flag)
             (set! f1-0 (- f1-0))
             )
-        (set! (-> a2-1 x) (+ (the float (-> this x0)) (* 2.0 f1-0 (the float (-> a3-0 x)))))
-        (set! (-> a2-1 y) (- (the float (+ (* (-> a3-0 y) 2) 1840)) (-> this scroll y)))
-        (let ((f1-2 (* 20.0 f1-0 f0-0))
-              (f0-1 (* 20.0 f0-0))
+        (set! (-> icon-center x)    (+ (the float (-> this x0)) (* bigmap-scale 2.0 f1-0 (the float (-> a3-0 x)))))  ;; icon starts at bigmap.x0 + 2*scale*realpos.x
+        (set! (-> icon-center y) (- (+ (the float (-> this y0)) (* bigmap-scale 2.0      (the float (-> a3-0 y)))) (* bigmap-scale (-> this scroll y))))      ;; ... consider scroll
+        (let ((icon-width (* 20.0 f1-0 f0-0))
+              (icon-height (* 20.0 f0-0))
               )
-          (set! (-> a0-23 x) (the float (the int (- (-> a2-1 x) (/ f1-2 2)))))
-          (set! (-> a0-23 y) (the float (the int (- (-> a2-1 y) (/ f0-1 2)))))
-          (set! (-> v1-21 x) (+ (-> a0-23 x) f1-2))
-          (set! (-> v1-21 y) (+ (-> a0-23 y) f0-1))
+          (set! (-> icon-topleft x) (the float (the int (- (-> icon-center x) (/ icon-width 2)))))
+          (set! (-> icon-topleft y) (the float (the int (- (-> icon-center y) (/ icon-height 2)))))
+          (set! (-> icon-botright x) (+ (-> icon-topleft x) icon-width))
+          (set! (-> icon-botright y) (+ (-> icon-topleft y) icon-height))
+
+          ;; (format 0 "bigmap ~D,~D to ~D,~D  -" (-> this x0) (-> this y0) (-> this x1) (-> this y1))
+          ;; (format 0 "  icon ~F,~F to ~F,~F ~%" (-> icon-topleft x) (-> icon-topleft y) (-> icon-botright x) (-> icon-botright y))
           )
         )
       ;; og:preserve-this cast
@@ -514,25 +519,25 @@
         (set! (-> (the-as (pointer uint128) t0-15) 0) (-> this sprite-tmpl dma-vif quad))
         (set! (-> (the-as (pointer uint128) t0-15) 1) (-> this sprite-tmpl quad 1))
         (set-vector!
-          (the-as vector4w (&+ t0-15 32))
+          (the-as vector4w (&+ t0-15 32)) ;; color?
           (the-as int (-> a1-5 r))
           (the-as int (-> a1-5 g))
           (the-as int (-> a1-5 b))
           128
           )
-        (set-vector! (the-as vector4w (&+ t0-15 48)) t1-2 t2-0 0 0)
+        (set-vector! (the-as vector4w (&+ t0-15 48)) t1-2 t2-0 0 0) ;; icon texture top left?
         (set-vector!
-          (the-as vector4w (&+ t0-15 64))
-          (the int (* 16.0 (-> a0-23 x)))
-          (the int (* 16.0 (-> a0-23 y)))
+          (the-as vector4w (&+ t0-15 64)) ;; map pos top left?
+          (the int (* 16.0 (-> icon-topleft x)))
+          (the int (* 16.0 (-> icon-topleft y)))
           #xffffff
           0
           )
-        (set-vector! (the-as vector4w (&+ t0-15 80)) a2-8 a3-11 0 0)
+        (set-vector! (the-as vector4w (&+ t0-15 80)) a2-8 a3-11 0 0)  ;; icon texture bottom right?
         (set-vector!
-          (the-as vector4w (&+ t0-15 96))
-          (the int (* 16.0 (-> v1-21 x)))
-          (the int (* 16.0 (-> v1-21 y)))
+          (the-as vector4w (&+ t0-15 96)) ;; map pos bottom right?
+          (the int (* 16.0 (-> icon-botright x)))
+          (the int (* 16.0 (-> icon-botright y)))
           #xffffff
           0
           )
@@ -564,56 +569,71 @@
         (set! (-> this bigmap-index) (the-as uint (-> v1-1 info bigmap-id)))
         )
     )
-  (cond
-    ((-> this drawing-flag)
-     (cond
-       ((= (-> *blit-displays-work* count-down) 1)
-        (set-pending-file
-          (-> this bigmap-image)
-          "world-map"
-          (the-as int (-> this load-index))
-          (process->handle *dproc*)
-          0.0
+  (when (-> this drawing-flag)
+    (let ((map-texture-status (file-status (-> *bigmap* bigmap-image) "world-map" (the-as int (-> *bigmap* load-index))))
+          (icon-texture-status (file-status (-> *bigmap* tpage) "progress-minimap" 0))
           )
-        (set-pending-file (-> this tpage) "progress-minimap" 0 (process->handle *dproc*) 0.0)
-        (set! (-> this loading-flag) #t)
-        )
-       (else
-         (update (-> this bigmap-image))
-         (update (-> this tpage))
-         (when (and (-> this loading-flag)
-                    (= (file-status (-> this bigmap-image) "world-map" (the-as int (-> this load-index))) 'active)
-                    (= (file-status (-> this tpage) "progress-minimap" 0) 'active)
+      (cond
+        ((or (= (-> *blit-displays-work* count-down) 1) ;; vanilla progress blit stuff, or if texture status is #f for either
+             (not map-texture-status)
+             (not icon-texture-status)
+             )
+          (set-pending-file
+            (-> this bigmap-image)
+            "world-map"
+            (the-as int (-> this load-index))
+            (process->handle *dproc*)
+            0.0
+            )
+          (set-pending-file (-> this tpage) "progress-minimap" 0 (process->handle *dproc*) 0.0)
+          (set! (-> this loading-flag) #t)
+          )
+        (else
+          (update (-> this bigmap-image))
+          (update (-> this tpage))
+          (when (and (-> this loading-flag)
+                    (= map-texture-status 'active)
+                    (= icon-texture-status 'active)
                     (not (load-in-progress? *level*))
                     )
-           (if (!= (-> this bigmap-index) 20)
-               (mask-image-from-bit-mask this)
-               )
-           (let ((s5-0 (-> *level* loading-level))
-                 (s4-0 (-> *texture-pool* allocate-func))
-                 (s3-0 (-> *texture-relocate-later* memcpy))
-                 )
-             (set! (-> *texture-pool* allocate-func) texture-page-common-boot-allocate)
-             (set! (-> *level* loading-level) #f)
-             (set! (-> *texture-relocate-later* memcpy) #f)
-             (set! (-> this progress-minimap)
-                   (the-as
-                     texture-page
-                     (link (-> this tpage buf) (-> this tpage load-file data) (-> this tpage len) (-> this tpage heap) 4)
-                     )
-                   )
-             (set! (-> *level* loading-level) s5-0)
-             (set! (-> *texture-pool* allocate-func) s4-0)
-             (set! (-> *texture-relocate-later* memcpy) s3-0)
-             )
-           (set! (-> this loading-flag) #f)
-           )
-         )
-       )
-     )
+            ;; still loading but everything is ready -> finish load
+            (if (!= (-> this bigmap-index) 20)
+                (mask-image-from-bit-mask this)
+                )
+            (let ((s5-0 (-> *level* loading-level))
+                  (s4-0 (-> *texture-pool* allocate-func))
+                  (s3-0 (-> *texture-relocate-later* memcpy))
+                  )
+              (set! (-> *texture-pool* allocate-func) texture-page-common-boot-allocate)
+              (set! (-> *level* loading-level) #f)
+              (set! (-> *texture-relocate-later* memcpy) #f)
+              (when (not (-> this progress-minimap))
+                (set! (-> this progress-minimap)
+                      (the-as
+                        texture-page
+                        (link (-> this tpage buf) (-> this tpage load-file data) (-> this tpage len) (-> this tpage heap) 4)
+                        )
+                      )
+                )
+              (set! (-> *level* loading-level) s5-0)
+              (set! (-> *texture-pool* allocate-func) s4-0)
+              (set! (-> *texture-relocate-later* memcpy) s3-0)
+              )
+            (set! (-> this loading-flag) #f)
+            )
+          )
+        )
+      )
+    )
+  (cond
     ((!= (-> this bigmap-index) 20)
      (set! (-> this offset quad) (-> *bigmap-info-array* data (-> this mask-index) quad))
      (when (!= (-> this bigmap-index) (-> this mask-index))
+      ;; switching bigmap maps
+       (disable-drawing this)
+       (set! *mini-bigmap-toggle-time* (get-current-time))
+       (false! *show-mini-bigmap*)
+
        (if (!= (-> this mask-index) 20)
            (compress-current-masks! this)
            )
@@ -677,6 +697,7 @@
 
 (defmethod draw ((this bigmap) (arg0 int) (arg1 int) (arg2 int) (arg3 int))
   (when (and (= (file-status (-> this bigmap-image) "world-map" (the-as int (-> this load-index))) 'active)
+             (= (file-status (-> this tpage) "progress-minimap" 0) 'active)
              (not (-> this loading-flag))
              )
     (let ((f0-0 (-> *video-params* relative-x-scale)))
@@ -702,17 +723,28 @@
                              (alpha-1 (new 'static 'gs-alpha :b #x1 :d #x1))
                              (clamp-1 (new 'static 'gs-clamp :wms (gs-tex-wrap-mode clamp) :wmt (gs-tex-wrap-mode clamp)))
                              )
-      (if (= (-> this bigmap-index) 20)
+      (cond
+        ((= (-> this bigmap-index) 20)
+          (when (and (not *progress-process*)
+                     (or (= (-> (level-get-target-inside *level*) name) 'consite)
+                         (= (-> (level-get-target-inside *level*) name) 'consiteb)
+                         ))
+            ;; force certain scroll for consite mini-bigmap hack
+            (set! (-> this scroll y) 200.0)
+            )
           (draw-city-map this s4-1)
+          )
+        (else
           (draw-non-city-map this s4-1)
           )
+        )
       )
     (with-dma-buffer-add-bucket ((s4-2 (-> *display* frames (-> *display* on-screen) global-buf))
                                  (bucket-id tex-all-map)
                                  )
-      (when (= (-> this y0) 1840)
+      ;; (when (= (-> this y0) 1840)  ;; wtf was this doing?
         (let ((s2-1 (-> s4-2 base))
-              (s3-1 (lookup-texture-by-id-fast (new 'static 'texture-id :index #x15 :page #xc93)))
+              (s3-1 (lookup-texture-by-id-fast (new 'static 'texture-id :index #x15 :page #xc93))) ;; 21, 3219
               )
           (when s3-1
             (set! (-> (the-as (pointer uint128) s2-1) 0) (-> this adgif-tmpl dma-vif quad))
@@ -728,14 +760,31 @@
           (while s3-2
             (let ((a2-3 (the-as connection-minimap s3-2)))
               (when (logtest? (-> a2-3 class flags) (minimap-flag bigmap))
-                (cond
-                  ((= (-> this bigmap-index) 20)
-                   (draw-from-minimap this s4-2 a2-3)
-                   )
-                  (else
-                    (if (not (logtest? (-> a2-3 class flags) (minimap-flag city-only)))
-                        (draw-from-minimap this s4-2 a2-3)
+                ;; orb hunt - only draw orba connections if the setting is on
+                (when
+                  (case (-> a2-3 class class)
+                    (((minimap-class orba) (minimap-class orba-blue) (minimap-class orba-gold))
+                      (let ((proc (handle->process (-> a2-3 handle))))
+                        (or (-> *mod-settings* orb-map-icons?)
+                            (and (= (-> proc type) skill)
+                                 ;; check overloaded bit-15 from crate orbs
+                                 (logtest? (-> proc entity extra perm status) (entity-perm-status bit-15))
+                                 )
+                            )
                         )
+                      )
+                    (else
+                      #t)
+                    )
+                  (cond
+                    ((= (-> this bigmap-index) 20)
+                    (draw-from-minimap this s4-2 a2-3)
+                    )
+                    (else
+                      (when (not (logtest? (-> a2-3 class flags) (minimap-flag city-only)))
+                          (draw-from-minimap this s4-2 a2-3)
+                          )
+                      )
                     )
                   )
                 )
@@ -745,6 +794,7 @@
           )
         (let ((s3-3 (new 'stack-no-clear 'vector))
               (f30-0 (-> *video-params* relative-x-scale))
+              (bigmap-scale (/ (the float (- (-> this y1) (-> this y0))) 416.0)) ;; ydelta/416
               )
           (vector-z-quaternion! s3-3 (-> *target* control quat))
           (vector-xz-normalize! s3-3 -1.0)
@@ -761,64 +811,63 @@
               (if (-> *blit-displays-work* horizontal-flip-flag)
                   (set! f30-0 (- f30-0))
                   )
-              (set-vector! (-> (the-as matrix sv-104) vector 0) (* (-> s3-3 z) f30-0) 0.0 (- (-> s3-3 x)) 0.0)
-              (set-vector! (-> (the-as matrix sv-104) vector 1) 0.0 1.0 0.0 0.0)
-              (set-vector! (-> (the-as matrix sv-104) vector 2) (* (-> s3-3 x) f30-0) 0.0 (-> s3-3 z) 1.0)
-              (set-vector!
-                (-> (the-as matrix sv-104) trans)
-                (+ (the float (-> this x0)) (* 2.0 f30-0 (the float (-> this pos x))))
-                0.0
-                (- (the float (+ (* (-> this pos y) 2) 1840)) (-> this scroll y))
-                1.0
-                )
-              (set-vector! (-> this corner 0) 0.0 0.0 -7.0 1.0)
-              (set-vector! (-> this corner 1) 7.0 0.0 0.0 1.0)
-              (set-vector! (-> this corner 2) -7.0 0.0 0.0 1.0)
-              (set-vector! (-> this corner 3) 0.0 0.0 7.0 1.0)
-              (vector-matrix*! (-> this corner 0) (-> this corner 0) sv-104)
-              (vector-matrix*! (-> this corner 1) (-> this corner 1) sv-104)
-              (vector-matrix*! (-> this corner 2) (-> this corner 2) sv-104)
-              (vector-matrix*! (-> this corner 3) (-> this corner 3) sv-104)
-              (set! (-> (the-as (pointer uint128) sv-96)) (-> this adgif-tmpl dma-vif quad))
-              (set! (-> (the-as (pointer uint128) sv-96) 1) (-> this adgif-tmpl quad 1))
-              (adgif-shader<-texture-simple! (the-as adgif-shader (&+ sv-96 32)) sv-100)
-              (set! (-> (the-as (pointer uint128) sv-96) 7) (-> this draw-tmpl dma-vif quad))
-              (set! (-> (the-as (pointer uint128) sv-96) 8) (-> this draw-tmpl quad 1))
-              (set-vector! (the-as vector4w (&+ sv-96 144)) 0 255 255 128)
-              (set-vector! (the-as vector4w (&+ sv-96 160)) 0 0 0 0)
-              (set-vector!
-                (the-as vector4w (&+ sv-96 176))
-                (the int (* 16.0 (-> this corner 0 x)))
-                (the int (* 16.0 (-> this corner 0 z)))
-                #xffffff
-                0
-                )
-              (set-vector! (the-as vector4w (&+ sv-96 192)) 256 0 0 0)
-              (set-vector!
-                (the-as vector4w (&+ sv-96 208))
-                (the int (* 16.0 (-> this corner 1 x)))
-                (the int (* 16.0 (-> this corner 1 z)))
-                #xffffff
-                0
-                )
-              (set-vector! (the-as vector4w (&+ sv-96 224)) 0 256 0 0)
-              (set-vector!
-                (the-as vector4w (&+ sv-96 240))
-                (the int (* 16.0 (-> this corner 2 x)))
-                (the int (* 16.0 (-> this corner 2 z)))
-                #xffffff
-                0
-                )
-              (set-vector! (the-as vector4w (&+ sv-96 256)) 256 256 0 0)
-              (set-vector!
-                (the-as vector4w (&+ sv-96 272))
-                (the int (* 16.0 (-> this corner 3 x)))
-                (the int (* 16.0 (-> this corner 3 z)))
-                #xffffff
-                0
-                )
-              (&+! (-> s4-2 base) 288)
+            (set-vector! (-> (the-as matrix sv-104) vector 0) (* (-> s3-3 z) f30-0) 0.0 (- (-> s3-3 x)) 0.0)
+            (set-vector! (-> (the-as matrix sv-104) vector 1) 0.0 1.0 0.0 0.0)
+            (set-vector! (-> (the-as matrix sv-104) vector 2) (* (-> s3-3 x) f30-0) 0.0 (-> s3-3 z) 1.0)
+            (set-vector!
+              (-> (the-as matrix sv-104) trans)
+              (+ (the float (-> this x0)) (* 2.0 bigmap-scale f30-0 (the float (-> this pos x))))
+              0.0
+              (- (+ (the float (-> this y0)) (* 2.0 bigmap-scale (the float (-> this pos y)))) (* bigmap-scale (-> this scroll y)))
+              1.0
               )
+            (set-vector! (-> this corner 0) 0.0 0.0 (* bigmap-scale -7.0) 1.0)
+            (set-vector! (-> this corner 1) (* bigmap-scale 7.0) 0.0 0.0 1.0)
+            (set-vector! (-> this corner 2) (* bigmap-scale -7.0) 0.0 0.0 1.0)
+            (set-vector! (-> this corner 3) 0.0 0.0 (* bigmap-scale 7.0) 1.0)
+            (vector-matrix*! (-> this corner 0) (-> this corner 0) sv-104)
+            (vector-matrix*! (-> this corner 1) (-> this corner 1) sv-104)
+            (vector-matrix*! (-> this corner 2) (-> this corner 2) sv-104)
+            (vector-matrix*! (-> this corner 3) (-> this corner 3) sv-104)
+            (set! (-> (the-as (pointer uint128) sv-96)) (-> this adgif-tmpl dma-vif quad))
+            (set! (-> (the-as (pointer uint128) sv-96) 1) (-> this adgif-tmpl quad 1))
+            (adgif-shader<-texture-simple! (the-as adgif-shader (&+ sv-96 32)) sv-100)
+            (set! (-> (the-as (pointer uint128) sv-96) 7) (-> this draw-tmpl dma-vif quad))
+            (set! (-> (the-as (pointer uint128) sv-96) 8) (-> this draw-tmpl quad 1))
+            (set-vector! (the-as vector4w (&+ sv-96 144)) 0 255 255 128)
+            (set-vector! (the-as vector4w (&+ sv-96 160)) 0 0 0 0)
+            (set-vector!
+              (the-as vector4w (&+ sv-96 176))
+              (the int (* 16.0 (-> this corner 0 x)))
+              (the int (* 16.0 (-> this corner 0 z)))
+              #xffffff
+              0
+              )
+            (set-vector! (the-as vector4w (&+ sv-96 192)) 256 0 0 0)
+            (set-vector!
+              (the-as vector4w (&+ sv-96 208))
+              (the int (* 16.0 (-> this corner 1 x)))
+              (the int (* 16.0 (-> this corner 1 z)))
+              #xffffff
+              0
+              )
+            (set-vector! (the-as vector4w (&+ sv-96 224)) 0 256 0 0)
+            (set-vector!
+              (the-as vector4w (&+ sv-96 240))
+              (the int (* 16.0 (-> this corner 2 x)))
+              (the int (* 16.0 (-> this corner 2 z)))
+              #xffffff
+              0
+              )
+            (set-vector! (the-as vector4w (&+ sv-96 256)) 256 256 0 0)
+            (set-vector!
+              (the-as vector4w (&+ sv-96 272))
+              (the int (* 16.0 (-> this corner 3 x)))
+              (the int (* 16.0 (-> this corner 3 z)))
+              #xffffff
+              0
+              )
+            (&+! (-> s4-2 base) 288)
             )
           )
         )
@@ -903,19 +952,19 @@
     (process->handle *dproc*)
     0.0
     )
-  (set-pending-file (-> this tpage) (the-as string #f) 0 (process->handle *dproc*) 0.0)
+  ;; (set-pending-file (-> this tpage) (the-as string #f) 0 (process->handle *dproc*) 0.0)
   (let ((v1-8 #f))
     (while (not v1-8)
       (update (-> this bigmap-image))
-      (update (-> this tpage))
-      (set! v1-8 (and (= (-> this bigmap-image status) 'inactive) (= (-> this tpage status) 'inactive)))
+      ;; (update (-> this tpage))
+      (set! v1-8 (and (= (-> this bigmap-image status) 'inactive))) ;; (= (-> this tpage status) 'inactive)))
       )
     )
-  (when (-> this progress-minimap)
-    (unload-page *texture-pool* (-> this progress-minimap))
-    (set! (-> *level* default-level texture-page 3) (the-as texture-page 0))
-    (set! (-> this progress-minimap) #f)
-    )
+  ;; (when (-> this progress-minimap)
+  ;;   (unload-page *texture-pool* (-> this progress-minimap))
+  ;;   (set! (-> *level* default-level texture-page 3) (the-as texture-page 0))
+  ;;   (set! (-> this progress-minimap) #f)
+  ;;   )
   (set! (-> this drawing-flag) #f)
   (set! (-> this loading-flag) #f)
   0

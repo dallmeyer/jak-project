@@ -26,6 +26,7 @@
 (declare-type ammo collectable)
 (define-extern process-contact-action (function process none :behavior target))
 (define-extern eco-blue-glow (function vector none))
+(define-extern orb-placer-list-maintenance (function symbol none))
 
 ;; DECOMP BEGINS
 
@@ -59,9 +60,9 @@
                (collectables-skill-lod2-mg (meters 999999))
                )
               :bounds (static-spherem 0 0 0 0.6)
-              :shadow collectables-skill-shadow-mg
+              ;; :shadow collectables-skill-shadow-mg
               :texture-level 10
-              :shadow-joint-index 3
+              ;; :shadow-joint-index 3
               )
 
 (deftype collectable (process-drawable)
@@ -143,6 +144,9 @@
          )
      (vector-reset! (-> this root transv))
      )
+    ((logtest? (-> this fact options) (actor-option force-bob))
+      ;; do nothing, keep bob-amount
+      )
     (else
       (logior! (-> this flags) (collectable-flag bounce))
       (logclear! (-> this flags) (collectable-flag pickup))
@@ -290,6 +294,11 @@
        (set! s5-0 group-eco-light-pill)
        (set! (-> this collect-effect) group-eco-light-pill)
        )
+      ;; not using init-common currently
+      ;; (((pickup-type fuel-cell))
+      ;;  (set! s5-0 (-> *part-group-id-table* 1560))
+      ;;  (set! (-> this collect-effect) (-> *part-group-id-table* 127))
+      ;;  )
       )
     (if s5-0
         (set! (-> this part) (create-launch-control s5-0 this))
@@ -345,11 +354,13 @@
   (go-to-initial-state self)
   )
 
+(define-extern mod-override-init-position (function process-drawable entity-actor none))
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-common ((this collectable) (arg0 entity-actor) (arg1 pickup-type) (arg2 float))
   (set! (-> this pickup-amount) arg2)
   (set! (-> this pickup-type) arg1)
   (initialize-allocations this)
+  (when (not *entity-placer-active?*) (mod-override-init-position this arg0))
   (vector-copy! (-> this root trans) (-> arg0 extra trans))
   (initialize-effects this (-> this fact pickup-type))
   (initialize-options this 0 1024.0 (the-as fact-info #f))
@@ -368,8 +379,10 @@
     (if (nonzero? (-> this draw))
         (ja-post)
         )
-    (if (nonzero? s5-0)
+    ;; orb hunt - dont spawn particles for fuel cell in pending
+    (if (and (nonzero? s5-0) (not (name= (-> this state name) 'pending)))
         (spawn s5-0 (-> s4-0 world-sphere))
+        ;; (kill-particles s5-0)
         )
     )
   (if (nonzero? (-> this sound))
@@ -649,6 +662,11 @@
   #f
   )
 
+(defun-extern hover-need-to-cooldown? symbol)
+(define-extern *last-hover-time* time-frame)
+(define-extern *hover-collected-grace-time* time-frame)
+(define-extern try-play-no-hover-zone-audio (function none))
+(define-extern skill-alt-actor-check? (function collectable symbol symbol))
 (defbehavior collectable-standard-event-handler collectable ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
   (local-vars (v0-4 object))
   (when (and (or (= arg2 'touch) (= arg2 'attack))
@@ -662,12 +680,42 @@
                     )
                   (not (and (-> self next-state) (= (-> self next-state name) 'pickup)))
                   (-> *setting-control* user-current pickups)
-                  (send-event arg0 'get-pickup (-> self fact pickup-type) (-> self fact pickup-amount))
                   )
              )
-    (logclear! (-> self mask) (process-mask actor-pause))
-    (process-contact-action arg0)
-    (go-virtual pickup #f (process->handle arg0))
+    (when (and (= (-> self type symbol) 'skill)
+               (= (-> self pickup-amount) (-> *FACT-bank* super-skill-inc))
+               (hover-need-to-cooldown?)
+               )
+      ;; hover orb collected, reset cooldown
+      (set! *last-hover-time* (the time-frame #f))
+      (set! *hover-collected-grace-time* (get-current-time))
+      )
+    (cond
+      ;; ghost orb hint, no pickup
+      ((and (= (-> self type symbol) 'skill-ghost))
+        ;; don't do pickup
+        )
+      ;; some orbs require 'alt-actor to be dead before pickup is allowed (veggies hack)
+      ((and (= (-> self type symbol) 'skill)
+            (not (skill-alt-actor-check? self #t))
+            )
+        ;; don't do pickup
+        )
+      ;; if this is a non-hover orb and you've hovered in the past X minutes, frick you
+      ((and (= (-> self type symbol) 'skill)
+            (!= (-> self pickup-amount) (-> *FACT-bank* super-skill-inc))
+            (hover-need-to-cooldown?)
+            )
+        (try-play-no-hover-zone-audio)
+        ;; no pickup
+        )
+      ;; otherwise try to get-pickup as usual
+      ((send-event arg0 'get-pickup (-> self fact pickup-type) (-> self fact pickup-amount))
+        (logclear! (-> self mask) (process-mask actor-pause))
+        (process-contact-action arg0)
+        (go-virtual pickup #f (process->handle arg0))
+        )
+      )
     )
   (cond
     ((= arg2 'trans)
@@ -964,6 +1012,9 @@
          (go-virtual notice-blue (process->handle proc))
          )
        )
+      (('suck)
+        (go-virtual suck (process->handle *target*))
+        )
       (else
         (collectable-standard-event-handler proc argc message block)
         )
@@ -1384,7 +1435,7 @@
   "Should this process be run? Checked by execute-process-tree."
   (or (not (logtest? (-> this mask) (process-mask actor-pause)))
       (or (and (nonzero? (-> this draw))
-               (logtest? (-> this draw status) (draw-control-status on-screen))
+              ;;  (logtest? (-> this draw status) (draw-control-status on-screen))
                (>= (+ (-> *ACTOR-bank* pause-dist) (-> this root pause-adjust-distance))
                    (vector-vector-distance (-> this root trans) (math-camera-pos))
                    )
@@ -1407,7 +1458,7 @@
        )
       (else
         (if (not (and (-> this entity) (logtest? (-> this entity extra perm status) (entity-perm-status dead))))
-            (format #t "~A ~A was killed in pickup~%" (-> this type) (-> this name))
+            (format #t "~A ~A was killed in pickup ~2m ~2m ~2m~%" (-> this type) (-> this name) (-> this base x) (-> this base y) (-> this base z))
             )
         )
       )
@@ -1438,7 +1489,7 @@
   (let ((a0-7 (-> this part))
         (a1-1 (-> this root root-prim prim-core))
         )
-    (if (nonzero? a0-7)
+    (if (and (nonzero? a0-7) (not (name= (-> this state name) 'pending)) (-> *mod-settings* skill-starburst?))
         (spawn a0-7 (-> a1-1 world-sphere))
         )
     )
@@ -1480,6 +1531,12 @@
   :virtual #t
   :code (behavior ((arg0 symbol) (arg1 handle))
     (process-entity-status! self (entity-perm-status dead) #t)
+    )
+  :exit (behavior ()
+    ;; refresh orb-placer list in debug mode
+    (when *debug-segment*
+      (orb-placer-list-maintenance #t)
+      )
     )
   )
 
@@ -1536,11 +1593,26 @@
 
 (defmethod init-from-entity! ((this money) (arg0 entity-actor))
   "Set up a newly created process from the entity that created it."
-  (initialize-allocations this)
-  (process-drawable-from-entity! this (-> this entity))
-  (initialize-options this 0 1024.0 (the-as fact-info #f))
-  (update-transforms (-> this root))
-  (go-to-initial-state this)
+  (let ((entity-pickup-amount (res-lump-float arg0 'pickup-amount))
+        (entity-bob-scale (res-lump-float arg0 'bob-scale))
+        (bob-amount 1024.0)
+        )
+    (when (and entity-pickup-amount (> entity-pickup-amount 0.0))
+      (set! (-> this pickup-amount) entity-pickup-amount)
+      )
+    (initialize-allocations this)
+    (when (and entity-bob-scale (nonzero? entity-bob-scale))  ;; zero = not set (use default); anything negative = no bob
+      (logior! (-> this fact options) (actor-option force-bob))
+      (if (> entity-bob-scale 0)
+        (*! bob-amount entity-bob-scale)
+        (set! bob-amount 0.0) ;; anything negative = no bob
+        )
+      )
+    (process-drawable-from-entity! this (-> this entity))
+    (initialize-options this 0 bob-amount (the-as fact-info #f))
+    (update-transforms (-> this root))
+    (go-to-initial-state this)
+    )
   )
 
 (defbehavior money-init-by-other money ((arg0 vector) (arg1 vector) (arg2 fact-info) (arg3 entity-actor) (arg4 time-frame))
@@ -1880,14 +1952,70 @@
   )
 
 (deftype skill (money)
-  ()
+  ((minimap connection-minimap)  ;; added orbhunt
+   )
   )
 
+(deftype skill-ghost (skill) ()) ;; same as skill but can't be picked up and is transparent
+
+(defstate pickup (skill)
+  :virtual #t
+  :code (behavior ((arg0 symbol) (arg1 handle))
+    (if (and (nonzero? (-> self part))
+             (= (-> self type) skill) ;; no onin-brain particles crash
+             )
+      (kill-particles (-> self part))
+      )
+    
+    ;; increment skill-per-level
+    (let ((par (ppointer->process (-> self parent))))
+      (case (-> par type symbol) 
+        (('skill-crate 'market-crate 'wascity-market-crate 'crate 'wascity-market-sack-a 'market-sack-a 'market-basket-a 'wascity-market-basket-a 'wascity-market-sack-b 'market-sack-b 'market-basket-b 'wascity-market-basket-b 'urn-a 'urn-b 'urn-c)
+          (increment-skill-per-level (-> (the process-drawable par) entity))
+          )
+        (else
+          (increment-skill-per-level (-> self entity))
+          )
+        ))
+
+    (process-entity-status! self (entity-perm-status bit-15) #f)
+    (process-entity-status! self (entity-perm-status dead) #t)
+    )
+  :exit (behavior ()
+    ;; refresh orb-placer list in debug mode
+    (when *debug-segment*
+      (orb-placer-list-maintenance #t)
+      )
+    )
+  )
 
 (defstate wait (skill)
   :virtual #t
   :code (behavior ()
     (until #f
+      ;; check orb/ghost visibility
+      (cond
+        ((not (skill-alt-actor-check? self #f))
+          ;; make orbs invis if they can't be collected yet due to alt-actor
+          (logior! (-> self draw status) (draw-control-status no-draw-bounds))
+          ;; set state-time so we can cooldown based on this
+          (set-time! (-> self state-time))
+          )
+        ((= (-> self type) skill-ghost)
+          (cond
+            ((-> *mod-settings* orb-ghosts?)
+              ;; translucent ghost orb
+              (logclear! (-> self draw status) (draw-control-status no-draw-bounds))
+              (logior! (-> self draw status) (draw-control-status force-fade))
+              (set! (-> self draw force-fade) (the-as uint 12)))
+            (else
+              ;; hidden ghost orb
+              (logior! (-> self draw status) (draw-control-status no-draw-bounds))
+              (logclear! (-> self draw status) (draw-control-status force-fade)))))
+        (else
+          ;; passed alt-actor check, not a ghost, show orba
+          (logclear! (-> self draw status) (draw-control-status no-draw-bounds))))
+
       (if (and (logtest? (-> self flags) (collectable-flag fadeout))
                (begin
                  (if (movie?)
@@ -1898,6 +2026,18 @@
                )
           (go-virtual fade)
           )
+      
+      ;; og-orbhunt
+      (with-pc
+        (cond
+          ((and (-> *mod-settings* skill-starburst?) 
+                (= (-> self type) skill) ;; no onin-brain particles crash
+                )
+            (spawn (-> self part) (-> self root trans)))
+          ((nonzero? (-> self part)) ;; skill-starburst? is off but we have particles, kill em
+            (kill-particles (-> self part)))
+          )
+        )
       (common-post self)
       (suspend)
       )
@@ -1929,11 +2069,11 @@
     )
   (logior! (-> this mask) (process-mask actor-pause))
   (set! (-> this actor-pause) #t)
-  (set! (-> this root pause-adjust-distance) 409600.0)
+  (set! (-> this root pause-adjust-distance) (meters 1000)) ;; keep these bitches unpaused (barge orbs get weird)
   (set! (-> this notify) (the-as handle #f))
   (set! (-> this fact) (new 'process 'fact-info this (pickup-type skill) 1.0))
   (let ((a0-11 (-> this entity)))
-    (if (when a0-11
+    (if (when (and a0-11 (= (-> this type symbol) 'skill)) ;; orb hunt dont set task for ghosts, no perm will be saved
           (let ((a0-12 (-> a0-11 extra perm task)))
             (if a0-12
                 (= a0-12 (game-task none))
@@ -1952,26 +2092,285 @@
   (if (-> this entity)
       (nav-mesh-connect-from-ent this)
       )
-  (cond
-    ((>= (-> this pickup-amount) (-> *FACT-bank* super-skill-inc))
-     (set-vector! (-> this draw color-mult) 0.8 0.8 0.0 1.0)
-     (set-vector! (-> this draw color-emissive) 0.0 1.0 0.2 1.0)
-     (set! (-> this part) (create-launch-control group-skill-glow-yellow this))
-     )
-    (else
-      (set-vector! (-> this draw color-mult) 0.8 0.8 0.8 1.0)
-      (set-vector! (-> this draw color-emissive) 0.2 0.2 0.2 1.0)
-      (set! (-> this part) (create-launch-control group-skill-glow-red this))
+  ;; (cond
+  ;;   ((>= (-> this pickup-amount) (-> *FACT-bank* super-skill-inc))
+  ;;    (set-vector! (-> this draw color-mult) 0.8 0.8 0.0 1.0)
+  ;;    (set-vector! (-> this draw color-emissive) 0.0 1.0 0.2 1.0)
+  ;;    (set! (-> this part) (create-launch-control (-> *part-group-id-table* 133) this))
+  ;;    )
+  ;;   (else
+  ;;     (set-vector! (-> this draw color-mult) 0.8 0.8 0.8 1.0)
+  ;;     (set-vector! (-> this draw color-emissive) 0.2 0.2 0.2 1.0)
+  ;;     (set! (-> this part) (create-launch-control (-> *part-group-id-table* 132) this))
+  ;;     )
+  ;;   )
+  (let ((map-class (minimap-class orba)))
+    (cond
+      ((= (-> this pickup-amount) 2.0)  ;; abah hint
+        (set! map-class (minimap-class orba-blue))
+        (set-vector! (-> this draw color-mult) 0.0 0.0 0.8 1.0)
+        (set-vector! (-> this draw color-emissive) 0.1 0.1 1.0 1.0)
+        (set! (-> this part) (create-launch-control group-skill-glow-purp this))
+        )
+      ((>= (-> this pickup-amount) (-> *FACT-bank* super-skill-inc))
+        (set! map-class (minimap-class orba-gold))
+        (set-vector! (-> this draw color-mult) 0.8 0.8 0.0 1.0)
+        (set-vector! (-> this draw color-emissive) 0.0 1.0 0.2 1.0)
+        (set! (-> this part) (create-launch-control group-skill-glow-yellow this))
+        )
+      (else
+        (set-vector! (-> this draw color-mult) 0.8 0.8 0.8 1.0)
+        (set-vector! (-> this draw color-emissive) 0.2 0.2 0.2 1.0)
+        (set! (-> this part) (create-launch-control group-skill-glow-red this))
+        )
+      )
+    (when (= (-> this type) skill)
+      (set! (-> this minimap) (add-icon! *minimap* this (the uint map-class) (the-as int #f) (the-as vector #t) 0))
       )
     )
+  ;; (set! (-> this part) (create-launch-control (-> *part-group-id-table* 1295) this))
   0
   (none)
   )
 
-(deftype fuel-cell (process-hidden)
-  ()
+(defskelgroup skel-pre-artifact-d pre-artifact-d pre-artifact-d-lod0-jg pre-artifact-d-idle-ja
+              ((pre-artifact-d-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 0 0 4)
+              )
+
+(deftype fuel-cell (money)
+  ((level-index uint8)
+   (prompt-distance float))
+  (:state-methods
+    pending
+    )
   )
 
+(define-extern get-vag-thing (function string string))
+(define-extern all-orbs-check? (function uint symbol))
+(define-extern need-orbs-string (function uint string))
+(defstate pending (fuel-cell)
+  :virtual #t
+  :event collectable-standard-event-handler
+  :enter (behavior ()
+    ;; dont draw, dont collide
+    (logior! (-> self draw status) (draw-control-status no-draw-bounds))
+    (clear-collide-with-as (-> self root))
+    )
+  :code (behavior ()
+    (until #f
+      (let ((alt-actor (entity-actor-lookup (-> self entity) 'alt-actor 0))
+            (vag (res-lump-struct (-> self entity) 'vag string))
+            (run? #t))
+        ;; check if alt-actor is visible to decide if we should be visible/responsive
+        (when (or (not alt-actor) (not (-> alt-actor extra process))
+                  (logtest? (-> (the process-drawable (-> alt-actor extra process)) draw status) (draw-control-status no-draw-bounds no-draw-bounds2)))
+          (false! run?))
+        ;; maybe show prompt / give cell
+        (when (and run?
+                  *target* 
+                  (not (focus-test? *target* pilot mech board))
+                  (< (vector-vector-distance (-> self base) (-> *target* control trans)) (-> self prompt-distance))
+                  )
+          (let ((s5-2 (new 'stack 'font-context *font-default-matrix* 32 280 0.0 (font-color default) (font-flags shadow kerning))))
+            (cond
+              ((all-orbs-check? (-> self level-index))
+                ;; player has all orbs for this level! show prompt
+                (kill-current-talker '() '(daxter voicebox ambient) 'exit)
+                (talker-surpress!)
+                (when (can-display-query? self "process-taskable" -99.0)
+                  (set-width! s5-2 340)
+                  (set-height! s5-2 80)
+                  (let ((v1-98 s5-2)
+                        (a0-39 (-> *setting-control* user-default language))
+                        )
+                    (set! (-> v1-98 scale) (if (or (= a0-39 (language-enum korean)) (= a0-39 (language-enum russian)))
+                                              0.9
+                                              0.7
+                                              )
+                          )
+                    )
+                  (set! (-> s5-2 flags) (font-flags shadow kerning middle-vert large))
+                  (print-game-text
+                    (lookup-text! *common-text* (text-id press-triangle-for-reward) #f)
+                    s5-2
+                    #f
+                    44
+                    (bucket-id hud-draw-hud-alpha)
+                    )
+                  )
+                ;; check for triangle press and make sure we grab target successfully
+                (when (cpad-pressed? 0 triangle)
+                  ;; end any special modes so we can do powercell anim
+                  (send-event *target* 'end-mode 'pilot)
+                  (send-event *target* 'end-mode 'board)
+                  (send-event *target* 'end-mode 'gun)
+                  (send-event *target* 'end-mode 'darkjak)
+                  (send-event *target* 'end-mode 'lightjak)
+                  (when (process-grab? *target* 'fuel-cell)
+                    (when vag
+                      ;; play vag sound, if any
+                      (let* ((v-id (add-process *gui-control* self (gui-channel alert) (gui-action play) (get-vag-thing vag) -10.0 0))
+                             (status (gui-status active)))
+                        (suspend-for (seconds 1))
+                        (while (or (= status (gui-status ready)) (= status (gui-status active)))
+                          (suspend)
+                          (set! status (get-status *gui-control* v-id))
+                          )
+                        )
+                      )
+                    ;; reveal fuel-cell, allow for collision, and wait for suck
+                    (logclear! (-> self draw status) (draw-control-status no-draw-bounds))
+                    (restore-collide-with-as (-> self root))
+                    (play-sound-file "tpl_proto_win.mp3" (the int (* (-> *setting-control* user-current sfx-volume) 50.0)))
+                    (go-virtual wait)
+                    )
+                  )
+                )
+              (else
+                ;; player is missing orbs, give em hint
+                (kill-current-talker '() '(daxter voicebox ambient) 'exit)
+                (talker-surpress!)
+                (when (can-display-query? self "process-taskable" -99.0)
+                  (set-width! s5-2 340)
+                  (set-height! s5-2 80)
+                  (let ((v1-98 s5-2)
+                        (a0-39 (-> *setting-control* user-default language))
+                        )
+                    (set! (-> v1-98 scale) (if (or (= a0-39 (language-enum korean)) (= a0-39 (language-enum russian)))
+                                              0.9
+                                              0.7
+                                              )
+                          )
+                    )
+                  (set! (-> s5-2 flags) (font-flags shadow kerning middle-vert large))
+                  (print-game-text
+                    (need-orbs-string (-> self level-index))
+                    s5-2
+                    #f
+                    44
+                    (bucket-id hud-draw-hud-alpha)
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      (common-post self)
+      (suspend)
+      )
+    #f
+    )
+  )
+
+(defmethod initialize-allocations ((this fuel-cell))
+  (stack-size-set! (-> this main-thread) 1024)
+  (let ((s5-0 (new 'process 'collide-shape-moving this (collide-list-enum hit-by-player))))
+    (set! (-> s5-0 dynam) (copy *standard-dynamics* 'process))
+    (set! (-> s5-0 reaction) cshape-reaction-default)
+    (set! (-> s5-0 no-reaction)
+          (the-as (function collide-shape-moving collide-query vector vector object) nothing)
+          )
+    (let ((v1-8 (new 'process 'collide-shape-prim-sphere s5-0 (the-as uint 0))))
+      (set! (-> v1-8 prim-core collide-as) (collide-spec collectable notice-blue-eco-powerup))
+      (set! (-> v1-8 prim-core collide-with) (collide-spec jak player-list tobot jak-vehicle))
+      (set-vector! (-> v1-8 local-sphere) 0.0 2048.0 0.0 4915.2)
+      (set! (-> s5-0 total-prims) (the-as uint 1))
+      (set! (-> s5-0 root-prim) v1-8)
+      )
+    (set! (-> s5-0 nav-radius) (* 0.75 (-> s5-0 root-prim local-sphere w)))
+    (let ((v1-11 (-> s5-0 root-prim)))
+      (set! (-> s5-0 backup-collide-as) (-> v1-11 prim-core collide-as))
+      (set! (-> s5-0 backup-collide-with) (-> v1-11 prim-core collide-with))
+      )
+    (set! (-> this root) s5-0)
+    )
+  (logior! (-> this mask) (process-mask actor-pause))
+  (set! (-> this actor-pause) #t)
+  (set! (-> this notify) (the-as handle #f))
+  (set! (-> this fact) (new 'process 'fact-info this (pickup-type fuel-cell) 1.0))
+  ;; (let ((a0-11 (-> this entity)))
+  ;;   (if (when a0-11
+  ;;         (let ((a0-12 (-> a0-11 extra perm task)))
+  ;;           (if a0-12
+  ;;               (= a0-12 (game-task none))
+  ;;               )
+  ;;           )
+  ;;         )
+  ;;       (set! (-> this entity extra perm task) (game-task complete))
+  ;;       )
+  ;;   )
+  (initialize-skeleton
+    this
+    (the-as skeleton-group (art-group-get-by-name *level* "skel-pre-artifact-d" (the-as (pointer level) #f)))
+    (the-as pair 0)
+    )
+  (set! (-> this prompt-distance) (meters 8.0))
+  (when (-> this entity)
+    (nav-mesh-connect-from-ent this)
+    (set! (-> this level-index) (res-lump-value (-> this entity) 'level-idx int32 :time -1000000000.0))
+    (when (nonzero? (res-lump-float (-> this entity) 'distance))
+      (set! (-> this prompt-distance) (meters (res-lump-float (-> this entity) 'distance)))
+      )
+    )
+  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 1560) this))
+  (set-vector! (-> this draw color-mult) 0.8 0.8 0.8 1.0)
+  (set-vector! (-> this draw color-emissive) 0.2 0.2 0.2 1.0)
+  0
+  (none)
+  )
+
+(defmethod init-from-entity! ((this fuel-cell) (arg0 entity-actor))
+  "Set up a newly created process from the entity that created it."
+  (initialize-allocations this)
+  (process-drawable-from-entity! this (-> this entity))
+  (initialize-options this 0 512.0 (the-as fact-info #f))
+  (update-transforms (-> this root))
+  (go (method-of-object this pending))
+  )
+
+(defbehavior fuel-cell-init-by-other fuel-cell ((arg0 vector) (arg1 vector) (arg2 fact-info) (arg3 entity-actor) (arg4 time-frame))
+  (let ((s2-0 (-> arg2 pickup-type))
+        (f30-0 (-> arg2 pickup-spawn-amount))
+        )
+    (process-entity-set! self arg3)
+    (set! (-> self pickup-type) s2-0)
+    (set! (-> self pickup-amount) f30-0)
+    (initialize-allocations self)
+    (set! (-> self fact pickup-type) s2-0)
+    (set! (-> self fact pickup-amount) f30-0)
+    )
+  (set! (-> self fact options) (-> arg2 options))
+  (let ((v1-5 (ppointer->process (-> self parent))))
+    (set! (-> self notify) (if (logtest? (-> v1-5 mask) (process-mask process-tree))
+                               (the-as handle #f)
+                               (process->handle v1-5)
+                               )
+          )
+    )
+  (vector-copy! (-> self root trans) arg0)
+  (quaternion-identity! (-> self root quat))
+  (vector-copy! (-> self root transv) arg1)
+  (initialize-options
+    self
+    (the-as int (cond
+                  ((and arg2 (logtest? (-> arg2 options) (actor-option fade-out)))
+                   (-> arg2 fade-time)
+                   )
+                  (else
+                    (empty)
+                    arg4
+                    )
+                  )
+            )
+    1024.0
+    arg2
+    )
+  (update-transforms (-> self root))
+  (set! (-> self event-hook) (-> (method-of-object self wait) event))
+  (go-to-initial-state self)
+  )
 
 (deftype trick-point (collectable)
   ()
@@ -2341,7 +2740,7 @@
   )
 
 ;; WARN: Return type mismatch object vs (pointer process).
-(defbehavior birth-pickup-at-point process ((arg0 vector) (arg1 pickup-type) (arg2 float) (arg3 symbol) (arg4 process-tree) (arg5 fact-info))
+(defbehavior birth-pickup-at-point-named process ((arg0 vector) (arg1 pickup-type) (arg2 float) (arg3 symbol) (arg4 process-tree) (arg5 fact-info) (name string))
   (local-vars
     (v1-56 pickup-type)
     (v1-68 pickup-type)
@@ -2589,6 +2988,11 @@
                (process-spawn money arg0 sv-32 sv-56 (-> self entity) 0 :name "money" :from *pickup-dead-pool* :to arg4)
                )
          )
+        (((pickup-type fuel-cell))
+         (set! sv-40
+               (process-spawn fuel-cell arg0 sv-32 sv-56 (-> self entity) 0 :name "fuel-cell" :from *pickup-dead-pool* :to arg4)
+               )
+         )
         (((pickup-type trick-point))
          (set! sv-40
                (process-spawn money arg0 sv-32 sv-56 (-> self entity) 4500 :name "money" :from *pickup-dead-pool* :to arg4)
@@ -2628,7 +3032,7 @@
                        sv-56
                        (-> self entity)
                        0
-                       :name "skill"
+                       :name name
                        :from *pickup-dead-pool*
                        :to arg4
                        )
@@ -2642,6 +3046,9 @@
     )
   (the-as (pointer process) sv-40)
   )
+
+(defbehavior birth-pickup-at-point process ((arg0 vector) (arg1 pickup-type) (arg2 float) (arg3 symbol) (arg4 process-tree) (arg5 fact-info))
+  (birth-pickup-at-point-named arg0 arg1 arg2 arg3 arg4 arg5 (pickup-type->string arg1)))
 
 (defun pickup-dark-set! ((arg0 fact-info) (arg1 (pointer pickup-type)) (arg2 (pointer float)) (arg3 int))
   (-> arg2 0)

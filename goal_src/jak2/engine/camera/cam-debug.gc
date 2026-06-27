@@ -595,7 +595,7 @@
 
 (defun cam-debug-add-los-tri ((arg0 (inline-array collide-cache-tri)) (arg1 vector) (arg2 vector))
   (cond
-    ((>= *cam-debug-los-tri-current* 460)
+    ((>= *cam-debug-los-tri-current* (- BIG_COLLIDE_CACHE_SIZE 1))
      )
     (else
       (let ((v1-3 (-> *cam-debug-los-tri* *cam-debug-los-tri-current*)))
@@ -606,7 +606,7 @@
         (set! (-> v1-3 color) (the-as vector4w arg2))
         )
       (set! *cam-debug-los-tri-current* (+ *cam-debug-los-tri-current* 1))
-      (if (= *cam-debug-los-tri-current* 460)
+      (if (= *cam-debug-los-tri-current* (- BIG_COLLIDE_CACHE_SIZE 1))
           (format 0 "ERROR <GMJ>: cam-debug-add-los-tri overflow~%")
           )
       )
@@ -617,7 +617,7 @@
 
 (defun cam-debug-add-coll-tri ((arg0 cam-debug-tri) (arg1 vector) (arg2 cam-debug-tri))
   (cond
-    ((>= *cam-debug-coll-tri-current* 460)
+    ((>= *cam-debug-coll-tri-current* (- BIG_COLLIDE_CACHE_SIZE 1))
      )
     (else
       (let ((v1-3 (-> *cam-debug-coll-tri* *cam-debug-coll-tri-current*)))
@@ -628,7 +628,7 @@
         (set! (-> v1-3 color) (the-as vector4w arg2))
         )
       (set! *cam-debug-coll-tri-current* (+ *cam-debug-coll-tri-current* 1))
-      (if (>= *cam-debug-coll-tri-current* 460)
+      (if (>= *cam-debug-coll-tri-current* (- BIG_COLLIDE_CACHE_SIZE 1))
           (format 0 "ERROR <GMJ>: cam-debug-add-coll-tri overflow~%")
           )
       )

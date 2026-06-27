@@ -504,6 +504,108 @@ This gives us more freedom to write code how we want.
           (set! (-> *pc-settings* speedrunner-mode?) val)
           (pc-settings-save))))
 
+(defmacro misc-options-pc-orb-autosave ()
+  `(new 'static 'menu-generic-boolean-option
+        :name (text-id progress-orb-autosave)
+        :truthy-text (text-id progress-on)
+        :falsey-text (text-id progress-off)
+        :get-value-fn (lambda () (-> *mod-settings* orb-autosave?))
+        :on-confirm (lambda ((val symbol))
+          (set! (-> *mod-settings* orb-autosave?) val)
+          (commit-to-file *mod-settings*))))
+
+(defmacro misc-options-pc-skill-starburst ()
+  `(new 'static 'menu-generic-boolean-option
+        :name (text-id progress-skill-starburst)
+        :truthy-text (text-id progress-on)
+        :falsey-text (text-id progress-off)
+        :get-value-fn (lambda () (-> *mod-settings* skill-starburst?))
+        :on-confirm (lambda ((val symbol))
+          (set! (-> *mod-settings* skill-starburst?) val)
+          (commit-to-file *mod-settings*))))
+
+(defmacro misc-options-pc-orb-ghosts ()
+  `(new 'static 'menu-generic-boolean-option
+        :name (text-id progress-orb-ghosts)
+        :truthy-text (text-id progress-on)
+        :falsey-text (text-id progress-off)
+        :get-value-fn (lambda () (-> *mod-settings* orb-ghosts?))
+        :on-confirm (lambda ((val symbol))
+          (set! (-> *mod-settings* orb-ghosts?) val)
+          (commit-to-file *mod-settings*))))
+
+(defmacro misc-options-pc-closest-orb ()
+  `(new 'static 'menu-generic-boolean-option
+        :name (text-id progress-closest-orb)
+        :truthy-text (text-id progress-on)
+        :falsey-text (text-id progress-off)
+        :get-value-fn (lambda () (-> *mod-settings* closest-orb?))
+        :on-confirm (lambda ((val symbol))
+          (set! (-> *mod-settings* closest-orb?) val)
+          (commit-to-file *mod-settings*))))
+
+(defmacro misc-options-pc-orb-map-icons ()
+  `(new 'static 'menu-generic-boolean-option
+        :name (text-id progress-orb-map-icons)
+        :truthy-text (text-id progress-on)
+        :falsey-text (text-id progress-off)
+        :get-value-fn (lambda () (-> *mod-settings* orb-map-icons?))
+        :on-confirm (lambda ((val symbol))
+          (set! (-> *mod-settings* orb-map-icons?) val)
+          (commit-to-file *mod-settings*))))
+
+(defmacro misc-options-pc-pseudo-savestates ()
+  `(new 'static 'menu-generic-boolean-option
+        :name (text-id progress-pseudo-savestates)
+        :truthy-text (text-id progress-on)
+        :falsey-text (text-id progress-off)
+        :get-value-fn (lambda () (-> *mod-settings* pseudo-savestates?))
+        :on-confirm (lambda ((val symbol))
+          (set! (-> *mod-settings* pseudo-savestates?) val)
+          (commit-to-file *mod-settings*))))
+
+(defmacro misc-options-pc-easy-abah ()
+  `(new 'static 'menu-generic-boolean-option
+        :name (text-id progress-easy-abah)
+        :truthy-text (text-id progress-on)
+        :falsey-text (text-id progress-off)
+        :get-value-fn (lambda () (-> *mod-settings* easy-abah?))
+        :on-confirm (lambda ((val symbol))
+          (set! (-> *mod-settings* easy-abah?) val)
+          (commit-to-file *mod-settings*))))
+
+(defmacro misc-options-pc-collision-renderer-toggle ()
+  `(new 'static 'menu-generic-boolean-option
+        :name (text-id progress-collision-renderer-toggle)
+        :truthy-text (text-id progress-on)
+        :falsey-text (text-id progress-off)
+        :get-value-fn (lambda () (-> *mod-settings* collision-renderer-toggle?))
+        :on-confirm (lambda ((val symbol))
+          (set! (-> *mod-settings* collision-renderer-toggle?) val)
+          (commit-to-file *mod-settings*))))
+
+(defmacro misc-options-pc-hover-restriction ()
+  `(new 'static 'menu-generic-boolean-option
+        :name (text-id progress-hover-restriction)
+        :truthy-text (text-id progress-on)
+        :falsey-text (text-id progress-off)
+        :get-value-fn (lambda () (-> *mod-settings* hover-restriction?))
+        :on-confirm (lambda ((val symbol))
+          (set! (-> *mod-settings* hover-restriction?) val)
+          (commit-to-file *mod-settings*))))
+
+(defmacro misc-options-pc-slip-assist ()
+  `(new 'static 'menu-generic-carousel-option
+      :name (text-id progress-slip-assist)
+      :items (new 'static 'boxed-array :type text-id
+                  (text-id progress-slip-normal)
+                  (text-id progress-slip-no-slip)
+                  (text-id progress-slip-spiderman))
+      :get-item-index-fn (lambda () (-> *mod-settings* slip-assist))
+      :on-confirm (lambda ((index int) (the-progress progress))
+          (set! (-> *mod-settings* slip-assist) (the-as slip-assist-mode index))
+          (commit-to-file *mod-settings*))))
+
 (defmacro misc-options-pc-fast-progress ()
   `(new 'static 'menu-generic-boolean-option
         :name (text-id progress-fast-progress)
@@ -516,6 +618,18 @@ This gives us more freedom to write code how we want.
 
 (define *game-options-pc*
   (progress-new-generic-scrolling-page (text-id progress-root-game-options)
+    (progress-new-generic-link-to-scrolling-page (text-id progress-orb-hunt-options)
+      (misc-options-pc-orb-autosave)
+      (misc-options-pc-skill-starburst)
+      (misc-options-pc-orb-ghosts)
+      (misc-options-pc-closest-orb)
+      (misc-options-pc-orb-map-icons)
+      (misc-options-pc-pseudo-savestates)
+      (misc-options-pc-easy-abah)
+      (misc-options-pc-collision-renderer-toggle)
+      (misc-options-pc-slip-assist)
+      (misc-options-pc-hover-restriction)
+      )
     (game-options-pc-input-options)
     (game-options-pc-subtitle-toggle)
     (game-options-pc-hint-subtitle-toggle)
@@ -530,6 +644,18 @@ This gives us more freedom to write code how we want.
 
 (define *game-options-title-pc*
   (progress-new-generic-scrolling-page (text-id progress-root-game-options)
+    (progress-new-generic-link-to-scrolling-page (text-id progress-orb-hunt-options)
+      (misc-options-pc-orb-autosave)
+      (misc-options-pc-skill-starburst)
+      (misc-options-pc-orb-ghosts)
+      (misc-options-pc-closest-orb)
+      (misc-options-pc-orb-map-icons)
+      (misc-options-pc-pseudo-savestates)
+      (misc-options-pc-easy-abah)
+      (misc-options-pc-collision-renderer-toggle)
+      (misc-options-pc-slip-assist)
+      (misc-options-pc-hover-restriction)
+      )
     (game-options-pc-input-options)
     (game-options-pc-subtitle-toggle)
     (game-options-pc-hint-subtitle-toggle)

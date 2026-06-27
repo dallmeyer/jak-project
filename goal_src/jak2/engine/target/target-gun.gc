@@ -1092,6 +1092,7 @@
 
 (defun target-gun-marking-menu ((arg0 target))
   (when (and (not (paused?))
+             (not (and (-> *mod-settings* pseudo-savestates?) (focus-test? arg0 in-head))) ;; no gun if using save states and zoomed
              (not (and (focus-test? arg0 dark) (nonzero? (-> arg0 darkjak))))
              (not (logtest? (-> arg0 focus-status) (focus-status grabbed)))
              )

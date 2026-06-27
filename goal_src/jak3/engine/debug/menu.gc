@@ -1413,10 +1413,10 @@
      (debug-menu-context-select-new-item arg0 1)
      )
     ((cpad-pressed? (-> arg0 joypad-number) left)
-     (debug-menu-context-select-new-item arg0 -5)
+     (debug-menu-context-select-new-item arg0 (if (cpad-hold? (-> arg0 joypad-number) l2) -10 -5))
      )
     ((cpad-pressed? (-> arg0 joypad-number) right)
-     (debug-menu-context-select-new-item arg0 5)
+     (debug-menu-context-select-new-item arg0 (if (cpad-hold? (-> arg0 joypad-number) l2) 10 5))
      )
     )
   arg0

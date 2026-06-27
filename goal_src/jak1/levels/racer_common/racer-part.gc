@@ -247,7 +247,6 @@
 
 (deftype hud-bike-heat (hud) ())
 
-
 (defmethod hud-update ((this hud-bike-heat))
   (if *target* (tally-value this (the int (-> *target* racer heat)) 0))
   0
@@ -300,7 +299,6 @@
   (none))
 
 (deftype hud-bike-speed (hud) ())
-
 
 (defmethod hud-update ((this hud-bike-speed))
   (if *target* (tally-value this (the int (-> *target* control ctrl-xz-vel)) 0))
@@ -957,3 +955,38 @@
    (:accel-y (meters -0.000016666667))
    (:timer (seconds 1.5))
    (:flags (bit0 bit2 bit3 bit14))))
+
+;; TFL note: added constant
+(defconstant SUPER_ECO_RED_BOOST_COOLDOWN (seconds 2.2))
+
+;; TFL note: added racer boost hud particle
+(defun part-hud-racer-red-boost-glow-func ((system sparticle-system) (info sparticle-cpuinfo) (mat matrix))
+  (when (nonzero? (-> *target* racer))
+    (let ((last-boost-time (-> *target* racer super-red-boost-time)))
+      (when (not (time-elapsed? last-boost-time SUPER_ECO_RED_BOOST_COOLDOWN))
+        (set! (-> mat vector 2 x)
+              (* (the float (- (current-time) last-boost-time)) (/ 128.0 (the float SUPER_ECO_RED_BOOST_COOLDOWN))))
+        (set! (-> mat vector 2 w)
+              (* (the float (- (current-time) last-boost-time)) (/ 192.0 (the float SUPER_ECO_RED_BOOST_COOLDOWN)))))))
+  (none))
+
+(defpartgroup group-part-hud-racer-red-boost-glow
+  :id 750
+  :flags (screen-space)
+  :bounds (static-bspherem 0 0 0 2)
+  :parts ((sp-item 3664 :flags (launch-asap))))
+
+(defpart 3664
+  :init-specs
+  ((:texture (new 'static 'texture-id :index #xf :page 2))
+   (:num 1.0)
+   (:scale-x (meters 1))
+   (:rot-x 4)
+   (:scale-y (meters 1))
+   (:r 128.0)
+   (:g 0.0)
+   (:b 0.0)
+   (:a 192.0)
+   (:timer (seconds -0.005))
+   (:flags (bit2 bit9))
+   (:func 'part-hud-racer-red-boost-glow-func)))

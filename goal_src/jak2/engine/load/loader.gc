@@ -295,6 +295,7 @@
   )
 
 (defmethod unlink-file ((this external-art-buffer) (arg0 art-group))
+  (dbg-format 0 "unlink-file ~A ~A~%" this arg0)
   (when arg0
     (unlink-art! arg0)
     (set! (-> this art-group) #f)
@@ -630,7 +631,8 @@
   (cond
     ((or (nonzero? (-> this dma-reserve-buffer-count)) (= *master-mode* 'progress))
      (set! (-> this dma-reserve-buffer-count) 1)
-     (when (and (-> *bigmap* drawing-flag) (zero? (-> *blit-displays-work* count-down)))
+     (when (and (zero? (-> *blit-displays-work* count-down)))
+    ;;  (when (and (-> *bigmap* drawing-flag) (zero? (-> *blit-displays-work* count-down)))
        (let ((v1-8 (-> this dma-reserve-heap)))
          (set! (-> v1-8 base) (logand -64 (&+ (&+ (-> *display* frames 1 global-buf end) -252992) 63)))
          (set! (-> v1-8 current) (-> v1-8 base))

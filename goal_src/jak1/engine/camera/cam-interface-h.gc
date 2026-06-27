@@ -11,6 +11,7 @@
 
 (define *camera-read-analog* #t)
 
+(define *camera-read-face-buttons* #f) ;; turn off face buttons for debug camera movement
 (define *camera-read-buttons* #t)
 
 (define *cam-free-move-along-z* #t)

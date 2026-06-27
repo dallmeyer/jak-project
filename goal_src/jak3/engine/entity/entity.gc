@@ -348,6 +348,12 @@
     )
   )
 
+(define *pid-search-id* 0)
+(defun process-by-pid ((arg0 int))
+  (set! *pid-search-id* arg0)
+  (search-process-tree *active-pool* (lambda ((proc process)) (= (-> proc pid) *pid-search-id*)))
+  )
+
 (defun entity-process-count ((arg0 symbol))
   (let ((gp-0 0))
     (dotimes (s4-0 (-> *level* length))
@@ -358,7 +364,7 @@
               (let ((v1-9 (-> s2-0 data s1-0 entity)))
                 (case arg0
                   (('vis)
-                   (if (is-object-visible? s3-0 (-> v1-9 extra vis-id))
+                   (if (is-object-visible? s3-0 (-> v1-9 extra vis-id) v1-9)
                        (+! gp-0 1)
                        )
                    )
@@ -1149,7 +1155,7 @@
                  (bucket-id debug-no-zbuf1)
                  (-> v1-56 0)
                  (-> v1-56 1)
-                 (if (is-object-visible? (-> sv-16 extra level) a1-14)
+                 (if (is-object-visible? (-> sv-16 extra level) a1-14 sv-16)
                      (new 'static 'rgba :g #x80 :b #x80 :a #x80)
                      (new 'static 'rgba :r #x80 :b #x80 :a #x80)
                      )
@@ -1287,7 +1293,7 @@
                           (the-as bucket-id sv-80)
                           (the-as vector sv-96)
                           (the-as vector sv-112)
-                          (if (is-object-visible? s3-2 a1-16)
+                          (if (is-object-visible? s3-2 a1-16 s0-1)
                               (new 'static 'rgba :g #x80 :b #x80 :a #x80)
                               (new 'static 'rgba :r #x80 :b #x80 :a #x80)
                               )
@@ -1902,12 +1908,25 @@
   (none)
   )
 
+(define-extern *entity-placer-active?* symbol)
+(define-extern mod-override-init-position (function process-drawable entity-actor none))
 ;; WARN: Return type mismatch process-drawable vs none.
 (defun process-drawable-from-entity! ((arg0 process-drawable) (arg1 entity-actor))
   (logior! (-> arg0 mask) (process-mask actor-pause))
+  (when (not *entity-placer-active?*) (mod-override-init-position arg0 arg1))
   (vector-copy! (-> arg0 root trans) (-> arg1 extra trans))
   (quaternion-copy! (-> arg0 root quat) (-> arg1 quat))
   (vector-identity! (-> arg0 root scale))
+  (let* ((scale-x 1.0) ;; TFL notes: added a scale option for every process-drawable in the lump
+          (scale-y 1.0)
+          (scale-z 1.0)
+          (tag (new 'static 'res-tag))
+          (res (res-lump-data arg1 'scale (pointer float) :tag-ptr (& tag))))
+    (when res
+      (case (-> tag elt-count)
+        ((1) (set! scale-x (-> res 0)) (set! scale-y (-> res 0)) (set! scale-z (-> res 0)))
+        ((3) (set! scale-x (-> res 0)) (set! scale-y (-> res 1)) (set! scale-z (-> res 2)))))
+    (set-vector! (-> arg0 root scale) scale-x scale-y scale-z 1.0))
   (none)
   )
 
@@ -2265,8 +2284,8 @@
                                                                  ;                      "under-locking-1"
                                                                  ;                      "under-locking-2"))))
                                                                                       ))
-                                                   (is-object-visible? s4-1 (-> sv-48 vis-id)))
-                                               (is-object-visible? s4-1 (-> sv-48 vis-id)))
+                                                   (is-object-visible? s4-1 (-> sv-48 vis-id) (-> sv-48 entity)))
+                                               (is-object-visible? s4-1 (-> sv-48 vis-id) (-> sv-48 entity)))
                                   (not (logtest? (-> sv-48 perm status) (entity-perm-status bit-9 bit-10)))
                                   (not (logtest? (-> sv-48 kill-mask) sv-32))
                                   (or (-> s4-1 vis-info 0) (< (vector-vector-distance (-> sv-48 trans) sv-16) (-> sv-48 vis-dist)))

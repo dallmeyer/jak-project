@@ -271,8 +271,19 @@
   (set! (-> *entity-pick-menu* items) (sort (-> *entity-pick-menu* items) debug-menu-node<?))
   )
 
+(define-extern print-pd (function process-drawable none))
 (defun dm-display-entities-pick-func ((arg0 symbol))
-  (debug-print-entities *level* arg0 (the-as type #f) (the-as string #f))
+  (cond
+    ((-> *entity-debug-inspect* entity)
+      ;; print selected entity info only
+      ;; (debug-print (the-as entity-actor (-> *entity-debug-inspect* entity)) arg0 (the-as type #f))
+      (print-pd (the process-drawable (-> *entity-debug-inspect* entity extra process)))
+      )
+    (else
+      ;; original - print all entities
+      (debug-print-entities *level* arg0 (the-as type #f) (the-as string #f)))
+    )
+  (none)
   )
 
 (defmacro dm-lambda-boolean-flag (val)
@@ -284,6 +295,7 @@
                             ,val)
   )
 
+(define-extern *entity-placer-active?* symbol)
 (defun debug-menu-make-entity-menu ((ctx debug-menu-context))
   (let ((entity-menu (new 'debug 'debug-menu ctx "Entity menu")))
       (let ((pick-menu (new 'debug 'debug-menu ctx "Pick entity menu")))
@@ -300,6 +312,7 @@
                                                   (vector-identity! (-> tf scale))
                                                   (send-event *camera* 'teleport-to-transformq tf)
                                                   ))))
+      (debug-menu-append-item entity-menu (new-dm-bool "Entity Placer Edit Mode?" *entity-placer-active?* dm-boolean-toggle-pick-func))
       (debug-menu-append-item entity-menu (new-dm-func "Print entity info" #t dm-display-entities-pick-func))
       (debug-menu-append-item entity-menu (new-dm-func "Print entity info (ag)" 'art-group dm-display-entities-pick-func))
       (debug-menu-append-item entity-menu (new-dm-func "Print entity info (meters)" 'entity-meters dm-display-entities-pick-func))

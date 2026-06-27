@@ -64,7 +64,7 @@
     )
   )
 
-
+(defglobalconstant BIG_COLLIDE_CACHE_SIZE 921)
 (deftype collide-cache (basic)
   ((num-tris          int32)
    (num-tris-u32      uint32              :overlay-at num-tris)
@@ -77,7 +77,7 @@
    (collide-with      collide-spec)
    (unused            uint32)
    (prims             collide-cache-prim  100 :inline)
-   (tris              collide-cache-tri   461 :inline)
+   (tris              collide-cache-tri   BIG_COLLIDE_CACHE_SIZE :inline)
    )
   (:methods
     (debug-draw (_type_) none)
@@ -119,6 +119,8 @@
 (kmemopen global "collide-cache")
 
 (define-perm *collide-cache* collide-cache (new 'global 'collide-cache))
+;; disgusting hack to let us overflow the collide cache up to 5k triangles
+;; (malloc 'global (* (size-of collide-cache-tri) BIG_COLLIDE_CACHE_SIZE))
 
 (define-perm *collide-list* collide-list (new 'global 'collide-list))
 

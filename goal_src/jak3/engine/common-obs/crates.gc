@@ -63,6 +63,7 @@
    (target              handle)
    (child-count         int32)
    (victory-anim        spool-anim)
+   (minimap             connection-minimap) ;; added orbhunt
    )
   (:state-methods
     hide
@@ -1044,6 +1045,11 @@
        )
       )
     )
+  :enter (behavior () 
+    (when (name= (-> self name) 'crate-1217)
+      (play-sound-file "more_orbs.mp3" (the int (* (-> *setting-control* user-current sfx-volume) 100.0)))
+      )
+    )
   :trans (-> (method-of-type crate die) trans)
   :code (behavior ()
     (logior! (-> self focus-status) (focus-status dead))
@@ -1209,6 +1215,24 @@
   (set! (-> this carry max-pull) 3686.4)
   (set! (-> this carry carry-radius) 3276.8)
   (set! (-> this target) (the-as handle #f))
+    ;; orb hunt - add to minimap if containing orbs
+  (when (= (-> this fact pickup-type) (pickup-type skill))
+    (set! (-> this minimap) (add-icon! *minimap* this 
+      (the uint (cond
+        ;; ((= (-> this fact pickup-amount) 2.0)  ;; abah hint
+        ;;   (minimap-class orba-blue)
+        ;;   )
+        ;; ((>= (-> this fact pickup-amount) (-> *FACT-bank* super-skill-inc))
+        ;;   (minimap-class orba-gold)
+        ;;   )
+        (else
+          (minimap-class orba)
+          )
+        ))
+      (the-as int #f)
+      (the-as vector #t)
+      0))
+    )
   (none)
   )
 
@@ -1463,4 +1487,9 @@
     )
   (set! (-> this look) 'urn-c)
   (none)
+  )
+
+;; added orb-hunt - makes it easier to count up orbs per level
+(deftype skill-crate (crate)
+  ()
   )

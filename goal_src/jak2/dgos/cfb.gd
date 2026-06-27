@@ -2,7 +2,7 @@
  ("ctyfarm-obs.o"
   "ctyfarma-part.o"
   "ctyfarmb-part.o"
-  "yakow.o"
+  ;; "yakow.o"
   "tpage-3005.go"
   "tpage-3009.go"
   "tpage-3007.go"

@@ -166,6 +166,7 @@
         (&-> *setting-control* user-default dialog-volume)
         )
   (set! (-> (the-as menu-missions-option (-> *missions-options* options 0)) task-line-index) 0)
+  (set! (-> (the-as menu-orb-counts-option (-> *orb-counts-options* options 0)) task-line-index) 0)
   (set-setting-by-param *setting-control* 'extra-bank '((force2 menu1)) 0 0)
   )
 
@@ -377,8 +378,11 @@
       )
   (set! (-> self ring-angle) 0.0)
   (set! (-> self ring-want-angle) 0.0)
-  (set! (-> self option-index) 0)
-  (set! (-> self want-option-index) 0)
+  (set! (-> self option-index) 0) 
+  (if #f ;; *debug-segment*
+    (set! (-> self want-option-index) 1) ;; orb hunt - wakeup on bigmap debug mode
+    (set! (-> self want-option-index) 0)
+    )
   (set! (-> self graphic-index) 0)
   (set! (-> self swing) 0.0)
   (set! (-> self main-menu) #f)
@@ -718,7 +722,11 @@
     (set! (-> this next-option-index) arg1)
     (set! (-> this next) arg0)
     (case (-> this next)
-      (('select-load 'select-save 'select-save-title 'select-save-title-hero)
+      (('select-save-title 'select-save-title-hero)
+       (set! (-> *progress-state* last-slot-saved) -1)  ;; save from title screen is new game, so reset this
+       (set! (-> this next) (get-state-check-card this (-> this next)))
+       )
+      (('select-load 'select-save)
        (set! (-> this next) (get-state-check-card this (-> this next)))
        )
       )
@@ -730,6 +738,11 @@
        (set! (-> *progress-state* last-slot-saved) (-> *progress-state* which-slot))
        (auto-save-command 'restore 0 (-> *progress-state* which-slot) this #f)
        (set! (-> (the-as menu-missions-option (-> (the-as (array menu-option) (-> *missions-options* options)) 0))
+                 task-line-index
+                 )
+             0
+             )
+       (set! (-> (the-as menu-orb-counts-option (-> (the-as (array menu-option) (-> *orb-counts-options* options)) 0))
                  task-line-index
                  )
              0
@@ -925,6 +938,15 @@
     (('missions)
      (set! (-> *progress-state* missions-total-spacing) 0.0)
      (set! (-> (the-as menu-missions-option (-> (the-as (array menu-option) (-> *missions-options* options)) 0))
+               task-line-index
+               )
+           0
+           )
+     (set! (-> this current-options) *missions-options*)
+     )
+    (('orb-counts)
+     (set! (-> *progress-state* missions-total-spacing) 0.0)
+     (set! (-> (the-as menu-orb-counts-option (-> (the-as (array menu-option) (-> *orb-counts-options* options)) 0))
                task-line-index
                )
            0
@@ -2294,6 +2316,10 @@
        (cond
          ((-> *progress-state* yes-no-choice)
           (sound-play "generic-beep")
+          (if (>= (-> *progress-state* last-slot-saved) 0)
+            (copy-mod-save-file *mod-settings* (-> *progress-state* last-slot-saved) (-> *progress-state* which-slot))
+            (reset-mod-save-file *mod-settings* (-> *progress-state* which-slot))
+            )
           (set-next-state arg0 'saving 0)
           )
          ((begin (sound-play "generic-beep") (= (-> arg0 state-stack 0) 'title))

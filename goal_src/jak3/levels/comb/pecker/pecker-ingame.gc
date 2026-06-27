@@ -73,6 +73,9 @@
     #f
     )
   :post (behavior ()
+    (when (= (-> self path-u) 1.0)
+      (go-virtual die)
+      )
     (let* ((f0-0 (path-control-method-23 (-> self path) (target-pos 0)))
            (f0-3 (lerp-scale 0.01 0.1 (fmax 0.0 (- (-> self path-u) f0-0)) 0.1 0.0))
            )
@@ -91,6 +94,8 @@
 (defstate die (pecker-ingame)
   :virtual #t
   :code (behavior ()
+    (let ((p (process-by-ename "minec-pecker-npc")))
+      (when p (send-event p 'show)))
     (cleanup-for-death self)
     )
   )
@@ -123,6 +128,11 @@
   (set! (-> this draw light-index) (the-as uint 30))
   (logior! (-> this skel status) (joint-control-status eye-anim))
   (set! (-> this path) (new 'process 'curve-control this 'path -1000000000.0))
+  (when (and (name= (-> this name) 'pecker-ingame-1)
+             (= (-> this path curve num-cverts) 12) ;; sanity check
+             )
+    (set-vector-meters! (-> this path curve cverts 11) 158.96  100.23  23.11 )
+    )
   (set! (-> this path-u) 0.0)
   (go (method-of-object this idle))
   )

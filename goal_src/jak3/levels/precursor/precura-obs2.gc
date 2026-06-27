@@ -671,8 +671,10 @@
   (case arg2
     (('attack)
      (let ((s4-0 (the-as attack-info (-> arg3 param 1))))
+      ;; (format 0 "precur-bomb attack mode: ~A ~A~%" (-> s4-0 mode) (-> arg3 param 0))
        (case (-> s4-0 mode)
-         (('mech-punch 'crush)
+         ;; orbhunt - make it respond to jak
+         (('mech-punch 'crush 'punch 'spin 'spin-air) 
           (let ((s3-0
                   (the-as attack-info (mem-copy! (the-as pointer (new 'stack-no-clear 'attack-info)) (the-as pointer s4-0) 168))
                   )
@@ -684,7 +686,8 @@
               (as-type arg0 process-drawable)
               (the-as touching-shapes-entry (-> arg3 param 0))
               )
-            (when (logtest? (-> s3-0 mask) (attack-mask intersection))
+            ;; orbhunt - make it respond to jak
+            ;; (when (logtest? (-> s3-0 mask) (attack-mask intersection))
               (let ((gp-1 (new 'stack-no-clear 'vector)))
                 (vector-z-quaternion! gp-1 (target-rot))
                 (vector-copy! (-> self drop-point) (-> self root trans))
@@ -697,7 +700,7 @@
                 (set! (-> self blink-timer) (the-as uint (current-time)))
                 )
               (go-virtual fall)
-              )
+              ;; )
             )
           )
          (else
@@ -1183,9 +1186,9 @@
   (local-vars (v1-10 (pointer process)))
   (let ((s5-0 (new 'stack-no-clear 'vector)))
     (vector-copy! s5-0 (-> this root trans))
-    (format 0 "spawning bomb~%")
+    ;; (format 0 "spawning bomb~%")
     (sound-play "prec-bomb-spawn")
-    (format 0 "spawning bomb-post~%")
+    ;; (format 0 "spawning bomb-post~%")
     (+! (-> s5-0 y) -10240.0)
     (cond
       ((= (-> this hint-mode) (precur-hint-mode teach-bomb))

@@ -25,10 +25,10 @@
   :type uint32
   (sf0 0)
   (sf1 1)
-  (sf2 2)
+  (sf2 2) ;; secrets kind of invuln?
   (tinvul1 3)
-  (sf4 4)
-  (sf5 5)
+  (sf4 4) ;; some other invuln
+  (sf5 5) ;; idk but I reset it when I jumped
   (sf6 6)
   (prevent-jump 7)
   (prevent-attack 8)

@@ -1260,10 +1260,21 @@
           )
         )
       )
-    (if (and (-> this entity) (logtest? (-> this entity extra perm status) (entity-perm-status subtask-complete)))
-        (go (method-of-object this done-falling))
+    (case (-> this name) :comp name=
+      (('fac-drop-plat-163 'fac-drop-plat-239 'fac-drop-plat-199 'fac-drop-plat-198 'fac-drop-plat-194 'fac-drop-plat-240 'fac-drop-plat-103 
+        'fac-drop-plat-81 'fac-drop-plat-47 'fac-drop-plat-217 'fac-drop-plat-167 'fac-drop-plat-15 'fac-drop-plat-180 'fac-drop-plat-44 
+        'fac-drop-plat-154 'fac-drop-plat-59 'fac-drop-plat-169 'fac-drop-plat-20 'fac-drop-plat-142 'fac-drop-plat-251 'fac-drop-plat-134 
+        'fac-drop-plat-98 'fac-drop-plat-215 'fac-drop-plat-253 'fac-drop-plat-191 'fac-drop-plat-189 'fac-drop-plat-19
+        )
+        ;; static collision for these, so always show them
         (go (method-of-object this idle))
         )
+      (else
+        (if (-> this entity) (logtest? (-> this entity extra perm status) (entity-perm-status subtask-complete)))
+          (go (method-of-object this done-falling))
+          (go (method-of-object this idle))
+        )
+      )
     )
   )
 
@@ -1274,10 +1285,10 @@
   arg0
   )
 
-(defskelgroup skel-factory-boss errol-lowres errol-lowres-lod0-jg errol-lowres-idle30-ja
-              ((errol-lowres-lod0-mg (meters 20)) (errol-lowres-lod1-mg (meters 999999)))
-              :bounds (static-spherem 0 0 0 4)
-              )
+;; (defskelgroup skel-factory-boss errol-lowres errol-lowres-lod0-jg errol-lowres-idle30-ja
+;;               ((errol-lowres-lod0-mg (meters 20)) (errol-lowres-lod1-mg (meters 999999)))
+;;               :bounds (static-spherem 0 0 0 4)
+;;               )
 
 (deftype factory-boss-critter-tracker (structure)
   ((handle  handle)

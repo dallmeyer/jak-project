@@ -5,6 +5,11 @@
 ;; name in dgo: game-info
 ;; dgos: GAME
 
+
+(define *orb-count-updated?* #f)
+(define-extern increment-skill-per-level-side-mish (function game-task int none))
+(define-extern increment-skill-per-level (function entity-actor none))
+
 (define-extern stop (function symbol int))
 (define-extern start (function symbol continue-point target))
 (define-extern menu-secrets-notify-powerup-collect (function int))
@@ -401,6 +406,7 @@
   (none)
   )
 
+(define-extern startingDebugContinuePoint string)
 (defmethod initialize! ((this game-info) (mode symbol) (arg2 game-save) (continue-name string) (reset-spec resetter-spec))
   (when reset-spec
     (if (not continue-name)
@@ -480,7 +486,7 @@
           "title-start"
           )
          ((and *debug-segment* (= mode 'boot))
-          "wascity-start"
+          startingDebugContinuePoint ;; "wascity-start"
           )
          (else
            "title-start"
@@ -488,6 +494,14 @@
          )
        #f
        )
+     (when *debug-segment*
+      (set! (-> *mod-settings* orb-ghosts?) #t)
+      (set! (-> *mod-settings* closest-orb?) #t)
+      (set! (-> *mod-settings* orb-map-icons?) #t)
+      (set! (-> *mod-settings* pseudo-savestates?) #t)
+      ;; (set! (-> *mod-settings* easy-abah?) #f)
+      (set! (-> *mod-settings* hover-restriction?) #t)
+      )
      (set! mode 'game)
      (set! (-> this auto-save-count) 0)
      (set! (-> *setting-control* user-default auto-save) #f)
@@ -564,6 +578,8 @@
        (set! (-> this level-opened v1-89) (the-as uint 0))
        (nop!)
        )
+    (dotimes (i LEVEL_ID_LEN)
+      (set! (-> this skill-per-level i) (the-as uint 0)))
      (let ((v1-93 (-> *game-info* sub-task-list)))
        (dotimes (a0-39 (-> v1-93 length))
          (when (nonzero? a0-39)
@@ -770,16 +786,16 @@
        (-> this eco-pill-light)
        )
       (('fuel-cell)
-       (let ((s5-1 (the int arg1)))
-         (when (not (or (task-complete? this (the-as game-task s5-1)) (>= (the-as uint 1) (the-as uint s5-1))))
-           (set! (-> this task-deaths) 0)
-           (set! (-> this task-pickup-time) (-> *display* game-clock frame-counter))
-           (set! (-> this task-complete-time s5-1) (-> *display* game-clock frame-counter))
+      ;;  (let ((s5-1 (the int arg1)))
+      ;;    (when (not (or (task-complete? this (the-as game-task s5-1)) (>= (the-as uint 1) (the-as uint s5-1))))
+      ;;      (set! (-> this task-deaths) 0)
+      ;;      (set! (-> this task-pickup-time) (-> *display* game-clock frame-counter))
+      ;;      (set! (-> this task-complete-time s5-1) (-> *display* game-clock frame-counter))
            (+! (-> this fuel) 1.0)
-           (logior! (-> this task-perm-list data s5-1 status) (entity-perm-status complete))
-           (task-resolution-close! (the-as game-task s5-1))
-           )
-         )
+          ;;  (logior! (-> this task-perm-list data s5-1 status) (entity-perm-status complete))
+          ;;  (task-resolution-close! (the-as game-task s5-1))
+          ;;  )
+        ;;  )
        (-> this fuel)
        )
       (('buzzer)
@@ -898,6 +914,59 @@
     (set! (-> (the-as target (-> this process)) game score) 0.0)
     )
   (none)
+  )
+
+(defenum orba-author
+  :type uint32
+  (barg 0)
+  (blahpy 1)
+  (theguy 2)
+
+  (max)
+  )
+
+(define *author-names* (new 'static 'boxed-array :type string :length (orba-author max)
+  "barg"
+  "blahpy"
+  "TheGuy"
+  ))
+
+(defun draw-skill-author-text ((e entity))
+  (let ((a (res-lump-struct e 'author string)))
+  ;; TODO - maybe switch to enum?
+  ;; (let* ((a_id (res-lump-value e 'author int :default (the-as uint128 -1) :time -1000000000.0))
+  ;;        (a (if (and (nonzero? a_id) (< a_id (orba-author max))) (-> *author-names* a_id) (the-as string #f))))
+    (when a
+      (process-spawn-function process
+        (lambda :behavior process
+          ((a string))
+          (let ((t (current-time)))
+            (until (time-elapsed? t (seconds 10))
+              (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug-no-zbuf1))
+                ;; reset bucket settings prior to drawing - font won't do this for us, and
+                ;; draw-raw-image can sometimes mess them up. (intro sequence)
+                (dma-buffer-add-gs-set-flusha buf (alpha-1 (new 'static 'gs-alpha :b #x1 :d #x1)) (tex1-1 (new 'static 'gs-tex1 :mmag #x1 :mmin #x1)))
+                (let ((font-ctx (new 'stack 'font-context *font-default-matrix* 256 203 0.0 (font-color default) (font-flags kerning large middle))))
+                  (set! (-> font-ctx scale) 0.325)
+                  ;; (set! (-> font-ctx color) (font-color transparent))
+                  (clear *temp-string*)
+                  (clear *pc-encoded-temp-string*)
+                  (format *temp-string* "Collected one of ~S's orbs!~%" a)
+                  
+                  (pc-encode-utf8-string *temp-string* *pc-encoded-temp-string*)
+                  (draw-string-adv *pc-encoded-temp-string* buf font-ctx)
+                  )
+                )
+              (suspend)
+              )
+            )
+          (none)
+          )
+        a
+        :to *target*
+        )
+      )
+    )
   )
 
 (defmethod pickup-collectable! ((this fact-info-target) (pickup pickup-type) (amount float) (pickup-handle handle))
@@ -1135,6 +1204,9 @@
        (set! (-> this skill-pickup-time) (-> *display* game-clock frame-counter))
        )
      (ready-hud 'hud-skill -1)
+     (let* ((p (handle->process pickup-handle))
+            (e (if p (-> p entity))))
+      (when e (draw-skill-author-text e)))
      (give (-> this process game) 'skill amount pickup-handle)
      )
     (((pickup-type karma))
@@ -1423,12 +1495,38 @@
   (let ((v1-1 (level-get-target-inside *level*)))
     (format #t "~%(static-continue-point ~A ()~%" (symbol->string-debug (-> v1-1 name)))
     )
-  (format #t "                       (target ~m ~m ~m " (-> arg0 trans x) (-> arg0 trans y) (-> arg0 trans z))
-  (format #t "~f ~f ~f ~f)~%" (-> arg0 quat x) (-> arg0 quat y) (-> arg0 quat z) (-> arg0 quat w))
+  (format #t "                       (target :x (meters ~m) :y (meters ~m) :z (meters ~m) " (-> arg0 trans x) (-> arg0 trans y) (-> arg0 trans z))
+  (format #t "~d ~d ~d ~d)~%" 
+    (the int (* 32767.0 (-> arg0 quat x)))
+    (the int (* 32767.0 (-> arg0 quat y)))
+    (the int (* 32767.0 (-> arg0 quat z)))
+    (the int (* 32767.0 (-> arg0 quat w))))
   (let ((gp-1 *math-camera*))
     (format
       #t
-      "                       (camera ~m ~m ~m ~f ~f ~f "
+      "                       (camera :x (meters ~m) :y (meters ~m) :z (meters ~m) ~d ~d ~d "
+      (-> gp-1 trans x)
+      (-> gp-1 trans y)
+      (-> gp-1 trans z)
+      (the int (* 32767.0 (-> gp-1 inv-camera-rot rvec x)))
+      (the int (* 32767.0 (-> gp-1 inv-camera-rot rvec y)))
+      (the int (* 32767.0 (-> gp-1 inv-camera-rot rvec z)))
+      )
+    (format
+      #t
+      "~d ~d ~d ~d ~d ~d)~%"
+      (the int (* 32767.0 (-> gp-1 inv-camera-rot uvec x)))
+      (the int (* 32767.0 (-> gp-1 inv-camera-rot uvec y)))
+      (the int (* 32767.0 (-> gp-1 inv-camera-rot uvec z)))
+      (the int (* 32767.0 (-> gp-1 inv-camera-rot fvec x)))
+      (the int (* 32767.0 (-> gp-1 inv-camera-rot fvec y)))
+      (the int (* 32767.0 (-> gp-1 inv-camera-rot fvec z)))
+      )
+    )  
+  (let ((gp-1 *math-camera*))
+    (format
+      #t
+      "                       (camera :x (meters ~m) :y (meters ~m) :z (meters ~m) ~f ~f ~f "
       (-> gp-1 trans x)
       (-> gp-1 trans y)
       (-> gp-1 trans z)
@@ -1473,6 +1571,8 @@
   0
   )
 
+(defun trsqcp () (trsq->continue-point (-> *target* root)))
+
 (defun position->stream ((stream string) (arg1 symbol) (newline? symbol))
   (format
     stream
@@ -1503,13 +1603,47 @@
       (format stream "~%")
       )
   (dotimes (s4-2 10)
-    (if (or (= (-> *level* level s4-2 status) 'active)
-            (= (-> *level* level s4-2 status) 'alive)
-            (= (-> *level* level s4-2 status) 'loaded)
+    (cond
+      ((= (-> *level* level s4-2 status) 'active)
+        (let ((entities (-> *level* level s4-2 entity))
+              (orbs-collected 0) (orbs-total 0))
+          (dotimes (idx (-> entities length))
+            (let ((entity-link (-> entities data idx)))
+              (when (and (-> entity-link entity) (nonzero? (-> entity-link entity)))
+                (case (-> (the entity-actor (-> entity-link entity)) etype symbol) 
+                  (('skill)
+                    (+! orbs-total 1)
+                    (when (logtest? (-> entity-link status) (entity-perm-status dead))
+                      (+! orbs-collected 1)
+                      )
+                    )
+                  (('skill-crate 'market-crate 'wascity-market-crate 'crate 'wascity-market-sack-a 'market-sack-a 'market-basket-a 'wascity-market-basket-a 'wascity-market-sack-b 'market-sack-b 'market-basket-b 'wascity-market-basket-b 'urn-a 'urn-b 'urn-c)
+                    (let ((e-info (res-lump-value (-> entity-link entity) 'eco-info uint128 :time -1000000000.0)))
+                      (when (= (the-as uint e-info) 24) ;; holding skill
+                        (+! orbs-total 1)
+                        (when (nonzero? (-> entity-link perm user-int8 1))
+                          (+! orbs-collected 1)
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
             )
-        (format stream "level ~D ~-8A ~-8A " s4-2 (-> *level* level s4-2 name) (-> *level* level s4-2 display?))
+          (format stream "level ~D ~-8A ~-8A ~D/~D" s4-2 (-> *level* level s4-2 name) (-> *level* level s4-2 display?) orbs-collected orbs-total)
+          )
+        )
+      ((or ;; (= (-> *level* level s4-2 status) 'active)
+          (= (-> *level* level s4-2 status) 'alive)
+          (= (-> *level* level s4-2 status) 'loaded)
+          )
+        (format stream "level ~D ~-8A ~-8A" s4-2 (-> *level* level s4-2 name) (-> *level* level s4-2 display?))
+        )
+      (else
         (format stream "level ~D ~-8A ~-8A " s4-2 #f #f)
         )
+      )
     (if newline?
         (format stream "~%")
         )

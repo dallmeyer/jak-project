@@ -751,7 +751,7 @@
   (set! (-> this root-overlay pause-adjust-distance) 1228800.0)
   (set! (-> this fact) (new 'process 'fact-info-enemy this (pickup-type eco-pill-random) (-> *FACT-bank* default-pill-inc)))
   (set! (-> this water-y) (-> this root-overlay trans y))
-  (set! (-> this path) (new 'process 'path-control this 'path 0.0))
+  (set! (-> this path) (new 'process 'curve-control this 'path -1000000000.0)) ;; TFL note: Changed from path-control to use path-k
   (logior! (-> this path flags) (path-control-flag display draw-line draw-point draw-text))
   (set! (-> this link) (new 'process 'actor-link-info this))
   (balloonlurker-find-nearest-path-point)

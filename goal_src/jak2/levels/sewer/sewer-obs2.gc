@@ -588,7 +588,10 @@
   (transform-post)
   (set! (-> this event-hook) sew-mar-statue-event-handler)
   (cond
-    ((task-node-closed? (game-task-node sewer-escort-resolution))
+    ((and (task-node-closed? (game-task-node sewer-escort-resolution))
+          (or (= (-> (level-get-target-inside *level*) name) 'sewesc)
+              (= (-> (level-get-target-inside *level*) name) 'sewescb))
+          )
      (process-spawn sew-mar-statue-debris :to this)
      (process-spawn sew-mar-statue-debris-b :to this)
      (set! (-> this spawned-debris?) #t)

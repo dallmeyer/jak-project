@@ -171,6 +171,11 @@
 ;; This defines the format function to point to the same thing as _format.
 (define format _format)
 
+(define-extern ORB_HUNT_DEBUG? symbol)
+(defmacro dbg-format (&rest args)
+  `(when (and *debug-segment* (cpad-hold? 0 l2) ORB_HUNT_DEBUG?) (format ,@args))
+  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; numeric types
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1224,7 +1229,7 @@
        #f
        )
       ((and (= expected-type type) (!= (rtype-of this) type))
-       (if name
+       (if (and #f name)
            (format
              print-dest
              "ERROR: object #x~X ~S is not a valid object of type '~A' (invalid type #x~X)~%"
@@ -1237,7 +1242,7 @@
        #f
        )
       ((and (!= expected-type type) (not (valid? (rtype-of this) type (the-as string #f) #t 0)))
-       (if name
+       (if (and #f name)
            (format
              print-dest
              "ERROR: object #x~X ~S is not a valid object of type '~A' (invalid type #x~X)~%"

@@ -8,6 +8,8 @@
 (require "engine/common-obs/nav-enemy-h.gc")
 (declare-type battlecontroller process-drawable)
 
+(define-extern freeze (state nav-enemy))
+
 ;; DECOMP BEGINS
 
 (defun nav-enemy-rnd-float ()
@@ -16,7 +18,7 @@
 (defun nav-enemy-rnd-percent? ((arg0 float))
   (>= arg0 (rand-vu)))
 
-(defun nav-enemy-rnd-float-range ((arg0 float) (arg1 float))
+(defbehavior nav-enemy-rnd-float-range nav-enemy ((arg0 float) (arg1 float))
   (+ arg0 (* (rand-vu) (- arg1 arg0))))
 
 (defun nav-enemy-rnd-int-count ((arg0 int))
@@ -141,7 +143,10 @@
          v0-0)))
     (('cue-chase) (go-virtual nav-enemy-chase))
     (('cue-patrol) (go-virtual nav-enemy-patrol))
-    (('go-wait-for-cue) (go-virtual nav-enemy-wait-for-cue))))
+    (('go-wait-for-cue) (go-virtual nav-enemy-wait-for-cue))
+    ;; TFL note: added case for eco-blue event
+    (('eco-blue) (if (!= (-> self next-state name) 'freeze) (go freeze))))
+  (none))
 
 (defbehavior nav-enemy-jump-event-handler nav-enemy ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
   (case arg2
@@ -168,6 +173,30 @@ nav-enemy-default-event-handler
   (update-transforms! (-> self collide-info))
   0
   (none))
+
+;; TFL note: added freeze state
+(defstate freeze (nav-enemy)
+  :event
+    (the (function process int symbol event-message-block object :behavior nav-enemy)
+         nav-enemy-default-event-handler)
+  :enter
+    (behavior ()
+      (set! (-> self state-time) (current-time))
+      (none))
+  :trans
+    (behavior ()
+      (if (> (- (current-time) (-> self state-time)) (seconds 4)) (go-virtual nav-enemy-idle))
+      (none))
+  :code
+    (behavior ()
+      (loop
+        (target-powerup-effect 'eco-blue)
+        (suspend))
+      (none))
+  :exit
+    (behavior ()
+      (none))
+  :post nav-enemy-simple-post)
 
 (defmethod nav-enemy-method-40 ((this nav-enemy))
   (nav-control-method-11 (-> this nav) (-> this nav target-pos))
@@ -1104,6 +1133,8 @@ nav-enemy-default-event-handler
             :top-plane
             (new 'static 'plane :y 1.0 :w -4096.0))))
 
+(define-extern mod-override-path (function nav-enemy none))
+
 (defmethod init-defaults! ((this nav-enemy) (arg0 nav-enemy-info))
   (set! (-> this rand-gen) (new 'process 'random-generator))
   (set! (-> this rand-gen seed) (the-as uint #x666edd1e))
@@ -1125,6 +1156,7 @@ nav-enemy-default-event-handler
   (set! (-> this nav gap-event) 'jump)
   (nav-control-method-26 (-> this nav))
   (set! (-> this path) (new 'process 'path-control this 'path 0.0))
+  (mod-override-path this)
   (logior! (-> this path flags) (path-control-flag display draw-line draw-point draw-text))
   (set! (-> this enemy-info)
         (new 'process 'fact-info-enemy this (pickup-type eco-pill-random) (-> *FACT-bank* default-pill-inc)))

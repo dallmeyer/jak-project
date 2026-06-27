@@ -1367,7 +1367,7 @@
             (if (not a0-9) (set! a0-9 (-> self entity)))
             (set! (-> gp-1 quad) (-> a0-9 extra trans quad)))
           (label cfg-6)
-          (birth-pickup-at-point gp-1
+          (birth-pickup-at-point (static-vector-meters 209.98 32.4 -1897.90)
                                  (pickup-type fuel-cell)
                                  (the float (-> self entity extra perm task))
                                  #f

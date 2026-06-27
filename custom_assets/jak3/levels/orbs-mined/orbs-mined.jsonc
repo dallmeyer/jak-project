@@ -1,0 +1,306 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-mined",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O13",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o13", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-mined/orbs-mined.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 113000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [ 334.68,  71.82,  -281.60 ], // slippery ledge above veger
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 334.68,  71.82,  -281.60 , 10],
+      "lump": {
+        "name":"mined-skill-01"
+      }
+    },
+    {
+      "trans": [  305.3629, 62.9409, -282.2550], // abah spot on far side
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  305.3629, 62.9409, -282.2550, 10],
+      "lump": {
+        "name":"mined-skill-02",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  299.1947, 82.9491, -285.7930], // ledge above stone robot on left, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  299.1947, 82.9491, -285.7930, 10],
+      "lump": {
+        "name":"mined-skill-03",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  293.8522, 91.1676, -273.7493], // ledge next tp left explosive cart, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  293.8522, 91.1676, -273.7493, 10],
+      "lump": {
+        "name":"mined-skill-04"
+      }
+    },
+    {
+      "trans": [  313.6295, 94.3994, -275.3101], // inside middle explosive cart, follow from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  313.6295, 94.3994, -275.3101, 10],
+      "lump": {
+        "name":"mined-skill-05"
+      }
+    },
+    {
+      "trans": [   358.6768, 92.7625, -269.1423], // hallway behind right explosive cart, follow from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  358.6768, 92.7625, -269.1423, 10],
+      "lump": {
+        "name":"mined-skill-06"
+      }
+    },
+    {
+      "trans": [ 339.0310, 92.5195, -271.9102], // next to right cart
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 339.0310, 92.5195, -271.9102, 10],
+      "lump": {
+        "name":"mined-skill-07",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 341.4848, 109.4704, -271.9791], // abah from ^, up on right cart door frame
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 341.4848, 109.4704, -271.9791, 10],
+      "lump": {
+        "name":"mined-skill-08"
+      }
+    },
+    {
+      "trans": [ 347.7365, 107.1812, -248.8492], // rock wall right of right cart, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 347.7365, 107.1812, -248.8492, 10],
+      "lump": {
+        "name":"mined-skill-09"
+      }
+    },
+    {
+      "trans": [ 350.6720, 109.0946, -234.1703], // rock wall right of right cart, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 350.6720, 109.0946, -234.1703, 10],
+      "lump": {
+        "name":"mined-skill-10"
+      }
+    },
+    {
+      "trans": [ 349.4618, 105.5395, -222.7645], // rock wall right of right cart, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 349.4618, 105.5395, -222.7645, 10],
+      "lump": {
+        "name":"mined-skill-11"
+      }
+    },
+    {
+      "trans": [ 281.6069, 105.6668, -262.4520], // above left cable on left cart
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 281.6069, 105.6668, -262.4520, 10],
+      "lump": {
+        "name":"mined-skill-12"
+      }
+    },
+    {
+      "trans": [ 279.6740, 109.1581, -246.2193], // rock wall left of left cart, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 279.6740, 109.1581, -246.2193, 10],
+      "lump": {
+        "name":"mined-skill-13"
+      }
+    },
+    {
+      "trans": [ 277.7933, 90.0389, -234.5926], // rock wall left of left cart, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 277.7933, 90.0389, -234.5926, 10],
+      "lump": {
+        "name":"mined-skill-14"
+      }
+    },
+    {
+      "trans": [ 275.4177, 78.1537, -213.3597], // left rock wall, extended FF from arena
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 275.4177, 78.1537, -213.3597, 10],
+      "lump": {
+        "name":"mined-skill-15"
+      }
+    },
+    {
+      "trans": [ 281.2584, 84.9876, -205.1774], // left rock wall, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 281.2584, 84.9876, -205.1774, 10],
+      "lump": {
+        "name":"mined-skill-16",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 286.3558, 103.9780, -201.7519], // left rock wall, awful standpoint, abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 286.3558, 103.9780, -201.7519, 10],
+      "lump": {
+        "name":"mined-skill-17"
+      }
+    },
+    {
+      "trans": [ 299.8715, 95.7686, -197.7617], // back/left wall, extended from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 299.8715, 95.7686, -197.7617, 10],
+      "lump": {
+        "name":"mined-skill-18",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 304.2541, 111.8132, -198.7223], // way up back/left wall, abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 304.2541, 111.8132, -198.7223, 10],
+      "lump": {
+        "name":"mined-skill-19"
+      }
+    },
+    {
+      "trans": [ 284.8003, 73.4119, -267.6720], // underneath left cart support
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 284.8003, 73.4119, -267.6720, 10],
+      "lump": {
+        "name":"mined-skill-20"
+      }
+    },
+
+        
+    {
+      "trans": [329.8399, 57.8516, -278.9043], // veger on far side
+      "etype": "veger-npc",
+      "game_task": 0, 
+      "quat" : [  0.0, 0.0, 0.0, -1.0],
+      "bsphere": [329.8399, 57.8516, -278.9043, 6.928242206573486 ],
+      "lump": {
+        "name": "mined-veger-npc",
+        "task-actor": ["int32", 68]
+      }
+    },
+    {
+      "trans": [329.8399, 62.3516, -278.9043], // 
+      "etype": "fuel-cell",
+      "game_task": 0, 
+      "quat" : [ 0.0, 0.21679742634296417, 0.0, 0.9762166142463684],
+      "bsphere": [329.8399, 62.3516, -278.9043, 6.928242206573486 ],
+      "lump": {
+        "name": "mined-fuel-cell",
+        "level-idx": ["int32", 13],
+        "alt-actor": "mined-veger-npc"
+      }
+    }//,
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

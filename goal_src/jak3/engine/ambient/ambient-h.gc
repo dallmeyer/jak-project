@@ -1489,12 +1489,12 @@ and neg-state is greater than or equal to neg.
                           (new 'static 'talker-speech-class
                             :name "powup029"
                             :channel (gui-channel alert)
-                            :flags (talker-flags reduce-volume slide-in)
+                            ;; :flags (talker-flags reduce-volume slide-in)
                             :speech #x88
-                            :text-duration (seconds 5)
-                            :delay (seconds 1)
+                            ;; :text-duration (seconds 5)
+                            ;; :delay (seconds 1)
                             :neg #x1
-                            :text-message (text-id new-secrets-available)
+                            ;; :text-message (text-id new-secrets-available)
                             :on-close #f
                             :camera #f
                             )

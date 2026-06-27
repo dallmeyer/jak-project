@@ -1,0 +1,59 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+;; For debug-only additions to the mod-base. Anything defined in this file will be unavailable in retail mode.
+(declare-file (debug))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Additional debug menu(s)
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun-debug debug-menu-make-orb-placer-menu ((ctx debug-menu-context))
+  (let ((orb-placer-menu (new 'debug 'debug-menu ctx "Orb Placer")))
+    (debug-menu-append-item orb-placer-menu (new-dm-bool "Entity Placer Edit Mode?" *entity-placer-active?* dm-boolean-toggle-pick-func))
+    (debug-menu-append-item orb-placer-menu (new-dm-func "Add Orb" #f orb-placer-add))
+    (debug-menu-append-item orb-placer-menu (new-dm-func "Toggle Orb Marking" #f orb-placer-toggle-marking))
+    (let ((select-orb-menu (new 'debug 'debug-menu ctx "Select Orb")))
+      (set! *orb-placer-select-menu* select-orb-menu)
+      ;; populated on orb add
+      (debug-menu-append-item orb-placer-menu (new-dm-submenu "Select Orb" select-orb-menu))
+      )
+    (let ((dupe-orb-menu (new 'debug 'debug-menu ctx "Duplicate Orb")))
+      (set! *orb-placer-dupe-menu* dupe-orb-menu)
+      ;; populated on orb add
+      (debug-menu-append-item orb-placer-menu (new-dm-submenu "Duplicate Orb" dupe-orb-menu))
+      )
+    (debug-menu-append-item orb-placer-menu (new-dm-func "Print Selected Orb Position" #f orb-placer-print-selected))
+    (debug-menu-append-item orb-placer-menu (new-dm-func "Print All Orb Positions" #f orb-placer-print-all))
+    (let ((orb-save-menu (new 'debug 'debug-menu ctx "Save to File")))
+      (debug-menu-append-item orb-save-menu (new-dm-func "Save to Slot 1" #f orbs-save-to-file-1))
+      (debug-menu-append-item orb-save-menu (new-dm-func "Save to Slot 2" #f orbs-save-to-file-2))
+      (debug-menu-append-item orb-save-menu (new-dm-func "Save to Slot 3" #f orbs-save-to-file-3))
+      (debug-menu-append-item orb-save-menu (new-dm-func "Save to Slot 4" #f orbs-save-to-file-4))
+
+      (debug-menu-append-item orb-placer-menu (new-dm-submenu "Save to File" orb-save-menu))
+      )
+    (let ((orb-load-menu (new 'debug 'debug-menu ctx "Load from File")))
+      (debug-menu-append-item orb-load-menu (new-dm-func "Load from Slot 1" #f orbs-load-1))
+      (debug-menu-append-item orb-load-menu (new-dm-func "Load from Slot 2" #f orbs-load-2))
+      (debug-menu-append-item orb-load-menu (new-dm-func "Load from Slot 3" #f orbs-load-3))
+      (debug-menu-append-item orb-load-menu (new-dm-func "Load from Slot 4" #f orbs-load-4))
+
+      (debug-menu-append-item orb-placer-menu (new-dm-submenu "Load from File" orb-load-menu))
+      )
+    
+    (new-dm-submenu "Orb Placer" orb-placer-menu)
+    )
+  )
+
+;; (defun-debug debug-menu-make-modding-tools-menu ((ctx debug-menu-context))
+;;   (let ((modding-tools-menu (new 'debug 'debug-menu ctx "Modding Tools")))
+;;     (debug-menu-append-item modding-tools-menu (new-dm-submenu "Orb Placer" (debug-menu-make-orb-placer-menu ctx modding-tools-menu)))
+;;     ;; add more menus here
+;;     (new-dm-submenu "Modding Tools" modding-tools-menu)
+;;     )
+;;   )
+
+(when (-> *debug-menu-context* root-menu)
+  (debug-menu-append-item (-> *debug-menu-context* root-menu) (debug-menu-make-orb-placer-menu *debug-menu-context*))
+  )

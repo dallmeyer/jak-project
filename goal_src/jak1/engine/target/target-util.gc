@@ -7,6 +7,10 @@
 (require "engine/common-obs/process-drawable-h.gc")
 (define-extern target-collide-set! (function symbol float int :behavior target))
 
+;; TFL note: added macro
+(defmacro target-powerup? (ptype)
+  `(and (= (-> *target* fact eco-type) (pickup-type ,ptype)) (>= (-> *target* fact eco-level) 1.0)))
+
 ;; DECOMP BEGINS
 
 (defskelgroup *jchar-sg*
@@ -640,16 +644,21 @@
     ((or (not (cpad-pressed? (-> self control cpad number) square))
          (or (and (logtest? (-> self state-flags) (state-flags prevent-attack))
                   (or (not (logtest? (-> self state-flags) (state-flags remove-prevents)))
-                      (not (and (= (-> self fact eco-type) (pickup-type eco-yellow)) (>= (-> self fact eco-level) 1.0)))))
+                      ;; TFL note: added super eco case
+                      (not (and (or (= (-> self fact eco-type) (pickup-type eco-yellow)) (target-powerup? super-eco-yellow))
+                                (>= (-> self fact eco-level) 1.0)))))
              (logtest? (-> self control current-surface flags) (surface-flags prevent-attacks-during-launch-jump surf08))))
      #f)
     ((and (or (not arg0)
               (and (not (time-elapsed? (-> self control last-time-on-surface) (-> *TARGET-bank* ground-timeout)))
                    (< (-> self control local-slope-z) 0.7)))
-          (time-elapsed? (if (and (= (-> self fact eco-type) (pickup-type eco-yellow)) (>= (-> self fact eco-level) 1.0))
-                           (-> *TARGET-bank* yellow-attack-timeout)
-                           (-> *TARGET-bank* attack-timeout))
-                         (-> self control unknown-dword31)))
+          (>= (- (-> *display* base-frame-counter)
+                 (if (and (= (-> self fact eco-type) (pickup-type eco-yellow)) (>= (-> self fact eco-level) 1.0))
+                   (-> *TARGET-bank* yellow-attack-timeout)
+                   (if (and (= (-> self fact eco-type) (pickup-type super-eco-yellow)) (>= (-> self fact eco-level) 1.0))
+                     (seconds 0.01)
+                     (-> *TARGET-bank* attack-timeout))))
+              (-> self control unknown-dword31)))
      #t)
     (else (set-time! (-> self control unknown-dword32)) #f)))
 

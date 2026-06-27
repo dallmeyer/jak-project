@@ -481,6 +481,13 @@
   (let ((s1-0 (the-as sound-name #f)))
     (-> *display* frames (-> *display* last-screen) run-time)
     (let ((sv-192 arg0))
+      (when (and (or (= (-> arg4 material) (pat-material snow))
+                     (= (-> arg4 material) (pat-material deepsnow)))
+                 (or ;; (string= (the-as string sv-192) "effect-droppings")
+                     (string= (the-as string sv-192) "effect-land-poof"))
+                 )
+        (play-sound-file "jingle.mp3" (the int (* (-> *setting-control* user-current sfx-volume) 100.0)))
+        )
       (cond
         ((string= (the-as string sv-192) "effect-walk-step-left")
          (set! s1-0 (sound-name-with-material "walk" arg4 "1"))

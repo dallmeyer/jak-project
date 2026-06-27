@@ -54,11 +54,15 @@
    (checkname  basic :overlay-at (-> parm 0)))
   :pack-me)
 
+;; TFL note: Added custom flags for load-boundary
 (defenum load-boundary-flags
   :type uint8
   :bitfield #t
   (closed 0) ;; if set, the boundary is a closed area
   (player 1) ;; if set activate on player cross instead of camera
+  (ignore-normal 2) ;; ignore if on foot 
+  (ignore-racing 3) ;; ignore if on zoomer
+  (ignore-flut 4) ;; ignore if on flutflut
   )
 
 ;; actual boundary

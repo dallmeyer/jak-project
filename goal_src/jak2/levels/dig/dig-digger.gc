@@ -723,12 +723,12 @@
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! ((this dig-clasp-b) (arg0 entity-actor))
   "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
-   This commonly includes things such as:
-   - stack size
-   - collision information
-   - loading the skeleton group / bones
-   - sounds"
-  (when (not (task-node-closed? (game-task-node dig-knock-down-resolution)))
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (when #t ;; (not (task-node-closed? (game-task-node dig-knock-down-resolution)))
     (let ((s4-0 (new 'process 'collide-shape this (collide-list-enum usually-hit-by-player))))
       (let ((v1-2 (new 'process 'collide-shape-prim-sphere s4-0 (the-as uint 0))))
         (set! (-> v1-2 prim-core collide-as) (collide-spec enemy))
@@ -1192,18 +1192,18 @@
       ((zero? s5-0)
        (send-event (handle->process (-> this hud-counter)) 'hide-and-die)
        (set! (-> this hud-counter) (the-as handle #f))
-       (when (= (-> this movie-handle) #f)
-         (set! (-> this movie-handle)
-               (ppointer->handle (process-spawn scene-player :init scene-player-init "dig-digger-explode" #t #f))
-               )
-         (if (handle->process (-> this movie-handle))
-             (cleanup-for-death this)
-             )
-         )
+      ;;  (when (= (-> this movie-handle) #f)
+      ;;    (set! (-> this movie-handle)
+      ;;          (ppointer->handle (process-spawn scene-player :init scene-player-init "dig-digger-explode" #t #f))
+      ;;          )
+      ;;    (if (handle->process (-> this movie-handle))
+      ;;        (cleanup-for-death this)
+      ;;        )
+      ;;    )
        )
-      ((>= 4 s5-0)
-       (script-eval '(want-anim "dig-digger-explode"))
-       )
+      ;; ((>= 4 s5-0)
+      ;;  (script-eval '(want-anim "dig-digger-explode"))
+      ;;  )
       )
     )
   0

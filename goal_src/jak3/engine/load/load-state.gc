@@ -267,6 +267,32 @@
     )
   )
 
+(defun side-mish-level? ((name symbol))
+  (case name :comp name=  
+    (('lbbush) ;; TODO 'lshuttle 'lbombbot 'lprtrace 'lerlchal 'lracebb 'lracebf 'lracecb 'lracecf 'lracedb 'lracedf 'outrocst)
+      #t
+      )
+    (else
+      #f
+      )
+    )
+  )
+
+(defun side-mish-active? ()
+  (let ((tm (process-by-type task-manager *active-pool*)))
+    (and tm (!= (-> tm type symbol) 'task-manager-desert-interceptors-attack)))
+  
+  ;; jak 2 code
+  ;; (dotimes (s5-0 LEVEL_MAX)
+  ;;   (when (and *level* (-> *level* level s5-0) (side-mish-level? (-> *level* level s5-0 name)))
+  ;;     (return #t)
+  ;;     )
+  ;;   )
+
+  ;; ;; made it here -> no side mission levels
+  ;; #f
+  )
+
 ;; WARN: Return type mismatch int vs object.
 (defun add-want-level ((arg0 (inline-array level-buffer-state))
               (arg1 (pointer int64))
@@ -277,8 +303,14 @@
               )
   (when arg2
     (let ((s1-0 (lookup-level-info arg2)))
+      ;; (inspect s1-0)
+      ;; (format 0 "add-want-level ~A~%" arg2)
       (cond
         ((>= (-> arg1 0) 10)
+         )
+        ((and (logtest? (-> s1-0 level-flags) (level-flags orb-hunt)) (side-mish-active?))
+         ;; side mish active, skip orb-hunt (borrow) levels
+         (dbg-format 0 "side mission active, skipping level ~A~%" (-> s1-0 name))
          )
         ((and (-> s1-0 borrow) (-> s1-0 borrow alias))
          (let* ((s0-1 (borrow-city-expansion (the-as pair (-> s1-0 borrow alias))))
@@ -327,6 +359,7 @@
                         (a2-2 (car v1-38))
                         (a3-2 (car (cdr v1-38)))
                         )
+                    ;; (format 0 "load-state ~A borrow loop ~A ~A~%" arg2 a2-2 a3-2)
                     (set! a3-2 (cond
                                  ((or (not arg3) (= a3-2 'copy))
                                   arg3
@@ -432,6 +465,7 @@
   (none)
   )
 
+(define last-cant-display-warning-time (the-as time-frame #f))
 (defmethod want-display-level ((this load-state) (arg0 symbol) (arg1 symbol))
   (dotimes (v1-0 10)
     (when (= (-> this want v1-0 name) arg0)
@@ -440,8 +474,9 @@
       (return 0)
       )
     )
-  (if arg1
+  (when (and arg1 (or (not last-cant-display-warning-time) (time-elapsed? last-cant-display-warning-time (seconds 5))))
       (format 0 "ERROR: can't display ~A because it isn't loaded~%" arg0)
+      (set-time! last-cant-display-warning-time)
       )
   0
   )

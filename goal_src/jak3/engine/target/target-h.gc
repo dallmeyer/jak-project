@@ -584,6 +584,7 @@
     (target-warp-out vector vector handle)
     target-yellow-jump-blast
     tobot-stance
+    target-fuel-cell
     )
   )
 

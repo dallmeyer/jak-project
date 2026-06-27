@@ -1208,7 +1208,8 @@
     (behavior ()
       (set-setting! 'ambient-volume 'rel 50.0 0)
       (send-event *target* 'reset-pickup 'eco)
-      (ja-channel-set! 0)
+      (ja-channel-set! 1) ;; added so fisherman shows during fishgame
+      (ja :group! (get-art-elem self))
       (clear-collide-with-as (-> self root))
       (process-spawn-function process
         (lambda :behavior fisher-fish ()
@@ -1219,7 +1220,7 @@
           (none))
         :to
         self)
-      (send-event *camera* 'change-to-entity-by-name "camera-152")
+      (send-event *camera* 'change-to-entity-by-name "camera-152") ;; barg - change to move fish game?
       (init! (-> self query) (the-as string #f) 40 150 25 #t (lookup-text! *common-text* (text-id quit) #f)))
   :exit
     (behavior ()
@@ -1267,7 +1268,11 @@
       (set! (-> self ambient-steady) 0)
       (set! (-> self ambient-sagging) 0)
       (set! (-> self ambient-almost) 0)
+      (when (!= (ja-group) (get-art-elem self)) ;; modified to show fisher idle animation during fishgame
+        (ja-channel-push! 1 (seconds 0.2))
+        (ja :group! (get-art-elem self)))
       (loop
+        (ja :num! (loop!))
         (hide-hud-quick)
         (fisher-game-update)
         (if (or (zero? (-> self params timeout))
@@ -1556,6 +1561,7 @@
       (let ((v1-1 (handle->process arg0)))
         (when (and v1-1 (type-type? (-> v1-1 type) fisher))
           (set-vector! (-> self control trans) 1067827.2 9420.8 -955596.8 1.0)
+          ;; (set-vector! (-> self control trans) (meters 480.2) (meters 2.1) (meters -228.7) 1.0)  ;; barg - change to move fishgame?
           (set-yaw-angle-clear-roll-pitch! (-> self control) -20024.889)
           (rot->dir-targ! (-> self control))))
       (ja-channel-set! 1)

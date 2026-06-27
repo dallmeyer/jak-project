@@ -190,7 +190,7 @@
     (joint-control-channel-group! a0-27 (the-as art-joint-anim (-> this draw art-group data 2)) num-func-identity)
     )
   (transform-post)
-  (go (method-of-object this idle))
+  (go (method-of-object this open) 0)
   (none)
   )
 
@@ -376,7 +376,7 @@
     (joint-control-channel-group! a0-30 (the-as art-joint-anim (-> this draw art-group data 2)) num-func-identity)
     )
   (transform-post)
-  (go (method-of-object this idle))
+  (go (method-of-object this open))
   (none)
   )
 
@@ -593,9 +593,10 @@
          v0-0
          )
        )
-      (else
-        ((-> (method-of-type basebutton up-idle) event) proc argc message block)
-        )
+      ;; orbhunt - prevent beetle challenge from starting, doesnt work if doors are open already
+      ;; (else
+      ;;   ((-> (method-of-type basebutton up-idle) event) proc argc message block)
+      ;;   )
       )
     )
   :trans (behavior ()

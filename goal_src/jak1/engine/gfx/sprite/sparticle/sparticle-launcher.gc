@@ -55,10 +55,10 @@
 
 ;; All the particle launchers.
 ;; Particle effects will add themselves to this table when the code is loaded/linked
-(define *part-id-table* (new 'global 'boxed-array sparticle-launcher 3584))
+(define *part-id-table* (new 'global 'boxed-array sparticle-launcher 8192)) ;; TFL note: increased (default:3584)
 
 ;; All the particle groups.
-(define *part-group-id-table* (new 'global 'boxed-array sparticle-launch-group 1024))
+(define *part-group-id-table* (new 'global 'boxed-array sparticle-launch-group 2048)) ;; TFL note: increased (default:1024)
 
 (defun lookup-part-group-by-name ((arg0 string))
   "Find a particle group with the given name. Checks all of them, not very efficient."
@@ -225,14 +225,18 @@
 ;;;;;;;;;;;;;;;;;;;
 ;; launch
 ;;;;;;;;;;;;;;;;;;;
-
+(define *last-particle-error-log-time* (the time-frame #f))
 (defun sp-queue-launch ((arg0 sparticle-system) (arg1 sparticle-launcher) (arg2 vector))
   "Queue a launch from the given launcher, at the given position."
   (let ((v1-0 *sp-launch-queue*))
     ;; og:preserve-this constant
     ;; make sure we have room in the queue
     (when (= (-> v1-0 in-use) SPARTICLE_QUEUE_SIZE)
-      (format 0 "ERROR: sp-launch-particles called during processing, and queue is full~%")
+      ;; og:mod-base suppress particle log spam a bit
+      (when (or (not *last-particle-error-log-time*)
+                (time-elapsed? *last-particle-error-log-time* (seconds 10)))
+        (format 0 "ERROR: sp-launch-particles called during processing, and queue is full~%")
+        (set-time! *last-particle-error-log-time*))
       (return 0))
     ;; make a new entry in the queue
     (let ((a3-5 (-> v1-0 queue (-> v1-0 in-use))))

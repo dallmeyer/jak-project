@@ -490,7 +490,205 @@
         (set! (-> this on-close) (the-as pair (car (cdr (cdr (cdr s5-0))))))
         )
       (else
-        (set! (-> this continue) #f)
+        (case-str (-> this name)
+          (("casboss-air-train-01") ;; casboss -> caspad
+            (cond 
+              ((task-closed? "castle-boss-resolution")  ;; krew dead, show/enable air-train
+                (logclear! (-> this draw status) (draw-control-status no-draw))
+                (set! (-> this continue) (get-continue-by-name *game-info* "caspad-warp"))
+                (set! (-> this on-activate) '(scene-play "caspad-air-train-out"))
+                (set! (-> this wait-for) '())
+                (set! (-> this on-close) '(want-anim "caspad-air-train-out"))
+                )
+              (else ;; krew alive, hide/disable air-train
+                (logior! (-> this draw status) (draw-control-status no-draw))
+                (set! (-> this continue) #f)
+                )
+              )
+            )
+          ;; halfpipe -> stadium
+          (("halfpipe-warp-gate-01")
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide real warp gate
+            (set! (-> this continue) (get-continue-by-name *game-info* "stadium-warp"))
+            (set! (-> this on-activate) '())
+            (set! (-> this wait-for) '())
+            (set! (-> this on-close) '())
+            )
+          (("halfpipe-air-train-01")
+            (logclear! (-> this draw status) (draw-control-status no-draw)) ;; show air-train
+            (set! (-> this continue) #f)
+            )
+          ;; stadium -> halfpipe
+          (("stadium-warp-gate-01") 
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide real warp gate
+            (set! (-> this continue) (get-continue-by-name *game-info* "halfpipe-warp"))
+            (set! (-> this on-activate) '())
+            (set! (-> this wait-for) '())
+            (set! (-> this on-close) '())
+            )
+          (("stadium-air-train-01") ;; show air-train
+            (logclear! (-> this draw status) (draw-control-status no-draw))
+            (set! (-> this continue) #f)
+            )
+          ;; nestb -> village1
+          (("nestb-warp-gate-01")
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide so it looks like rift-ring is warp
+            (when (task-closed? "nest-boss-resolution")  ;; kor dead, allow use
+              (set! (-> this continue) (get-continue-by-name *game-info* "village1-rift"))
+              (set! (-> this on-activate) '())
+              (set! (-> this wait-for) '())
+              (set! (-> this on-close) '())
+              )
+            )
+          ;; village1 -> nestb
+          (("village1-warp-gate-01")
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide so it looks like rift-ring is warp
+            (when (task-closed? "nest-boss-resolution")  ;; kor dead, allow use
+              (set! (-> this continue) (get-continue-by-name *game-info* "nestb-warp"))
+              (set! (-> this on-activate) '())
+              (set! (-> this wait-for) '())
+              (set! (-> this on-close) '())
+              )
+            )
+          ;; sagehut -> village1
+          (("sagehut-warp-gate-01")
+            (cond 
+              ((task-closed? "nest-boss-resolution")  ;; kor dead, allow use
+                (set! (-> this continue) (get-continue-by-name *game-info* "village1-warp"))
+                (set! (-> this on-activate) '())
+                (set! (-> this wait-for) '())
+                (set! (-> this on-close) '())            
+                )
+              (else
+                (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide
+                )
+              )
+            )
+          ;; village1 -> sagehut
+          (("village1-warp-gate-02")
+            ;; no kor check - backup to make sure you can exit village1 if you somehow get here
+            (set! (-> this continue) (get-continue-by-name *game-info* "sagehut-warp"))
+            (set! (-> this on-activate) '())
+            (set! (-> this wait-for) '())
+            (set! (-> this on-close) '())            
+            )
+          ;; forresca -> fordumpa
+          (("forresca-warp-gate-01")
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide so it looks like rift-ring is warp
+            (set! (-> this continue) (get-continue-by-name *game-info* "fordumpa-start"))
+            (set! (-> this on-activate) '())
+            (set! (-> this wait-for) '())
+            (set! (-> this on-close) '())
+            )
+          ;; dig1 -> dig3a
+          (("dig1-warp-gate-01")
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide so it looks like rift-ring is warp
+            (set! (-> this continue) (get-continue-by-name *game-info* "dig3a-warp"))
+            (set! (-> this on-activate) '())
+            (set! (-> this wait-for) '())
+            (set! (-> this on-close) '())            
+            )
+          ;; dig3a -> dig1
+          (("dig3a-warp-gate-01")
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide so it looks like rift-ring is warp
+            (set! (-> this continue) (get-continue-by-name *game-info* "dig1-warp"))
+            (set! (-> this on-activate) '())
+            (set! (-> this wait-for) '())
+            (set! (-> this on-close) '())
+            )
+          ;; sewer -> sewesc
+          (("sewer-warp-gate-01")
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide so it looks like rift-ring is warp
+            (set! (-> this continue) (get-continue-by-name *game-info* "sewesc-warp"))
+            (set! (-> this on-activate) '())
+            (set! (-> this wait-for) '())
+            (set! (-> this on-close) '())            
+            )
+          ;; sewesc -> sewer
+          (("sewesc-warp-gate-01")
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide so it looks like rift-ring is warp
+            (set! (-> this continue) (get-continue-by-name *game-info* "sewer-warp"))
+            (set! (-> this on-activate) '())
+            (set! (-> this wait-for) '())
+            (set! (-> this on-close) '())
+            )
+          ;; skatea -> stadiumb
+          (("skatea-warp-gate-01")
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide so it looks like rift-ring is warp
+            (set! (-> this continue) (get-continue-by-name *game-info* "stadiumb-warp"))
+            (set! (-> this on-activate) '())
+            (set! (-> this wait-for) '())
+            (set! (-> this on-close) '())            
+            )
+          ;; stadiumb -> stadiumc
+          (("stadiumb-warp-gate-01")
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide so it looks like rift-ring is warp
+            (set! (-> this continue) (get-continue-by-name *game-info* "stadiumc-warp"))
+            (set! (-> this on-activate) '())
+            (set! (-> this wait-for) '())
+            (set! (-> this on-close) '())            
+            )
+          ;; stadiumc -> stadiumd
+          (("stadiumc-warp-gate-01")
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide so it looks like rift-ring is warp
+            (set! (-> this continue) (get-continue-by-name *game-info* "stadiumd-warp"))
+            (set! (-> this on-activate) '())
+            (set! (-> this wait-for) '())
+            (set! (-> this on-close) '())            
+            )
+          ;; stadiumd -> skatea
+          (("stadiumd-warp-gate-01")
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide so it looks like rift-ring is warp
+            (set! (-> this continue) (get-continue-by-name *game-info* "skatea-warp"))
+            (set! (-> this on-activate) '())
+            (set! (-> this wait-for) '())
+            (set! (-> this on-close) '())            
+            )
+          
+          ;; slums -> mooon
+          (("ctysluma-warp-gate-01")
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide real warp gate
+
+            (cond
+              ((>= (-> *game-info* skill-total) 3125.0)
+                (set! (-> this continue) (get-continue-by-name *game-info* "mooon-start"))
+                (set! (-> this on-activate) '())
+                (set! (-> this wait-for) '())
+                (set! (-> this on-close) '())
+                )
+              (else
+                (set! (-> this continue) #f)
+                )
+              )
+            )
+          (("ctysluma-air-train-01") ;; show air-train
+            (cond
+              ((>= (-> *game-info* skill-total) 3125.0)
+                (logclear! (-> this draw status) (draw-control-status no-draw))
+                )
+              (else
+                (logior! (-> this draw status) (draw-control-status no-draw))
+                )
+              )
+            (set! (-> this continue) #f)
+            )
+          ;; mooon -> slums
+          (("mooon-warp-gate-01") 
+            (logior! (-> this draw status) (draw-control-status no-draw)) ;; hide real warp gate
+            (set! (-> this continue) (get-continue-by-name *game-info* "ctysluma-warp"))
+            (set! (-> this on-activate) '())
+            (set! (-> this wait-for) '())
+            (set! (-> this on-close) '())
+            )
+          (("mooon-air-train-01") ;; show air-train
+            (logclear! (-> this draw status) (draw-control-status no-draw))
+            (set! (-> this continue) #f)
+            )
+          ;; unknown
+          (else
+            ;; (set! (-> this continue) #f)
+            )
+          )
         )
       )
     )
@@ -549,8 +747,8 @@
         ;; og:preserve-this
         ;; For speedrunner mode, always allow warp-gates to be used
         ;; even when dialogues are playing
-        (when (and (or (-> *pc-settings* speedrunner-mode?)
-                       (can-display-query? self (the-as string #f) -99.0))
+        (when (and ;; (or (-> *pc-settings* speedrunner-mode?)
+                   ;;    (can-display-query? self (the-as string #f) -99.0))
                    (cond
                      ((and (-> *target* next-state) (let ((v1-30 (-> *target* next-state name)))
                                                       (or (= v1-30 'target-warp-in) (= v1-30 'target-warp-out))
@@ -565,24 +763,49 @@
                      )
                    (time-elapsed? (-> self state-time) (seconds 0.1))
                    )
-          (if (and (cpad-pressed? 0 triangle) (process-grab? *target* #f))
-              (go-virtual use (-> self continue))
-              )
-          (script-eval (-> self on-close))
-          (let ((gp-0
-                  (new 'stack 'font-context *font-default-matrix* 32 320 0.0 (font-color default) (font-flags shadow kerning))
+          (cond
+            ((and (name= (-> self name) "air-train-1")
+                  (not (task-closed? "nest-boss-resolution"))
+                  (< (-> *game-info* skill) 286.0))
+              ;; no metalhead nest until you get 286 orbs / beat finalboss (debug)
+              (let ((gp-0
+                      (new 'stack 'font-context *font-default-matrix* 100 320 0.0 (font-color default) (font-flags middle shadow kerning))
+                      )
+                    )
+                (set-width! gp-0 340)
+                (set-height! gp-0 80)
+                (set-scale! gp-0 0.9)
+                (set! (-> gp-0 flags) (font-flags shadow kerning large))
+                (print-game-text
+                  (lookup-text! *common-text* (text-id collect-1000-orbs) #f)
+                  gp-0
+                  #f
+                  44
+                  (bucket-id progress)
                   )
                 )
-            (set-width! gp-0 340)
-            (set-height! gp-0 80)
-            (set-scale! gp-0 0.9)
-            (set! (-> gp-0 flags) (font-flags shadow kerning large))
-            (print-game-text
-              (lookup-text! *common-text* (text-id press-triangle-to-use) #f)
-              gp-0
-              #f
-              44
-              (bucket-id progress)
+              )
+            (else
+              (if (and (cpad-pressed? 0 triangle) (process-grab? *target* #f))
+                  (go-virtual use (-> self continue))
+                  )
+              (script-eval (-> self on-close))
+              (let ((gp-0
+                      (new 'stack 'font-context *font-default-matrix* 32 320 0.0 (font-color default) (font-flags shadow kerning))
+                      )
+                    )
+                (set-width! gp-0 340)
+                (set-height! gp-0 80)
+                (set-scale! gp-0 0.9)
+                (set! (-> gp-0 flags) (font-flags shadow kerning large))
+                (print-game-text
+                  (lookup-text! *common-text* (text-id press-triangle-to-use) #f)
+                  gp-0
+                  #f
+                  44
+                  (bucket-id progress)
+                  )
+                )
               )
             )
           )
@@ -647,44 +870,74 @@
     (set! (-> *setting-control* user-default border-mode) #t)
     (set! (-> *level* play?) #t)
     (apply-settings *setting-control*)
-    (let ((s5-0 (new 'stack-no-clear 'event-message-block)))
-      (set! (-> s5-0 from) (process->ppointer self))
-      (set! (-> s5-0 num-params) 4)
-      (set! (-> s5-0 message) 'change-state)
-      (set! (-> s5-0 param 0) (the-as uint target-warp-out))
-      (let ((v1-22 (new 'static 'vector)))
-        (set! (-> v1-22 quad) (-> self center quad))
-        (set! (-> s5-0 param 1) (the-as uint v1-22))
+    (case (-> arg0 name) :comp name=
+      (("ctysluma-warp")
+        ;; restore normal grav when leaving mooon
+        (when *target* (set! (-> *target* control dynam gravity-length) (meters 50)))
+        (set! (-> *TARGET-bank* jump-height-max) (meters 3.5))
+        (set! (-> *TARGET-bank* double-jump-height-max) (meters 2.5))
+        (set! (-> *TARGET_BOARD-bank* jump-height-max) (meters 3.5))
+        (set! (-> *TARGET_BOARD-bank* duck-jump-height-max) (meters 5.0))
+        (set! (-> *TARGET_BOARD-bank* trickx-jump-height-max) (meters 1.2))
+        (set! (-> *TARGET_BOARD-bank* tricky-jump-height-max) (meters 1.2))
         )
-      (set! (-> s5-0 param 2) (the-as uint (target-pos 0)))
-      (set! (-> s5-0 param 3) (the-as uint (process->handle self)))
-      (send-event-function *target* s5-0)
+      (("mooon-warp")
+        ;; low grav when heading to mooon
+        (when *target* (set! (-> *target* control dynam gravity-length) (meters 20)))
+        (set! (-> *TARGET-bank* jump-height-max) (meters 7.0))
+        (set! (-> *TARGET-bank* double-jump-height-max) (meters 5.0))
+        (set! (-> *TARGET_BOARD-bank* jump-height-max) (meters 7.0))
+        (set! (-> *TARGET_BOARD-bank* duck-jump-height-max) (meters 10.0))
+        (set! (-> *TARGET_BOARD-bank* trickx-jump-height-max) (meters 2.4))
+        (set! (-> *TARGET_BOARD-bank* tricky-jump-height-max) (meters 2.4))
+        )
       )
-    (script-eval (-> self on-activate))
-    (while (begin
-             (set! v1-38 (when (-> self wait-for)
-                           (let* ((s5-1 (-> self wait-for))
-                                  (a1-8 (car s5-1))
+    (case-str (-> self name)
+      (("halfpipe-warp-gate-01" "stadium-warp-gate-01" "ctysluma-warp-gate-01" "mooon-warp-gate-01") 
+        ;; skip target-warp-out, just go to continue
+        )
+      (else
+        ;; normal warp gate behavior
+        (let ((s5-0 (new 'stack-no-clear 'event-message-block)))
+          (set! (-> s5-0 from) (process->ppointer self))
+          (set! (-> s5-0 num-params) 4)
+          (set! (-> s5-0 message) 'change-state)
+          (set! (-> s5-0 param 0) (the-as uint target-warp-out))
+          (let ((v1-22 (new 'static 'vector)))
+            (set! (-> v1-22 quad) (-> self center quad))
+            (set! (-> s5-0 param 1) (the-as uint v1-22))
+            )
+          (set! (-> s5-0 param 2) (the-as uint (target-pos 0)))
+          (set! (-> s5-0 param 3) (the-as uint (process->handle self)))
+          (send-event-function *target* s5-0)
+          )
+        (script-eval (-> self on-activate))
+        (while (begin
+                (set! v1-38 (when (-> self wait-for)
+                              (let* ((s5-1 (-> self wait-for))
+                                      (a1-8 (car s5-1))
+                                      )
+                                (while (not (null? s5-1))
+                                  (when (not (member (level-status *level* (the-as symbol a1-8)) '(loaded active)))
+                                    (set! v1-38 #t)
+                                    (goto cfg-21)
+                                    )
+                                  (set! s5-1 (cdr s5-1))
+                                  (set! a1-8 (car s5-1))
                                   )
-                             (while (not (null? s5-1))
-                               (when (not (member (level-status *level* (the-as symbol a1-8)) '(loaded active)))
-                                 (set! v1-38 #t)
-                                 (goto cfg-21)
-                                 )
-                               (set! s5-1 (cdr s5-1))
-                               (set! a1-8 (car s5-1))
-                               )
-                             )
-                           #f
-                           )
-                   )
-             (label cfg-21)
-             (or v1-38 (not (time-elapsed? (-> self state-time) (seconds 2))))
-             )
-      (update! (-> self sound))
-      (suspend)
-      (ja :num! (loop!))
-      (ja-post)
+                                )
+                              #f
+                              )
+                      )
+                (label cfg-21)
+                (or v1-38 (not (time-elapsed? (-> self state-time) (seconds 2))))
+                )
+          (update! (-> self sound))
+          (suspend)
+          (ja :num! (loop!))
+          (ja-post)
+          )
+        )
       )
     (if (not (logtest? (-> arg0 flags) (continue-flags no-blackout)))
         (set-blackout-frames (seconds 0.05))
@@ -763,14 +1016,17 @@
   (logior! (-> self mask) (process-mask actor-pause))
   ;; og:preserve-this added for revisiting nest
   (#when PC_PORT
-    (when (string= (-> self name) "air-train-1")
-      (set! (-> (the (pointer pair) (get-tag-index-data arg0 2)))
+    (case-str (-> self name)
+      (("air-train-1")  ;; ctyport
+        (set! (-> (the (pointer pair) (get-tag-index-data arg0 2))) ;; 'on-notice
             '(cond
               ((task-closed? "nest-boss-resolution") '("nest-warp" (scene-play '("city-air-train-in-nest" "nest-air-train-out")) #f (want-anim "city-air-train-in-nest")))
               ((task-closed? "nest-get-to-gun-introduction") '("nest-warp" (scene-play '("city-air-train-in-nest" "nest-air-train-out")) #f (want-anim "city-air-train-in-nest")))
               ((task-closed? "dig-find-totem-introduction") '("caspad-warp" (scene-play '("city-air-train-in-caspad" "caspad-air-train-out")) #f (want-anim "city-air-train-in-caspad")))
               ((task-closed? "dig-knock-down-introduction") '("caspad-warp" (scene-play '("city-air-train-in-caspad" "caspad-air-train-out")) #f (want-anim "city-air-train-in-caspad"))))
             )
+        )
+      ;; (("air-train-3")) ;; caspad
       )
     )
   (setup-fields self)
@@ -1014,7 +1270,7 @@
     (move-to-point! (-> self control) (-> self control unknown-vector37))
     (let ((s5-1 (current-time)))
       (while (or (not (time-elapsed? s5-1 (seconds 1)))
-                 (< 81920.0 (vector-vector-distance (camera-pos) (-> self control trans)))
+                 (< (meters 40.0) (vector-vector-distance (camera-pos) (-> self control trans)))
                  )
         (suspend)
         )

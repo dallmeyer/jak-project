@@ -1495,6 +1495,293 @@
                                         :fwd
                                         (checkpt "finalboss-fight" #f)
                                         :bwd
-                                        (checkpt "finalboss-start" #f))))
+                                        (checkpt "finalboss-start" #f))
+
+;; TFL note: Added custom load-boundaries for custom levels:
+
+;; these are the load boundaries to load in and display our custom level and checkpoints
+;; the "top" field is the max of the boundary's y position, the "bot" field is the min.
+;; the "points" field defines two points with x and z coordinates, respectively.
+;; using these two fields, the load boundary's plane is generated.
+;;
+;; the "fwd" field determines what command to execute when the camera passes the boundary
+;; from the front, here, it loads in outset-island as level 0 and beach as level 1
+;; and loads village1 and beach if you pass it from the back.
+;;
+;; when you're trying to create your own boundaries,
+;; multiply your in-game coordinates (target or cam-trans in the bug report menu for example) by 4096.
+
+;; CRYSTAL CAVE BOUNDARIES:
+
+;; (static-load-boundary :flags ()
+;;   :top (meters 117.77)  :bot (meters 77.84)
+;;   :points (  (meters -268.05) (meters 38.89)  (meters -295.40) (meters 0.44) (meters -325.45) (meters 2.75) )
+;;   :fwd (display crescent display-no-wait)
+;;   :bwd (display crescent #f)
+;;   )
+
+(static-load-boundary :flags ()
+  :top (meters 117.77)  :bot (meters 77.84)
+  :points (  (meters -262.81) (meters 26.82)  (meters -290.15) (meters -11.62) (meters -332.01) (meters -12.9) )
+  :fwd (display crescent display-no-wait)
+  :bwd (display crescent #f)
+  )
+
+(static-load-boundary :flags ()
+  :top (meters 138.83)  :bot (meters 78.62)
+  :points (  (meters -278.26) (meters 103.31)  (meters -334.01) (meters 99.15) ) 
+  :bwd (vis crc #f)
+  )
+
+(static-load-boundary :flags (player )
+  ;;     y top                y bottom
+  :top (meters 111.62)  :bot (meters 92.77)
+  ;;          point 0 x        point 0 z      point 1 x        point 1 z
+  :points (  (meters -49.33) (meters 28.08)  (meters -46.07) (meters 3.86) )
+  :fwd (checkpt "crystal-cave-start" #f)
+  :bwd (checkpt "crystal-cave-start" #f)
+  )
+
+(static-load-boundary :flags (player )
+  ;;     y top                y bottom
+  :top (meters 106.31)  :bot (meters 86.17)
+  ;;          point 0 x        point 0 z      point 1 x        point 1 z
+  :points (  (meters -177.31) (meters 6.42)  (meters -200.30) (meters -32.76) )
+  :fwd (checkpt "crystal-cave-void-entry" #f)
+  :bwd (checkpt "crystal-cave-void-entry" #f)
+  )
+
+(static-load-boundary :flags (player )
+  ;;     y top                y bottom
+  :top (meters 113.98)  :bot (meters 81.53)
+  ;;          point 0 x        point 0 z      point 1 x        point 1 z
+  :points (  (meters -171.88) (meters -109.6)  (meters -155.9) (meters -63.43) (meters -87.76) (meters -74.59))
+  :fwd (checkpt "crystal-cave-river" #f)
+  :bwd (checkpt "crystal-cave-river" #f)
+  )
+
+(static-load-boundary :flags (player )
+  ;;     y top                y bottom
+  :top (meters 98.87)  :bot (meters 72.62)
+  ;;          point 0 x        point 0 z      point 1 x        point 1 z
+  :points (  (meters -214.99) (meters -65.94)  (meters -203.57) (meters -127.6) )
+  :fwd (checkpt "crystal-cave-bad-shrooms" #f)
+  :bwd (checkpt "crystal-cave-bad-shrooms" #f)
+  )
+
+(static-load-boundary :flags (player )
+  ;;     y top                y bottom
+  :top (meters 116.71)  :bot (meters 95.84)
+  ;;          point 0 x        point 0 z      point 1 x        point 1 z
+  :points (  (meters -317.58) (meters -49.09)  (meters -339.10) (meters -37.49) )
+  :fwd (checkpt "crystal-cave-void-end" #f)
+  :bwd (checkpt "crystal-cave-void-end" #f)
+  )
+
+(static-load-boundary :flags (player )
+  ;;     y top                y bottom
+  :top (meters 112.68)  :bot (meters 92.54)
+  ;;          point 0 x        point 0 z      point 1 x        point 1 z
+  :points (  (meters -276.61) (meters 32.51)  (meters -318.34) (meters 14.54) )
+  :fwd (checkpt "crystal-cave-gondola" #f)
+  :bwd (checkpt "crystal-cave-gondola" #f)
+  )
+
+
+;; TEMPORARY WAY TO CRESCENT TOP
+
+;; (static-load-boundary :flags (closed player) ;; closed flag makes it a horizontal load-boundary
+;;   ;;     y top                y bottom
+;;   :top (meters 84.06)  :bot -568353.0000
+;;   ;;          point 0 x        point 0 z      point 1 x        point 1 z        point 2 x        point 2 z      point 3 x        point 3 z      
+;;   :points (  (meters -278.46) (meters 119.6)  (meters -329.53) (meters 118.65)  (meters -328.41) (meters 58.11)  (meters -277.34) (meters 59.05))
+;;   :fwd (vis cst #f)
+;;   :bwd (vis cst #f)
+;;   )
+
+;; CRESCENT TOP BOUNDARIES
+
+(static-load-boundary :flags () ; observatory side
+  :top (meters 292.18)  :bot (meters 209.51)
+  :points (  (meters -135.63) (meters 287.46)  (meters 34.55) (meters 528.97) )
+  ;; :fwd (load crescent maincave) ;; remove when platforms are fixed
+  :bwd (load crescent crystalc)
+  )
+
+(static-load-boundary :flags () ; open mine side
+  :top (meters 286.56)  :bot (meters 202.06)
+  :points (  (meters -307.67) (meters 509.67)  (meters -126.76) (meters 639.09) )
+  :fwd (load crescent crystalc)
+  ;; :bwd (load crescent maincave) ;; open mines load whenever it exists
+  )
+
+(static-load-boundary :flags ()
+  :top (meters 302.75)  :bot (meters 126.82)
+  :points (  (meters 359.44) (meters 365.73)  (meters 235.99) (meters 546.72) )
+  :fwd (load crescent energbay)
+  ;:bwd (load crescent maincave) ;; remove when platforms are fixed
+  )
+
+(static-load-boundary :flags ()
+  :top (meters 285.30)  :bot (meters 212.05)
+  :points (  (meters -258.33) (meters 462.83)  (meters -169.51) (meters 449.59) (meters -148.44) (meters 382.88) (meters -161.21) (meters 329.24) )
+  :fwd (display crystalc display-no-wait)
+  :bwd (display crystalc #f)
+  )
+
+(static-load-boundary :flags ()
+  :top (meters 302.75)  :bot (meters 126.82)
+  :points (  (meters 386.22) (meters 384.52)  (meters 255.35) (meters 576.76) )
+  :fwd (display energbay display-no-wait)
+  :bwd (display energbay #f)
+  )
+
+;; (static-load-boundary :flags () ;; Display for open-mines whenever it exists
+;;   :top (meters 267.92)  :bot (meters 193.83)
+;;   :points (  (meters -307.23) (meters 568.9)  (meters -294.03) (meters 615.05)  (meters -325.2) (meters 669.78))
+;;   :fwd (display open-mines display-no-wait)
+;;   :bwd (display open-mines #f)
+;;   )
+
+(static-load-boundary :flags (closed )
+  :top (meters 168.12)  :bot (meters 168.12)
+  :points (  (meters -373.47) (meters 172.4)  (meters -312.08) (meters 308.44) (meters -231.21) (meters 271.95)(meters -292.6) (meters 135.91))
+  ;:fwd (vis crc #f)
+  :bwd (vis cst #f) ;vis cst #f
+  )
+
+(static-load-boundary :flags (player ignore-racing)
+  :top (meters 267.94)  :bot (meters 188.8)
+  :points (  (meters -177.73) (meters 308.23)  (meters -269.76) (meters 406.01))
+  :fwd (checkpt "crescent-top-near-cave" #f)
+  :bwd (checkpt "crescent-top-near-cave" #f)
+  )
+
+(static-load-boundary :flags (player )
+  :top (meters 290.37)  :bot (meters 199.78)
+  :points (  (meters -115.28) (meters 600.55)  (meters -242.01) (meters 433.03) (meters -170.29) (meters 353.75) (meters -3.86) (meters 529.26))
+  :fwd (checkpt "crescent-top-zoomer" #f)
+  :bwd (checkpt "crescent-top-zoomer" #f)
+  )
+
+(static-load-boundary :flags (player ignore-racing)
+  :top (meters 226.40)  :bot (meters 210.61)
+  :points (  (meters -232.14) (meters 639.44)  (meters -238.81) (meters 651.71))
+  :fwd (checkpt "crescent-top-robot" #f)
+  :bwd (checkpt "crescent-top-robot" #f)
+  )
+
+(static-load-boundary :flags (player ignore-racing)
+  :top (meters 301.00)  :bot (meters 259.52)
+  :points (  (meters 111.42) (meters 406.53)  (meters 93.09) (meters 389.69)  (meters 119.65) (meters 359.48))
+  :fwd (checkpt "crescent-top-observatory" #f)
+  :bwd (checkpt "crescent-top-observatory" #f)
+  )
+
+(static-load-boundary :flags (player ignore-racing)
+  :top (meters 313.17)  :bot (meters 247.99)
+  :points ((meters 417.97)(meters 498.39)  (meters 298.32)(meters 589.74))
+  :fwd (checkpt "crescent-top-near-bay" #f)
+  :bwd (checkpt "crescent-top-near-bay" #f)
+  )
+
+;; (static-load-boundary :flags (player ignore-racing) ;; Previous one, only if you go up the small challenge
+;;   :top (meters 305.15)  :bot (meters 256.16)
+;;   :points (  (meters 404.99) (meters 613.25)  (meters 387.06) (meters 540.26)  (meters 330.3) (meters 564.38)  (meters 392.3) (meters 627.29))
+;;   :fwd (checkpt "crescent-top-near-bay" #f)
+;;   :bwd (checkpt "crescent-top-near-bay" #f)
+;;   )
+
+(static-load-boundary :flags (player )
+  :top (meters 222.27)  :bot (meters 197.45)
+  :points (  (meters 143.71) (meters 407.15)  (meters 148.56) (meters 434.63))
+  :fwd (checkpt "crescent-top-zoomer2" #f)
+  :bwd (checkpt "crescent-top-underground" #f)
+  )
+
+(static-load-boundary :flags (player )
+  :top (meters 231.61)  :bot (meters 202.59)
+  :points (  (meters 175.29) (meters 396.88)  (meters 178.78) (meters 447.31))
+  :fwd (checkpt "crescent-top-zoomer2" #f)
+  :bwd (checkpt "crescent-top-zoomer2" #f)
+  )
+
+(static-load-boundary :flags (player )
+  :top (meters 300.72)  :bot (meters 166.86)
+  :points (  (meters 231.74) (meters 225.45)  (meters 194.87) (meters 514.57))
+  :fwd (checkpt "crescent-top-zoomer2" #f)
+  :bwd (checkpt "crescent-top-zoomer2" #f)
+  )
+
+(static-load-boundary :flags (player closed)
+  :top (meters 242.18)  :bot (meters 242.18)
+  :points (  (meters 61.00) (meters 387.22) (meters 74.56) (meters 387.22)  (meters 74.56) (meters 400.37)  (meters 61.00) (meters 400.37))
+  :fwd (checkpt "crescent-top-underground" #f)
+  :bwd (checkpt "crescent-top-observatory" #f)
+  )
+
+(static-load-boundary :flags (player )
+  :top (meters 244.27)  :bot (meters 192.32)
+  :points (  (meters -376.07) (meters 602.18)  (meters -336.26) (meters 663.33))
+  :fwd (checkpt "crescent-top-near-mines" #f)
+  :bwd (checkpt "crescent-top-near-mines" #f)
+  )
+
+(static-load-boundary :flags (player ignore-normal)
+  :top (meters 263.0)  :bot (meters 187.04)
+  :points (  (meters -291.56) (meters 677.34)  (meters -195.94) (meters 728.07))
+  :fwd (checkpt "crescent-top-near-mines" #f)
+  :bwd (checkpt "crescent-top-near-mines" #f)
+  )
+
+;; ENERGY BAY BOUNDARIES
+
+(static-load-boundary :flags (closed )
+  :top (meters 196.28)  :bot (meters 196.28)
+  :points (  (meters 551.24) (meters 633.72)  (meters 449.46) (meters 633.72) (meters 449.46) (meters 735.50) (meters 551.24) (meters 735.50))
+  :fwd (vis enb #f)
+  :bwd (vis cst #f)
+  )
+
+(static-load-boundary :flags ()
+  :top (meters 118.62)  :bot (meters 61.19)
+  :points (  (meters 403.81) (meters 598.64)  (meters 367.14) (meters 642.83))
+  :fwd (vis enb #f)
+  )
+
+(static-load-boundary :flags ()
+  :top (meters 203.98)  :bot (meters 135.76)
+  :points ((meters 342.52) (meters 442.85)  (meters 270.04) (meters 432.28)  )
+  :bwd (vis cst #f)
+  )
+
+(static-load-boundary :flags (closed player)
+  :top (meters 114.35)  :bot (meters 114.35)
+  :points (  (meters 551.24) (meters 633.72)  (meters 449.46) (meters 633.72) (meters 449.46) (meters 735.50) (meters 551.24) (meters 735.50))
+  :fwd (checkpt "energy-bay-start" #f)
+  )
+
+(static-load-boundary :flags (player)
+  :top (meters 89.62)  :bot (meters -8.0)
+  :points ((meters 759.51) (meters 456.53)  (meters 749.31) (meters 665.53)  (meters 686.79) (meters 743.46)  (meters 476.77) (meters 839.4))
+  :fwd (checkpt "energy-bay-start" #f)
+  :bwd (checkpt "energy-bay-start" #f)
+  )
+
+(static-load-boundary :flags (player)
+  :top (meters 59.87)  :bot (meters 18.39)
+  :points ((meters 850.04) (meters 571.08)  (meters 827.37) (meters 594.41))
+  :fwd (checkpt "energy-bay-turbine1" #f)
+  :bwd (checkpt "energy-bay-turbine1" #f)
+  )
+
+(static-load-boundary :flags (player)
+  :top (meters 56.20)  :bot (meters -18.28)
+  :points ((meters 751.14) (meters 993.66)  (meters 779.29) (meters 953.22))
+  :fwd (checkpt "energy-bay-turbine3" #f)
+  :bwd (checkpt "energy-bay-turbine3" #f)
+  )
+
+))
 
 (doarray (i *static-load-boundary-list*) (load-boundary-from-template (the-as (array object) i)))

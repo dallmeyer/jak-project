@@ -1,0 +1,345 @@
+(in-package goal)
+(declare-file (debug))
+
+(defun dm-orb-placer-select-func ((idx int) (msg debug-menu-msg))
+  (when (= msg (debug-menu-msg press))
+    (cond
+      ((= *orb-placer-selected-idx* idx)
+        ;; deselect
+        (set! *orb-placer-selected-idx* -1)
+        (false! *orb-placer-active?*)
+        (false! *orb-placer-disabled?*)
+        )
+      (else
+        ;; select
+        (set! *orb-placer-selected-idx* idx)
+        (true! *orb-placer-active?*)
+        (false! *orb-placer-disabled?*)
+        )
+      )
+    )
+  (= *orb-placer-selected-idx* idx)
+  )
+
+(defun orb-placer-highlight ((orb money) (highlight? symbol))
+  (cond 
+    ((and highlight? *orb-placer-disabled?*)
+      (set-vector! (-> orb draw color-mult) 0.0 0.0 0.0 1.0)
+      (set-vector! (-> orb draw color-emissive) 0.0 0.0 0.0 1.0)
+      )
+    (highlight?
+     (set-vector! (-> orb draw color-mult) 0.8 0.8 0.0 1.0)
+     (set-vector! (-> orb draw color-emissive) 0.0 1.0 0.2 1.0))
+    (else (set-vector! (-> orb draw color-mult) 0.8 0.8 0.8 1.0) (set-vector! (-> orb draw color-emissive) 0.2 0.2 0.2 1.0)))
+  (none))
+
+(defun dm-orb-placer-dupe-func ((idx int))
+  (let ((vec (new 'stack-no-clear 'vector))
+        (orb (the money (handle->process (-> *orb-placer-orbs* idx)))))
+    (when orb
+      (vector-copy! vec (-> orb base))
+
+      ; spawn and update orb-placer data
+      (let ((orb-handle (spawn-money vec 1.0 #t)))
+        (when (nonzero? orb-handle)
+          (set! (-> *orb-placer-orbs* *orb-placer-count*) orb-handle)
+          (set! *orb-placer-selected-idx* *orb-placer-count*)
+          (orb-placer-highlight (the money (handle->process orb-handle)) #t)
+          (+! *orb-placer-count* 1)
+          (orb-placer-list-maintenace #t)
+          )
+        )
+      )
+    )
+  0
+  )
+
+(defun orb-placer-list-maintenace ((update-debug-list? symbol))
+  (when update-debug-list?
+   (debug-menu-remove-all-items *orb-placer-select-menu*)
+   (debug-menu-remove-all-items *orb-placer-dupe-menu*)
+   )
+
+  (dotimes (i *orb-placer-count*)
+    (let ((orb-handle (-> *orb-placer-orbs* i))
+          (is-selected? (and *orb-placer-active?* (= i *orb-placer-selected-idx*))))
+      (when (and (nonzero? orb-handle) (handle->process orb-handle))
+        (let ((orb-proc (the money (handle->process orb-handle))))
+          (when (and orb-proc (!= (-> orb-proc next-state name) 'dead-state))
+            ;; ensure correct highlighting
+            (orb-placer-highlight orb-proc is-selected?)
+            ;; draw z-debug text
+            (add-debug-text-3d #t
+                               (bucket-id debug-no-zbuf)
+                               (-> *orb-placer-temp-strs* i)
+                               (-> orb-proc base)
+                               (if is-selected? (font-color red) (font-color white))
+                               (new 'static 'vector2h :y 16))
+            (when update-debug-list?
+              ;; append to debug menu list
+              (let ((orb-menu-item (new-dm-flag (-> *orb-placer-temp-strs* i) i dm-orb-placer-select-func))
+                    (orb-dupe-menu-item (new-dm-func (-> *orb-placer-temp-strs* i) i dm-orb-placer-dupe-func))
+                    )
+                (debug-menu-append-item *orb-placer-select-menu* orb-menu-item)
+                (debug-menu-append-item *orb-placer-dupe-menu* orb-dupe-menu-item)
+                (when is-selected?
+                  (set! (-> *orb-placer-select-menu* selected-item) orb-menu-item)
+                  (set! (-> *orb-placer-dupe-menu* selected-item) orb-dupe-menu-item)
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+
+  (when update-debug-list?
+    (set! (-> *orb-placer-select-menu* items) (sort (-> *orb-placer-select-menu* items) debug-menu-node<?)))
+  (none))
+
+(defun orb-placer-add ()
+  (when (< *orb-placer-count* ORB_PLACER_MAX)
+    (let ((vec (new 'stack-no-clear 'vector))
+          (camera-quat (new-stack-quaternion0))
+          (camera-z-vector (new-stack-vector0)))
+      ;; figure out spawn position
+      (cond
+        (*target*
+         ;; jak exists, use his position
+         (vector-copy! vec (-> *target* root trans))
+         (+! (-> vec y) (meters 2.0)) ;; dont spawn in ground
+         )
+        (else
+         ;; use camera position
+         (vector-copy! vec (-> *math-camera* trans))))
+      ;; convert the camera angle from a matrix to a quaternion (???)
+      (matrix->quaternion camera-quat (-> *camera-combiner* inv-camera-rot))
+      ;; convert the quaternion to a vector representing rotation around z axis (isnt it the y axis in GOAL tho?)
+      (vector-z-quaternion! camera-z-vector camera-quat)
+      ;; shift orb's position with camera angle, by 3m
+      (vector+! vec vec (vector-normalize! camera-z-vector (meters 3.0)))
+      ;; spawn and update orb-placer data
+      (let ((orb-handle (spawn-money vec 1.0 #t)))
+        (when (nonzero? orb-handle)
+          (set! (-> *orb-placer-orbs* *orb-placer-count*) orb-handle)
+          (set! *orb-placer-selected-idx* *orb-placer-count*)
+          (false! *orb-placer-disabled?*) ;; we probably want edit mode enabled again
+          (orb-placer-highlight (the money (handle->process orb-handle)) #t)
+          (+! *orb-placer-count* 1)
+          (orb-placer-list-maintenace #t)))))
+  (none))
+
+(defun orb-placer-print-selected ()
+  (when (and (>= *orb-placer-selected-idx* 0) (nonzero? (-> *orb-placer-orbs* *orb-placer-selected-idx*)))
+    (let ((orb (the money (handle->process (-> *orb-placer-orbs* *orb-placer-selected-idx*)))))
+      (when orb
+        (format 0 " ~m, ~m, ~m~%" (-> orb base x) (-> orb base y) (-> orb base z)))))
+  (none))
+
+(defun orb-placer-print-all ()
+  (format 0 "|------------orba start------------|~%")
+  (dotimes (i *orb-placer-count*)
+    (let ((orb-handle (-> *orb-placer-orbs* i)))
+      (when (and (nonzero? orb-handle) (handle->process orb-handle))
+        (let ((orb (the money (handle->process orb-handle))))
+          (format 0 " ~m, ~m, ~m~%" (-> orb base x) (-> orb base y) (-> orb base z))))))
+  (format 0 "|-------------orba end-------------|~%")
+  (none))
+
+(define *orb-offset-tmp-vec* (new 'global 'vector))
+(defun debug-check-process-drawable-move ((proc process-drawable))
+  (let ((pad (-> *cpad-list* cpads 0))
+        (vec *orb-offset-tmp-vec*)
+        (proc-extra-vec (the vector #f)))
+    ;; update extra vectors for certain types
+    (cond
+      ((type-type? (-> proc type) money)
+        (set! proc-extra-vec (-> (the money proc) base))
+        )
+      ((type-type? (-> proc type) crate)
+        (set! proc-extra-vec (-> (the crate proc) base))
+        )
+      )
+
+    ;; X/Z based on camera
+    (when (nonzero? (-> pad stick0-speed))
+      (set! (-> vec x) (sin (-> pad stick0-dir)))
+      (set! (-> vec y) 0.0)
+      (set! (-> vec z) (cos (-> pad stick0-dir)))
+      (set! (-> vec w) 0.0)
+      ;; camera magic
+      (vector-matrix*! vec vec (matrix-local->world #t #f))
+      (vector-flatten! vec vec (-> *camera* local-down))
+      (vector-float*! vec vec (* (-> pad stick0-speed) 512.0))
+      
+      ;; actually move orb
+      (vector+! (-> proc root trans) (-> proc root trans) vec)
+      (when proc-extra-vec (vector+! proc-extra-vec proc-extra-vec vec))
+      )
+    
+    (cond
+      ;; fine tune/axis-aligned X/Z
+      ((cpad-pressed? 0 down)
+        (+! (-> proc root trans z) (meters 0.03))
+        (when proc-extra-vec (+! (-> proc-extra-vec z) (meters 0.03)))
+        )
+      ((cpad-pressed? 0 up)
+        (+! (-> proc root trans z) (meters -0.03))
+        (when proc-extra-vec (+! (-> proc-extra-vec z) (meters -0.03)))
+        )
+      ((cpad-pressed? 0 right)
+        (+! (-> proc root trans x) (meters 0.03))
+        (when proc-extra-vec (+! (-> proc-extra-vec x) (meters 0.03)))
+        )
+      ((cpad-pressed? 0 left)
+        (+! (-> proc root trans x) (meters -0.03))
+        (when proc-extra-vec (+! (-> proc-extra-vec x) (meters -0.03)))
+        )
+      ;; Y (up/down)
+      ((cpad-hold? 0 r2)
+        (+! (-> proc root trans y) (meters 0.08))
+        (when proc-extra-vec (+! (-> proc-extra-vec y) (meters 0.08)))
+        )
+      ((cpad-hold? 0 l2)
+        (+! (-> proc root trans y) (meters -0.08))
+        (when proc-extra-vec (+! (-> proc-extra-vec y) (meters -0.08)))
+        )
+      ((cpad-pressed? 0 r1)
+        (+! (-> proc root trans y) (meters 0.03))
+        (when proc-extra-vec (+! (-> proc-extra-vec y) (meters 0.03)))
+        )
+      ((cpad-pressed? 0 l1)
+        (+! (-> proc root trans y) (meters -0.03))
+        (when proc-extra-vec (+! (-> proc-extra-vec y) (meters -0.03)))
+        )
+      )
+
+    ;; rotation, just around Y axis
+    (let ((d 0))
+      (cond
+        ((cpad-pressed? 0 circle) (set! d -1))
+        ((cpad-pressed? 0 square) (set! d 1)))
+      (quaternion-rotate-y! (-> proc root quat) (-> proc root quat) (degrees d)))
+
+    ;; update entity too
+    (when (-> proc entity)
+      (if proc-extra-vec
+        (vector-copy! (-> (the entity-actor (-> proc entity)) extra trans) proc-extra-vec)
+        (vector-copy! (-> (the entity-actor (-> proc entity)) extra trans) (-> proc root trans)))
+      (quaternion-copy! (-> (the entity-actor (-> proc entity)) quat) (-> proc root quat))))
+
+  ;; un sleep 
+  (logclear! (-> proc mask) (process-mask sleep))
+  ;; force update transforms
+  (when (type-type? (-> proc root type) collide-shape)
+    (update-transforms! (the collide-shape (-> proc root))))
+    
+  (none))
+
+;; called from run-every-frame to ensure orb-placer is spawned/killed
+(defun orb-placer-maintenance ()
+  (when *debug-segment*
+    (orb-placer-list-maintenace #f)
+
+    (when (and (not (paused?)) *orb-placer-active?*)
+      ;; handle disable toggle
+      (when (cpad-pressed? 0 triangle)
+        (not! *orb-placer-disabled?*))
+
+      ;; draw text on screen
+      (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
+                                        (bucket-id subtitle))
+        (draw-string-xy "Entity Placer Edit Mode" buf 510 2 (font-color red) (font-flags right shadow kerning))
+        (cond
+          (*orb-placer-disabled?*
+            (draw-string-xy "PAUSED" buf 510 10 (font-color transparent) (font-flags right shadow kerning)))
+          (else
+            (draw-string-xy "ACTIVE" buf 510 10 (font-color green) (font-flags right shadow kerning))))))
+    
+    (cond
+      ((process-by-name "orb-placer" *active-pool*)
+        ;; orb-placer exists
+        ;; if its not enabled, kill it
+        (when (not (and *debug-segment* *orb-placer-active?*))
+          (kill-by-name "orb-placer" *active-pool*)
+
+          ;; make sure target is ungrabbed
+          (when (and *target* (= (-> *target* next-state name) 'target-grab))
+            (send-event *target* 'end-mode))
+          
+         ;; release freecam if no target
+         (when (and (not *target*) (not (send-event *camera* 'query-state cam-free-floating)))
+           (send-event *camera* 'change-state cam-free-floating 0))))
+      (else
+        ;; orb-placer doesn't exist
+        ;; if its enabled, spawn it
+        (when (and *debug-segment* *orb-placer-active?*)
+          ;; process-spawn-function, spawns a process that runs the function you give it
+          (process-spawn-function process :name "orb-placer"
+            (lambda :behavior process ()
+              (stack-size-set! (-> self top-thread) 512)
+              ;; Code before the loop runs once on process spawn
+              (loop
+                ;; Loop runs once per frame while process is active
+                (cond
+                  (*orb-placer-disabled?*
+                    ;; make sure target is released
+                    (when (and *target* (= (-> *target* next-state name) 'target-grab))
+                      (send-event *target* 'end-mode)
+                      )
+                    ;; unlock freecam if no target
+                    (when (and (not *target*) (send-event *camera* 'query-state cam-fixed))
+                      (send-event *camera* 'change-state cam-free-floating 0))
+
+                    ;; if we have an orb selected and the handle is nonzero...
+                    (when (and (>= *orb-placer-selected-idx* 0) (nonzero? (-> *orb-placer-orbs* *orb-placer-selected-idx*)))
+                      (let ((orb (the money (handle->process (-> *orb-placer-orbs* *orb-placer-selected-idx*)))))
+                        (when orb
+                          ;; highlight it
+                          (orb-placer-highlight orb #t)
+                          
+                          ;; do NOT handle controller input for moving orb
+                          ))))
+                  (else ;; not disabled
+                    ;; make sure target is grabbed
+                    (when (and *target* (!= (-> *target* next-state name) 'target-grab))
+                      (send-event *target* 'change-mode 'grab)
+                      )
+                    ;; lock freecam if no target
+                    (when (and (not *target*) (not (send-event *camera* 'query-state cam-fixed)))
+                      (send-event *camera* 'change-state cam-fixed 0))
+
+                    (cond
+                      ;; prefer selected entity over orb placer selection
+                      ((and (-> *entity-debug-inspect* entity) (-> *entity-debug-inspect* entity extra process) (type-type? (-> *entity-debug-inspect* entity extra process type) process-drawable))
+                        ;; respond to controller input
+                        (debug-check-process-drawable-move (the process-drawable (-> *entity-debug-inspect* entity extra process)))
+                        )
+                      ;; if we have an orb selected and the handle is nonzero...
+                      ((and (>= *orb-placer-selected-idx* 0) (nonzero? (-> *orb-placer-orbs* *orb-placer-selected-idx*)))
+                        (let ((orb (the money (handle->process (-> *orb-placer-orbs* *orb-placer-selected-idx*)))))
+                          (when orb
+                            ;; highlight it
+                            (orb-placer-highlight orb #t)
+
+                            ;; respond to controller input
+                            (debug-check-process-drawable-move orb)
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+
+                ;; Processes should suspend themselves, the loop will resume next frame
+                (suspend)
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  (none)
+  )

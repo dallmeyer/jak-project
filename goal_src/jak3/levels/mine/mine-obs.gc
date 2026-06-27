@@ -1266,10 +1266,19 @@
   :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
     (case message
       (('ridden)
-       (process-grab? *target* #f)
+      ;;  (process-grab? *target* #f)
+       ((-> (method-of-type elevator waiting) event) proc argc message block)
+       )
+      (('player-ridden-cooldown?)
+       (and (time-elapsed? (-> self state-time) (seconds 3.0))
+            (> (-> self ride-timer) (-> self state-time)) ;; make sure player re-rides after we change state
+            (time-elapsed? (-> self ride-timer) (seconds 3.0))
+            (logtest? (-> self elevator-status) (elevator-status waiting-to-descend)))
+       )
+      (else
+       ((-> (method-of-type elevator waiting) event) proc argc message block)
        )
       )
-    ((-> (method-of-type elevator waiting) event) proc argc message block)
     )
   :post (behavior ()
     (let ((t9-0 (-> (method-of-type elevator waiting) post)))
@@ -1277,10 +1286,11 @@
           ((the-as (function none) t9-0))
           )
       )
-    (when (task-node-closed? (game-task-node mine-blow-elevator))
-      (send-event self 'jump-to 'top)
-      (go-virtual dormant)
-      )
+    ;; orb hunt - open up minec from mineb/a
+    ;; (when (task-node-closed? (game-task-node mine-blow-elevator))
+    ;;   (send-event self 'jump-to 'top)
+    ;;   (go-virtual dormant)
+    ;;   )
     )
   )
 
@@ -1332,7 +1342,11 @@
       (set! (-> a1-0 0) 'mine4)
       (want-sound-banks *load-state* a1-0)
       )
-    (go-virtual dormant)
+    ;; (go-virtual dormant)
+    ;; instead of going dormant, suspend until player un-rides
+    (until (!= (-> self sticky-player-last-ride-time) (current-time))
+      (suspend))
+    (go-virtual waiting)
     )
   )
 
@@ -1640,6 +1654,16 @@
 
 (defstate down-idle (min-crane-switch)
   :virtual #t
+  :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
+    (case message
+      (('up?)
+       #f
+       )
+      (else
+       ((-> (method-of-type basebutton down-idle) event) proc argc message block)
+       )
+      )
+    )
   :code (behavior ()
     (sound-play "floor-switch")
     (suspend-for (seconds 0.5)
@@ -1660,6 +1684,16 @@
 
 (defstate up-idle (min-crane-switch)
   :virtual #t
+  :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
+    (case message
+      (('up?)
+       #t
+       )
+      (else
+       ((-> (method-of-type basebutton up-idle) event) proc argc message block)
+       )
+      )
+    )
   :exit (behavior ()
     (send-event (handle->process (-> self rog)) 'leave)
     (let ((t9-1 (-> (method-of-type basebutton up-idle) exit)))
@@ -1946,10 +1980,10 @@
 
 ;; WARN: Return type mismatch int vs object.
 (defmethod go-initial-state ((this min-elec-gate))
-  (if (task-node-closed? (game-task-node mine-blow-elevator))
-      ((method-of-type elec-gate go-initial-state) this)
+  ;; (if (task-node-closed? (game-task-node mine-blow-elevator))
+      ;; ((method-of-type elec-gate go-initial-state) this)
       (go (method-of-object this idle))
-      )
+      ;; )
   0
   )
 

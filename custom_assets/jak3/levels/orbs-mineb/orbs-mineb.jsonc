@@ -1,0 +1,233 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-mineb",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O11",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o11", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-mineb/orbs-mineb.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 111000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [   -94.3486, 37.7549, -92.1289], // up in crevice next do doorway from elevator down at start
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   -94.3486, 37.7549, -92.1289, 10],
+      "lump": {
+        "name":"mineb-skill-01"
+      }
+    },
+    {
+      "trans": [  -119.7967, 37.9761, -47.5799], // up on high ledge on right before first cart down
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -119.7967, 37.9761, -47.5799, 10],
+      "lump": {
+        "name":"mineb-skill-02"
+      }
+    },
+    {
+      "trans": [  -92.3263, 12.2397, -47.9477], // in tight crevice on left side of first cart down
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -92.3263, 12.2397, -47.9477, 10],
+      "lump": {
+        "name":"mineb-skill-03"
+      }
+    },
+    {
+      "trans": [  -125.0334, 7.1535, -27.7987], // in tight crevice on right side of first cart down
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -125.0334, 7.1535, -27.7987, 10],
+      "lump": {
+        "name":"mineb-skill-04"
+      }
+    },
+    {
+      "trans": [  -102.3430, 16.7066, -4.6258], // up on blocks at bottom of first cart down
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -102.3430, 16.7066, -4.6258, 10],
+      "lump": {
+        "name":"mineb-skill-05"
+      }
+    },
+    {
+      "trans": [  -118.5303, 21.4888, -14.5664], // on pipes at bottom of first cart down
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -118.5303, 21.4888, -14.5664, 10],
+      "lump": {
+        "name":"mineb-skill-06",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  -118.8851, 35.7306, -26.7179], // up on high ledge on right side at bottom of first cart down, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -118.8851, 35.7306, -26.7179, 10],
+      "lump": {
+        "name":"mineb-skill-07"
+      }
+    },
+    {
+      "trans": [  -89.1120, 39.9116, -8.7824], // up in corner above end of first cart down, IJ from top of pipe from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -89.1120, 39.9116, -8.7824, 10],
+      "lump": {
+        "name":"mineb-skill-08"
+      }
+    },
+    {
+      "trans": [  -81.2494, 23.5297, 17.5811], // on left wall just past first cart down, extendo concussor from blocks or something
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -81.2494, 23.5297, 17.5811, 10],
+      "lump": {
+        "name":"mineb-skill-09"
+      }
+    },
+    {
+      "trans": [  -83.9657, 31.4173, -0.8444], // up left wall from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -83.9657, 31.4173, -0.8444, 10],
+      "lump": {
+        "name":"mineb-skill-10",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  -90.0775, 46.5194, -0.2167], // way up near ceiling just past end of first cart down, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -90.0775, 46.5194, -0.2167, 10],
+      "lump": {
+        "name":"mineb-skill-11"
+      }
+    },
+    {
+      "trans": [  -89.0364, 0.2209, 36.9531], // behind first hamster wheel, jetboard from backside
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -89.0364, 0.2209, 36.9531, 10],
+      "lump": {
+        "name":"mineb-skill-12"
+      }
+    },
+    {
+      "trans": [  -77.4047, 23.1909, 38.7830], // up a few blocks from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   -77.4047, 23.1909, 38.7830, 10],
+      "lump": {
+        "name":"mineb-skill-13",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  -79.5148, 44.2871, 37.2296], // way up near ceiling, abah from ^ to next ledge, standpoint, then concussor jump or double abah
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   -79.5148, 44.2871, 37.2296, 10],
+      "lump": {
+        "name":"mineb-skill-14",
+        "bob-scale": ["float", 0.25]
+      }
+    },
+    {
+      "trans": [ -66.3981, 33.8996, 98.8735], // up on pipe, between 2nd and 3rd hamster wheels. L2 extended ff, pretty tight. can probably abah up here too 
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -66.3981, 33.8996, 98.8735, 10],
+      "lump": {
+        "name":"mineb-skill-15"
+      }
+    }
+    //,
+    
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

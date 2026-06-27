@@ -608,13 +608,13 @@
 
   :trans (behavior ()
     (when *debug-segment*
-        (when (and (cpad-hold? 0 l3) (cpad-pressed? 0 r3))
-            (cpad-clear! 0 r3)
-            (set! (-> self cheat-backup) *cheat-mode*)
-            (set! *cheat-mode* 'camera)
-            (set-master-mode 'pause)
-            (go subtitle3-debug)
-            )
+        ;; (when (and (cpad-hold? 0 l3) (cpad-pressed? 0 r3))
+        ;;     (cpad-clear! 0 r3)
+        ;;     (set! (-> self cheat-backup) *cheat-mode*)
+        ;;     (set! *cheat-mode* 'camera)
+        ;;     (set-master-mode 'pause)
+        ;;     (go subtitle3-debug)
+        ;;     )
         )
 
     (load-level-subtitle3-files 0)

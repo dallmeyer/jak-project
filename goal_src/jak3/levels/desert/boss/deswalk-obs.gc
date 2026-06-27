@@ -1973,10 +1973,10 @@
 
 
 (defbehavior desw-snake-stump-should-be-active? desw-snake-stump ()
-  (when (task-node-closed? (game-task-node desert-final-boss-climb))
-    (set! (-> self up-timer) 0)
-    (return #f)
-    )
+  ;; (when (task-node-closed? (game-task-node desert-final-boss-climb))
+  ;;   (set! (-> self up-timer) 0)
+  ;;   (return #f)
+  ;;   )
   (when (> (-> self actor-group-count) 0)
     (dotimes (v1-4 (-> self actor-group 0 length))
       (let ((a0-4 (-> self actor-group 0 data v1-4 actor)))

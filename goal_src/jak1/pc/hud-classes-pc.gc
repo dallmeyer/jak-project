@@ -11,7 +11,7 @@
 
 (defconstant HUD_ICON_COUNT 6)
 
-(defconstant HUD_PART_PC_AMOUNT 1)
+(defconstant HUD_PART_PC_AMOUNT 2)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; hud processes and parts
@@ -45,17 +45,22 @@
    (kill-all-icons (_type_) int)
    (update-display-status (_type_ symbol entity int symbol) int)))
 
+(deftype hud-bike-red-boost (hud-pc)
+  ((kicked? symbol)
+   (ready?  symbol)))
+
 ;; all pc hud elements
 (deftype hud-parts-pc (structure)
-  ((battle-enemy (pointer hud-battle-enemy))
-   (parts        (pointer hud-pc) HUD_PART_PC_AMOUNT :offset 0)))
+  ((battle-enemy   (pointer hud-battle-enemy))
+   (bike-red-boost (pointer hud-bike-red-boost))
+   (parts          (pointer hud-pc) HUD_PART_PC_AMOUNT :offset 0)))
 
 ;;;----------------------------------------------
 ;;  globals
 ;;;----------------------------------------------
 
 ;; all of the pc hud elements
-(define *hud-parts-pc* (new 'static 'hud-parts-pc :battle-enemy #f))
+(define *hud-parts-pc* (new 'static 'hud-parts-pc :battle-enemy #f :bike-red-boost #f))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;  hud macros
@@ -449,6 +454,75 @@
   0
   (none))
 
+;; TFL note: added hud-bike-red-boost
+(defmacro hud-new-particle (&key part &key x &key y &key z)
+  `(when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
+    (let ((part-nb (-> this nb-of-particles)))
+      (set! (-> this particles part-nb) (new 'static 'hud-particle))
+      (set! (-> this particles part-nb part) (create-launch-control (-> *part-group-id-table* ,part) this))
+      (set! (-> this particles part-nb init-pos x) ,x)
+      (set! (-> this particles part-nb init-pos y) ,y)
+      (set! (-> this particles part-nb init-pos z) ,z)
+      (set! (-> this particles part-nb part matrix) -1))
+    (+! (-> this nb-of-particles) 1)))
+
+(defmethod init-particles! ((this hud-bike-red-boost) (arg0 int))
+  (hud-new-particle :part 750 :x 413.0 :y 370.0 :z -1.0)
+  (set! (-> this text-x) 418)
+  (set! (-> this text-y) 356)
+  (set! (-> this x-sgn) 1)
+  (set! (-> this y-sgn) 1)
+  (set-pos-and-scale this (= (get-aspect-ratio) 'aspect16x9) (= (get-video-mode) 'pal))
+  (false! (-> this kicked?))
+  (true! (-> this ready?))
+  (none))
+
+(defmethod set-pos-and-scale ((this hud-bike-red-boost) (widescreen? symbol) (pal? symbol))
+  (let ((base-x 378.0))
+    (+! base-x (* (- 512.0 base-x) (- 1.0 (-> *pc-settings* aspect-ratio-reciprocal))))
+    (set! (-> this particles 0 init-pos x) 413.0)
+    (when (not (-> *pc-settings* use-vis?))
+      (dotimes (i (-> this nb-of-particles))
+        (set! (-> this particles i init-pos x)
+              (+ base-x (* (-> *pc-settings* aspect-ratio-reciprocal) (- (-> this particles i init-pos x) base-x)))))))
+  (none))
+
+(defmethod draw-hud ((this hud-bike-red-boost))
+  ;; (call-parent-method this)
+  ((method-of-type hud draw-hud) this)
+  (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug))
+    (let ((str-x (+ (-> this text-x) (* (-> this x-sgn) (-> this offset))))
+          (str-y (/ (* (+ (-> this text-y) (* (-> this y-sgn) (-> this offset)) (-> this y-offset))
+                       (the int (-> *video-parms* relative-y-scale)))
+                    2)))
+      (if (and (nonzero? (-> *target* racer)) (time-elapsed? (-> *target* racer super-red-boost-time) (seconds 2)))
+        (draw-string-xy-scaled (lookup-text! *common-text* (text-id pad-circle) #f)
+                               buf
+                               str-x
+                               str-y
+                               (font-color white)
+                               (font-flags shadow kerning large)
+                               0.85))))
+  0
+  (none))
+
+(defmethod hud-update ((this hud-bike-red-boost))
+  (let ((should-display? (and (on-racer?) (target-powerup? super-eco-red))))
+    (when (and (hidden? this) should-display?)
+      (false! (-> this kicked?))
+      (true! (-> this ready?))
+      (send-event this 'show))
+    (when (and (not (-> this kicked?)) (= *master-mode* 'progress))
+      (true! (-> this kicked?))
+      (false! (-> this ready?))
+      (send-event this 'hide-quick))
+    (when (and (not (-> this kicked?)) (not should-display?))
+      (true! (-> this kicked?))
+      (false! (-> this ready?))
+      (send-event this 'hide))
+    (if (!= (-> this next-state name) 'hud-leaving) (set-time! (-> this trigger-time))))
+  (none))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;  hud helper funcs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -464,6 +538,8 @@
   (deactivate-hud-pc)
   (set! (-> *hud-parts-pc* battle-enemy)
         (process-spawn hud-battle-enemy :init hud-init-by-other 0 :from *pc-dead-pool* :to tree))
+  (set! (-> *hud-parts-pc* bike-red-boost)
+        (process-spawn hud-bike-red-boost :init hud-init-by-other 0 :from *pc-dead-pool* :to tree))
   0)
 
 (activate-hud-pc *display-pool*)

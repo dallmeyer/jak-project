@@ -1609,6 +1609,16 @@
          (('mech-punch 'crush)
           (go-virtual hit #f)
           )
+         (else
+          (let ((t0-1 (get-penetrate-using-from-attack-event (the process-drawable proc) block)))
+            (when (and *target*
+                        (logtest? (penetrate dark-bomb) t0-1) 
+                        (< (vector-vector-distance (-> self root trans) (-> *target* root trans)) (meters 10.0))
+                        )
+              (go-virtual hit #f)
+              )
+            )
+          )
          )
        )
       (('combo)

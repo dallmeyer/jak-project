@@ -1990,7 +1990,13 @@
       )
     )
   :trans (behavior ()
-    (if (or (= (-> *cpad-list* cpads 0 stick0-speed) 0.0) (zero? (-> self slide-count)))
+    (if (or (and (= (-> *cpad-list* cpads 0 stick0-speed) 0.0) 
+                 (not (or (cpad-pressed? 0 left) (cpad-hold? 0 left)
+                          (cpad-pressed? 0 right) (cpad-hold? 0 right)
+                          (cpad-pressed? 0 up) (cpad-hold? 0 up)
+                          (cpad-pressed? 0 down) (cpad-hold? 0 down)
+                          )))
+            (zero? (-> self slide-count)))
         (set! (-> self slide-lock) #f)
         )
     (let ((gp-0 (ppointer->process (-> self parent))))
@@ -2012,6 +2018,7 @@
             ((-> self slide-lock)
              )
             ((power-game-method-40 gp-0 s5-0)
+             ;; slide one track inwards
              (vector-copy! (-> self slide-dest) (-> self local))
              (set! (-> self slide-speed) 8.0)
              (when (power-game-method-42 gp-0 (-> self slide-dest) -1 s5-0)
@@ -2029,6 +2036,7 @@
                )
              )
             ((power-game-method-40 gp-0 s4-0)
+             ;; slide one track outwards
              (vector-copy! (-> self slide-dest) (-> self local))
              (set! (-> self slide-speed) 8.0)
              (when (power-game-method-42 gp-0 (-> self slide-dest) -1 s4-0)
@@ -2045,6 +2053,17 @@
                  )
                )
              )
+            )
+          ;; og:preserve-this clear dpad inputs to give better control over moving across 1 lane vs 2 lanes
+          (#when PC_PORT
+            (logclear!
+              (-> *cpad-list* cpads 0 button0-abs 0)
+              (pad-buttons up right down left)
+              )
+            (logclear!
+              (-> *cpad-list* cpads 0 button0-rel 0)
+              (pad-buttons up right down left)
+              )
             )
           )
         )
@@ -3041,7 +3060,7 @@
       (((game-task-action talk))
        (let ((a0-5 (-> self root trans)))
          (when (and (time-elapsed? (-> self state-time) (seconds 3))
-                    (and (and *target* (and (>= 40960.0 (vector-vector-distance a0-5 (-> *target* control trans)))
+                    (and (and *target* (and (>= 8192.0 (vector-vector-distance a0-5 (-> *target* control trans)))
                                             (not (logtest? (focus-status teleporting) (-> *target* focus-status)))
                                             )
                               )
@@ -3066,14 +3085,15 @@
                )
              (set! (-> gp-0 flags) (font-flags shadow kerning large))
              (print-game-text
-               (lookup-text! *common-text* (text-id text-0087) #f)
+              ;;  (lookup-text! *common-text* (text-id text-0087) #f)
+               "Press ~Y~22L<~Z~Y~25L@~Z~Y~1L>~Z~Y~23L[~Z~+26H to ~+7Vp~-7Vla~+7Vy~-7V ~+7Vg~-7Vame as Daxter."
                gp-0
                #f
                44
                (bucket-id hud-draw-hud-alpha)
                )
              )
-           (if (cpad-pressed? 0 triangle)
+           (if (cpad-pressed? 0 circle)
                (go-virtual wait-for-start)
                )
            )

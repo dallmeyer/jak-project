@@ -641,22 +641,22 @@
   (monk-mummy 51)
   (pecker 52)
   (samos-onintent 53)
-  (unused-slot-8 54)
-  (unused-slot-9 55)
-  (unused-slot-10 56)
-  (unused-slot-11 57)
-  (unused-slot-12 58)
-  (unused-slot-13 59)
-  (unused-slot-14 60)
-  (unused-slot-15 61)
-  (unused-slot-16 62)
-  (unused-slot-17 63)
-  (unused-slot-18 64)
-  (unused-slot-19 65)
-  (unused-slot-20 66)
-  (unused-slot-21 67)
-  (unused-slot-22 68)
-  (unused-slot-23 69)
+  (torn-orbhunt 54) ;; torn in hiphog
+  (unused-slot-9 55) ;; save for tess in gungame just in case
+  (onin-orbhunt 56) ;; onin in tent
+  (ashelin-orbhunt 57) ;; ashelin at desert oasis
+  (kleever-orbhunt 58) ;; kleever garage
+  (damus-orbhunt 59) ;; damus throne
+  (erol-orbhunt 60) ;; erol war factory
+  (vin-orbhunt 61) ;; vin power station
+  (pecker-orbhunt 62) ;; pecker eco mine
+  (seem-orbhunt 63) ;; seem temple
+  (samos-orbhunt 64) ;; samos white barrier
+  (keira-orbhunt 65) ;; keira freehq
+  (jinx-orbhunt 66) ;; jinx industrial
+  (sig-orbhunt 67) ;; sig cave
+  (veger-orbhunt 68) ;; veger precursor robot fight
+  (unused-slot-23 69) ;; save for yakow in gardens just in case
   (unused-slot-24 70)
   (unused-slot-25 71)
   (unused-slot-26 72)

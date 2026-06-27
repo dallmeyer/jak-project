@@ -1,0 +1,285 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-towerb",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O26",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o26", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-towerb/orbs-towerb.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 126000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [ "warp-gate-ag"],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [ -102.83,  171.11,  448.28 ], // fake warp gate on final plat to warp to top
+      "etype": "warp-gate",
+      "game_task": 0, 
+      "quat" : [0, 0.6314, 0, 0.7754],
+      "bsphere": [ -102.83,  171.11,  448.28  , 10],
+      "lump": {
+        "name":"towerb-warp-gate-1",
+        "distance": ["meters", 5.0]
+      }
+    },
+
+    {
+      "trans": [   -162.9776, 165.1886, 379.0115], // up on thin branch along wall, not too far from top (IJ)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   -162.9776, 165.1886, 379.0115, 10],
+      "lump": {
+        "name":"towerb-skill-01"
+        // "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [   -153.3335, 173.3408, 374.4054], // on higher thin branch from ^ (IJ)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   -153.3335, 173.3408, 374.4054, 10],
+      "lump": {
+        "name":"towerb-skill-02"
+      }
+    },
+    {
+      "trans": [  -168.5482, 182.4747, 382.5474], // on higher branch from ^ 
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -168.5482, 182.4747, 382.5474, 10],
+      "lump": {
+        "name":"towerb-skill-03"
+      }
+    },
+    {
+      "trans": [  -171.6569, 190.4426, 400.4915], // on higher branch from ^ (IJ)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -171.6569, 190.4426, 400.4915, 10],
+      "lump": {
+        "name":"towerb-skill-04"
+      }
+    },
+    {
+      "trans": [   -157.5882, 195.2052, 380.8668], // on higher branch from ^ (IJ)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -157.5882, 195.2052, 380.8668, 10],
+      "lump": {
+        "name":"towerb-skill-05"
+      }
+    },
+    {
+      "trans": [ -160.3570, 205.0383, 370.1167], // on higher thin branch from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -160.3570, 205.0383, 370.1167, 10],
+      "lump": {
+        "name":"towerb-skill-06"
+      }
+    },
+    {
+      "trans": [  -162.1194, 223.1521, 387.0423], // up in pocket against big branch
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   -162.1194, 223.1521, 387.0423, 10],
+      "lump": {
+        "name":"towerb-skill-07",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  -177.3438, 242.8159, 385.3148], // up in corner on top of big branch, abah from ^ (or can prob just climb up somewhere too)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   -177.3438, 242.8159, 385.3148, 10],
+      "lump": {
+        "name":"towerb-skill-08"
+      }
+    },
+    {
+      "trans": [ -158.79,  264.16,  449.37 ], // further up big branch, near corner where you can IJ up to next orb
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -158.79,  264.16,  449.37 , 10],
+      "lump": {
+        "name":"towerb-skill-09"
+      }
+    },
+    {
+      "trans": [-172.5450, 322.1744, 449.4157], // top of vertical big branch IJ, follow from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -172.5450, 322.1744, 449.4157, 10],
+      "lump": {
+        "name":"towerb-skill-10"
+      }
+    },
+    {
+      "trans": [ -168.3488, 42.4500, 516.2102], // proxy hint near tentacle after light eco vent 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -168.3488, 42.4500, 516.2102, 10],
+      "lump": {
+        "name":"towerb-skill-11"
+      }
+    },
+    {
+      "trans": [ -176.0397, 64.2292, 520.8505], // up on wall in corner, proxy from ^ 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -176.0397, 64.2292, 520.8505, 10],
+      "lump": {
+        "name":"towerb-skill-12",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ -165.8889, 83.4667, 527.8570], // on small standpoint in center of purple light, abah from ^ 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -165.8889, 83.4667, 527.8570, 10],
+      "lump": {
+        "name":"towerb-skill-13"
+      }
+    },
+    {
+      "trans": [ -138.7888, 92.9038, 547.6843], // up on "branch" near purple light ^, abah from ^^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -138.7888, 92.9038, 547.6843, 10],
+      "lump": {
+        "name":"towerb-skill-14"
+      }
+    },
+    {
+      "trans": [ -113.3554, 41.9816, 500.7544], // behind trunk void side first section in tower 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -113.3554, 41.9816, 500.7544, 10],
+      "lump": {
+        "name":"towerb-skill-15"
+      }
+    },
+    {
+      "trans": [ -99.3281, 40.6523, 543.7727], // behind shrooms/eggs before walkway leaving first section 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -99.3281, 40.6523, 543.7727, 10],
+      "lump": {
+        "name":"towerb-skill-16"
+      }
+    },
+    {
+      "trans": [ -99.7739, 54.5718, 537.6174], // on top of lamp before walkway from first section 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -99.7739, 54.5718, 537.6174, 10],
+      "lump": {
+        "name":"towerb-skill-17",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ -105.6399, 62.6452, 553.9928], // between branch and wall above first section, abah from ^ 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -105.6399, 62.6452, 553.9928, 10],
+      "lump": {
+        "name":"towerb-skill-18"
+      }
+    },
+    {
+      "trans": [ -11.5899, 74.1956, 476.0166], // prize for killing all enemies from spawners on second section
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -11.5899, 74.1956, 476.0166, 10],
+      "lump": {
+        "name":"towerb-skill-19",
+        "alt-actor": "tow-spawner-8"
+      }
+    }//,
+    
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

@@ -1,0 +1,339 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-ctyindb",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O21",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o21", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-ctyindb/orbs-ctyindb.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 121000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [  948.2604, 26.6788, 513.7640], // on pipe next to upper walkway, near jetboard grind rail stuff
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  948.2604, 26.6788, 513.7640, 10],
+      "lump": {
+        "name":"ctyindb-skill-01",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  944.4631, 42.9406, 516.6648], // up in crevice along wall, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   944.4631, 42.9406, 516.6648, 10],
+      "lump": {
+        "name":"ctyindb-skill-02"
+      }
+    },
+    {
+      "trans": [ 951.92,  56.95,  529.82  ], // top of building behind invis wall near jetboard grind rail, jump spin repeat up thru crevice^^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 951.92,  56.95,  529.82 , 10],
+      "lump": {
+        "name":"ctyindb-skill-03"
+      }
+    },
+    {
+      "trans": [   1075.3057, 41.3150, 558.2810], // small standpoint on broken wall, zoomer launch from walkway, concussor jump, you got it
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   1075.3057, 41.3150, 558.2810, 10],
+      "lump": {
+        "name":"ctyindb-skill-04"
+      }
+    },
+    {
+      "trans": [   1083.2377, 43.5351, 555.0173], // small standpoint on broken wall, jump from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   1083.2377, 43.5351, 555.0173, 10],
+      "lump": {
+        "name":"ctyindb-skill-05"
+      }
+    },
+    {
+      "trans": [  1091.5449, 52.3283, 534.5784], // concussor jump over invis wall from ^ onto pipe
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1091.5449, 52.3283, 534.5784, 10],
+      "lump": {
+        "name":"ctyindb-skill-06"
+      }
+    },
+    {
+      "trans": [  1140.7889, 56.8038, 527.1602], // concussor jump along pipe from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1140.7889, 56.8038, 527.1602, 10],
+      "lump": {
+        "name":"ctyindb-skill-07"
+      }
+    },
+    {
+      "trans": [  1146.2282, 32.8867, 557.3011], // pipe in corner, concussor jump from vanilla plats (easiest to get an abah/cancel going early here, before jak crouches)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1091.5449, 52.3283, 534.5784, 10],
+      "lump": {
+        "name":"ctyindb-skill-08"
+      }
+    },
+    {
+      "trans": [  1145.8721, 42.9642, 552.8160], // up on wall from ^, dont need abah but its prob easier
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1145.8721, 42.9642, 552.8160, 10],
+      "lump": {
+        "name":"ctyindb-skill-09"
+      }
+    },
+    {
+      "trans": [ 1150.66,  49.38,  547.07 ], // up in corner of wall from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1150.66,  49.38,  547.07 , 10],
+      "lump": {
+        "name":"ctyindb-skill-10"
+      }
+    },{
+      "trans": [  1141.5704, 27.1001, 416.7070], // on pipe right next to slums connection
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1141.5704, 27.1001, 416.7070, 10],
+      "lump": {
+        "name":"ctyindb-skill-11",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  1130.5782, 42.5137, 408.2530], // way up on wall right next to slums connection, abah from ^ (hint for getting over invis wall)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1130.5782, 42.5137, 408.2530, 10],
+      "lump": {
+        "name":"ctyindb-skill-12"
+      }
+    },
+    {
+      "trans": [  1129.2973, 10.1184, 399.0198], // between pipes right by slums connection follow from ^^ over invis wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1129.2973, 10.1184, 399.0198, 10],
+      "lump": {
+        "name":"ctyindb-skill-13"
+      }
+    },
+    {
+      "trans": [     1161.3287, 10.1808, 518.2760], // on edge of pipe base platform in corner near ctysluma (ctyindb-skill-33 from OH2)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [     1161.3287, 10.1808, 518.2760, 10],
+      "lump": {
+        "name": "ctyindb-skill-14",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [   1159.1506, 26.6099, 516.2239], // on pipe in corner near ctysluma, abah from ^ (ctyindb-skill-34 from OH2)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   1159.1506, 26.6099, 516.2239, 10],
+      "lump": {
+        "name": "ctyindb-skill-15",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [   1161.8981, 42.9826, 514.4287], // way up on top of window in corner, abah from ^ (ctyindb-skill-35 from OH2)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   1161.8981, 42.9826, 514.4287, 10],
+      "lump": {
+        "name": "ctyindb-skill-16"
+      }
+    },
+    {
+      "trans": [ 982.9714, 29.7130, 399.4176], // up behind u shaped pipe above walkway ramp near slums
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 982.9714, 29.7130, 399.4176, 10],
+      "lump": {
+        "name": "ctyindb-skill-17"
+      }
+    },
+    {
+      "trans": [ 1068.7395, 24.3816, 494.5780], // up in corner behind pipes in "2nd room", abah between wall and ledge below (no hint)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1068.7395, 24.3816, 494.5780, 10],
+      "lump": {
+        "name": "ctyindb-skill-18"
+      }
+    },
+    {
+      "trans": [   945.9544, 42.3152, 594.3948], // up in buttcrack on wall, hint for getting over invis wall to orb below vvv
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  945.9544, 42.3152, 594.3948 , 10],
+      "lump": {
+        "name": "ctyindb-skill-19"
+      }
+    },
+    {
+      "trans": [  942.0988, 10.2067, 593.9316 ], // behind pipes ground level behind invis wall, jetboard over from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  942.0988, 10.2067, 593.9316 , 10],
+      "lump": {
+        "name": "ctyindb-skill-20"
+      }
+    },
+    {
+      "trans": [  812.1538, 8.2865, 736.5597], // between wall and ramp near ctyinda
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  812.1538, 8.2865, 736.5597, 10],
+      "lump": {
+        "name": "ctyindb-skill-21"
+      }
+    },
+    {
+      "trans": [ 848.4726, 38.3168, 619.6204], // up on windowsill in "room" before ctyinda, either abah from grindrail or just yolo jetboard from walkway
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 848.4726, 38.3168, 619.6204, 10],
+      "lump": {
+        "name": "ctyindb-skill-22"
+      }
+    },
+    {
+      "trans": [  874.8527, 28.1031, 752.8920], // up on ledge of building tucked around corner, either boosted/extended/concussor from walkway or just jetboard launch pad jump
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 874.8527, 28.1031, 752.8920, 10],
+      "lump": {
+        "name": "ctyindb-skill-23"
+      }
+    },
+    {
+      "trans": [ 844.0896, 10.3329, 792.4963], // behind pipe on small ledge on hallway to ctyinda, left side has small gap you can punch thru
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 844.0896, 10.3329, 792.4963, 10],
+      "lump": {
+        "name": "ctyindb-skill-24"
+      }
+    },
+    {
+      "trans": [ 765.7849, 8.3032, 615.2931], // in NW corner of southern half (ctyindb-skill-10 from OH2)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 765.7849, 8.3032, 615.2931, 10],
+      "lump": {
+        "name": "ctyindb-skill-25"
+      }
+    },
+    {
+      "trans": [   985.2556, 48.0416, 481.1967], // triangular gap up above camera(?) just past first "room" from slums, yolo from grindrail
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  985.2556, 48.0416, 481.1967, 10],
+      "lump": {
+        "name": "ctyindb-skill-26"
+      }
+    }//,
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

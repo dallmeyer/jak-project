@@ -193,6 +193,7 @@
     )
   )
 
+(define-extern mod-override-init-position (function process-drawable entity-actor none))
 (defmethod init-from-entity! ((this w-parking-spot) (arg0 entity-actor))
   "Set up a newly created process from the entity that created it."
   (set! (-> this root) (new 'process 'trsqv))

@@ -415,6 +415,7 @@
    (current-vehicle         vehicle-type-u8)
    (vehicle-turbo-ready     float)
    (percent-complete        float)
+   (skill-per-level         uint8         LEVEL_ID_LEN)
    )
   (:methods
     (initialize! (_type_ symbol game-save string resetter-spec) _type_)

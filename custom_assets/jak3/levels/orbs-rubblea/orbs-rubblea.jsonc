@@ -1,0 +1,363 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-rubblea",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O01",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o01", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-rubblea/orbs-rubblea.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 101000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [  -96.77,  39.47,  -352.02 ], // corner of debris near entrance from stadiuma, hint for invis wall for dividing wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -96.77,  39.47,  -352.02 , 10],
+      "lump": {
+        "name":"rubblea-skill-01"
+      }
+    },
+    {
+      "trans": [  -188.6116, 33.6900, -347.4516], // rubble near entrance from stadiuma, walk along wall from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -188.6116, 33.6900, -347.4516, 10],
+      "lump": {
+        "name":"rubblea-skill-02"
+      }
+    },
+    {
+      "trans": [  -116.2836, 43.8773, -221.2061 ], // top of lamp not far from entrance from stadiuma
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -116.2836, 43.8773, -221.2061, 10],
+      "lump": {
+        "name":"rubblea-skill-03",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  -117.8875, 56.9184, -206.6280], // abah from ^ into IJ 
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -117.8875, 56.9184, -206.6280, 10],
+      "lump": {
+        "name":"rubblea-skill-04"
+      }
+    },  
+    {
+      "trans": [  -203.9814, 32.4624, -339.2733], // in crevice between square rocks in "oob" section where damus breaks in (proxy from somewhere over big invis walls)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -203.9814, 32.4624, -339.2733, 10],
+      "lump": {
+        "name":"rubblea-skill-05"
+      }
+    },  
+    {
+      "trans": [ -245.5848, 17.7900, -249.0207], // on bridge behind huge invis walls, proxy over from somewhere
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -245.5848, 17.7900, -249.0207, 10],
+      "lump": {
+        "name":"rubblea-skill-06"
+      }
+    },   
+    {
+      "trans": [  -287.1407, 16.2690, -210.0548], // against wall in crevice, "oob" behind huge invis wall, across bridge
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   -287.1407, 16.2690, -210.0548, 10],
+      "lump": {
+        "name":"rubblea-skill-07"
+      }
+    },  
+    {
+      "trans": [ -188.77,  64.36,  -344.14 ], // on top corner of wall where damus breaks in (proxy over huge invis wall)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -188.77,  64.36,  -344.14 , 10],
+      "lump": {
+        "name":"rubblea-skill-08"
+      }
+    }, 
+    {
+      "trans": [-215.24,  58.90,  -342.90 ], // on top of cross hatch beams, just down from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-215.24,  58.90,  -342.90  , 10],
+      "lump": {
+        "name":"rubblea-skill-09"
+      }
+    },
+    {
+      "trans": [ -344.9547, 52.4910, -265.3081], // trail of orbs climbing rubble to top of inner city wall
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -344.9547, 52.4910, -265.3081, 10],
+      "lump": {
+        "name":"rubblea-skill-10"
+      }
+    },
+    {
+      "trans": [ -344.5504, 67.1256, -276.8453], // trail of orbs climbing rubble to top of inner city wall
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -344.5504, 67.1256, -276.8453, 10],
+      "lump": {
+        "name":"rubblea-skill-11"
+      }
+    },
+    {
+      "trans": [ -354.3435, 76.6471, -273.9178], // trail of orbs climbing rubble to top of inner city wall
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -354.3435, 76.6471, -273.9178, 10],
+      "lump": {
+        "name":"rubblea-skill-12"
+      }
+    },
+    {
+      "trans": [ -350.6935, 93.1314, -262.1251], // trail of orbs climbing rubble to top of inner city wall
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -350.6935, 93.1314, -262.1251, 10],
+      "lump": {
+        "name":"rubblea-skill-13"
+      }
+    },
+    {
+      "trans": [ -346.8898, 102.6224, -247.9698], // in triangle on top of inner city wall, near weird freecam cutscene during btr skip
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -346.8898, 102.6224, -247.9698, 10],
+      "lump": {
+        "name":"rubblea-skill-14"
+      }
+    },
+    {
+      "trans": [ -353.0921, 105.3280, -214.0711], // on inner city wall spike, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -353.0921, 105.3280, -214.0711, 10],
+      "lump": {
+        "name":"rubblea-skill-15"
+      }
+    },
+    {
+      "trans": [ -348.7656, 105.2395, -185.9000], // on inner city wall spike, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -348.7656, 105.2395, -185.9000, 10],
+      "lump": {
+        "name":"rubblea-skill-16"
+      }
+    },
+    {
+      "trans": [ -345.5276, 112.6184, -151.9715], // on inner city wall triangle, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -345.5276, 112.6184, -151.9715, 10],
+      "lump": {
+        "name":"rubblea-skill-17"
+      }
+    },
+    {
+      "trans": [ -334.1340, 39.9235, -330.9956], // on broken beam against outer city wall, near weird freecam cutscene during btr skip
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -334.1340, 39.9235, -330.9956, 10],
+      "lump": {
+        "name":"rubblea-skill-18"
+      }
+    },
+    {
+      "trans": [-288.4717, 29.2211, -184.5040], // on upper left side of building before first bridge
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -288.4717, 29.2211, -184.5040, 10],
+      "lump": {
+        "name":"rubblea-skill-19"
+      }
+    },
+    {
+      "trans": [ -233.5680, -1.8686, -258.8305], // in water, behind beam/rubble under first bridge
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -233.5680, -1.8686, -258.8305, 10],
+      "lump": {
+        "name":"rubblea-skill-20"
+      }
+    },
+    {
+      "trans": [ -480.9923, 47.9318, -265.4018], // top of wall near breakable door right before BTR west
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -480.9923, 47.9318, -265.4018, 10],
+      "lump": {
+        "name":"rubblea-skill-21"
+      }
+    },
+    {
+      "trans": [ -392.7774, 36.8170, -348.4883], // on top of broken screens, right side before breakable door to BTR west
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -392.7774, 36.8170, -348.4883, 10],
+      "lump": {
+        "name":"rubblea-skill-22"
+      }
+    },
+    {
+      "trans": [ -97.4502, 42.0958, -337.9726], // immediate left, up on the fall wall/columns (right side, left side is behind invis wall)
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -97.4502, 42.0958, -337.9726, 10],
+      "lump": {
+        "name":"rubblea-skill-23"
+      }
+    },
+    {
+      "trans": [ -82.6106, 50.0332, -339.3165], // up on broken screens/wall from ^, concussor double jump
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -82.6106, 50.0332, -339.3165, 10],
+      "lump": {
+        "name":"rubblea-skill-24"
+      }
+    },
+    {
+      "trans": [ -85.0988, 63.3620, -287.9226], // further along broken screens/wall from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -85.0988, 63.3620, -287.9226, 10],
+      "lump": {
+        "name":"rubblea-skill-25"
+      }
+    },
+    {
+      "trans": [ -87.9873, 56.7599, -253.8275], // further along broken screens/wall from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -87.9873, 56.7599, -253.8275, 10],
+      "lump": {
+        "name":"rubblea-skill-26"
+      }
+    },
+
+    // HOVER
+    {
+      "trans": [ -79.2730, 80.5949, -167.2519], // way up on wall dead ahead from start, on exposed beams (left)
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -79.2730, 80.5949, -167.2519, 10],
+      "lump": {
+        "name":"rubblea-skill-hover-01",
+        "pickup-amount": ["float", 3.0] // hover
+      }
+    },
+    {
+      "trans": [ -184.6193, 81.2349, -146.4904], // way up on wall dead ahead from start, on exposed beams (right)
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -184.6193, 81.2349, -146.4904, 10],
+      "lump": {
+        "name":"rubblea-skill-hover-02",
+        "pickup-amount": ["float", 3.0] // hover
+      }
+    }
+    //,
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

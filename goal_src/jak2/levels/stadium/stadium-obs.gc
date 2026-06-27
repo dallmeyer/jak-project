@@ -149,14 +149,27 @@
               )
 
 (deftype gar-curtain (process-drawable)
-  ()
+  ((part-explode    basic)
+   (explode-matrix  matrix  :inline))
   (:state-methods
     idle
+    die
     )
   )
 
 
 (defstate idle (gar-curtain)
+  :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
+  (case message
+    (('attack)
+      (let ((t0-1 (get-penetrate-using-from-attack-event (the process-drawable proc) block)))
+        (when (logtest? (penetrate dark-bomb) t0-1)
+          (go-virtual die)
+          )
+        )
+      )
+    )
+  )
   :virtual #t
   :code (behavior ()
     (until #f
@@ -169,6 +182,15 @@
     #f
     )
   :post transform-post
+  )
+
+(defstate die (gar-curtain)
+  :virtual #t
+  :code (behavior ()
+    ;; dead dead
+    (logior! (-> self draw status) (draw-control-status no-draw))
+    (process-entity-status! self (entity-perm-status dead) #t)
+    )
   )
 
 ;; WARN: Return type mismatch object vs none.
@@ -228,6 +250,7 @@
     (the-as skeleton-group (art-group-get-by-name *level* "skel-gar-curtain" (the-as (pointer uint32) #f)))
     (the-as pair 0)
     )
+  ;; (set! (-> this part-explode) (-> *part-group-id-table* 1007))
   (quaternion-vector-angle! (-> this root quat) *y-vector* 5461.3335)
   (go (method-of-object this idle))
   (none)
@@ -2479,6 +2502,8 @@
   (none)
   )
 
+(define-extern side-mish-active? (function symbol))
+
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! ((this stad-force-field) (arg0 entity-actor))
   "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
@@ -2498,7 +2523,10 @@
   (set! (-> this field) (the-as handle #f))
   (set! (-> this ripple) (the-as handle #f))
   (transform-post)
-  (go (method-of-object this idle))
+  (if (side-mish-active?)
+    (go (method-of-object this idle))
+    (deactivate this)
+    )
   (none)
   )
 
@@ -2531,7 +2559,10 @@
   (set! (-> this field) (the-as handle #f))
   (set! (-> this ripple) (the-as handle #f))
   (transform-post)
-  (go (method-of-object this idle))
+  (if (side-mish-active?)
+    (go (method-of-object this idle))
+    (deactivate this)
+    )
   (none)
   )
 
@@ -2564,7 +2595,10 @@
   (set! (-> this field) (the-as handle #f))
   (set! (-> this ripple) (the-as handle #f))
   (transform-post)
-  (go (method-of-object this idle))
+  (if (side-mish-active?)
+    (go (method-of-object this idle))
+    (deactivate this)
+    )
   (none)
   )
 

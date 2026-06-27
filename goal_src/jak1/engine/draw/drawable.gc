@@ -737,6 +737,8 @@
 
 (define *generic-effect-mode* 0)
 
+(define-extern baby-mode-find-closest-orb (function none))
+
 (defun real-main-draw-hook ()
   "The main drawing function. This dispatches all renderers and is called directly from the display-loop
   in main.gc"
@@ -904,6 +906,8 @@
     (with-profiler "sprite"
       (swap-fake-shadow-buffers)
       (sprite-draw *display*)))
+  ;; find closest orb for baby-mode
+  (baby-mode-find-closest-orb)
   ;; debug drawing
   (with-profiler "debug-draw"
     (when *debug-segment*

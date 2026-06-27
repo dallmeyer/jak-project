@@ -7,6 +7,7 @@
 (require "engine/target/target-part.gc")
 
 ;; DECOMP BEGINS
+(define-extern runs-on-jak-spawn (function none))
 
 (defskelgroup *deathcam-sg*
   deathcam
@@ -138,7 +139,8 @@
       (let ((s5-2 (level-get *level* (-> arg0 level))))
         ;; vis info check added for PC, don't bother waiting for vis if the level doesn't have it.
         (when (and s5-2 (-> s5-2 vis-info 0))
-          (while (and (= (-> s5-2 all-visible?) 'loading) (-> *level* vis?))
+          (while (and (= (-> s5-2 all-visible?) 'loading) (-> *level* vis?)
+                      (not (logtest? (-> arg0 flags) (continue-flags speedrun)))) ;; custom checkpoints might have bad vis data, don't let them get stuck here
             (suspend))))
       (set! *spawn-actors* #t)
       (set! *teleport* #t)
@@ -269,7 +271,12 @@
                   (let ((s3-7 send-event-function)
                         (v1-235 (entity-by-name "assistant-lavatube-end-3")))
                     (s3-7 (if v1-235 (-> v1-235 extra process)) s4-13))))
-              (set-continue! *game-info* "lavatube-end")))
+              (set-continue! *game-info* "lavatube-end"))
+             ;; TFL note: CUSTOM SPAWN POINT FOR WARPGATE FOR CUSTOM LEVEL
+             ((string= (-> arg0 name) "crystal-cave-warp") ;; NAME OF THE WARP CHECKPOINT HERE
+              (set! (-> s5-6 quad) (-> (entity-by-name "crystalc-warpmiddle-01") extra trans quad)) ;; ACTOR IN THE PORTAL, SPAWN IT WITH THE JSONC OF YOUR CUSTOM LEVEL
+              (set-continue! *game-info* "crystal-cave-start") ;; IF YOU WANT THE CHECKPOINT TO BE SWITCHED TO A DIFFERENT ONE AFTER WARPING
+              ))
            (go target-warp-in s5-6 (-> arg0 trans))))
         (else (suspend-for (seconds 0.05))))
       (set-continue! *game-info* arg0)
@@ -284,6 +291,7 @@
               (car (-> s5-8 continues))))))
       (ja-channel-set! 1)
       (ja :group! eichar-stance-loop-ja)
+      (runs-on-jak-spawn) ;; trigger hook for mod base mod-base-change
       (suspend)
       (logior! (-> self control status) (cshape-moving-flags onsurf onground tsurf))
       (go target-stance))
@@ -684,6 +692,7 @@
         trans)
   :code
     (behavior ((arg0 symbol))
+      (runs-on-jak-death 'dying) ;;mod-base-change
       (set! (-> self control unknown-uint20) (the-as uint #f))
       (set! (-> self control did-move-to-pole-or-max-jump-height)
             (the-as int (send-event (handle->process (-> self attack-info attacker)) 'target 'die arg0)))

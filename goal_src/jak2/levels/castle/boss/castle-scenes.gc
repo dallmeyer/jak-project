@@ -793,7 +793,8 @@
                        )
                      )
                    :load-point-obj "casboss-start"
-                   :end-point-obj "ctyport-warp"
+                   :end-point-obj "casboss-start" ;; changed orbhunt to give one free return to casboss
+                  ;;  :end-point-obj "ctyport-warp"
                    :borrow '()
                    :sfx-volume -1.0
                    :ambient-volume -1.0

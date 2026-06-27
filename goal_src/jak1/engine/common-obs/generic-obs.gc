@@ -61,7 +61,7 @@
        (let* ((s5-1 self)
               (v1-37 (if (and (nonzero? s5-1) (type-type? (-> s5-1 type) manipy)) s5-1)))
          (if (and manipy (not (-> (the-as manipy v1-37) draw?))) (logior! (-> self draw status) (draw-status no-anim))))
-       (do-joint-math! self)
+       (do-joint-math! self) ;; this is what actually moves the MFer I think
        (let ((a0-22 (-> self skel effect))) (if a0-22 (effect-control-method-9 a0-22)))
        (if (logtest? (-> self skel status) (janim-status blerc blerc-done)) (merc-blend-shape self))
        (if (logtest? (-> self skel status) (janim-status eye-done eye)) (merc-eye-anim self)))
@@ -1190,10 +1190,15 @@
     (behavior ()
       (when (and *target* (>= (-> self active-distance) (vector-vector-distance (-> self root trans) (-> *target* control trans))))
         (cond
-          ((send-event *target* 'query 'powerup (pickup-type eco-blue)) (go launcher-active))
+          ;; TFL note: added case for super eco
+          ((or (send-event *target* 'query 'powerup (pickup-type eco-blue))
+               (send-event *target* 'query 'powerup (pickup-type super-eco-blue)))
+           (go launcher-active))
           (else (let ((gp-0 'target-launch)) (if (= (send-event *target* 'query 'mode) gp-0) (send-event *target* 'end-mode)))))
+        ;; TFL note: added case for super eco
         (if (and (and *target* (>= 32768.0 (vector-vector-distance (-> self root trans) (-> *target* control trans))))
-                 (not (send-event *target* 'query 'powerup (pickup-type eco-blue))))
+                 (not (or (send-event *target* 'query 'powerup (pickup-type eco-blue))
+                          (send-event *target* 'query 'powerup (pickup-type super-eco-blue)))))
           (level-hint-spawn (text-id sidekick-hint-launcher) "sksp0035" (the-as entity #f) *entity-pool* (game-task none)))))
   :code anim-loop)
 
@@ -1222,7 +1227,9 @@
     (behavior ()
       (if (or (or (not *target*)
                   (< (-> self active-distance) (vector-vector-distance (-> self root trans) (-> *target* control trans))))
-              (not (send-event *target* 'query 'powerup (pickup-type eco-blue))))
+              ;; TFL note: added super eco case
+              (not (or (send-event *target* 'query 'powerup (pickup-type eco-blue))
+                       (send-event *target* 'query 'powerup (pickup-type super-eco-blue)))))
         (go launcher-idle))
       (spawn (-> self part) (-> self root trans))
       (sound-play "launch-idle" :id (-> self sound-id))

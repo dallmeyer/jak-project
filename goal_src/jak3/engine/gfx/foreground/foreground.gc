@@ -492,6 +492,7 @@
 ;; WARN: Return type mismatch bucket-id-16 vs bucket-id.
 (defun vu1-bucket-map ((arg0 int) (arg1 int) (arg2 merc-mode))
   "Map from level, texture, mode to bucket-id."
+  ;; (when (cpad-pressed? 0 l3) (format 0 "vu1-bm ~D ~D ~%" arg0 arg1))
   (the-as bucket-id (-> *bucket-map* (+ (+ (* 42 arg0) (* 6 arg1)) (the-as int arg2))))
   )
 

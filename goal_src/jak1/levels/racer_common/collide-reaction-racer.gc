@@ -37,7 +37,7 @@
         (set! (-> arg0 poly-normal quad) (-> arg1 best-tri normal quad))
         (collide-shape-moving-angle-set! arg0 sv-84 (-> sv-88 0))
         (if (< (-> arg0 poly-angle) -0.2) (logior! sv-96 16))
-        (let ((s3-1 (< (fabs (-> arg0 surface-angle)) (-> *pat-mode-info* (-> arg0 cur-pat mode) wall-angle))))
+        (let ((s3-1 (< (fabs (-> arg0 surface-angle)) (-> (get-active-pat-mode-info) (-> arg0 cur-pat mode) wall-angle))))
           (if s3-1 (logior! sv-104 2))
           (when (not (logtest? (-> arg0 prev-status) (cshape-moving-flags onsurf)))
             (set! (-> arg0 ground-impact-vel) (- (vector-dot (-> arg0 transv) (-> arg0 dynam gravity-normal))))

@@ -15,6 +15,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Letterbox and blackout
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun-extern runs-every-frame (none))
 
 (defun set-letterbox-frames ((arg0 time-frame))
   "Set the letterbox frame counter for arg0 frames in the future"
@@ -348,14 +349,15 @@
           ))))
   0)
 
+;; (define *actor-view-toggle* #t)
 (defbehavior display-loop process ()
   "the main 'display loop' in GOAL. v-sync is done in this function, so all frames start and end here."
   ;; increase our stack size.
-  (stack-size-set! (-> self main-thread) 512)
+  (stack-size-set! (-> self main-thread) 1024)
   (let ((disp *display*))
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;; Pre loop initialization
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;; the size is 0, so this doesn't actually do anything.
     ;; (dma-send-to-spr (the-as uint #x70000000) (the-as uint *terrain-context*) (the-as uint 0) #t)
     (set! *teleport* #t)
@@ -367,7 +369,12 @@
     (blerc-init)
     ;; collide dma
     (suspend)
+
+    ;; TFL note: added music player
+    (process-spawn tfl-music-player)
+
     (while *run*
+      (runs-every-frame) ;; trigger hook for mod base mod-base-change entry point
       ;; start immediately after all process updates finish.
       (profiler-instant-event "display-loop-top")
       ;; drawing effects to be used in foreground drawing.
@@ -422,8 +429,8 @@
         (*draw-hook*))
       (add-ee-profile-frame 'draw :g #x80)
       (with-profiler "menu"
-        (#when PC_PORT
-          (if (and *display-sha* *debug-segment*) (draw-build-revision)))
+        ;; (#when PC_PORT
+        ;;   (if (and *display-sha* *debug-segment*) (draw-build-revision)))
         (*menu-hook*)
         (add-ee-profile-frame 'draw :g #x40)
         ;; finally, update hints/text

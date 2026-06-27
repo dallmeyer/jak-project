@@ -421,7 +421,7 @@
                   ((= (the-as uint v1-16) 1)
                    32768.0
                    )
-                  ((= (the-as uint v1-16) 2)
+                  ((= (the-as uint v1-16) 2) ;; final plat to ltowerb
                    0.0
                    )
                   )
@@ -445,12 +445,13 @@
       )
     )
   (cond
-    ((= (res-lump-value (-> this entity) 'extra-id uint :time -1000000000.0) 2)
-     (if (task-node-closed? (game-task-node tower-destroy-resolution))
-         (go (method-of-object this die))
-         (go wait-for-battle)
-         )
-     )
+    ;; orbhunt - keep final platform ready
+    ;; ((= (res-lump-value (-> this entity) 'extra-id uint :time -1000000000.0) 2)
+    ;;  (if (task-node-closed? (game-task-node tower-destroy-resolution))
+    ;;      (go (method-of-object this die))
+    ;;      (go wait-for-battle)
+    ;;      )
+    ;;  )
     ((logtest? (-> this entity extra perm status) (entity-perm-status subtask-complete))
      (go (method-of-object this lowered))
      )

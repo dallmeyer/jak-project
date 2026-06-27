@@ -290,6 +290,11 @@
   )
 
 (defmethod want-cross-airlock? ((this com-airlock))
+  (case-str (-> this name)
+    (("factoryb-cty-door-1" "lfacrm2-cty-door-1") ;; factoryb <-> lfacrm2 keep open when manually opened
+      (return (= (-> this state name) 'open))
+      )
+    )
   (local-vars (a0-22 entity-actor))
   (let* ((tpos (target-pos 0))
          (f30-0 (check-crossing-distance this tpos #t))
@@ -340,7 +345,7 @@
                     (persist-with-delay *setting-control* 'pilot (seconds 0.1) 'pilot #f 0.0 0)
                     )
                 (or (and (< f30-0 (-> this open-distance 0))
-                         (or (not (-> this were-behind?)) (< f30-0 20480.0))
+                         (or (= (-> this type symbol) 'precur-door-b) (not (-> this were-behind?)) (< f30-0 20480.0))
                          (and (or (< 409.6 f30-0)
                                   (begin
                                     (let ((a0-21 (-> this entity)))
@@ -580,6 +585,14 @@
            )
        (and (-> self next-state) (= (-> self next-state name) 'close))
        )
+      (('trigger)
+        ;; hack for factoryb-cty-door-1/lfacrm2-cty-door-1
+        (go-virtual open #f)
+        )      
+      (('untrigger)
+        ;; hack for factoryb-cty-door-1/lfacrm2-cty-door-1
+        (go-virtual close #f)
+        )
       (('front)
        (let ((f30-0 (check-crossing-distance self (target-pos 0) #f))
              (f0-3 (check-crossing-distance self (camera-pos) #f))
@@ -652,6 +665,12 @@
                         (if gp-0
                             (script-eval (the-as pair gp-0))
                             )
+                        )
+                      ;; hack instead of adding res lump for on-activate
+                      (case (-> self name) :comp name=  
+                        (('com-airlock-inner-117)
+                          (script-eval '(want-load 'minee 'mined))
+                          )
                         )
                       (destination-loaded? self #f)
                       )

@@ -317,7 +317,9 @@
 
 (defstate die (wascity-cactus)
   :virtual #t
-  :enter #f
+  :enter (behavior ()
+    (set-g-time! (-> self state-time))
+    )
   :exit #f
   :trans #f
   :code (behavior ()

@@ -1225,8 +1225,9 @@
                 (when (logtest? (-> geom effect effect-idx effect-bits) 1)
                   ;; grab the extra info for it:
                   (let* ((v1-35 (-> geom effect effect-idx extra-info))
-                         (v1-36 (the-as mei-texture-scroll (+ (the-as uint v1-35) (* (-> v1-35 texture-scroll-offset) 16)))))
-                    (when (< arg2 (-> v1-36 max-dist)) ;; in range to draw?
+                         (v1-36 (the-as mei-texture-scroll (+ (the-as uint v1-35) (* (-> v1-35 texture-scroll-offset) 16))))
+                         (texscroll-dist (res-lump-float (-> arg0 process entity) 'texscroll-dist :default 0.0))) ;; TFL notes: added a custom distance for tex scroll animations to play
+                    (when (or (< arg2 (-> v1-36 max-dist)) (< arg2 texscroll-dist)) ;; in range to draw?
                       ;; do scrolling.
                       (if *texscroll-force-generic*
                         (set! pc-force-mercneric #t) ;; use generic for texscroll

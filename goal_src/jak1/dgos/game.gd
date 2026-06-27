@@ -203,6 +203,7 @@
   "speedruns.o" ;; added
   "pckernel-common.o" ;; added
   "pckernel.o" ;; added
+  "input-display.o" ;; mod-base-change added
   "mood-tables.o"
   "mood.o"
   "weather-part.o"
@@ -246,6 +247,8 @@
   "target-util.o"
   "target-part.o"
   "collide-reaction-target.o"
+  ;; TFL note: added
+  "tfl-music-player.o"
   "logic-target.o"
   "sidekick.o"
   "voicebox.o"
@@ -279,6 +282,23 @@
   "pov-camera.o"
   "powerups.o"
   "crates.o"
+  "mods_training.o"
+  "mods_village1.o"
+  "mods_jungle.o"
+  "mods_beach.o"
+  "mods_misty.o"
+  "mods_firecanyon.o"
+  "mods_village2.o"
+  "mods_sunken.o"
+  "mods_swamp.o"
+  "mods_rolling.o"
+  "mods_ogre.o"
+  "mods_village3.o"
+  "mods_snowy.o"
+  "mods_cave.o"
+  "mods_lavatube.o"
+  "mods_citadel.o"
+  "mods.o"
   "hud.o"
   "hud-classes.o"
   "progress-static.o"
@@ -345,5 +365,35 @@
   "plat-eco.o"
   "ropebridge.o"
   "ticky.o"
+  "mod-settings.o" ;; added mod-base-change
+  "orb-placer-h.o"  ;; added
+  "mod-common-functions.o" ;; added
+  "orb-placer.o" ;; added
+  "mod-custom-code.o" ;; added
+  "mod-debug.o" ;; added
+  ;; keep zoomer stuff loaded
+  "target-racer-h.o"
+  "racer-part.o"
+  ;; TFL note: moved
   "hud-classes-pc.o" ;; added
+  "racer.o"
+  "target-racer.o"
+  "racer-states.o"
+  "collide-reaction-racer.o"
+  "racer-ag.go"
+  "eichar-racer+0-ag.go"
+  "tpage-1119.go"
+  ;; keep flutflut stuff loaded
+  "flut-part.o"
+  "flutflut.o"
+  "target-flut.o"
+  "flut-saddle-ag.go"
+  "eichar-flut+0-ag.go"
+  ;; keep blocking-plane stuff loaded
+  "blocking-plane.o"
+  "ef-plane-ag.go"
+  ;; TFL note: added
+  "super-eco-crystal.o"
+  "tfl-hint-data.o"
+  "tfl-hint.o"
  ))

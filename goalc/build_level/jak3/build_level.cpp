@@ -41,9 +41,9 @@ bool run_build_level(const std::string& input_file,
   // unk zero
   // name
   file.name = level_json.at("long_name").get<std::string>();
-  ASSERT_MSG(file.name.size() <= 10,
-             fmt::format("long_name over 10 characters ({} characters): '{}'", file.name.size(),
-                         file.name));
+  // ASSERT_MSG(file.name.size() <= 10,
+  //            fmt::format("long_name over 10 characters ({} characters): '{}'", file.name.size(),
+  //                        file.name));
   // nick
   file.nickname = level_json.at("nickname").get<std::string>();
   // vis infos
@@ -66,9 +66,9 @@ bool run_build_level(const std::string& input_file,
   // cameras
   // nodes
   // regions
+  file.region_array.entities = &file.actors;
+  file.region_array.actor_groups = &file.actor_groups;
   if (level_json.contains("region_trees") && !level_json.at("region_trees").empty()) {
-    file.region_array.entities = &file.actors;
-    file.region_array.actor_groups = &file.actor_groups;
     fill_region_trees(file.region_trees, file.regions, file.region_array,
                       level_json.at("region_trees"), level_json.value("base_region_id", 0));
   }
@@ -95,7 +95,7 @@ bool run_build_level(const std::string& input_file,
 
   // COLLIDE
   if (mesh_extract_out.collide.faces.empty()) {
-    lg::error("No collision geometry was found");
+    // lg::warn("No collision geometry was found");
   } else {
     file.collide_hash = construct_collide_hash(mesh_extract_out.collide.faces);
     // for collision renderer

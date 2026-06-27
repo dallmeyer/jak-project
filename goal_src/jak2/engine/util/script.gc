@@ -1040,6 +1040,7 @@
                   )
               (cond
                 ((>= s5-0 ((method-of-type (rtype-of a0-1) length) a0-1))
+                  (dbg-format 0 "HANDLING 'want-load ~A~%" (-> arg0 param 1))
                  (when (and (-> arg0 side-effect?)
                             (-> *level* border?)
                             (let ((s5-1 (-> *setting-control* user-current exclusive-load)))
@@ -1133,6 +1134,7 @@
         (the-as
           (function script-context object)
           (lambda ((arg0 script-context))
+            (dbg-format 0 "HANDLING 'want-display ~A ~A~%" (-> arg0 param 1) (-> arg0 param 2))
             (if (and (-> arg0 side-effect?)
                      (-> *level* border?)
                      (let ((s5-0 (-> *setting-control* user-current exclusive-load)))
@@ -3318,6 +3320,40 @@
             0
             (none)
             )
+          )
+        )
+  )
+
+(let ((v1-79 (-> *script-form* 85)))
+  (set! (-> v1-79 name) 'process-alive?)
+  (set! (-> v1-79 spec) '((return macro (boolean)) (function macro (symbol)) (procname macro (symbol))))
+  (set! (-> v1-79 func)
+        (lambda ((arg0 script-context)) (process-by-ename (symbol->string (-> arg0 param 1))) )
+        )
+  )
+
+(let ((v1-79 (-> *script-form* 86)))
+  (set! (-> v1-79 name) 'level-active?)
+  (set! (-> v1-79 spec) '((return macro (boolean)) (function macro (symbol)) (levelname macro (symbol))))
+  (set! (-> v1-79 func)
+        (lambda ((arg0 script-context)) 
+          ;; (format 0 "eval level-active? script for ~A => ~A~%" 
+          ;;   (-> arg0 param 1)
+          ;;   (level-status *level* (the symbol (-> arg0 param 1))))
+          (= (level-status *level* (the symbol (-> arg0 param 1))) 'active)
+          )
+        )
+  )
+
+(let ((v1-79 (-> *script-form* 87)))
+  (set! (-> v1-79 name) 'current-continue-level?)
+  (set! (-> v1-79 spec) '((return macro (boolean)) (function macro (symbol)) (levelname macro (symbol))))
+  (set! (-> v1-79 func)
+        (lambda ((arg0 script-context)) 
+          ;; (format 0 "eval current-continue-level? script for ~A => ~A~%" 
+          ;;   (-> arg0 param 1)
+          ;;   (-> *game-info* current-continue level))
+          (= (-> *game-info* current-continue level) (the symbol (-> arg0 param 1)))
           )
         )
   )

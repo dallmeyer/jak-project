@@ -83,7 +83,7 @@
       (new 'static 'turret-path-event
         :pos (the-as float #x3f800000)
         :event-type 'set-speed-mult
-        :param (new 'static 'boxed-array :type int32 #x50)
+        :param (new 'static 'boxed-array :type int32 #xf0) ;; orb hunt made this faster since ship part is skipped
         )
       (new 'static 'turret-path-event
         :pos (the-as float #x40400000)
@@ -140,7 +140,7 @@
         )
       (new 'static 'turret-path-event
         :pos (the-as float #x41580000)
-        :event-type 'trigger-battle
+        :event-type 'trigger-battle ;; will get skipped if task completed
         :param '()
         )
       (new 'static 'turret-path-event
@@ -177,7 +177,7 @@
       (new 'static 'turret-path-event
         :pos (the-as float #x3d4ccccd)
         :event-type 'set-speed-mult
-        :param (new 'static 'boxed-array :type int32 #x50)
+        :param (new 'static 'boxed-array :type int32 #xf0) ;; orb hunt made this faster since ship part is skipped
         )
       (new 'static 'turret-path-event
         :pos (the-as float #x3d4ccccd)
@@ -245,7 +245,7 @@
       (new 'static 'turret-path-event
         :pos (the-as float #x3d4ccccd)
         :event-type 'set-speed-mult
-        :param (new 'static 'boxed-array :type int32 #x50)
+        :param (new 'static 'boxed-array :type int32 #xf0) ;; orb hunt made this faster since ship part is skipped
         )
       (new 'static 'turret-path-event
         :pos (the-as float #x40000000)
@@ -532,8 +532,11 @@
 (defmethod base-turret-method-39 ((this turret) (arg0 turret-path-event))
   (case (-> arg0 event-type)
     (('trigger-battle)
-     (set! (-> this hud-cgh-event) 'force-show)
-     (send-event (handle->process (-> this hover-battle)) 'trigger)
+     ;; skip 40 hover KG
+     (when (not (task-node-closed? (game-task-node drill-ship-resolution)))
+      (set! (-> this hud-cgh-event) 'force-show)
+      (send-event (handle->process (-> this hover-battle)) 'trigger)
+      )
      )
     (else
       ((method-of-type base-turret base-turret-method-39) this arg0)

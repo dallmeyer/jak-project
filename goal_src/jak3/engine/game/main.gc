@@ -1488,6 +1488,8 @@
 
     ; ;; Update start-menu map and masking
     (update *bigmap*)
+    ;; orb hunt: update mini-bigmap
+    (update *mini-bigmap*)
 
     ;; do some more level loading.
     (if (-> *level* loading-level)

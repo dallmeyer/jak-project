@@ -1191,9 +1191,9 @@
           (let ((v1-45 (and (cpad-hold? 0 x) (time-elapsed? (-> self state-time) (seconds 1)))))
             (when (zero? s5-0)
               (when v1-45
-                (set! gp-0 (seekl gp-0 300 (the-as int (- (current-time) (-> *display* old-base-frame-counter)))))
+                (set! gp-0 (seekl gp-0 400 (the-as int (- (current-time) (-> *display* old-base-frame-counter)))))
                 (sound-play "cannon-charge" :id (-> self sound-id) :pitch (* 0.008 (the float gp-0))))
-              (when (or (= gp-0 300) (and (not (cpad-hold? 0 x)) (nonzero? gp-0)))
+              (when (or (= gp-0 400) (and (not (cpad-hold? 0 x)) (nonzero? gp-0)))
                 (let ((gp-1 (+ 50 (the int (* 0.16666667 (the float gp-0))))))
                   (level-hint-spawn (text-id sidekick-mistycannon) "sksp009f" (the-as entity #f) *entity-pool* (game-task none))
                   (mistycannon-method-22 self (* 4096.0 (the float gp-1)) 2.0 40960.0))

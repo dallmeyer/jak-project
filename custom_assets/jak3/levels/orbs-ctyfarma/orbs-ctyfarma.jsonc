@@ -1,0 +1,562 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-ctyfarma",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O95",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o95", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-ctyfarma/orbs-ctyfarma.glb",
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 195000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": ["warp-gate-ag"],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [ -362.9835, 33.9877, 157.9458], // warp gate to rubbleb
+      "etype": "warp-gate",
+      "game_task": 0, 
+      "quat" : [ 0.0000, 0.7069, 0.0000, 0.7072],
+      "bsphere": [ -362.9835, 33.9877, 157.9458, 10],
+      "lump": {
+        "name":"ctyfarma-warp-gate-1"
+      }
+    },
+
+    {
+      "trans": [-42.7	,	37.74	,	166.7   ]	,	// #t  behind veggies in wooden trailer thing
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-42.7	,	37.74	,	166.7, 10],
+      "lump": {
+        "name": "ctyfarma-skill-1"
+      }
+    },
+    {
+      "trans": [-398.55	,	52.12	,	227.29  ]	,	// #t  inside leaves on tree left of mountain airlock
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-398.55	,	52.12	,	227.29, 10],
+      "lump": {
+        "name": "ctyfarma-skill-2"
+      }
+    },
+    {
+      "trans": [-310.01	,	40.34	,	372.75  ]	,	// #t  up/behind tree right before bazaar
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-310.01	,	40.34	,	372.75, 10],
+      "lump": {
+        "name": "ctyfarma-skill-3"
+      }
+    },
+    {
+      "trans": [-398.8	,	52.18	,	-0.7    ]	,	// #t  up/behind tree right before ctygen on left wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-398.8	,	52.18	,	-0.7, 10],
+      "lump": {
+        "name": "ctyfarma-skill-4"
+      }
+    },
+    {
+      "trans": [-43.2	,	29.24	,	98.89   ]	,	// #t ; in lurker pipe exit
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-43.2	,	29.24	,	98.89, 10],
+      "lump": {
+        "name": "ctyfarma-skill-5"
+      }
+    },
+    {
+      "trans": [-405.34	,	40.14	,	228.29]	,	// on pipe left side of door to mountain
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-405.34	,	40.14	,	228.29, 10],
+      "lump": {
+        "name": "ctyfarma-skill-6"
+      }
+    },
+    {
+      "trans": [-351.55	,	41.02	,	253.79 ]	,	// above/behind pipes left wall near mountain door
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-351.55	,	41.02	,	253.79, 10],
+      "lump": {
+        "name": "ctyfarma-skill-7"
+      }
+    },
+    {
+      "trans": [-273.18	,	48	,	251.21 ]	,	// on light post on left wall near mountain door
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-273.18	,	48	,	251.21, 10],
+      "lump": {
+        "name": "ctyfarma-skill-8"
+      }
+    },
+    {
+      "trans": [-288.736	,	29.47	,	206.417]	,	// "inside" small cabbage near mountain entrance
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-288.736	,	29.47	,	206.417, 10],
+      "lump": {
+        "name": "ctyfarma-skill-9",
+        "alt-actor": "farm-small-cabbage-13"
+      }
+    },
+    {
+      "trans": [-226.7594	,	32.93	,	173.0526]	,	// "inside" marrow near mountain entrance
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-226.7594	,	32.93	,	173.0526, 10],
+      "lump": {
+        "name": "ctyfarma-skill-10",
+        "alt-actor": "farm-marrow-30"
+      }
+    },
+    {
+      "trans": [-170.5243	,	29.7939	,	198.3310]	,	// "inside" chilirots near mountain entrance
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-170.5243	,	29.7939	,	198.3310, 10],
+      "lump": {
+        "name": "ctyfarma-skill-11",
+        "alt-actor": "farm-beetree-21"
+      }
+    },
+    {
+      "trans": [-107.79	,	43.23	,	196.96]	,	// between wall/pipe near sprinkler by mountain entrance
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-107.79	,	43.23	,	196.96, 10],
+      "lump": {
+        "name": "ctyfarma-skill-12",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [-105.72	,	56.72	,	196.62]	,	// atop tree on wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-105.72	,	56.72	,	196.62, 10],
+      "lump": {
+        "name": "ctyfarma-skill-13"
+      }
+    },
+    {
+      "trans": [-143.9	,	32.64	,	196.0 ]	,	// behind sprinkler near mountain entrance
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-143.9	,	32.64	,	196.0, 10],
+      "lump": {
+        "name": "ctyfarma-skill-14"
+      }
+    },
+    {
+      "trans": [-340.0407	,	29.93	,	334.2722]	,	// "inside" cabbage near ctymarka
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-340.0407	,	29.93	,	334.2722, 10],
+      "lump": {
+        "name": "ctyfarma-skill-15",
+        "alt-actor": "farm-cabbage-14"
+      }
+    },
+    {
+      "trans": [-216.21	,	52.34	,	329.39]	,	// atop pipe/well on wall at 3 way intersction
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-216.21	,	52.34	,	329.39, 10],
+      "lump": {
+        "name": "ctyfarma-skill-16"
+      }
+    },
+    {
+      "trans": [-130.91	,	42.98	,	312.54]	,	// inside tree at 3 way intersection
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-130.91	,	42.98	,	312.54, 10],
+      "lump": {
+        "name": "ctyfarma-skill-17"
+      }
+    },
+    {
+      "trans": [-94.41	,	42.52	,	254.8]	,	// on pipes/behind well on wall near trailer w/ veggies
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-94.41	,	42.52	,	254.8, 10],
+      "lump": {
+        "name": "ctyfarma-skill-18"
+      }
+    },
+    {
+      "trans": [-116.15	,	43.34	,	159.86]	,	// in corner behind pipe towards citygena
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-116.15	,	43.34	,	159.86, 10],
+      "lump": {
+        "name": "ctyfarma-skill-19"
+      }
+    },
+    {
+      "trans": [-214.7311	,	29.65	,	94.5843]	,	// "inside" beetree near ctygena
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-214.7311	,	29.65	,	94.5843, 10],
+      "lump": {
+        "name": "ctyfarma-skill-20",
+        "alt-actor": "farm-beetree-5"
+      }
+    },
+    {
+      "trans": [-290.8568	,	31.64	,	91.4465]	,	// "inside" chilirots near ctygena
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-290.8568	,	31.64	,	91.4465, 10],
+      "lump": {
+        "name": "ctyfarma-skill-21",
+        "alt-actor": "farm-chilirots-3"
+      }
+    },
+    {
+      "trans": [-327.8311	,	31.45	,	107.3315]	,	// "inside" marrow near ctygena
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-327.8311	,	31.45	,	107.3315, 10],
+      "lump": {
+        "name": "ctyfarma-skill-22",
+        "alt-actor": "farm-marrow-11"
+      }
+    },
+    {
+      "trans": [-382.35	,	31.67	,	60.8]	,	// behind rocks near ctygena
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-382.35	,	31.67	,	60.8, 10],
+      "lump": {
+        "name": "ctyfarma-skill-23"
+      }
+    }//,
+
+    // GHOSTS
+    // {
+    //   "trans": [ -42.7,    16.9,    166.7   ], // #t  behind veggies in wooden trailer thing
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-42.7,    16.9,    166.7 , 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-1",
+    //     "alt-actor":"ctyfarma-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [ -398.55,  31.28,   227.29  ], // #t  inside leaves on tree left of mountain airlock
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-398.55,  31.28,   227.29, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-2",
+    //     "alt-actor":"ctyfarma-skill-2"
+    //   }
+    // },
+    // {
+    //   "trans": [ -310.01,  19.5,    372.75  ], // #t  up/behind tree right before bazaar
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-310.01,  19.5,    372.75, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-3",
+    //     "alt-actor":"ctyfarma-skill-3"
+    //   }
+    // },
+    // {
+    //   "trans": [ -398.8,   31.34,   -0.7    ], // #t  up/behind tree right before ctygen on left wall
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-398.8,   31.34,   -0.7  , 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-4",
+    //     "alt-actor":"ctyfarma-skill-4"
+    //   }
+    // },
+    // {
+    //   "trans": [ -43.20,   8.4,     98.89   ], // #t ; in lurker pipe exit
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-43.20,   8.4,     98.89 , 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-5",
+    //     "alt-actor":"ctyfarma-skill-5"
+    //   }
+    // },
+    // {
+    //   "trans": [-405.34,  19.3, 228.29], // on pipe left side of door to mountain
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-405.34,  19.3, 228.29, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-6",
+    //     "alt-actor":"ctyfarma-skill-6"
+    //   }
+    // },
+    // {
+    //   "trans": [-351.55,  20.18, 253.79 ], // above/behind pipes left wall near mountain door
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-351.55,  20.18, 253.79, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-7",
+    //     "alt-actor":"ctyfarma-skill-7"
+    //   }
+    // },
+    // {
+    //   "trans": [-273.18,  27.16, 251.21 ], // on light post on left wall near mountain door
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-273.18,  27.16, 251.21, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-8",
+    //     "alt-actor":"ctyfarma-skill-8"
+    //   }
+    // },
+    // {
+    //   "trans": [-288.736, 8.63, 206.417], // "inside" small cabbage near mountain entrance
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-288.736, 8.63, 206.417, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-9",
+    //     "alt-actor":"ctyfarma-skill-9"
+    //     // "alt-actor": "farm-small-cabbage-13"
+    //   }
+    // },
+    // {
+    //   "trans": [-226.7594, 12.09, 173.0526], // "inside" marrow near mountain entrance
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-226.7594, 12.09, 173.0526, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-10",
+    //     "alt-actor":"ctyfarma-skill-10"
+    //     // "alt-actor": "farm-marrow-30"
+    //   }
+    // },
+    // {
+    //   "trans": [-170.5243, 8.9539, 198.3310], // "inside" chilirots near mountain entrance
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-170.5243, 8.9539, 198.3310, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-11",
+    //     "alt-actor":"ctyfarma-skill-11"
+    //     // "alt-actor": "farm-beetree-21"
+    //   }
+    // },
+    // {
+    //   "trans": [-107.79,  22.39, 196.96], // between wall/pipe near sprinkler by mountain entrance
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-107.79,  22.39, 196.96, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-12",
+    //     "alt-actor":"ctyfarma-skill-12",
+    //     "pickup-amount": ["float", 2.0] // abah hint
+    //   }
+    // },
+    // {
+    //   "trans": [-105.72,  35.88, 196.62], // atop tree on wall, abah from ^
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-105.72,  35.88, 196.62, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-13",
+    //     "alt-actor":"ctyfarma-skill-13"
+    //   }
+    // },
+    // {
+    //   "trans": [-143.9,  11.8, 196.0 ], // behind sprinkler near mountain entrance
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-143.9,  11.8, 196.0 , 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-14",
+    //     "alt-actor":"ctyfarma-skill-14"
+    //   }
+    // },
+    // {
+    //   "trans": [-340.0407, 9.09, 334.2722], // "inside" cabbage near ctymarka
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-340.0407, 9.09, 334.2722, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-15",
+    //     "alt-actor":"ctyfarma-skill-15"
+    //     // "alt-actor": "farm-cabbage-14"
+    //   }
+    // },
+    // {
+    //   "trans": [-216.21,  31.5, 329.39], // atop pipe/well on wall at 3 way intersction
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-216.21,  31.5, 329.39, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-16",
+    //     "alt-actor":"ctyfarma-skill-16"
+    //   }
+    // },
+    // {
+    //   "trans": [-130.91,  22.14, 312.54], // inside tree at 3 way intersection
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-130.91,  22.14, 312.54, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-17",
+    //     "alt-actor":"ctyfarma-skill-17"
+    //   }
+    // },
+    // {
+    //   "trans": [-94.41,  21.68, 254.8], // on pipes/behind well on wall near trailer w/ veggies
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-94.41,  21.68, 254.8, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-18",
+    //     "alt-actor":"ctyfarma-skill-18"
+    //   }
+    // },
+    // {
+    //   "trans": [-116.15,  22.3, 159.86], // in corner behind pipe towards citygena
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-116.15,  22.3, 159.86, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-19",
+    //     "alt-actor":"ctyfarma-skill-19"
+    //   }
+    // },
+    // {
+    //   "trans": [-214.7311, 8.81, 94.5843], // "inside" beetree near ctygena
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-214.7311, 8.81, 94.5843, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-20",
+    //     "alt-actor":"ctyfarma-skill-20"
+    //     // "alt-actor": "farm-beetree-5"
+    //   }
+    // },
+    // {
+    //   "trans": [-290.8568, 10.8, 91.4465], // "inside" chilirots near ctygena
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-290.8568, 10.8, 91.4465, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-21",
+    //     "alt-actor":"ctyfarma-skill-21"
+    //     // "alt-actor": "farm-chilirots-3"
+    //   }
+    // },
+    // {
+    //   "trans": [-327.8311, 10.61, 107.3315], // "inside" marrow near ctygena
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-327.8311, 10.61, 107.3315, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-22",
+    //     "alt-actor":"ctyfarma-skill-22"
+    //     // "alt-actor": "farm-marrow-11"
+    //   }
+    // },
+    // {
+    //   "trans": [-382.35,  10.83,  60.8], // behind rocks near ctygena
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-382.35,  10.83,  60.8, 10],
+    //   "lump": {
+    //     "name":"ctyfarma-skill-ghost-23",
+    //     "alt-actor":"ctyfarma-skill-23"
+    //   }
+    // }
+  ]
+}

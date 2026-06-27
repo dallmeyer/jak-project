@@ -2595,7 +2595,10 @@
         )
       ;; og:preserve-this give skill directly
       (#if PC_PORT
-          (send-event *target* 'get-pickup (pickup-type skill) (-> *FACT-bank* super-skill-inc))
+          (begin 
+            (send-event *target* 'get-pickup (pickup-type skill) (-> *FACT-bank* super-skill-inc))
+            (increment-skill-per-level-side-mish (game-task city-play-onin-game) (the int (-> *FACT-bank* super-skill-inc)))
+            )
           (script-eval '(birth-pickup ("pecker-npc-1" "head") skill FACT_SUPER_SKILL_INC flags (suck-in)))
           )
       (task-node-close! (game-task-node city-play-onin-game-skill))

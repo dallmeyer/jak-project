@@ -1,0 +1,416 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-templed",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O34",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o34", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-templed/orbs-templed.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 134000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": ["warp-gate-ag", "seem-highres-ag"],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [ 4352.0629, 77.2128, 4508.0585], // hidden warp gate on elevator
+      "etype": "warp-gate",
+      "game_task": 0, 
+      "quat" : [ 0.0000, 0.9479, 0.0000, -0.3183],
+      "bsphere": [ 4352.0629, 77.2128, 4508.0585, 10],
+      "lump": {
+        "name": "templed-warp-gate-1"
+      }
+    },
+
+    {
+      "trans": [   4325.8974, 80.9460, 4637.8417], // between bricks on rubble, SE corner of room
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   4325.8974, 80.9460, 4637.8417, 10],
+      "lump": {
+        "name":"templed-skill-01",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [   4331.9580, 108.0924, 4646.8994], // up on column in SE corner of room, abah from ^ to concussor slide to standpoint near urn, then up more
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   4331.9580, 108.0924, 4646.8994, 10],
+      "lump": {
+        "name":"templed-skill-02"
+      }
+    },
+    {
+      "trans": [ 4249.8808, 78.4104, 4625.4687], // upper level, first half moon ledge in SW
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 4249.8808, 78.4104, 4625.4687, 10],
+      "lump": {
+        "name":"templed-skill-03",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 4249.9672, 97.6758, 4619.6557], // up on west wall, abah from^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 4249.9672, 97.6758, 4619.6557, 10],
+      "lump": {
+        "name":"templed-skill-04"
+      }
+    },
+    {
+      "trans": [ 4271.5747, 87.6386, 4623.4907], // pillar climb in SW of room
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 4271.5747, 87.6386, 4623.4907, 10],
+      "lump": {
+        "name":"templed-skill-05"
+      }
+    },
+    {
+      "trans": [ 4277.9335, 95.1095, 4622.1552], // pillar climb in SW of room
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 4277.9335, 95.1095, 4622.1552, 10],
+      "lump": {
+        "name":"templed-skill-06"
+      }
+    },
+    {
+      "trans": [ 4273.5483, 107.0800, 4628.2421], // pillar climb in SW of room
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 4273.5483, 107.0800, 4628.2421, 10],
+      "lump": {
+        "name":"templed-skill-07"
+      }
+    },
+    {
+      "trans": [ 4268.9667, 119.3131, 4628.0512], // pillar climb in SW of room
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 4268.9667, 119.3131, 4628.0512, 10],
+      "lump": {
+        "name":"templed-skill-08"
+      }
+    },
+    {
+      "trans": [ 4274.0581, 130.7947, 4623.6938], // pillar climb in SW of room
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 4274.0581, 130.7947, 4623.6938, 10],
+      "lump": {
+        "name":"templed-skill-09"
+      }
+    },
+    {
+      "trans": [ 4251.8476, 140.3498, 4612.6684], // pillar climb in SW of room
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 4251.8476, 140.3498, 4612.6684, 10],
+      "lump": {
+        "name":"templed-skill-10"
+      }
+    },
+    {
+      "trans": [ 4248.5913, 142.6031, 4596.0517], // top edge of west wall, follow pillar climb in SW of room^^^^^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 4248.5913, 142.6031, 4596.0517, 10],
+      "lump": {
+        "name":"templed-skill-11"
+      }
+    },
+    {
+      "trans": [ 4266.7700, 93.7006, 4658.6992], // hidden on bricks behind pillar on wall in SW, jump over from other pillar with orba
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 4266.7700, 93.7006, 4658.6992, 10],
+      "lump": {
+        "name":"templed-skill-12"
+      }
+    },
+    {
+      "trans": [ 4267.9282, 109.0410, 4653.9609], // up from ^, on pillar on wall in SW
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 4267.9282, 109.0410, 4653.9609, 10],
+      "lump": {
+        "name":"templed-skill-13"
+      }
+    },
+    {
+      "trans": [ 4290.0419, 117.4126, 4654.7690], // on top of precursor plaque on southern wall, extended or something from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 4290.0419, 117.4126, 4654.7690, 10],
+      "lump": {
+        "name":"templed-skill-14"
+      }
+    },
+    {
+      "trans": [  4315.1606, 118.9182, 4653.2060], // up on taller pillar from templed-skill-02, SE corner
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  4315.1606, 118.9182, 4653.2060, 10],
+      "lump": {
+        "name":"templed-skill-15"
+      }
+    },
+    {
+      "trans": [  4330.4057, 105.1479, 4596.0595], // on top of arch on wall in E/SE corner of room, follow urns from ^/skill-02
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  4330.4057, 105.1479, 4596.0595, 10],
+      "lump": {
+        "name":"templed-skill-16"
+      }
+    },
+    {
+      "trans": [  4327.3588, 108.0882, 4572.1069], // follow from ^ along east wall, tall pillar
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  4327.3588, 108.0882, 4572.1069, 10],
+      "lump": {
+        "name":"templed-skill-17"
+      }
+    },
+    {
+      "trans": [  4303.1552, 105.1072, 4572.3671], // follow from ^, on edge of middle pillar (block is actually missing collision)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  4303.1552, 105.1072, 4572.3671, 10],
+      "lump": {
+        "name":"templed-skill-18"
+      }
+    },
+    {
+      "trans": [  4330.3999, 118.7037, 4563.5620], // follow from ^^, in slippery crevice on east wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  4330.3999, 118.7037, 4563.5620, 10],
+      "lump": {
+        "name":"templed-skill-19"
+      }
+    },
+    {
+      "trans": [  4309.0556, 119.3281, 4564.0180], // follow from ^, on slippery broken part of pillar in middle
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  4309.0556, 119.3281, 4564.0180, 10],
+      "lump": {
+        "name":"templed-skill-20"
+      }
+    },
+    {
+      "trans": [  4302.5019, 130.8167, 4566.9204], // follow from ^, IJ up and around to top layer, pillar in middle
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  4302.5019, 130.8167, 4566.9204, 10],
+      "lump": {
+        "name":"templed-skill-21"
+      }
+    },
+    {
+      "trans": [  4326.41,  140.01,  4551.99 ], // follow from ^, all the way up. east wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 4326.41,  140.01,  4551.99 , 10],
+      "lump": {
+        "name":"templed-skill-22"
+      }
+    },
+    {
+      "trans": [  4252.6762, 136.8621, 4452.8466], // cross very top section to NW corner, on some bricks
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  4252.6762, 136.8621, 4452.8466, 10],
+      "lump": {
+        "name":"templed-skill-23"
+      }
+    },
+    {
+      "trans": [ 4352.1123, 97.2798, 4508.0732], // near ceiling in elevator room before subrails, abah in crack at edge of elevator plat
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0.5102,       0.0024,       0.8599,       0.0041], // upside down
+      "bsphere": [ 4352.1123, 97.2798, 4508.0732, 10],
+      "lump": {
+        "name":"templed-skill-24"
+      }
+    },
+    {
+      "trans": [ 4250.6782, 44.2788, 4511.8974], // behind rubble, one gap over from lower entrance from rotator room
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 4250.6782, 44.2788, 4511.8974, 10],
+      "lump": {
+        "name":"templed-skill-25"
+      }
+    },
+    {
+      "trans": [ 4249.3203, 46.2408, 4549.4550], // behind rising sun looking thing on ground, a bit further down from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 4249.3203, 46.2408, 4549.4550, 10],
+      "lump": {
+        "name":"templed-skill-26"
+      }
+    },
+    {
+      "trans": [ 4278.8642, 44.2830, 4452.4877], // behind 3 bricks, not far from lower entrance from rotator room / below seem exit area
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 4278.8642, 44.2830, 4452.4877, 10],
+      "lump": {
+        "name":"templed-skill-27"
+      }
+    },
+    {
+      "trans": [ 4328.1704, 45.0113, 4501.5878], // behind big fallen slab, below door to elevator
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 4328.1704, 45.0113, 4501.5878, 10],
+      "lump": {
+        "name":"templed-skill-28"
+      }
+    },
+    {
+      "trans": [ 4327.9384, 44.2857, 4543.6542], // behind big fallen block, against mid east wall
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 4327.9384, 44.2857, 4543.6542, 10],
+      "lump": {
+        "name":"templed-skill-29"
+      }
+    },
+    {
+      "trans": [ 4276.2666, 88.4030, 4452.0595], // small ledge just under seem/warp gate stage
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 4276.2666, 88.4030, 4452.0595, 10],
+      "lump": {
+        "name":"templed-skill-30"
+      }
+    },
+
+
+    {
+      "trans": [ 4293.60986328125, 95.28469848632813, 4445.169921875 ], // seem at end of templed
+      "etype": "seem-npc",
+      "game_task": 0, 
+      "quat" : [  0.0, 1.0, 0.0, 0.0],
+      "bsphere": [ 4293.60986328125, 95.28469848632813, 4445.169921875, 6.928242206573486 ],
+      "lump": {
+        "name": "templed-seem-npc",
+        "task-actor": ["int32", 63]
+      }
+    },
+    {
+      "trans": [  4293.9829, 102.9230, 4440.4565], // 
+      "etype": "fuel-cell",
+      "game_task": 0, 
+      "quat" : [ 0.0, 0.21679742634296417, 0.0, 0.9762166142463684],
+      "bsphere": [  4293.9829, 102.9230, 4440.4565, 6.928242206573486 ],
+      "lump": {
+        "name": "templed-fuel-cell",
+        "level-idx": ["int32", 37],
+        "distance": ["float", 10.0],
+        "alt-actor": "templed-seem-npc"
+      }
+    }//,
+
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

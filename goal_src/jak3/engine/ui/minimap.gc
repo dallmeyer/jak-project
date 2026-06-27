@@ -166,7 +166,7 @@
 
 (kmemopen global "minimap-engines")
 
-(define *minimap-class-list* (new 'static 'inline-array minimap-class-node 177
+(define *minimap-class-list* (new 'static 'inline-array minimap-class-node 180
                                (new 'static 'minimap-class-node
                                  :default-position (new 'static 'vector :w 1.0)
                                  :flags (minimap-flag trail bigmap)
@@ -771,7 +771,7 @@
                                (new 'static 'minimap-class-node
                                  :default-position (new 'static 'vector :x 4068556.8 :y 45465.6 :z 2008678.4 :w 1.0)
                                  :flags (minimap-flag bigmap local-only ctywide)
-                                 :name "bbush-indb-1"
+                                 :name "bbush-indb-1" ;; unused!
                                  :icon-xy (new 'static 'vector2ub :data (new 'static 'array uint8 2 #x1 #x0))
                                  :scale 1.0
                                  :color (new 'static 'rgba :r #x80 :g #x80 :b #x80 :a #x80)
@@ -873,17 +873,17 @@
                                  :color (new 'static 'rgba :r #x80 :g #x80 :b #x80 :a #x80)
                                  )
                                (new 'static 'minimap-class-node
-                                 :default-position (new 'static 'vector :x 3889152.0 :y 45056.0 :z 1889075.2 :w 1.0)
+                                 :default-position (new 'static 'vector :x (meters 969.1300) :y (meters 51.8899) :z (meters 560.2600) :w 1.0)
                                  :flags (minimap-flag bigmap local-only ctywide)
-                                 :name "bbush-indb-2"
+                                 :name "bbush-indb-2" ;; burning-bush-39 / burning-bush-indb-2 / city-bbush-get-to-36
                                  :icon-xy (new 'static 'vector2ub :data (new 'static 'array uint8 2 #x1 #x0))
                                  :scale 1.0
                                  :color (new 'static 'rgba :r #x80 :g #x80 :b #x80 :a #x80)
                                  )
                                (new 'static 'minimap-class-node
-                                 :default-position (new 'static 'vector :x 4385997.0 :y 45056.0 :z 2440396.8 :w 1.0)
+                                 :default-position (new 'static 'vector :x (meters 1082.8267) :y (meters 24.5556) :z (meters 607.5993) :w 1.0)
                                  :flags (minimap-flag bigmap local-only ctywide)
-                                 :name "bbush-indb-3"
+                                 :name "bbush-indb-3" ;; burning-bush-40 / burning-bush-indb-3 / city-bbush-get-to-37
                                  :icon-xy (new 'static 'vector2ub :data (new 'static 'array uint8 2 #x1 #x0))
                                  :scale 1.0
                                  :color (new 'static 'rgba :r #x80 :g #x80 :b #x80 :a #x80)
@@ -1573,6 +1573,33 @@
                                  :icon-xy (new 'static 'vector2ub :data (new 'static 'array uint8 2 #x0 #x4))
                                  :scale 1.0
                                  :color (new 'static 'rgba :g #x40 :a #x80)
+                                 )
+                               (new 'static 'minimap-class-node
+                                 :default-position (new 'static 'vector :x -592445.44 :y 20111.36 :z -1443553.2 :w 1.0)
+                                 :flags (minimap-flag bigmap)
+                                 :name "orba"
+                                 :class (minimap-class orba)
+                                 :icon-xy (new 'static 'vector2ub :data (new 'static 'array uint8 2 #x4 #x5))
+                                 :scale 1.0
+                                 :color (new 'static 'rgba :r #x7f :g #x7f :b #x7f :a #x80)
+                                 )
+                               (new 'static 'minimap-class-node
+                                 :default-position (new 'static 'vector :x -592445.44 :y 20111.36 :z -1443553.2 :w 1.0)
+                                 :flags (minimap-flag bigmap)
+                                 :name "orba-blue"
+                                 :class (minimap-class orba-blue)
+                                 :icon-xy (new 'static 'vector2ub :data (new 'static 'array uint8 2 #x3 #x5))
+                                 :scale 1.0
+                                 :color (new 'static 'rgba :r #x7f :g #x7f :b #x7f :a #x80)
+                                 )
+                               (new 'static 'minimap-class-node
+                                 :default-position (new 'static 'vector :x -592445.44 :y 20111.36 :z -1443553.2 :w 1.0)
+                                 :flags (minimap-flag bigmap)
+                                 :name "orba-gold"
+                                 :class (minimap-class orba-gold)
+                                 :icon-xy (new 'static 'vector2ub :data (new 'static 'array uint8 2 #x5 #x5))
+                                 :scale 1.0
+                                 :color (new 'static 'rgba :r #x7f :g #x7f :b #x7f :a #x80)
                                  )
                                )
         )
@@ -3560,7 +3587,25 @@
     (let ((s3-5 (-> *minimap* engine alive-list)))
       (while s3-5
         (let ((a2-5 s3-5))
-          (draw-connection this gp-0 a2-5)
+          ;; orb hunt - only draw orba connections if the setting is on
+          (when 
+            (case (-> (the-as connection-minimap a2-5) class class)
+              (((minimap-class orba) (minimap-class orba-blue) (minimap-class orba-gold))
+                (dbg-format 0 "minimap trying to draw orbs~%")
+                (let ((proc (handle->process (-> (the-as connection-minimap a2-5) handle))))
+                  (or (-> *mod-settings* orb-map-icons?)
+                      (and (= (-> proc type) skill)
+                            ;; check overloaded bit-15 from crate orbs
+                            (logtest? (-> proc entity extra perm status) (entity-perm-status bit-15))
+                            )
+                      )
+                  )
+                )
+              (else 
+                #t)
+              )
+            (draw-connection this gp-0 a2-5)
+            )
           )
         (set! s3-5 (-> s3-5 next))
         )

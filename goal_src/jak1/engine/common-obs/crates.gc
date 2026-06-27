@@ -463,6 +463,14 @@
              (send-event arg0 'get-attack-count 1)
              (go-virtual die #f (the-as int s5-0)))
             (else
+             ;; TFL note: added super eco case
+             (if (and (target-powerup? super-eco-red)
+                      (or (= (-> arg3 param 1) 'punch)
+                          (= (-> arg3 param 1) 'flip)
+                          (= (-> arg3 param 1) 'flop-down)
+                          (= (-> arg3 param 1) 'spin)
+                          (= (-> arg3 param 1) 'spin-air)))
+               (go-virtual die #f (the int s5-0)))
              (when (and (!= s4-0 (-> self incomming-attack-id)) (= (-> self root trans y) (-> self base y)))
                (if (not (and (!= *kernel-boot-message* 'play) (= (-> *setting-control* current language) (language-enum japanese))))
                  (level-hint-spawn (text-id training-ironcrate) "sagevb36" (the-as entity #f) *entity-pool* (game-task none)))
@@ -494,6 +502,16 @@
                                  (game-task none)))
              (go-virtual die #f (the-as int s5-0)))
             (else
+             ;; TFL note: added super eco case
+             (if (and (target-powerup? super-eco-red)
+                      (or (= (-> arg3 param 1) 'punch)
+                          (= (-> arg3 param 1) 'flip)
+                          (= (-> arg3 param 1) 'flop)
+                          (= (-> arg3 param 1) 'flop-down)
+                          (= (-> arg3 param 1) 'spin)
+                          (= (-> arg3 param 1) 'spin-air)
+                          (= (-> arg3 param 1) 'uppercut)))
+               (go-virtual die #f (the int s5-0)))
              (when (and (!= s4-0 (-> self incomming-attack-id)) (= (-> self root trans y) (-> self base y)))
                (level-hint-spawn (text-id sidekick-hint-crate-steel) "sksp0006" (the-as entity #f) *entity-pool* (game-task none))
                (set! (-> self incomming-attack-id) s4-0)
@@ -563,7 +581,9 @@
   :trans
     (behavior ()
       (cond
-        ((not (send-event *target* 'query 'powerup (pickup-type eco-blue)))
+        ;; TFL note: added case for super-eco-blue
+        ((not (or (send-event *target* 'query 'powerup (pickup-type eco-blue))
+                  (send-event *target* 'query 'powerup (pickup-type super-eco-blue))))
          (logior! (-> self mask) (process-mask sleep-code))
          (if (not (!= (-> self smush amp) 0.0)) (go-virtual wait)))
         (else (logclear! (-> self mask) (process-mask sleep-code)))))
@@ -579,8 +599,13 @@
               (when v1-6
                 (let* ((gp-2 (-> self root root-prim prim-core))
                        (a1-3 (-> (the-as collide-shape v1-6) root-prim prim-core))
-                       (f30-0 (vector-vector-distance (-> gp-2 world-sphere) (-> a1-3 world-sphere))))
-                  (when (and (< f30-0 (-> *FACT-bank* suck-suck-dist)) (!= (-> self defense) 'steel))
+                       (f30-0 (vector-vector-distance (the-as vector gp-2) (the-as vector a1-3))))
+                  ;; TFL note: increased radius for super eco
+                  (when (and (< f30-0
+                                (if (send-event *target* 'query 'powerup (pickup-type super-eco-blue))
+                                  (* 1.5 (-> *FACT-bank* suck-suck-dist))
+                                  (-> *FACT-bank* suck-suck-dist)))
+                             (!= (-> self defense) 'steel))
                     (logior! (-> self fact options) (fact-options can-collect))
                     (go-virtual die #f 0))
                   (when (rand-vu-percent? 0.5)
@@ -764,8 +789,9 @@
   (check-dead this)
   (none))
 
-(defmethod params-init ((this crate) (arg0 entity))
-  (stack-size-set! (-> this main-thread) 128)
+(defmethod params-init crate ((this crate) (arg0 entity))
+  ;; TFL note: increased stack from 128
+  (stack-size-set! (-> this main-thread) 256)
   (logior! (-> this mask) (process-mask crate))
   (let ((s4-0 (new 'process 'collide-shape-moving this (collide-list-enum usually-hit-by-player))))
     (set! (-> s4-0 dynam) (copy *standard-dynamics* 'process))

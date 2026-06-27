@@ -204,6 +204,7 @@
   (set! *look-around-mods* a0-22)
   )
 
+(define-extern *zoom-sensitivity-scale* float)
 (defstate target-look-around (target)
   :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
     (cond
@@ -239,6 +240,8 @@
     (set-setting! 'mode-name 'cam-eye 0.0 0)
     )
   :exit (behavior ()
+    (remove-setting-by-arg0 *setting-control* 'fov) ;; orbhunt to reset any "zoom"
+    (set! *zoom-sensitivity-scale* 1.0) ;; orbhunt to reset zoom sensitivity changes
     (set! (-> self cam-user-mode) 'normal)
     (target-exit)
     (remove-setting! 'mode-name)
@@ -1296,7 +1299,8 @@
       (ja :num! (seek! (ja-aframe 15.0 0) 3.0))
       )
     (if arg1
-        (send-event *camera* 'change-state arg1 (seconds 0.6))
+        (set-setting-by-param *setting-control* 'mode-name 'cam-launcher-longfall 0 0)
+        ;; (send-event *camera* 'change-mode arg1 (seconds 0.6))
         )
     (if (nonzero? arg3)
         (process-spawn-function

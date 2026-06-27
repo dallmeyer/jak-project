@@ -16,6 +16,7 @@
     unbroken
     hit
     broken
+    die
     )
   (:methods
     (rhino-wall-method-30 (_type_) none)
@@ -106,6 +107,17 @@
   )
 
 (defstate broken (rhino-wall)
+  :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
+    (case message
+      (('attack)
+        (let ((t0-1 (get-penetrate-using-from-attack-event (the process-drawable proc) block)))
+          (when (logtest? (penetrate dark-bomb) t0-1)
+            (go-virtual die)
+            )
+          )
+        )
+      )
+    )
   :virtual #t
   :code (behavior ()
     (rhino-wall-method-30 self)
@@ -125,6 +137,15 @@
     (suspend)
     (transform-post)
     (sleep-code)
+    )
+  )
+
+(defstate die (rhino-wall)
+  :virtual #t
+  :code (behavior ()
+    ;; dead dead
+    (logior! (-> self draw status) (draw-control-status no-draw))
+    (process-entity-status! self (entity-perm-status dead) #t)
     )
   )
 

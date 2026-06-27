@@ -514,6 +514,9 @@
    )
   )
 
+(deftype menu-orb-counts-option (menu-missions-option)
+  ())
+
 
 (deftype highscore-page-info (structure)
   ((text          text-id)

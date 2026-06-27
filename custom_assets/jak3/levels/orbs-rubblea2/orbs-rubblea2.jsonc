@@ -1,0 +1,258 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-rubblea2",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O02",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o02", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-rubblea2/orbs-rubblea2.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 102000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [  -439.1120, 45.4011, -63.9887], // on top of electric barrier (hint for getting over invis wall for next two orbs)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   -439.1120, 45.4011, -63.9887, 10],
+      "lump": {
+        "name":"rubblea2-skill-01"
+      }
+    },
+    {
+      "trans": [  -407.6864, 34.5306, -75.1777], // follow from ^, on wall before "river" room
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   -407.6864, 34.5306, -75.1777, 10],
+      "lump": {
+        "name":"rubblea2-skill-02"
+      }
+    },
+    {
+      "trans": [  -352.9021, 57.9007, -105.7132], // follow from ^, further up wall against citywall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   -352.9021, 57.9007, -105.7132, 10],
+      "lump": {
+        "name":"rubblea2-skill-03"
+      }
+    },
+    {
+      "trans": [ -201.13,  34.18,  -124.74  ], // on rubble just past last elec barrier before rubbleb
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -201.13,  34.18,  -124.74 , 10],
+      "lump": {
+        "name":"rubblea2-skill-04"
+      }
+    },
+    {
+      "trans": [ -186.48,  47.82,  -123.41  ], // tricky jump up from higher from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -186.48,  47.82,  -123.41 , 10],
+      "lump": {
+        "name":"rubblea2-skill-05"
+      }
+    },
+    {
+      "trans": [ -201.97,  50.20,  -115.01  ], // jump over from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -201.97,  50.20,  -115.01 , 10],
+      "lump": {
+        "name":"rubblea2-skill-06"
+      }
+    },
+    {
+      "trans": [ -357.4205, 18.6157, -126.8498], // under fallen beam in first "room", kinda troll since near missing wall (not far from first barrier skip)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -357.4205, 18.6157, -126.8498, 10],
+      "lump": {
+        "name":"rubblea2-skill-07"
+      }
+    },
+    {
+      "trans": [ -403.1451, 39.0299, -235.5714], // in smoking rubble you normally hover over, near rubblea
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -403.1451, 39.0299, -235.5714, 10],
+      "lump": {
+        "name":"rubblea2-skill-08"
+      }
+    },
+    {
+      "trans": [ -473.4217, 13.6582, -219.6342], // ground level, crouch under rubble near breakable wall to/from rubblea
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -473.4217, 13.6582, -219.6342, 10],
+      "lump": {
+        "name":"rubblea2-skill-09"
+      }
+    },
+    {
+      "trans": [ -417.9506, 20.9748, -78.9199], // between rocks and rubble near first barrier
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -417.9506, 20.9748, -78.9199, 10],
+      "lump": {
+        "name":"rubblea2-skill-10"
+      }
+    },
+    {
+      "trans": [ -528.2013, 31.5585, -91.2023], // along outer wall just before first barrier, slightly behind invis wall
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -528.2013, 31.5585, -91.2023, 10],
+      "lump": {
+        "name":"rubblea2-skill-11"
+      }
+    },
+    {
+      "trans": [ -500.8413, 2.6422, 109.5843], // below first breakable bridge near water, on waterbottom surface w the weird camera
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -500.8413, 2.6422, 109.5843, 10],
+      "lump": {
+        "name":"rubblea2-skill-12"
+      }
+    },
+    {
+      "trans": [ -336.9149, 70.3239, 31.9057], // midway up on broken edge of city wall, where'd you hover over to death warp oob in any%
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -336.9149, 70.3239, 31.9057, 10],
+      "lump": {
+        "name":"rubblea2-skill-13"
+      }
+    },
+    {
+      "trans": [ -343.3769, 101.0523, 44.0809], // top of city wall, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -343.3769, 101.0523, 44.0809, 10],
+      "lump": {
+        "name":"rubblea2-skill-14"
+      }
+    },
+    {
+      "trans": [ -343.5175, 113.3798, 136.2189], // further along top of city wall, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -343.5175, 113.3798, 136.2189, 10],
+      "lump": {
+        "name":"rubblea2-skill-15"
+      }
+    },
+    {
+      "trans": [ -358.6872, 62.5413, 203.7134], // on bit of city wall sticking out above rock wall, drop down from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -358.6872, 62.5413, 203.7134, 10],
+      "lump": {
+        "name":"rubblea2-skill-16"
+      }
+    },
+    {
+      "trans": [ -243.9982, 39.7885, -72.8953], // up on back of lamp before rubbleb
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -243.9982, 39.7885, -72.8953, 10],
+      "lump": {
+        "name":"rubblea2-skill-17"
+      }
+    },
+    {
+      "trans": [ -304.6806, 17.1758, -186.2579], // ground level, crouch under broken wall in corner left of second barrier
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -304.6806, 17.1758, -186.2579, 10],
+      "lump": {
+        "name":"rubblea2-skill-18"
+      }
+    }//,
+    
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

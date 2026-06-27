@@ -20,6 +20,10 @@
 
 ;; DECOMP BEGINS
 
+(define-extern runs-on-jak-death (function symbol none))
+
+;; DECOMP BEGINS
+
 ;;;;;;;;;;;;;;;;;;
 ;; border plane
 ;;;;;;;;;;;;;;;;;;
@@ -167,6 +171,7 @@
         ;; not in play mode, we're done.
         (set! this this)
         (goto cfg-50)))))
+  (runs-on-jak-death 'blackout) ;;mod-base-change
   (kill-current-level-hint '() '() 'die)
   (case cause
     (('game)
@@ -197,7 +202,7 @@
      (set-time! (-> this continue-time))
      (set-time! (-> this death-time))
      (set-time! (-> this hit-time))
-     (dotimes (v1-50 116)
+     (dotimes (v1-50 (the int (game-task max))) ;; changed from hard-coded 116 to (game-task max) mod-base-change
        (set! (-> this fuel-cell-time 0) 0)
        (nop!))
      (dotimes (v1-53 32)
@@ -383,7 +388,8 @@
 (defmethod pickup-collectable! ((this fact-info-target) (kind pickup-type) (amount float) (source-handle handle))
   "Pickup a thing!"
   (case kind
-    (((pickup-type eco-green))
+    ;; TFL note: added super-eco-green case
+    (((pickup-type eco-green) (pickup-type super-eco-green))
      ;; big green eco.  This counts toward the health (up to 3), and if that's full, maxes out the little green ecos to 50.
      (cond
        ((>= amount 0.0)
@@ -419,8 +425,9 @@
         (if (= (-> this health) 0.0)
           (adjust (-> (the-as target (-> this process)) game) 'life (- (-> *GAME-bank* life-single-inc)) source-handle))))
      ;; green eco vents power-up when racing.
-     (b! (and (logtest? (-> (the-as collide-shape (-> this process root)) root-prim prim-core action) (collide-action racer))
-              (type-type? (-> (handle->process source-handle) type) vent))
+     (b! (or (= kind (pickup-type super-eco-green))
+             (and (logtest? (-> (the-as collide-shape (-> this process root)) root-prim prim-core action) (collide-action racer))
+                  (type-type? (-> (handle->process source-handle) type) vent)))
          cfg-80
          :delay (nop!))
      (-> this health))
@@ -429,7 +436,8 @@
      (when (>= amount 0.0)
        ;; update small eco count
        (set-time! (-> this eco-pill-pickup-time))
-       (seek! (-> this eco-pill) (-> this eco-pill-max) amount)
+       ;; TFL note: don't seek towards max if we have more than the max (i.e. picked up super green eco)
+       (if (not (> (-> this eco-pill) (-> this eco-pill-max))) (seek! (-> this eco-pill) (-> this eco-pill-max) amount))
        ;; increment big health if needed
        (when (and (>= (-> this eco-pill) (-> *FACT-bank* eco-pill-max-default)) (< (-> this health) (-> this health-max)))
          ;; decrease eco pills
@@ -467,7 +475,13 @@
          (set-time! (-> this buzzer-pickup-time)))
        (set! (-> this buzzer) buzz-count))
      (-> this buzzer))
-    (((pickup-type eco-red) (pickup-type eco-blue) (pickup-type eco-yellow))
+    ;; TFL note: added super eco cases
+    (((pickup-type eco-red)
+      (pickup-type eco-blue)
+      (pickup-type eco-yellow)
+      (pickup-type super-eco-red)
+      (pickup-type super-eco-blue)
+      (pickup-type super-eco-yellow))
      ;; the green vent jumps here.
      (label cfg-80)
      ;; if the amount is zero, we just want to know how much eco there is.
@@ -506,10 +520,10 @@
          (cpad-set-buzz! (-> *cpad-list* cpads 0) 1 127 (seconds 0.2))
          (cpad-set-buzz! (-> *cpad-list* cpads 0) 0 17 (seconds 0.2))
          (case kind
-           (((pickup-type eco-blue)) (sound-play "get-blue-eco"))
-           (((pickup-type eco-green)) (sound-play "get-green-eco"))
-           (((pickup-type eco-yellow)) (sound-play "get-yellow-eco"))
-           (((pickup-type eco-red)) (sound-play "get-red-eco"))))
+           (((pickup-type eco-blue) (pickup-type super-eco-blue)) (sound-play "get-blue-eco"))
+           (((pickup-type eco-green) (pickup-type super-eco-green)) (sound-play "get-green-eco"))
+           (((pickup-type eco-yellow) (pickup-type super-eco-yellow)) (sound-play "get-yellow-eco"))
+           (((pickup-type eco-red) (pickup-type super-eco-red)) (sound-play "get-red-eco"))))
        (set! (-> this eco-source) source-handle)
        (set-time! (-> this eco-source-time))
        ;; special case for blue eco magnet effect
@@ -541,7 +555,43 @@
                :from
                *4k-dead-pool*
                :to
-               s5-1)))))
+               s5-1))))
+       ;; super blue eco magnet
+       (when (= kind (pickup-type super-eco-blue))
+         (when (= eco-lev 0.0)
+           (let ((target (-> this process)))
+             (let ((touch-tracker (process-spawn touch-tracker
+                                                 :init
+                                                 touch-tracker-init
+                                                 (-> target root trans)
+                                                 (* 2.0 (-> *FACT-bank* suck-bounce-dist))
+                                                 (seconds 1)
+                                                 :to
+                                                 target)))
+               (send-event (ppointer->process touch-tracker) 'target target)
+               (send-event (ppointer->process touch-tracker) 'event 'eco-blue)
+               (send-event (ppointer->process touch-tracker)
+                           'exit
+                           (lambda ()
+                             (send-event *target* 'query 'powerup (pickup-type super-eco-blue))))
+               (send-event (ppointer->process touch-tracker)
+                           'eval
+                           (lambda :behavior process-drawable ()
+                             (set! (-> (the-as collide-shape (-> self root)) root-prim collide-with)
+                                   (collide-kind enemy cak-1 cak-2 cak-3 blue-eco-suck))
+                             (none))))
+             (process-spawn-function process
+               (lambda ((pdraw process-drawable))
+                 (let ((curtime (current-time)))
+                   (until (>= (- (current-time) curtime) (seconds 0.6))
+                     (send-event pdraw 'effect 'eco-blue)
+                     (suspend)))
+                 (none))
+               target
+               :from
+               *4k-dead-pool*
+               :to
+               target)))))
      (-> this eco-level))
     (else ((method-of-type fact-info pickup-collectable!) this kind amount source-handle))))
 
@@ -653,7 +703,7 @@
   (inspect this)
   (when (or (not arg0) (= arg0 'game-task))
     (format #t "~Tgame-task:~%")
-    (dotimes (s4-0 116)
+    (dotimes (s4-0 (the int (game-task max))) ;; changed from hard-coded 116 to (game-task max) ;; mod-base-change
       (if (task-complete? this (the-as game-task s4-0)) (format #t "~T~T~S~%" (game-task->string (the-as game-task s4-0))))))
   (when (or (not arg0) (= arg0 'entity-perm))
     (format #t "~Tentity-perm:~%")
@@ -671,7 +721,7 @@
     0)
   ;; task perms
   (when (zero? (-> gp-0 task-perm-list))
-    (let ((v1-15 (new 'global 'entity-perm-array 116)))
+    (let ((v1-15 (new 'global 'entity-perm-array (the int (game-task max))))) ;; mod-base-change changed from hard-coded 116 to (game-task max)
       (set! (-> gp-0 task-perm-list) v1-15)
       (dotimes (a0-24 (-> v1-15 length))
         (set! (-> v1-15 data a0-24 task) (the-as game-task a0-24)))

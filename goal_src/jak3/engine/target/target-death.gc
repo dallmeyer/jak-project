@@ -463,6 +463,11 @@
         )
       )
     )
+  :enter (behavior ()
+    ;; help prevent crash when developer is dum
+    (when *debug-segment*
+      (set-entity! *entity-debug-inspect* (the entity #f)))
+    )
   :exit (behavior ()
     (set! (-> *level* camera-pos 0 quad) (-> (camera-pos) quad))
     (vector-copy! (-> *level* camera-pos 1) (-> *level* camera-pos 0))

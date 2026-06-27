@@ -1,7 +1,21 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
+(define-extern speedrun-practice-spawn (function none)) ;; defined at end of this file
+(define-extern speedrun-practice-store-temp-checkpoint (function none)) ;; defined at end of this file
+(define *practice-spawn-post-init* (the-as (function none) #f))
+(define *last-checkpoint-load-time* (the time-frame #f))
+
+(define *last-real-continue-point* (the-as continue-point #f))
+(defun generic-post-init ()
+  (when *last-real-continue-point*
+    (set! (-> *game-info* current-continue) *last-real-continue-point*)
+    )
+  (none)
+  )
 ;; TODO later - customize menu open keybind
+
+(define-extern *mod-version-text* string)
 
 (define-extern task-close! (function string symbol))
 
@@ -107,14 +121,232 @@
   ;; - If you are playing a category that forbids cheats, you wouldn't want your run invalidated because you forgot
   (case (-> this category)
     (((speedrun-category newgame-normal) (speedrun-category newgame-heromode))
-      ;; disable any active cheats
-      (set! (-> *pc-settings* cheats) (the-as pc-cheats #x0)))
+      ;; disable any active cheats (skip in orb hunt)
+      ;; (set! (-> *pc-settings* cheats) (the-as pc-cheats #x0))
+      )
     (((speedrun-category custom))
       (set! (-> *game-info* secrets) (-> *speedrun-info* active-custom-category secrets))
       (logior! (-> *game-info* features) (-> *speedrun-info* active-custom-category features))
       (logclear! (-> *game-info* features) (-> *speedrun-info* active-custom-category forbidden-features))
       (set! (-> *pc-settings* cheats) (-> *speedrun-info* active-custom-category pc-cheats))))
   (none))
+
+(define-extern draw-orb-hunt-text (function none))
+(define-extern *auto-saving?* symbol)
+(define-extern *last-auto-save-time* time-frame)
+(defun orb-hunt-update ()
+  ;; Draw info to the screen
+  (draw-orb-hunt-text)
+
+  (when (-> *mod-settings* pseudo-savestates?)
+    (when (and (or (not *progress-process*) (gone? (-> *progress-process* 0)))
+               (>= (- (-> *display* base-clock frame-counter) (-> *game-info* blackout-time)) (seconds 0.1))
+               )
+      ;; call post-init function
+      (when (and *target* *practice-spawn-post-init*)
+        (*practice-spawn-post-init*)
+        (set! *practice-spawn-post-init* #f)
+        )
+
+      (when (cpad-hold? 0 r3)
+        (cond
+          ((cpad-pressed? 0 up)
+            (format 0 "player tried to load tmp checkpoint~%")
+            (speedrun-practice-spawn)
+            )
+          ((cpad-pressed? 0 down)
+            (format 0 "player tried to save tmp checkpoint~%")
+            (speedrun-practice-store-temp-checkpoint)
+            )
+          )
+        )
+      )
+    )
+  (none)
+  )
+
+(define *tmp-continue-point* (new 'static 'continue-point
+                             :name "tmp"
+                             :level #f
+                             :trans (new 'static 'vector :w 1.0)
+                             :quat (new 'static 'vector :w 1.0)
+                             :camera-trans (new 'static 'vector :w 1.0)
+                             :camera-rot (new 'static 'inline-array vector3s 3)
+                             :on-goto #f
+                             :vis-nick #f
+                             :want (new 'static 'inline-array level-buffer-state 6
+                                    (new 'static 'level-buffer-state :name #f :display? #f :force-vis? #f :force-inside? #f)
+                                    (new 'static 'level-buffer-state :name #f :display? #f :force-vis? #f :force-inside? #f)
+                                    (new 'static 'level-buffer-state :name #f :display? #f :force-vis? #f :force-inside? #f)
+                                    (new 'static 'level-buffer-state :name #f :display? #f :force-vis? #f :force-inside? #f)
+                                    (new 'static 'level-buffer-state :name #f :display? #f :force-vis? #f :force-inside? #f)
+                                    (new 'static 'level-buffer-state :name #f :display? #f :force-vis? #f :force-inside? #f))
+                             :want-sound (new 'static 'array symbol 3 #f #f #f))
+    )
+
+(defun speedrun-practice-temp-checkpoint ()
+  (when (-> *tmp-continue-point* level)
+    (set! (-> *game-info* mode) 'play)
+    (cond
+      ;; (*tmp-flut?* (set! *practice-spawn-post-init* get-on-flutflut))
+      ;; (*tmp-zoomer?* (set! *practice-spawn-post-init* get-on-zoomer))
+      (else (set! *practice-spawn-post-init* generic-post-init))
+      )
+    ;; commented out to prevent malding 
+    ;; (if (cpad-hold? 0 r2)  ;; fully reset game if r2 held too
+    ;;   (initialize! *game-info* 'game (the-as game-save #f) "default")
+    ;;   )
+    (set! (-> *game-info* current-continue) *tmp-continue-point*)
+    (cheats-sound-play #f)
+    (initialize! *game-info* 'dead (the-as game-save #f) (the-as string #f))
+    ;; (speedrun-reset-common-settings)
+    )
+  (none)
+  )
+
+(defun continue-point-copy! ((dst continue-point) (src continue-point))
+  (set! (-> dst level) (or (-> src level) (-> *last-real-continue-point* level)))
+  (set! (-> dst quat quad) (-> src quat quad))
+  (set! (-> dst vis-nick) (-> src vis-nick))
+  (dotimes (idx 6)
+    ;; clear levels
+    (set! (-> dst want idx name) #f)
+    (set! (-> dst want idx display?) #f)
+
+    (when (or (= (-> *level* level idx status) 'active)
+              (= (-> *level* level idx status) 'loaded)
+              (= (-> *level* level idx status) 'loading)
+              )
+      (set! (-> dst want idx name) (-> *level* level idx name))
+      (set! (-> dst want idx display?) (-> *level* level idx display?))
+      
+      (when (name= (-> *level* level idx name) (-> dst level))
+        (set! (-> dst want idx display?) 'display)
+        (set! (-> dst want idx force-vis?) #t)
+        (set! (-> dst want idx force-inside?) #t)
+        )
+      )
+    )
+  (dotimes (idx 3)
+    (set! (-> dst want-sound idx)  (-> src want-sound idx))
+    )
+  (none)
+  )
+
+(defun camera-rot-copy! ((dst continue-point) (src matrix))
+  (set! (-> dst camera-rot 0 x) (-> src vector 0 x))
+  (set! (-> dst camera-rot 0 y) (-> src vector 0 y))
+  (set! (-> dst camera-rot 0 z) (-> src vector 0 z))
+  (set! (-> dst camera-rot 1 x) (-> src vector 1 x))
+  (set! (-> dst camera-rot 1 y) (-> src vector 1 y))
+  (set! (-> dst camera-rot 1 z) (-> src vector 1 z))
+  (set! (-> dst camera-rot 2 x) (-> src vector 2 x))
+  (set! (-> dst camera-rot 2 y) (-> src vector 2 y))
+  (set! (-> dst camera-rot 2 z) (-> src vector 2 z))
+  (none)
+  )
+
+(defun speedrun-practice-store-temp-checkpoint ()
+  (when (and *target* )
+    (cond
+      ((or (side-mish-active?) 
+           (not (progress-allowed?))
+           *auto-saving?*
+           (and *last-auto-save-time* (not (g-time-elapsed? *last-auto-save-time* (seconds 3))))
+           (focus-test? *target* dead hit grabbed)
+           )
+        (sound-play "smack-surface")  
+        )
+      (else
+        (case (-> *target* state)
+          ;; only store temp checkpoint if in one of these states
+          ((target-look-around target-stance target-duck-stance target-wade-stance target-gun-stance)
+            (when (not (string= (-> *game-info* current-continue name) "tmp"))
+              (set! *last-real-continue-point* (-> *game-info* current-continue))
+              )
+            ;; assume current continue is good enough for the current location
+            (continue-point-copy! *tmp-continue-point* (-> *game-info* current-continue))
+            (vector-copy! (-> *tmp-continue-point* trans) (-> *target* root trans))
+            (vector-copy! (-> *tmp-continue-point* quat) (-> *target* root quat))
+            (vector-copy! (-> *tmp-continue-point* camera-trans) (-> *camera-combiner* trans))
+            (camera-rot-copy! *tmp-continue-point* (-> *camera-combiner* inv-camera-rot))
+
+            ;; some weird bug where current continue has #f or default level?
+            (when (or (not (-> *tmp-continue-point* level))
+                      (= (-> *tmp-continue-point* vis-nick) 'default-level))
+              (let ((lvl (level-get-target-inside *level*)))
+                (dbg-format 0 "current continue has #f level, using inside level ~A~%" lvl)
+                (set! (-> *tmp-continue-point* level) (-> lvl name))
+                (set! (-> *tmp-continue-point* vis-nick) (-> lvl name))
+                )
+              )
+            (cheats-sound-play #t)
+            
+            ;; autosave in debug mode
+            (when (and *debug-segment*
+                       (not *auto-saving?*)
+                       (>= (-> *game-info* auto-save-which) 0)
+                       ;; dont autosave with bad checkpoint
+                       (not (or (name= (-> *game-info* current-continue name) 'tmp)
+                                (name= (-> *game-info* current-continue name) 'default))))
+              (format 0 "autosave on checkpoint debug mode~%")
+              (true! *auto-saving?*)
+              (auto-save-user)
+              )
+            )
+          (else
+            (sound-play "smack-surface")
+            )
+          )
+        )
+      )
+    )
+  (none)
+  )
+
+(defun speedrun-practice-spawn ()
+  (cond
+    ((or (not (progress-allowed?))
+         *auto-saving?*
+         (and *last-auto-save-time* (not (g-time-elapsed? *last-auto-save-time* (seconds 3))))
+         (focus-test? *target* dead hit grabbed)
+         )
+      (sound-play "smack-surface")  
+      )
+    ((not *target*)
+      ;; only respawn from no target when in debug
+      (when *debug-segment*
+        (set! *last-checkpoint-load-time* (get-current-time))
+        ;; reset any previous post-target-init callback
+        (set! *practice-spawn-post-init* #f)
+        (speedrun-practice-temp-checkpoint)
+        )
+      )
+    ((or (not *last-checkpoint-load-time*)
+         (g-time-elapsed? *last-checkpoint-load-time* (seconds 1))
+         )
+      ;; if we havent yet used checkpoint load, or its been more than 1s since last load, OK to load
+      
+      (set! *last-checkpoint-load-time* (get-current-time))
+      ;; reset any previous post-target-init callback
+      (set! *practice-spawn-post-init* #f)
+      (speedrun-practice-temp-checkpoint)
+      )
+    (else
+      (sound-play "smack-surface")
+      )
+    )
+      
+  (none)
+  )
+
+(defun get-active-pat-mode-info ()
+  (case (-> *mod-settings* slip-assist)
+    (((slip-assist-mode normal)) *pat-mode-info*)
+    (((slip-assist-mode no-slip)) *no-slip-pat-mode-info*)
+    (((slip-assist-mode spiderman)) *spiderman-pat-mode-info*)
+    )
+  )
 
 (defmethod draw-zone ((this objective-zone))
   (add-debug-box
@@ -450,21 +682,21 @@
       ((= (-> this category) (speedrun-category custom))
        (pc-sr-mode-get-custom-category-name (-> this active-custom-category index) *pc-cpp-temp-string*)
        (format *temp-string*
-               "<COLOR_WHITE>Category: <COLOR_GREEN>~S~%<COLOR_WHITE>Secrets: <COLOR_GREEN>~D~%<COLOR_WHITE>Features: <COLOR_GREEN>~D~%<COLOR_WHITE>Forbidden Features: <COLOR_GREEN>~D~%<COLOR_WHITE>Cheats: <COLOR_GREEN>~D~%<COLOR_WHITE>Version: <COLOR_GREEN>~S~%"
+               "<COLOR_WHITE>Category: <COLOR_GREEN>~S~%<COLOR_WHITE>Secrets: <COLOR_GREEN>~D~%<COLOR_WHITE>Features: <COLOR_GREEN>~D~%<COLOR_WHITE>Forbidden Features: <COLOR_GREEN>~D~%<COLOR_WHITE>Cheats: <COLOR_GREEN>~D~%<COLOR_WHITE>Mod Version: <COLOR_GREEN>~S~%"
                *pc-cpp-temp-string*
                (-> this active-custom-category secrets)
                (-> this active-custom-category features)
                (-> this active-custom-category forbidden-features)
                (-> this active-custom-category pc-cheats)
-               *pc-settings-built-sha*))
+               *mod-version-text*))
       (else
         (format *temp-string*
-              "<COLOR_WHITE>Category: <COLOR_GREEN>~S~%<COLOR_WHITE>PC Cheats: <COLOR_GREEN>~D~%<COLOR_WHITE>Frame Rate: <COLOR_GREEN>~D~%<COLOR_WHITE>PS2 Actor Vis?: <COLOR_GREEN>~S~%<COLOR_WHITE>Version: <COLOR_GREEN>~S~%"
+              "<COLOR_WHITE>Category: <COLOR_GREEN>~S~%<COLOR_WHITE>PC Cheats: <COLOR_GREEN>~D~%<COLOR_WHITE>Frame Rate: <COLOR_GREEN>~D~%<COLOR_WHITE>PS2 Actor Vis?: <COLOR_GREEN>~S~%<COLOR_WHITE>Mod Version: <COLOR_GREEN>~S~%"
               (enum->string speedrun-category (-> this category))
               (the-as int (-> *pc-settings* cheats))
               (-> *pc-settings* target-fps)
               (if (-> *pc-settings* ps2-actor-vis?) "true" "false")
-              *pc-settings-built-sha*)))
+              *mod-version-text*)))
     (pc-encode-utf8-string *temp-string* *pc-encoded-temp-string*)
     (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug-no-zbuf2))
       ;; reset bucket settings prior to drawing - font won't do this for us, and

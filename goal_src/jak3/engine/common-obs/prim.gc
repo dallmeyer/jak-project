@@ -329,6 +329,7 @@
         )
       (set! (-> this level) s5-0)
       (set! (-> this texture-index) s4-0)
+      ;; (when (cpad-pressed? 0 l3) (inspect this))
       )
     (when (not (logtest? (-> this flags) (prim-flags no-texture-name)))
       (set! (-> this tex-id)

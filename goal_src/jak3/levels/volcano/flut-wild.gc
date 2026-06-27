@@ -549,9 +549,10 @@
           (t9-0)
           )
       )
-    (if (task-node-closed? (game-task-node volcano-darkeco-catch-flut))
-        (go-virtual disappear)
-        )
+    ;; orb hunt X flutflut legacy
+    ;; (if (task-node-closed? (game-task-node volcano-darkeco-catch-flut))
+    ;;     (go-virtual disappear)
+    ;;     )
     )
   )
 
@@ -563,39 +564,40 @@
           (t9-0)
           )
       )
-    (when (-> self first-notice?)
-      (let ((gp-0 (-> self entity extra perm)))
-        (logior! (-> gp-0 status) (entity-perm-status bit-5))
-        (cond
-          ((zero? (-> gp-0 user-object 0))
-           (if (res-lump-struct (-> self entity) 'camera-name structure)
-               (process-spawn
-                 external-camera-controller
-                 (-> self entity)
-                 750
-                 #f
-                 :name "external-camera-controller"
-                 :to *entity-pool*
-                 )
-               )
-           )
-          (else
-            (if (res-lump-struct (-> self entity) 'camera-name structure)
-                (process-spawn
-                  external-camera-controller
-                  (-> self entity)
-                  450
-                  #f
-                  :name "external-camera-controller"
-                  :to *entity-pool*
-                  )
-                )
-            (set! (-> self first-notice?) #f)
-            )
-          )
-        (set! (-> gp-0 user-object 0) (+ (the-as int (-> gp-0 user-object 0)) 1))
-        )
-      )
+    ;; orb hunt - disable camera / target-grab
+    ;; (when (-> self first-notice?)
+    ;;   (let ((gp-0 (-> self entity extra perm)))
+    ;;     (logior! (-> gp-0 status) (entity-perm-status bit-5))
+    ;;     (cond
+    ;;       ((zero? (-> gp-0 user-object 0))
+    ;;        (if (res-lump-struct (-> self entity) 'camera-name structure)
+    ;;            (process-spawn
+    ;;              external-camera-controller
+    ;;              (-> self entity)
+    ;;              750
+    ;;              #f
+    ;;              :name "external-camera-controller"
+    ;;              :to *entity-pool*
+    ;;              )
+    ;;            )
+    ;;        )
+    ;;       (else
+    ;;         (if (res-lump-struct (-> self entity) 'camera-name structure)
+    ;;             (process-spawn
+    ;;               external-camera-controller
+    ;;               (-> self entity)
+    ;;               450
+    ;;               #f
+    ;;               :name "external-camera-controller"
+    ;;               :to *entity-pool*
+    ;;               )
+    ;;             )
+    ;;         (set! (-> self first-notice?) #f)
+    ;;         )
+    ;;       )
+    ;;     (set! (-> gp-0 user-object 0) (+ (the-as int (-> gp-0 user-object 0)) 1))
+    ;;     )
+    ;;   )
     )
   :exit (behavior ()
     (let ((t9-0 (-> (method-of-type nav-enemy notice) exit)))
@@ -750,9 +752,10 @@
 
 (defmethod enemy-common-post ((this flut-wild))
   "Common implementation of post. Runs ja-post."
-  (if (task-node-closed? (game-task-node volcano-darkeco-catch-flut))
-      (go (method-of-object this disappear))
-      )
+  ;; orb hunt X flutflut legacy
+  ;; (if (task-node-closed? (game-task-node volcano-darkeco-catch-flut))
+  ;;     (go (method-of-object this disappear))
+  ;;     )
   (if (time-elapsed? (-> this focus-ignore-timer) (seconds 2))
       (logclear! (-> this focus-status) (focus-status ignore))
       (logior! (-> this focus-status) (focus-status ignore))
@@ -918,10 +921,10 @@
 
 (defmethod go-fallback-init ((this flut-wild))
   "If there's no specific settings for initial state, go to this state after spawning."
-  (if (task-node-closed? (game-task-node volcano-darkeco-catch-flut))
-      (go (method-of-object this disappear))
+  ;; (if (task-node-closed? (game-task-node volcano-darkeco-catch-flut))
+  ;;     (go (method-of-object this disappear))
       ((method-of-type nav-enemy go-fallback-init) this)
-      )
+      ;; )
   )
 
 (defmethod init-enemy! ((this flut-wild))

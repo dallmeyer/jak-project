@@ -941,6 +941,102 @@
       (if (logtest? (-> self control status) (cshape-moving-flags onsurf)) (go target-stance) (go target-falling #f)))
   :post target-post)
 
+;; TFL note: added state
+(defstate target-super-yellow-blast (target)
+  :event
+    (-> target-running-attack
+        event)
+  :enter
+    (behavior ()
+      (set! (-> self state-time) (current-time))
+      (set! (-> self control unknown-surface00) *run-attack-mods*)
+      (set! (-> *run-attack-mods* turnv) 655360.0)
+      (set! (-> *run-attack-mods* turnvv) 655360.0)
+      (target-start-attack)
+      (target-danger-set! 'spin #f)
+      (set! (-> self control unknown-uint20) (the uint 0))
+      (set! (-> self control unknown-int21) 0)
+      (set! (-> self control unknown-uint31) (the uint 0))
+      (let ((gp-0 (new-stack-vector0))
+            (f30-0 (vector-dot (-> self control dynam gravity-normal) (-> self control transv))))
+        0.0
+        (vector-! gp-0 (-> self control transv) (vector-float*! gp-0 (-> self control dynam gravity-normal) f30-0))
+        (let* ((f0-5 (vector-length gp-0))
+               (f1-0 f0-5))
+          (if (< 0.0 f30-0) (set! f30-0 0.0))
+          (vector+! (-> self control transv)
+                    (vector-float*! (-> self control transv) (-> self control dynam gravity-normal) f30-0)
+                    (vector-float*! gp-0 gp-0 (/ f0-5 f1-0)))))
+      (none))
+  :exit
+    (behavior ()
+      (set! (-> *run-attack-mods* turnv) 0.0)
+      (set! (-> *run-attack-mods* turnvv) 0.0)
+      (set! (-> self control unknown-dword31) (current-time))
+      (target-exit)
+      (none))
+  :code
+    (behavior ()
+      (let ((proj-handle (the-as handle #f)))
+        (ja-channel-push! 1 (seconds 0.075))
+        (ja-no-eval :group! eichar-yellow-running-blast-ja :num! (seek! (ja-aframe 1.0 0)) :frame-num 0.0)
+        (until (ja-done? 0)
+          (if (>= (- (current-time) (-> self state-time)) (seconds 0.1)) (set! (-> *run-attack-mods* turnvv) 0.0))
+          (suspend)
+          (ja :num! (seek! (ja-aframe 1.0 0))))
+        (let ((s5-2 (vector-z-quaternion! (new 'stack-no-clear 'vector) (-> self control quat))))
+          (set! (-> s5-2 y) 0.0)
+          (vector-normalize! s5-2 (-> *TARGET-bank* yellow-projectile-speed))
+          (when (and (= (-> self fact eco-type) (pickup-type super-eco-yellow)) (>= (-> self fact eco-level) 1.0))
+            (let ((projectile (get-process *default-dead-pool* projectile-yellow #x4000))
+                  (quat (-> self control quat))
+                  (negative? (= 1 (rand-vu-int-range 1 10))))
+              (set! proj-handle
+                    (ppointer->handle (when projectile
+                                        (activate (the projectile-yellow projectile) self 'projectile-yellow (the pointer #x70004000))
+                                        (run-now-in-process projectile
+                                                            projectile-init-by-other
+                                                            (-> self entity)
+                                                            (vector<-cspace! (new 'stack-no-clear 'vector) (-> self node-list data 23))
+                                                            s5-2
+                                                            (if (>= (-> self fact eco-level) (-> *FACT-bank* eco-level-max)) 25 9)
+                                                            #f)
+                                        (-> projectile ppointer))))
+              (format 0
+                      "proj quat before: ~f ~f ~f ~f~%"
+                      (-> (the projectile (handle->process proj-handle)) root quat x)
+                      (-> (the projectile (handle->process proj-handle)) root quat y)
+                      (-> (the projectile (handle->process proj-handle)) root quat z)
+                      (-> (the projectile (handle->process proj-handle)) root quat w))
+              (quaternion-rotate-y! (-> (the projectile (handle->process proj-handle)) root quat)
+                                    (-> (the projectile (handle->process proj-handle)) root quat)
+                                    (if negative? (degrees (rand-vu-float-range -45.0 -5.0)) (degrees (rand-vu-float-range 5.0 45.0))))
+              (format 0
+                      "proj quat after: ~f ~f ~f ~f~%"
+                      (-> (the projectile (handle->process proj-handle)) root quat x)
+                      (-> (the projectile (handle->process proj-handle)) root quat y)
+                      (-> (the projectile (handle->process proj-handle)) root quat z)
+                      (-> (the projectile (handle->process proj-handle)) root quat w)))
+            ;; (let ((projectile (process-spawn projectile-yellow :init projectile-init-by-other (-> self entity)
+            ;;                                  (vector<-cspace! (new 'stack-no-clear 'vector) (-> self node-list data 23)) s5-2
+            ;;                                  (if (>= (-> self fact eco-level) (-> *FACT-bank* eco-level-max)) 25 9)
+            ;;                                  #f)))
+            ;;   (when projectile
+            ;;     (set! proj-handle (ppointer->handle projectile))
+            ;;     )
+            ;;   )
+            (set! (-> self control unknown-dword82) (current-time))))
+        (ja-no-eval :group! eichar-yellow-running-blast-ja :num! (seek!) :frame-num (ja-aframe 1.0 0))
+        (until (ja-done? 0)
+          (if (or (< (the uint (- (current-time) (the int (-> self control unknown-uint30)))) (seconds 0.1))
+                  (= (-> self control unknown-uint31) 1))
+            (send-event (handle->process proj-handle) 'die))
+          (suspend)
+          (ja :num! (seek! max 10.0))))
+      (if (logtest? (-> self control status) (cshape-moving-flags onsurf)) (go target-stance) (go target-falling #f))
+      (none))
+  :post target-post)
+
 (define *yellow-jump-mods*
   (new 'static
        'surface
@@ -1322,7 +1418,6 @@
       ;; og:preserve-this - High FPS Fix
       (if (and (recently-pressed? x) (can-jump? #f) (time-elapsed? (-> self water enter-swim-time) (seconds 0.1)))
         (go target-swim-jump (-> *TARGET-bank* swim-jump-height-min) (-> *TARGET-bank* swim-jump-height-max)))
-      ;; og:preserve-this - High FPS Fix
       (if (and (recently-pressed? square) (< (-> *TARGET-bank* min-dive-depth) (target-height-above-ground)))
         (go target-swim-down))
       (cond

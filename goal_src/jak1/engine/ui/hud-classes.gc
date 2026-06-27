@@ -118,7 +118,6 @@
 
 (deftype hud-pickups (hud) ())
 
-
 (defmethod draw-hud ((this hud-pickups))
   (let ((t9-0 (method-of-type hud draw-hud))) (t9-0 this))
   (let* ((s5-0 (-> *display* frames (-> *display* on-screen) frame global-buf))
@@ -370,7 +369,6 @@
    (total-orbs  int32)
    (level-index int32)
    (start-time  time-frame)))
-
 
 (defmethod draw-hud ((this hud-money-all))
   (let ((t9-0 (method-of-type hud draw-hud))) (t9-0 this))
@@ -856,7 +854,6 @@
    (scale-center        float)
    (icon-pos-y          int32)))
 
-
 (defmethod draw-hud ((this hud-fuel-cell))
   (let ((t9-0 (method-of-type hud draw-hud))) (t9-0 this))
   (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug))
@@ -1292,11 +1289,76 @@
         (a2-1 0)
         (a3-0 64)
         (t0-0 128))
+    ;; TFL note: added cases and flicker for super eco
     (case (-> *target* fact eco-type)
-      (((pickup-type eco-yellow)) (set! a2-1 128) (set! a3-0 96) (set! t0-0 0))
-      (((pickup-type eco-red)) (set! a2-1 128) (set! a3-0 32) (set! t0-0 0))
-      (((pickup-type eco-green)) (set! a2-1 0) (set! a3-0 128) (set! t0-0 32)))
-    (calculate-rotation-and-color-for-slice 0 f0-2 a2-1 a3-0 t0-0 arg2))
+      (((pickup-type eco-yellow) (pickup-type super-eco-yellow)) (set! a2-1 128) (set! a3-0 96) (set! t0-0 0))
+      (((pickup-type eco-red) (pickup-type super-eco-red)) (set! a2-1 128) (set! a3-0 32) (set! t0-0 0))
+      (((pickup-type eco-green) (pickup-type super-eco-green)) (set! a2-1 0) (set! a3-0 128) (set! t0-0 32)))
+    (let* ((eco-type (-> *target* fact eco-type))
+           (eco-time f0-2)
+           (super-eco-blue? (= eco-type (pickup-type super-eco-blue)))
+           (super-eco-yellow? (= eco-type (pickup-type super-eco-yellow)))
+           (super-eco-red? (= eco-type (pickup-type super-eco-red)))
+           (super-eco-green? (= eco-type (pickup-type super-eco-green)))
+           (super-eco? (or super-eco-blue? super-eco-yellow? super-eco-red? super-eco-green?))
+           (flicker-speed (lerp-scale 0.5 0.0 eco-time 1.0 4.0))
+           (flicker-amp (lerp-scale (- 1.0 0.25) (- 1.0 1.0) eco-time 1.0 4.0))
+           (min-r (cond
+                    ((or super-eco-green? super-eco-blue?) 0.0)
+                    (super-eco-yellow? 65.0)
+                    (super-eco-red? 60.0))) ;; Kui notes: Changed some colors
+           (min-g (cond
+                    (super-eco-blue? 40.0)
+                    (super-eco-yellow? 50.0)
+                    (super-eco-red? 10.0)
+                    (super-eco-green? 60.0)))
+           (min-b (cond
+                    (super-eco-blue? 60.0)
+                    (super-eco-green? 0.0)
+                    (else 0.0)))
+           (max-r (cond
+                    (super-eco-blue? 15.0)
+                    (super-eco-green? 25.0)
+                    (else 255.0)))
+           (max-g (cond
+                    (super-eco-blue? 100.0)
+                    (super-eco-yellow? 220.0)
+                    (super-eco-red? 40.0)
+                    (super-eco-green? 256.0)))
+           (max-b (cond
+                    (super-eco-blue? 255.0)
+                    (super-eco-green? 70.0)
+                    (super-eco-yellow? 30.0)
+                    (super-eco-red? 20.0)))
+           (r (if (or super-eco-blue? super-eco-green?)
+                0
+                (if super-eco?
+                  (the int
+                       (lerp-clamp min-r
+                                   max-r
+                                   (+ -0.1 (- 1.0 (* flicker-amp (/ (+ 1.0 (sin (* flicker-speed (degrees (-> *display* game-frame-counter))))) 2.0))))))
+                  a2-1)))
+           (g (if super-eco?
+                (the int
+                     (lerp-clamp min-g
+                                 max-g
+                                 (+ -0.1 (- 1.0 (* flicker-amp (/ (+ 1.0 (sin (* flicker-speed (degrees (-> *display* game-frame-counter))))) 2.0))))))
+                a3-0))
+           (b (if (or super-eco-red? super-eco-yellow?)
+                0
+                (if super-eco?
+                  (the int
+                       (lerp-clamp min-b
+                                   max-b
+                                   (+ -0.1 (- 1.0 (* flicker-amp (/ (+ 1.0 (sin (* flicker-speed (degrees (-> *display* game-frame-counter))))) 2.0))))))
+                  t0-0))))
+      ;; if remaining eco time is <0.2, don't change colors
+      (calculate-rotation-and-color-for-slice 0
+                                              eco-time
+                                              (if (< eco-time 0.2) a2-1 r)
+                                              (if (< eco-time 0.2) a3-0 g)
+                                              (if (< eco-time 0.2) t0-0 b)
+                                              arg2)))
   (let ((f0-3 (-> *hud-parts* power 0 scale-blue))) (set! (-> arg2 vector 0 w) f0-3) (set! (-> arg2 vector 1 w) f0-3))
   0
   (none))
@@ -1310,11 +1372,76 @@
         (a2-1 0)
         (a3-0 64)
         (t0-0 128))
+    ;; TFL note: added cases and flicker for super eco
     (case (-> *target* fact eco-type)
-      (((pickup-type eco-yellow)) (set! a2-1 128) (set! a3-0 96) (set! t0-0 0))
-      (((pickup-type eco-red)) (set! a2-1 128) (set! a3-0 32) (set! t0-0 0))
-      (((pickup-type eco-green)) (set! a2-1 0) (set! a3-0 128) (set! t0-0 32)))
-    (calculate-rotation-and-color-for-slice 1 f0-2 a2-1 a3-0 t0-0 arg2))
+      (((pickup-type eco-yellow) (pickup-type super-eco-yellow)) (set! a2-1 128) (set! a3-0 96) (set! t0-0 0))
+      (((pickup-type eco-red) (pickup-type super-eco-red)) (set! a2-1 128) (set! a3-0 32) (set! t0-0 0))
+      (((pickup-type eco-green) (pickup-type super-eco-green)) (set! a2-1 0) (set! a3-0 128) (set! t0-0 32)))
+    (let* ((eco-type (-> *target* fact eco-type))
+           (eco-time f0-2)
+           (super-eco-blue? (= eco-type (pickup-type super-eco-blue)))
+           (super-eco-yellow? (= eco-type (pickup-type super-eco-yellow)))
+           (super-eco-red? (= eco-type (pickup-type super-eco-red)))
+           (super-eco-green? (= eco-type (pickup-type super-eco-green)))
+           (super-eco? (or super-eco-blue? super-eco-yellow? super-eco-red? super-eco-green?))
+           (flicker-speed (lerp-scale 0.5 0.0 eco-time 1.0 4.0))
+           (flicker-amp (lerp-scale (- 1.0 0.25) (- 1.0 1.0) eco-time 1.0 4.0))
+           (min-r (cond
+                    ((or super-eco-green? super-eco-blue?) 0.0)
+                    (super-eco-yellow? 65.0)
+                    (super-eco-red? 60.0))) ;; Kui notes: Changed some colors
+           (min-g (cond
+                    (super-eco-blue? 40.0)
+                    (super-eco-yellow? 50.0)
+                    (super-eco-red? 10.0)
+                    (super-eco-green? 60.0)))
+           (min-b (cond
+                    (super-eco-blue? 60.0)
+                    (super-eco-green? 0.0)
+                    (else 0.0)))
+           (max-r (cond
+                    (super-eco-blue? 15.0)
+                    (super-eco-green? 25.0)
+                    (else 255.0)))
+           (max-g (cond
+                    (super-eco-blue? 100.0)
+                    (super-eco-yellow? 220.0)
+                    (super-eco-red? 40.0)
+                    (super-eco-green? 256.0)))
+           (max-b (cond
+                    (super-eco-blue? 255.0)
+                    (super-eco-green? 70.0)
+                    (super-eco-yellow? 30.0)
+                    (super-eco-red? 20.0)))
+           (r (if (or super-eco-blue? super-eco-green?)
+                0
+                (if super-eco?
+                  (the int
+                       (lerp-clamp min-r
+                                   max-r
+                                   (+ -0.1 (- 1.0 (* flicker-amp (/ (+ 1.0 (sin (* flicker-speed (degrees (-> *display* game-frame-counter))))) 2.0))))))
+                  a2-1)))
+           (g (if super-eco?
+                (the int
+                     (lerp-clamp min-g
+                                 max-g
+                                 (+ -0.1 (- 1.0 (* flicker-amp (/ (+ 1.0 (sin (* flicker-speed (degrees (-> *display* game-frame-counter))))) 2.0))))))
+                a3-0))
+           (b (if (or super-eco-red? super-eco-yellow?)
+                0
+                (if super-eco?
+                  (the int
+                       (lerp-clamp min-b
+                                   max-b
+                                   (+ -0.1 (- 1.0 (* flicker-amp (/ (+ 1.0 (sin (* flicker-speed (degrees (-> *display* game-frame-counter))))) 2.0))))))
+                  t0-0))))
+      ;; if remaining eco time is <0.2, don't mess with the colors
+      (calculate-rotation-and-color-for-slice 1
+                                              eco-time
+                                              (if (< eco-time 0.2) a2-1 r)
+                                              (if (< eco-time 0.2) a3-0 g)
+                                              (if (< eco-time 0.2) t0-0 b)
+                                              arg2)))
   (let ((f0-3 (-> *hud-parts* power 0 scale-blue))) (set! (-> arg2 vector 0 w) f0-3) (set! (-> arg2 vector 1 w) f0-3))
   0
   (none))
@@ -1328,11 +1455,76 @@
         (a2-1 0)
         (a3-0 64)
         (t0-0 128))
+    ;; TFL note: added cases and flicker for super eco
     (case (-> *target* fact eco-type)
-      (((pickup-type eco-yellow)) (set! a2-1 128) (set! a3-0 96) (set! t0-0 0))
-      (((pickup-type eco-red)) (set! a2-1 128) (set! a3-0 32) (set! t0-0 0))
-      (((pickup-type eco-green)) (set! a2-1 0) (set! a3-0 128) (set! t0-0 32)))
-    (calculate-rotation-and-color-for-slice 2 f0-2 a2-1 a3-0 t0-0 arg2))
+      (((pickup-type eco-yellow) (pickup-type super-eco-yellow)) (set! a2-1 128) (set! a3-0 96) (set! t0-0 0))
+      (((pickup-type eco-red) (pickup-type super-eco-red)) (set! a2-1 128) (set! a3-0 32) (set! t0-0 0))
+      (((pickup-type eco-green) (pickup-type super-eco-green)) (set! a2-1 0) (set! a3-0 128) (set! t0-0 32)))
+    (let* ((eco-type (-> *target* fact eco-type))
+           (eco-time f0-2)
+           (super-eco-blue? (= eco-type (pickup-type super-eco-blue)))
+           (super-eco-yellow? (= eco-type (pickup-type super-eco-yellow)))
+           (super-eco-red? (= eco-type (pickup-type super-eco-red)))
+           (super-eco-green? (= eco-type (pickup-type super-eco-green)))
+           (super-eco? (or super-eco-blue? super-eco-yellow? super-eco-red? super-eco-green?))
+           (flicker-speed (lerp-scale 0.5 0.0 eco-time 1.0 4.0))
+           (flicker-amp (lerp-scale (- 1.0 0.25) (- 1.0 1.0) eco-time 1.0 4.0))
+           (min-r (cond
+                    ((or super-eco-green? super-eco-blue?) 0.0)
+                    (super-eco-yellow? 65.0)
+                    (super-eco-red? 60.0))) ;; Kui notes: Changed some colors
+           (min-g (cond
+                    (super-eco-blue? 40.0)
+                    (super-eco-yellow? 50.0)
+                    (super-eco-red? 10.0)
+                    (super-eco-green? 60.0)))
+           (min-b (cond
+                    (super-eco-blue? 60.0)
+                    (super-eco-green? 0.0)
+                    (else 0.0)))
+           (max-r (cond
+                    (super-eco-blue? 15.0)
+                    (super-eco-green? 25.0)
+                    (else 255.0)))
+           (max-g (cond
+                    (super-eco-blue? 100.0)
+                    (super-eco-yellow? 220.0)
+                    (super-eco-red? 40.0)
+                    (super-eco-green? 256.0)))
+           (max-b (cond
+                    (super-eco-blue? 255.0)
+                    (super-eco-green? 70.0)
+                    (super-eco-yellow? 30.0)
+                    (super-eco-red? 20.0)))
+           (r (if (or super-eco-blue? super-eco-green?)
+                0
+                (if super-eco?
+                  (the int
+                       (lerp-clamp min-r
+                                   max-r
+                                   (+ -0.1 (- 1.0 (* flicker-amp (/ (+ 1.0 (sin (* flicker-speed (degrees (-> *display* game-frame-counter))))) 2.0))))))
+                  a2-1)))
+           (g (if super-eco?
+                (the int
+                     (lerp-clamp min-g
+                                 max-g
+                                 (+ -0.1 (- 1.0 (* flicker-amp (/ (+ 1.0 (sin (* flicker-speed (degrees (-> *display* game-frame-counter))))) 2.0))))))
+                a3-0))
+           (b (if (or super-eco-red? super-eco-yellow?)
+                0
+                (if super-eco?
+                  (the int
+                       (lerp-clamp min-b
+                                   max-b
+                                   (+ -0.1 (- 1.0 (* flicker-amp (/ (+ 1.0 (sin (* flicker-speed (degrees (-> *display* game-frame-counter))))) 2.0))))))
+                  t0-0))))
+      ;; if remaining eco time is <0.2, don't mess with the colors
+      (calculate-rotation-and-color-for-slice 2
+                                              eco-time
+                                              (if (< eco-time 0.2) a2-1 r)
+                                              (if (< eco-time 0.2) a3-0 g)
+                                              (if (< eco-time 0.2) t0-0 b)
+                                              arg2)))
   (let ((f0-3 (-> *hud-parts* power 0 scale-blue))) (set! (-> arg2 vector 0 w) f0-3) (set! (-> arg2 vector 1 w) f0-3))
   0
   (none))
@@ -1479,6 +1671,19 @@
         (if (-> *hud-parts* parts s4-0) (set-pos-and-scale (-> (the-as (pointer hud) (-> *hud-parts* parts s4-0)) 0) gp-0 s5-0)))))
   0
   (none))
+
+(defun main-hud-shown? ()
+  (and *target*
+       *hud-parts*
+       (-> *hud-parts* money)
+       (-> *hud-parts* fuel-cell)
+       (-> *hud-parts* health)
+       (not (hidden? (the-as hud (ppointer->process (-> *hud-parts* money)))))
+       (not (hidden? (the-as hud (ppointer->process (-> *hud-parts* fuel-cell)))))
+       (not (hidden? (the-as hud (ppointer->process (-> *hud-parts* health)))))
+      ;;  (not (hidden? (the-as hud (ppointer->process (-> *hud-parts* buzzers)))))
+       )
+  )
 
 (defun hud-hidden? ()
   (local-vars (gp-0 symbol))

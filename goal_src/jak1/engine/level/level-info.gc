@@ -13,6 +13,7 @@
        'level-load-info
        :index 1
        :name 'training
+       :customname "GEYSER ROCK"
        :visname 'training-vis
        :nickname 'tra
        :packages '(training)
@@ -64,9 +65,9 @@
              :quat
              (new 'static 'quaternion :y 0.084 :w 0.9964)
              :camera-trans
-             (new 'static 'vector :x -5366765.0 :y 45646.234 :z 4325889.0 :w 1.0)
+             (new 'static 'vector :x -5378019.0000 :y 47208.5820 :z 4319700.0000 :w 1.0)
              :camera-rot
-             (new 'static 'array float 9 0.9057 0.0 0.4238 -0.0666 0.9875 0.1424 -0.4186 -0.1572 0.8944)
+             (new 'static 'array float 9 0.9956 0.0 0.0932 -0.0136 0.9892 0.1458 -0.0922 -0.1464 0.9849)
              :load-commands
              '((special "med-res-level-1" #t)
               (special "med-res-level-2" #t)
@@ -89,13 +90,13 @@
              :level 'training
              :flags (continue-flags warp game-start)
              :trans
-             (new 'static 'vector :x -5393740.5 :y 28259.533 :z 4360945.5 :w 1.0)
+             (new 'static 'vector :x -5383524.0 :y 28019.098 :z 4360302.0 :w 1.0)
              :quat
-             (new 'static 'quaternion :y 0.9993 :w 0.0359)
+             (new 'static 'quaternion :y 0.084 :w 0.9964)
              :camera-trans
-             (new 'static 'vector :x -5434444.5 :y 47050.344 :z 4372832.5 :w 1.0)
+             (new 'static 'vector :x -5378019.0000 :y 47208.5820 :z 4319700.0000 :w 1.0)
              :camera-rot
-             (new 'static 'array float 9 -0.3536 0.0 -0.9353 0.1315 0.99 -0.0497 0.926 -0.1406 -0.35)
+             (new 'static 'array float 9 0.9956 0.0 0.0932 -0.0136 0.9892 0.1458 -0.0922 -0.1464 0.9849)
              :load-commands
              '((special "med-res-level-1" #t)
               (special "med-res-level-2" #t)
@@ -133,6 +134,7 @@
        'level-load-info
        :index 2
        :name 'village1
+       :customname "GREEN SAGE'S HUT"
        :visname 'village1-vis
        :nickname 'vi1
        :packages '(village1)
@@ -689,6 +691,7 @@
        'level-load-info
        :index 8
        :name 'village2
+       :customname "BLUE SAGE'S HUT"
        :visname 'village2-vis
        :nickname 'vi2
        :packages '(village2)
@@ -1304,6 +1307,7 @@
        'level-load-info
        :index 14
        :name 'village3
+       :customname "RED SAGE'S HUT"
        :visname 'village3-vis
        :nickname 'vi3
        :packages '(village3)
@@ -1922,6 +1926,7 @@
        'level-load-info
        :index 20
        :name 'citadel
+       :customname "GOL AND MAIA'S CITADEL"
        :visname 'citadel-vis
        :nickname 'cit
        :packages '(citadel)
@@ -2472,7 +2477,7 @@
 (define test-zone
   (new 'static
        'level-load-info
-       :index 26
+       :index 99 ;; TFL note: changed id from 26 to get it out of the way
        :name 'test-zone
        :visname 'test-zone-vis
        ;; name + -vis
@@ -2525,4 +2530,355 @@
        '()
        :wait-for-load #t))
 
-(cons! *level-load-list* 'test-zone)
+;; TFL note: custom level-info stuff start here
+(define crystalc (new 'static 'level-load-info
+                           :index 27
+                           :name 'crystalc
+                           :customname "???" ;; TFL note: custom type for the portal name
+                           :custom-orb-count 150
+                           :custom-buzzer-count 7
+                           :visname 'crystalc-vis ;; name + -vis
+                           :nickname 'crc          ;; nickname
+                           :packages '(maincave)
+                           :sound-banks '(maincave misty) ;; maincave to get ambient sounds, misty for the breakaways
+                           :music-bank #f
+                           :ambient-sounds '()
+                           :mood '*crystal-cave-mood*
+                           :mood-func 'update-mood-crystal-cave
+                           :ocean #f
+                           :sky #t
+                           :continues '(
+                                            (new 'static 'continue-point
+                                             :name "crystal-cave-start"
+                                             :level 'crystalc
+                                             :trans (new 'static 'vector :x (meters -51.23) :y (meters 93.12) :z (meters 15.18) :w 1.0)
+                                             :quat (new 'static 'quaternion  :x 0.0 :y -0.707 :z 0.0 :w 0.707)
+                                             :camera-trans (new 'static 'vector :x 0.0 :y 4096.0 :z 0.0 :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 -0.0134 -0.0000 0.9999 -0.1257 0.9920 -0.0016 -0.9919 -0.1257 -0.0133)
+                                             :load-commands '()
+                                             :vis-nick 'crc
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'crystalc
+                                             :disp1 'display
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "crystal-cave-warp"
+                                             :level 'crystalc
+                                             :flags (continue-flags warp)
+                                             :trans (new 'static 'vector :x (meters 0.37) :y (meters 99.55) :z (meters 2.92) :w 1.0)
+                                             :quat (new 'static 'quaternion  :x 0.0 :y -0.0568 :z 0.0 :w -0.9983)
+                                             :camera-trans (new 'static 'vector :x (meters 5.70) :y (meters 102.99) :z (meters 5.81) :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 5.8176 -0.3953 -0.0000 0.9185 -0.2369 0.9661 -0.1020 -0.8874 -0.2580 -0.3819)
+                                             :load-commands '()
+                                             :vis-nick 'crc
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'crystalc
+                                             :disp1 'display
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "crystal-cave-void-entry"
+                                             :level 'crystalc
+                                             :trans (new 'static 'vector :x (meters -186.34) :y (meters 88.49) :z (meters -9.55) :w 1.0)
+                                             :quat (new 'static 'quaternion :x 0.0 :y -0.612 :z 0.0 :w 0.791)
+                                             :camera-trans (new 'static 'vector :x (meters -179.77) :y (meters 92.48) :z (meters -11.25) :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 0.3245 -0.0000 0.9458 -0.1371 0.9894 0.0470 -0.9358 -0.1449 0.3210)
+                                             :load-commands '()
+                                             :vis-nick 'crc
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'crystalc
+                                             :disp1 'display
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "crystal-cave-river"
+                                             :level 'crystalc
+                                             :trans (new 'static 'vector :x (meters -132.60) :y (meters 90.00) :z (meters -79.22) :w 1.0)
+                                             :quat (new 'static 'quaternion :x 0.0 :y 0.9876 :z 0.0 :w -0.1564)
+                                             :camera-trans (new 'static 'vector :x (meters -125.11) :y (meters 95.15) :z (meters -69.22) :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 -0.8011 -0.0000 0.5984 -0.0727 0.9925 -0.0973 -0.5940 -0.1215 -0.7951)
+                                             :load-commands '()
+                                             :vis-nick 'crc
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'crystalc
+                                             :disp1 'display
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "crystal-cave-bad-shrooms"
+                                             :level 'crystalc
+                                             :trans (new 'static 'vector :x (meters -206.08) :y (meters 73.61) :z (meters -109.63) :w 1.0)
+                                             :quat (new 'static 'quaternion :x 0.0 :y -0.735 :z 0.0 :w 0.678)
+                                             :camera-trans (new 'static 'vector :x 0.0 :y 4096.0 :z 0.0 :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 0.1605 -0.0000 0.9870 -0.1198 0.9925 0.0194 -0.9797 -0.1214 0.1593)
+                                             :load-commands '()
+                                             :vis-nick 'crc
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'crystalc
+                                             :disp1 'display
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "crystal-cave-void-end"
+                                             :level 'crystalc
+                                             :trans (new 'static 'vector :x (meters -327.51) :y (meters 96.61) :z (meters -43.80) :w 1.0)
+                                             :quat (new 'static 'quaternion :x 0.0 :y 0.411 :z 0.0 :w 0.912)
+                                             :camera-trans (new 'static 'vector :x 0.0 :y 4096.0 :z 0.0 :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 0.4809 0.0000 -0.8767 0.1087 0.9922 0.0596 0.8699 -0.1240 0.4772)
+                                             :load-commands '()
+                                             :vis-nick 'crc
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'crystalc
+                                             :disp1 'display
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "crystal-cave-gondola"
+                                             :level 'crystalc
+                                             :trans (new 'static 'vector :x (meters -299.91) :y (meters 93.58) :z (meters 23.47) :w 1.0)
+                                             :quat (new 'static 'quaternion :x 0.0 :y 0.411 :z 0.0 :w 0.912)
+                                             :camera-trans (new 'static 'vector :x 0.0 :y 4096.0 :z 0.0 :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 0.4809 0.0000 -0.8767 0.1087 0.9922 0.0596 0.8699 -0.1240 0.4772)
+                                             :load-commands '()
+                                             :vis-nick 'crc
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'crystalc
+                                             :disp1 'display
+                                             ))
+                           :tasks '(117 118 119 120 121)
+                           :priority 100
+                           :load-commands '()
+                           :alt-load-commands '()
+                           :bsp-mask #xffffffffffffffff
+                           :bsphere (new 'static 'sphere :x (meters -176.73) :y (meters 103.93) :z (meters -78.25) :w (meters 300.0))
+                           :buzzer 121
+                           :bottom-height (meters 40)
+                           :run-packages '()
+                           :wait-for-load #t
+                           )
+        )
+
+(define crescent (new 'static 'level-load-info
+                           :index 28
+                           :name 'crescent
+                           :customname "Crescent Top"
+                           :custom-orb-count 200
+                           :custom-buzzer-count 7
+                           :visname 'crescent-vis ;; name + -vis
+                           :nickname 'cst          ;; nickname
+                           :packages '(village1)
+                           :sound-banks '(rolling ogre) ;; to get ambient sounds and zoomer sfx
+                           :music-bank #f
+                           :ambient-sounds '()
+                           :mood '*crescent-top-mood*
+                           :mood-func 'update-mood-crescent-top
+                           :ocean '*ocean-map-village1*
+                           :sky #t
+                           :continues '(
+                                            (new 'static 'continue-point
+                                             :name "crescent-top-near-cave"
+                                             :level 'crescent
+                                             :trans (new 'static 'vector :x (meters -259.53) :y (meters 211.15) :z (meters 329.38) :w 1.0)
+                                             :quat (new 'static 'quaternion  :x 0.0 :y 0.2418 :z 0.0 :w 0.9703)
+                                             :camera-trans (new 'static 'vector :x 0.0 :y 4096.0 :z 0.0 :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 0.9756 0.0000 -0.2193 0.0310 0.9899 0.1379 0.2171 -0.1413 0.9658)
+                                             :load-commands '()
+                                             :vis-nick 'cst
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'crystalc
+                                             :disp1 'display
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "crescent-top-zoomer"
+                                             :level 'crescent
+                                             :trans (new 'static 'vector :x (meters -177.33) :y (meters 229.72) :z (meters 371.51) :w 1.0)
+                                             :quat (new 'static 'quaternion  :x 0.0 :y 0.3584 :z 0.0 :w 0.9335)
+                                             :camera-trans (new 'static 'vector :x 0.0 :y 4096.0 :z 0.0 :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 0.7394 0.0000 -0.6731 0.0812 0.9926 0.0892 0.6682 -0.1207 0.7340)
+                                             :load-commands '()
+                                             :vis-nick 'cst
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'crystalc
+                                             :disp1 'display
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "crescent-top-robot"
+                                             :level 'crescent
+                                             :trans (new 'static 'vector :x (meters -234.97) :y (meters 212.69) :z (meters 645.78) :w 1.0)
+                                             :quat (new 'static 'quaternion  :x 0.0 :y -0.5340 :z 0.0 :w -0.8454)
+                                             :camera-trans (new 'static 'vector :x 0.0 :y 4096.0 :z 0.0 :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 0.4148 0.0000 -0.9099 0.1241 0.9906 0.0565 0.9013 -0.1363 0.4109)
+                                             :load-commands '()
+                                             :vis-nick 'cst
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'crystalc ;; TFL todo: change to mines later
+                                             :disp1 '#f
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "crescent-top-observatory"
+                                             :level 'crescent
+                                             :trans (new 'static 'vector :x (meters 123.42) :y (meters 278.5157) :z (meters 374.59) :w 1.0)
+                                             :quat (new 'static 'quaternion  :x 0.0 :y -0.5873 :z 0.0 :w 0.8093)
+                                             :camera-trans (new 'static 'vector :x (meters 133.61) :y (meters 283.32) :z (meters 369.90) :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 0.4180 0.0000 0.9084 -0.1142 0.9920 0.0525 -0.9011 -0.1257 0.4147)
+                                             :load-commands '()
+                                             :vis-nick 'cst
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'crystalc
+                                             :disp1 '#f
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "crescent-top-underground"
+                                             :level 'crescent
+                                             :trans (new 'static 'vector :x (meters 81.77) :y (meters 181.82) :z (meters 451.72) :w 1.0)
+                                             :quat (new 'static 'quaternion  :x 0.0 :y -0.5592 :z 0.0 :w 0.8290)
+                                             :camera-trans (new 'static 'vector :x 0.0 :y 4096.0 :z 0.0 :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 0.3376 -0.0000 0.9412 -0.1327 0.9900 0.0476 -0.9318 -0.1410 0.3342)
+                                             :load-commands '()
+                                             :vis-nick 'cst
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'energbay
+                                             :disp1 '#f
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "crescent-top-zoomer2"
+                                             :level 'crescent
+                                             :trans (new 'static 'vector :x (meters 160.9) :y (meters 203.82) :z (meters 422.56) :w 1.0)
+                                             :quat (new 'static 'quaternion  :x 0.0 :y 0.6444 :z 0.0 :w 0.7646)
+                                             :camera-trans (new 'static 'vector :x (meters 146.35) :y (meters 208.77) :z (meters 422.02) :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 0.1313 0.0000 -0.9913 0.1206 0.9925 0.0159 0.9839 -0.1217 0.1303)
+                                             :load-commands '()
+                                             :vis-nick 'cst
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'energbay
+                                             :disp1 '#f
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "crescent-top-near-bay"
+                                             :level 'crescent
+                                             :trans (new 'static 'vector :x (meters 331.91) :y (meters 264.51) :z (meters 569.02) :w 1.0)
+                                             :quat (new 'static 'quaternion  :x 0.0 :y -0.7369 :z 0.0 :w -0.6759)
+                                             :camera-trans (new 'static 'vector :x (meters 319.9271) :y (meters 269.4374) :z (meters 567.2053) :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 0.1324 0.0000 -0.9911 0.1196 0.9926 0.0159 0.9839 -0.1207 0.1315)
+                                             :load-commands '()
+                                             :vis-nick 'cst
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'energbay
+                                             :disp1 'display
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "crescent-top-near-mines"
+                                             :level 'crescent
+                                             :trans (new 'static 'vector :x (meters -363.3) :y (meters 197.08) :z (meters 650.38) :w 1.0)
+                                             :quat (new 'static 'quaternion  :x 0.0 :y -0.9586 :z 0.0 :w -0.2845)
+                                             :camera-trans (new 'static 'vector :x (meters -370.77) :y (meters 202.12) :z (meters 660.11) :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 -0.7797 -0.0000 -0.6261 0.0751 0.9927 -0.0936 0.6216 -0.1200 -0.7740)
+                                             :load-commands '()
+                                             :vis-nick 'cst
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'crystalc ;; TFL todo: switch to mines and display when it exists
+                                             :disp1 '#f
+                                             )
+                                          )
+                           :tasks '(123 124 125 127)
+                           :priority 100
+                           :load-commands '()
+                           :alt-load-commands '()
+                           :bsp-mask #xffffffffffffffff
+                           :bsphere (new 'static 'sphere :x (meters 740.01) :y (meters 9.37) :z (meters 696.20) :w (meters 1200.0))
+                           :buzzer 127
+                           :bottom-height (meters 50.0) ;; 75.0
+                           :run-packages '()
+                           :wait-for-load #t
+                           )
+        )
+
+(define energbay (new 'static 'level-load-info
+                           :index 29
+                           :name 'energbay
+                           :customname "Energy Bay"
+                           :custom-orb-count 200
+                           :custom-buzzer-count 7
+                           :visname 'energbay-vis ;; name + -vis
+                           :nickname 'enb          ;; nickname
+                           :packages '(village1)
+                           :sound-banks '(village1) ;; to get ambient sounds
+                           :music-bank #f
+                           :ambient-sounds '()
+                           :mood '*crescent-top-mood*
+                           :mood-func 'update-mood-crescent-top
+                           :ocean '*ocean-map-village1*
+                           :sky #t
+                           :continues '(
+                                            (new 'static 'continue-point
+                                             :name "energy-bay-start"
+                                             :level 'energbay
+                                             :trans (new 'static 'vector :x (meters 514.5076) :y (meters 47.99) :z (meters 682.4989) :w 1.0)
+                                             :quat (new 'static 'quaternion  :x 0.0 :y 0.6390 :z 0.0 :w 0.7691)
+                                             :camera-trans (new 'static 'vector :x (meters 506.0487) :y (meters 53.0512) :z (meters 691.2423) :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 -0.6659 -0.0000 -0.7460 0.0851 0.9934 -0.0759 0.7411 -0.1140 -0.6615)
+                                             :load-commands '()
+                                             :vis-nick 'enb
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'energbay
+                                             :disp1 'display
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "energy-bay-turbine1"
+                                             :level 'energbay
+                                             :trans (new 'static 'vector :x (meters 837.44) :y (meters 29.8) :z (meters 580.89) :w 1.0)
+                                             :quat (new 'static 'quaternion  :x 0.0 :y 0.352 :z 0.0 :w 0.936)
+                                             :camera-trans (new 'static 'vector :x 0.0 :y 4096.0 :z 0.0 :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 0.8938 0.0000 -0.4484 0.0637 0.9898 0.1270 0.4439 -0.1421 0.8847)
+                                             :load-commands '()
+                                             :vis-nick 'enb
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'energbay
+                                             :disp1 'display
+                                             )
+                                             (new 'static 'continue-point
+                                             :name "energy-bay-turbine3"
+                                             :level 'energbay
+                                             :trans (new 'static 'vector :x (meters 748.68) :y (meters 5.11) :z (meters 968.4) :w 1.0)
+                                             :quat (new 'static 'quaternion  :x 0.0 :y 0.960 :z 0.0 :w -0.280)
+                                             :camera-trans (new 'static 'vector :x 0.0 :y 4096.0 :z 0.0 :w 1.0)
+                                             :camera-rot (new 'static 'array float 9 -0.6279 0.0000 0.7782 -0.0939 0.9926 -0.0757 -0.7725 -0.1206 -0.6233)
+                                             :load-commands '()
+                                             :vis-nick 'enb
+                                             :lev0 'crescent
+                                             :disp0 'display
+                                             :lev1 'energbay
+                                             :disp1 'display
+                                             )
+                                          )
+                           :tasks '(128 134)
+                           :priority 100
+                           :load-commands '()
+                           :alt-load-commands '()
+                           :bsp-mask #xffffffffffffffff
+                           :bsphere (new 'static 'sphere :x (meters 42.27) :y (meters 240.03) :z (meters 636.27) :w (meters 700.0))
+                           :buzzer 134
+                           :bottom-height (meters -20.0)
+                           :run-packages '()
+                           :wait-for-load #t
+                           )
+        )
+
+;; cons! adds to the front of the list, so add in reverse order
+(cons! *level-load-list* 'energbay)
+(cons! *level-load-list* 'crescent)
+(cons! *level-load-list* 'crystalc)
+
+;; (cons! *level-load-list* 'test-zone)

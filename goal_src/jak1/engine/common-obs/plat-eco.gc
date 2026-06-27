@@ -40,7 +40,9 @@
         (('wake) (go-virtual plat-path-active (the-as plat #f)))
         (('eco-blue) (go-virtual notice-blue (process->handle proc)))
         (('ridden 'edge-grabbed)
-         (when (send-event *target* 'query 'powerup (pickup-type eco-blue))
+         ;; TFL note: added case for super eco
+         (when (or (send-event *target* 'query 'powerup (pickup-type eco-blue))
+                   (send-event *target* 'query 'powerup (pickup-type super-eco-blue)))
            (send-to-all (-> self link) 'wake)
            (go-virtual plat-path-active (the-as plat #f))))))
   :enter
@@ -49,7 +51,9 @@
   :trans
     (behavior ()
       (when (and (and *target* (>= (-> self notice-dist) (vector-vector-distance (-> self root trans) (-> *target* control trans))))
-                 (send-event *target* 'query 'powerup (pickup-type eco-blue)))
+                 ;; TFL note: added case for super eco
+                 (or (send-event *target* 'query 'powerup (pickup-type eco-blue))
+                     (send-event *target* 'query 'powerup (pickup-type super-eco-blue))))
         (send-to-all (-> self link) 'wake)
         (go-virtual plat-path-active (the-as plat #f)))
       (if (and *target* (>= (-> self notice-dist) (vector-vector-distance (-> self root trans) (-> *target* control trans))))
@@ -70,23 +74,21 @@
          (sound-play "blue-eco-on" :position (the-as symbol (-> self root trans)))
          (go-virtual plat-path-active (the-as plat #f)))
         (('ridden 'edge-grabbed)
-         (when (send-event *target* 'query 'powerup (pickup-type eco-blue))
+         ;; TFL note: added case for super-eco-blue
+         (when (or (send-event *target* 'query 'powerup (pickup-type eco-blue))
+                   (send-event *target* 'query 'powerup (pickup-type super-eco-blue)))
            (send-to-all (-> self link) 'wake)
            (go-virtual plat-path-active (the-as plat #f))))))
   :trans
     (behavior ()
       ((-> (method-of-object self plat-idle) trans))
-      (let ((a1-0 (new 'stack-no-clear 'event-message-block)))
-        (set! (-> a1-0 from) self)
-        (set! (-> a1-0 num-params) 2)
-        (set! (-> a1-0 message) 'query)
-        (set! (-> a1-0 param 0) (the-as uint 'powerup))
-        (set! (-> a1-0 param 1) (the-as uint 3))
-        (if (and (not (send-event-function *target* a1-0))
-                 (begin
-                   (logior! (-> self mask) (process-mask sleep-code))
-                   (not (-> self bouncing))))
-          (go-virtual plat-idle))))
+      ;; TFL note: added case for super eco
+      (if (and (not (or (send-event *target* 'query 'powerup (pickup-type eco-blue))
+                        (send-event *target* 'query 'powerup (pickup-type super-eco-blue))))
+               (begin
+                 (logior! (-> self mask) (process-mask sleep-code))
+                 (not (-> self bouncing))))
+        (go-virtual plat-idle)))
   :code
     (behavior ((arg0 handle))
       (set! (-> self target) arg0)
@@ -177,6 +179,8 @@
 (defmethod get-lit-skel ((this plat-eco))
   *plat-eco-lit-sg*)
 
+(define-extern mod-override-plat-path (function plat entity-actor none))
+
 (defmethod init-from-entity! ((this plat-eco) (arg0 entity-actor))
   (logior! (-> this mask) (process-mask platform))
   (set! (-> this notice-dist) (res-lump-float arg0 'notice-dist :default -1.0))
@@ -192,6 +196,7 @@
   (update-transforms! (-> this root))
   (set! (-> this part) (create-launch-control group-standard-plat this))
   (set! (-> this path) (new 'process 'curve-control this 'path -1000000000.0))
+  (mod-override-plat-path this arg0)
   (logior! (-> this path flags) (path-control-flag display draw-line draw-point draw-text))
   (set! (-> this fact) (new 'process 'fact-info this (pickup-type eco-pill-random) (-> *FACT-bank* default-pill-inc)))
   (load-params! (-> this sync) this (the-as uint 3000) 0.0 0.15 0.15)

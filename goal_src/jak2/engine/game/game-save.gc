@@ -87,6 +87,7 @@
   (purchase-secrets 222)
   (perm-list 301)
   (language 503)
+  (skill-per-level 514) ;; orb hunt
   )
 
 ;; DECOMP BEGINS
@@ -617,6 +618,7 @@
                                                                                               (dotimes (s2-5 s3-11)
                                                                                                 (mem-copy! (&+ (the-as pointer s4-4) (* s2-5 16)) (the-as pointer (-> this perm-list data s2-5)) 16)
                                                                                                 )
+                                                                                              (dbg-format 0 "wrote perm-list to save~%")
                                                                                               (let ((v1-137 (the-as object (+ (the-as int s4-4) (logand -16 (+ (* s3-11 16) 15)))))
                                                                                                     (s4-5 (-> this task-perm-list length))
                                                                                                     )
@@ -975,7 +977,20 @@
                                                                                                                                                                                                                   )
                                                                                                                                                                                                             )
                                                                                                                                                                                                           )
-                                                                                                                                                                                                        (set! (-> arg0 length) (- (+ (the-as int v1-210) 16) (the-as int (the-as pointer (-> arg0 tag)))))
+                                                                                                                                                                                                        (let ((v1-211 (the-as object (&+ (the-as game-save-tag v1-210) 16))))
+                                                                                                                                                                                                          (let ((a0-153 (-> (the-as (inline-array game-save-tag) v1-211) 0)))
+                                                                                                                                                                                                            (set! (-> a0-153 elt-type) (game-save-elt skill-per-level))
+                                                                                                                                                                                                            (set! (-> a0-153 elt-count) 128)
+                                                                                                                                                                                                            (set! (-> a0-153 elt-size) (the-as uint 1))
+                                                                                                                                                                                                            )
+                                                                                                                                                                                                          (let ((v1-212 (the-as object (&+ (the-as game-save-tag v1-211) 16))))
+                                                                                                                                                                                                            (dotimes (a0-154 LEVEL_ID_LEN) ;; 73
+                                                                                                                                                                                                              (set! (-> (the-as (pointer uint8) (&+ (the-as pointer v1-212) a0-154))) (-> this skill-per-level a0-154))
+                                                                                                                                                                                                              )
+                                                                                                                                                                                                            ;; add 80 since its the next multiple of 16 after LEVEL_ID_LEN
+                                                                                                                                                                                                            (set! (-> arg0 length) (- (+ (the-as int v1-212) 128) (the-as int (the-as pointer (-> arg0 tag)))))
+                                                                                                                                                                                                            )
+                                                                                                                                                                                                          )
                                                                                                                                                                                                         )
                                                                                                                                                                                                       )
                                                                                                                                                                                                     )
@@ -1089,6 +1104,11 @@
 (defmethod load-game ((this game-info) (arg0 game-save))
   (let ((v1-0 (the-as object (-> arg0 tag))))
     (while (< (the-as int v1-0) (the-as int (&-> arg0 tag 0 user-int8 (-> arg0 length))))
+      ;; (dbg-format 0 "load-game found tag at ~D with type ~S (~D) and count ~D ~%" 
+      ;;   v1-0
+      ;;   (game-save-elt->string (-> (the-as (inline-array game-save-tag) v1-0) 0 elt-type))
+      ;;   (-> (the-as (inline-array game-save-tag) v1-0) 0 elt-type)
+      ;;   (-> (the-as (inline-array game-save-tag) v1-0) 0 elt-count))
       (case (-> (the-as (inline-array game-save-tag) v1-0) 0 elt-type)
         ;; og:preserve-this Moved saving these settings to pc-settings
         ;; (((game-save-elt sfx-volume))
@@ -1272,6 +1292,15 @@
              )
            )
          )
+        (((game-save-elt skill-per-level))
+         (let ((v1-67 (min LEVEL_ID_LEN (-> (the-as (inline-array game-save-tag) s4-0) 0 elt-count))))
+           (dotimes (a0-89 v1-67)
+             (set! (-> this skill-per-level a0-89)
+                   (-> (the-as (pointer uint8) (&+ (the-as pointer (-> (the-as (inline-array game-save-tag) s4-0) 1)) a0-89)))
+                   )
+             )
+           )
+         )
         (((game-save-elt money))
          (set! (-> this money) (-> (the-as (inline-array game-save-tag) s4-0) 0 user-float0))
          )
@@ -1299,6 +1328,21 @@
                )
              )
            )
+          (dbg-format 0 "loaded perm-list from save~%")
+
+          ;; (when (orbhunt-cleanup-aid-perms! this)
+          ;;   ;; we actually updated something, re-save the file to persist
+          ;;   (dbg-format 0 "saving after orbhunt aid cleanup~%")
+          ;;   ;; saving always reads from level perms, so refresh level perms
+          ;;   (dotimes (s4-1 (-> *level* length))
+          ;;     (let ((a1-106 (-> *level* level s4-1)))
+          ;;       (if (= (-> a1-106 status) 'active)
+          ;;           (copy-perms-to-level! this a1-106)
+          ;;           )
+          ;;       )
+          ;;     )
+          ;;   (save-game this arg0 "save")
+          ;;   )
          )
         (((game-save-elt task-list))
          (let ((s2-5
@@ -1769,9 +1813,18 @@ auto-save-post
     (set! (-> self state-time) (-> *display* real-clock frame-counter))
     (let ((a0-9 (reserve-alloc *art-control*)))
       (while (not a0-9)
-        (if (>= (- (-> *display* real-clock frame-counter) (-> self state-time)) (seconds 60))
+        (cond 
+          ((not (-> *art-control* reserve-buffer))
+            ;; mountain avalanche grr
+            (when (zero? (mod (- (-> *display* real-clock frame-counter) (-> self state-time)) (seconds 5)))
+              (format 0 "game-save waiting on (-> *art-control* reserve-buffer)~%")
+              )
+            )
+          ((>= (- (-> *display* real-clock frame-counter) (-> self state-time)) (seconds 10))
+            (format 0 "10s timeout in get-heap~%")
             (go-virtual error (mc-status-code no-memory))
             )
+          )
         (suspend)
         (set! a0-9 (reserve-alloc *art-control*))
         )
@@ -1970,6 +2023,7 @@ auto-save-post
   :post auto-save-post
   )
 
+(define-extern runs-on-game-saved (function int none))
 (defstate save (auto-save)
   :virtual #t
   :code (behavior ()
@@ -1987,6 +2041,7 @@ auto-save-post
     (let ((gp-0 (the-as object loading-level)))
       (set! loading-level (-> self buffer))
       (set! (-> self save) (new 'loading-level 'game-save #x20000))
+      (dbg-format 0 "saving game ~D~%" (-> self which))
       (save-game *game-info* (-> self save) "save")
       (set! loading-level (the-as kheap gp-0))
       0
@@ -2029,6 +2084,7 @@ auto-save-post
       )
     #f
     (label cfg-18)
+    (runs-on-game-saved (-> self which))
     (go-virtual done)
     )
   :post auto-save-post

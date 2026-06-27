@@ -1,0 +1,418 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(deftype air-train-menu-entry (structure)
+  ((level-name    symbol)
+   (continue-name symbol)
+   (text          string)
+   (allow-when    pair)
+   (on-activate   pair)
+   (on-close      pair)
+   )  
+  )
+
+(define *menu-air-train-list* (new 'static 'boxed-array :type air-train-menu-entry
+              ;; original air-trains 
+              (new 'static 'air-train-menu-entry
+                :level-name 'caspad
+                :continue-name 'caspad-warp
+                :text "Landing Pad"
+                :allow-when '(task-closed? "dig-knock-down-introduction")  ;; first dig mission required
+                :on-activate '(scene-play "caspad-air-train-out")
+                :on-close '(want-anim "caspad-air-train-out")
+                )
+              (new 'static 'air-train-menu-entry
+                :level-name 'nest
+                :continue-name 'nest-warp
+                :text "Metal Head Nest"
+                :allow-when '(task-closed? "nest-get-to-gun-introduction")  ;; first nest mission required
+                :on-activate '(scene-play "nest-air-train-out")
+                :on-close '(want-anim "nest-air-train-out")
+                )
+              ;; orbhunt menu-air-trains
+              (new 'static 'air-train-menu-entry
+                :level-name 'casboss
+                :continue-name 'casboss-warp
+                :text "Weapons Factory (Rooftop)"
+                :allow-when '(task-closed? "castle-boss-resolution")  ;; defeat krew required
+                :on-activate #f
+                :on-close #f
+                )
+              (new 'static 'air-train-menu-entry
+                :level-name 'halfpipe
+                :continue-name 'halfpipe-warp ;; TODO
+                :text "Halfpipe"
+                :allow-when '(task-closed? "nest-boss-resolution")  ;; defeat kor required
+                :on-activate #f
+                :on-close #f
+                )
+
+              ;; maybe classic air-train for nestb <-> village1?
+              ;; (new 'static 'air-train-menu-entry
+              ;;   :level-name 'village1
+              ;;   :continue-name 'village1-warp
+              ;;   :text "Sandover Village"
+              ;;   :allow-when '(task-closed? "nest-boss-resolution")  ;; defeat kor required
+              ;;   :on-activate (the-as pair #f)
+              ;;   :on-close (the-as pair #f)
+              ;;   )
+              )
+  )
+
+(deftype menu-air-train (air-train)
+  "Normal air-train but shows a menu to select destination"
+  ((part-off    sparticle-launch-control)
+   (part-alert  sparticle-launch-control)
+   (angle       degrees)
+   (time        float)
+    )
+  (:methods
+    (warp-to-continue (_type_) none)
+    )
+  )
+
+(defmethod handle-notice ((this menu-air-train))
+  (case-str (-> this name)
+    (("casboss-air-train-01")
+      (cond 
+        ((task-closed? "castle-boss-resolution")  ;; krew dead, show air-train
+          (logclear! (-> this draw status) (draw-control-status no-draw))
+          (set! (-> this continue) (get-continue-by-name *game-info* "caspad-warp"))
+          (set! (-> this on-activate) (the-as pair '(scene-play "caspad-air-train-out")))
+          (set! (-> this wait-for) (the-as pair #f))
+          (set! (-> this on-close) '(want-anim "caspad-air-train-out"))
+          )
+        (else ;; krew alive, hide air-train
+          (logior! (-> this draw status) (draw-control-status no-draw))
+          (set! (-> this continue) #f)
+          )
+        )
+      )
+    (("halfpipe-air-train-01")
+      (logclear! (-> this draw status) (draw-control-status no-draw))
+      (set! (-> this continue) (get-continue-by-name *game-info* "casboss-warp"))
+      (set! (-> this on-activate) '())
+      (set! (-> this wait-for) '())
+      (set! (-> this on-close) '())
+      )
+    )
+  (-> this continue)
+  )
+
+(defmethod setup-fields ((this menu-air-train))
+  (let ((t9-0 (method-of-type air-train setup-fields)))
+    (t9-0 this)
+    )
+  
+  ;; make blue color?
+  (set-vector! (-> this draw color-mult)     0.2 0.0 0.6 1.0)
+  (set-vector! (-> this draw color-emissive)     0.2 0.0 0.6 1.0)
+  
+  ;; shove some menu particle init stuff in here; borrowed from burning-bush
+  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 173) this))
+  (set! (-> this part-off) (create-launch-control (-> *part-group-id-table* 171) this))
+  (set! (-> this part-alert) (create-launch-control (-> *part-group-id-table* 172) this))
+
+  (none)
+  )
+
+(defmethod warp-to-continue ((this menu-air-train))
+  (kill-current-talker (the-as symbol '()) '() 'exit)
+  (set-time! (-> this state-time))
+  (logclear! (-> this mask) (process-mask actor-pause))
+  (when (not (-> this continue))
+    (process-release? *target*)
+    (go (method-of-object this idle))
+    )
+  (set-setting! 'allow-progress #f 0.0 0)
+  (set! (-> *setting-control* user-default border-mode) #t)
+  (set! (-> *level* play?) #t)
+  (apply-settings *setting-control*)
+  (sound-stop (-> this hover-sound))
+  (set! (-> this hover-sound) (new 'static 'sound-id))
+  (script-eval (-> this on-activate))
+  (sleep-code)
+  (none)
+  )
+
+(defstate use (menu-air-train)
+  :virtual #t
+  :enter (behavior ()
+    (set-setting! 'minimap 'clear 0.0 (minimap-flag minimap))
+    (set! (-> self time) -1.0)
+    (set-time! (-> self state-time))
+    )
+  :exit (behavior ()
+    (remove-setting! 'minimap)
+    (send-event *camera* 'change-target *target*)
+    (remove-setting! 'interp-time)
+    (remove-setting! 'mode-name)
+    )
+  :trans (behavior ()
+    (rlet ((acc :class vf)
+           (vf0 :class vf)
+           (vf4 :class vf)
+           (vf5 :class vf)
+           (vf6 :class vf)
+           (vf7 :class vf)
+           )
+      (init-vf0-vector)
+      (when (time-elapsed? (-> self state-time) (seconds 1.5))
+        (let ((list-length 0)
+              (cur-idx 0)
+              )
+          ;; determine index/length
+          (let ((s4-0 (game-task-node stadium-burning-bush-race-board-introduction)))
+            (when (or (task-node-open? s4-0) (task-node-closed? s4-0))
+              (if (task-node-closed? s4-0)
+                  (set! cur-idx 0)
+                  )
+              (+! list-length 1)
+              )
+            )
+          ;; ...
+          (let ((s4-6 (game-task-node stadium-burning-bush-race-class1-r-resolution)))
+            (when (or (task-node-open? s4-6) (task-node-closed? s4-6))
+              (if (task-node-closed? s4-6)
+                  (set! cur-idx 1)
+                  )
+              (+! list-length 1)
+              )
+            )
+
+          ;; handle up/down
+          (when (cpad-pressed? 0 down l-analog-down)
+            (+! cur-idx 1)
+            (cond
+              ((< (+ list-length -1) cur-idx)
+               (set! cur-idx (+ list-length -1))
+               cur-idx
+               )
+              (else
+                (the-as int (sound-play "menu-up-down"))
+                )
+              )
+            )
+          (when (cpad-pressed? 0 up l-analog-up)
+            (+! cur-idx -1)
+            (cond
+              ((< cur-idx 0)
+               (set! cur-idx 0)
+               cur-idx
+               )
+              (else
+                (the-as int (sound-play "menu-up-down"))
+                )
+              )
+            )
+          
+          (cond
+            ((zero? cur-idx)
+              (task-node-open! (game-task-node stadium-burning-bush-race-board-resolution))
+              )
+            ;; ...
+            ((= cur-idx 1)
+              (task-node-open! (game-task-node stadium-burning-bush-race-class1-r-resolution))
+              )
+            )
+            
+          (let* ((font-height 40)
+                 (font-x 36)
+                 (font-y (- 228 (* list-length (/ font-height 2))))
+                 (font-ctxt (new
+                         'stack
+                         'font-context
+                         *font-default-matrix*
+                         font-x
+                         font-y
+                         0.0
+                         (font-color default)
+                         (font-flags shadow kerning)
+                         )
+                       )
+                 )
+            (set! (-> font-ctxt flags) (font-flags shadow kerning middle middle-vert large))
+            (set! (-> font-ctxt width) (the float 440))
+            (set! (-> font-ctxt height) (the float 50))
+            (set! (-> font-ctxt scale) 1.0)
+            (let ((a0-59 40))
+              (set! (-> font-ctxt origin x) (the float font-x))
+              (set! (-> font-ctxt origin y) (the float a0-59))
+              )
+            (set! (-> font-ctxt color) (font-color progress-old-yellow))
+            (let ((select-text (lookup-text! *common-text* (text-id select-event) #f)))
+              (format (clear *temp-string*) select-text)
+              )
+            (print-game-text *temp-string* font-ctxt #f 44 (bucket-id progress))
+            (set! (-> font-ctxt height) (the float font-height))
+            (dotimes (idx list-length)
+              (set! (-> font-ctxt origin x) (the float font-x))
+              (set! (-> font-ctxt origin y) (the float font-y))
+              (set! (-> font-ctxt scale) (if (= idx cur-idx)
+                                          0.8
+                                          0.6
+                                          )
+                    )
+              (set! (-> font-ctxt color) (if (= idx cur-idx)
+                                          (font-color progress-old-selected)
+                                          (font-color default)
+                                          )
+                    )
+              (cond
+                ((zero? idx)
+                  (let ((tmp-text (lookup-text! *common-text* (text-id board-name) #f)))
+                    (format (clear *temp-string*) tmp-text)
+                    )
+                  (print-game-text *temp-string* font-ctxt #f 44 (the-as bucket-id 320))
+                  )
+                ;; ...
+                ((= idx 1)
+                  (let ((tmp-text (lookup-text! *common-text* (text-id reverse-race-class1) #f)))
+                    (format (clear *temp-string*) tmp-text)
+                    )
+                  (print-game-text *temp-string* font-ctxt #f 44 (the-as bucket-id 320))
+                  )
+                )
+              (+! font-y font-height)
+              )
+            )
+          )
+        )
+      ;; not touching this garbage
+      (when (!= (-> self time) -1.0)
+        (let ((gp-1 (new 'stack-no-clear 'vector)))
+          (new 'stack-no-clear 'vector)
+          (vector+! gp-1 (-> self root trans) (vector-orient-by-quat!
+                                                (new 'stack-no-clear 'vector)
+                                                (new 'static 'vector :y 24166.4 :z 32768.0 :w 1.0)
+                                                (-> self root quat)
+                                                )
+                    )
+          (set! (-> *camera* slave 0 trans quad) (-> gp-1 quad))
+          (let ((t9-66 forward-down->inv-matrix)
+                (a0-112 (-> *camera* slave 0 tracking))
+                (a1-30 (new 'stack-no-clear 'vector))
+                (v1-96 (new 'stack-no-clear 'vector))
+                )
+            (let ((a2-21 (-> self root trans)))
+              (let ((a3-11 *up-vector*))
+                (let ((t0-12 24166.4))
+                  (.mov vf7 t0-12)
+                  )
+                (.lvf vf5 (&-> a3-11 quad))
+                )
+              (.lvf vf4 (&-> a2-21 quad))
+              )
+            (.add.x.vf vf6 vf0 vf0 :mask #b1000)
+            (.mul.x.vf acc vf5 vf7 :mask #b111)
+            (.add.mul.w.vf vf6 vf4 vf0 acc :mask #b111)
+            (.svf (&-> v1-96 quad) vf6)
+            (t9-66 (the-as matrix a0-112) (vector-! a1-30 v1-96 gp-1) (-> *camera* local-down))
+            )
+          )
+        )
+      (let ((gp-2 (new 'stack-no-clear 'matrix)))
+        (let* ((a2-23 (-> self node-list data 3 bone transform))
+               (v1-101 (-> a2-23 quad 0))
+               (a0-113 (-> a2-23 quad 1))
+               (a1-32 (-> a2-23 quad 2))
+               (a2-24 (-> a2-23 trans quad))
+               )
+          (set! (-> gp-2 quad 0) v1-101)
+          (set! (-> gp-2 quad 1) a0-113)
+          (set! (-> gp-2 quad 2) a1-32)
+          (set! (-> gp-2 trans quad) a2-24)
+          )
+        (if (< (vector-dot
+                 (-> gp-2 vector 2)
+                 (vector-! (new 'stack-no-clear 'vector) (camera-pos) (matrix->trans gp-2 (new 'stack-no-clear 'vector)))
+                 )
+               0.0
+               )
+            (matrix*! gp-2 (matrix-rotate-y! (new 'stack-no-clear 'matrix) 32768.0) gp-2)
+            )
+        (spawn-with-matrix (-> self part-off) gp-2)
+        )
+      )
+    )
+  :code (behavior ((arg0 continue-point))
+    (set-setting! 'mode-name 'cam-really-fixed 0.0 0)
+    (suspend)
+    (until (process-grab? *target* #f)
+      (suspend)
+      )
+    (set! (-> self time) 0.0)
+    (let ((cur-idx #f))
+      (let ((list-length (add-process *gui-control* self (gui-channel bbush) (gui-action play) "cityv174" -99.0 0)))
+        (while (nonzero? (get-status *gui-control* list-length))
+          (suspend)
+          (when (or (cpad-pressed? 0 triangle) (cpad-pressed? 0 confirm))
+            (logclear! (-> *cpad-list* cpads 0 button0-abs 0) (pad-buttons triangle circle x confirm))
+            (logclear! (-> *cpad-list* cpads 0 button0-rel 0) (pad-buttons triangle circle x confirm))
+            (set-action!
+              *gui-control*
+              (gui-action stop)
+              list-length
+              (gui-channel none)
+              (gui-action none)
+              (the-as string #f)
+              (the-as (function gui-connection symbol) #f)
+              (the-as process #f)
+              )
+            (set! cur-idx #t)
+            )
+          )
+        )
+      (when (not cur-idx)
+        (until #f
+          (when (or (cpad-pressed? 0 confirm) (cpad-pressed? 0 triangle))
+            (logclear! (-> *cpad-list* cpads 0 button0-abs 0) (pad-buttons triangle circle x confirm))
+            (logclear! (-> *cpad-list* cpads 0 button0-rel 0) (pad-buttons triangle circle x confirm))
+            (sound-play "menu-pick")
+            #t
+            (goto cfg-17)
+            )
+          (suspend)
+          )
+        #f
+        )
+      )
+    (until (process-release? *target*)
+      (label cfg-17)
+      (suspend)
+      )
+    (go-virtual idle)
+    )
+  :post (behavior ()
+    (rlet ((acc :class vf)
+           (vf0 :class vf)
+           (vf4 :class vf)
+           (vf5 :class vf)
+           (vf6 :class vf)
+           (vf7 :class vf)
+           )
+      (init-vf0-vector)
+      (when *target*
+        (let* ((a0-0 (-> *target* neck))
+               (t9-0 (method-of-object a0-0 look-at!))
+               (a1-0 (new 'stack-no-clear 'vector))
+               )
+          (let ((v1-4 (-> self root trans)))
+            (let ((a2-0 *up-vector*))
+              (let ((a3-1 20480.0))
+                (.mov vf7 a3-1)
+                )
+              (.lvf vf5 (&-> a2-0 quad))
+              )
+            (.lvf vf4 (&-> v1-4 quad))
+            )
+          (.add.x.vf vf6 vf0 vf0 :mask #b1000)
+          (.mul.x.vf acc vf5 vf7 :mask #b111)
+          (.add.mul.w.vf vf6 vf4 vf0 acc :mask #b111)
+          (.svf (&-> a1-0 quad) vf6)
+          (t9-0 a0-0 a1-0 #f self)
+          )
+        )
+      )
+    )
+  )

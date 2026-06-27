@@ -62,10 +62,10 @@
     (the-as skeleton-group (art-group-get-by-name *level* "skel-cav-break-bridge" (the-as (pointer level) #f)))
     (the-as pair 0)
     )
-  (when (task-node-closed? (game-task-node mine-boss-introduction))
-    (cleanup-for-death this)
-    (deactivate this)
-    )
+  ;; (when (task-node-closed? (game-task-node mine-boss-introduction))
+  ;;   (cleanup-for-death this)
+  ;;   (deactivate this)
+  ;;   )
   (go (method-of-object this idle))
   )
 
@@ -1238,6 +1238,7 @@
 (defstate rise (cav-exit-door)
   :virtual #t
   :enter (behavior ()
+    ;; (script-eval '(want-load minee mined minea))
     (set-time! (-> self state-time))
     (sound-play "mb-door-open")
     )

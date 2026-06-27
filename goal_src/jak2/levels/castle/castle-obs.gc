@@ -1565,7 +1565,7 @@
     (case message
       (('attack)
        (let ((gp-0 (the-as object (-> block param 1))))
-         (when (and (not (task-node-closed? (game-task-node castle-boss-resolution)))
+         (when (and ;; (not (task-node-closed? (game-task-node castle-boss-resolution))) ;; changed orb hunt to allow return to 'casboss
                     (logtest? (-> (the-as attack-info gp-0) penetrate-using) (penetrate flop))
                     )
            (go-virtual die)
@@ -1648,9 +1648,10 @@
       )
     (set! (-> this root) s4-0)
     )
-  (if (not (task-node-closed? (game-task-node castle-boss-resolution)))
+  ;; changed orbhunt to allow return to casboss
+  ;; (if (not (task-node-closed? (game-task-node castle-boss-resolution)))
       (set! (-> this root penetrated-by) (penetrate flop))
-      )
+      ;; )
   (process-drawable-from-entity! this arg0)
   (initialize-skeleton
     this

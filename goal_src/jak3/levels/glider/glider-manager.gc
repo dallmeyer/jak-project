@@ -1537,8 +1537,9 @@
     (the-as skeleton-group (art-group-get-by-name *level* "skel-tpl-glider" (the-as (pointer level) #f)))
     (the-as pair 0)
     )
-  (if (task-node-closed? (game-task-node temple-climb-resolution))
-      (cleanup-for-death this)
+  ;; orb hunt - keep alive
+  ;; (if (task-node-closed? (game-task-node temple-climb-resolution))
+  ;;     (cleanup-for-death this)
       (go (method-of-object this idle))
-      )
+      ;; )
   )

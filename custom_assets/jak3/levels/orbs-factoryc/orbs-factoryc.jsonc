@@ -1,0 +1,333 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-factoryc",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O84",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o84", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-factoryc/orbs-factoryc.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 184000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [  256.3369, 438.5318, 40.9540 ], // on top of pipe normally for dax section 1
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  256.3369, 438.5318, 40.9540 , 10],
+      "lump": {
+        "name":"factoryc-skill-01"
+      }
+    },
+    {
+      "trans": [ 246.8089, 443.8191, 29.2461], // up on wall near daxter section 1, abah from somewhere below prob (no hint)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 246.8089, 443.8191, 29.2461, 10],
+      "lump": {
+        "name":"factoryc-skill-02"
+      }
+    },
+    {
+      "trans": [  237.6888, 443.7457, -9.4690 ], // up on other fence, extended concussor from ^ or maybe yolo from further in
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  237.6888, 443.7457, -9.4690 , 10],
+      "lump": {
+        "name":"factoryc-skill-03"
+      }
+    },
+    {
+      "trans": [ 284.7176, 438.5527, 20.6536 ], // robot dispenser
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 284.7176, 438.5527, 20.6536, 10],
+      "lump": {
+        "name":"factoryc-skill-04",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  288.5544, 462.1465, 26.7624], // up near light in ceiling, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   288.5544, 462.1465, 26.7624, 10],
+      "lump": {
+        "name":"factoryc-skill-05"
+      }
+    },
+    {
+      "trans": [  278.4325, 419.0000, -23.4446], // down on small ledge, in gap where you ramp back with faccar
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  278.4325, 419.0000, -23.4446, 10],
+      "lump": {
+        "name":"factoryc-skill-06"
+      }
+    },
+    {
+      "trans": [  279.9868, 440.2846, -172.8056 ], // daxter section 2 pipe
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  279.9868, 440.2846, -172.8056, 10],
+      "lump": {
+        "name":"factoryc-skill-07",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  271.0295, 453.9122, -175.2046], // up on fence above dax section 2 pipe, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  271.0295, 453.9122, -175.2046, 10],
+      "lump": {
+        "name":"factoryc-skill-08"
+      }
+    },
+    {
+      "trans": [  280.0260, 452.3353, -190.2418], // other end of pipe for dax section 2, extended from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  280.0260, 452.3353, -190.2418, 10],
+      "lump": {
+        "name":"factoryc-skill-09"
+      }
+    },
+    {
+      "trans": [  281.6166, 457.5547, -196.5325], // up on top of electric things in daxter hanging section 2
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  281.6166, 457.5547, -196.5325, 10],
+      "lump": {
+        "name":"factoryc-skill-10"
+      }
+    },
+    {
+      "trans": [  281.6166, 457.5547, -211.4410], // up on top of electric things in daxter hanging section 2
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  281.6166, 457.5547, -211.4410, 10],
+      "lump": {
+        "name":"factoryc-skill-11"
+      }
+    },
+    {
+      "trans": [  290.7455, 457.5547, -211.4410], // up on top of electric things in daxter hanging section 2
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  290.7455, 457.5547, -211.4410, 10],
+      "lump": {
+        "name":"factoryc-skill-12"
+      }
+    },
+    {
+      "trans": [  290.7455, 457.5547, -196.5557], // up on top of electric things in daxter hanging section 2
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  290.7455, 457.5547, -196.5557, 10],
+      "lump": {
+        "name":"factoryc-skill-13"
+      }
+    },
+    {
+      "trans": [   65.7096, 424.9984, -179.9402], // on small ledge in big open corner with 2 moving plats and escalator
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  65.7096, 424.9984, -179.9402, 10],
+      "lump": {
+        "name":"factoryc-skill-14"
+      }
+    },
+    {
+      "trans": [   39.4344, 451.6003, -127.6152 ], // daxter section 3 light above starting pipe
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  39.4344, 451.6003, -127.6152, 10],
+      "lump": {
+        "name":"factoryc-skill-15",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [   38.9129, 459.8749, -129.8307 ], // up on fence above dax section 3 pipe, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  38.9129, 459.8749, -129.8307, 10],
+      "lump": {
+        "name":"factoryc-skill-16",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [   24.2453, 470.3955, -130.0340 ], // other end of pipe for dax section 3, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  24.2453, 470.3955, -130.0340, 10],
+      "lump": {
+        "name":"factoryc-skill-17"
+      }
+    },
+    {
+      "trans": [  55.8535, 454.6456, -127.9178], // up in donut on ceiling, near middle dax section
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  55.8535, 454.6456, -127.9178, 10],
+      "lump": {
+        "name":"factoryc-skill-18"
+      }
+    },
+    {
+      "trans": [ 67.1393, 460.7115, -147.5545], // up in ceiling near middle dax section. abah+concussor from conveyor crevice
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 67.1393, 460.7115, -147.5545, 10],
+      "lump": {
+        "name":"factoryc-skill-19"
+      }
+    },
+    {
+      "trans": [  38.4698, 456.3773, 33.2961], // up on fence near final dax section
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [  38.4698, 456.3773, 33.2961, 10],
+      "lump": {
+        "name":"factoryc-skill-20"
+      }
+    },
+    {
+      "trans": [ 98.2223, 445.6361, 28.3323], // top of pipe near final dax section
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 98.2223, 445.6361, 28.3323, 10],
+      "lump": {
+        "name":"factoryc-skill-21"
+      }
+    },
+    {
+      "trans": [ 97.2209, 447.7917, -10.3005], // on top of wall near final dax section, boosted/concussor from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 97.2209, 447.7917, -10.3005, 10],
+      "lump": {
+        "name":"factoryc-skill-22"
+      }
+    },
+    {
+      "trans": [ 103.6559, 451.4862, 36.1180], // on top of burner in final dax section, extended from ^^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 103.6559, 451.4862, 36.1180, 10],
+      "lump": {
+        "name":"factoryc-skill-23"
+      }
+    },
+    {
+      "trans": [ 92.1556, 451.4862, 44.2994], // on top of burner in final dax section, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 92.1556, 451.4862, 44.2994, 10],
+      "lump": {
+        "name":"factoryc-skill-24"
+      }
+    },
+    {
+      "trans": [ 103.7824, 451.4862, 53.8667], // on top of burner in final dax section, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 103.7824, 451.4862, 53.8667, 10],
+      "lump": {
+        "name":"factoryc-skill-25"
+      }
+    }//,
+    
+    
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

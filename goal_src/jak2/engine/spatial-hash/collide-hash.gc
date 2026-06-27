@@ -79,7 +79,7 @@ the side length.
       (set! *already-printed-exeeded-max-cache-tris* #t)
       (if pp
           (format *stdcon* "Exceeded collide cache max # of tris (~s)!~%" (-> pp name))
-          (format *stdcon* "Exceeded collide cache max # of tris!~%")
+          (format *stdcon* "Exceeded collide cache max # of tris !~%")
           )
       (print-collide-cache-tri-count)
       )

@@ -41,6 +41,20 @@
        (check-impact self (the-as rigid-body-impact a1-4) (the-as vehicle arg0))
        )
      )
+    (('attack 'attack-invinc)
+      (case (-> (the-as attack-info (-> arg3 param 1)) mode)
+        (('dark-smack 'eco-dark)
+          (go-virtual fall))
+        (else
+          (dbg-format 0 "rub-tower attacked ~A~%" (-> (the-as attack-info (-> arg3 param 1)) mode))
+          #f
+          )
+        )
+      )
+    (else
+      (dbg-format 0 "rub-tower other event ~A~%" arg2)
+      #f
+      )
     )
   )
 
@@ -154,6 +168,7 @@
 
 (defmethod init-collision! ((this rub-tower))
   (let ((s5-0 (new 'process 'collide-shape this (collide-list-enum usually-hit-by-player))))
+    ;; (set! (-> s5-0 penetrated-by) (penetrate jak-dark-shot jak-dark-nuke dark-smack))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 2) 0)))
       (set! (-> s5-0 total-prims) (the-as uint 3))
       (set! (-> s4-0 prim-core collide-as) (collide-spec obstacle camera-blocker))
@@ -209,6 +224,7 @@
   "Set up a newly created process from the entity that created it."
   (init-collision! this)
   (process-drawable-from-entity! this arg0)
+  (logior! (-> this mask) (process-mask crate)) ;; orbhunt - so attacks target it
   (initialize-skeleton
     this
     (the-as skeleton-group (art-group-get-by-name *level* "skel-rub-tower" (the-as (pointer level) #f)))
@@ -581,35 +597,36 @@
           )
         (when (and (zero? gp-0) (-> self active?) (zero? (-> self shutoff-delay-time)))
           (set-time! (-> self shutoff-delay-time))
-          (when (string= (-> self name) "rub-elec-gate-1")
-            (if (res-lump-struct (-> self entity) 'camera-name structure)
-                (process-spawn
-                  external-camera-controller
-                  (-> self entity)
-                  1200
-                  #f
-                  :name "external-camera-controller"
-                  :to *entity-pool*
-                  )
-                )
-            (let ((a1-15 (new 'stack-no-clear 'event-message-block)))
-              (set! (-> a1-15 from) (process->ppointer self))
-              (set! (-> a1-15 num-params) 0)
-              (set! (-> a1-15 message) 'camera-cut)
-              (let ((t9-7 send-event-function)
-                    (v1-45 (-> *game-info* sub-task-list (game-task-node palace-ruins-attack-resolution)))
-                    )
-                (t9-7
-                  (handle->process (if (-> v1-45 manager)
-                                       (-> v1-45 manager manager)
-                                       (the-as handle #f)
-                                       )
-                                   )
-                  a1-15
-                  )
-                )
-              )
-            )
+          ;; orbhunt - disable weird camera thing in hubblea2
+          ;; (when (string= (-> self name) "rub-elec-gate-1")
+          ;;   (if (res-lump-struct (-> self entity) 'camera-name structure)
+          ;;       (process-spawn
+          ;;         external-camera-controller
+          ;;         (-> self entity)
+          ;;         1200
+          ;;         #f
+          ;;         :name "external-camera-controller"
+          ;;         :to *entity-pool*
+          ;;         )
+          ;;       )
+          ;;   (let ((a1-15 (new 'stack-no-clear 'event-message-block)))
+          ;;     (set! (-> a1-15 from) (process->ppointer self))
+          ;;     (set! (-> a1-15 num-params) 0)
+          ;;     (set! (-> a1-15 message) 'camera-cut)
+          ;;     (let ((t9-7 send-event-function)
+          ;;           (v1-45 (-> *game-info* sub-task-list (game-task-node palace-ruins-attack-resolution)))
+          ;;           )
+          ;;       (t9-7
+          ;;         (handle->process (if (-> v1-45 manager)
+          ;;                              (-> v1-45 manager manager)
+          ;;                              (the-as handle #f)
+          ;;                              )
+          ;;                          )
+          ;;         a1-15
+          ;;         )
+          ;;       )
+          ;;     )
+          ;;   )
           )
         )
       )

@@ -1460,7 +1460,7 @@
   (local-vars (v0-1 texture-id) (v0-4 texture-id) (a0-72 int) (a0-74 int))
   (cond
     ((and (not (logtest? (cloth-flag using-alt-tex) (-> this flags)))
-          (and (>= (-> *game-info* skill-total) 600.0) (-> this params alt-tex-name))
+          (and (>= (-> *game-info* skill-total) 6000.0) (-> this params alt-tex-name)) ;; TODO 600 green scarf adjust total
           )
      (logior! (-> this flags) (cloth-flag using-alt-tex))
      (set! (-> this strip tex-id) (lookup-texture-id-by-name (-> this params alt-tex-name) (the-as string #f)))
@@ -1473,7 +1473,7 @@
              )
            )
      )
-    ((and (logtest? (cloth-flag using-alt-tex) (-> this flags)) (< (-> *game-info* skill-total) 600.0))
+    ((and (logtest? (cloth-flag using-alt-tex) (-> this flags)) (< (-> *game-info* skill-total) 6000.0)) ;; TODO 600 green scarf adjust total
      (logclear! (-> this flags) (cloth-flag using-alt-tex))
      (set! (-> this strip tex-id) (lookup-texture-id-by-name (-> this params tex-name) (the-as string #f)))
      (set! v0-4

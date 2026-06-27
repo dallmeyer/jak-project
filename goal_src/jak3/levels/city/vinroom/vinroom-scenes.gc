@@ -7,11 +7,11 @@
 
 ;; DECOMP BEGINS
 
-(defskelgroup skel-vin-effect vin-effect vin-effect-lod0-jg vin-effect-idle-ja
-              ((vin-effect-lod0-mg (meters 999999)))
-              :bounds (static-spherem 0 0 0 8)
-              :origin-joint-index 3
-              )
+;; (defskelgroup skel-vin-effect vin-effect vin-effect-lod0-jg vin-effect-idle-ja
+;;               ((vin-effect-lod0-mg (meters 999999)))
+;;               :bounds (static-spherem 0 0 0 8)
+;;               :origin-joint-index 3
+;;               )
 
 (defskelgroup skel-precursor-movie precursor precursor-lod0-jg precursor-idle-ja
               ((precursor-lod0-mg (meters 999999)))
@@ -406,4 +406,52 @@
     (:userdata 409.6)
     (:rotate-y (degrees 0))
     )
+  )
+
+(def-actor arcade :bounds (0 0 0 5) :texture-level 2)
+
+(deftype arcade (process-drawable)
+  ((root collide-shape-moving :override)
+   )
+  (:methods (init-collision! (_type_) none))
+  (:state-methods idle)
+  )
+
+(defmethod init-from-entity! ((this arcade) (arg0 entity-actor))
+  (init-collision! this)
+  (process-drawable-from-entity! this arg0)
+  (initialize-skeleton this *arcade-sg* '())
+  (go (method-of-object this idle))
+  (none))
+
+
+(defmethod init-collision! ((this arcade))
+  (let ((cshape (new 'process 'collide-shape-moving this (collide-list-enum hit-by-player))))
+    (set! (-> cshape dynam) (copy *standard-dynamics* 'process))
+    (set! (-> cshape reaction) cshape-reaction-default)
+    (set! (-> cshape no-reaction) (the (function collide-shape-moving collide-query vector vector object) nothing))
+    (let ((mesh (new 'process 'collide-shape-prim-mesh cshape (the uint 0) (the uint 0))))
+      (set! (-> mesh prim-core collide-as) (collide-spec pusher))
+      (set! (-> mesh collide-with) (collide-spec jak player-list))
+      (set! (-> mesh prim-core action) (collide-action solid rideable))
+      (set! (-> mesh transform-index) 0)
+      (set! (-> cshape total-prims) (the uint 1))
+      (set! (-> cshape root-prim) mesh)
+      (set-vector! (-> mesh local-sphere) 0.0 (meters 0) 0.0 (meters 5)))
+    (pusher-init cshape)
+    (set! (-> cshape nav-radius) (* 0.75 (-> cshape root-prim local-sphere w)))
+    (let ((prim (-> cshape root-prim)))
+      (set! (-> cshape backup-collide-as) (-> prim prim-core collide-as))
+      (set! (-> cshape backup-collide-with) (-> prim prim-core collide-with))
+      )
+    (set! (-> this root) cshape))
+  (none)
+  )
+
+(defstate idle (arcade)
+  :virtual #t ;; virtual state
+  :code (behavior ()
+    (loop (suspend))
+    )
+  :post transform-post ;; run the transform-post handler which updates our root transform every frame
   )

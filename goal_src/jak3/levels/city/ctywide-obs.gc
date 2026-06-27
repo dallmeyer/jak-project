@@ -2078,6 +2078,27 @@
   (none)
   )
 
+(defun mod-override-burning-bush-get-on! ((info city-burning-bush-get-on-info) (task game-task))
+  (case task
+    ;; === ctyindb ===
+    (((game-task city-bbush-get-to-36))  ;; burning-bush-39 / burning-bush-indb-2 - at top of broken pipe jetboard grind before turning right
+      (set-vector-meters! (-> info trans)  1099.75 9.8982  516.0345)  ;; in corner between pipes where can deload into sewers in jak 2
+      (set-vector! (-> info camera-trans) (meters 1099.8830) (meters 13.1429) (meters 510.7397) 1.0)
+      (set! (-> info camera-rot 0) 0.9628 ) (set! (-> info camera-rot 1) -0.0000) (set! (-> info camera-rot 2) 0.2701)
+      (set! (-> info camera-rot 3) -0.0784) (set! (-> info camera-rot 4) 0.9569) (set! (-> info camera-rot 5)  0.2796)
+      (set! (-> info camera-rot 6) -0.2585) (set! (-> info camera-rot 7) -0.2904) (set! (-> info camera-rot 8) 0.9213)
+      (set! (-> info time) 3600.0))
+    (((game-task city-bbush-get-to-37))  ;; burning-bush-40 / burning-bush-indb-3 - on grindrail above vanilla bbush
+      (set-vector-meters! (-> info trans) 844.8472 22.5066 776.8930)  ;; on "steps" on wall right before ctyinda
+      (set-vector! (-> info camera-trans) (meters 852.0466) (meters 26.8847) (meters 778.21) 1.0)
+      (set! (-> info camera-rot 0) -0.3514) (set! (-> info camera-rot 1) -0.0000) (set! (-> info camera-rot 2) 0.9362)
+      (set! (-> info camera-rot 3) -0.1940) (set! (-> info camera-rot 4) 0.9782) (set! (-> info camera-rot 5) -0.0728)
+      (set! (-> info camera-rot 6) -0.9158) (set! (-> info camera-rot 7) -0.2072) (set! (-> info camera-rot 8) -0.3437)
+      (set! (-> info time) 4250.0))
+    )
+  (none)
+  )
+
 (defstate active (task-manager-ctywide-bbush-get-to)
   :virtual #t
   :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
@@ -2105,6 +2126,7 @@
     (let ((t1-1 (new 'stack 'fact-info self (pickup-type eco-pill-random) (-> *FACT-bank* default-eco-pill-green-inc)))
           (a0-3 (new 'stack-no-clear 'vector))
           )
+      (mod-override-burning-bush-get-on! (-> *city-burning-bush-get-on-info* (-> self info index)) (-> self node-info task))
       (logior! (-> t1-1 options) (actor-option fade-out))
       (set! (-> t1-1 fade-time)
             (the-as time-frame (the int (-> *city-burning-bush-get-on-info* (-> self info index) time)))
@@ -2615,7 +2637,7 @@
             (dotimes (s5-1 (length (-> self actor-group 0)))
               (let ((s4-1 (-> self actor-group 0 data s5-1 actor)))
                 (when s4-1
-                  (if (and (is-object-visible? (-> s4-1 extra level) (-> s4-1 vis-id))
+                  (if (and (is-object-visible? (-> s4-1 extra level) (-> s4-1 vis-id) s4-1)
                            (let ((s3-0 sphere-in-view-frustum?)
                                  (a0-13 (new 'stack 'sphere))
                                  )

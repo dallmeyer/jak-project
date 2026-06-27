@@ -248,6 +248,8 @@
                 (let ((f0-34 (vector-dot s5-7 (-> self local-down))))
                   (cond
                     ((and (focus-test? (the-as target gp-0) touch-water)
+                          (or (= (-> (the-as target gp-0) control mod-surface name) 'swim)
+                              (= (-> (the-as target gp-0) control mod-surface name) 'swim-bottom))
                           (not (logtest? (focus-status mech) (-> (the-as target gp-0) focus-status)))
                           )
                      (set! (-> self upspeed) 0.0)

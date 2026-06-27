@@ -21,6 +21,10 @@
              (or (= (-> self control mod-surface name) 'run) (= (-> self control mod-surface name) 'jump)))
     (+! (-> self control current-surface target-speed) 20480.0)
     (+! (-> self control current-surface transv-max) 20480.0))
+  ;; TFL note: added super-eco-blue case
+  (when (target-powerup? super-eco-blue)
+    (+! (-> self control current-surface target-speed) (meters 10))
+    (+! (-> self control current-surface transv-max) (meters 10)))
   (let ((s5-0 (new-stack-vector0)))
     (vector-z-quaternion! s5-0 (-> self control quat-for-control))
     (when (logtest? (-> self control mod-surface flags) (surface-flags dive))
@@ -159,6 +163,8 @@
 ;; WARN: Stack slot load at 160 mismatch: defined as size 4, got size 16
 ;; WARN: Stack slot load at 176 mismatch: defined as size 4, got size 16
 (defun-debug target-print-stats ((arg0 target) (arg1 symbol))
+  (when (and (= *cheat-mode* 'debug) (cpad-pressed? 0 l3))
+    (format 0 "~6,,2m, ~6,,2m, ~6,,2m  ~%" (-> arg0 control trans x) (-> arg0 control trans y) (-> arg0 control trans z)))
   (when (and *display-ground-stats* arg0)
     (format arg1
             "~0kpoly:~6X  mode:~-8S  material:~-10S  event:~S~%"

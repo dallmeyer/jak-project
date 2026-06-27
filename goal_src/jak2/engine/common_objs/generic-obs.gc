@@ -62,23 +62,37 @@
       (if (not s4-0)
           (go process-drawable-art-error (the-as string #f))
           )
-      (let ((s3-0 (the-as object (-> (the-as (pointer uint32) s4-0)))))
-        (cond
-          ((part-group-pointer? (the-as pointer s3-0))
-           (set! gp-0 (-> (the-as (pointer uint32) s4-0)))
-           )
-          ((= (-> (the-as basic s3-0) type) string)
-           (if arg1
-               (set! (-> arg1 0) (the-as string s3-0))
-               )
-           (set! gp-0 (lookup-part-group-pointer-by-name (the-as string s3-0)))
-           (if (the-as (pointer object) gp-0)
-               ;; og:preserve-this TODO - manual fix here
-               (set! (-> (the-as (pointer int32) s4-0)) (the-as int gp-0))
-               )
-           )
-          (else
-            (go process-drawable-art-error (the-as string s3-0))
+      (cond ;; orb hunt - override part group for prison cell hint
+        ((string= (res-lump-struct arg0 'name string) "prison-part-376")
+          (if arg1
+            (set! (-> arg1 0) "group-prison-console-small-door-skill")
+            )
+          (set! gp-0 (lookup-part-group-pointer-by-name "group-prison-console-small-door-skill"))
+          (if (the-as (pointer object) gp-0)
+            ;; og:preserve-this TODO - manual fix here
+            (set! (-> (the-as (pointer int32) s4-0)) (the-as int gp-0))
+            )
+          )
+        (else
+          (let ((s3-0 (the-as object (-> (the-as (pointer uint32) s4-0)))))
+            (cond
+              ((part-group-pointer? (the-as pointer s3-0))
+              (set! gp-0 (-> (the-as (pointer uint32) s4-0)))
+              )
+              ((= (-> (the-as basic s3-0) type) string)
+              (if arg1
+                  (set! (-> arg1 0) (the-as string s3-0))
+                  )
+              (set! gp-0 (lookup-part-group-pointer-by-name (the-as string s3-0)))
+              (if (the-as (pointer object) gp-0)
+                  ;; og:preserve-this TODO - manual fix here
+                  (set! (-> (the-as (pointer int32) s4-0)) (the-as int gp-0))
+                  )
+              )
+              (else
+                (go process-drawable-art-error (the-as string s3-0))
+                )
+              )
             )
           )
         )
@@ -2134,7 +2148,8 @@
           (vector--float*! (-> self trans) (-> *camera* tpos-curr) (-> *camera* local-down) 28672.0)
           (send-event *camera* 'teleport)
           (if (and (-> *camera* on-ground) (time-elapsed? gp-0 (seconds 1)))
-              (send-event *camera* 'change-state cam-string (seconds 0.5))
+              (remove-setting-by-arg0 *setting-control* 'mode-name)
+              ;; (send-event *camera* 'change-state cam-string (seconds 0.5))
               )
           )
         (suspend)
@@ -2234,7 +2249,8 @@
           (set! (-> self trans z) (-> *camera* tpos-curr z))
           (vector+! (-> self trans) (-> self trans) (-> self view-flat))
           (if (and (-> *camera* on-ground) (time-elapsed? gp-0 (seconds 1)))
-              (send-event *camera* 'change-state cam-string (seconds 0.5))
+              (remove-setting-by-arg0 *setting-control* 'mode-name)
+              ;; (send-event *camera* 'change-state cam-string (seconds 0.5))
               )
           )
         (vector-reset! (-> self tracking follow-off))

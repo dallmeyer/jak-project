@@ -1515,55 +1515,60 @@
     )
   )
 
+;; ctymarka / burning-bush-3 / shuttle-1
 (define *city-burning-bush-shuttle-1-info*
   (new 'static 'boxed-array :type city-shuttle-info
+    ;; homie 1
     (new 'static 'city-shuttle-info
-      :pos (new 'static 'vector :x -1519902.8 :y 32727.04 :z 2502369.2 :w 1.0)
+      :pos (new 'static 'vector :x (meters -179.10)  :y (meters   8.0)  :z (meters 850.04)    :w 1.0)
       :level 'ctysluma
-      :nav-mesh-id #x2578
-      :time (seconds 60)
+      :nav-mesh-id #x567a
+      :time (seconds 15)
       )
     (new 'static 'city-shuttle-info
-      :pos (new 'static 'vector :x 715612.2 :y 81879.04 :z 2993889.2 :w 1.0)
+      :pos (new 'static 'vector :x (meters  53.13)  :y (meters  16.77)  :z (meters 693.69)    :w 1.0)
       :level 'ctysluma
-      :nav-mesh-id #x2578
-      :time (seconds 60)
+      :nav-mesh-id #x587c
+      :time (seconds 30)
       )
+    ;; homie 2
     (new 'static 'city-shuttle-info
-      :pos (new 'static 'vector :x 1588920.4 :y 65536.0 :z 2774384.8 :w 1.0)
+      :pos (new 'static 'vector :x (meters 112.11)  :y (meters  11.61)  :z (meters 285.28)    :w 1.0)
       :level 'ctysluma
-      :nav-mesh-id #x2578
-      :time (seconds 60)
+      :nav-mesh-id #x5583
+      :time (seconds 30)
       )
     (new 'static 'city-shuttle-info
-      :pos (new 'static 'vector :x -218152.95 :y 31621.12 :z 5460336.5 :w 1.0)
+      :pos (new 'static 'vector :x (meters -222.94)  :y (meters   8.0)  :z (meters -60.43)   :w 1.0)
       :level 'ctyslumb
-      :nav-mesh-id #x2644
-      :time (seconds 60)
+      :nav-mesh-id #x8e6c
+      :time (seconds 30)
       )
+    ;; homie 3
     (new 'static 'city-shuttle-info
-      :pos (new 'static 'vector :x 767180.8 :y 70778.88 :z 7193682.0 :w 1.0)
+      :pos (new 'static 'vector :x (meters -247.14)  :y (meters   3.51)  :z (meters -325.54)    :w 1.0)
       :level 'ctyslumb
-      :nav-mesh-id #x2644
-      :time (seconds 60)
+      :nav-mesh-id #x8e6a
+      :time (seconds 20)
       )
     (new 'static 'city-shuttle-info
-      :pos (new 'static 'vector :x 4055408.8 :y 32727.04 :z 4727562.0 :w 1.0)
+      :pos (new 'static 'vector :x (meters -166.31)  :y (meters   8.0)  :z (meters  93.58)   :w 1.0)
       :level 'ctyslumb
-      :nav-mesh-id #x2644
-      :time (seconds 60)
+      :nav-mesh-id #x5648
+      :time (seconds 25)
       )
+    ;; homie 4
     (new 'static 'city-shuttle-info
-      :pos (new 'static 'vector :x 4694958.0 :y 32727.04 :z 3358392.2 :w 1.0)
+      :pos (new 'static 'vector :x (meters -290.90)  :y (meters   8.55)  :z (meters 191.67)     :w 1.0)
       :level 'ctyslumb
-      :nav-mesh-id #x2644
-      :time (seconds 60)
+      :nav-mesh-id #x5648
+      :time (seconds 30)
       )
     (new 'static 'city-shuttle-info
-      :pos (new 'static 'vector :x 4653957.0 :y 33341.44 :z 638730.25 :w 1.0)
+      :pos (new 'static 'vector :x (meters -355.75)  :y (meters   8.0)  :z (meters 668.93)   :w 1.0)
       :level 'ctyslumc
-      :nav-mesh-id #x2644
-      :time (seconds 60)
+      :nav-mesh-id #x567a
+      :time (seconds 25)
       )
     )
   )
@@ -1593,7 +1598,7 @@
     ()
     (set-setting! 'airlock #f 0.0 0)
     (set-setting! 'exclusive-task #f 0.0 (-> self node-info task))
-    (set! (-> self begin-pos quad) (-> (new 'static 'vector :x -687390.75 :y 40960.0 :z 3479224.2 :w 1.0) quad))
+    (set! (-> self begin-pos quad) (-> (new 'static 'vector :x (meters -314.90)   :y (meters 11.6)  :z (meters 840.34) :w 1.0) quad))
     (shuttle-init self *city-burning-bush-shuttle-1-info*)
     (none)
     )

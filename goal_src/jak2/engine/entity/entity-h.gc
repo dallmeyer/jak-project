@@ -8,19 +8,23 @@
 (defenum entity-perm-status
   :bitfield #t
   :type uint16
-  (bit-0 0) ;; blocks birth
-  (error 1)
-  (dead 2)
-  (no-kill 3)
-  (bit-4 4)
-  (bit-5 5)
-  (subtask-complete 6)
+  (bit-0 0) ;; 1 blocks birth
+  (error 1) ;; 2
+  (dead 2)  ;; 4
+  (no-kill 3) ;; 8
+  (bit-4 4) ;; 16
+  (bit-5 5) ;; 32
+  (subtask-complete 6)  ;; 64
   (bit-7 7)
   (complete 8)
   (bit-9 9)
   (bit-10 10)
   (save 11)
   (bit-12 12)
+  ;;mod-base-change
+  (bit-13 13)
+  (bit-14 14)
+  (bit-15 15)
   )
 
 (defenum vehicle-type
@@ -224,4 +228,4 @@ that gets accessed by the accompanying process."
   )
 
 
-(define *ACTOR-bank* (new 'static 'actor-bank :pause-dist (meters 50) :birth-dist (meters 220) :birth-max 10))
+(define *ACTOR-bank* (new 'static 'actor-bank :pause-dist (meters 50) :birth-dist (meters 1000) :birth-max 10))

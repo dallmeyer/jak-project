@@ -290,7 +290,7 @@
     )
   )
 
-(defun-debug internal-draw-debug-text-3d ((bucket bucket-id) (text string) (pos vector) (color font-color) (offset vector2h))
+(defun-debug internal-draw-debug-text-3d-scaled ((bucket bucket-id) (text string) (pos vector) (color font-color) (scale float) (offset vector2h))
   "Implementation of 3D text drawing."
   (let ((s2-0 (new 'stack-no-clear 'vector4w)))
     (set! (-> s2-0 quad) (the-as uint128 0))
@@ -307,6 +307,38 @@
                       0.0
                       color
                       (font-flags shadow kerning)
+                      )
+                    )
+              )
+          (let ((v1-10 s1-1))
+            (set! (-> v1-10 origin z) (the float (/ (-> s2-0 z) 16)))
+            )
+          (set-scale! s1-1 scale)
+          (set-context! *font-work* s1-1)
+          (draw-string text s3-0 s1-1)
+          )
+        )
+      )
+    )
+  )
+
+(defun-debug internal-draw-debug-text-3d ((bucket bucket-id) (text string) (pos vector) (color font-color) (offset vector2h))
+  "Implementation of 3D text drawing."
+  (let ((s2-0 (new 'stack-no-clear 'vector4w)))
+    (set! (-> s2-0 quad) (the-as uint128 0))
+    (when (transform-point-qword! s2-0 pos)
+      (with-dma-buffer-add-bucket ((s3-0 (-> *display* frames (-> *display* on-screen) debug-buf))
+                                   bucket
+                                   )
+        (let ((s1-1 (new
+                      'stack
+                      'font-context
+                      *font-default-matrix*
+                      (+ (-> offset x) -1792 (/ (-> s2-0 x) 16))
+                      (+ (-> offset y) -1855 (/ (-> s2-0 y) 16))
+                      0.0
+                      color
+                      (font-flags large shadow kerning)
                       )
                     )
               )
@@ -833,7 +865,7 @@
   #f
   )
 
-(defun-debug add-debug-text-3d ((enable symbol) (bucket bucket-id) (text string) (pos vector) (color font-color) (offset vector2h))
+(defun-debug add-debug-text-3d-scaled ((enable symbol) (bucket bucket-id) (text string) (pos vector) (color font-color) (scale float) (offset vector2h))
   "Draw debug text."
   (when (and enable (not *display-capture-mode*))
     (#when PC_PORT
@@ -877,7 +909,7 @@
           )
         )
       (else
-        (internal-draw-debug-text-3d bucket text pos color (cond
+        (internal-draw-debug-text-3d-scaled bucket text pos color scale (cond
                                                              (offset
                                                                (empty)
                                                                offset
@@ -892,6 +924,9 @@
     )
   #f
   )
+
+(defun-debug add-debug-text-3d ((enable symbol) (bucket bucket-id) (text string) (pos vector) (color font-color) (offset vector2h))
+  (add-debug-text-3d-scaled enable bucket text pos color 1.0 offset))
 
 (defun-debug add-debug-sphere-with-transform ((enable symbol) (bucket bucket-id) (pos vector) (radius meters) (mat matrix) (color rgba))
   "Draw a debug sphere, applying a transform to the given point first."

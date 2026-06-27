@@ -84,37 +84,37 @@
     ((-> target-stance enter))
     (let ((v1-2 (rand-vu-int-count 7)))
       (cond
-        ((zero? v1-2)
+        ((zero? v1-2) ;; dax stretch
          (set! (-> self spool-anim)
                (new 'static 'spool-anim :name "jak-ambient-1" :anim-name "jak-ambient-1" :parts 1 :command-list '())
                )
          )
-        ((= v1-2 1)
+        ((= v1-2 1) ;; look around
          (set! (-> self spool-anim)
                (new 'static 'spool-anim :name "jak-ambient-2" :anim-name "jak-ambient-2" :parts 1 :command-list '())
                )
          )
-        ((= v1-2 2)
+        ((= v1-2 2) ;; jak 1 powercell throwback
          (set! (-> self spool-anim)
                (new 'static 'spool-anim :name "jak-ambient-3" :anim-name "jak-ambient-3" :parts 1 :command-list '())
                )
          )
-        ((= v1-2 3)
+        ((= v1-2 3) ;; jak stretch
          (set! (-> self spool-anim)
                (new 'static 'spool-anim :name "jak-ambient-4" :anim-name "jak-ambient-4" :parts 1 :command-list '())
                )
          )
-        ((= v1-2 4)
+        ((= v1-2 4) ;; dax peekaboo
          (set! (-> self spool-anim)
                (new 'static 'spool-anim :name "jak-ambient-5" :anim-name "jak-ambient-5" :parts 1 :command-list '())
                )
          )
-        ((= v1-2 5)
+        ((= v1-2 5) ;; dax itchy
          (set! (-> self spool-anim)
                (new 'static 'spool-anim :name "jak-ambient-6" :anim-name "jak-ambient-6" :parts 1 :command-list '())
                )
          )
-        (else
+        (else ;; stank face
           (set! (-> self spool-anim)
                 (new 'static 'spool-anim :name "jak-ambient-7" :anim-name "jak-ambient-7" :parts 1 :command-list '())
                 )
@@ -207,6 +207,7 @@
   (set! *look-around-mods* a0-22)
   )
 
+(define-extern *zoom-sensitivity-scale* float)
 (defstate target-look-around (target)
   :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
     (cond
@@ -251,6 +252,9 @@
     )
   :exit (behavior ()
     (set! (-> self cam-user-mode) 'normal)
+    (set-setting-by-param *setting-control* 'fov #f (* 182.04445 64.0) 0)
+    ;; (remove-setting-by-arg0 *setting-control* 'fov) ;; orbhunt to reset any "zoom"
+    (set! *zoom-sensitivity-scale* 1.0) ;; orbhunt to reset zoom sensitivity changes
     (target-exit)
     (remove-setting! 'mode-name)
     )
@@ -306,6 +310,7 @@
     )
   )
 
+(define-extern spawn-fuel-cell (function vector string (pointer process)))
 (defstate target-grab (target)
   :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
     (local-vars (v0-0 object))
@@ -442,7 +447,7 @@
   :code (behavior ((arg0 symbol))
     (set-forward-vel 0.0)
     (let ((gp-0 0))
-      (while (not (logtest? (-> self control status) (collide-status on-surface)))
+      (while (and (< gp-0 (seconds 1.0)) (not (logtest? (-> self control status) (collide-status on-surface))))
         (target-falling-anim-trans)
         (+! gp-0 (- (current-time) (-> self clock old-frame-counter)))
         (suspend)
@@ -613,11 +618,63 @@
              )
            (set! (-> self control unknown-word04) (the-as uint 'stance))
            )
+          (('fuel-cell)
+            (send-event *target* 'vector-turn-to (vector-! (new-stack-vector0) (-> *math-camera* trans) (-> *target* root trans)))
+            (while (let ((v1-15 (file-status *art-control* (-> self spool-anim name) 0)))
+                    (not (or (= v1-15 'locked) (= v1-15 'active)))
+                    )
+              (suspend)
+              (ja :num! (loop!))
+              )
+            (set-time! (-> self ambient-time))
+            (ja-play-spooled-anim
+              (-> self spool-anim)
+              (the-as art-joint-anim jakb-stance-loop-ja)
+              (the-as art-joint-anim jakb-stance-loop-ja)
+              (the-as
+                (function process-drawable symbol)
+                (lambda :behavior target () (and (time-elapsed? (-> self ambient-time) (seconds 3.0)) (cpad-pressed? 0 triangle)))
+                )
+              (spooler-flags)
+              )
+            ;; exit
+            (set-time! (-> self ambient-time))
+            (let ((a0-0 (-> self spool-anim)))
+              (when (and a0-0 (= (-> *setting-control* user-current spooling) (process->ppointer self)))
+                (ja-abort-spooled-anim a0-0 (the-as art-joint-anim #f) -1)
+                (ja-channel-set! 1)
+                (ja :group! jakb-stance-loop-ja :num! min)
+                )
+              )
+            (set! (-> self spool-anim) #f)
+            ;; idk everything else does this
+            (set! (-> self control unknown-word04) (the-as uint 'stance))
+            (let ((cell (process-by-type-exact-state 'fuel-cell 'wait *active-pool*)))
+              (if cell (send-event cell 'suck))
+              )
+            (go target-stance)
+           )
           )
         )
       (label cfg-131)
       )
     #f
+    )
+  :trans (behavior ()
+    (when (= (-> self control unknown-spool-anim00) 'fuel-cell)
+      (set! (-> self spool-anim) ;; jak 1 powercell throwback
+        (new 'static 'spool-anim :name "jak-ambient-3" :anim-name "jak-ambient-3" :parts 1 :command-list '()))
+      (gui-control-method-12
+        *gui-control*
+        self
+        (gui-channel art-load)
+        (gui-action queue)
+        (-> self spool-anim name)
+        0
+        -99.0
+        (new 'static 'sound-id)
+        )
+      )
     )
   :post (behavior ()
     (if (logtest? (-> self control status) (collide-status on-surface))
@@ -1331,9 +1388,11 @@
   (set! *hit-ground-hard-mods* a0-90)
   )
 
+(define-extern *last-lightjak-swoop-falling-again-height* float)
 (defstate target-hit-ground-hard (target)
   :event target-standard-event-handler
   :enter (behavior ((arg0 float))
+    (set! *last-lightjak-swoop-falling-again-height* (meters 1000000.0))
     (set! (-> self control last-running-attack-end-time) 0)
     (set! (-> self control last-attack-end-time) 0)
     (set-forward-vel 0.0)
@@ -1633,8 +1692,9 @@
       (suspend)
       (ja :num! (seek! (ja-aframe 15.0 0) 3.0))
       )
-    (if arg1
-        (send-event *camera* 'change-state arg1 (seconds 0.6))
+    (when arg1
+        (set-setting-by-param *setting-control* 'mode-name 'cam-launcher-longfall 0 0)
+        ;; (send-event *camera* 'change-mode arg1 (seconds 0.6))
         )
     (if (nonzero? arg3)
         (process-spawn-function
@@ -1810,7 +1870,7 @@
   (set! (-> v1-28 name) 'float)
   (set! (-> v1-28 target-speed) 81920.0)
   (set! (-> v1-28 transv-max) 81920.0)
-  (set! (-> v1-28 flags) (surface-flag gun-off))
+  ;; (set! (-> v1-28 flags) (surface-flag gun-off)) ;; allow gun out while floating
   (set! *float-mods* v1-28)
   )
 

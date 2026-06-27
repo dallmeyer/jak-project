@@ -1384,6 +1384,17 @@
   (none)
   )
 
+(defun sparticle-track-root-prim-fc ((arg0 object) (arg1 sparticle-cpuinfo) (arg2 vector))
+  (let ((v1-4 (-> (the-as collide-shape (-> arg1 key proc root)) root-prim prim-core)))
+    (set! (-> arg2 x) (-> v1-4 world-sphere x))
+    (set! (-> arg2 y) (-> v1-4 world-sphere y))
+    (-! (-> arg2 y) (meters 0.5))
+    (set! (-> arg2 z) (-> v1-4 world-sphere z))
+    )
+  0
+  (none)
+  )
+
 (defun sparticle-track-joint ((arg0 sparticle-system) (arg1 sparticle-cpuinfo) (arg2 vector))
   (let* ((v1-1 (-> arg1 key proc))
          (a1-1 (the int (-> arg1 user-float)))

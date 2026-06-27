@@ -796,6 +796,77 @@
   (input-opts-controller-led-reflect-heat #x1617)
   (input-opts-controller-pressure-sensitivity #x1618)
   (input-opts-analog-sensitivity #x1619)
+  
+  ;; mod text
+  (rolling-buzzer #x1700)
+  (baby-mode #x1701) ;; unused
+  (tnt-dodged #x1702)
+
+  ;; TFL note: CUSTOM LEVEL TEXTS
+  (crystalc-level #xa01) ;; CHANGED ID TO SEE THE LEVEL ONLY ONCE IN THE POPUP (<4096) xa00 and up seems to be free
+  (crystalc-middle #x3001)
+  (crystalc-river #x3002)
+  (crystalc-ship #x3003)
+  (crystalc-shrooms #x3004)
+  (crystalc-buzzer #x3005)
+  (crystalc-hidden #x3006)
+  (crystalc-gondola-need-cells #xa28) ;; hint popup
+
+  (crescent-level #xa10) ;; level name
+  (crescent-observatory #x3011)
+  (crescent-robot #x3012)
+  (crescent-lava #x3013)
+  (crescent-zoomer #x3014)
+  (crescent-orange-ring #x3015)
+  (crescent-buzzer #x3016)
+
+  (energy-bay-level #xa20) ;; level name
+  (energy-bay-turbine1 #x3021)
+  (energy-bay-turbine2 #x3022)
+  (energy-bay-turbine3 #x3023)
+  (energy-bay-turbine4 #x3024)
+  (energy-bay-kill #x3025)
+  (energy-bay-green-ring #x3026)
+  (energy-bay-buzzer #x3027)
+
+  ;; TFL Hint IDs so they only play once. Use up from #xb00
+  (crystalc-tfl-hint-01-daxPortal #xb00)
+  (crystalc-tfl-hint-02-daxShip #xb01)
+  (crystalc-tfl-hint-03-daxSeeGreen #xb02)
+  (crystalc-tfl-hint-04-daxUseGreen #xb03)
+  (crystalc-tfl-hint-05-daxSeeGondola #xb04)
+  (crystalc-tfl-hint-06-daxUseGondola #xb05)
+  (crescent-tfl-hint-01-daxStart #xb06)
+  (crescent-tfl-hint-02-daxHouse #xb07)
+  (crescent-tfl-hint-03-daxPlushie #xb08)
+  (crescent-tfl-hint-04-daxPad #xb09)
+  (crescent-tfl-hint-05-daxScream #xb0a)
+  (crescent-tfl-hint-06-daxRobot #xb0b)
+  (crescent-tfl-hint-07-SamosConnect #xb0c)
+  (crescent-tfl-hint-08-SamosInfused #xb0d)
+  (crescent-tfl-hint-09-KeiraZoomer #xb0e)
+  (crescent-tfl-hint-12-KeiraControl #xb0f)
+  (crescent-tfl-hint-13-KeiraCable #xb10)
+  (energy-bay-tfl-hint-01-daxTurbine1 #xb11)
+  (energy-bay-tfl-hint-02-daxClosed #xb12)
+  (energy-bay-tfl-hint-03-daxTurbine4 #xb13)
+  (energy-bay-tfl-hint-04-SamosCrystal #xb14)
+
+  (unlocked-warp-gates #x1703)
+  (pseudo-savestates #x1704)
+  (closest-orb #x1705)
+  (slip-assist #x1706)
+  (slip-normal #x1707)
+  (slip-no-slip #x1708)
+  (slip-spiderman #x1709)
+
+  ;; mod text mod-base-change
+  (pad-triangle #x2000)
+  (pad-circle #x2001)
+  (pad-x #x2002)
+  (pad-square #x2003)
+
+  (save-and-load-game #x3000)
   ;; GAME-TEXT-ID ENUM ENDS
   )
 

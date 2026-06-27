@@ -1,0 +1,229 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-ctyinda",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O22",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o22", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-ctyinda/orbs-ctyinda.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 122000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": ["jinx-highres-ag"],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [  756.6954, 9.8674, 1059.2314], // in back corner almost vanilla, in "room" before port hallway
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  756.6954, 9.8674, 1059.2314, 10],
+      "lump": {
+        "name":"ctyinda-skill-01",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  759.1220, 26.6370, 1066.1246], // up on pipe in corner, "room" before port hallway, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  759.1220, 26.6370, 1066.1246, 10],
+      "lump": {
+        "name":"ctyinda-skill-02",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 758.5156, 43.1890, 1068.6011], // way up on pipe in corner in "room" before port hallway, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 758.5156, 43.1890, 1068.6011, 10],
+      "lump": {
+        "name":"ctyinda-skill-03"
+      }
+    },
+    {
+      "trans": [  740.2265, 9.4561, 1169.3504], // on small broken ledge in hallway to port
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  740.2265, 9.4561, 1169.3504, 10],
+      "lump": {
+        "name":"ctyinda-skill-04",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  748.7360, 27.1057, 1168.8527], // on end of pipe in corner in hallway to port, abah from ^ (or maybe zoomer jump)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  748.7360, 27.1057, 1168.8527, 10],
+      "lump": {
+        "name":"ctyinda-skill-05",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  734.7328, 42.5794, 1162.2843], // up on wall above broken pipes in hallway to port, hint for getting over invis wall to crate-1138, abah from^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  734.7328, 42.5794, 1162.2843, 10],
+      "lump": {
+        "name":"ctyinda-skill-06"
+      }
+    },
+    {
+      "trans": [  720.4904, 28.4171, 1163.0517], // up on pipe in corner in hallway to port, zoomer jump
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  720.4904, 28.4171, 1163.0517, 10],
+      "lump": {
+        "name":"ctyinda-skill-07"
+      }
+    },
+    {
+      "trans": [   1040.2500, 16.6798, 904.7310], // in light / support for walkway
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   1040.2500, 16.6798, 904.7310, 10],
+      "lump": {
+        "name":"ctyinda-skill-08"
+      }
+    },
+    {
+      "trans": [ 854.3255, 45.1176, 797.5418], // small gap between walls/pipes overhead hallway to/from ctyindb, use jetboard launcher
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 854.3255, 45.1176, 797.5418, 10],
+      "lump": {
+        "name": "ctyinda-skill-09"
+      }
+    },
+    {
+      "trans": [  1017.7474, 8.7706, 960.8829], // crevice between pipes and wall not far from sewers, have to punch I think
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1017.7474, 8.7706, 960.8829, 10],
+      "lump": {
+        "name": "ctyinda-skill-10"
+      }
+    },
+
+    {
+      "trans": [ 1124.48,  57.9,  1092.02 ], // small standpoint on walls around vinroom, left side
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1124.48,  57.9,  1092.02 , 10],
+      "lump": {
+        "name": "ctyinda-skill-hover-01",
+        "pickup-amount": ["float", 3.0] // hover
+      }
+    },
+    {
+      "trans": [ 1096.2099, 57.9, 1134.6000], // small standpoint on walls around vinroom, right side
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1096.2099, 57.9, 1134.6000, 10],
+      "lump": {
+        "name": "ctyinda-skill-hover-02",
+        "pickup-amount": ["float", 3.0] // hover
+      }
+    },
+
+    
+    {
+      "trans": [ 1114.8276, 7.6499, 963.5968], // samos by white barrier
+      "etype": "jinx-npc",
+      "game_task": 0, 
+      "quat" : [  0.0000, 0.8488, 0.0000, 0.5285],
+      "bsphere": [ 1114.8276, 7.6499, 963.5968 , 6.928242206573486 ],
+      "lump": {
+        "name": "ctyinda-jinx-npc",
+        "task-actor": ["int32", 66]
+      }
+    },
+    {
+      "trans": [ 1097.15,  12.13,  969.74 ], // 
+      "etype": "fuel-cell",
+      "game_task": 0, 
+      "quat" : [ 0.0, 0.21679742634296417, 0.0, 0.9762166142463684],
+      "bsphere": [ 1097.15,  12.13,  969.74 , 6.928242206573486 ],
+      "lump": {
+        "name": "ctyinda-fuel-cell",
+        "level-idx": ["int32", 24],
+        "alt-actor": "ctyinda-jinx-npc",
+        "vag": "jinx127"
+      }
+    }//,
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

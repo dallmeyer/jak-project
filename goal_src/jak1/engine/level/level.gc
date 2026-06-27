@@ -708,9 +708,101 @@
 
 ;; method 27 level
 
+(defun vanilla-level? ((lvl-name symbol))
+  (case lvl-name :comp name=
+    (('intro 'title 'demo
+      'training 'village1 'beach 'jungle 'jungleb 'misty 'firecanyon
+      'village2 'sunken 'sunkenb 'rolling 'swamp 'ogre
+      'village3 'snow 'maincave 'darkcave 'robocave 'lavatube
+      'citadel 'finalboss)
+      (return #t)
+      )
+    )
+  ;; if we get here, it's some custom level
+  #f
+  )
+
 ;; method 10 level
-(defmethod is-object-visible? ((this level) (arg0 int))
+(defmethod is-object-visible? ((this level) (arg0 int) (actor entity))
   "Is arg0 visible? Note that this will return #f if the visibility data is not loaded."
+  ;; og:mod-base anything thats not a vanilla level -> always show actors
+  (if (not (vanilla-level? (-> this name)))
+    (return #t))
+
+  ;; hack to force visibility of stuff moved (rather than update visibility data)
+  (case (-> (the entity-actor actor) etype symbol)
+    (('money 'eco
+            'crate
+            'crate-buzzer
+            'fisher
+            'fuel-cell
+            'orb-cache-top
+            'yakow
+            'plat
+            'plat-flip
+            'eggtop
+            'logtrap
+            'launcher
+            'racer
+            'spike
+            'balloon
+            'crate-darkeco-cluster
+            'aphid
+            'pelican
+            'ventblue
+            'harvester
+            'flutflutegg
+            'grottopole
+            'bird-lady-beach
+            'ecoventrock
+            'part-tracker
+            'citb-disc-a
+            'citb-disc-b
+            'citb-disc-c
+            'citb-disc-d
+            'citb-launcher
+            'scarecrow-a
+            'scarecrow-b
+            'junglesnake
+            'darkvine
+            'ecovent
+            'mistycannon
+            'babak-with-cannon
+            'periscope
+            'springbox
+            'teetertotter
+            'plant-boss
+            'warrior
+            'gambler
+            'pontoonten
+            'pontoonfive
+            'blue-eco-charger
+            'swamp-spike
+            'dark-crystal
+            'swamp-tetherrock
+            'swamp-rat-nest
+            'swamp-rock
+            'flutflut
+            'tar-plat
+            'balance-plat
+            'race-ring
+            'snow-bunny
+            'babak
+            'shortcut-boulder
+            'tntbarrel
+            'plunger-lurker
+            'snow-bumper
+            'ram
+            'snow-log-button
+            'snow-log
+            'snow-eggtop
+            'snow-switch
+            'snow-button
+            'flutflut-plat-med
+            'flutflut-plat-large
+            'flutflut-plat-small)
+     (return #t)))
+
   ;; og:preserve-this pc port added option to show every actor regardless
   (with-pc
     (if (not (-> *pc-settings* ps2-actor-vis?)) (return #t)))
@@ -975,6 +1067,8 @@
   (set! *print-login* #f)
   0)
 
+(define-extern *debug-continue-point* string)
+
 (defun play ((use-vis symbol) (init-game symbol))
   "The entry point to the actual game! This allocates the level heaps, loads some data, sets some default parameters and sets the startup level."
   ;; temp
@@ -982,9 +1076,13 @@
   (format 0 "(play :use-vis ~A :init-game ~A) has been called!~%" use-vis init-game)
   (format 0 "*kernel-boot-message*: ~A~%" *kernel-boot-message*)
   ;;(kernel-shutdown)
-  (let ((startup-level (case *kernel-boot-message*
-                         (('play) (if *debug-segment* 'village1 'title))
-                         (else 'demo))))
+  ;; og:mod-base use custom continue point
+  (let* ((debug-cont (if (and *debug-segment* (nonzero? *debug-continue-point*)) (get-continue-by-name *game-info* *debug-continue-point*)))
+         (startup-level (if debug-cont
+                          (-> debug-cont level)
+                          (case *kernel-boot-message*
+                            (('play) (if *debug-segment* 'village1 'title))
+                            (else 'demo)))))
     (stop 'play)
     (set! (-> *level* vis?) use-vis)
     (set! (-> *level* want-level) #f)
@@ -1016,7 +1114,11 @@
   (on #t)
   (load-dbg "Display started: ~A~%" *dproc*)
   (when init-game
-    (initialize! *game-info* 'game (the-as game-save #f) (the-as string #f)))
+    ;; og:mod-base use custom continue point
+    (initialize! *game-info*
+                 'game
+                 (the-as game-save #f)
+                 (if (and *debug-segment* (nonzero? *debug-continue-point*)) *debug-continue-point* (the string #f))))
   0)
 
 (defun update-sound-banks ()
@@ -1033,7 +1135,8 @@
                 ((or (= gp-0 t0-0) (= s5-0 t0-0) (-> *setting-control* current movie)))
                 ((not gp-0) (set! gp-0 t0-0))
                 ((not s5-0) (set! s5-0 t0-0))
-                (else (format 0 "ERROR: Soundbanks ~A, ~A and ~A all required~%" gp-0 s5-0 t0-0)))
+                ;; (else (format 0 "ERROR: Soundbanks ~A, ~A and ~A all required~%" gp-0 s5-0 t0-0))
+                )
               (set! s3-0 (cdr s3-0))
               (set! t0-0 (the-as symbol (car s3-0))))))))
     (when (and gp-0 (!= gp-0 *sound-bank-1*) (!= gp-0 *sound-bank-2*))
@@ -1269,8 +1372,8 @@
         (when (and (= (-> s4-4 nickname) (-> *load-state* vis-nick)) ;; vis for A
                    (not (-> s4-4 inside-boxes?)) ;; but not in A
                    )
-          (if (and (= *cheat-mode* 'debug) (-> s4-4 other inside-boxes?))
-            (format *stdcon* "~3LForcing outside of ~A [bad split boxes]~%~0L" (-> s4-4 other name)))
+          ;; (if (and (= *cheat-mode* 'debug) (-> s4-4 other inside-boxes?))
+          ;;   (format *stdcon* "~3LForcing outside of ~A [bad split boxes]~%~0L" (-> s4-4 other name)))
           (set! (-> s4-4 other inside-boxes?) #f)))))
   ;; if we are outside of the boxes, we consider ourselves "outside of bsp"
   ;; if we are outside of both levels boxes, then we don't really know what to do

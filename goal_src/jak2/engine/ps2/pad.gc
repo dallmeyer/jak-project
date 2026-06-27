@@ -745,7 +745,7 @@ The cpad-set-buzz! function can be used for vibration.
 (define *mouse* (new 'global 'mouse-info))
 (#when PC_PORT
 ;; added so we can hide the mouse
-(define *disable-mouse* #f)
+(define *disable-mouse* #t)
 )
 
 ;; WARN: Return type mismatch mouse-info vs none.

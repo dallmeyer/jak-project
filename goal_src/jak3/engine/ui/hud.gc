@@ -745,6 +745,27 @@
   (none)
   )
 
+(define-extern *show-mini-bigmap* symbol)
+(define-extern *mini-bigmap-toggle-time* time-frame)
+
+(defun have-minimap? ()
+  (let ((map-gui (lookup-gui-connection *gui-control* (the process #f) (gui-channel hud-lower-right) "hud-map" (new 'static 'sound-id))))
+    (and (logtest? (minimap-flag minimap) (-> *setting-control* user-current minimap))
+         (!= map-gui #f)
+         (!= (gui-status pending) (get-status *gui-control* (-> map-gui id)))
+         (!= (gui-action hidden) (-> map-gui action)))
+    )
+  )
+
+(defun allow-mini-bigmap? ()
+  (and *target*
+      ;;  (-> *pc-settings* baby-mode?)
+       (pause-allowed?)
+       (not (hud-hidden?))
+       (not (have-minimap?))
+       )
+  )
+
 (defmethod update-values! ((this hud))
   (with-pp
     (let ((s5-0 #f))
@@ -760,6 +781,10 @@
         (set! v1-0 (or s5-0 v1-0))
         (when v1-0
           (dotimes (s4-0 8)
+            (when (= (-> this type symbol) 'hud-health)
+              ;; skip any tallying for health
+              (set! (-> this values s4-0 current) (-> this values s4-0 target))
+              )
             (cond
               ((and (or (and (logtest? (-> this values s4-0 flags) 1) (< (-> this values s4-0 current) (-> this values s4-0 target)))
                         (and (logtest? (-> this values s4-0 flags) 2) (< (-> this values s4-0 target) (-> this values s4-0 current)))
@@ -808,32 +833,44 @@
             )
           )
         )
-      (if (and (not *progress-process*)
-               (time-elapsed? (-> this last-hide-time) (seconds 0.05))
-               (>= (- (-> *display* base-clock frame-counter) (-> *game-info* letterbox-time)) (seconds 0.1))
-               (>= (- (-> *display* base-clock frame-counter) (-> *game-info* blackout-time)) (seconds 0.1))
-               (or (not *target*) (not (focus-test? *target* grabbed)) (logtest? (-> this flags) (hud-flags show)))
-               (not (logtest? (-> this flags) (hud-flags disable)))
-               (not (or (= *master-mode* 'progress) (= *master-mode* 'menu)))
-               (or s5-0
-                   (cond
-                     (*debug-segment*
-                       (let ((a0-63 (-> *cpad-list* cpads 0)))
-                         (logtest? (logclear (pad-buttons l3) (-> a0-63 button0-abs 0))
-                                   (logior (-> a0-63 button0-abs 2) (-> a0-63 button0-abs 1))
-                                   )
-                         )
-                       )
-                     (else
-                       (cpad-hold? 0 l3)
-                       )
+      (let* ((a0-32 (-> *cpad-list* cpads 0))
+        (l3-released? (logtest? (logclear (pad-buttons l3) (-> a0-32 button0-abs 0))
+                                (logior (-> a0-32 button0-abs 2) (-> a0-32 button0-abs 1))
+                                ))
+            )
+        (when (and (not *progress-process*)
+                  (time-elapsed? (-> this last-hide-time) (seconds 0.05))
+                  (>= (- (-> *display* base-clock frame-counter) (-> *game-info* letterbox-time)) (seconds 0.1))
+                  (>= (- (-> *display* base-clock frame-counter) (-> *game-info* blackout-time)) (seconds 0.1))
+                  (or (not *target*) (not (focus-test? *target* grabbed)) (logtest? (-> this flags) (hud-flags show)))
+                  (not (logtest? (-> this flags) (hud-flags disable)))
+                  (not (or (= *master-mode* 'progress) (= *master-mode* 'menu)))
+                  (or s5-0
+                    (cond
+                      (*debug-segment*
+                        l3-released?
+                        )
+                      (else
+                        (cpad-hold? 0 l3)
+                        )
+                      )
+                    (logtest? (-> this flags) (hud-flags show))
+                    )
+                  (check-ready-and-maybe-show this #t)
+                  (or *show-mini-bigmap* (= *mini-bigmap-toggle-time* #f) (g-time-elapsed? *mini-bigmap-toggle-time* (seconds 0.5)))  ;; give time for progress-minimap to unlink before relink
+                  )
+          (when (and ;; #f ;; disabled for now
+                     (or l3-released? (cpad-hold? 0 l3) (cpad-pressed? 0 l3))
+                     (allow-mini-bigmap?)  ;; not showing hudmap
                      )
-                   (logtest? (-> this flags) (hud-flags show))
-                   )
-               (check-ready-and-maybe-show this #t)
-               )
+            ;; user did this, so show map
+            (dbg-format 0 "user triggered l3, ~D ~D ~D~%" (get-current-time) (-> *bigmap* bigmap-index) (-> *bigmap* load-index))
+            (set! *mini-bigmap-toggle-time* (get-current-time))
+            (true! *show-mini-bigmap*)
+            )
           (go hud-arriving)
           )
+        )
       )
     0
     (none)
@@ -872,6 +909,10 @@
 
 (defmethod hidden? ((this hud))
   (and (-> this next-state) (= (-> this next-state name) 'hud-hidden))
+  )
+
+(defun fully-in? ((this hud))
+  (the-as symbol (and (-> this next-state) (= (-> this next-state name) 'hud-in)))
   )
 
 ;; WARN: Return type mismatch (pointer process) vs (pointer manipy).
@@ -1258,6 +1299,10 @@
   )
 
 (defun hide-hud-quick ((arg0 symbol))
+  (disable-drawing *bigmap*)
+  (dbg-format 0 "disabling drawing 3~%")
+  (set! *mini-bigmap-toggle-time* (get-current-time))
+  (false! *show-mini-bigmap*)
   (when *target*
     (let ((v1-3 (-> *hud-engine* alive-list next0)))
       *hud-engine*
@@ -1338,6 +1383,35 @@
       )
     (else
       (set! gp-0 #t)
+      )
+    )
+  gp-0
+  )
+
+(defun hud-skill-shown? ()
+  (local-vars (gp-0 symbol))
+  (cond
+    (*target*
+      (set! gp-0 #f)
+      (let ((v1-2 (-> *hud-engine* alive-list next0)))
+        *hud-engine*
+        (let ((s5-0 (-> v1-2 next0)))
+          (while (!= v1-2 (-> *hud-engine* alive-list-end))
+            (let ((h (the-as hud (-> (the-as connection v1-2) param1))))
+              (if (and (fully-in? h)
+                       (= (-> h type) hud-skill))
+                (set! gp-0 #t)
+                )
+              )
+            (set! v1-2 s5-0)
+            *hud-engine*
+            (set! s5-0 (-> s5-0 next0))
+            )
+          )
+        )
+      )
+    (else
+      (set! gp-0 #f)
       )
     )
   gp-0

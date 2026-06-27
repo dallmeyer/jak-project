@@ -230,7 +230,7 @@
   "134b": "Swap R1 and R2",
   "134c": "Trigger Effects",
   "134d": "Fix Projectile Focus",
-  "134e": "Eco Grid (Pac-Man) D-Pad Controls",
+  "134e": "Eco Grid (Pac-Man) D-Pad Controls",  
   "134f": "Analog Sensitivity",
   "1350": "None",
   "1351": "Spin",
@@ -260,5 +260,8 @@
   "1369": "Light Regeneration",
   "136a": "Light Flight",
   "136b": "Flash Freeze",
-  "136c": "Light Shield"
+  "136c": "Light Shield",
+
+  "2000": "Press ~Y~22L<~Z~Y~26L;~Z~Y~1L>~Z~Y~23L[~Z~+26H for reward.",
+  "2001": "Orb Counts"
 }

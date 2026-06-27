@@ -24,7 +24,8 @@
     :scale 0.82
     :options (new 'static 'boxed-array :type menu-option
       (new 'static 'menu-main-menu-option :name (text-id progress-bigmap) :next-state 'bigmap)
-      (new 'static 'menu-main-menu-option :name (text-id progress-missions) :next-state 'missions)
+      ;; (new 'static 'menu-main-menu-option :name (text-id progress-missions) :next-state 'missions)
+      (new 'static 'menu-main-menu-option :name (text-id progress-orb-counts) :next-state 'orb-counts)
       (new 'static 'menu-main-menu-option :name (text-id progress-highscores) :next-state 'highscores)
       (new 'static 'menu-main-menu-option :name (text-id progress-inventory) :next-state 'inventory)
       (new 'static 'menu-main-menu-option :name (text-id progress-controls) :next-state 'controls)
@@ -681,6 +682,14 @@
                              :y-space 30
                              :scale 0.82
                              :options (new 'static 'boxed-array :type menu-option (new 'static 'menu-missions-option))
+                             )
+        )
+
+(define *orb-counts-options* (new 'static 'menu-option-list
+                             :y-center #xc6
+                             :y-space 30
+                             :scale 0.82
+                             :options (new 'static 'boxed-array :type menu-option (new 'static 'menu-orb-counts-option))
                              )
         )
 

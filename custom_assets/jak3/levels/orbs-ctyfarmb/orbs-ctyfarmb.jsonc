@@ -1,0 +1,671 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-ctyfarmb",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O96",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o96", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-ctyfarmb/orbs-ctyfarmb.glb",
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 196000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": ["warp-gate-ag"],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [ -283.2207, 9.5143, 1176.3676], // warp gate to mhcitya
+      "etype": "warp-gate",
+      "game_task": 0, 
+      "quat" : [ -0.0012, -0.9309, 0.0006, 0.3651],
+      "bsphere": [ -283.2207, 9.5143, 1176.3676, 10],
+      "lump": {
+        "name":"ctyfarmb-warp-gate-1"
+      }
+    },
+
+    {
+      "trans": [-167.32	,	30.5	,	935.36  ]	,	// #t  atop pipes near north sprinkler	abah from skill-3
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-167.32	,	30.5	,	935.36  , 10],
+      "lump": {
+        "name": "ctyfarmb-skill-1"
+      }
+    },
+    {
+      "trans": [-404.64	,	9.2	,	1155.76 ]	,	// #t  in center pumpkin near port	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-404.64	,	9.2	,	1155.76 , 10],
+      "lump": {
+        "name": "ctyfarmb-skill-2",
+        "alt-actor": "farm-cabbage-42"
+      }
+    },
+    {
+      "trans": [-160.84	,	20.16	,	942.9]	,	// on pipe where north sprinkler connects	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-160.84	,	20.16	,	942.9, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-3",
+        "pickup-amount": ["float", 2.0] // abah hint for skill-1
+      }
+    },
+    {
+      "trans": [-371.36	,	9.6	,	920.16  ]	,	// #t  inside lurker escape pipe	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-371.36	,	9.6	,	920.16  , 10],
+      "lump": {
+        "name": "ctyfarmb-skill-4"
+      }
+    },
+    {
+      "trans": [-82.3	,	12.2	,	1031.47 ]	,	// #t  in crack between rocks by yakows	bazaar side
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-82.3	,	12.2	,	1031.47 , 10],
+      "lump": {
+        "name": "ctyfarmb-skill-5"
+      }
+    },
+    {
+      "trans": [-36.61	,	25.2	,	938.81  ]	,	// #t ; in tree behind rock near bazaar	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-36.61	,	25.2	,	938.81  , 10],
+      "lump": {
+        "name": "ctyfarmb-skill-6"
+      }
+    },
+    {
+      "trans": [-418.72	,	12.9	,	978.06  ]	,	// in crevice of rocks	west yakows
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-418.72	,	12.9	,	978.06  , 10],
+      "lump": {
+        "name": "ctyfarmb-skill-7"
+      }
+    },
+    {
+      "trans": [-444.99	,	21.12	,	907.73]	,	// between wall and pipes in corner	west yakows
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [444.99	,	21.12	,	907.73, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-8"
+      }
+    },
+    {
+      "trans": [-296.6	,	19.28	,	1198.0]	,	// between wall and pipes in corner south middle (above real fake wall)	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [296.6	,	19.28	,	1198.0, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-9"
+      }
+    },
+    // {
+    //   "trans": [-444.32	,	12.03	,	1195.09]	,	// crevice in outer wall as it connects to ctyport	
+    //   "etype": "skill",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [444.32	,	12.03	,	1195.09, 10],
+    //   "lump": {
+    //     "name": "ctyfarmb-skill-10",
+    //     "pickup-amount": ["float", 2.0] // abah hint
+    //   }
+    // },
+    // {
+    //   "trans": [-444.33	,	31.63	,	1194.63]	,	// up towards top of wall in corner	abah from ^
+    //   "etype": "skill",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [444.33	,	31.63	,	1194.63, 10],
+    //   "lump": {
+    //     "name": "ctyfarmb-skill-11"
+    //   }
+    // },
+    {
+      "trans": [-424.0513	,	10.62	,	1098.8139]	,	// "inside" chilirots near ctyport	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [424.0513	,	10.62	,	1098.8139, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-12",
+        "alt-actor": "farm-chilirots-59"
+      }
+    },
+    {
+      "trans": [-401.8748	,	10.85	,	1061.4674]	,	// "inside" marrow near ctyport	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [401.8748	,	10.85	,	1061.4674, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-13",
+        "alt-actor": "farm-marrow-122"
+      }
+    },
+    {
+      "trans": [-447.9	,	12.15	,	1006.8]	,	// between wall and end of yakow fence	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [447.9	,	12.15	,	1006.8, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-14"
+      }
+    },
+    {
+      "trans": [-333.1745	,	10.51	,	954.2900]	,	// "inside" marrow near yakows	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [333.1745	,	10.51	,	954.2900, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-15",
+        "alt-actor": "farm-marrow-37"
+      }
+    },
+    {
+      "trans": [-257.06	,	11.5	,	919.11]	,	// "inside" chilirots past yakows	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [257.06	,	11.5	,	919.11, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-16",
+        "alt-actor": "farm-chilirots-24"
+      }
+    },
+    {
+      "trans": [-166.42	,	20.55	,	906.12]	,	// up/behind pipes on wall in corner near north sprinkler	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [166.42	,	20.55	,	906.12, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-17"
+      }
+    },
+    {
+      "trans": [-176.67	,	21.81	,	985.22]	,	// up in tree in middle part	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [176.67	,	21.81	,	985.22, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-18"
+      }
+    },
+    {
+      "trans": [-286.8292	,	8.91	,	1065.4185]	,	// "inside" beetree in middle part	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [286.8292	,	8.91	,	1065.4185, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-19",
+        "alt-actor": "farm-beetree-46"
+      }
+    },
+    {
+      "trans": [-303.5798	,	8.83	,	1091.4031]	,	// "inside" small cabbage in middle part	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [303.5798	,	8.83	,	1091.4031, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-20",
+        "alt-actor": "farm-small-cabbage-29"
+      }
+    },
+    {
+      "trans": [-248.5606	,	9.15	,	1169.2907]	,	// "inside" small cabbage in middle part	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [248.5606	,	9.15	,	1169.2907, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-21",
+        "alt-actor": "farm-cabbage-19"
+      }
+    },
+    {
+      "trans": [-81.2968	,	10.76	,	1151.7114]	,	// "inside" chilirots in middle	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [81.2968	,	10.76	,	1151.7114, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-22",
+        "alt-actor": "farm-chilirots-39"
+      }
+    },
+    // {
+    //   "trans": [-115.0306	,	11.4	,	1035.8944]	,	// special code to follow yakow-8 (hidden) until its attacked	
+    //   "etype": "skill",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [115.0306	,	11.4	,	1035.8944, 10],
+    //   "lump": {
+    //     "name": "ctyfarmb-skill-23",
+    //     "alt-actor": "yakow-8"
+    //   }
+    // },
+    {
+      "trans": [-137.5865	,	12.1	,	1175.6287]	,	// "inside" marrow in middle	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [137.5865	,	12.1	,	1175.6287, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-24",
+        "alt-actor": "farm-marrow-90"
+      }
+    },
+    {
+      "trans": [-179.52	,	17.77	,	1105.12]	,	// behind pipe on inside wall	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-179.52	,	17.77	,	1105.12, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-25"
+      }
+    },
+    {
+      "trans": [-341.57	,	23.51	,	1186.22]	,	// behind well on inside wall near ctyport	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-341.57	,	23.51	,	1186.22, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-26"
+      }
+    },
+    {
+      "trans": [-154.41	,	17.15	,	905.08]	,	// behind pipes right near ctymarka	
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [154.41	,	17.15	,	905.08, 10],
+      "lump": {
+        "name": "ctyfarmb-skill-27",
+        "bob-scale": ["float", 0.4] // less bob
+      }
+    },
+
+    {
+      "trans": [ -25.20,  14.75,  927.03 ], // above yakow
+      "etype": "fuel-cell",
+      "game_task": 0, 
+      "quat" : [ 0.0, 0.21679742634296417, 0.0, 0.9762166142463684],
+      "bsphere": [ -25.20,  14.75,  927.03 , 6.928242206573486 ],
+      "lump": {
+        "name": "ctyfarmb-fuel-cell",
+        "level-idx": ["int32", 18],
+        "alt-actor": "yakow-12"
+      }
+    }//,
+
+    // GHOSTS
+    // {
+    //   "trans": [ -167.32,  30.5,    935.36  ], // #t  atop pipes near north sprinkler, abah from skill-3
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-167.32,  30.5,    935.36, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-1",
+    //     "alt-actor":"ctyfarmb-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [ -404.64,  9.2,     1155.76 ], // #t  in center pumpkin near port
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-404.64,  9.2,     1155.7, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-2",
+    //     "alt-actor":"ctyfarmb-skill-2"
+    //     // "alt-actor": "farm-cabbage-42"
+    //   }
+    // },
+    // {
+    //   "trans": [  -160.84,  20.16, 942.9], // on pipe where north sprinkler connects
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [ -160.84,  20.16, 942.9, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-3",
+    //     "alt-actor":"ctyfarmb-skill-3",
+    //     "pickup-amount": ["float", 2.0] // abah hint for skill-1
+    //   }
+    // },
+    // {
+    //   "trans": [ -371.36,  9.6,     920.16  ], // #t  inside lurker escape pipe
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-371.36,  9.6,     920.16, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-4",
+    //     "alt-actor":"ctyfarmb-skill-4"
+    //   }
+    // },
+    // {
+    //   "trans": [ -82.3,    12.2,    1031.47 ], // #t  in crack between rocks by yakows, bazaar side
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-82.3,    12.2,    1031.4, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-5",
+    //     "alt-actor":"ctyfarmb-skill-5"
+    //   }
+    // },
+    // {
+    //   "trans": [ -36.61,   25.2,    938.81  ], // #t ; in tree behind rock near bazaar
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-36.61,   25.2,    938.81, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-6",
+    //     "alt-actor":"ctyfarmb-skill-6"
+    //   }
+    // },
+    // {
+    //   "trans": [ -418.72 , 12.9, 978.06  ], // in crevice of rocks, west yakows
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-418.72 , 12.9, 978.06, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-7",
+    //     "alt-actor":"ctyfarmb-skill-7"
+    //   }
+    // },
+    // {
+    //   "trans": [-444.99,  21.12, 907.73], // between wall and pipes in corner, west yakows
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-444.99,  21.12, 907.73, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-8",
+    //     "alt-actor":"ctyfarmb-skill-8"
+    //   }
+    // },
+    // {
+    //   "trans": [-296.6,  19.28, 1198.0], // between wall and pipes in corner south middle (above real fake wall)
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-296.6,  19.28, 1198.0, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-9",
+    //     "alt-actor":"ctyfarmb-skill-9"
+    //   }
+    // },
+    // {
+    //   "trans": [-444.32,  12.03, 1195.09], // crevice in outer wall as it connects to ctyport
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-444.32,  12.03, 1195.09, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-10",
+    //     "alt-actor":"ctyfarmb-skill-10",
+    //     "pickup-amount": ["float", 2.0] // abah hint
+    //   }
+    // },
+    // {
+    //   "trans": [-444.33,  31.63, 1194.63], // up towards top of wall in corner, abah from ^
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-444.33,  31.63, 1194.63, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-11",
+    //     "alt-actor":"ctyfarmb-skill-11"
+    //   }
+    // },
+    // {
+    //   "trans": [-424.0513, 10.62, 1098.8139], // "inside" chilirots near ctyport
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-424.0513, 10.62, 1098.8139, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-12",
+    //     "alt-actor":"ctyfarmb-skill-12"
+    //     // "alt-actor": "farm-chilirots-59"
+    //   }
+    // },
+    // {
+    //   "trans": [-401.8748, 10.85, 1061.4674], // "inside" marrow near ctyport
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-401.8748, 10.85, 1061.4674, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-13",
+    //     "alt-actor":"ctyfarmb-skill-13"
+    //     // "alt-actor": "farm-marrow-122"
+    //   }
+    // },
+    // {
+    //   "trans": [-447.9,  12.15, 1006.8], // between wall and end of yakow fence
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-447.9,  12.15, 1006.8, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-14",
+    //     "alt-actor":"ctyfarmb-skill-14"
+    //   }
+    // },
+    // {
+    //   "trans": [-333.1745, 10.51, 954.2900], // "inside" marrow near yakows
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-333.1745, 10.51, 954.2900, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-15",
+    //     "alt-actor":"ctyfarmb-skill-15"
+    //     // "alt-actor": "farm-marrow-37"
+    //   }
+    // },
+    // {
+    //   "trans": [-257.06,  11.50, 919.11], // "inside" chilirots past yakows
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-257.06,  11.50, 919.11, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-16",
+    //     "alt-actor":"ctyfarmb-skill-16"
+    //     // "alt-actor": "farm-chilirots-24"
+    //   }
+    // },
+    // {
+    //   "trans": [-166.42,  20.55, 906.12], // up/behind pipes on wall in corner near north sprinkler
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-166.42,  20.55, 906.12, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-17",
+    //     "alt-actor":"ctyfarmb-skill-17"
+    //   }
+    // },
+    // {
+    //   "trans": [-176.67,  21.81, 985.22], // up in tree in middle part
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-176.67,  21.81, 985.22, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-18",
+    //     "alt-actor":"ctyfarmb-skill-18"
+    //   }
+    // },
+    // {
+    //   "trans": [-286.8292, 8.91, 1065.4185], // "inside" beetree in middle part
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-286.8292, 8.91, 1065.4185, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-19",
+    //     "alt-actor":"ctyfarmb-skill-19"
+    //     // "alt-actor": "farm-beetree-46"
+    //   }
+    // },
+    // {
+    //   "trans": [-303.5798, 8.83, 1091.4031], // "inside" small cabbage in middle part
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-303.5798, 8.83, 1091.4031, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-20",
+    //     "alt-actor":"ctyfarmb-skill-20"
+    //     // "alt-actor": "farm-small-cabbage-29"
+    //   }
+    // },
+    // {
+    //   "trans": [-248.5606, 9.15, 1169.2907], // "inside" small cabbage in middle part
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-248.5606, 9.15, 1169.2907, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-21",
+    //     "alt-actor":"ctyfarmb-skill-21"
+    //     // "alt-actor": "farm-cabbage-19"
+    //   }
+    // },
+    // {
+    //   "trans": [-81.2968, 10.76, 1151.7114], // "inside" chilirots in middle
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-81.2968, 10.76, 1151.7114, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-22",
+    //     "alt-actor":"ctyfarmb-skill-22"
+    //     // "alt-actor": "farm-chilirots-39"
+    //   }
+    // },
+    // {
+    //   "trans": [-115.0306, 11.4, 1035.8944], // special code to follow yakow-8 (hidden) until its attacked
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-115.0306, 11.4, 1035.8944, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-23",
+    //     "alt-actor":"ctyfarmb-skill-23"
+    //     // "alt-actor": "yakow-8"
+    //   }
+    // },
+    // {
+    //   "trans": [-137.5865, 12.1, 1175.6287], // "inside" marrow in middle
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-137.5865, 12.1, 1175.6287, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-24",
+    //     "alt-actor":"ctyfarmb-skill-24"
+    //     // "alt-actor": "farm-marrow-90"
+    //   }
+    // },
+    // {
+    //   "trans": [ -179.52,  17.77, 1105.12], // behind pipe on inside wall
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [ -179.52,  17.77, 1105.12, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-25",
+    //     "alt-actor":"ctyfarmb-skill-25"
+    //   }
+    // },
+    // {
+    //   "trans": [ -341.57,  23.51, 1186.22], // behind well on inside wall near ctyport
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-341.57,  23.51, 1186.22, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-26",
+    //     "alt-actor":"ctyfarmb-skill-26"
+    //   }
+    // },
+    // {
+    //   "trans": [-154.41,  17.15, 905.08], // behind pipes right near ctymarka
+    //   "etype":"skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [-154.41,  17.15, 905.08, 10],
+    //   "lump": {
+    //     "name":"ctyfarmb-skill-ghost-27",
+    //     "alt-actor":"ctyfarmb-skill-27",
+    //     "bob-scale": ["float", 0.4] // less bob
+    //   }
+    // }
+  ]
+}

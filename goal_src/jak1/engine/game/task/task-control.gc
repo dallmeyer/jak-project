@@ -4963,6 +4963,853 @@
                               :flags (task-flags has-entity)
                               :condition
                               (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               ;; the task controls for our custom level tasks.
+               ;; I'm not very sure how this array in general works,
+               ;; but adding a dummy task here is needed to make the rest of our custom tasks work
+               (new 'static
+                    'task-control ;;DUMMY TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task dummy)
+                              :status (task-status need-hint)
+                              :flags (task-flags closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task dummy)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task dummy)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task dummy)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               
+               ;; CRYSTAL CAVE TASKS
+               (new 'static
+                    'task-control ;;crystalc-middle TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-middle)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-middle)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-middle)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-middle)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;crystalc-river TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-river)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-river)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-river)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-river)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;crystalc-ship TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-ship)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-ship)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-ship)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-ship)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;crystalc-shrooms TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-shrooms)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-shrooms)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-shrooms)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-shrooms)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;crystalc-buzzer TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-buzzer)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-buzzer)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-buzzer)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-buzzer)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               ;; CRESCENT TOP TASKS
+               (new 'static
+                    'task-control ;;crescent-observatory TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-observatory)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-observatory)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-observatory)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-observatory)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;crescent-robot TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-robot)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-robot)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-robot)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-robot)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;crescent-lava TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-lava)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-lava)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-lava)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-lava)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;crescent-zoomer TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-zoomer)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-zoomer)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-zoomer)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-zoomer)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;crescent-orange-ring TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-orange-ring)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-orange-ring)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-orange-ring)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-orange-ring)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;crescent-buzzer TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-buzzer)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-buzzer)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-buzzer)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crescent-buzzer)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               ;; ENERGY BAY TASKS
+               (new 'static
+                    'task-control ;;energy-bay-turbine1 TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine1)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine1)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine1)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine1)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;energy-bay-turbine2 TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine2)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine2)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine2)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine2)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;energy-bay-turbine3 TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine3)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine3)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine3)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine3)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;energy-bay-turbine4 TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine4)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine4)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine4)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-turbine4)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;energy-bay-kill TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-kill)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-kill)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-kill)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-kill)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;energy-bay-green-ring TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-green-ring)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-green-ring)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-green-ring)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-green-ring)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;energy-bay-buzzer TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-buzzer)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-buzzer)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-buzzer)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task energy-bay-buzzer)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;crystalc-hidden TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-hidden)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-hidden)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-hidden)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-hidden)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))))
+               (new 'static
+                    'task-control ;;crystalc-gondola TASK
+                    :current-stage -1
+                    :stage
+                    (new 'static
+                         'boxed-array
+                         :type
+                         task-cstage
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-gondola)
+                              :status (task-status need-hint)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-gondola)
+                              :status (task-status need-introduction)
+                              :flags (task-flags has-entity closed-by-default)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-gondola)
+                              :status (task-status need-reminder)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
+                                #t))
+                         (new 'static
+                              'task-cstage
+                              :game-task (game-task crystalc-gondola)
+                              :status (task-status need-resolution)
+                              :flags (task-flags has-entity)
+                              :condition
+                              (lambda :behavior process-taskable ((arg0 task-control))
                                 #t)))))))
 
 (defun task-control-reset ((arg0 symbol))
@@ -4977,7 +5824,7 @@
 (defun get-task-control ((arg0 game-task))
   "Get the task control for a given game-task"
   (cond
-    ((or (>= (the-as uint 1) (the-as uint arg0)) (>= (the-as uint arg0) (the-as uint 116)))
+    ((or (>= (the-as uint 1) (the-as uint arg0)) (>= (the-as uint arg0) (the-as uint (game-task max)))) ;;  mod-base-chage changed from hard-coded 116 to (game-task max)
      ;; invalid game task
      (format 0 "ERROR<GMJ>: get-task-control received invalid task ~D/~S~%" arg0 (game-task->string arg0))
      *null-task-control*)

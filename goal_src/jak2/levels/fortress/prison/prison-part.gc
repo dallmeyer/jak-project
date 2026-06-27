@@ -657,13 +657,44 @@
   :id 599
   :flags (unk-4)
   :bounds (static-bspherem 0 0 0 5)
-  :parts ((sp-item 2638 :fade-after (meters 80) :flags (bit6 bit7) :period (seconds 0.667) :length (seconds 0.167))
-    (sp-item 2639 :fade-after (meters 40) :flags (bit6 bit7) :period (seconds 0.135) :length (seconds 0.067) :offset 25)
-    (sp-item 2640 :fade-after (meters 80) :flags (bit6 bit7) :period (seconds 0.667) :length (seconds 0.167) :offset 100)
+  :parts ((sp-item 2638 :fade-after (meters 80) :flags (bit6 bit7) :period (seconds 0.667) :length (seconds 0.167)) ;; red square
+    (sp-item 2639 :fade-after (meters 40) :flags (bit6 bit7) :period (seconds 0.135) :length (seconds 0.067) :offset 25) ;; yellow circle
+    (sp-item 2640 :fade-after (meters 80) :flags (bit6 bit7) :period (seconds 0.667) :length (seconds 0.167) :offset 100) ;; blue square
     )
   )
 
-(defpart 2638
+(defpartgroup group-prison-console-small-door-skill
+  :id 1296
+  :flags (unk-4)
+  :bounds (static-bspherem 0 0 0 5)
+  :parts ((sp-item 2638 :fade-after (meters 80) :flags (bit6 bit7) :period (seconds 0.667) :length (seconds 0.167)) ;; red square
+    (sp-item 5509 :fade-after (meters 40) :flags (bit6 bit7) :period (seconds 0.135) :length (seconds 5.067) :offset 25) ;; green circle
+    (sp-item 2640 :fade-after (meters 80) :flags (bit6 bit7) :period (seconds 0.667) :length (seconds 0.167) :offset 100) ;; blue square
+    )
+  )
+
+(defpart 5509 ;; green circle for skill cell hint
+  :init-specs ((:texture (new 'static 'texture-id :index #xca :page #xc))
+    (:num 1.0)
+    (:x (meters 0))
+    (:y (meters -0.3))
+    (:z (meters 0.2))
+    (:scale-x (meters 0.6) (meters 0.1))
+    (:rot-x (degrees 1.125))
+    (:scale-y :copy scale-x)
+    (:r 0.0)
+    (:g 255.0)
+    (:b 0.0)
+    (:a 30.0 4.0)
+    (:omega (degrees 2265.75))
+    (:timer (seconds 0.017))
+    (:flags (sp-cpuinfo-flag-2 sp-cpuinfo-flag-3 glow))
+    (:userdata 1024.0)
+    (:rotate-y (degrees 0))
+    )
+  )
+
+(defpart 2638 ;; red square
   :init-specs ((:texture (glow effects))
     (:num 1.0)
     (:x (meters 0))
@@ -684,7 +715,7 @@
     )
   )
 
-(defpart 2639
+(defpart 2639 ;; yellow circle
   :init-specs ((:texture (glow-soft effects))
     (:num 1.0)
     (:x (meters 0))
@@ -705,7 +736,7 @@
     )
   )
 
-(defpart 2640
+(defpart 2640 ;; blue square
   :init-specs ((:texture (glow effects))
     (:num 1.0)
     (:x (meters 0))

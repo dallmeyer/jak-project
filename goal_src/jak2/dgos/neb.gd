@@ -17,6 +17,7 @@
   "metalkor-setup.o"
   "metalkor-states.o"
   "metalkor-extras.o"
+  "rift-ring-ingame.o"
   "nestb-scenes.o"
   "nestb-part.o"
   "kid-nestb+0-ag.go"

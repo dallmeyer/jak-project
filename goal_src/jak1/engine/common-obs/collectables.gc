@@ -7,6 +7,21 @@
 (require "pc/pckernel.gc")
 (require "engine/common-obs/collectables-part.gc")
 (require "engine/entity/entity.gc")
+
+;; name: collectables.gc
+;; name in dgo: collectables
+;; dgos: GAME, ENGINE
+
+(define-extern runs-on-orb-pickup (function process-tree none))
+
+(define-extern runs-on-fly-pickup (function none))
+
+(define-extern runs-on-cell-pickup (function symbol none))
+
+(define-extern runs-on-eco-pickup (function pickup-type process-tree none))
+
+(define-extern orb-placer-list-maintenace (function symbol none))
+
 (declare-type vent process-drawable)
 
 (declare-type eco eco-collectable)
@@ -237,10 +252,18 @@
             (if (and arg1 (rand-vu-percent? (the-as float 0.25))) (eco-blue-glow (-> s2-0 world-sphere)))
             (let ((f0-0 (vector-vector-distance (-> s2-0 world-sphere) (-> gp-2 world-sphere))))
               (cond
-                ((and arg3 (< f0-0 8192.0)) (return #t))
+                ;; TFL note: increased radius for super eco
+                ((and arg3 (< f0-0 (if (send-event *target* 'query 'powerup (pickup-type super-eco-blue)) (meters 8) (meters 2))))
+                 (return #t))
                 ((begin
                    (set! arg0
-                         (and (or (not arg2) (or (< f0-0 (-> *FACT-bank* suck-suck-dist)) (logtest? (-> self flags) (collectable-flags suck))))
+                         (and (or (not arg2)
+                                  ;; TFL note: increased radius for super eco
+                                  (or (< f0-0
+                                         (if (send-event *target* 'query 'powerup (pickup-type super-eco-blue))
+                                           (* 2.0 (-> *FACT-bank* suck-suck-dist))
+                                           (-> *FACT-bank* suck-suck-dist)))
+                                      (logtest? (-> self flags) (collectable-flags suck))))
                               arg0))
                    arg0)
                  (logior! (-> self flags) (collectable-flags suck))
@@ -485,6 +508,7 @@
             (level-hint-spawn (text-id training-eco-reminder) "sagevb23" (the-as entity #f) *entity-pool* (game-task none)))))
         (((pickup-type eco-green)) (sound-play "g-eco-pickup"))
         (((pickup-type eco-green) (pickup-type eco-pill)) (sound-play "pill-pickup")))
+      (runs-on-eco-pickup (-> self fact pickup-type) (ppointer->process (-> self parent))) ;; trigger hook for mod base
       (if (nonzero? (-> self part)) (kill-and-free-particles (-> self part)))
       (let ((gp-6 (handle->process (-> self pickup-handle))))
         (if (nonzero? (-> self collect-effect))
@@ -673,7 +697,7 @@
 (defmethod deactivate ((this money))
   (when (= (-> this next-state name) 'pickup)
     (if (not (and (-> this entity) (logtest? (-> this entity extra perm status) (entity-perm-status dead))))
-      (format #t "money ~A was killed in pickup~%"))
+      (format #t "~A ~A was killed in pickup ~%    ~m, ~m, ~m ~%" (-> this type) (-> this name) (-> this base x) (-> this base y) (-> this base z)))
     (process-entity-status! this (entity-perm-status dead) #t))
   ((method-of-type eco-collectable deactivate) this)
   (none))
@@ -683,7 +707,9 @@
   :code
     (behavior ()
       (loop
-        (quaternion-rotate-y! (-> self root quat) (-> self root quat) (* 40049.777 (seconds-per-frame)))
+        (if (> (-> self bob-amount) 0.0)
+          ;; don't spin if "frozen"
+          (quaternion-rotate-y! (-> self root quat) (-> self root quat) (* 40049.777 (seconds-per-frame))))
         (let ((f30-0 (-> self bob-amount)))
           (when (< 0.0 f30-0)
             (set! (-> self root trans y)
@@ -717,6 +743,8 @@
           (if (-> *pc-settings* money-starburst?) (spawn (-> self part) (-> self root root-prim world-sphere))))
         (suspend))))
 
+(define-extern orb-placer-list-maintenace (function symbol none))
+
 (defstate pickup (money)
   :virtual #t
   :code
@@ -726,7 +754,14 @@
       (logclear! (-> self mask) (process-mask actor-pause))
       (clear-collide-with-as (-> self root))
       (process-entity-status! self (entity-perm-status dead) #t)
-      (convert-to-hud-object self (the-as hud (ppointer->process (-> *hud-parts* money))))))
+      (format #t "~A ~A was pickup-ed ~%    ~m, ~m, ~m ~%" (-> self type) (-> self name) (-> self base x) (-> self base y) (-> self base z))
+      (runs-on-orb-pickup (ppointer->process (-> self parent))) ;; trigger hook for mod base
+      (convert-to-hud-object self (the-as hud (ppointer->process (-> *hud-parts* money)))))
+  :exit
+    (behavior ()
+      ;; refresh orb-placer list in debug mode
+      (when *debug-segment*
+        (orb-placer-list-maintenace #t))))
 
 (defmethod initialize ((this money))
   (stack-size-set! (-> this main-thread) 192) ;; og:preserve-this hack increased from 128
@@ -1084,6 +1119,7 @@
         (((game-task citadel-sage-green)) (send-event (process-by-name "green-sagecage-1" *active-pool*) 'play-anim))
         (((game-task jungle-eggtop) (game-task snow-eggtop) (game-task snow-ball) (game-task sunken-slide)))
         (else (send-event (ppointer->process (-> *hud-parts* fuel-cell)) 'show)))
+      (runs-on-cell-pickup 'cutscene-end)
       (convert-to-hud-object self (the-as hud (ppointer->process (-> *hud-parts* fuel-cell)))))
   :post
     (behavior ()
@@ -1126,6 +1162,8 @@
   (go (method-of-object this wait))
   (none))
 
+(define-extern mod-override-child-fuel-cell-movie-pos (function vector fuel-cell process none))
+
 (defbehavior fuel-cell-init-by-other fuel-cell ((arg0 vector) (arg1 vector) (arg2 fact-info) (arg3 entity-actor))
   (let ((s3-0 (-> arg2 pickup-type))
         (f30-0 (-> arg2 pickup-spawn-amount)))
@@ -1145,6 +1183,7 @@
   (logclear! (-> self fact options) (fact-options can-collect))
   (update-transforms! (-> self root))
   (let ((gp-1 (res-lump-struct (-> self entity) 'movie-pos structure :time (the-as float -1000000000.0))))
+    (mod-override-child-fuel-cell-movie-pos (the-as vector gp-1) self (-> arg3 extra process))
     (cond
       ((and *debug-segment* (< (-> *fuel-cell-tune-pos* w) 1000000000.0))
        (set! (-> self jump-pos quad) (-> *fuel-cell-tune-pos* quad))
@@ -1199,6 +1238,7 @@
 
 (defbehavior fuel-cell-init-as-clone fuel-cell ((arg0 handle) (arg1 int))
   (initialize self)
+  (mod-override-child-fuel-cell-movie-pos (-> self root trans) self (handle->process arg0))
   (set! (-> self fact pickup-type) (pickup-type fuel-cell))
   (set! (-> self fact pickup-amount) (the float arg1))
   (initialize-params self 0 (the-as float 1024.0))
@@ -1260,6 +1300,7 @@
       (logclear! (-> self mask) (process-mask actor-pause))
       (process-entity-status! self (entity-perm-status complete) #t)
       (sound-play "buzzer-pickup")
+      (runs-on-fly-pickup)
       (case (-> (level-get-target-inside *level*) name)
         (('training)
          (level-hint-spawn (text-id training-buzzer-hint) "asstvb44" (the-as entity #f) *entity-pool* (game-task none)))
@@ -1698,6 +1739,7 @@
                  (set! (-> a1-1 message) 'get-pickup)
                  (set! (-> a1-1 param 0) (the-as uint (-> self fact pickup-type)))
                  (set! (-> a1-1 param 1) (the-as uint (-> self fact pickup-amount)))
+                 (runs-on-eco-pickup (-> self fact pickup-type) self)
                  (and (= (send-event-function proc a1-1) #t)
                       (or (logtest? (-> self fact options) (fact-options powerup)) (send-event proc 'powerup)))))
         (go vent-pickup (process->handle proc)))
@@ -1771,9 +1813,12 @@
   (initialize this arg0 (pickup-type eco-red))
   (none))
 
+(define-extern mod-override-init-position (function process-drawable entity-actor none))
+
 (deftype ventblue (vent) ())
 
 (defmethod init-from-entity! ((this ventblue) (arg0 entity-actor))
+  (mod-override-init-position this arg0)
   (initialize this arg0 (pickup-type eco-blue))
   (none))
 

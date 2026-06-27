@@ -114,6 +114,7 @@
   ;;       (&-> *pc-settings* memcard-volume-dialog)
   ;;       )
   (set! (-> (the-as menu-missions-option (-> *missions-options* options 0)) task-line-index) 0)
+  (set! (-> (the-as menu-orb-counts-option (-> *orb-counts-options* options 0)) task-line-index) 0)
   (set-setting-by-param *setting-control* 'extra-bank '((force2 menu1)) 0 0)
 
   ;; PC STATE BEGIN
@@ -307,6 +308,15 @@
            0
            )
      (set! (-> obj current-options) *missions-options*)
+     )
+    (('orb-counts)
+     (set! (-> *progress-state* missions-total-spacing) 0.0)
+     (set! (-> (the-as menu-orb-counts-option (-> (the-as (array menu-option) (-> *orb-counts-options* options)) 0))
+               task-line-index
+               )
+           0
+           )
+     (set! (-> obj current-options) *orb-counts-options*)
      )
     (('highscores)
      (set! (-> (the-as menu-highscores-option (-> (the-as (array menu-option) (-> *highscores-options* options)) 0))

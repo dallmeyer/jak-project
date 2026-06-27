@@ -631,7 +631,7 @@
     :command-list '((0
         (task-close! "nest-boss-resolution")
         (task-close! "city-win-introduction")
-        (kill "rift-ring-ingame-1")
+        ;; (kill "rift-ring-ingame-1")
         (kill "crate-942")
         (kill "crate-943")
         (kill "crate-944")

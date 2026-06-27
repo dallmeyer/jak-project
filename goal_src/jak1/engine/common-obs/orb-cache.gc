@@ -43,8 +43,10 @@
         (else (plat-event proc argc message block))))
   :trans
     (behavior ()
+      ;; TFL note: added case for super-eco-blue
       (if (and (and *target* (>= 20480.0 (vector-vector-distance (-> self root trans) (-> *target* control trans))))
-               (not (send-event *target* 'query 'powerup (pickup-type eco-blue))))
+               (not (or (send-event *target* 'query 'powerup (pickup-type eco-blue))
+                        (send-event *target* 'query 'powerup (pickup-type super-eco-blue)))))
         (level-hint-spawn (text-id sidekick-hint-orb-cache-top) "sksp0009" (the-as entity #f) *entity-pool* (game-task none))))
   :code
     (behavior ((arg0 symbol))

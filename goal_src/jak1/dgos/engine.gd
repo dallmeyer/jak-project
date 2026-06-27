@@ -207,6 +207,7 @@
   "speedruns.o" ;; added
   "pckernel-common.o" ;; added
   "pckernel.o" ;; added
+  "input-display.o" ;; mod-base-change added
   "mood-tables.o"
   "mood.o"
   "weather-part.o"
@@ -283,6 +284,23 @@
   "pov-camera.o"
   "powerups.o"
   "crates.o"
+  "mods_training.o"
+  "mods_village1.o"
+  "mods_jungle.o"
+  "mods_beach.o"
+  "mods_misty.o"
+  "mods_firecanyon.o"
+  "mods_village2.o"
+  "mods_sunken.o"
+  "mods_swamp.o"
+  "mods_rolling.o"
+  "mods_ogre.o"
+  "mods_village3.o"
+  "mods_snowy.o"
+  "mods_cave.o"
+  "mods_lavatube.o"
+  "mods_citadel.o"
+  "mods.o"
   "hud.o"
   "hud-classes.o"
   "progress-static.o"

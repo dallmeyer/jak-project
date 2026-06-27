@@ -7,9 +7,20 @@
 
 ;; DECOMP BEGINS
 
+(defun lookup-text-credits-helper ((arg0 level) (s5-0 int))
+  (case s5-0
+    ((#xf02 #xf03)  ;; special credit override cases
+      (lookup-text! *common-text* (the-as text-id s5-0) #f)
+      )
+    (else
+      (lookup-text arg0 (the-as text-id s5-0) #t)
+      )
+    )
+  )
+
 (defun draw-end-credits ((arg0 level) (arg1 float))
   (let ((f30-0 (- 416.0 arg1))
-        (s5-0 3839)
+        (s5-0 3839) ;; two entries before "IN MEMORY OF MORGAN", 3840 is empty string
         (f28-0 0.0)
         (s3-0 #t)
         (s4-0
@@ -23,10 +34,10 @@
     (while (or s3-0 (and (< f30-0 (- f28-0)) (< (the-as uint s5-0) (the-as uint 4272))))
       (+! f30-0 f28-0)
       (+! s5-0 1)
-      (let ((a0-6 (lookup-text arg0 (the-as text-id s5-0) #t)))
+      (let ((a0-6 (lookup-text-credits-helper arg0 s5-0)))
         (while (and a0-6 (zero? (-> a0-6 data 0)) (< (the-as uint s5-0) (the-as uint 4272)))
           (+! s5-0 1)
-          (set! a0-6 (lookup-text arg0 (the-as text-id s5-0) #t))
+          (set! a0-6 (lookup-text-credits-helper arg0 s5-0))
           )
         (set! f28-0 (if a0-6
                         (+ 5.0 (print-game-text a0-6 s4-0 #t 35 (bucket-id progress)))
@@ -46,10 +57,10 @@
       (else
         (set! (-> s4-0 origin y) f30-0)
         (while (< (-> s4-0 origin y) 416.0)
-          (let ((a0-15 (lookup-text arg0 (the-as text-id s5-0) #t)))
+          (let ((a0-15 (lookup-text-credits-helper arg0 s5-0)))
             (while (and a0-15 (zero? (-> a0-15 data 0)) (< (the-as uint s5-0) (the-as uint 4272)))
               (+! s5-0 1)
-              (set! a0-15 (lookup-text arg0 (the-as text-id s5-0) #t))
+              (set! a0-15 (lookup-text-credits-helper arg0 s5-0))
               )
             (let ((f0-10 (if a0-15
                              (+ 5.0 (print-game-text a0-15 s4-0 #f 35 (bucket-id progress)))
@@ -117,6 +128,63 @@
       (none)
       )
     :to arg0
+    )
+  0
+  (none)
+  )
+
+(define *credits-rolling?* #f)
+(defun start-credits-yolo ()
+  (true! *credits-rolling?*)
+  (remove-setting! 'movie)
+  (remove-setting! 'music-volume)
+  (persist-with-delay *setting-control* 'music-volume (seconds 3) 'music-volume 'abs 0.001 0)
+  (process-spawn-function
+    process :name "credits-yolo"
+    (lambda :behavior scene-player
+      ()
+      (stack-size-set! (-> self top-thread) 512)
+      (set-setting! 'allow-pause #f 0.0 0)
+      (set-setting! 'allow-progress #f 0.0 0)
+      (set-setting! 'music 'forest 0.0 0)
+      (set-setting! 'sound-mode #f 0.0 1)
+      (apply-settings *setting-control*)
+      (let ((gp-0 (ppointer->process (-> self parent))))
+        (when (type? gp-0 scene-player)
+          (if (lookup-gui-connection
+                *gui-control*
+                (the-as process gp-0)
+                (gui-channel art-load)
+                (the-as string #f)
+                (new 'static 'sound-id)
+                )
+              (sound-group-pause (sound-group dialog))
+              )
+          )
+        )
+      (let ((gp-1 (current-time)))
+        (while (let ((a0-9 (level-get *level* 'outrocst)))
+                 (and a0-9 (not (draw-end-credits a0-9 (* 0.15 (the float (- (current-time) gp-1))))))
+                 )
+          (suspend)
+          )
+        )
+      (let ((gp-2 (ppointer->process (-> self parent))))
+        (when (type? gp-2 scene-player)
+          (if (lookup-gui-connection
+                *gui-control*
+                (the-as process gp-2)
+                (gui-channel art-load)
+                (the-as string #f)
+                (new 'static 'sound-id)
+                )
+              (sound-group-continue (sound-group dialog))
+              )
+          )
+        )
+      (false! *credits-rolling?*)
+      (none)
+      )
     )
   0
   (none)

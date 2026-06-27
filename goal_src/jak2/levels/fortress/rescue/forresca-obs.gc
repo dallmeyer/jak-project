@@ -196,6 +196,16 @@
     )
   )
 
+(defstate idle (elec-lock-gate)
+  :virtual #t
+  :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
+    (case message
+      (('trigger)
+      ;;  (go-virtual active)
+       )
+      )
+    )
+  )
 
 (defstate active (elec-lock-gate)
   :virtual #t
@@ -346,10 +356,10 @@
                                  )
                              )
                 )
-        (if (not (logtest? (-> this actor-group v1-0 data a2-0 actor extra perm status) (entity-perm-status subtask-complete))
-                 )
-            (return #f)
-            )
+        ;; (if (not (logtest? (-> this actor-group v1-0 data a2-0 actor extra perm status) (entity-perm-status subtask-complete))
+        ;;          )
+        ;;     (return #f)
+        ;;     )
         )
       )
     )

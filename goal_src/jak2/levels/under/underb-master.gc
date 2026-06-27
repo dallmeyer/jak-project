@@ -206,7 +206,10 @@
              ((-> *setting-control* user-current pilot-exit)
               (let ((a1-2 *target*))
                 (when (and a1-2 (focus-test? a1-2 mech))
-                  (set-setting! 'pilot-exit #f 0.0 0)
+                  ;; only block mech exit if dont have invuln secret
+                  (when (not (logtest? (-> *game-info* secrets) (game-secrets invulnerable)))
+                    (set-setting! 'pilot-exit #f 0.0 0)
+                    )
                   (apply-settings *setting-control*)
                   #t
                   )

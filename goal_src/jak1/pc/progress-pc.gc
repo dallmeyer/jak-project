@@ -101,6 +101,8 @@
 
 (def-progress-carousell *carousell-frame-rate-100fps* (60fps 100fps))
 
+(def-progress-carousell *carousell-slip-assist* (slip-normal slip-no-slip slip-spiderman))
+
 (define *carousell-frame-rate* *carousell-frame-rate-150fps*)
 
 ;; pad remap stuff
@@ -115,6 +117,13 @@
        'boxed-array
        :type
        game-option
+      ;;  ;; un-comment this section to add save+load option
+      ;;  (new 'static
+      ;;       'game-option
+      ;;       :option-type (game-option-type menu)
+      ;;       :name (text-id save-and-load-game)
+      ;;       :scale #t
+      ;;       :param3 (game-option-menu save-and-load-game))
        (new 'static
             'game-option
             :option-type (game-option-type menu)
@@ -164,6 +173,13 @@
        'boxed-array
        :type
        game-option
+      ;;  ;; un-comment this section to add save+load option
+      ;;  (new 'static
+      ;;       'game-option
+      ;;       :option-type (game-option-type menu)
+      ;;       :name (text-id save-and-load-game)
+      ;;       :scale #t
+      ;;       :param3 (game-option-menu save-and-load-game))
        (new 'static
             'game-option
             :option-type (game-option-type menu)
@@ -219,6 +235,10 @@
        'boxed-array
        :type
        game-option
+       (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id unlocked-warp-gates) :scale #t)
+       (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id pseudo-savestates) :scale #t)
+       (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id closest-orb) :scale #t)
+       (new 'static 'game-option :option-type (game-option-type slip-assist) :name (text-id slip-assist) :scale #t)
        (new 'static
             'game-option
             :option-type (game-option-type menu)
@@ -2064,9 +2084,11 @@
   (set! (-> *options-remap* (progress-screen memcard-not-formatted)) *ok-options*)
   (set! (-> *options-remap* (progress-screen memcard-format)) *yes-no-options*)
   (set! (-> *options-remap* (progress-screen memcard-data-exists)) *yes-no-options*)
+  (set! (-> *options-remap* (progress-screen memcard-data-exists-save-and-load)) *yes-no-options*)
   (set! (-> *options-remap* (progress-screen memcard-insert)) *ok-options*)
   (set! (-> *options-remap* (progress-screen load-game)) *load-options*)
   (set! (-> *options-remap* (progress-screen save-game)) *save-options*)
+  (set! (-> *options-remap* (progress-screen save-and-load-game)) *save-and-load-options*)
   (set! (-> *options-remap* (progress-screen save-game-title)) *save-options-title*)
   (set! (-> *options-remap* (progress-screen memcard-error-loading)) *ok-options*)
   (set! (-> *options-remap* (progress-screen memcard-error-saving)) *ok-options*)
@@ -2127,13 +2149,18 @@
   (set! (-> *sound-options* 2 value-to-modify) (&-> *setting-control* default dialog-volume))
   (set! (-> *yes-no-options* 0 value-to-modify) (&-> *progress-state* yes-no-choice))
   ;; our options!
-  (set! (-> *game-options-pc* 1 value-to-modify) (&-> *pc-settings* memcard-play-hints?))
-  (set! (-> *game-options-pc* 2 value-to-modify) (&-> *pc-settings* subtitles?))
-  (set! (-> *game-options-pc* 3 value-to-modify) (&-> *pc-settings* hinttitles?))
-  (set! (-> *game-options-pc* 4 value-to-modify) (&-> *setting-control* default language))
-  (set! (-> *game-options-pc* 5 value-to-modify) (&-> *progress-carousell* int-backup))
-  (set! (-> *game-options-pc* 6 value-to-modify) (&-> *progress-carousell* int-backup))
-  (set! (-> *game-options-pc* 7 value-to-modify) (&-> *progress-carousell* int-backup))
+  (set! (-> *game-options-pc* 0 value-to-modify) (&-> *pc-settings* unlocked-warp-gates?))
+  (set! (-> *game-options-pc* 1 value-to-modify) (&-> *pc-settings* pseudo-savestates?))
+  (set! (-> *game-options-pc* 2 value-to-modify) (&-> *pc-settings* closest-orb?))
+  (set! (-> *game-options-pc* 3 value-to-modify) (&-> *progress-carousell* int-backup)) ;; slip assist
+  ;; (set! (-> *game-options-pc* 4 value-to-modify) (&-> *setting-control* default vibration)) ;; input options submenu
+  (set! (-> *game-options-pc* 5 value-to-modify) (&-> *pc-settings* memcard-play-hints?))
+  (set! (-> *game-options-pc* 6 value-to-modify) (&-> *pc-settings* subtitles?))
+  (set! (-> *game-options-pc* 7 value-to-modify) (&-> *pc-settings* hinttitles?))
+  (set! (-> *game-options-pc* 8 value-to-modify) (&-> *setting-control* default language))
+  (set! (-> *game-options-pc* 9 value-to-modify) (&-> *progress-carousell* int-backup))
+  (set! (-> *game-options-pc* 10 value-to-modify) (&-> *progress-carousell* int-backup))
+  (set! (-> *game-options-pc* 11 value-to-modify) (&-> *progress-carousell* int-backup))
   (set! (-> *graphic-options-pc* 1 value-to-modify) (&-> *progress-carousell* int-backup))
   (set! (-> *graphic-options-pc* 3 value-to-modify) (&-> *pc-settings* vsync?))
   (set! (-> *graphic-options-pc* 5 value-to-modify) (&-> *progress-carousell* int-backup))
@@ -2280,7 +2307,8 @@
                     (game-option-type speaker)
                     (game-option-type frame-rate)
                     (game-option-type language-subtitles)
-                    (game-option-type language-text))
+                    (game-option-type language-text)
+                    (game-option-type slip-assist))
                    ;; a carousell like language
                    (if (> (-> (the-as (pointer int) (-> options (-> obj option-index) value-to-modify))) 0)
                      (+! (-> (the-as (pointer int) (-> options (-> obj option-index) value-to-modify))) -1)
@@ -2366,7 +2394,8 @@
                     (game-option-type speaker)
                     (game-option-type frame-rate)
                     (game-option-type language-subtitles)
-                    (game-option-type language-text))
+                    (game-option-type language-text)
+                    (game-option-type slip-assist))
                    ;; same thing as before. if at last, go to first. otherwise, keep going forward.
                    (if (< (-> (the-as (pointer int) (-> options (-> obj option-index) value-to-modify)))
                           (1- (length (-> *progress-carousell* current-carousell))))
@@ -2427,6 +2456,7 @@
            ((or (can-go-back? obj)
                 (= (-> obj display-state) (progress-screen load-game))
                 (= (-> obj display-state) (progress-screen save-game))
+                (= (-> obj display-state) (progress-screen save-and-load-game))
                 (= (-> obj display-state) (progress-screen save-game-title)))
             ;; no option selected, go back
             (cpad-clear! 0 square)
@@ -2462,7 +2492,7 @@
                   (sound-play "select-option")
                   (set! (-> obj next-display-state) (the-as progress-screen (-> options (-> obj option-index) param3)))
                   (case (-> obj next-display-state)
-                    (((progress-screen load-game) (progress-screen save-game) (progress-screen save-game-title))
+                    (((progress-screen load-game) (progress-screen save-game) (progress-screen save-and-load-game) (progress-screen save-game-title))
                      (set! (-> obj next-display-state) (set-memcard-screen obj (-> obj next-display-state))))))))
               ((= (-> options (-> obj option-index) option-type) (game-option-type button))
                ;; a button. what?
@@ -2706,7 +2736,12 @@
                  (((game-option-type language-text))
                   (let ((cur-lang (get-language-name (-> *pc-settings* text-language))))
                     (dotimes (i (-> *text-languages* length))
-                      (if (= (-> *text-languages* i) cur-lang) (set! (-> *progress-carousell* int-backup) i))))))
+                      (if (= (-> *text-languages* i) cur-lang) (set! (-> *progress-carousell* int-backup) i)))))
+                 (((game-option-type slip-assist))
+                  (case (-> *pc-settings* slip-assist)
+                    (((slip-assist-mode normal)) (set! (-> *progress-carousell* int-backup) 0))
+                    (((slip-assist-mode no-slip)) (set! (-> *progress-carousell* int-backup) 1))
+                    (((slip-assist-mode spiderman)) (set! (-> *progress-carousell* int-backup) 2)))))
                (sound-play "select-option")
                (cpad-clear! 0 x)
                (cpad-clear! 0 circle)
@@ -2730,7 +2765,8 @@
                     (((game-option-type speaker)) (set! (-> *progress-carousell* current-carousell) *carousell-speaker*))
                     (((game-option-type frame-rate)) (set! (-> *progress-carousell* current-carousell) *carousell-frame-rate*))
                     (((game-option-type language-subtitles)) (set! (-> *progress-carousell* current-carousell) *subtitle-languages*))
-                    (((game-option-type language-text)) (set! (-> *progress-carousell* current-carousell) *text-languages*))))))))
+                    (((game-option-type language-text)) (set! (-> *progress-carousell* current-carousell) *text-languages*))
+                    (((game-option-type slip-assist)) (set! (-> *progress-carousell* current-carousell) *carousell-slip-assist*))))))))
            (else
             ;; an option was selected. write stuff!
             (if (= (-> options (-> obj option-index) option-type) (game-option-type confirmation))
@@ -2796,7 +2832,12 @@
                  ((0) (set-frame-rate! *pc-settings* 60 #t))
                  ((1) (set-frame-rate! *pc-settings* 100 #t))
                  ((2) (set-frame-rate! *pc-settings* 150 #t)))
-               (set-video-mode (-> *setting-control* default video-mode))))
+               (set-video-mode (-> *setting-control* default video-mode)))
+              (((game-option-type slip-assist))
+               (case (-> *progress-carousell* int-backup)
+                 ((0) (set! (-> *pc-settings* slip-assist) (slip-assist-mode normal)))
+                 ((1) (set! (-> *pc-settings* slip-assist) (slip-assist-mode no-slip)))
+                 ((2) (set! (-> *pc-settings* slip-assist) (slip-assist-mode spiderman))))))
             ;; if the option has a `on-confirm` function, run it
             (when (nonzero? (-> options (-> obj option-index) on-confirm))
               ((-> options (-> obj option-index) on-confirm)))
@@ -2811,6 +2852,15 @@
         (cpad-clear! 0 x)
         (cpad-clear! 0 circle)
         (case (-> obj display-state)
+          (((progress-screen save-and-load-game))
+           (cond
+             ((< (-> obj option-index) 4)
+              (set! (-> *progress-state* which) (-> obj option-index))
+              ;; save slot selected
+              (if (zero? (-> s5-0 file (-> obj option-index) present))
+                (set! (-> obj next-display-state) (progress-screen memcard-saving-and-loading))
+                (set! (-> obj next-display-state) (progress-screen memcard-data-exists-save-and-load))))
+             (else (sound-play "cursor-options") (set! (-> obj next-display-state) (progress-screen invalid)))))
           (((progress-screen load-game))
            (cond
              ((< (-> obj option-index) 4)
@@ -2853,6 +2903,14 @@
               (if (= (-> obj display-state-stack 0) (progress-screen title))
                 (set! (-> obj next-display-state) (progress-screen save-game-title))
                 (set! (-> obj next-display-state) (progress-screen save-game))))))
+          (((progress-screen memcard-data-exists-save-and-load))
+           (cond
+             ((-> *progress-state* yes-no-choice)
+              (sound-play "start-options")
+              (set! (-> obj next-display-state) (progress-screen memcard-saving-and-loading)))
+             (else
+              (sound-play "cursor-options")
+              (set! (-> obj next-display-state) (progress-screen save-and-load-game)))))
           (((progress-screen memcard-no-data))
            (cond
              ((-> *progress-state* yes-no-choice)
@@ -3159,7 +3217,8 @@
                       (game-option-type speaker)
                       (game-option-type frame-rate)
                       (game-option-type language-subtitles)
-                      (game-option-type language-text))
+                      (game-option-type language-text)
+                      (game-option-type slip-assist))
                      ;; crunched down to one generic function.
                      (progress-draw-carousell-from-string-list (-> *progress-carousell* current-carousell)
                                                                font
@@ -3300,7 +3359,13 @@
                      (set! option-str
                            (string-format "~S: ~S"
                                           (lookup-text! *common-text* (-> options index name) #f)
-                                          (lookup-text! *common-text* (get-language-name (-> *pc-settings* text-language)) #f)))))))))
+                                          (lookup-text! *common-text* (get-language-name (-> *pc-settings* text-language)) #f))))
+                    (((game-option-type slip-assist))
+                     (let ((slip-assist-text (case (-> *pc-settings* slip-assist)
+                                               (((slip-assist-mode normal)) (lookup-text! *common-text* (text-id slip-normal) #f))
+                                               (((slip-assist-mode no-slip)) (lookup-text! *common-text* (text-id slip-no-slip) #f))
+                                               (((slip-assist-mode spiderman)) (lookup-text! *common-text* (text-id slip-spiderman) #f)))))
+                       (set! option-str (string-format "~S: ~S" (lookup-text! *common-text* (-> options index name) #f) slip-assist-text)))))))))
             (when (or (<= (length options) PROGRESS_PC_PAGE_HEIGHT)
                       (and (not (progress-scrolling?)) (>= index *progress-scroll-start*) (< index *progress-scroll-end*))
                       (and (progress-scrolling-down?) (>= index (1- *progress-scroll-start*)) (< index *progress-scroll-end*))
@@ -3409,15 +3474,16 @@
         (((progress-screen memcard-format)) (draw-memcard-format obj a1-1))
         (((progress-screen memcard-no-space) (progress-screen memcard-not-inserted) (progress-screen memcard-not-formatted))
          (draw-memcard-storage-error obj a1-1))
-        (((progress-screen memcard-data-exists)) (draw-memcard-data-exists obj a1-1))
+        (((progress-screen memcard-data-exists) (progress-screen memcard-data-exists-save-and-load)) (draw-memcard-data-exists obj a1-1))
         (((progress-screen memcard-no-data)) (draw-memcard-no-data obj a1-1))
         (((progress-screen memcard-loading)
           (progress-screen memcard-saving)
+          (progress-screen memcard-saving-and-loading)
           (progress-screen memcard-formatting)
           (progress-screen memcard-creating))
          (draw-memcard-accessing obj a1-1))
         (((progress-screen memcard-insert)) (draw-memcard-insert obj a1-1))
-        (((progress-screen load-game) (progress-screen save-game) (progress-screen save-game-title))
+        (((progress-screen load-game) (progress-screen save-game) (progress-screen save-and-load-game) (progress-screen save-game-title))
          (draw-memcard-file-select obj a1-1))
         (((progress-screen memcard-auto-save-error)) (draw-memcard-auto-save-error obj a1-1))
         (((progress-screen memcard-removed)) (draw-memcard-removed obj a1-1))
@@ -3510,7 +3576,9 @@
               (progress-screen memcard-auto-save-error)
               (progress-screen auto-save)
               (progress-screen load-game)
-              (progress-screen save-game))
+              (progress-screen save-game)
+              (progress-screen save-and-load-game)
+              )
              (draw-notice-screen self)
              (draw-options self 190 0 0.82))
             (((progress-screen no-disc) (progress-screen bad-disc))
@@ -3520,9 +3588,10 @@
              (draw-notice-screen self)
              (draw-options self 110 0 0.82))
             (((progress-screen memcard-insert)) (draw-notice-screen self) (draw-options self 165 0 0.82))
-            (((progress-screen memcard-data-exists)) (draw-notice-screen self) (draw-options self 168 0 0.82))
+            (((progress-screen memcard-data-exists) (progress-screen memcard-data-exists-save-and-load)) (draw-notice-screen self) (draw-options self 168 0 0.82))
             (((progress-screen memcard-loading)
               (progress-screen memcard-saving)
+              (progress-screen memcard-saving-and-loading)
               (progress-screen memcard-formatting)
               (progress-screen memcard-creating))
              (draw-notice-screen self))
@@ -3566,7 +3635,7 @@
         (set! (-> self particles 32 init-pos x) -320.0)
         (set! (-> self particles 33 init-pos x) -320.0)
         (case (-> self display-state)
-          (((progress-screen load-game) (progress-screen save-game) (progress-screen save-game-title))
+          (((progress-screen load-game) (progress-screen save-game) (progress-screen save-and-load-game) (progress-screen save-game-title))
            (set! (-> self transition-speed) 30.0)))
         (none)))
 
@@ -3640,9 +3709,11 @@
               ((or (= v1-74 (progress-screen memcard-no-space))
                    (= v1-74 (progress-screen memcard-format))
                    (= v1-74 (progress-screen memcard-data-exists))
+                   (= v1-74 (progress-screen memcard-data-exists-save-and-load))
                    (= v1-74 (progress-screen memcard-insert))
                    (= v1-74 (progress-screen load-game))
                    (= v1-74 (progress-screen save-game))
+                   (= v1-74 (progress-screen save-and-load-game))
                    (= v1-74 (progress-screen save-game-title))
                    (= v1-74 (progress-screen memcard-error-loading))
                    (= v1-74 (progress-screen memcard-error-saving))

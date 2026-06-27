@@ -3120,6 +3120,8 @@
   (set-time! (-> this on-screen-timer))
   (set! (-> this minimap) #f)
   (set-time! (-> this valid-ground-timer))
+  ;; keep these guys dead
+  (set! (-> this entity extra perm task) (game-task complete))
   0
   (none)
   )

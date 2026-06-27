@@ -31,11 +31,17 @@
   :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
     (case message
       (('open)
-       (set! (-> self tt-target) 1.0)
-       )
+        (if (= (-> self tt-target) 1.0)
+          #f
+          (set! (-> self tt-target) 1.0)
+          )
+        )
       (('close)
-       (set! (-> self tt-target) 0.0)
-       )
+        (if (= (-> self tt-target) 0.0)
+          #f
+          (set! (-> self tt-target) 0.0)
+          )
+        )
       )
     )
   :code sleep-code

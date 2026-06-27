@@ -1,0 +1,2444 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+;; more for testing purposes than anything
+(defun move-actor-str-target-offset ((actor-name string) (x float) (y float) (z float))
+  (cond 
+    ((entity-by-name actor-name)
+     (let* ((entity-actor (entity-by-name actor-name))
+            (actor (the process-drawable (-> entity-actor extra process))))
+            
+       (when actor
+         (vector-copy! (-> actor root trans) (target-pos 0))
+         (+! (-> actor root trans x) (meters x))
+         (+! (-> actor root trans y) (meters y))
+         (+! (-> actor root trans z) (meters z))
+         (vector-copy! (-> entity-actor trans) (target-pos 0))
+         (+! (-> entity-actor trans x) (meters x))
+         (+! (-> entity-actor trans y) (meters y))
+         (+! (-> entity-actor trans z) (meters z))
+         (vector-copy! (-> entity-actor extra trans) (target-pos 0))
+         (+! (-> entity-actor extra trans x) (meters x))
+         (+! (-> entity-actor extra trans y) (meters y))
+         (+! (-> entity-actor extra trans z) (meters z))))))
+    
+  (none))
+
+(defun move-actor-str ((actor-name string) (x float) (y float) (z float))
+  (cond 
+    ((string= actor-name "target")
+     (set-vector-meters! (-> *target* root trans) x y z))
+      
+    ((entity-by-name actor-name)
+     (let* ((entity-actor (entity-by-name actor-name))
+            (actor (-> entity-actor extra process)))
+            
+       (when actor
+         (set-vector! (-> entity-actor trans) (meters x) (meters y) (meters z) 1.0)
+         (set-vector! (-> entity-actor extra trans) (meters x) (meters y) (meters z) 1.0)))))
+         ;; (set-vector! (-> (the process-drawable actor) root trans) (meters x) (meters y) (meters z) 1.0)
+    
+  (none))
+
+(defun pvm ((v vector))
+  (format 0 "~m ~m ~m ~%" (-> v x) (-> v y) (-> v z)))
+
+;; prints the position (root trans) of a process-drawable
+(defun pd-pos-m ((procname string))
+  (let ((obj (the process-drawable 
+                (case procname :comp name= 
+                  (("target" "")
+                    *target*)
+                  (else 
+                    (process-by-ename procname))
+                  ))))
+    (when obj
+      (print-pd obj))
+    (none)))
+
+(defun print-pd ((pd process-drawable))
+  (let ((vec (cond
+              ((type-type? (-> pd type) skill)
+                (-> (the skill pd) base))
+              (else
+                (-> pd root trans))))
+        (q (-> pd root quat)))
+    (format 0 "~%~S:~%" (-> pd name))
+    (format 0 "~m ~m ~m  |||  " (-> vec x) (-> vec y) (-> vec z))
+    (format 0 " Q:  ~f  ~f  ~f  ~f~%" (-> q x) (-> q y) (-> q z) (-> q w))
+    (format 0 "~m, ~m, ~m  |||  " (-> vec x) (-> vec y) (-> vec z))
+    (format 0 " Q:  ~f, ~f, ~f, ~f~%" (-> q x) (-> q y) (-> q z) (-> q w))
+    )
+  (none)
+  )
+
+(defmacro mod-copy-mesh-and-path (dst-name src-name)
+  `(let ((dst (the nav-enemy (process-by-ename ,dst-name)))
+         (src (the nav-enemy (process-by-ename ,src-name))))
+         
+    (when (and src dst)
+      (set! (-> dst nav mesh) (-> src nav mesh))
+      (set! (-> dst path flags) (-> src path flags))
+      (curve-copy! (-> dst path curve) (-> src path curve))
+      (set! (-> dst path num-cverts) (-> src path num-cverts))
+      (set! (-> dst path cverts) (-> src path cverts)))))
+
+(defmacro mod-no-collectable-bob (collectablename height)
+  `(begin
+    (when (process-by-ename ,collectablename)
+      (set! (-> (the collectable (process-by-ename ,collectablename)) bob-amount) 0.0)
+      (set! (-> (the collectable (process-by-ename ,collectablename)) root trans y) (meters ,height)))))
+
+;; takes a path-control and xyz values to offsets every node in the path by
+;; (defmacro shift-path! (path x y z)
+;;   `(let ((voff (static-vector-meters ,x ,y ,z)))
+;;     (dotimes (idx (-> ,path num-cverts))
+;;       (vector+! (-> ,path cverts idx) (-> ,path cverts idx) voff)
+;;       )
+;;     )
+;;   )
+
+;; (defmacro path-print-meters (path)
+;;   `(dotimes (idx (-> ,path num-cverts))
+;;     (print-vector3m (-> ,path cverts idx))
+;;     )
+;;   )
+
+(defmacro move-pd-str (actor-name x y z)
+  `(let ((pd (the process-drawable (process-by-ename ,actor-name))))
+    (when pd
+      (set-vector-meters! (-> pd root trans) ,x ,y ,z))
+      
+    (none)))
+    
+  
+
+(defmacro set-pd-quat (actor-name x y z w)
+  `(let ((pd (the process-drawable (process-by-ename ,actor-name))))
+    (when pd
+      (set-vector! (-> pd root quat) ,x ,y ,z ,w))
+      
+    (none)))
+    
+  
+
+;; (defun mod-override-plat-path ((obj plat) (arg0 entity-actor))
+;;   (case (-> obj name) :comp name=
+;;     (('citb-launcher-4) ;; back and forth - shortcut to other side
+;;       (set-vector-meters! (-> obj path cverts 0) 2630.9350 -23.0000 -4715.0468)
+;;       (set-vector-meters! (-> obj path cverts 1) 2649.4807 -23.0000 -4715.1137)
+;;       )
+;;     )
+;;   (none)
+;;   )
+
+(defmacro spawn-skill-old (x y z bob? name)
+  `(spawn-skill-internal ,x ,y ,z ,bob? ,name 1.0))
+  
+
+(defmacro spawn-gold-skill-old (x y z bob? name)
+  `(spawn-skill-internal ,x ,y ,z ,bob? ,name (-> *FACT-bank* super-skill-inc)))
+  
+
+(defun spawn-skill-internal ((x float) (y float) (z float) (bob? symbol) (name string) (amount float))
+  (dbg-format 0 "trying to spawn skill ~A~%" name)
+  (cond
+    ((process-by-name name *active-pool*)
+     (format 0 "~A is already spawned, skipping" name)
+     )
+    (else
+      (let ((fax (new 'static 'fact-info)))
+        (set! (-> fax pickup-type) (pickup-type skill))
+        (set! (-> fax pickup-amount) amount)
+        (set! (-> fax pickup-spawn-amount) amount)
+        ;; make sure it doesn't timeout and disappear
+        (logior! (-> fax options) (actor-option fade-out))
+        (set! (-> fax fade-time) (the-as time-frame 0))
+        (if bob?
+          (logior! (-> fax options) (actor-option force-bob))
+          (logclear! (-> fax options) (actor-option force-bob)))
+          
+        (let ((vec (new 'stack-no-clear 'vector)))
+          (set-vector-meters! vec x y z)
+          (let ((proc (ppointer->process (birth-pickup-at-point-named vec (pickup-type skill) amount #t *active-pool* fax name))))
+            (dbg-format 0 "spawned ~A~%" proc)))))))
+
+(defun spawn-fuel-cell2 ((x float) (y float) (z float) (name string))
+  (cond
+    ((process-by-name name *active-pool*)
+     (format 0 "~A is already spawned, skipping" name)
+     (the-as (pointer process) #f)
+     )
+    (else
+      (let ((fax (new 'static 'fact-info)))
+        (set! (-> fax pickup-type) (pickup-type fuel-cell))
+        (set! (-> fax pickup-amount) 1.0)
+        (set! (-> fax pickup-spawn-amount) 1.0)
+        ;; make sure it doesn't timeout and disappear
+        (logior! (-> fax options) (actor-option fade-out))
+        (set! (-> fax fade-time) (the-as time-frame 0))
+          
+        (let ((vec (new 'stack-no-clear 'vector)))
+          (set-vector-meters! vec x y z)
+          (let ((ptr (birth-pickup-at-point-named vec (pickup-type fuel-cell) 1.0 #t *active-pool* fax name)))
+            (format 0 "spawned ~A~%" (ppointer->process ptr))
+            ptr ;; return ptr
+            )
+          )
+        )
+      )
+    )
+  )
+
+(defun spawn-fuel-cell ((vec vector) (name string))
+  (spawn-fuel-cell2 (/ (-> vec x) 4096) (/ (+ (-> vec y) (meters 4.0)) 4096) (/ (-> vec z) 4096) name)
+  )
+
+(define *baby-mode-orb-dist* (the-as float #f))
+(defun baby-mode-find-closest-orb ()
+  (when (-> *mod-settings* closest-orb?)
+    ;; find closest orb
+    (set! *baby-mode-orb-dist* (the-as float #f))
+    (when (not (or (= *master-mode* 'menu) (= *master-mode* 'progress)))
+      (dotimes (s4-0 (-> *level* length))
+        (let ((v1-8 (-> *level* level s4-0)))
+          (when (= (-> v1-8 status) 'active)
+            (let ((s3-0 (-> v1-8 bsp level entity)))
+              (dotimes (s2-0 (-> s3-0 length))
+                (let* ((s0-0 (-> s3-0 data s2-0 entity))
+                      (s1-0 (-> s0-0 extra trans))
+                      (proc (-> s0-0 extra process)))
+                      
+                  (when (and proc 
+                            ;; open orbs/crates
+                            (or (type-type? (-> proc type) skill)
+                                (and (type-type? (-> proc type) crate) 
+                                     (= (-> (the crate proc) fact pickup-type) (pickup-type skill))
+                                     )
+                                )
+                            (not (type-type? (-> proc type) skill-ghost))
+                            (not (logtest? (-> s0-0 extra status) (entity-perm-status subtask-complete))) ;; crate respawn check
+                            )
+                    (let ((dist (vector-vector-distance 
+                                  (target-pos 0) 
+                                  (-> (the process-drawable (-> s0-0 extra process)) root trans))))
+                      (if (or (= *baby-mode-orb-dist* #f) (< dist *baby-mode-orb-dist*))
+                        (set! *baby-mode-orb-dist* dist))))))))))))
+  (none))
+  
+;; (defun get-cur-rank ((score game-score))
+;;   (let* ((game-score-idx (the uint8 score))
+;;          (old-rank 0)
+;;          (orig-scores (-> *highscore-info-array* game-score-idx))
+;;          (sv-32 0)
+;;          )
+;;     (let ((s0-0 (get-game-score-ref *game-info* (the-as int game-score-idx)))
+;;           (s1-0 (new 'stack-no-clear 'array 'int8 4))
+;;           )
+;;       (dotimes (v1-5 4)
+;;         (set! (-> s1-0 v1-5) 0)
+;;         )
+;;       (while (< sv-32 8)
+;;         (let ((v1-13 (get-rank orig-scores (-> s0-0 sv-32))))
+;;           (+! (-> s1-0 v1-13) 1)
+;;           )
+;;         (set! sv-32 (+ sv-32 1))
+;;         )
+;;       (dotimes (v1-20 4)
+;;         (if (< 1 (-> s1-0 v1-20))
+;;             (set! old-rank v1-20)
+;;             )
+;;         )
+;;       )
+
+;;     old-rank
+;;     )
+;;   )
+
+(defun increment-skill-per-level-side-mish ((tsk game-task) (amount int))
+;;   (case tsk
+;;     ;; "Bazaar (West)" ;;  ctymarka
+;;     (((game-task city-burning-bush-racepoint-1) (game-task city-burning-bush-shuttle-1) (game-task city-burning-bush-get-to-12) (game-task city-burning-bush-bombbot-1))
+;;       (+! (-> *game-info* skill-per-level 2) amount))
+;;     ;; "Stadium (Class 1)" ;; 
+;;     (((game-task stadium-burning-bush-race-class1))
+;;       (+! (-> *game-info* skill-per-level 60) amount))
+;;     )
+;;     (if (nonzero? amount) (true! *orb-count-updated?*))
+  (none))
+
+(defun increment-skill-per-level ((ent entity-actor))
+  (when ent
+    (let* ((lvl-idx (-> *level-load-info-level-id-remap* (-> ent extra level info index)))
+          (lvl-idx-override (res-lump-value ent 'lvl-idx-override int :default (the-as uint128 -1) :time -1000000000.0))
+          (final-lvl-idx (if (>= lvl-idx-override 0) lvl-idx-override lvl-idx)))
+      (+! (-> *game-info* skill-per-level final-lvl-idx) 1))
+    (true! *orb-count-updated?*)
+    )
+  (none))
+
+(defun-extern hover-need-to-cooldown? symbol)
+(defun-extern lightjak-flight-need-to-cooldown? symbol)
+(define *auto-saving?* #f)
+(define *last-auto-save-time* (the time-frame #f))
+(define *last-l3-time* (the time-frame #f))
+(define *tmp-orb-hunt-str* (new 'global 'string 2048 (the-as string #f)))
+(defun draw-orb-hunt-text ()
+  ;; track L3 presses
+  (when (or (cpad-hold? 0 l3) (cpad-pressed? 0 l3)) (set-g-time! *last-l3-time*))
+
+  (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
+                                (bucket-id debug-no-zbuf2))
+    ;; reset bucket settings prior to drawing - font won't do this for us, and
+    ;; draw-raw-image can sometimes mess them up. (intro sequence)
+    (dma-buffer-add-gs-set-flusha buf (alpha-1 (new 'static 'gs-alpha :b #x1 :d #x1)) (tex1-1 (new 'static 'gs-tex1 :mmag #x1 :mmin #x1)))
+
+    ;; init font-ctx for bottom-left corner
+    (let ((font-ctx (new 'stack 'font-context *font-default-matrix* 5 400 0.0 (font-color default) (font-flags shadow kerning large))))
+      (set! (-> font-ctx scale) 0.325)
+
+      (when (and (pause-allowed?) (not (paused?)))
+        (clear *pc-encoded-temp-string*)
+        (when (and (hud-skill-shown?)
+                   (-> *mod-settings* closest-orb?)
+                   *last-l3-time* 
+                   (not (g-time-elapsed? *last-l3-time* (seconds 3.2)))
+                   )
+          ;; show closest orb text while hud is up + L3 pressed recently
+          (cond
+            ((= *baby-mode-orb-dist* #f)
+              (pc-encode-utf8-string "Closest Orb: N/A" *pc-encoded-temp-string*)
+              (set! (-> font-ctx color) (font-color transparent))
+              (draw-string-adv *pc-encoded-temp-string* buf font-ctx)
+              )
+            (else
+              (pc-encode-utf8-string (string-format "Closest Orb: ~,,1Mm" *baby-mode-orb-dist*)
+                                      *pc-encoded-temp-string*)
+              ;; color based on distance
+              (set! (-> font-ctx color)
+                    (cond
+                      ((< *baby-mode-orb-dist* (meters  5.0)) (font-color red))
+                      ((< *baby-mode-orb-dist* (meters 10.0)) (font-color orange))
+                      ((< *baby-mode-orb-dist* (meters 20.0)) (font-color progress-old-yellow))
+                      ((< *baby-mode-orb-dist* (meters 30.0)) (font-color flat-yellow))
+                      ((< *baby-mode-orb-dist* (meters 40.0)) (font-color progress-old-blue))
+                      ((< *baby-mode-orb-dist* (meters 50.0)) (font-color cyan))
+                      (else (font-color blue))
+                      )
+                    )
+              (draw-string-adv *pc-encoded-temp-string* buf font-ctx)
+              )
+            )
+          ;; bump buffer Y pos
+          (set! (-> font-ctx origin x) 5.0)
+          (-! (-> font-ctx origin y) 10.0)
+          )
+
+        (clear *pc-encoded-temp-string*)
+        (when (or (hover-need-to-cooldown?) (lightjak-flight-need-to-cooldown?))
+          ;; show hover cooldown text
+          (clear *tmp-orb-hunt-str*)
+          (cond
+            ((and *last-hover-time* *last-lightjak-flight-glitch-time*)
+              (if (< *last-hover-time* *last-lightjak-flight-glitch-time*)
+                (format *tmp-orb-hunt-str* "Light Jak flight glitch cooldown: ~Ds" (/ (- (+ *last-lightjak-flight-glitch-time* (seconds 30)) (get-current-time)) TICKS_PER_SECOND))
+                (format *tmp-orb-hunt-str* "Hover glitch cooldown: ~Ds" (/ (- (+ *last-hover-time* (seconds 30)) (get-current-time)) TICKS_PER_SECOND))
+                ))
+            (*last-hover-time*
+              (format *tmp-orb-hunt-str* "Hover glitch cooldown: ~Ds" (/ (- (+ *last-hover-time* (seconds 30)) (get-current-time)) TICKS_PER_SECOND))
+              )
+            (else 
+              (format *tmp-orb-hunt-str* "Light Jak flight glitch cooldown: ~Ds" (/ (- (+ *last-lightjak-flight-glitch-time* (seconds 30)) (get-current-time)) TICKS_PER_SECOND))
+              )
+            )
+          (pc-encode-utf8-string *tmp-orb-hunt-str* *pc-encoded-temp-string*)
+          (set! (-> font-ctx color) (font-color orange))
+          (draw-string-adv *pc-encoded-temp-string* buf font-ctx)
+          )
+
+        ;; refresh orb counts for active levels
+        (dotimes (idx LEVEL_ID_LEN)
+          (false! (-> *level-orb-active* idx))
+          (set! (-> *level-orb-collected-counts* idx) 0)
+          (set! (-> *level-orb-total-counts* idx) 0)
+          )
+
+        (dotimes (s4-2 LEVEL_MAX)
+          (cond
+            ((= (-> *level* level s4-2 status) 'active)
+              (let ((lvl-idx (-> *level-load-info-level-id-remap* (-> *level* level s4-2 info index)))
+                    (entities (-> *level* level s4-2 entity)))
+                ;; open orbs
+                (dotimes (idx (-> entities length))
+                  (let ((entity-link (-> entities data idx)))
+                    (when (and (-> entity-link entity) (nonzero? (-> entity-link entity)))
+                      (let* ((lvl-idx-override (res-lump-value (-> entity-link entity) 'lvl-idx-override int :default (the-as uint128 -1) :time -1000000000.0))
+                             (final-lvl-idx (if (>= lvl-idx-override 0) lvl-idx-override lvl-idx)))
+                        (case (-> (the entity-actor (-> entity-link entity)) etype symbol)
+                          (('skill)
+                            ;; only consider final-lvl-idx active if not overridden from some other level
+                            (when (< lvl-idx-override 0)
+                              (dbg-format 0 "og idx ~D -> ~D~%" (-> *level* level s4-2 info index) lvl-idx)
+                              (true! (-> *level-orb-active* final-lvl-idx))
+                              )
+                            (+! (-> *level-orb-total-counts* final-lvl-idx) 1)
+                            (when (logtest? (-> entity-link status) (entity-perm-status dead))
+                              (+! (-> *level-orb-collected-counts* final-lvl-idx) 1)
+                              )
+                            )
+                          (('skill-crate 'market-crate 'wascity-market-crate 'crate 'wascity-market-sack-a 'market-sack-a 'market-basket-a 'wascity-market-basket-a 'wascity-market-sack-b 'market-sack-b 'market-basket-b 'wascity-market-basket-b 'urn-a 'urn-b 'urn-c)
+                            (let ((e-info (res-lump-value (-> entity-link entity) 'eco-info uint128 :time -1000000000.0)))
+                              (when (= (the-as uint e-info) 24) ;; holding skill
+                                ;; only consider final-lvl-idx active if not overridden from some other level
+                                (if (< lvl-idx-override 0)
+                                  (true! (-> *level-orb-active* final-lvl-idx))
+                                  )
+                                (+! (-> *level-orb-total-counts* final-lvl-idx) 1)
+                                (when (nonzero? (-> entity-link perm user-int8 1))
+                                  (+! (-> *level-orb-collected-counts* final-lvl-idx) 1)
+                                  )
+                                )
+                              )
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+
+        ;; side mish orbs for any other loaded levels
+        (dotimes (lvl-idx LEVEL_ID_LEN)
+          (when (-> *level-orb-active* lvl-idx)
+            (case lvl-idx
+              ((23) ;; ctyindb (industrial north)
+                (+! (-> *level-orb-total-counts* lvl-idx) 3)
+                (when (task-node-closed? (game-task-node city-bbush-get-to-36-resolution))
+                  (+! (-> *level-orb-collected-counts* lvl-idx) 3)
+                  )
+
+                (+! (-> *level-orb-total-counts* lvl-idx) 3)
+                (when (task-node-closed? (game-task-node city-bbush-get-to-37-resolution))
+                  (+! (-> *level-orb-collected-counts* lvl-idx) 3)
+                  )
+                )
+            ;;   ((24) ;; "Gardens (South)" ;;  farmb
+            ;;     (+! (-> *level-orb-total-counts* lvl-idx) 3)
+            ;;     (when (task-complete? *game-info* (game-task city-burning-bush-get-to-5))
+            ;;       (+! (-> *level-orb-collected-counts* lvl-idx) 3)
+            ;;       )
+            ;;     )
+            ;;   ((1) ;; "Bazaar (East)" or "Onin's Tent" ;;  ctymarkb
+            ;;     (+! (-> *level-orb-total-counts* lvl-idx) 3)
+            ;;     (when (task-complete? *game-info* (game-task city-burning-bush-get-to-7))
+            ;;       (+! (-> *level-orb-collected-counts* lvl-idx) 3)
+            ;;       )
+
+            ;;     (+! (-> *level-orb-total-counts* lvl-idx) 3)
+            ;;     (when (task-complete? *game-info* (game-task city-burning-bush-get-to-6))
+            ;;       (+! (-> *level-orb-collected-counts* lvl-idx) 3)
+            ;;       )
+
+            ;;     (when (task-node-closed? (game-task-node city-play-onin-game-skill))
+            ;;       (+! (-> *level-orb-collected-counts* 45) 3) ;; count towards onin tent instead of ctymarkb
+            ;;       )
+            ;;     )
+            ;;   ((25) ;; "Gun Course" ;;
+            ;;     (let ((red-rank (get-cur-rank (game-score gungame-red)))
+            ;;           (yellow-rank (get-cur-rank (game-score gungame-yellow)))
+            ;;           (blue-rank (get-cur-rank (game-score gungame-blue)))
+            ;;           (dark-rank (get-cur-rank (game-score gungame-dark)))
+            ;;           )
+            ;;       (when (< 0 red-rank)
+            ;;         (+! (-> *level-orb-collected-counts* lvl-idx) (* 3 red-rank))
+            ;;         )
+                    
+            ;;       (when (< 0 yellow-rank)
+            ;;         (+! (-> *level-orb-collected-counts* lvl-idx) (* 3 yellow-rank))
+            ;;         )
+                    
+            ;;       (when (< 0 blue-rank)
+            ;;         (+! (-> *level-orb-collected-counts* lvl-idx) (* 3 blue-rank))
+            ;;         )
+                    
+            ;;       (when (< 0 dark-rank)
+            ;;         (+! (-> *level-orb-collected-counts* lvl-idx) (* 3 dark-rank))
+            ;;         )
+            ;;       )
+            ;;     )
+              )
+            )
+          )
+        
+        ;; check if game-info needs to be synced from current entities
+        (dotimes (idx LEVEL_ID_LEN)
+          (when (< (-> *game-info* skill-per-level idx) (-> *level-orb-collected-counts* idx))
+            (set! (-> *game-info* skill-per-level idx) (the uint (-> *level-orb-collected-counts* idx)))))
+
+        ;; autosave from orb update, if needed
+        (when (and *orb-count-updated?*
+                   (>= (-> *game-info* auto-save-which) 0)
+                   (-> *mod-settings* orb-autosave?))
+                   (not *auto-saving?*)
+                   ;; dont autosave with bad checkpoint
+                   (not (or (name= (-> *game-info* current-continue name) 'tmp)
+                            (name= (-> *game-info* current-continue name) 'default)))
+          (format 0 "autosave on orb pickup~%")
+          (true! *auto-saving?*)
+          (auto-save-user)  ;; autosave on orb pickup
+          (false! *orb-count-updated?*)
+          )
+
+        (when (not (movie?))
+          ;; print orb counts
+          (clear *tmp-orb-hunt-str*)
+          (let ((save-idx (-> *game-info* auto-save-which))
+                (row-offset 0)
+                (xpos (if (= 1.0 (-> *pc-settings* aspect-ratio-scale)) 507.0 1019.0))
+                )
+            (dotimes (idx LEVEL_ID_LEN)
+              (when (or (-> *level-orb-active* idx)
+                        (and (= idx 41) (-> *level-orb-active* 59)) ;; onintent has orbs in ctysluma
+                        )
+                (dbg-format 0 "lvl-idx ~D is active ~%" idx)
+                (let* ((coll (-> *game-info* skill-per-level idx))
+                       (tot (-> *level-orb-total-counts* idx))
+                      ;;  (tot (-> *level-orb-total-counts-fixed* idx))
+                       (color-str
+                          (cond
+                            ((= coll tot) "<COLOR_GREEN>") ;; green if 100%
+                            ((nonzero? coll) "<COLOR_ORANGE>") ;; nonzero, orange
+                            (else "<COLOR_FLAT-YELLOW>") ;; zero, slight yellow
+                            )))
+                  (format *tmp-orb-hunt-str* (string-format "<COLOR_DEFAULT>~S ~S~D / ~D~%"
+                                                (-> *level-id-names* idx)
+                                                color-str
+                                                coll
+                                                tot
+                                                ))
+                  (+! row-offset 1)
+                  )
+                )
+              )
+            
+            (when (nonzero? row-offset)
+              (set! (-> font-ctx origin x) 507.0)
+              (set! (-> font-ctx origin y) (- 409.0 (* 9.0 row-offset)))
+              (set! (-> font-ctx color) (font-color white))
+              (logior! (-> font-ctx flags) (font-flags right))
+              
+              (clear *pc-encoded-temp-string*)
+              (pc-encode-utf8-string *tmp-orb-hunt-str* *pc-encoded-temp-string*)
+              (draw-string-adv *pc-encoded-temp-string* buf font-ctx)
+              )
+            )
+          )
+        )
+      )
+    )
+  
+  (none))
+
+(defun mod-spawn-new-entities ((level symbol))
+  ;; (format 0 "spawning extra mod entities for level ~A~%" level)
+  (case level
+    )
+    
+  (none))
+
+;; (defun prison-door-button-check ((button-name string) (door-name string))
+;;   (when *target*
+;;     (case (-> *target* state name)
+;;       ;; if target is attacking...
+;;       (('target-attack 'target-running-attack 'target-attack-uppercut-jump 'target-attack-air 'target-flop)
+;;        (let ((button (the part-spawner (process-by-ename button-name)))
+;;              (door (process-by-ename door-name)))
+              
+;;          ;; ... and button and door both exist, and player is close enough ...
+;;          (when (and button door (-> button root) (-> button root trans))
+;;            (let ((button-vec (-> button root trans))
+;;                  (target-vec (new 'stack 'vector))
+;;                  )
+;;              (vector-copy! target-vec (-> *target* root trans))
+;;              (+! (-> target-vec y) (meters 1.5))
+;;              (when (<= (vector-vector-distance target-vec button-vec) (meters 2.0))
+;;                ;; ... then we (try to) open door ...
+;;                (when (send-event door 'open)
+;;                  ;; ... if successful we play sounds and turn off lights
+;;                  (sound-play "door-open")
+;;                  (set! (-> button part data 0 flags) (the sp-launch-state-flags 0))
+;;                  (set! (-> button part data 1 flags) (the sp-launch-state-flags 0))
+;;                  (set! (-> button part data 2 flags) (the sp-launch-state-flags 0))))))))))
+    
+;;   (none))
+  
+
+;; (defun stdmb-hatch-check ((stdmb-hatch string))
+;;   (when (and *target* (not (side-mish-active?)))
+;;     (case (-> *target* state name)
+;;       ;; if target is attacking...
+;;       (('target-flop)
+;;        (let ((hatch (the process-drawable (process-by-ename stdmb-hatch))))
+              
+;;          ;; ... and hatch exists, and player is close enough ...
+;;          (when (and hatch (-> hatch root) (-> hatch root trans))
+;;            (let ((hatch-vec (-> hatch root trans)))
+;;              (when (<= (vector-vector-distance (-> *target* root trans) hatch-vec) (meters 4.0))
+;;                ;; ... then we (try to) open hatch ...
+;;                (when (send-event hatch 'open)
+;;                  ;; ... if successful we play sound
+;;                  (sound-play "timer-warn")))))))))
+;;   (none))
+
+;; (defun random-orb-pos ((orb skill))
+;;   (case (-> orb name) :comp name= 
+;;     (('castle-skill-84)
+;;       (case (rand-vu-int-count 4)
+;;         ;; west (original)
+;;         ((0) (set-vector-meters! (-> orb root trans) -266.45  53.37 -1720.35))
+;;         ;; south
+;;         ((1) (set-vector-meters! (-> orb root trans) -257.70  53.37 -1711.35))
+;;         ;; east
+;;         ((2) (set-vector-meters! (-> orb root trans) -243.28  53.37 -1724.83))
+;;         ;; north
+;;         ((3) (set-vector-meters! (-> orb root trans) -258.47  53.37 -1734.51))
+;;         )
+;;       )
+;;     )
+;;   (none)
+;;   )
+  
+;; (defun skill-float-up ((orb skill) (rate meters) (min meters) (max meters))
+;;   (when (and (not (logtest? (-> *kernel-context* prevent-from-run) (-> orb mask)))
+;;              (logtest? (-> orb draw status) (draw-control-status on-screen))
+;;              )
+;;     (+! (-> orb root trans y) rate)
+;;     (when (> (-> orb root trans y) max) 
+;;       ;; possibly warp orb to different point
+;;       (random-orb-pos orb)
+;;       ;; reset height
+;;       (set! (-> orb root trans y) min)
+;;       )
+;;     ;; sync base
+;;     (vector-copy! (-> orb base) (-> orb root trans))
+;;     )
+;;   (none)
+;;   )
+
+
+(defun mod-override-init-position ((obj process-drawable) (arg0 entity-actor))
+  (case (-> obj name) :comp name=
+
+    ;; ====== DESERT ======
+    (('des-burning-bush-6) (set-vector-meters! (-> arg0 extra trans) 1799.87  9.50  2288.08) ;; random bit of ground above sea level, near stronghold/cave
+      (quaternion-set! (-> arg0 quat) -0.0053  -0.0496  0.0030  0.9987)
+      ;; get-to-6 / desert-bbush-desc-2
+      )
+
+    ;; ====== CTYINDB (industrial north) ======
+    (('skill-134) (set-vector-meters! (-> arg0 extra trans)  1113.9781  8.9507  686.8352)) ;; crawl behind pipe in corner, towards ctyinda
+    (('skill-178) (set-vector-meters! (-> arg0 extra trans)  1039.5916  21.5289  550.8125)) ;; "inside" ramp from fallen pipe, just have to go in from one side
+    (('skill-179) (set-vector-meters! (-> arg0 extra trans)  986.4072  50.3802  601.7383)) ;; up high on wall near section with fallen pipe, abah from pipe underneath (no hint)
+    (('crate-1135) (set-vector-meters! (-> arg0 extra trans) 944.9800 9.9099 390.6400) ;; in corner behind pipes towards slums
+      (quaternion-set! (-> arg0 quat) 0.0 0.0 0.0 -1.0))
+    (('crate-1136) (set-vector-meters! (-> arg0 extra trans) 1048.2800 20.8600 400.9299) ;; on top of weird broken fence thing near slums, just jump from zoomer up here
+      (quaternion-set! (-> arg0 quat) 0.0000  0.7038  0.0000  0.7103))
+    (('burning-bush-39) (set-vector-meters! (-> arg0 extra trans) 969.1300 51.8899 560.2600) ;; at top of broken pipe jetboard grind before turning right
+      (quaternion-set! (-> arg0 quat) 0.1823  0.7556  -0.1409  0.6130)) ;; bbush-indb-2 / burning-bush-39 / burning-bush-indb-2 / city-bbush-get-to-36
+    (('burning-bush-40) (set-vector-meters! (-> arg0 extra trans) 1082.8267 24.5556 607.5993) ;; on grindrail where vanilla orb challenge is
+      (quaternion-set! (-> arg0 quat) 0.0 0.0 0.0 -1.0)) ;; burning-bush-40 / burning-bush-indb-3 / city-bbush-get-to-37 / bbush-indb-3
+    (('parking-spot-116) (set-vector-meters! (-> arg0 extra trans) 1065.8126 8.2436 498.4766)) ;; in corner near jetboard upper grind rail area
+
+    ;; ====== CTYINDA (industrial south) ======
+    (('skill-180) (set-vector-meters! (-> arg0 extra trans) 810.42  8.6  1067.37 )) ;; between ramp and wall near port
+    (('skill-181) (set-vector-meters! (-> arg0 extra trans) 852.8791 26.9578 872.4902)) ;; up in corner small crevice between buildings, above parking spot near ctyindb
+    (('skill-182) (set-vector-meters! (-> arg0 extra trans) 992.6550 26.7788 825.8588)) ;; in corner behind circling pipe, boosted from platforms nearby
+    (('skill-183) (set-vector-meters! (-> arg0 extra trans) 1098.4771 10.1819 1171.3032)) ;; in corner near vinroom
+    (('skill-208) (set-vector-meters! (-> arg0 extra trans) 856.3762 28.3448 1155.3575)) ;; on ledge below pipe in corner near hallway to port, above vanilla orb spot (abah from below or extended around from walkway)
+    (('crate-1137) (set-vector-meters! (-> arg0 extra trans) 1065.5700 7.9899 1058.6699) ;; in corner near vinroom
+      (quaternion-set! (-> arg0 quat) 0.0000  0.2823  0.0000  0.9593))
+    (('crate-1138) (set-vector-meters! (-> arg0 extra trans) 733.3499 10.0399 1159.1199 ) ;; behind broken pipes in hallway to port, follow orb trail over invis wall
+      (quaternion-set! (-> arg0 quat) 0.0 0.0 0.0 -1.0))
+    (('crate-1139) (set-vector-meters! (-> arg0 extra trans) 1060.56  9.86  1042.28 ) ;; behind pipes near funny collision hole by sewers
+      (quaternion-set! (-> arg0 quat) 0.0 -1.0 0.0 0.0))
+    ;; (('burning-bush-28) (set-vector-meters! (-> arg0 extra trans) ) ;; 
+    ;;   (quaternion-set! (-> arg0 quat) 0.0 0.0 0.0 1.0))
+    (('burning-bush-41) (set-vector-meters! (-> arg0 extra trans) 1040.1009 7.9687 1156.8247) ;; between walkway ramp and wall near vinroom
+      (quaternion-set! (-> arg0 quat) 0.0 1.0 0.0 0.0))
+    (('burning-bush-42) (set-vector-meters! (-> arg0 extra trans) 1157.0253 7.9987 968.8895) ;; in corner where jinx eco grid mission ends
+      (quaternion-set! (-> arg0 quat)  0.0000  -0.6233  0.0000  0.7819))
+    ;; (('burning-bush-43) (set-vector-meters! (-> arg0 extra trans) ) ;; 
+    ;;   (quaternion-set! (-> arg0 quat) 0.0 0.0 0.0 1.0))
+    ;; (('burning-bush-49) (set-vector-meters! (-> arg0 extra trans) ) ;; 
+    ;;   (quaternion-set! (-> arg0 quat) 0.0 0.0 0.0 1.0))
+
+    ;; ====== CTYGENB (main town ruins) ======
+    (('skill-184) (set-vector-meters! (-> arg0 extra trans)  142.4263  5.7946  -96.2793)) ;; under rubble at funny oob spot :tf:
+    (('skill-189) (set-vector-meters! (-> arg0 extra trans)  385.6683 19.9105 -280.8059)) ;; near stadium entrance, IJ wall hint
+    (('skill-135) (set-vector-meters! (-> arg0 extra trans)  385.6057 8.3034 -278.8738)) ;; behind IJ wall from ^
+    (('skill-155) (set-vector-meters! (-> arg0 extra trans)  275.1310  33.9039  -45.5778)) ;; up in west, southish corner, above bbush. concussor crevice jumps
+    (('skill-154) (set-vector-meters! (-> arg0 extra trans) 250.7003 1.3349 -270.3506)) ;; between rubble and ramp from canal
+    (('skill-168) (set-vector-meters! (-> arg0 extra trans)  344.9586 25.0751 -81.9843)) ;; on pole above door/awning in lil pocket near new haven
+    (('crate-1140) (set-vector-meters! (-> arg0 extra trans) 357.54  33.61  -69.56 )) ;; on top of vents near new haven, extended concussor from ^
+    (('crate-1141) (set-vector-meters! (-> arg0 extra trans)  142.6752 18.7872 -133.9132)) ;; under rubble with grind rail in middle area
+    (('burning-bush-25) (set-vector-meters! (-> arg0 extra trans) 334.2557 8.0999 -55.3177) ;; 
+      (quaternion-set! (-> arg0 quat) 0.0000  0.9999  0.0000  -0.0003))
+    (('burning-bush-31) (set-vector-meters! (-> arg0 extra trans) 381.4006 8.0999 -134.5408) ;; 
+      (quaternion-set! (-> arg0 quat) 0.0000  0.5319  -0.0000  -0.8467))
+    (('burning-bush-32) (set-vector-meters! (-> arg0 extra trans) 278.3242 7.9766 -315.7193) ;; 
+      (quaternion-set! (-> arg0 quat) 0.0000  0.1879  0.0000  -0.9821))
+    (('burning-bush-33) (set-vector-meters! (-> arg0 extra trans) 268.3970 8.0664 -44.4095) ;; in west, southish corner
+      (quaternion-set! (-> arg0 quat) 0.0 1.0 0.0 0.0))
+
+    ;; ====== NSTA (metal head nest (cave) (north) ()) ======
+    (('skill-234) (set-vector-meters! (-> arg0 extra trans) 1797.5676  -5.1098  1778.1246 )) ;; up in hole in ceiling in entrance hallway, extended concussor from IJ on yellow/orange egg thing
+    (('skill-233) (set-vector-meters! (-> arg0 extra trans) 1822.1123 -7.2554 1753.7292)) ;; ^ again but now quad chain IJ eggs lmao
+    (('skill-235) (set-vector-meters! (-> arg0 extra trans)  1829.3707  -44.7529  1644.6341)) ;; near vanilla orbs, but tucked into corner you kinda crouch walk into 
+    (('skill-229) (set-vector-meters! (-> arg0 extra trans) 1850.85  -30.97  1612.76 )) ;; on yellow/orange egg above where vanilla orbs are
+    (('skill-230) (set-vector-meters! (-> arg0 extra trans)  1546.9666  -90.9417  862.4261)) ;; in corner behind stalags at top of first room, can crawl in/out from right side
+    (('skill-231) (set-vector-meters! (-> arg0 extra trans) 1529.72  -116.1  861.99 )) ;; first room, in lower corner near black hole
+    (('skill-232) (set-vector-meters! (-> arg0 extra trans)  1658.8945  -116.9093  994.7319)) ;; first room, under entrance ramp near funny oob
+    (('skill-228) (set-vector-meters! (-> arg0 extra trans) 1602.0628 -115.3197 866.8390)) ;; in crevice / almost black hole between wall and ramp
+
+    ;; ====== DESERTG (ruins) ======
+    (('des-cactus-obstacle-77) (set-vector-meters! (-> arg0 extra trans) 2965.6030 43.3592 2921.0488) ;; mid rooftop, abah from skill-02
+      (quaternion-set! (-> arg0 quat) 0.1011  -0.6155  -0.0315  0.7809))
+    (('des-cactus-obstacle-80) (set-vector-meters! (-> arg0 extra trans) 2939.7453 59.8781 2913.6057 ) ;; higher level roof, abah from ^
+      (quaternion-set! (-> arg0 quat) 0.0000  0.5428  0.0000  0.8398))
+    (('des-cactus-obstacle-75) (set-vector-meters! (-> arg0 extra trans) 2898.6896 60.5042 2875.7370) ;; roor over from ^
+      (quaternion-set! (-> arg0 quat) 0.0000  0.0000  0.0000  1.0000))
+    (('des-cactus-obstacle-67) (set-vector-meters! (-> arg0 extra trans) 2917.5629 61.8190 2826.0173) ;; roor over from ^
+      (quaternion-set! (-> arg0 quat) 0.0000  0.0000  0.0000  1.0000))
+
+    ;; ====== VOLCANOX (volcano entrance) ======
+    (('dark-maker-idol-1026) (set-vector-meters! (-> arg0 extra trans) -124.3420 27.4540 -417.8297) ;; up on wall in first room, lots of ways up here
+      (quaternion-set! (-> arg0 quat)  0.2594  0.7843  -0.3276  0.4583))
+
+    ;; ====== TEMPLEX (monk temple exterior) ======
+    (('skill-212) (set-vector-meters! (-> arg0 extra trans) 4363.12  72.31  4008.60 )) ;; up on left wall as you first approach temple from desert (need to go behind invis wall from far left/early on)
+    (('skill-213) (set-vector-meters! (-> arg0 extra trans) 4375.0493 83.5116 4014.6745)) ;; in crevice up on left wall, follow from ^
+    (('skill-214) (set-vector-meters! (-> arg0 extra trans) 4396.57  73.89  4048.61 )) ;; around back of left wall before it gets OOB-y, follow from ^
+    (('urn-b-4) (set-vector-meters! (-> arg0 extra trans) 4131.32  167.20  4152.79 ) ;; in courtyard, up on fallen "pad" above outer door (hint for getting over invis wall to orb on robot statue)
+      (quaternion-set! (-> arg0 quat)  -0.1289      -0.8769       0.2406      -0.3954))
+    (('urn-c-7) (set-vector-meters! (-> arg0 extra trans) 4106.65  167.26  4273.75 ) ;; outside courtyard, up on vehicle blocking wall
+      (quaternion-set! (-> arg0 quat) 0.0611      -0.8906       0.0769       0.4438))
+    (('urn-a-8) (set-vector-meters! (-> arg0 extra trans) 4188.89  134.46  4178.07 ) ;; in courtyard, up on SNOW where torch is missing on right
+      (quaternion-set! (-> arg0 quat)  0.0322      -0.8997       0.0468       0.4326))
+    (('urn-a-9) (set-vector-meters! (-> arg0 extra trans) 4151.8759 125.7131 4097.0878)) ;; in courtyard, on torch
+    (('urn-b-10) (set-vector-meters! (-> arg0 extra trans) 4171.1611 182.0120 4085.0329)) ;; in courtyard, up on ledge to side of hallway stairs
+    (('urn-b-3) (set-vector-meters! (-> arg0 extra trans) 4197.9511 270.5099 4180.2700 ) ;; in courtyard, near the very top in broken section
+      (quaternion-set! (-> arg0 quat) 0.1470      -0.9352      -0.2252      -0.2302))
+    (('urn-c-6) (set-vector-meters! (-> arg0 extra trans) 4167.0932 121.2980 4080.2719)) ;; in courtyard, in "window" next to precur mosquito head
+    (('urn-c-14) (set-vector-meters! (-> arg0 extra trans) 4141.5795 226.2335 4101.3945 )) ;; in courtyard, halfway up wall on small ledge
+    (('w-parking-spot-18) (set-vector-meters! (-> arg0 extra trans) 4192.2407 145.4383 4340.9873 ) ;; sugar free reference
+      (set-vector-meters! (res-lump-struct arg0 'spawn-trans vector) 4192.2407 145.4383 4340.9873 )
+      (quaternion-set! (res-lump-struct arg0 'spawn-quat quaternion) -0.0300  -0.4903  0.0000  0.8709)
+      (quaternion-set! (-> arg0 quat) -0.0300  -0.4903  0.0000  0.8709))
+
+    ;; TEMPLEA
+    (('urn-a-2) (set-vector-meters! (-> arg0 extra trans) 4251.8857 74.0457 4219.2153)) ;; behind/in exposed waterfall
+    (('urn-c-2) (set-vector-meters! (-> arg0 extra trans) 4224.1181 119.1814 4070.2402)) ;; just inside temple
+    (('urn-b-2) (set-vector-meters! (-> arg0 extra trans) 4255.8398 125.7970 4099.2070)) ;; on top of torch near entrance
+    (('urn-c-10) (set-vector-meters! (-> arg0 extra trans) 4149.7958 44.4215 4368.1318)) ;; on wall in watchers room without ornaments
+    (('urn-c-9) (set-vector-meters! (-> arg0 extra trans) 4149.7958 47.8416 4368.1318)) ;; on wall in watchers room without ornaments
+
+    ;; ====== TEMPLED (monk temple light jak flight) ======
+    (('urn-a-15) (set-vector-meters! (-> arg0 extra trans) 4248.67  118.32  4648.52 )) ;; top of pillar climb in SW corner (follow orb trail, templeb-skill-13 ish)
+    (('light-eco-vent-34) (set-vector-meters! (-> arg0 extra trans) 4304.6909 85.0681 4484.4106)) ;; block tower close to seem
+    (('dark-eco-vent-12) (set-vector-meters! (-> arg0 extra trans) 4273.3706 81.1297 4567.7934)) ;; block tower mid towards seem
+    (('light-eco-vent-19) (set-vector-meters! (-> arg0 extra trans) 4304.9277 72.1381 4624.2265)) ;; block tower far from seem
+
+    ;; ====== TEMPLEB (monk temple poles/rotators/precursor triangle room) ======
+    ;; TODO - these orbs are in templex, not b, need to move to custom level orbs I guess?
+    ;; (('skill-212) (set-vector-meters! (-> arg0 extra trans)  4121.2294  64.0372  4728.5834)) ;; middle finger of oracle, hint for orb urn on torch
+    ;; (('skill-213) (set-vector-meters! (-> arg0 extra trans)   4210.1816  75.7331  4704.5761)) ;; up on door frame in triangle room leading to templed, hint for orb urn on torch
+    ;; (('skill-214) (set-vector-meters! (-> arg0 extra trans) 4159.7138 67.7620 4815.9785)) ;; up on torch in treasure room
+    (('urn-b-26) (set-vector-meters! (-> arg0 extra trans) 4135.6640 74.3720 4720.2871)) ;; up on torch between central oracles, concussor high jump from skill-212 (or abah)
+    (('urn-b-25) (set-vector-meters! (-> arg0 extra trans) 4181.1923 74.3720 4720.8168)) ;; up on torch between central oracles, concussor extended from skill-213 ^ (or maybe abah or something)
+    (('urn-a-34) (set-vector-meters! (-> arg0 extra trans) 4144.6430 38.5877 4759.5078) ;; below oracle hand, on stable but also slippery ground?
+      (quaternion-set! (-> arg0 quat) 0.0525  0.9363  0.1948  0.2873))      
+    (('urn-a-32) (set-vector-meters! (-> arg0 extra trans) 4249.6513 113.7980 4773.1738) ;; way up in corner in SE, controlled candle proxy
+      (quaternion-set! (-> arg0 quat) -0.1289  0.6170  0.2435  0.7371))
+    (('urn-a-31) (set-vector-meters! (-> arg0 extra trans) 4147.0590 114.0964 4636.5400) ;; way up in corner in North, controlled candle proxy
+      (quaternion-set! (-> arg0 quat) -0.0841  -0.8766  -0.2621  0.3946))
+    (('urn-a-33) (set-vector-meters! (-> arg0 extra trans) 4080.4311 113.7913 4793.5332) ;; way up in corner in SW, controlled candle proxy
+      (quaternion-set! (-> arg0 quat) -0.2754  -0.3221  0.0077  0.9056))
+    (('urn-c-30) (set-vector-meters! (-> arg0 extra trans) 4210.01  75.44  4704.68 )) ;; triangle room, top of arch above NE doorway to upper templed, come from torch
+    (('urn-c-31) (set-vector-meters! (-> arg0 extra trans) 4125.91  82.66  4455.02 )) ;; on small ledge on precursor thing in middle of upper rotator room
+    (('urn-c-29) (set-vector-meters! (-> arg0 extra trans) 4158.41  82.81  4488.81 )) ;; on small ledge on precursor thing in middle of upper rotator room
+    (('urn-b-7) (set-vector-meters! (-> arg0 extra trans) 4151.1772 78.7900 4527.4663) ;; on ground standpoint wall near templed to comb bridge
+      (quaternion-set! (-> arg0 quat) -0.3511  -0.1783  0.0683  0.9166))
+    (('urn-c-13)  ;; vanilla triple orb! 
+      (set-vector-meters! (-> arg0 extra trans) 4108.5952 132.5621 4706.1166) ;; way way up on NW pillar, you can proxy here but staying in-bounds is impossible maybe, so this is a semi-hover orb
+      (quaternion-set! (-> arg0 quat)  -0.2549  -0.5888  0.1041  -0.7598))
+    
+    ;; ====== CTYSLUMC (new haven north) ======
+    (('skill-171) (set-vector-meters! (-> arg0 extra trans)  497.8662  21.4755  -556.8512)) ;; on top of ledge above fake door opposite from freedomhq
+    (('skill-170) (set-vector-meters! (-> arg0 extra trans)  746.4497  21.3800  -582.8273)) ;; another ledge above fake door, near hanger
+    (('skill-169) (set-vector-meters! (-> arg0 extra trans) 558.4760 32.9201 -556.4490)) ;; fountain outside freedomhq, just moved way up to top of water effect. jetboard triangle turn super jump thing
+    (('skill-207) (set-vector-meters! (-> arg0 extra trans) 396.1460 -9.7146 -589.5195)) ;; underwater behind pipes in corner near NW
+
+    ;; ====== CTYSLUMB (new haven south) ======
+    (('skill-175) (set-vector-meters! (-> arg0 extra trans)  402.1042  20.9327  -181.6336)) ;; on pipe in corner near speedrun oob to ruins
+    (('skill-172) (set-vector-meters! (-> arg0 extra trans)  394.0835  21.3836  -166.6652)) ;; on high windowsill in corner just down from ctysluma, zoomer launch
+    (('skill-206) (set-vector-meters! (-> arg0 extra trans)   392.3831  21.1201  -19.2109)) ;; in pipes on wall near ctygenb entrance
+    (('skill-205) (set-vector-meters! (-> arg0 extra trans)  416.1460  28.5568  -11.5396)) ;; up on ledge, shitty extended concussor from ^
+    (('skill-174) (set-vector-meters! (-> arg0 extra trans)  726.9362  -9.8939  -67.7004)) ;; underwater in crevice near entrance from ctysluma
+    (('skill-173) (set-vector-meters! (-> arg0 extra trans)  541.6387 46.0828 -274.0468)) ;; up on ledge above windowsill with bushes and ctyslumb-skill-03 
+    (('crate-1132) (set-vector-meters! (-> arg0 extra trans) 540.3664 52.0341 -240.8164) ;; up from ^ on top of building
+      (quaternion-set! (-> arg0 quat) 0.0486  0.7096  -0.0681  0.6995))
+
+    ;; ====== CTYPORT (port) ======
+    ;; (('skill-144) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-145) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-146) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-147) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-227) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-186) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-157) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-185) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-156) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-158) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-143) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-148) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-159) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-160) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-161) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+    ;; (('skill-164) (set-vector-meters! (-> arg0 extra trans) )) ;; move-port-barge-orbs
+
+    (('skill-226) (set-vector-meters! (-> arg0 extra trans) 272.02  5.20  1327.21 )) ;; behind balls in center, ctyinda side
+    (('skill-167) (set-vector-meters! (-> arg0 extra trans)  321.9746  26.8046  1729.9516)) ;; intended pipe steps to vanilla orbs
+    (('skill-162) (set-vector-meters! (-> arg0 extra trans)  350.8096  57.7852  1764.5488)) ;; intended pipe steps to vanilla orbs
+    (('skill-163) (set-vector-meters! (-> arg0 extra trans)  66.7415  35.6970  1729.4565)) ;; intended pipe steps to vanilla orbs
+    (('skill-165) (set-vector-meters! (-> arg0 extra trans)  35.3857  52.1248  1764.6433)) ;; intended pipe steps to vanilla orbs
+    (('skill-166) (set-vector-meters! (-> arg0 extra trans)  -58.1490  29.0910  1326.2271)) ;; naughty ottsel roof
+    (('skill-225) (set-vector-meters! (-> arg0 extra trans)  206.2570  44.8846  1378.6987)) ;; up on fallen pipe in middle near sewers, just zoomer launch to spam concussor/spin
+    (('skill-188) (set-vector-meters! (-> arg0 extra trans)  56.0662  26.2693  1951.6672)) ;; up on city wall in back
+    (('skill-187) (set-vector-meters! (-> arg0 extra trans)  161.9607  20.5184  1206.4691)) ;; near sewers / towards where mars tomb would be, up behind metal sheet
+    (('crate-1142) (set-vector-meters! (-> arg0 extra trans) 112.5644 5.2090 1328.3836) ;; behind big balls near sewers
+      (quaternion-set! (-> arg0 quat) 0.0 0.0 0.0 -1.0))
+    (('crate-1143) (set-vector-meters! (-> arg0 extra trans) -220.9320 -1.0825 1637.4323) ;; on ramp into water where underport exit would be
+      (quaternion-set! (-> arg0 quat) -0.2641  -0.5464  0.2458  -0.7557))
+    (('crate-1326) (set-vector-meters! (-> arg0 extra trans) -407.2276 5.1906 1255.4074) ;; behind big balls near mhcity
+      (quaternion-set! (-> arg0 quat)  -0.0000  -0.8427  0.0001  -0.5383))
+    (('crate-1345) (set-vector-meters! (-> arg0 extra trans) 782.4699 5.1906 1249.3962) ;; behind big balls near ctyinda
+      (quaternion-set! (-> arg0 quat) 0.0001  0.6394  -0.0000  -0.7688))
+    (('crate-1344) (set-vector-meters! (-> arg0 extra trans) 725.9799 41.1748 1417.6951) ;; on top of big ball on path to ctyinda
+      (quaternion-set! (-> arg0 quat)  -0.0157  -0.9826  0.1555  -0.0998))
+
+    ;; non-orb crates
+    (('crate-1317) (set-vector-meters! (-> arg0 extra trans) -23.60  18.57  1444.92 ) ;; pipes outside path to dev pic
+      (quaternion-set! (-> arg0 quat) 0.0000  0.3545  0.0000  0.9350))
+    (('crate-1318) (set-vector-meters! (-> arg0 extra trans) -38.0943 0.5999 1428.9041 ) ;; pipes outside path to dev pic
+      (quaternion-set! (-> arg0 quat) -0.1385  0.8611  -0.3566  -0.3346))
+    (('crate-1319) (set-vector-meters! (-> arg0 extra trans) -54.32  3.44  1423.12 )) ;; along hidden route to dev pic
+    (('crate-1323) (set-vector-meters! (-> arg0 extra trans) -53.66  7.05  1422.11 )) ;; along hidden route to dev pic
+    (('crate-1325) (set-vector-meters! (-> arg0 extra trans) -53.64  12.55  1422.10 )) ;; along hidden route to dev pic
+    (('crate-1327) (set-vector-meters! (-> arg0 extra trans) -54.39  18.52  1423.05 )) ;; along hidden route to dev pic
+    (('crate-1330) (set-vector-meters! (-> arg0 extra trans) -53.53  22.01  1422.00 )) ;; along hidden route to dev pic
+    (('crate-1331) (set-vector-meters! (-> arg0 extra trans) -53.53  27.57  1422.00 )) ;; along hidden route to dev pic
+    (('crate-1332) (set-vector-meters! (-> arg0 extra trans) -54.36  33.51  1423.08 )) ;; along hidden route to dev pic
+    (('crate-1334) (set-vector-meters! (-> arg0 extra trans) -53.59  36.90  1422.05 )) ;; along hidden route to dev pic
+    (('crate-1320) (set-vector-meters! (-> arg0 extra trans) -53.59  42.31  1422.05 )) ;; along hidden route to dev pic
+    (('crate-1321) (set-vector-meters! (-> arg0 extra trans) -51.64  44.33  1420.30 )) ;; along hidden route to dev pic
+    (('crate-1322) (set-vector-meters! (-> arg0 extra trans) -47.93  48.04  1417.66 )) ;; along hidden route to dev pic
+    (('crate-1324) (set-vector-meters! (-> arg0 extra trans) -56.5890 57.7427 1408.7154 ) ;; along hidden route to dev pic
+      (quaternion-set! (-> arg0 quat) 0.2487  0.3983  -0.0822  0.8790))
+    (('crate-1328) (set-vector-meters! (-> arg0 extra trans) -69.81  63.59  1394.47 )) ;; along hidden route to dev pic
+    (('crate-1329) (set-vector-meters! (-> arg0 extra trans) -75.00  63.72  1388.56 )) ;; along hidden route to dev pic
+    (('crate-1333) (set-vector-meters! (-> arg0 extra trans) -93.61  63.97  1368.69 )) ;; along hidden route to dev pic
+    (('crate-1335) (set-vector-meters! (-> arg0 extra trans) -99.15  41.49  1362.10 )) ;; dropping down to rooftop with pic
+    (('crate-1336) (set-vector-meters! (-> arg0 extra trans) -117.90  44.74  1371.52 )) ;; dev pic
+    (('crate-1198) (set-vector-meters! (-> arg0 extra trans) -116.4020 27.6321 1383.7844)) ;; grindrail near hiphog
+    (('crate-1337) (set-vector-meters! (-> arg0 extra trans) -147.6550 32.0821 1411.0551)) ;; ^
+    (('crate-1338) (set-vector-meters! (-> arg0 extra trans) -192.8882 32.0821 1439.5035 )) ;; ^^
+    (('crate-1339) (set-vector-meters! (-> arg0 extra trans) -223.2357 32.0621 1432.1665)) ;; ^^^
+    (('crate-1343) (set-vector-meters! (-> arg0 extra trans) -272.2278 27.6521 1401.4531 )) ;; ^^^^
+    (('crate-1340) (set-vector-meters! (-> arg0 extra trans) 164.67  49.91  1750.76 )) ;; grindrail between towers
+    (('crate-1341) (set-vector-meters! (-> arg0 extra trans) 220.17  50.16  1745.23 )) ;; ^
+    (('crate-1342) (set-vector-meters! (-> arg0 extra trans) 7.79  40.85  1640.84 )) ;; grindrail from tower closer to mhcity
+    (('crate-1346) (set-vector-meters! (-> arg0 extra trans) -19.84  32.72  1583.98 )) ;; ^
+    (('crate-1348) (set-vector-meters! (-> arg0 extra trans) -77.03  40.41  1500.50 )) ;; jetboard-only section at end of grindrail, closer to mhcity
+    (('crate-1349) (set-vector-meters! (-> arg0 extra trans) 370.81  40.61  1636.50 )) ;; grindrail from tower closer to ctyinda
+    (('crate-1353) (set-vector-meters! (-> arg0 extra trans) 407.07  33.11  1581.74 )) ;; ^
+    (('crate-1197) (set-vector-meters! (-> arg0 extra trans) 457.54  40.49  1496.28 )) ;; jetboard-only section at end of grindrail, closer to ctyinda
+    (('crate-1159) (set-vector-meters! (-> arg0 extra trans) 581.05  7.70  1428.58 )) ;; behind invis wall behind pipes, before hallway to ctyinda
+    (('crate-1350) (set-vector-meters! (-> arg0 extra trans) 605.2816 -0.8129 1635.5150 ) ;; on ramp under water where cut jak2 turret mission would be
+      (quaternion-set! (-> arg0 quat) -0.2031  0.3632  -0.2984  -0.8588))
+    (('crate-1351) (set-vector-meters! (-> arg0 extra trans) 550.70  -1.44  1495.30 ) ;; on ramp under water from hallway to ctyinda
+      (quaternion-set! (-> arg0 quat) 0.3136  -0.4345  0.1785  0.8251))
+    (('crate-1352) (set-vector-meters! (-> arg0 extra trans) 466.5300 -0.9845 1404.2291) ;; on ramp under water near gun course
+      (quaternion-set! (-> arg0 quat) -0.3468  0.3846  -0.1002  -0.8495))
+    (('crate-1354) (set-vector-meters! (-> arg0 extra trans) 261.1956 -1.1142 1390.6545) ;; on ramp under water near sewers
+      (quaternion-set! (-> arg0 quat)  0.3604  -0.1219  0.0122  0.9246))
+    (('crate-1347) (set-vector-meters! (-> arg0 extra trans) 122.3066 -1.0431 1390.3979) ;; on ramp under water near sewers other side
+      (quaternion-set! (-> arg0 quat)  -0.3468  -0.0694  0.0263  -0.9349))
+    (('crate-1355) (set-vector-meters! (-> arg0 extra trans) -83.8939 -1.0173 1405.5980 ) ;; on ramp under water near hiphog
+      (quaternion-set! (-> arg0 quat)  -0.3238  -0.2392  0.1544  -0.9022))
+    (('crate-1356) (set-vector-meters! (-> arg0 extra trans) -167.8282 -1.1060 1497.0976 ) ;; on ramp under water from hallway to mhcity
+      (quaternion-set! (-> arg0 quat)  -0.3070  -0.4231  0.1883  -0.8313))
+    (('crate-1199) (set-vector-meters! (-> arg0 extra trans) 71.4860 -1.0699 1676.9094) ;; on ramp under water near tower mhcity/inside
+      (quaternion-set! (-> arg0 quat)  -0.0281  -0.9049  0.3598  -0.2254))
+    (('crate-1200) (set-vector-meters! (-> arg0 extra trans) 25.3639 -0.9923 1818.7943) ;; on ramp under water near tower mhcity/outside
+      (quaternion-set! (-> arg0 quat)  0.3575  -0.2135  0.0326  0.9085))
+    (('crate-1157) (set-vector-meters! (-> arg0 extra trans) 359.1248 -1.0982 1818.8353 ) ;; on ramp under water near tower cytinda/outside
+      (quaternion-set! (-> arg0 quat)  -0.3484  -0.0701  0.0814  -0.9311))
+    (('crate-1201) (set-vector-meters! (-> arg0 extra trans) 312.9546 -1.0952 1677.0134 ) ;; on ramp under water near tower ctyinda/inside
+      (quaternion-set! (-> arg0 quat)  -0.0820  0.9301  -0.3509  -0.0698))
+    (('crate-1158) (set-vector-meters! (-> arg0 extra trans) -281.27  7.69  1648.33 )) ;; far end where underport exit would be
+    (('crate-1202) (set-vector-meters! (-> arg0 extra trans) 666.61  7.64  1648.06 )) ;; other end where cut jak2 turret mission would be
+    (('crate-1064) (set-vector-meters! (-> arg0 extra trans) 216.54  2.94  1210.57 )) ;; behind rubble where mars tomb would be
+    (('crate-1065) (set-vector-meters! (-> arg0 extra trans) 177.63  3.09  1206.90 )) ;; ^
+    (('crate-1066) (set-vector-meters! (-> arg0 extra trans) -345.74  8.73  1430.68 )) ;; behind ball on mhcity path
+    (('crate-1160) (set-vector-meters! (-> arg0 extra trans) 526.15  26.41  1409.38 )) ;; grindrail near guncourse
+    (('crate-1063) (set-vector-meters! (-> arg0 extra trans) 494.67  32.03  1376.07 )) ;; ^
+    (('crate-1062) (set-vector-meters! (-> arg0 extra trans) 433.97  39.16  1381.25 )) ;; ^^
+    (('crate-1067) (set-vector-meters! (-> arg0 extra trans) -342.58  4.25  1236.97 )) ;; behind some metal head roots near mhcity
+
+    ;; CTYFARMB
+    (('yakow-12)
+      (set-vector-meters! (-> arg0 extra trans) -25.62  10.36 926.80)
+      )
+    (('yakow-8)
+      (logior! (-> arg0 extra perm status) (entity-perm-status dead)) ;; relocated to mhcitya
+      )
+    
+
+    ;; ====== SEWL (sewers 1.1) ======
+    (('crate-1249) (set-vector-meters! (-> arg0 extra trans) 435.5313 -137.9920 -224.8183) ;; in corner behind halfpipe
+      (quaternion-set! (-> arg0 quat) 0.0000  0.8644  0.0000  0.5027))
+    (('crate-1250) (set-vector-meters! (-> arg0 extra trans) 451.4246 -137.9920 -229.9092) ;; under walkway steps
+      (quaternion-set! (-> arg0 quat) 0.0000  0.0000  0.0000  1.0000))
+
+    ;; ====== SEWM (sewers 1.2) ======
+    (('crate-1236) (set-vector-meters! (-> arg0 extra trans) 187.7550 -161.3462 -268.1669) ;; on beam behind invis wall at first waterfall (into void)
+      (quaternion-set! (-> arg0 quat) 0.1662  0.9841  0.0613  -0.0071))
+    (('crate-1237) (set-vector-meters! (-> arg0 extra trans) 303.4149 -121.4953 -281.6883) ;; 
+      (quaternion-set! (-> arg0 quat) 0.0000  0.6966  0.0000  0.7174))
+    (('crate-1235) (set-vector-meters! (-> arg0 extra trans) 92.3550 -136.8666 -240.7576) ;; ammo/eco, in vanilla orb room
+      (quaternion-set! (-> arg0 quat) 0.0000  0.6886  0.0000  0.7250))
+    (('sew-fan-4) (set-vector-meters! (-> arg0 extra trans) 124.9756 -136.6828 -237.9628) ;; blocking vanilla orb room
+      (quaternion-set! (-> arg0 quat) 0.0000  0.7172  0.0000  0.6968))
+    (('sew-fan-5) (set-vector-meters! (-> arg0 extra trans) 134.8988 -145.1979 -238.6669) ;; blocking vanilla orb room
+      (quaternion-set! (-> arg0 quat) 0.0000  0.7008  0.0000  0.7133))
+    (('sew-fan-6) (set-vector-meters! (-> arg0 extra trans) 105.3948 -136.6486 -239.0018) ;; blocking vanilla orb room
+      (quaternion-set! (-> arg0 quat) 0.0000  0.6884  0.0000  0.7253))
+
+    ;; ====== SEWN (sewers 1.3) ======
+    (('crate-1238) (set-vector-meters! (-> arg0 extra trans) 16.8670 -157.7911 -332.5602) ;; side ledge on snaking slide
+      (quaternion-set! (-> arg0 quat)  0.0000  0.8946  0.0000  0.4468))
+    (('crate-1239) (set-vector-meters! (-> arg0 extra trans) 71.6141 -135.5906 -318.8776) ;; side ledge on snaking slide
+      (quaternion-set! (-> arg0 quat)  0.0000  0.9969  0.0000  0.0775))
+
+    ;; ====== SEWO (sewers 1.4) ======
+    (('crate-1273) (set-vector-meters! (-> arg0 extra trans) -484.62  -128.62  -358.97 )) ;; on pipes on unused walkway, funny oob haha you dieded
+    (('crate-1270) (set-vector-meters! (-> arg0 extra trans) -416.0042 -124.8511 -269.3194) ;; above doorway back to sewers 1
+      (quaternion-set! (-> arg0 quat)  0.1540  -0.8189  0.2581  0.4888))
+
+    ;; non-orb crates
+    (('crate-1272) (set-vector-meters! (-> arg0 extra trans) -518.41  -140.01  -321.93 )) ;; on unused pipe walkway
+    (('crate-1274) (set-vector-meters! (-> arg0 extra trans) -521.41  -140.00  -309.80 )) ;; on unused pipe walkway
+    (('crate-1269) (set-vector-meters! (-> arg0 extra trans) -531.16  -140.00  -305.56 )) ;; on unused pipe walkway
+    (('crate-1271) (set-vector-meters! (-> arg0 extra trans) -530.23  -137.96  -292.15 )) ;; on unused pipe walkway
+    
+    ;; ====== SEWH (sewers 2.3) ======
+    (('crate-1275) (set-vector-meters! (-> arg0 extra trans) -141.5998 -135.6395 191.2752) ;; under halfpipe bridge with turret, shoot thru wall or something
+      (quaternion-set! (-> arg0 quat) 0.0000  -0.7125  0.0000  0.7016))
+    (('crate-1278) (set-vector-meters! (-> arg0 extra trans) 115.4458 -99.9828 159.3372) ;; on top of big circular drain
+      (quaternion-set! (-> arg0 quat) 0.0000  0.7069  0.0000  0.7072))
+    (('crate-1277) (set-vector-meters! (-> arg0 extra trans) 99.3015 -94.5532 225.5558) ;; way up above elec gate, abah from skill-X
+      (quaternion-set! (-> arg0 quat) 0.0000  -0.7098  0.7043  0.0000))
+
+    ;; ====== SEWB (sewers 3.1) ======
+    (('crate-1266) (set-vector-meters! (-> arg0 extra trans) 184.8231 -102.3516 -25.2051) ;; up in drain overhead vanilla orb crates
+      (quaternion-set! (-> arg0 quat) 0.0000  0.9762  -0.0001  0.2167))
+    (('crate-1309) (set-vector-meters! (-> arg0 extra trans) 236.9696 -127.6612 31.7916 ) ;; on pipes near door
+      (quaternion-set! (-> arg0 quat) 0.0000  0.8947  0.0000  0.4465))
+    (('crate-1268) (set-vector-meters! (-> arg0 extra trans) 259.9540 -127.3362 57.0922) ;; on ledge over door to next section
+      (quaternion-set! (-> arg0 quat) 0.0000  0.9801  0.0000  0.1984))
+
+    ;; ====== SEWD (sewers 3.3) ======
+    (('crate-1303) (set-vector-meters! (-> arg0 extra trans) -88.2003 -117.9119 -2.5337) ;; on top of arch over slide entrance
+      (quaternion-set! (-> arg0 quat) 0.0614  0.7061  -0.0617  0.7026))
+    (('crate-1304) (set-vector-meters! (-> arg0 extra trans) -116.1558 -161.0129 -7.8680) ;; back up into waterslide, jump from lamp
+      (quaternion-set! (-> arg0 quat) 0.3022  -0.6814  -0.0587  0.6639))
+    (('crate-1306) (set-vector-meters! (-> arg0 extra trans) -154.7130 -188.0412 9.6511 )) ;; deep end of pool
+
+    ;; ====== CTYSLUMA (slums) ======
+    (('skill-176) (set-vector-meters! (-> arg0 extra trans)  737.9973  8.5156  -93.4688)) ;; in corner behind fence at entrance to ctyslumb
+    (('crate-1134) (set-vector-meters! (-> arg0 extra trans) 1127.86  30.61  290.19)) ;; up on mid rooftop near ctyindb, abah from across the street
+    (('crate-1133) (set-vector-meters! (-> arg0 extra trans) 795.46  30.60  88.92 )) ;; on mid rooftop corner, near island before new haven
+
+    
+    ;; ====== VINROOM (power station) ======
+    (('power-game-1) (set-vector-meters! (-> arg0 extra trans) 1126.64  25.49  1127.56  )) ;; shifted over to separate play game as jak vs dax
+
+    ;; ====== WASCITYA (spargus east) ======
+    (('skill-153) (set-vector-meters! (-> arg0 extra trans) 2190.15  52.7  -274.97 )) ;; on rooftop between wascityb/wasstada, jump from awning trampoline behind invis wall and up
+    (('skill-215) (set-vector-meters! (-> arg0 extra trans) 2268.1621 35.1424 -327.1119)) ;; behind support beam against rock wall on rooftop left of wasstada entrance
+    (('skill-152) (set-vector-meters! (-> arg0 extra trans) 2155.9523 51.5318 -168.5149)) ;; rooftop above torch on wall opposite wasstada towards wascityb, leaper shenanigans
+    (('skill-204) (set-vector-meters! (-> arg0 extra trans) 2109.06  57.91  -197.50 )) ;; rooftop along wall opposite wasstada towards wascityb, leaper shenanigans from ^
+    (('skill-197) (set-vector-meters! (-> arg0 extra trans) 2181.2036 56.3234 -127.9972)) ;; above window shade on rooftop up from ^^
+    (('skill-199) (set-vector-meters! (-> arg0 extra trans) 2456.1828  52.0929  -261.5411)) ;; above torch on rooftop right of wasstada, leaper shenanigans hint
+    (('skill-191) (set-vector-meters! (-> arg0 extra trans) 2512.52  32.87  -264.13)) ;; in NE corner, jak kinda gets stuck here lol
+    (('skill-193) (set-vector-meters! (-> arg0 extra trans) 2279.86  40.39  -23.81)) ;; on rooftop up from leaper proxy
+    (('skill-196) (set-vector-meters! (-> arg0 extra trans) 2521.0671  64.7488  -60.2245)) ;; way up in corner, leaper ground pound climb
+    (('skill-198) (set-vector-meters! (-> arg0 extra trans) 2226.2849 34.7993 118.0449)) ;; in corner right side of garage door
+    (('skill-194) (set-vector-meters! (-> arg0 extra trans) 2185.9807  50.6666  -0.8634)) ;; up in corner/rooftop above trampoline, leaper ground pound climb hint
+    (('skill-200) (set-vector-meters! (-> arg0 extra trans) 2429.9228  49.9902  29.2615)) ;; rooftop connected to one from leaper proxy, think u can also gp climb right to here
+    (('skill-192) (set-vector-meters! (-> arg0 extra trans) 2488.8442  21.8861  -193.2280)) ;; behind rocks against loose wall, below vanilla orb location
+    (('skill-195) (set-vector-meters! (-> arg0 extra trans) 2271.4248  30.1314  -136.6333)) ;; inside flame of torch in middle
+    (('skill-190) (set-vector-meters! (-> arg0 extra trans) 2540.8210 34.8293 -120.8247)) ;; in corner on east wall
+    (('skill-151) (set-vector-meters! (-> arg0 extra trans) 2056.7946 29.3255 -315.4466)) ;; in crevice of rocks on left wall just before wascityb
+    (('skill-201) (set-vector-meters! (-> arg0 extra trans) 2281.2519 80.8620 -160.0431)) ;; jetboard jump from end of spiral grind
+    (('skill-202) (set-vector-meters! (-> arg0 extra trans) 2348.4277  41.8501  -2.9000)) ;; leaper proxy hint
+    (('skill-203) (set-vector-meters! (-> arg0 extra trans) 2225.1616 33.3377 78.1152)) ;; tight lil corner on right wall before garage
+    (('skill-150) (set-vector-meters! (-> arg0 extra trans) 2355.97  21.23  -337.44 )) ;; crevice just right of wasstada entrance
+    (('skill-140) (set-vector-meters! (-> arg0 extra trans) 2423.1967 49.1520 -154.9888)) ;; up under windowsill at start of grindrail line
+    (('skill-149) (set-vector-meters! (-> arg0 extra trans) 2237.25  53.73  -177.98 )) ;; above lower windmill (l2->extended ff jetboard jump from nearby roof)
+    (('wascity-market-basket-a-24) (set-vector-meters! (-> arg0 extra trans) 2524.96  34.45  -157.65 )) ;; in corner on east wall 
+    (('urn-c-5) (quaternion-set! (-> arg0 quat) 0.0 0.0 0.0 1.0) (set-vector-meters! (-> arg0 extra trans) 2318.19  57.79  84.75)) ;; way up / around on flut proxy roof, towards garage
+    (('wascity-market-basket-b-17) (set-vector-meters! (-> arg0 extra trans) 2179.71  42.93  -58.65 )) ;; rooftop on right side towards garage, leaper shenanigans from further down
+    (('wascity-market-sack-b-40) (set-vector-meters! (-> arg0 extra trans) 2429.66  51.29  -271.22)) ;; rooftop on right side of wasstada, around corner from vanilla (leaper shenanigans over invis wall, skill-199 hint)
+    (('wascity-market-crate-59) (set-vector-meters! (-> arg0 extra trans) 2347.09  39.03  -198.77 )) ;; under grindrail on roof
+    (('des-burning-bush-19)
+      (set-vector-meters! (-> arg0 extra trans) 2283.91  44.57  -140.29) ;; 
+      )
+    (('des-burning-bush-20)
+      (set-vector-meters! (-> arg0 extra trans) 2294.16  50.40  9.99) ;; 
+      )
+    (('des-burning-bush-35)
+      (set-vector-meters! (-> arg0 extra trans) 2279.04  21.77  -6.85 ) ;; 
+      )
+    (('des-burning-bush-18)
+      (set-vector-meters! (-> arg0 extra trans) 2305.98  39.81  110.94 ) ;; 
+      )
+    (('des-burning-bush-30)
+      (set-vector-meters! (-> arg0 extra trans) 2235.13  31.04  -183.59 ) ;; 
+      )
+    (('des-burning-bush-21)
+      (set-vector-meters! (-> arg0 extra trans) 2411.80  40.28  -281.46 ) ;; 
+      )
+
+    ;; ====== WASCITYB (spargus west) ======
+    (('skill-139) (set-vector-meters! (-> arg0 extra trans) 2017.3160 55.1388 -374.2029)) ;; in torch along wall on right side leading to throne room
+    (('skill-133) (set-vector-meters! (-> arg0 extra trans) 2020.5428 79.6620 -374.8247)) ;; abah from wascityb-skill-03 hint from ^ torch
+    (('skill-217) (set-vector-meters! (-> arg0 extra trans) 1977.4611  32.5940  -436.0137)) ;; small crevice just left of elevator to throne room
+    (('skill-220) (set-vector-meters! (-> arg0 extra trans) 1967.62  37.08  -358.46 )) ;; between stoops not far from elevator
+    (('skill-142) (set-vector-meters! (-> arg0 extra trans) 1963.98  58.53  -246.22 )) ;; window awning on path from wascitya, leaper jump
+    (('skill-216) (set-vector-meters! (-> arg0 extra trans) 1946.85  58.9  -242.27 )) ;; opposite side of building from ^, leaper jump
+    (('skill-218) (set-vector-meters! (-> arg0 extra trans) 1909.30  37.71  -244.14 )) ;; crevice along path from wascitya
+    (('skill-219) (set-vector-meters! (-> arg0 extra trans) 1838.0230  27.1001  -426.4093)) ;; corner crevice on eastern wall by beach
+    (('skill-221) (set-vector-meters! (-> arg0 extra trans) 1803.1005  9.5955  -450.0989)) ;; deep crevice in rocks along shore, more east
+    (('skill-137) (set-vector-meters! (-> arg0 extra trans) 1455.23  60.50  -534.49)) ;; coconut on tree western beach (abah from other tree, wascityb-skill-04)
+    (('skill-138) (set-vector-meters! (-> arg0 extra trans) 1412.3383 40.2142 -483.8695)) ;; up under invis wall in crevice on wall near west end of beach
+    (('skill-136) (set-vector-meters! (-> arg0 extra trans) 1506.6127  99.1709  -185.0385)) ;; leaper climb hint 
+    (('skill-141) (set-vector-meters! (-> arg0 extra trans) 1733.9438  80.4723  -177.9469)) ;; crevice along peninsula wall, can also fall in from rooftop above
+    (('wascity-market-crate-20) 
+      (set-vector-meters! (-> arg0 extra trans) 1499.68  91.47  -222.95 ) ;; on rooftop kinda west side towards beach, leaper GP climb skill-136
+      (quaternion-set! (-> arg0 quat) 0.0 0.0 0.0 1.0))
+    (('wascity-market-basket-b-1) (set-vector-meters! (-> arg0 extra trans) 1470.97  70.26  -278.76 )) ;; further along footop from ^
+    (('wascity-market-crate-63) (set-vector-meters! (-> arg0 extra trans) 1494.24  62.48  -225.29 )) ;; crevice along wall, kinda towards west beach
+    (('wascity-market-basket-a-3) (set-vector-meters! (-> arg0 extra trans) 1724.57  98.27  -206.53)) ;; on small stone cylinder next to rooftop, with invis wall around it
+    (('wascity-market-sack-a-3) (set-vector-meters! (-> arg0 extra trans) 1695.40  95.55  -235.37 )) ;; on intended rooftop :O
+    (('wascity-market-basket-a-43) (set-vector-meters! (-> arg0 extra trans) 1726.19  6.86  -449.41 )) ;; on island with vanilla orb, underwater a bit
+    (('wascity-market-basket-a-35) 
+      (set-vector-meters! (-> arg0 extra trans) 1596.44  20.03  -481.41 ) ;; backside of turret cliff
+      (quaternion-set! (-> arg0 quat) -0.0298      -0.6506       0.0735       0.7552)) 
+    (('wascity-market-sack-a-11) (set-vector-meters! (-> arg0 extra trans) 1584.20  34.75  -291.85 )) ;; crevice between stoops, housing island (near beach)
+     
+    ;; ====== WASSTADA (spargus arena) ======
+    (('skill-211) (set-vector-meters! (-> arg0 extra trans) 2322.89  94.74  -392.67 )) ;; straight up from flag proxy 
+    (('urn-a-25) (set-vector-meters! (-> arg0 extra trans) 2272.74  98.13  -404.08 ) ;; up over invis wall onto awnings clockwise, flag proxy ofc
+      (set-vector! (-> arg0 quat) 0.1503      -0.7040      -0.0343      -0.6931))
+    (('urn-a-27) (set-vector-meters! (-> arg0 extra trans) 2436.15  95.60  -531.34 ) ;; way up on awnings counterclockwise, flag proxy, jetboard
+      (set-vector! (-> arg0 quat) -0.0116      -0.7445      -0.0268       0.6669))
+    (('urn-a-26) (set-vector-meters! (-> arg0 extra trans) 2278.66  32.01  -471.37 )) ;; healthpack - on training course "island"
+    
+    ;; ====== WASPALA (spargus palace) ======
+    (('skill-209) (set-vector-meters! (-> arg0 extra trans)  2022.1783  266.9973  -402.9075)) ;; top of precursor statue behind throne
+    (('skill-222) (set-vector-meters! (-> arg0 extra trans) 1978.9605 242.2532 -399.8515)) ;; in corner behind wheel behidn throne (dark jak)
+    (('skill-210) (set-vector-meters! (-> arg0 extra trans)  2001.1348  247.4380  -414.0994)) ;; RIGHT behind throne
+    (('urn-a-16) (set-vector-meters! (-> arg0 extra trans) 1990.4197 241.4400 -493.3398 )) ;; in water on far side from throne
+    (('urn-c-17) (set-vector-meters! (-> arg0 extra trans) 1956.5202 239.8999 -427.5701 )) ;; in water off to side of throne
+    ;; non-orb urns
+    (('urn-b-12) (set-vector-meters! (-> arg0 extra trans) 2036.12  241.16  -489.26 )) ;; 
+    (('urn-c-16) (set-vector-meters! (-> arg0 extra trans) 1962.37  239.81  -488.02 )) ;; 
+    (('urn-b-13) (set-vector-meters! (-> arg0 extra trans) 1990.65  239.72  -439.61 )) ;; 
+    (('urn-a-17) (set-vector-meters! (-> arg0 extra trans) 2025.98  246.96  -443.00 )) ;; 
+    (('urn-c-26) (set-vector-meters! (-> arg0 extra trans) 1987.22  241.94  -398.45 )) ;; 
+    (('urn-a-28) (set-vector-meters! (-> arg0 extra trans) 1982.27  241.59  -422.41 )) ;; 
+    (('urn-a-20) (set-vector-meters! (-> arg0 extra trans) 1956.26  242.07  -418.81 )) ;; 
+    (('urn-a-19) (set-vector-meters! (-> arg0 extra trans) 2020.44  239.34  -443.81 )) ;; 
+    (('urn-c-18) (set-vector-meters! (-> arg0 extra trans) 2056.26  239.66  -435.66 )) ;; 
+    (('urn-b-14) (set-vector-meters! (-> arg0 extra trans) 2007.43  239.72  -442.72 )) ;; 
+    (('urn-a-18) (set-vector-meters! (-> arg0 extra trans) 2054.6799 239.9299 -489.9201 )) ;; 
+    (('urn-c-20) (set-vector-meters! (-> arg0 extra trans) 2000.3804 241.7799 -398.5659 )) ;; 
+    (('urn-b-16) (set-vector-meters! (-> arg0 extra trans) 2005.16  239.91  -453.31 )) ;; 
+    (('urn-c-19) (set-vector-meters! (-> arg0 extra trans) 1993.78  241.71  -430.47 )) ;; 
+    (('urn-b-15) (set-vector-meters! (-> arg0 extra trans) 1989.21  239.77  -450.14 )) ;; 
+
+    ;; ====== STADIUM (stadium ruins east) ======
+    (('skill-239) (set-vector-meters! (-> arg0 extra trans)  373.3389  27.0050  -483.0043)) ;; top of exposed rebar grid near start
+    (('skill-223) (set-vector-meters! (-> arg0 extra trans) 388.77  8.92  -456.03 )) ;; behind invis wall at start, concussor over from ^
+    (('skill-224) (set-vector-meters! (-> arg0 extra trans)  349.2544  8.8823  -432.2265)) ;; down in crevice, immediate left from starting tunnel
+    (('skill-236) (set-vector-meters! (-> arg0 extra trans)  353.2688  42.7480  -465.0366)) ;; top of archway overhead at start (bunch of ways to get up to IJ)
+    (('skill-238) (set-vector-meters! (-> arg0 extra trans) 346.01  11.59  -428.10 )) ;; from top of archway^ concussor boosted over invis wall just over rubble, orb is on ledge below "oob"
+    (('skill-237) (set-vector-meters! (-> arg0 extra trans) 235.61  1.70  -403.73 )) ;; on far end of exposed rebar in first side area near start
+    (('crate-1214) (set-vector-meters! (-> arg0 extra trans) 388.28  15.98  -479.31 ) ;; behind invis wall at start, concussor over from skill-239
+      (quaternion-set! (-> arg0 quat) -0.0050  -0.9368  -0.2658  0.2271))
+    (('crate-1216) (set-vector-meters! (-> arg0 extra trans) 370.92  36.52  -490.88 )) ;; on edge of wall near start, jump over invis wall from skill-236
+    (('crate-1217) (set-vector-meters! (-> arg0 extra trans) 207.75  48.73  -468.10 )) ;; on lower part of rooftop, have to go close to left edge to drop from invis floor (double orb!)
+    
+    ;; ====== WASSTADB (training course) ======
+    (('wstd-training-dummy-1) (set-vector-meters! (-> arg0 extra trans) 2348.34  41.00  -458.75 ) ;; on small side ledge probably nobody notices
+      (quaternion-set! (-> arg0 quat) 0.0000       0.7088       0.0000      -0.7053))
+    (('wstd-training-dummy-978) (set-vector-meters! (-> arg0 extra trans) 2334.68  41.05  -519.24 ) ;; on side steps u only see if u suck
+      (quaternion-set! (-> arg0 quat) 0.0000      -0.7041       0.0000      -0.7100))
+
+    ;; HALFPIPE
+    
+    (('crate-4) (set-vector! (-> arg0 extra trans)  204226.5625  -14090.2402  -186818.5625  1.0) ;; halfpipe right
+      (set-vector! (-> arg0 quat)  -0.4723  0.5263  -0.4731  -0.5254))
+    (('crate-5) (set-vector! (-> arg0 extra trans)  204226.5625  -14090.2402  -148134.1181  1.0) ;; halfpipe right
+      (set-vector! (-> arg0 quat)  -0.4723  0.5263  -0.4731  -0.5254))
+    ;; 204226.5625  -14090.2402  -109449.6736
+    (('crate-6) (set-vector! (-> arg0 extra trans)  204226.5625  -14090.2402  -70765.22917  1.0) ;; halfpipe right
+      (set-vector! (-> arg0 quat)  -0.4723  0.5263  -0.4731  -0.5254))
+    (('crate-7) (set-vector! (-> arg0 extra trans)  204226.5625  -14090.2402  -32080.78472  1.0) ;; halfpipe right
+      (set-vector! (-> arg0 quat)  -0.4723  0.5263  -0.4731  -0.5254))
+    (('crate-8) (set-vector! (-> arg0 extra trans)  204226.5625  -14090.2402   6603.659722  1.0) ;; halfpipe right
+      (set-vector! (-> arg0 quat)  -0.4723  0.5263  -0.4731  -0.5254))
+    (('crate-9) (set-vector! (-> arg0 extra trans)  204226.5625  -14090.2402  45288.10417  1.0) ;; halfpipe right
+      (set-vector! (-> arg0 quat)  -0.4723  0.5263  -0.4731  -0.5254))
+    (('crate-10) (set-vector! (-> arg0 extra trans)  204226.5625  -14090.2402  83972.54861  1.0) ;; halfpipe right
+      (set-vector! (-> arg0 quat)  -0.4723  0.5263  -0.4731  -0.5254))
+    (('crate-11) (set-vector! (-> arg0 extra trans)  204226.5625  -14090.2402  122656.9931  1.0) ;; halfpipe right
+      (set-vector! (-> arg0 quat)  -0.4723  0.5263  -0.4731  -0.5254))
+    (('crate-12) (set-vector! (-> arg0 extra trans)  204226.5625  -14090.2402  161341.4375  1.0) ;; halfpipe right
+      (set-vector! (-> arg0 quat)  -0.4723  0.5263  -0.4731  -0.5254))
+    
+    (('crate-13) (set-vector! (-> arg0 extra trans)   -204226.5625  -14090.2402  -186818.5625 1.0) ;; halfpipe left
+      (set-vector! (-> arg0 quat)  0.4723  0.5263  -0.4731  0.5254))
+    (('crate-14) (set-vector! (-> arg0 extra trans)  -204226.5625  -14090.2402  -148134.1181 1.0) ;; halfpipe left
+      (set-vector! (-> arg0 quat)  0.4723  0.5263  -0.4731  0.5254))
+    (('crate-15) (set-vector! (-> arg0 extra trans)  -204226.5625  -14090.2402  -109449.6736 1.0) ;; halfpipe left
+      (set-vector! (-> arg0 quat)  0.4723  0.5263  -0.4731  0.5254))
+    (('crate-18) (set-vector! (-> arg0 extra trans)  -204226.5625  -14090.2402  -70765.22917 1.0) ;; halfpipe left
+      (set-vector! (-> arg0 quat)  0.4723  0.5263  -0.4731  0.5254))
+    (('crate-16) (set-vector! (-> arg0 extra trans)  -204226.5625  -14090.2402  -32080.78472 1.0) ;; halfpipe left
+      (set-vector! (-> arg0 quat)  0.4723  0.5263  -0.4731  0.5254))
+    (('crate-17) (set-vector! (-> arg0 extra trans)  -204226.5625  -14090.2402   6603.659722 1.0) ;; halfpipe left
+      (set-vector! (-> arg0 quat)  0.4723  0.5263  -0.4731  0.5254))
+    ;; -204226.5625  -14090.2402   45288.10417
+    (('crate-19) (set-vector! (-> arg0 extra trans)  -204226.5625  -14090.2402   83972.54861 1.0) ;; halfpipe left
+      (set-vector! (-> arg0 quat)  0.4723  0.5263  -0.4731  0.5254))
+    (('crate-20) (set-vector! (-> arg0 extra trans)  -204226.5625  -14090.2402   122656.9931 1.0) ;; halfpipe left
+      (set-vector! (-> arg0 quat)  0.4723  0.5263  -0.4731  0.5254))
+    (('crate-21) (set-vector! (-> arg0 extra trans)  -204226.5625  -14090.2402   161341.4375 1.0) ;; halfpipe left
+      (set-vector! (-> arg0 quat)  0.4723  0.5263  -0.4731  0.5254))
+
+    (('eco-1) ;; green eco, up on last chain of platforms
+      (set-vector-meters! (-> arg0 extra trans)   148.08 -29.40 -42.08  )) 
+    (('eco-2) ;; blue eco, early platform, closer to launcher
+      (set-vector-meters! (-> arg0 extra trans)   88.21  -33.4  -62.0)) 
+    (('eco-3) ;; red eco, early platform
+      (set-vector-meters! (-> arg0 extra trans)   71.82  -33.4  -62.0)) 
+    (('eco-4) ;; yellow eco, early platform
+      (set-vector-meters! (-> arg0 extra trans)   56.00  -33.4  -62.0))
+
+    (('dark-eco-vent-1)
+      (set-vector-meters! (-> arg0 extra trans) 73.9986 -37.8954 -49.9974))
+    (('light-eco-vent-4)
+      (set-vector-meters! (-> arg0 extra trans) 80.0035 -37.9054 -49.9976))
+    (('ecovent-2) ;; red vent
+      (set-vector-meters! (-> arg0 extra trans) 74.3520 -38.2316 -44.1268))
+    (('ecovent-1) ;; yellow vent
+      (set-vector-meters! (-> arg0 extra trans) 80.0035 -38.2316 -44.1268))
+    (('ecovent-3) ;; blue vent
+      (set-vector-meters! (-> arg0 extra trans) 163.6688 23.9911 -49.6220))
+    (('ladder-1) ;; 
+      (set-vector-meters! (-> arg0 extra trans) 163.6597 11.2745 -49.6324))
+    (('ladder-3) ;; 
+      (set-vector-meters! (-> arg0 extra trans) 163.7432 -15.9883 -42.0092))
+    (('precur-warp-effect-1)
+      (set-vector-meters! (-> arg0 extra trans) 172.2319 -10.3819 39.2106)
+      (quaternion-set! (-> arg0 quat) 0.0000       0.7065       0.0000       0.7077))
+    (('urn-a-1)
+      (set-vector-meters! (-> arg0 extra trans) 115.9935 -34.9973 -49.9939))
+    (('urn-b-1)
+      (set-vector-meters! (-> arg0 extra trans) 131.9950 -33.0070 -50.0013))
+    (('urn-c-1)
+      (set-vector-meters! (-> arg0 extra trans) 99.9998 -37.0175 -49.9980))
+    (('dark-maker-idol-1017)
+      (set-vector-meters! (-> arg0 extra trans) -18.2987 -53.2578 67.4365))
+    (('crate-976)
+      (set-vector-meters! (-> arg0 extra trans) 139.4401 -30.6148 49.7607 ))
+
+    )
+  (none))
+
+;; (defun mod-turbo-jetboard? () 
+;;   (or (= (level-status *level* 'stadiumb) 'active)
+;;       (= (level-status *level* 'stadiumc) 'active)
+;;       (= (level-status *level* 'stadiumd) 'active)))
+      
+(define *last-hover-time* (the time-frame #f))
+(define *hover-collected-grace-time* (the time-frame #f))
+(define *last-no-hover-zone-time* (the time-frame #f))
+
+(defun hover-need-to-cooldown? ()
+  ;; need to cooldown if we have a last hover time and it isn't 1m ago
+  (if (and (-> *mod-settings* hover-restriction?)
+           *last-hover-time* 
+           (not (g-time-elapsed? *last-hover-time* (seconds 30))))
+    #t
+    #f
+    )
+  )
+
+(defun lightjak-flight-need-to-cooldown? ()
+  ;; need to cooldown if we have a last hover time and it isn't 1m ago
+  (if (and (-> *mod-settings* hover-restriction?)
+           *last-lightjak-flight-glitch-time*
+           (not (g-time-elapsed? *last-lightjak-flight-glitch-time* (seconds 30))))
+    #t
+    #f
+    )
+  )
+
+(defun try-play-no-hover-zone-audio ()
+  (when (or (not *last-no-hover-zone-time*)
+            (g-time-elapsed? *last-no-hover-zone-time* (seconds 5)))
+    ;; "no hover zone" dialogue if its been 5s since last one
+    (play-sound-file "nohoverzone.mp3" (the int (* (-> *setting-control* user-current sfx-volume) 200.0)))
+    ;; remember last time we played this dialogue
+    (set-g-time! *last-no-hover-zone-time*)
+    )
+  (none)
+  )
+
+(defun skill-alt-actor-check? ((skill collectable) (for-pickup? symbol))
+  (let ((alt-actor (entity-actor-lookup (-> skill entity) 'alt-actor 0)))
+    (when (and alt-actor (-> alt-actor extra process))
+      (when (and for-pickup? ;; visibility check would skip this
+                *target* 
+                (= (-> *target* next-state) target-hit)
+                )
+        ;; we have some alt-actor but jak is getting knocked, no pickup
+        (return #f)
+        )
+
+      (case (-> alt-actor etype symbol)
+        (('yakow 'yakow-dummy)
+          (when (zero? (-> (the yakow (-> alt-actor extra process)) incoming-attack-id))
+            ;; yakow hasnt been attacked yet, prevent pickup/hide
+            (return #f)
+            )          
+          )
+        (('tow-spawner)
+          (when (not (logtest? (-> alt-actor extra perm status) (entity-perm-status subtask-complete)))
+            (return #f))
+          )
+        (else
+          (when (not (or (name= (-> alt-actor extra process state name) 'die)
+                         (name= (-> alt-actor extra process state name) 'die-hidden)
+                         (name= (-> alt-actor extra process state name) 'joint-exploder-shatter)
+                         ))
+            ;; alt-actor is not dead/triggered, prevent pickup/hide
+            (return #f)
+            )
+          (when (and for-pickup? (not (time-elapsed? (-> skill state-time) (seconds 0.5))))
+            ;; visible for a bit before allow pickup
+            (return #f)
+            )
+          )
+        )
+      )
+    )
+  ;; allow pickup
+  #t
+  )
+
+(defun clear-entity-dead-status ((name string))
+  (let ((actor (entity-by-name name)))
+    (when actor
+      (logclear! (-> actor extra perm status) (entity-perm-status dead))
+      )
+    )
+  (none)
+  )
+
+(defun clear-entity-kill-mask ((name string))
+  (let ((actor (entity-by-name name))
+        )
+    (when actor
+      (set! (-> (res-lump-data actor 'kill-mask (pointer task-mask))) (task-mask))
+      (set! (-> actor extra kill-mask) (task-mask))
+      )
+    )
+  (none)
+  )
+
+(defun skill-follow-y-offset ((orb-name string) (pd-name string) (y-offset float))
+  (let ((orb (the skill (process-by-ename orb-name)))
+        (pd (the process-drawable (process-by-ename pd-name))))
+    (when (and orb pd) ;; (logtest? (-> orb draw status) (draw-control-status no-draw-bounds)))
+      (vector-copy! (-> orb root trans) (-> pd root trans))
+      (+! (-> orb root trans y) y-offset)
+      (vector-copy! (-> orb base) (-> orb root trans))
+      )
+    )
+  (none)
+  )
+
+(defun skill-follow-min-y ((orb-name string) (pd-name string) (min-y float))
+  (let ((orb (the skill (process-by-ename orb-name)))
+        (pd (the process-drawable (process-by-ename pd-name))))
+    (when (and orb pd) ;; (logtest? (-> orb draw status) (draw-control-status no-draw-bounds)))
+      (vector-copy! (-> orb root trans) (-> pd root trans))
+      (set! (-> orb root trans y) (fmax min-y (-> orb root trans y)))
+      (vector-copy! (-> orb base) (-> orb root trans))
+      )
+    )
+  (none)
+  )
+
+(define *port-barge-orb-names* (the-as (array string) 
+  (new 'static 'boxed-array :type string :length 16 :allocated-length 16
+    "skill-144"
+    "skill-145"
+    "skill-146"
+    "skill-147"
+    "skill-227"
+    "skill-186"
+    "skill-157"
+    "skill-185"
+    "skill-156"
+    "skill-158"
+    "skill-143"
+    "skill-148"
+    "skill-159"
+    "skill-160"
+    "skill-161"
+    "skill-164"
+    )))
+(define *port-barge-temp-idx* 0)
+(define *port-barge-pids* (the-as (array int)
+  (new 'global 'boxed-array int32 16)))
+
+(defun move-port-barge-orbs ()
+  ;; reset idx and list
+  (set! *port-barge-temp-idx* 0)
+  (dotimes (i 16)
+    (set! (-> *port-barge-pids* i) 0))
+  ;; look for barges
+  (when *vehicle-manager*
+    (iterate-process-tree *vehicle-manager*
+      (lambda ((arg0 process-drawable))
+        (when (= (-> arg0 type symbol) 'barge)
+          (set! (-> *port-barge-pids* *port-barge-temp-idx*) (-> arg0 pid))
+          ;; (dbg-format 0 "found barge pid ~D~%" (-> arg0 pid))
+          (+! *port-barge-temp-idx* 1)
+          )
+        #t
+        )
+      *null-kernel-context*)
+    ;; sort barge pids for consistent orb assignment - buggy results, yolo it
+    (qs-sort *port-barge-pids*)
+    ;; map orbs to barges, if we got any
+    (dotimes (i (min 16 *port-barge-temp-idx*))
+      (let* ((orb (the skill (process-by-ename (-> *port-barge-orb-names* i))))
+             (bpid (-> *port-barge-pids* i))
+             (barge (the process-drawable (process-by-pid bpid)))
+             (tmp-vec (new-stack-vector0))
+             )
+        (cond 
+          ((and (nonzero? bpid) orb barge)
+            ;; (dbg-format 0 "moving ~S to barge pid ~D~%" (-> *port-barge-orb-names* i) bpid)
+            (set! (-> orb root trans x) (-> barge root trans x))
+            (set! (-> orb root trans z) (-> barge root trans z))
+            ;; convert the quaternion to a vector representing rotation around z axis (isnt it the y axis in GOAL tho?)
+            (vector-z-quaternion! tmp-vec (-> barge root quat))
+            ;; shift orbs's position opposite the barge angle, by 1m
+            (vector-! (-> orb root trans) (-> orb root trans) (vector-normalize! tmp-vec (meters 9.45)))
+            (set! (-> orb root trans y) (fmin (-> orb root trans y) (meters 3.7)))
+
+            (set! (-> orb base x) (-> orb root trans x))
+            (set! (-> orb base y) (meters 2.7))
+            (set! (-> orb base z) (-> orb root trans z))
+
+            ;; make sure orb not hidden
+            (logclear! (-> orb draw status) (draw-control-status no-draw-bounds))
+            )
+          (orb
+            (dbg-format 0 "hiding barge-less orb ~S~%" (-> *port-barge-orb-names* i))
+            ;; orb but couldn't find barge? make it invis just in case
+            (logior! (-> orb draw status) (draw-control-status no-draw-bounds))
+            )
+          )
+        )
+      )
+    )
+  (none))
+
+(defun level-status ((this level-group) (arg0 symbol))
+  "Get the status of a level by name, return #f if no level is found."
+  (let ((v1-1 (level-get *level* arg0)))
+    (if v1-1
+        (-> v1-1 status))))
+
+(defun active-level? ((lvl-name symbol))
+  (= (level-status *level* lvl-name) 'active)
+  )
+
+(defun all-orbs-check? ((idx uint))
+  (= (-> *level-orb-collected-counts* idx) (-> *level-orb-total-counts* idx))
+  )
+
+(define *zoom-sensitivity-scale* 1.0)
+(define *show-mini-bigmap* #f)
+(define *mini-bigmap-toggle-time* (the time-frame #f))
+(define-extern *credits-rolling?* symbol)
+(define-extern start-credits-yolo (function none))
+(define-extern orb-placer-maintenance (function none))
+(defun mod-run-each-frame ()
+  (when *debug-segment*
+    (orb-placer-maintenance)
+    )
+    
+  (task-close! "city-win-introduction") ;; NG+ or something
+;;   (task-close! "city-oracle-level3-training") ;; close oracle stuff
+;;   (logior! (-> *game-info* features) (game-feature board darkjak darkjak-bomb0 darkjak-bomb1 darkjak-invinc darkjak-giant)) ;; give board and dark jak stuff
+
+  (baby-mode-find-closest-orb)
+
+  ;; debug stuff for jak spawn/despawn
+  (when (and *debug-segment*
+             (cpad-hold? 0 l3)
+             (cpad-pressed? 0 r3))
+    ;; probably trying to control jak/camera, turn off edit mode
+    (set! *entity-placer-active?* #f)
+    ;; toggle target
+    (cond
+      (*target*
+        (stop 'debug)
+        )
+      (else
+        (start 'play (get-current-continue-forced *game-info*))
+        (send-event *camera* 'set-slave-option (cam-slave-options COLLIDE))
+        (send-event *camera* 'set-slave-option (cam-slave-options LINE_OF_SIGHT))
+        )
+      )
+    )
+
+  ;; check for orb tagging / "zooming"
+  (when (and *target* (name= (-> *target* state name) 'target-look-around)
+             (pause-allowed?) (not (paused?)))
+    ;; we're first-person, draw reticle
+    (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
+                                (bucket-id debug-no-zbuf1))
+      ;; reset bucket settings prior to drawing - font won't do this for us, and
+      ;; draw-raw-image can sometimes mess them up. (intro sequence)
+      (dma-buffer-add-gs-set-flusha buf (alpha-1 (new 'static 'gs-alpha :b #x1 :d #x1)) (tex1-1 (new 'static 'gs-tex1 :mmag #x1 :mmin #x1)))
+
+      ;; init font-ctx for dead center
+      (let ((font-ctx (new 'stack 'font-context *font-default-matrix* 256 203 0.0 (font-color default) (font-flags kerning large middle))))
+        (set! (-> font-ctx scale) 0.325)
+        (set! (-> font-ctx color) (font-color transparent))
+        (draw-string-adv "o" buf font-ctx)
+        )
+      )
+
+    ;; ...and zoomed in/out (but not both)
+    (when (!= (cpad-pressed? 0 l2) (cpad-pressed? 0 r2))
+      (let* ((cur (* 0.005493164 (-> *math-camera* fov)))
+             (arg2 (fmax 28.0 (fmin 64.0 (+ cur (if (cpad-pressed? 0 r2) -12.0 12.0)))))
+             )
+        (set! *zoom-sensitivity-scale* (+ 1.0 (/ (- 64.0 arg2) 24.0)))
+        (set-setting-by-param *setting-control* 'fov #f (* 182.04445 arg2) 0)
+        (if *camera-combiner*
+          (set! (-> *camera-combiner* fov) (* 182.04445 arg2))
+          )
+        (if (and *camera* (-> *camera* slave))
+          (set! (-> *camera* slave 0 fov) (* 182.04445 arg2))
+          )
+        )
+      )
+    
+    ;; ...and pressed a face button
+    (when (cpad-pressed? 0 triangle square circle x l1 r1)
+      (let ((v-cam (new-stack-vector0))
+          (v-tmp (new-stack-vector0))
+          (skill-pos-offset (new-stack-vector0))
+          (dist 0.0)
+          (off 0.0)
+          (ratio 0.0)
+          )
+        ;; figure out where we're looking
+        (vector-matrix*! v-cam (new 'static 'vector :z 1.0) (math-camera-matrix))
+
+        ;; check if any orbs are in our line of sight
+        (dotimes (s4-2 LEVEL_MAX)
+          (cond
+            ((= (-> *level* level s4-2 status) 'active)
+              (let ((entities (-> *level* level s4-2 entity)))
+                (dotimes (idx (-> entities length))
+                  (let ((entity-link (-> entities data idx)))
+                    (when (and (-> entity-link entity) (nonzero? (-> entity-link entity))
+                              (-> entity-link process)
+                              (= (-> (the entity-actor (-> entity-link entity)) etype symbol) 'skill)
+                              )
+                      (let ((s (the skill (-> entity-link process))))
+                        ;; we have a live orb, figure out how far away it is relative to camera
+                        (vector-copy! skill-pos-offset (-> s root trans))
+                        (+! (-> skill-pos-offset y) (meters 0.6)) ;; from base of orb to middle
+                        (vector-! v-tmp skill-pos-offset (camera-pos))
+                        (set! dist (vector-length v-tmp))
+
+                        ;; project in v-cam direction with length dist, then compare position to actual orb
+                        (vector-copy! v-tmp v-cam)
+                        (vector-normalize! v-tmp dist)
+                        (vector+! v-tmp (camera-pos) v-tmp)
+
+                        ;; figure out how far off our projection would be
+                        (set! off (vector-vector-distance v-tmp skill-pos-offset))
+                        ;; compute ratio scaled based on cube root of the distance to orb
+                        (set! ratio (/ (cube-root dist) off))
+
+                        ;; the closer we are, the less accurate the vectors need to be, so lower threshold
+                        (when (> ratio 0.011)
+                          (dbg-format 0 "tagging orb ~A~%" (-> s name))
+                          (show-hud #f)
+                          (set! *mini-bigmap-toggle-time* (get-current-time))
+                          (true! *show-mini-bigmap*)
+                          (process-entity-status! s (entity-perm-status bit-15) #t)  ;; overload this bit for crate orbs
+                          (sound-play "gem-spawn" :pitch -0.5)
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+
+  ;; hover check/cooldown stuff
+  (cond
+    ((and (board-hovering?) 
+          (or (not *hover-collected-grace-time*)
+              (g-time-elapsed? *hover-collected-grace-time* (seconds 2))
+              )
+          )
+      ;; hovering and we didnt recently pickup a hover orb -> update last hover time
+      (set-g-time! *last-hover-time*)
+      )
+    ((not (hover-need-to-cooldown?))
+      (set! *last-hover-time* (the time-frame #f))
+      )
+    )
+  
+  (when (not (lightjak-flight-need-to-cooldown?))
+    (set! *last-lightjak-flight-glitch-time* (the time-frame #f)))
+
+  ;; loading hacks
+  (cond
+    ((in-bubble-m? 169.71  474.42  -40.11 12.0)  ;; halfway down elevator factoryd > factoryc, should be no-op when going up since not loaded
+      (script-eval '(want-display 'factoryc 'display))
+      )
+    ((in-bubble-m?  14.2037  -3460.4550  -979.4643 100.0) ;; end of subrails 2 jump to railx
+      (script-eval '(continue "railx-warp"))
+      )
+    ((in-bubble-m? 4235.20  66.03  4685.42 25.0) ;; hallway from triangle room to upper templed (rescue seem/light jak flight section)
+      (script-eval '(want-load 'templea 'templeb 'templed))
+      )
+    ((in-bubble-m? 4210.62  57.16  4704.14 25.0) ;; exiting ^ hallway back to triangle room
+      (script-eval '(want-load 'templea 'templeb 'templec))
+      )
+    ((in-bubble-m? 4276.21  53.38  4784.63 25.0) ;; hallway from triangle room to lower templed (where big skip happen :O)
+      (script-eval '(want-load 'templea 'templeb 'templed))
+      )
+    ((in-bubble-m? 4248.67  51.63  4785.09 25.0) ;; exiting ^ hallway back to triangle room
+      (script-eval '(want-load 'templea 'templeb 'templec))
+      )
+    ((in-bubble-m? 4157.98  47.86  4530.81 20.0) ;; hallway from precursor room to rotator room
+      (script-eval '(want-display 'templed 'display))
+      )
+    )
+
+  ;; palette hacks
+  (case (-> (level-get-target-inside *level*) name)
+    (('railx)
+      ;; turn on some palettes so not dark
+      (set! (-> *time-of-day-context* mode) (time-of-day-palette-id palette-0 palette-1 palette-2 palette-3 palette-4 palette-5 palette-6 palette-7))
+      )
+    (else
+      ;; default palette
+      (time-of-day-setup #t)
+      )
+    )
+
+  ;; rubblea -> stadiumb
+  (let ((plane (process-by-ename "blocking-plane-13"))
+        (r1454 (region-lookup-by-id 1454))
+        (r1796 (region-lookup-by-id 1796))
+        (r1823 (region-lookup-by-id 1823)))
+    (when plane
+      (send-event plane 'off))
+    (when r1454
+      (set! (-> r1454 on-exit) '(want-load 'stadiuma 'stadiumb 'rubblea)))
+    (when r1796
+      (set! (-> r1796 on-exit) '(begin (send-event *task-manager* 'missile-spawners 0) (want-display 'stadiumb 'display))))
+    (when r1823
+      (set! (-> r1796 on-enter) '(begin (none)))) ;; no talker-spawn
+    )
+
+  ;; precura/b
+  ;; open door to precurb (mech section)
+  (let ((door1 (entity-by-name "precura-door-a-1"))
+        (door2 (entity-by-name "precura-door-a-2"))
+        (r50 (region-lookup-by-id 1350))
+        )
+    (when door1 (set! (cdr (res-lump-struct door1 'open-test pair)) '(#t)))
+    (when door2 (set! (cdr (res-lump-struct door2 'open-test pair)) '(#t))) ;; (entity-status? "dp-bipedal-109" subtask-complete no-birth) (entity-status? "dp-bipedal-110" subtask-complete no-birth) (entity-status? "dp-bipedal-111" subtask-complete no-birth) (entity-status? "dp-bipedal-176" subtask-complete no-birth) (entity-status? "dp-bipedal-177" subtask-complete no-birth))))
+    (when r50
+      (set! (-> r50 on-enter) '(want-load 'precura 'precurb)))
+    )
+  
+  ;; prevent precurb deload / prevent cutscene in final room of mech section
+  (let ((r54 (region-lookup-by-id 1354))
+        (r57 (region-lookup-by-id 1357))
+        (r58 (region-lookup-by-id 1358))
+        (door (entity-by-name "precur-door-b-3")))
+    (when door 
+      (set! (cdr (res-lump-struct door 'on-inside pair)) '((want-load 'precura 'precurb)))
+      (set! (cdr (res-lump-struct door 'on-notice pair)) '(#t '(precura precurb)))
+      )
+    (when r54 
+      (set! (-> r54 on-enter) '(want-load 'precura 'precurb)))
+    (when r57 
+      (set! (-> r57 on-enter) #f))
+    (when r58
+      (set! (-> r58 on-enter) '(want-load 'precura 'precurb)))
+    )
+  ;; precurc/d
+  ;; door to elevator to precurd
+  (let ((door (entity-by-name "precur-door-a-1")))
+    (when door 
+      (set! (cdr (res-lump-struct door 'open-test pair)) '(#t))) ;; (or (task-closed? "precursor-destroy-ship-resolution") (and (entity-status? "dp-bipedal-100" subtask-complete no-birth) (entity-status? "dp-bipedal-101" subtask-complete no-birth) (entity-status? "dp-bipedal-102" subtask-complete no-birth) (entity-status? "dp-bipedal-103" subtask-complete no-birth)))))
+    )
+
+  ;; desertf - open marauder stronghold doors when jak in bubble
+  (when (in-bubble-m? 1461.43  24.70  3030.57 50.0)
+    (send-event (process-by-ename "des-draw-bridge-1") 'lower))
+  (when (in-bubble-m? 1555.90  24.21  3002.20 10.0)
+    (send-event (process-by-ename "des-garage-door-1") 'open))
+  (when (in-bubble-m? 1496.96  24.19  2938.46 10.0)
+    (send-event (process-by-ename "des-garage-door-2") 'open))
+
+  ;; deswalk 
+  (let ((r1525 (region-lookup-by-id 1525)))
+    (when r1525
+      (set! (-> r1525 on-enter) '(want-load 'wasall 'desert 'desinter 'desertb 'desertd))) ;; no endlessfall, just swap deswalk out for desertd
+    )
+
+  ;; keep minea (c->b, into cave) elevator active; work in reverse
+  (let ((elev (entity-by-name "min-elevator-6"))
+        (elev-proc (the elevator (process-by-ename "min-elevator-6"))))
+    (when elev 
+      (set! (cdr (res-lump-struct elev 'on-deactivate pair)) '((send-event self 'use-camera #f) (task-close! "mine-explore-elevator") (want-vis 'mineb) (want-continue "mineb-start") (want-sound 'mine1 'mine2 'mine3)))
+      (set! (cdr (res-lump-struct elev 'on-notice pair)) '((task-closed? "mine-explore-elevator") (cond ((and (eq? (level-status? 'mineb) 'active) (not (send-event self 'query 'bottom?))) (send-event self 'jump-to 'bottom)) ((and (eq? (level-status? 'minec) 'active) (not (send-event self 'query 'top?))) (send-event self 'jump-to 'top)))))
+      )
+    (when elev-proc 
+      (set! (-> elev-proc on-activate) '(when (send-event self 'player-ridden?) (cond ((send-event self 'query 'going-up?) (want-load 'minea 'minec #f) (want-display 'minec 'display)) ((send-event self 'query 'going-down?) (want-load 'minea 'mineb #f)))))
+      )
+    )
+  ;; load correct levels for minea (b->c, out of cave) elevator; require switch to be hit and player riding; work in reverse
+  (let ((elev (entity-by-name "min-bomb-elevator-1"))
+        (elev-proc (the elevator (process-by-ename "min-bomb-elevator-1"))))
+    (when elev 
+      (set! (cdr (res-lump-struct elev 'on-activate pair)) '((send-event self 'player-ridden?) (cond ((send-event self 'query 'going-up?) (want-load 'minea 'minec #f) (want-display 'minec 'display)) ((send-event self 'query 'going-down?) (want-load 'minea 'mineb #f) (want-display 'mineb 'display)))))
+      )
+    (when elev-proc 
+      (set! (-> elev-proc activate-test) '(and (send-event self 'player-ridden-cooldown?) (not (send-event "min-crane-switch-8" 'up?))))
+      )
+    )
+  ;; keep minea (c->d, into boss) elevator active; work in reverse
+  (let ((elev (entity-by-name "min-boss-elev-1"))
+        (elev-proc (the elevator (process-by-ename "min-boss-elev-1")))
+        (door (entity-by-name "cav-airlock-door-1"))
+        (bridge (entity-by-name "cav-break-bridge-1")))
+    (when elev 
+      (set! (cdr (res-lump-struct elev 'on-deactivate pair)) '((want-continue "minea-boss") (want-sound 'mine7 'mine8 'mine9)))
+      (set! (cdr (res-lump-struct elev 'on-notice pair)) '((send-event self 'query 'bottom?) #f))
+      )
+    (when elev-proc 
+      (set! (-> elev-proc on-activate) '(when (send-event self 'player-ridden?) (cond ((send-event self 'query 'going-up?) (want-load 'minea 'minec #f) (want-display 'minec 'display)) ((send-event self 'query 'going-down?) (want-load 'minea 'mined #f)))))
+      )
+    (when door
+      (set! (car (res-lump-struct door 'on-notice pair)) 'begin)
+      (set! (cdr (res-lump-struct door 'on-notice pair)) '((when (send-event self 'front) (want-load 'minea 'mined) (want-display 'minea 'display)) '(minea)))
+      )
+    (when bridge  
+      (set! (-> bridge extra perm task) (game-task none)))
+    )
+  ;; let you return from ctygenb -> mined JK decided not to
+  (let ((door (entity-by-name "com-airlock-outer-15")))
+    (when door 
+      (set! (cdr (res-lump-struct door 'on-deactivate pair)) '((want-display 'minee #f) (when (and (send-event self 'front) (level-status? 'minee)) (want-sound 'genbtsk1))))
+      (set! (car (res-lump-struct door 'on-notice pair)) 'begin)
+      (set! (cdr (res-lump-struct door 'on-notice pair)) '((want-load 'ctywide-ff 'ctygenb 'minee) '(minee)))
+      )
+    )
+
+  ;; allow lfacrm1 door to open (ctyslumc->ffacrm1, shuttle behind freehq)
+  (let ((door (entity-by-name "cty-door-3"))
+        (r1804 (region-lookup-by-id 1804))
+        )
+    (when door
+      (set! (cdr (res-lump-struct door 'on-activate pair)) '(((task-closed? "factory-sky-battle-introduction") (when (send-event self 'front) (want-display 'lfacrm1 'display)))))
+      (set! (cdr (res-lump-struct door 'on-cross pair)) '(#f))
+      (set! (cdr (res-lump-struct door 'on-notice pair)) '(((task-closed? "factory-sky-battle-introduction") '(ctyslumc lfacrm1))))
+      ;; (set! (cdr (res-lump-struct door 'on-notice pair)) '(((and (task-closed? "factory-sky-battle-introduction") (or (eq? (level-status? 'lfacrm1) 'loaded) (eq? (level-status? 'lfacrm1) 'active))) '(ctyslumc factorya))))
+      )
+    (when r1804 
+      (set! (-> r1804 on-enter) '(when (task-closed? "factory-sky-battle-introduction") (want-load 'ctywide-ff 'ctyslumc 'lfacrm1)))
+      )
+    )
+    
+  ;; keep lfacrm2 elevators (lfacrm2->factoryc, into interior) elevator active; work in reverse
+  (let ((elev1 (entity-by-name "fac-elevator-a-1"))
+        (elev1-proc (the elevator (process-by-ename "fac-elevator-a-1")))
+        (elev2 (entity-by-name "fac-elevator-a-2"))
+        (elev2-proc (the elevator (process-by-ename "fac-elevator-a-2"))))
+    (when elev1 
+      (set! (cdr (res-lump-struct elev1 'on-deactivate pair)) '((send-event self 'use-camera #f)))
+      (set! (cdr (res-lump-struct elev1 'on-notice pair)) '((when (task-closed? "factory-assault-indax-1") #f)))
+      )
+    ;; (when elev1-proc 
+      ;; (set! (-> elev1-proc on-activate) '(when (send-event self 'player-ridden?) (cond ((send-event self 'query 'going-up?) (want-load 'minea 'minec #f) (want-display 'minec 'display)) ((send-event self 'query 'going-down?) (want-load 'minea 'mined #f)))))
+      ;; )
+    (when elev2
+      (set! (cdr (res-lump-struct elev2 'on-deactivate pair)) '((send-event self 'use-camera #f)))
+      (set! (cdr (res-lump-struct elev2 'on-notice pair)) '((when (task-closed? "factory-assault-resolution") #f)))
+      )
+    (when elev2-proc 
+      ;; load factoryc (displayed by loading hack bubble); make sure door to factoryb is closed
+      ;; (set! (-> elev2-proc on-down) '(begin (print (target-below-meters? 500)) (want-load 'factorya 'factoryc) (send-event "lfacrm2-cty-door-1" 'untrigger)))
+      (set! (-> elev2-proc on-running) '(when (and (target-below-meters? 500) (send-event "fac-elevator-a-2" 'query 'going-down?)) (want-load 'factorya 'factoryc) (send-event "lfacrm2-cty-door-1" 'untrigger)))
+      )
+    )
+
+  ;; fix factoryd floor collision to match visuals
+  (clear-entity-kill-mask "fac-drop-plat-163")
+  (clear-entity-kill-mask "fac-drop-plat-239")
+  (clear-entity-kill-mask "fac-drop-plat-199")
+  (clear-entity-kill-mask "fac-drop-plat-198")
+  (clear-entity-kill-mask "fac-drop-plat-194")
+  (clear-entity-kill-mask "fac-drop-plat-240")
+  (clear-entity-kill-mask "fac-drop-plat-103")
+  (clear-entity-kill-mask "fac-drop-plat-81")
+  (clear-entity-kill-mask "fac-drop-plat-47")
+  (clear-entity-kill-mask "fac-drop-plat-217")
+  (clear-entity-kill-mask "fac-drop-plat-167")
+  (clear-entity-kill-mask "fac-drop-plat-15")
+  (clear-entity-kill-mask "fac-drop-plat-180")
+  (clear-entity-kill-mask "fac-drop-plat-44")
+  (clear-entity-kill-mask "fac-drop-plat-154")
+  (clear-entity-kill-mask "fac-drop-plat-59")
+  (clear-entity-kill-mask "fac-drop-plat-169")
+  (clear-entity-kill-mask "fac-drop-plat-20")
+  (clear-entity-kill-mask "fac-drop-plat-142")
+  (clear-entity-kill-mask "fac-drop-plat-251")
+  (clear-entity-kill-mask "fac-drop-plat-134")
+  (clear-entity-kill-mask "fac-drop-plat-98")
+  (clear-entity-kill-mask "fac-drop-plat-215")
+  (clear-entity-kill-mask "fac-drop-plat-253")
+  (clear-entity-kill-mask "fac-drop-plat-191")
+  (clear-entity-kill-mask "fac-drop-plat-189")
+  (clear-entity-kill-mask "fac-drop-plat-19")
+
+  ;; pick some level to check loaded for these doors to open - just used the level they're in since they're warp-gates anyway
+  (let ((door (the cty-door (process-by-ename "factoryb-cty-door-1"))))
+    (when door
+      (set! (-> door level-name) '(when #t '(factoryb)))
+      )
+    )
+  (let ((door (the cty-door (process-by-ename "lfacrm2-cty-door-1"))))
+    (when door
+      (set! (-> door level-name) '(when #t '(factorya)))
+      )
+    )
+
+  ;; railx (subrails 2) - kill doors to final room so you can warp out
+  (when (process-by-ename "rail-oracle-door-2")
+    (script-eval '(kill "rail-oracle-door-2"))
+    )
+
+  ;; temple
+  (let ((adoor2 (entity-by-name "tpl-door-a-2"))
+        (adoor3 (entity-by-name "tpl-door-a-3"))
+        (adoor5 (entity-by-name "tpl-door-a-5"))
+        (adoor7 (entity-by-name "tpl-door-a-7"))
+        (adoor8 (entity-by-name "tpl-door-a-8"))
+        (adoor13 (entity-by-name "tpl-door-a-13"))
+        (adoor15 (entity-by-name "tpl-door-a-15"))
+        (bdoor1 (entity-by-name "tpl-door-b-1"))
+        (mardoor4 (entity-by-name "tpl-mardoor-4"))
+        (mardoor5 (entity-by-name "tpl-mardoor-5"))
+        (r1183 (region-lookup-by-id 1183))
+        (r1382 (region-lookup-by-id 1382))
+        (r1657 (region-lookup-by-id 1657))
+        (r1698 (region-lookup-by-id 1698))
+        (r1373 (region-lookup-by-id 1373))
+        (r1762 (region-lookup-by-id 1762))
+        (r1764 (region-lookup-by-id 1764))
+        (r1778 (region-lookup-by-id 1778))
+        (r1614 (region-lookup-by-id 1614))
+        (r1615 (region-lookup-by-id 1615))
+        (r1937 (region-lookup-by-id 1937))
+        (r1938 (region-lookup-by-id 1938))
+        )
+    ;; open door templeb > templec
+    (when adoor2
+      (set! (cdr (res-lump-struct adoor2 'on-notice pair)) '((want-display 'templec 'display) '(templeb templec)))
+      )
+    ;; open door templea > templeb
+    (when adoor3
+      (set! (cdr (res-lump-struct adoor3 'on-notice pair)) '(#t '(templeb)))
+      )
+    ;; open door templeb > templed
+    (when adoor5
+      (set! (cdr (res-lump-struct adoor5 'on-notice pair)) '((want-display 'templed 'display) '(templeb templed)))
+      )
+    ;; open door templeb > templec?
+    (when adoor7
+      (set! (cdr (res-lump-struct adoor7 'on-notice pair)) '((want-display 'templec 'display) '(templeb templec)))
+      )
+    ;; open door templeb > templed
+    (when adoor8
+      (set! (cdr (res-lump-struct adoor8 'on-exit pair)) '(task-close! "temple-tests-door-3"))
+      (set! (cdr (res-lump-struct adoor8 'on-notice pair)) '(#t '(templea templeb templed)))
+      )
+    ;; open door templeb > templed
+    (when adoor13
+      (set! (cdr (res-lump-struct adoor13 'on-notice pair)) '((want-display 'templed 'display) '(templed)))
+      )
+    ;; open door templea > templec
+    (when adoor15
+      (set! (cdr (res-lump-struct adoor15 'on-notice pair)) '(#t '(templec)))
+      )
+    ;; open door templec > templeb
+    (when bdoor1
+      ;; (set! (cdr (res-lump-struct bdoor1 'on-enter pair)) '(want-display 'templec 'display))
+      (set! (cdr (res-lump-struct bdoor1 'on-exit pair)) '(task-close! "temple-tests-door-2"))
+      (set! (cdr (res-lump-struct bdoor1 'on-notice pair)) '((want-display 'templec 'display) '(templea templeb templec)))
+      )
+    ;; restore bridge
+    (clear-entity-kill-mask "tpl-break-bridge-1")
+    ;; open door templea > templec
+    (when mardoor4
+      (set! (cdr (res-lump-struct mardoor4 'on-notice pair)) '(#t '(templea templec)))
+      )
+    ;; open door templed > comb
+    (when mardoor5
+      (set! (cdr (res-lump-struct mardoor5 'on-notice pair)) '(#t '(templed)))
+      )
+    ;; no cutscene at templec > comb top of elevator, just go to continue at bottom
+    (when r1382
+      (set! (-> r1382 on-enter) #f)
+      )
+    ;; templec/d swap hack in hallway between circle room and rotator room
+    (when r1698
+      (set! (-> r1698 on-enter) '(want-load 'templea 'templeb 'templed))
+      (set! (-> r1698 on-exit) '(want-load 'templea 'templeb 'templec))
+      )
+    ;; default to loading templec from entrance, wait to load templed in hallway^ right before it gets displayed
+    (when r1373
+      (set! (-> r1373 on-enter) '(want-load 'templea 'templeb 'templec))
+      )
+    ;; make sure templeb gets displayed, i.e. if coming from jetboard tests 
+    (when r1657
+       (set! (-> r1657 on-exit) '(want-display 'templeb 'display))
+      )
+    ;; templec/d swap hack on upper level of rotator room
+    (when r1762
+      (set! (-> r1762 on-enter) '(begin (send-event *target* 'end-mode 'freeze #t) (want-load 'templea 'templeb 'templed) (want-continue "templeb-fans-mid")))
+      (set! (-> r1762 on-exit) '(want-load 'templea 'templeb 'templec))
+      )
+    ;; templec/d swap hack from precursor room
+    (when r1778
+      (set! (-> r1778 on-enter) '(begin (want-load 'templea 'templeb 'templed) (want-display 'templea 'display)))
+      (set! (-> r1778 on-exit) '(begin (want-load 'templea 'templeb 'templec) (want-display 'templea 'special)))
+      )
+    ;; get rid of some deathplanes in templex
+    (when r1183
+      (set! (-> r1183 on-enter) #f))
+    ;; get rid of some deathplanes in templec
+    (when r1614
+      (set! (-> r1614 on-enter) #f))
+    ;; get rid of some deathplanes in templed
+    (when r1615
+      (set! (-> r1615 on-enter) #f))
+    (when r1937
+      (set! (-> r1937 on-enter) #f)) ;; why does this shit exist above seem?
+    (when r1938
+      (set! (-> r1938 on-enter) #f))
+    )
+
+  ;; make urn with triple orb (vanilla) gold
+  (let ((hover-urn (the process-drawable (process-by-ename "urn-c-13"))))
+    (when hover-urn
+      (set-vector! (-> hover-urn draw color-emissive) 1.0 1.0 0.0 1.0)))
+  
+  ;; foresta - sync orbs to balls
+  (let ((t (the process-drawable (process-by-type-exact 'for-telescope *active-pool*)))
+        (s2 (the skill (process-by-ename "foresta-skill-02")))
+        (s3 (the skill (process-by-ename "foresta-skill-03"))))
+    (when t
+      (when s2 ;; middle_ball_a
+        (vector-copy! (-> s2 root trans) (-> t node-list data 14 bone position))
+        (+! (-> s2 root trans y) (meters 4.25))
+        (vector-copy! (-> s2 base) (-> s2 root trans))
+        ;; make sure orb not hidden
+        (logclear! (-> s2 draw status) (draw-control-status no-draw-bounds))
+        )
+      (when s3 ;; smaller_ball_a
+        (vector-copy! (-> s3 root trans) (-> t node-list data 16 bone position))
+        (+! (-> s3 root trans y) (meters 2.25))
+        (vector-copy! (-> s3 base) (-> s3 root trans))
+        ;; make sure orb not hidden
+        (logclear! (-> s3 draw status) (draw-control-status no-draw-bounds))
+        )
+      ))
+
+  ;; vinroom - some hacks to make door unlock
+  (let ((door (entity-by-name "vin-door-ctyinda-6"))
+        )
+    (when door
+      (set! (car (res-lump-struct door 'on-notice pair)) 'when)
+      (set! (cdr (res-lump-struct door 'on-notice pair)) '((and (not (target-below-meters? 0)) (want-display 'ctywide-kg 'display) (want-display 'ctyinda 'display)) '(ctyinda)))
+      )
+    )
+
+  ;; sewers
+  (let ((door (entity-by-name "com-airlock-outer-mhcity-3")))
+    (when door
+      (set! (cdr (res-lump-struct door 'on-exit pair)) '((want-display 'sewa #f) (when (send-event self 'front) (want-load 'mhcityb 'ctywide-mh 'towera) (want-display 'towera 'display) (want-sound 'ctyprtdh 'mhcity1h 'mhcity2h))))
+      )
+    )
+
+  ;; ====== CTYPORT (port) ======
+  (move-port-barge-orbs)
+
+  ;; mooon things
+;;   (cond
+;;     ((and (pause-allowed?) (= (level-status *level* 'mooon) 'active))
+;;       ;; low grav
+;;       (when *target* (set! (-> *target* control dynam gravity-length) (meters 20)))
+;;       (set! (-> *TARGET-bank* jump-height-max) (meters 7.0))
+;;       (set! (-> *TARGET-bank* double-jump-height-max) (meters 5.0))
+;;       (set! (-> *TARGET_BOARD-bank* jump-height-max) (meters 7.0))
+;;       (set! (-> *TARGET_BOARD-bank* duck-jump-height-max) (meters 10.0))
+;;       (set! (-> *TARGET_BOARD-bank* trickx-jump-height-max) (meters 2.4))
+;;       (set! (-> *TARGET_BOARD-bank* tricky-jump-height-max) (meters 2.4))
+
+;;       ;; evening always
+;;       (send-event (ppointer->process *time-of-day*) 'change 'hour 23)
+;;       (set! (-> *time-of-day-context* mode) (the-as time-of-day-palette-id (/ 6 8)))
+
+;;       ;; credits
+;;       (when (and (not *credits-rolling?*) (pause-allowed?) (not (paused?)))
+;;         ;; show prompt
+;;         (let ((gp-0 (new 'stack 'font-context *font-default-matrix* 100 320 0.0 (font-color default) (font-flags large middle shadow kerning))))
+;;           (set! (-> gp-0 width) (the float 340))
+;;           (set! (-> gp-0 height) (the float 80))
+;;           (set! (-> gp-0 scale) 0.9)
+;;           (print-game-text
+;;             (lookup-text! *common-text* (text-id roll-credits) #f)
+;;             gp-0
+;;             #f
+;;             44
+;;             (bucket-id progress)
+;;             )
+;;           )
+
+;;         ;; check for combo to start credits
+;;         (when (and (or (cpad-pressed? 0 l1) (cpad-hold? 0 l1))
+;;                    (or (cpad-pressed? 0 r1) (cpad-hold? 0 r1))
+;;                    (or (cpad-pressed? 0 l2) (cpad-hold? 0 l2))
+;;                    (or (cpad-pressed? 0 r2) (cpad-hold? 0 r2))
+;;                    )
+;;           (start-credits-yolo)
+;;           )
+;;         )
+;;       )
+;;     (else
+;;       ;; normal grav
+;;       ;; (when *target* (set! (-> *target* control dynam gravity-length) (meters 50)))
+;;       (set! (-> *TARGET-bank* jump-height-max) (meters 3.5))
+;;       (set! (-> *TARGET-bank* double-jump-height-max) (meters 2.5))
+;;       (set! (-> *TARGET_BOARD-bank* jump-height-max) (meters 3.5))
+;;       (set! (-> *TARGET_BOARD-bank* duck-jump-height-max) (meters 5.0))
+;;       (set! (-> *TARGET_BOARD-bank* trickx-jump-height-max) (meters 1.2))
+;;       (set! (-> *TARGET_BOARD-bank* tricky-jump-height-max) (meters 1.2))
+;;       )
+;;     )
+
+  ;; exit stadium race tasks if you portal to one of the other stadium areas
+;;   (cond
+;;     ((and (or (task-closed? "stadium-burning-bush-race-class3-introduction")
+;;               (task-closed? "stadium-burning-bush-race-class3-r-introduction")
+;;               )
+;;           (or (active-level? 'skatea) (active-level? 'stadiumc) (active-level? 'stadiumd)))
+;;       ;; kill class 3 if in jetboard/class2/class1
+;;       (task-node-close! (game-task-node stadium-burning-bush-race-class3-resolution))
+;;       (task-node-close! (game-task-node stadium-burning-bush-race-class3-r-resolution))
+;;       )
+;;     ((and (or (task-closed? "stadium-burning-bush-race-class2-introduction")
+;;               (task-closed? "stadium-burning-bush-race-class2-r-introduction")
+;;               )
+;;           (or (active-level? 'skatea) (active-level? 'stadiumb) (active-level? 'stadiumd)))
+;;       ;; kill class 2 if in jetboard/class3/class1
+;;       (task-node-close! (game-task-node stadium-burning-bush-race-class2-resolution))
+;;       (task-node-close! (game-task-node stadium-burning-bush-race-class2-r-resolution))
+;;       )
+;;     ((and (or (task-closed? "stadium-burning-bush-race-class1-introduction")
+;;               (task-closed? "stadium-burning-bush-race-class1-r-introduction")
+;;               )
+;;           (or (active-level? 'skatea) (active-level? 'stadiumb) (active-level? 'stadiumc)))
+;;       ;; kill class 1 if in jetboard/class3/class2
+;;       (task-node-close! (game-task-node stadium-burning-bush-race-class1-resolution))
+;;       (task-node-close! (game-task-node stadium-burning-bush-race-class1-r-resolution))
+;;       )
+;;     ;; probably only this one below is really needed
+;;     ((and (or (task-closed? "stadium-burning-bush-race-board-introduction")
+;;               )
+;;           (or (active-level? 'stadiumb) (active-level? 'stadiumc) (active-level? 'stadiumd)))
+;;       ;; kill jeboard if in class3/class2/class1
+;;       (task-node-close! (game-task-node stadium-burning-bush-race-board-resolution))
+;;       )
+;;     )
+
+  ;; === sewer(b) ===
+;;   (clear-entity-kill-mask "skill-125") ;; spawn skill-125!!
+  
+  ;; make orb follow grunt/mine
+  ;; (skill-follow-min-y "sewer-skill-ghost-28" "grunt-203" (meters -66.5))
+  (skill-follow-y-offset "wascitya-skill-04" "dogat-18" (meters 0.7))
+  (skill-follow-y-offset "wascitya-skill-05" "tizard-5" (meters 0.7))
+
+  (skill-follow-y-offset "wascityb-skill-10" "tizard-7" (meters 0.7))
+  (skill-follow-y-offset "wascityb-skill-11" "dogat-9" (meters 0.7))
+
+  ;; dev stuff
+  (when (and (cpad-pressed? 0 select) (not (cpad-hold? 0 l3)) (not (paused?)) (not (movie?)))
+    (when *target*
+      (format 0 "~,,2M,  ~,,2M,  ~,,2M ~%" (-> *target* root trans x) (-> *target* root trans y) (-> *target* root trans z))
+      (format 0 "~,,2M  ~,,2M  ~,,2M ~%" (-> *target* root trans x) (-> *target* root trans y) (-> *target* root trans z))
+      )
+
+    ;; collision renderer, either debug or toggle
+    (when (or *debug-segment* (-> *mod-settings* collision-renderer-toggle?))
+      (toggleCollisionRenderer)
+      (true! *collision-wireframe*)
+      ;; hideskip nojak
+      (pc-set-collision-mask (pc-collision-mode skiphide) (the int (pc-pat-skip-hack nojak probe)) #t)
+      )
+
+    ;; debug only helper shit
+    (when *debug-segment*
+      ;; disable camera collision/line of sight
+      (if (logtest? (-> *camera* slave-options) 32)
+        (send-event *camera* 'clear-slave-option (cam-slave-options COLLIDE))
+        )
+      (if (logtest? (-> *camera* slave-options) 512)
+        (send-event *camera* 'clear-slave-option (cam-slave-options LINE_OF_SIGHT))
+        )         
+      
+      ;; show bug report level info
+      (true! *display-bug-report*)
+      (when (cpad-hold? 0 start)
+        ;; mark game won and give cheats
+        (task-close! "city-win-introduction")
+        )
+      (logior! (-> *game-info* secrets) (game-secrets endless-dark endless-light invulnerable endless-ammo board-fast vehicle-hit-points unlimited-turbos board-faster))
+      (logior! (-> *pc-settings* cheats) (pc-cheats city-peace desert-peace))
+      (+! (-> *game-info* gem) 100)
+      )
+    )
+  
+  ;; ensure we turn off collision renderer if you disable the setting
+  (when (and (not *debug-segment*)
+             (not (-> *mod-settings* collision-renderer-toggle?)))
+    (disableCollisionRenderer)
+    )
+
+  ;; mini-bigmap stuff
+  (when (and (-> *mod-settings* mini-map?)
+            (not *progress-process*))
+    ;; (format 0 "no progress proc~%")
+    (cond
+      ((and *show-mini-bigmap*
+            (or ;; timeout 
+                (g-time-elapsed? *mini-bigmap-toggle-time* (seconds 3.0))
+                (and (= (-> *bigmap* bigmap-index) 20)
+                    ;;  (not (= (-> (level-get-target-inside *level*) name) 'consite))
+                    ;;  (not (= (-> (level-get-target-inside *level*) name) 'consiteb))
+                     )
+                ))
+        (dbg-format 0 "disabling drawing ~D~%" (get-current-time))
+        (disable-drawing *mini-bigmap*)
+        (set! *mini-bigmap-toggle-time* (get-current-time))
+        (false! *show-mini-bigmap*)
+        )
+      ((and *show-mini-bigmap*
+            (allow-mini-bigmap?)
+            )
+        (dbg-format 0 "trying to draw mini bigmap~%")
+        (let ((x1 2304));;  (+ 2048 (* (-> *pc-settings* aspect-ratio-scale) (- 2304 2048)))))
+          (enable-drawing *mini-bigmap*)
+          (dbg-format 0 "post enable-draw mini bigmap at x1 ~D~%" x1)
+          (when (= (-> *mini-bigmap* bigmap-images (the int (-> *mini-bigmap* load-index)) status) 'active)
+            ;; loaded, draw it
+            ;; (draw! *bigmap* 1792 1840 2304 2256)  ;; original "full" screen
+            ;; (draw! *bigmap* 1800 1840 2304 2256)  ;; slight shrink full screen
+            ;; (draw! *bigmap* 1984 1996 2112 2100) ;; middle
+            ;; (draw! *bigmap* 1792 1840 1920 1944) ;; top left ish
+            ;; (draw! *bigmap* 2176 1840 2304 1944) ;; top right ish
+            ;; (draw! *bigmap* 1792 2152 1920 2256) ;; bottom left ish
+            ;; mini-bigmap
+            ;; (dbg-format 0 "actually doing draw!~%")
+            (draw! *mini-bigmap* ;; bottom right
+              (- x1 (* (-> *pc-settings* aspect-ratio-scale) 128))
+              (- 2216 (* (-> *pc-settings* aspect-ratio-scale) (- 2216 2112)))
+              x1  ;; + 128
+              2216  ;; + 104
+              )
+            )
+          )
+        )
+      )
+    )
+
+  (none))
+
+(defun give-orba ((tgt-lvl-idx int))
+  (dotimes (s4-2 LEVEL_MAX)
+    (cond
+      ((and (= (-> *level* level s4-2 status) 'active))
+        (let ((lvl-idx (-> *level-load-info-level-id-remap* (-> *level* level s4-2 info index)))
+              (entities (-> *level* level s4-2 entity)))
+          ;; open orbs
+          (dotimes (idx (-> entities length))
+            (let ((entity-link (-> entities data idx)))
+              (when (and (-> entity-link entity) (nonzero? (-> entity-link entity)))
+                (let* ((lvl-idx-override (res-lump-value (-> entity-link entity) 'lvl-idx-override int :default (the-as uint128 -1) :time -1000000000.0))
+                        (final-lvl-idx (if (>= lvl-idx-override 0) lvl-idx-override lvl-idx)))
+                  (when (= final-lvl-idx tgt-lvl-idx)
+                    (when (not (logtest? (-> entity-link status) (entity-perm-status dead)))
+                      (case (-> (the entity-actor (-> entity-link entity)) etype symbol)
+                        (('skill)
+                          (format 0 "picking up ~A~%" (res-lump-struct (-> entity-link entity) 'name string))
+                          (+! (-> *game-info* skill) 1)
+                          (+! (-> *game-info* skill-total) 1)
+                          (logior! (-> entity-link status) (entity-perm-status dead))
+                          )
+                        (('skill-crate 'market-crate 'wascity-market-crate 'crate 'wascity-market-sack-a 'market-sack-a 'market-basket-a 'wascity-market-basket-a 'wascity-market-sack-b 'market-sack-b 'market-basket-b 'wascity-market-basket-b 'urn-a 'urn-b 'urn-c)
+                          (let ((e-info (res-lump-value (-> entity-link entity) 'eco-info uint128 :time -1000000000.0)))
+                            (when (= (the-as uint e-info) 24) ;; holding skill
+                              (format 0 "picking up ~A~%" (res-lump-struct (-> entity-link entity) 'name string))
+                              (+! (-> *game-info* skill) 1)
+                              (+! (-> *game-info* skill-total) 1)
+                              (logior! (-> entity-link status) (entity-perm-status dead bit-4 bit-5 subtask-complete))
+                              (set! (-> entity-link perm task) (game-task complete))
+                              (set! (-> entity-link perm user-uint64) #x102)
+                              )
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+
+(define *tmp-continue-point* (new 'static 'continue-point
+                             :name "tmp"
+                             :level #f
+                             :trans (new 'static 'vector :w 1.0)
+                             :camera-trans (new 'static 'vector :w 1.0)
+                             :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 #x4e76 0 -25885))
+                             :camera-rot (new 'static 'array int16 9 #x6fe8 0 #x3e1a -6936 #x7328 #x30d7 -14302 -14299 #x64ae) ;; idk just stole this from existing continue-point
+                             :on-goto #f
+                             :vis-nick #f
+                             :vehicle-type 0
+                             :want-count 10
+                             :want (new 'static 'inline-array level-buffer-state-small 10
+                                    (new 'static 'level-buffer-state-small :name #f :display? #f)
+                                    (new 'static 'level-buffer-state-small :name #f :display? #f)
+                                    (new 'static 'level-buffer-state-small :name #f :display? #f)
+                                    (new 'static 'level-buffer-state-small :name #f :display? #f)
+                                    (new 'static 'level-buffer-state-small :name #f :display? #f)
+                                    (new 'static 'level-buffer-state-small :name #f :display? #f)
+                                    (new 'static 'level-buffer-state-small :name #f :display? #f)
+                                    (new 'static 'level-buffer-state-small :name #f :display? #f)
+                                    (new 'static 'level-buffer-state-small :name #f :display? #f)
+                                    (new 'static 'level-buffer-state-small :name #f :display? #f))
+                             :want-sound (new 'static 'array symbol 3 #f #f #f))
+  )
+
+(define *practice-spawn-post-init* (the-as (function none) #f))
+(define *last-checkpoint-load-time* (the time-frame #f))
+
+(define *last-real-continue-point* (the-as continue-point #f))
+(defun generic-post-init ()
+  ;; try give vehicle
+  (cond
+    ((nonzero? (-> *tmp-continue-point* vehicle-type))
+      (send-event *target* 'change-mode 'pilot #f (-> *tmp-continue-point* vehicle-type) #t))
+    ((logtest? (-> *tmp-continue-point* flags) (continue-flags flut))
+      (send-event *target* 'change-mode 'flut #f))
+    )
+
+  ;; restore old continue point
+  (when *last-real-continue-point*
+    (set! (-> *game-info* current-continue) *last-real-continue-point*))
+  
+  ;; ;; copy exclusive tasks to re-open
+  ;; (when (nonzero? *tmp-bbush-stored*)
+  ;;   (bbush-task-restart! *tmp-bbush-stored*))
+
+  (none)
+  )
+
+(define-extern speedrun-practice-spawn (function none)) ;; defined at end of this file
+(define-extern speedrun-practice-store-temp-checkpoint (function none)) ;; defined at end of this file
+(define-extern draw-orb-hunt-text (function none))
+(define-extern *auto-saving?* symbol)
+(define-extern *last-auto-save-time* time-frame)
+(defun orb-hunt-update ()
+  (mod-run-each-frame)
+
+  ;; Draw info to the screen
+  (draw-orb-hunt-text)
+
+  (when (-> *mod-settings* pseudo-savestates?)
+    (when (and (or (not *progress-process*) (gone? (-> *progress-process* 0)))
+               (>= (- (-> *display* base-clock frame-counter) (-> *game-info* blackout-time)) (seconds 0.1))
+               )
+      ;; call post-init function
+      (when (and *target* *practice-spawn-post-init*)
+        (*practice-spawn-post-init*)
+        (set! *practice-spawn-post-init* #f)
+        )
+
+      (when (cpad-hold? 0 r3)
+        (cond
+          ((cpad-pressed? 0 up)
+            (format 0 "player tried to load tmp checkpoint~%")
+            (speedrun-practice-spawn)
+            )
+          ((cpad-pressed? 0 down)
+            (format 0 "player tried to save tmp checkpoint~%")
+            (speedrun-practice-store-temp-checkpoint)
+            )
+          )
+        )
+      )
+    )
+  (none)
+  )
+
+
+
+(defun speedrun-practice-temp-checkpoint ()
+  (when (-> *tmp-continue-point* level)
+    (set! (-> *game-info* mode) 'play)
+    (cond
+      ;; (*tmp-flut?* (set! *practice-spawn-post-init* get-on-flutflut))
+      ;; (*tmp-zoomer?* (set! *practice-spawn-post-init* get-on-zoomer))
+      (else (set! *practice-spawn-post-init* generic-post-init))
+      )
+    ;; commented out to prevent malding 
+    ;; (if (cpad-hold? 0 r2)  ;; fully reset game if r2 held too
+    ;;   (initialize! *game-info* 'game (the-as game-save #f) "default")
+    ;;   )
+    (set! (-> *game-info* current-continue) *tmp-continue-point*)
+    (cheats-sound-play #f)
+    (format 0 "init! gameinfo~%")
+    (initialize! *game-info* 'dead (the-as game-save #f) (the-as string #f) (the-as resetter-spec #f))
+    ;; (speedrun-reset-common-settings)
+    )
+  (none)
+  )
+
+(defun continue-point-copy! ((dst continue-point) (src continue-point))
+  ;; (set! (-> dst level) (or (-> src level) (-> *last-real-continue-point* level)))
+  (set! (-> dst level) 'level-default) ;; idk but it works
+  (set! (-> dst quat long) (-> src quat long))
+  (set! (-> dst vis-nick) (-> src vis-nick))
+  (dotimes (idx 10)
+    ;; clear levels
+    (set! (-> dst want idx name) #f)
+    (set! (-> dst want idx display?) #f)
+    (when (or (= (-> *level* level idx status) 'active)
+              (= (-> *level* level idx status) 'loaded)
+              (= (-> *level* level idx status) 'loading))
+      ;; (format 0 "adding ~S to tmp checkpoint, display: ~A~%" (-> *level* level idx name) (-> *level* level idx display?))
+      (set! (-> dst want idx name) (-> *level* level idx name))
+      (set! (-> dst want idx display?) (-> *level* level idx display?))
+
+      (when (name= (-> *level* level idx name) (-> dst level))
+        ;; (format 0 "  forcing 'display for ~S since this is our continue point level~%" (-> *level* level idx name))
+        (set! (-> dst want idx display?) 'display)
+        )
+      )
+    )
+  (dotimes (idx 3)
+    (set! (-> dst want-sound idx)  (-> src want-sound idx))
+    )
+  (none)
+  )
+
+(defun camera-rot-copy! ((dst continue-point) (src matrix))
+  (set! (-> dst camera-rot 0) (the int (* 32767.0 (-> src rvec x))))
+  (set! (-> dst camera-rot 1) (the int (* 32767.0 (-> src rvec y))))
+  (set! (-> dst camera-rot 2) (the int (* 32767.0 (-> src rvec z))))
+  (set! (-> dst camera-rot 3) (the int (* 32767.0 (-> src uvec x))))
+  (set! (-> dst camera-rot 4) (the int (* 32767.0 (-> src uvec y))))
+  (set! (-> dst camera-rot 5) (the int (* 32767.0 (-> src uvec z))))
+  (set! (-> dst camera-rot 6) (the int (* 32767.0 (-> src fvec x))))
+  (set! (-> dst camera-rot 7) (the int (* 32767.0 (-> src fvec y))))
+  (set! (-> dst camera-rot 8) (the int (* 32767.0 (-> src fvec z))))
+  (none)
+  )
+
+(defun speedrun-practice-store-temp-checkpoint ()
+  (when (and *target* )
+    (cond
+      ((or (side-mish-active?)
+           (not (progress-allowed?))
+          ;;  *auto-saving?* ;; TODO - this seems busted, not getting cleared?
+           (and *last-auto-save-time* (not (g-time-elapsed? *last-auto-save-time* (seconds 3))))
+           (focus-test? *target* dead hit grabbed)
+           )
+        (sound-play "smack-surface")  
+        )
+      (else
+        (case (-> *target* state)
+          ;; only store temp checkpoint if in one of these states
+          ((target-look-around target-stance target-duck-stance target-wade-stance target-gun-stance target-pilot-stance target-flut-stance target-indax-stance)
+            (when (not (string= (-> *game-info* current-continue name) "tmp"))
+              (set! *last-real-continue-point* (-> *game-info* current-continue))
+              )
+            ;; assume current continue is good enough for the current location
+            (continue-point-copy! *tmp-continue-point* (-> *game-info* current-continue))
+            (vector-copy! (-> *tmp-continue-point* trans) (-> *target* root trans))
+            (set! (-> *tmp-continue-point* quat x) (the int (* 32767.0 (-> *target* root quat x))))
+            (set! (-> *tmp-continue-point* quat y) (the int (* 32767.0 (-> *target* root quat y))))
+            (set! (-> *tmp-continue-point* quat z) (the int (* 32767.0 (-> *target* root quat z))))
+            (set! (-> *tmp-continue-point* quat w) (the int (* 32767.0 (-> *target* root quat w))))
+            (vector-copy! (-> *tmp-continue-point* camera-trans) (-> *camera-combiner* trans))
+            (camera-rot-copy! *tmp-continue-point* (-> *camera-combiner* inv-camera-rot))
+
+            (set! (-> *tmp-continue-point* vehicle-type) 0)
+            (when (focus-test? *target* pilot)
+              (set! (-> *tmp-continue-point* vehicle-type) (the-as uint (-> *game-info* current-vehicle)))
+              )
+
+            (cond 
+              ((focus-test? *target* flut)
+                (logior! (-> *tmp-continue-point* flags) (continue-flags flut)))
+              (else
+                (logclear! (-> *tmp-continue-point* flags) (continue-flags flut))))
+
+            ;; some weird bug where current continue has #f or default level?
+            (when (or (not (-> *tmp-continue-point* level))
+                      (= (-> *tmp-continue-point* vis-nick) 'default-level))
+              (let ((lvl (level-get-target-inside *level*)))
+                (dbg-format 0 "current continue has #f level, using inside level ~A~%" lvl)
+                (set! (-> *tmp-continue-point* level) (-> lvl name))
+                (set! (-> *tmp-continue-point* vis-nick) (-> lvl name))
+                )
+              )
+            (cheats-sound-play #t)
+            
+            ;; autosave in debug mode
+            (when (and *debug-segment*
+                       (not *auto-saving?*)
+                       (>= (-> *game-info* auto-save-which) 0)
+                       ;; dont autosave with bad checkpoint
+                       (not (or (name= (-> *game-info* current-continue name) 'tmp)
+                                (name= (-> *game-info* current-continue name) 'default))))
+              (format 0 "autosave on checkpoint debug mode~%")
+              (true! *auto-saving?*)
+              (auto-save-user)
+              )
+            )
+          (else
+            (sound-play "smack-surface")
+            )
+          )
+        )
+      )
+    )
+  (none)
+  )
+
+(defun speedrun-practice-spawn ()
+  (cond
+    ((or (not (progress-allowed?))
+        ;;  *auto-saving?* ;; TODO - this seems busted, not getting cleared?
+         (and *last-auto-save-time* (not (g-time-elapsed? *last-auto-save-time* (seconds 3))))
+         (focus-test? *target* dead hit grabbed)
+         )
+      (sound-play "smack-surface")  
+      )
+    ((not *target*)
+      ;; only respawn from no target when in debug
+      (when *debug-segment*
+        (set! *last-checkpoint-load-time* (get-current-time))
+        ;; reset any previous post-target-init callback
+        (set! *practice-spawn-post-init* #f)
+        (speedrun-practice-temp-checkpoint)
+        )
+      )
+    ((or (not *last-checkpoint-load-time*)
+         (g-time-elapsed? *last-checkpoint-load-time* (seconds 1))
+         )
+      ;; if we havent yet used checkpoint load, or its been more than 1s since last load, OK to load
+      
+      (set! *last-checkpoint-load-time* (get-current-time))
+      ;; reset any previous post-target-init callback
+      (set! *practice-spawn-post-init* #f)
+      (speedrun-practice-temp-checkpoint)
+      )
+    (else
+      (sound-play "smack-surface")
+      )
+    )
+      
+  (none)
+  )
+
+(defun get-active-pat-mode-info ()
+  (case (-> *mod-settings* slip-assist)
+    (((slip-assist-mode normal)) *pat-mode-info*)
+    (((slip-assist-mode no-slip)) *no-slip-pat-mode-info*)
+    (((slip-assist-mode spiderman)) *spiderman-pat-mode-info*)
+    )
+  )

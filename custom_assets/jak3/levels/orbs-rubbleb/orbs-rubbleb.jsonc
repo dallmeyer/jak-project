@@ -1,0 +1,392 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-rubbleb",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O03",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o03", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-rubbleb/orbs-rubbleb.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 103000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": ["warp-gate-ag"],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [ -336.3517, 24.7200, 184.1002 ], // warp gate to ctyfarma
+      "etype": "warp-gate",
+      "game_task": 0, 
+      "quat" : [ 0.0000,      1.0,       0.0000,       0.0],
+      "bsphere": [ -336.3517, 24.7200, 184.1002 , 10],
+      "lump": {
+        "name":"rubbleb-warp-gate-1"
+      }
+    },
+
+    {
+      "trans": [ -8.6177, 33.0830, 103.7800], // in crevice where building meets wall, concussor up onto roof
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-8.6177, 33.0830, 103.7800, 10],
+      "lump": {
+        "name":"rubbleb-skill-01"
+      }
+    },
+    {
+      "trans": [ -96.04,  16.59,  -192.84 ], // up on left ledge behind invis wall, at start of rubbleb
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -96.04,  16.59,  -192.84 , 10],
+      "lump": {
+        "name":"rubbleb-skill-02"
+      }
+    },
+    {
+      "trans": [ -117.13,  16.58,  -191.35 ], // up on left ledge behind invis wall, crawl along from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -117.13,  16.58,  -191.35 , 10],
+      "lump": {
+        "name":"rubbleb-skill-03"
+      }
+    },
+    {
+      "trans": [  -80.7017, 16.2456, -252.9070], // up on left ledge behind invis wall towards first bridge, follow from ^^ 
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -80.7017, 16.2456, -252.9070, 10],
+      "lump": {
+        "name":"rubbleb-skill-04",
+        "bob-scale": ["float", 0.8]
+      }
+    },
+    {
+      "trans": [ 103.01,  20.29,  -322.65 ], // after 1st bridge, on QP-like ledge
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 103.01,  20.29,  -322.65 , 10],
+      "lump": {
+        "name":"rubbleb-skill-05",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 109.44,  38.55,  -324.23 ], // abah from ^, up onto mid building ledge. only edges are solid where orb is
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [109.44,  38.55,  -324.23 , 10],
+      "lump": {
+        "name":"rubbleb-skill-06"
+      }
+    },
+    {
+      "trans": [  112.46,  52.38,  -344.28 ], // up from ^, and left behind invis wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 112.46,  52.38,  -344.28 , 10],
+      "lump": {
+        "name":"rubbleb-skill-07"
+      }
+    },
+    {
+      "trans": [   93.2724, 50.6731, -355.3318], // on rebar on wall after 1st bridge, behind invis wall, follow from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  93.2724, 50.6731, -355.3318 , 10],
+      "lump": {
+        "name":"rubbleb-skill-08"
+      }
+    },
+    {
+      "trans": [   78.3720, 56.2979, -358.1184 ], // on rebar on wall after 1st bridge, behind invis wall, follow from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  78.3720, 56.2979, -358.1184 , 10],
+      "lump": {
+        "name":"rubbleb-skill-09"
+      }
+    },
+    {
+      "trans": [  95.35,  24.33,  -356.01 ], // follow from ^^^, on ground behind invis wall in corner before 2nd bridge
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 95.35,  24.33,  -356.01 , 10],
+      "lump": {
+        "name":"rubbleb-skill-10"
+      }
+    },
+    {
+      "trans": [ 101.45,  33.98,  -232.35 ], // on left wall just after water after 1st bridge
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 101.45,  33.98,  -232.35 , 10],
+      "lump": {
+        "name":"rubbleb-skill-11",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  114.11,  60.19,  -232.68 ], // abah concussor spam from ^, up on 
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 114.11,  60.19,  -232.68 , 10],
+      "lump": {
+        "name":"rubbleb-skill-12"
+      }
+    },
+    {
+      "trans": [ -1.56,  16.69,  -339.53 ], // behind invis wall, between rebar sticking up
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -1.56,  16.69,  -339.53 , 10],
+      "lump": {
+        "name":"rubbleb-skill-13"
+      }
+    },
+    {
+      "trans": [ -84.4316, 16.3012, -309.2965], // further around behind invis wall, in broken window, close to first bridge
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -84.4316, 16.3012, -309.2965, 10],
+      "lump": {
+        "name":"rubbleb-skill-14"
+      }
+    },
+    {
+      "trans": [ -100.9779, 33.3688, -105.7571], // up in corner between buildings near 3rd barrier
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -100.9779, 33.3688, -105.7571, 10],
+      "lump": {
+        "name":"rubbleb-skill-15"
+      }
+    },
+    {
+      "trans": [ -72.4391, 39.4625, -109.0048], // up above lamp near 3rd barrier, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -72.4391, 39.4625, -109.0048, 10],
+      "lump": {
+        "name":"rubbleb-skill-16"
+      }
+    },
+    {
+      "trans": [ -63.2456, 48.2398, -87.7045], // up on rebar above 3rd barrier, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -63.2456, 48.2398, -87.7045, 10],
+      "lump": {
+        "name":"rubbleb-skill-17"
+      }
+    },
+    {
+      "trans": [ -87.8234, 50.8062, -112.1522], // building rooftop near 3rd barrier
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -87.8234, 50.8062, -112.1522, 10],
+      "lump": {
+        "name":"rubbleb-skill-18"
+      }
+    },
+    {
+      "trans": [ -70.0204, 62.7428, -108.3994], // up on inner beam above 3rd barrier, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -70.0204, 62.7428, -108.3994, 10],
+      "lump": {
+        "name":"rubbleb-skill-19"
+      }
+    },
+    {
+      "trans": [ -105.4007, 105.3478, -81.5078], // way up on inner beam above 3rd barrier, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -105.4007, 105.3478, -81.5078, 10],
+      "lump": {
+        "name":"rubbleb-skill-20"
+      }
+    },
+    {
+      "trans": [ -116.4395, 111.7479, -56.5942], // up high on beam above 3rd barrier, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -116.4395, 111.7479, -56.5942, 10],
+      "lump": {
+        "name":"rubbleb-skill-21"
+      }
+    },
+    {
+      "trans": [ -151.4277, 91.2523, -34.3818], // in corner on beam above 3rd barrier, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -151.4277, 91.2523, -34.3818, 10],
+      "lump": {
+        "name":"rubbleb-skill-22"
+      }
+    },
+    {
+      "trans": [ -141.5892, 66.4257, 0.9919], // lower beam above 3rd barrier, drop down from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -141.5892, 66.4257, 0.9919, 10],
+      "lump": {
+        "name":"rubbleb-skill-23"
+      }
+    },
+    {
+      "trans": [ -286.6894, 48.4800, 43.6796], // in NW corner of big open section with water, extended FF up here
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -286.6894, 48.4800, 43.6796, 10],
+      "lump": {
+        "name":"rubbleb-skill-24"
+      }
+    },
+    {
+      "trans": [ -283.0747, 53.8501, 84.5618], // on top of lamp in NW corner of big open section, extended from ^ onto roof and onto lamp 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -283.0747, 53.8501, 84.5618, 10],
+      "lump": {
+        "name":"rubbleb-skill-25"
+      }
+    },
+    {
+      "trans": [ -279.6991, 35.9563, 91.7196], // on mid level of building over water in big open section, north wall, follow from ^ 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -279.6991, 35.9563, 91.7196, 10],
+      "lump": {
+        "name":"rubbleb-skill-26"
+      }
+    },
+    {
+      "trans": [ -223.6106, 36.3081, 95.7930], // on mid level of building over water in big open section, north wall, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -223.6106, 36.3081, 95.7930, 10],
+      "lump": {
+        "name":"rubbleb-skill-27",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ -235.2275, 59.1492, 98.5710], // on rooftop of building over water in big open section, north wall, abah from ^ 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -235.2275, 59.1492, 98.5710, 10],
+      "lump": {
+        "name":"rubbleb-skill-28"
+      }
+    },
+    {
+      "trans": [ -272.7110, 57.5074, 95.7107], // on rooftop of building over water in big open section, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -272.7110, 57.5074, 95.7107, 10],
+      "lump": {
+        "name":"rubbleb-skill-29",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ -279.1819, 67.6000, 43.7034], // on rooftop of building in NW corner of big open section, abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -279.1819, 67.6000, 43.7034, 10],
+      "lump": {
+        "name":"rubbleb-skill-30"
+      }
+    }//,
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

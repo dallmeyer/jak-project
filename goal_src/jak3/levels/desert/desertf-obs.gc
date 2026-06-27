@@ -231,7 +231,14 @@
 (defstate dormant (des-draw-bridge)
   :virtual #t
   :parent (des-draw-bridge idle)
-  :event #f
+  :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
+    (case message
+      (('lower)
+       (logclear! (-> self mask) (process-mask actor-pause))
+       (go-virtual lower)
+       )
+      )
+    )
   :trans (behavior ()
     (des-draw-bridge-method-25 self)
     (if (and (task-node-closed? (game-task-node desert-chase-marauders-introduction))

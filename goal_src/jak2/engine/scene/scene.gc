@@ -97,7 +97,7 @@
                             s1-1
                             s2-0
                             #f
-                            (if (and s3-0 (logtest? (game-secrets big-head little-head) (-> *game-info* secrets)))
+                            (if (and s3-0 (logtest? (game-secrets no-head giant-head big-head little-head) (-> *game-info* secrets)))
                                 1
                                 0
                                 )
@@ -157,6 +157,24 @@
                          (the-as vector #f)
                          (the-as quaternion #f)
                          (new 'static 'vector :x 2.0 :y 2.0 :z 2.0 :w 1.0)
+                         )
+                       )
+                      ((logtest? (game-secrets giant-head) (-> *game-info* secrets))
+                       (mode-set! (-> (the-as manipy (-> s4-0 0)) joint 0) (joint-mod-mode joint-set*))
+                       (trs-set!
+                         (-> (the-as manipy (-> s4-0 0)) joint 0)
+                         (the-as vector #f)
+                         (the-as quaternion #f)
+                         (new 'static 'vector :x 4.0 :y 4.0 :z 4.0 :w 1.0)
+                         )
+                       )
+                      ((logtest? (game-secrets little-head) (-> *game-info* secrets))
+                       (mode-set! (-> (the-as manipy (-> s4-0 0)) joint 0) (joint-mod-mode joint-set*))
+                       (trs-set!
+                         (-> (the-as manipy (-> s4-0 0)) joint 0)
+                         (the-as vector #f)
+                         (the-as quaternion #f)
+                         (new 'static 'vector :x 0.0 :y 0.0 :z 0.0 :w 1.0)
                          )
                        )
                       )

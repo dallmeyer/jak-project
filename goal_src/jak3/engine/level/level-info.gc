@@ -455,12 +455,32 @@
                         )
                       :want-sound (new 'static 'array symbol 3 'vinroomh 'ctyindh #f)
                       )
+                    (new 'static 'continue-point
+                      :name "vinroom-game-exit"
+                      :level 'vinroom
+                      :flags (continue-flags no-auto)
+                      :trans (new 'static 'vector :x (meters 1122.9041) :y (meters 25.5000) :z (meters 1118.5413) :w 1.0)
+                      :camera-trans (new 'static 'vector :x (meters 1112.1630) :y (meters 30.4408) :z (meters 1113.8645) :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 27357 0 -18034))
+                      :camera-rot (new 'static 'array int16 9 13073 0 -30045 4516 32394 1965 29704 -4926 12924)
+                      :on-goto #f
+                      :vis-nick 'vinroom
+                      :vehicle-type #x1b
+                      :want-count 3
+                      :want (new 'static 'inline-array level-buffer-state-small 4
+                        (new 'static 'level-buffer-state-small :name 'vinroom :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'ctywide-kg :display? #f)
+                        (new 'static 'level-buffer-state-small :name 'ctyinda :display? #f)
+                        (new 'static 'level-buffer-state-small)
+                        )
+                      :want-sound (new 'static 'array symbol 3 'vinroomh 'ctyindh #f)
+                      )
                     )
                   :callback-list '()
                   :borrow (new 'static 'level-borrow-info
                     :alias #f
-                    :borrow-size (new 'static 'array uint16 5 #xbb8 #x0 #x0 #x0 #x0)
-                    :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                    :borrow-size (new 'static 'array uint16 5 #xbb8 #x300 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 #f '(orbs-vinroom display) #f #f #f)
                     )
                   :bottom-height (meters -15)
                   :fog-height (meters 80)
@@ -468,6 +488,26 @@
                   :mood-range (new 'static 'mood-range :max-cloud 1.0 :min-fog 0.5 :max-fog 1.0)
                   )
         )
+
+(define-extern level-status (function level-group symbol symbol))
+(defun powergd-borrow-toggle ((on? symbol))
+  (cond
+    (on?
+      (set! (-> vinroom borrow borrow-info 0) '(powergd display))
+      (when (not (level-status *level* 'powergd))
+        (script-eval '(want-load 'vinroom 'ctyinda))
+        ;; trigger borrow level re-eval
+        (add-borrow-levels *load-state*))
+      )
+    (else
+      (set! (-> vinroom borrow borrow-info 0) #f)
+      (when (level-status *level* 'powergd)
+        ;; trigger borrow level re-eval
+        (add-borrow-levels *load-state*))
+      )
+    )
+  (none)
+  )
 
 (define ljkdxvin (new 'static 'level-load-info
                    :name 'ljkdxvin
@@ -547,7 +587,7 @@
                   :level-flags (level-flags ocean-near-translucent)
                   :packages '()
                   :run-packages '("common")
-                  :memory-mode (level-memory-mode borrow)
+                  :memory-mode (level-memory-mode small-edge)
                   :music-bank #f
                   :extra-sound-bank #f
                   :mood-func 'update-mood-copy-parent
@@ -558,10 +598,33 @@
                   :draw-priority 10.0
                   :base-task-mask (task-mask task0)
                   :bigmap-id (bigmap-id none)
-                  :continues '()
+                  :continues '(
+                    (new 'static 'continue-point
+                      :name "powergd-warp"
+                      :level 'powergd
+                      :flags (continue-flags no-auto)
+                      :trans (new 'static 'vector :x (meters 1119.8276) :y (meters -200.0030) :z (meters 1113.8291) :w 1.0)
+                      :camera-trans (new 'static 'vector :x (meters 1120.3516) :y (meters -195.3244) :z (meters 1103.1207) :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 13 32765 0 298))
+                      :camera-rot (new 'static 'array int16 9 32719 0 1769 -261 32407 4831 -1750 -4838 32360)
+                      :on-goto #f
+                      :vis-nick 'powergd
+                      :vehicle-type #x1b
+                      :want-count 1
+                      :want (new 'static 'inline-array level-buffer-state-small 2
+                        (new 'static 'level-buffer-state-small :name 'vinroom :display? 'display)
+                        (new 'static 'level-buffer-state-small)
+                        )
+                      :want-sound (new 'static 'array symbol 3 'vinroomh 'ctyindh #f)
+                      )
+                    )
                   :callback-list '()
-                  :borrow #f
-                  :bottom-height (meters -15)
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x300 #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-powergd display) #f #f #f #f)
+                    )
+                  :bottom-height (meters -210)
                   :fog-height (meters 80)
                   :fog-mult 1.0
                   :mood-range (new 'static 'mood-range :max-cloud 1.0 :min-fog 0.5 :max-fog 1.0)
@@ -1623,7 +1686,11 @@
                       )
                     )
                   :callback-list '((23 . init-mood-ctygenb))
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x20 #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-ctygenb display) #f #f #f #f)
+                    )
                   :bottom-height (meters -15)
                   :fog-height (meters 80)
                   :max-rain 1.0
@@ -1755,7 +1822,11 @@
                        )
                      )
                    :callback-list '((23 . init-mood-ctysluma))
-                   :borrow #f
+                   :borrow (new 'static 'level-borrow-info
+                      :alias #f
+                      :borrow-size (new 'static 'array uint16 5 #x32a #x0 #x0 #x0 #x0)
+                      :borrow-info (new 'static 'array object 5 '(orbs-ctysluma display) #f #f #f #f)
+                      )
                    :bottom-height (meters -15)
                    :fog-height (meters 80)
                    :max-rain 1.0
@@ -1927,7 +1998,11 @@
                        )
                      )
                    :callback-list '((23 . init-mood-ctyslumb) (6 . *ctyslumb-water-texture-anim-array*))
-                   :borrow #f
+                   :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x32a #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-ctyslumb display) #f #f #f #f)
+                    )
                    :bottom-height (meters -15)
                    :fog-height (meters 80)
                    :max-rain 1.0
@@ -2152,7 +2227,11 @@
                        )
                      )
                    :callback-list '((23 . init-mood-ctyslumc) (6 . *ctyslumc-water-texture-anim-array*))
-                   :borrow #f
+                   :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #xa #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-ctyslumc display) #f #f #f #f)
+                    )
                    :bottom-height (meters -15)
                    :fog-height (meters 80)
                    :max-rain 1.0
@@ -2668,7 +2747,11 @@
                       )
                     )
                   :callback-list '()
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #xa #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-ctyport display) #f #f #f #f)
+                    )
                   :bottom-height (meters -15)
                   :fog-height (meters 80)
                   :max-rain 1.0
@@ -2686,7 +2769,7 @@
                    :index 38
                    :task-level #x1
                    :part-engine-max #x10
-                   :master-level 'ctywide
+                   :master-level #f
                    :level-flags (level-flags lf0 sky display-wait ocean-near-translucent)
                    :packages '("ctyfarm")
                    :run-packages '("common")
@@ -2700,9 +2783,32 @@
                    :priority 100
                    :draw-priority 10.0
                    :city-map-bits (city-map-bits cmb11)
-                   :continues '()
+                   :continues '((new 'static 'continue-point
+                      :name "ctyfarma-warp"
+                      :level 'ctyfarma
+                      :flags (continue-flags warp-gate)
+                      :trans (new 'static 'vector :x (meters -365.4281) :y (meters 32.9639) :z (meters 164.3372) :w 1.0)
+                      :camera-trans (new 'static 'vector :x (meters -377.3379) :y (meters 38.1139) :z (meters 160.5419) :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 41 21328 30 24874))
+                      :camera-rot (new 'static 'array int16 9 9914 0 -31231 3800 32523 1206 30998 -3987 9840)
+                      :on-goto #f
+                      :vis-nick 'ctyfarma
+                      :vehicle-type #x1b
+                      :want-count 1
+                      :want (new 'static 'inline-array level-buffer-state-small 4
+                        (new 'static 'level-buffer-state-small :name 'ctyfarma :display? 'display)
+                        (new 'static 'level-buffer-state-small) ;; :name 'ctyfarmb :display? 'display)
+                        (new 'static 'level-buffer-state-small) ;; :name 'ctywide-kg  :display? 'display)
+                        (new 'static 'level-buffer-state-small)
+                        )
+                      :want-sound (new 'static 'array symbol 3 #f #f #f)
+                      ))
                    :callback-list '((35 . farm-activate))
-                   :borrow #f
+                   :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x20 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-ctyfarma display) #f #f #f #f)
+                     )
                    :bottom-height (meters -15)
                    :fog-height (meters 80)
                    :max-rain 1.0
@@ -2720,7 +2826,7 @@
                    :index 39
                    :task-level #x1
                    :part-engine-max #x10
-                   :master-level 'ctywide
+                   :master-level #f
                    :level-flags (level-flags lf0 sky display-wait ocean-near-translucent)
                    :packages '("ctyfarm")
                    :run-packages '("common")
@@ -2734,9 +2840,32 @@
                    :priority 100
                    :draw-priority 10.0
                    :city-map-bits (city-map-bits cmb21)
-                   :continues '()
+                   :continues '((new 'static 'continue-point
+                      :name "ctyfarmb-warp"
+                      :level 'ctyfarmb
+                      :flags (continue-flags warp-gate)
+                      :trans (new 'static 'vector :x (meters -290.1593) :y (meters 9.9407) :z (meters 1178.4942) :w 1.0)
+                      :camera-trans (new 'static 'vector :x (meters -296.5505) :y (meters 14.4237) :z (meters 1186.1536) :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 -20 -30048 -41 13068))
+                      :camera-rot (new 'static 'array int16 9 -27396 0 -17975 2668 32403 -4067 17776 -4865 -27092)
+                      :on-goto #f
+                      :vis-nick 'ctyfarmb
+                      :vehicle-type #x1b
+                      :want-count 1
+                      :want (new 'static 'inline-array level-buffer-state-small 4
+                        (new 'static 'level-buffer-state-small :name 'ctyfarmb :display? 'display)
+                        (new 'static 'level-buffer-state-small) ;; :name 'ctyfarma :display? 'display)
+                        (new 'static 'level-buffer-state-small) ;; :name 'ctywide-kg  :display? 'display)
+                        (new 'static 'level-buffer-state-small)
+                        )
+                      :want-sound (new 'static 'array symbol 3 #f #f #f)
+                      ))
                    :callback-list '((35 . farm-activate))
-                   :borrow #f
+                   :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x20 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-ctyfarmb display) #f #f #f #f)
+                     )
                    :bottom-height (meters -15)
                    :fog-height (meters 80)
                    :max-rain 1.0
@@ -3025,7 +3154,11 @@
                       )
                     )
                   :callback-list '()
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x32a #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-ctyinda display) #f #f #f #f)
+                    )
                   :bottom-height (meters -15)
                   :fog-height (meters 80)
                   :max-rain 1.0
@@ -3094,13 +3227,13 @@
                       :want-sound (new 'static 'array symbol 3 'ctyindh #f #f)
                       )
                     (new 'static 'continue-point
-                      :name "ctyindb-bbush-2"
+                      :name "ctyindb-bbush-2" ;; city-bbush-get-to-36 / burning-bush-39 / burning-bush-indb-2
                       :level 'ctyindb
                       :flags (continue-flags no-auto)
-                      :trans (new 'static 'vector :x 3914337.5 :y 32741.785 :z 1884099.4 :w 1.0)
-                      :camera-trans (new 'static 'vector :x 3908069.5 :y 53720.68 :z 1833682.1 :w 1.0)
-                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 22 -23706 -22 #x5857))
-                      :camera-rot (new 'static 'array int16 9 #x7ffb 0 -45 3 #x7eff #xfec 45 -4076 #x7eff)
+                      :trans (new 'static 'vector :x (meters 971.3115) :y (meters 54.2364) :z (meters 560.1477) :w 1.0)
+                      :camera-trans (new 'static 'vector :x (meters 982.9697) :y (meters 59.2097) :z (meters 558.2052)  :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 -2 25379 -4 20726))
+                      :camera-rot (new 'static 'array int16 9 5190 0 32353 -4887 32390 784 -31981 -4950 5131)
                       :on-goto #f
                       :vis-nick 'ctyindb
                       :vehicle-type #x1b
@@ -3114,13 +3247,13 @@
                       :want-sound (new 'static 'array symbol 3 'ctyindh #f #f)
                       )
                     (new 'static 'continue-point
-                      :name "ctyindb-bbush-3"
+                      :name "ctyindb-bbush-3" ;; burning-bush-40 / burning-bush-indb-3 / city-bbush-get-to-37
                       :level 'ctyindb
                       :flags (continue-flags no-auto)
-                      :trans (new 'static 'vector :x 4404271.0 :y 33320.55 :z 2426769.5 :w 1.0)
-                      :camera-trans (new 'static 'vector :x 4390000.0 :y 54174.926 :z 2378528.0 :w 1.0)
-                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 #x16be 0 -32242))
-                      :camera-rot (new 'static 'array int16 9 #x7b04 0 -9040 #x432 #x7f13 #xea1 #x2312 -3895 #x7a25)
+                      :trans (new 'static 'vector :x (meters 1083.0693) :y (meters 27.5550) :z (meters 608.2944) :w 1.0)
+                      :camera-trans (new 'static 'vector :x (meters 1085.7805) :y (meters 32.7032) :z (meters 620.4906) :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 -3074 0 -32622))
+                      :camera-rot (new 'static 'array int16 9 -30260 0 12569 -1818 32422 -4377 -12437 -4740 -29941)
                       :on-goto #f
                       :vis-nick 'ctyindb
                       :vehicle-type #x1b
@@ -3154,8 +3287,11 @@
                       )
                     )
                   :callback-list '()
-                  :borrow #f
-                  :bottom-height (meters -15)
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #xa #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-ctyindb display) #f #f #f #f)
+                    )                  :bottom-height (meters -15)
                   :fog-height (meters 80)
                   :max-rain 1.0
                   :fog-mult 1.0
@@ -3286,9 +3422,33 @@
                         )
                       :want-sound (new 'static 'array symbol 3 'ruintsk1 'ruintsk2 'ruintsk3)
                       )
+                    (new 'static 'continue-point
+                      :name "stadium-warp"
+                      :level 'stadium
+                      :flags (continue-flags no-auto)
+                      :trans (new 'static 'vector :x (meters 263.4477) :y (meters 20.6489) :z (meters -625.0525) :w 1.0)
+                      :camera-trans (new 'static 'vector :x (meters 270.6054) :y (meters 26.3688) :z (meters -613.3674) :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 -32702 0 2062))
+                      :camera-rot (new 'static 'array int16 9 -30029 0 13112 -1571 32530 -3599 -13017 -3928 -29812)
+                      :on-goto #f
+                      :vis-nick 'stadium
+                      :vehicle-type #x1b
+                      :want-count 3
+                      :want (new 'static 'inline-array level-buffer-state-small 4
+                        (new 'static 'level-buffer-state-small :name 'stadiuma :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'stadium :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'ctygenb :display? 'display)
+                        (new 'static 'level-buffer-state-small)
+                        )
+                      :want-sound (new 'static 'array symbol 3 'ruintsk1 'ruintsk2 'ruintsk3)
+                      )
                     )
                   :callback-list '()
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x400 #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-stadium display) #f #f #f #f)
+                    )
                   :bottom-height (meters -100)
                   :fog-height (meters 80)
                   :fog-mult 1.0
@@ -3449,7 +3609,7 @@
                        :name "stadiumb-checkpoint"
                        :level 'stadiumb
                        :flags (continue-flags no-auto)
-                       :trans (new 'static 'vector :x 274922.7 :y -32770.457 :z -2648814.0 :w 1.0)
+                       :trans (new 'static 'vector :x 274922.7 :y -32300.457 :z -2648814.0 :w 1.0)
                        :camera-trans (new 'static 'vector :x 325496.44 :y -11848.909 :z -2649831.8 :w 1.0)
                        :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 -26741 0 #x49f4))
                        :camera-rot (new 'static 'array int16 9 #x25e 0 #x7ff8 -3951 #x7f0c 72 -32521 -3951 #x257)
@@ -3467,7 +3627,11 @@
                        )
                      )
                    :callback-list '()
-                   :borrow #f
+                   :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #xaa #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-stadiumb display) #f #f #f #f)
+                    )
                    :bottom-height (meters -100)
                    :fog-height (meters 80)
                    :fog-mult 1.0
@@ -3522,8 +3686,8 @@
                  :callback-list '((34 . towera-logout) (35 . towera-activate) (33 . towera-login))
                  :borrow (new 'static 'level-borrow-info
                    :alias #f
-                   :borrow-size (new 'static 'array uint16 5 #x13a1 #x0 #x0 #x0 #x0)
-                   :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                   :borrow-size (new 'static 'array uint16 5 #x13a1 #xa #x0 #x0 #x0)
+                   :borrow-info (new 'static 'array object 5 '(ltowera display) '(orbs-ltowera display) #f #f #f)
                    )
                  :bottom-height (meters -150)
                  :fog-height (meters 80)
@@ -3638,7 +3802,11 @@
                      )
                    )
                  :callback-list '((23 . init-mood-tower) (6 . *towerb-water-texture-anim-array*))
-                 :borrow #f
+                 :borrow (new 'static 'level-borrow-info
+                   :alias #f
+                   :borrow-size (new 'static 'array uint16 5 #x50 #xa0 #x0 #x0)
+                   :borrow-info (new 'static 'array object 5 '(orbs-towerb display) '(orbs-ltowerb display) #f #f #f)
+                   )
                  :bottom-height (meters -150)
                  :fog-height (meters 80)
                  :fog-mult 1.0
@@ -3674,8 +3842,8 @@
                  :callback-list '()
                  :borrow (new 'static 'level-borrow-info
                    :alias #f
-                   :borrow-size (new 'static 'array uint16 5 #xbea #x898 #x0 #x0 #x0)
-                   :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                   :borrow-size (new 'static 'array uint16 5 #x13a1 #x0 #x0 #x0 #x0)
+                   :borrow-info (new 'static 'array object 5 '(ltowerb display) #f #f #f #f)
                    )
                  :bottom-height (meters -150)
                  :fog-height (meters 80)
@@ -3830,6 +3998,26 @@
                         )
                       :want-sound (new 'static 'array symbol 3 'tower1 'tower2 'tower3)
                       )
+                    (new 'static 'continue-point
+                      :name "ltowerb-warp"
+                      :level 'ltowerb
+                      :flags (continue-flags no-auto)
+                      :trans (new 'static 'vector  :x (meters -117.6115) :y (meters 431.9760) :z (meters 446.4063) :w 1.0)
+                      :camera-trans (new 'static 'vector :x (meters -126.0672) :y (meters 437.1265) :z (meters 455.6127) :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 46 -31847 -20 -7708))
+                      :camera-rot (new 'static 'array int16 9 -24160 0 -22135 2692 32523 -2938 21970 -3985 -23980)
+                      :on-goto #f
+                      :vis-nick 'ltowerb
+                      :vehicle-type #x1b
+                      :want-count 3
+                      :want (new 'static 'inline-array level-buffer-state-small 4
+                        (new 'static 'level-buffer-state-small :name 'towera :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'towerb :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'towerc :display? 'display)
+                        (new 'static 'level-buffer-state-small)
+                        )
+                      :want-sound (new 'static 'array symbol 3 'tower1 'tower2 'tower3)
+                      )
                     )
                   :callback-list '()
                   :borrow #f
@@ -3906,7 +4094,11 @@
                       )
                     )
                   :callback-list '((33 . rubblea-login) (23 . init-mood-stadiuma) (6 . *rubblea-water-texture-anim-array*))
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x12a #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-rubblea display) #f #f #f #f)
+                    )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
                   :max-rain 1.0
@@ -3960,7 +4152,11 @@
                        )
                      )
                    :callback-list '((23 . init-mood-stadiuma) (6 . *rubblea2-water-texture-anim-array*))
-                   :borrow #f
+                   :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x28 #xa #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 #f '(orbs-rubblea2 display) #f #f #f)
+                    )
                    :bottom-height (meters -150)
                    :fog-height (meters 80)
                    :max-rain 1.0
@@ -4013,9 +4209,33 @@
                         )
                       :want-sound (new 'static 'array symbol 3 'ruintsk1 'ruintsk4 'ruintsk5)
                       )
+                    (new 'static 'continue-point
+                      :name "rubbleb-warp"
+                      :level 'rubbleb
+                      :flags (continue-flags warp-gate)
+                      :trans (new 'static 'vector :x (meters -329.5623) :y (meters 22.6151) :z (meters 180.5504) :w 1.0)
+                      :camera-trans (new 'static 'vector :x (meters -330.0447) :y (meters 27.2730) :z (meters 169.9414) :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 20 13717 -45 29757))
+                      :camera-rot (new 'static 'array int16 9 32696 0 -2152 291 32465 4423 2132 -4432 32395)
+                      :on-goto #f
+                      :vis-nick 'rubbleb
+                      :vehicle-type #x1b
+                      :want-count 3
+                      :want (new 'static 'inline-array level-buffer-state-small 4
+                        (new 'static 'level-buffer-state-small :name 'stadiuma :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'rubbleb :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'rubblec :display? 'display)
+                        (new 'static 'level-buffer-state-small)
+                        )
+                      :want-sound (new 'static 'array symbol 3 'ruintsk1 'ruintsk4 'ruintsk5)
+                      )
                     )
                   :callback-list '((23 . init-mood-stadiuma) (6 . *rubbleb-water-texture-anim-array*))
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x20 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-rubbleb display) #f #f #f #f)
+                     )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
                   :max-rain 1.0
@@ -4070,7 +4290,11 @@
                       )
                     )
                   :callback-list '((23 . init-mood-stadiuma) (6 . *rubblec-water-texture-anim-array*))
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #xa #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-rubblec display) #f #f #f #f)
+                     )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
                   :max-rain 1.0
@@ -4105,7 +4329,11 @@
                   :bigmap-id (bigmap-id rubble)
                   :continues '()
                   :callback-list '((3 . *darkjak-highres-texture-anim-array*))
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x400 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-rublcst display) #f #f #f #f)
+                     )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
                   :max-rain 1.0
@@ -4640,7 +4868,7 @@
                  :borrow (new 'static 'level-borrow-info
                    :alias #f
                    :borrow-size (new 'static 'array uint16 5 #x82a #x0 #x0 #x0 #x0)
-                   :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                   :borrow-info (new 'static 'array object 5 '(orbs-hiphog display) #f #f #f #f)
                    )
                  :bottom-height (meters -15)
                  :fog-height (meters 80)
@@ -4789,8 +5017,8 @@
                   :callback-list '()
                   :borrow (new 'static 'level-borrow-info
                     :alias #f
-                    :borrow-size (new 'static 'array uint16 5 #x1b #x2ee #x0 #x0 #x0)
-                    :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                    :borrow-size (new 'static 'array uint16 5 #x1b #x2ee #x20 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 #f #f '(orbs-gungame display) #f #f)
                     )
                   :bottom-height (meters -15)
                   :fog-height (meters 80)
@@ -5027,7 +5255,7 @@
                  :borrow (new 'static 'level-borrow-info
                    :alias #f
                    :borrow-size (new 'static 'array uint16 5 #x3e8 #xe6 #x0 #x0 #x0)
-                   :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                   :borrow-info (new 'static 'array object 5 '(orbs-freehq display) #f #f #f #f)
                    )
                  :bottom-height (meters -150)
                  :fog-height (meters 80)
@@ -5422,12 +5650,32 @@
                         )
                       :want-sound (new 'static 'array symbol 3 'ctyprtdh 'mhcity1h 'mhcity2h)
                       )
+                    (new 'static 'continue-point
+                      :name "mhcitya-warp"
+                      :level 'mhcitya
+                      :flags (continue-flags warp-gate)
+                      :trans (new 'static 'vector :x (meters -293.9992) :y (meters 11.4911) :z (meters 1111.3377) :w 1.0)
+                      :camera-trans (new 'static 'vector :x (meters -288.0535) :y (meters 16.5507) :z (meters 1121.9219) :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 3 28361 -4 16409))
+                      :camera-rot (new 'static 'array int16 9 -30278 0 12524 -1499 32531 -3626 -12434 -3924 -30060)
+                      :on-goto #f
+                      :vis-nick 'mhcitya
+                      :vehicle-type #x1b
+                      :want-count 3
+                      :want (new 'static 'inline-array level-buffer-state-small 4
+                        (new 'static 'level-buffer-state-small :name 'mhcitya :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'ctywide-mh :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'ctyport :display? #f)
+                        (new 'static 'level-buffer-state-small)
+                        )
+                      :want-sound (new 'static 'array symbol 3 'mhcity1h 'mhcity2h #f)
+                      )
                     )
                   :callback-list '((23 . init-mood-mhcitya) (3 . *mhcitya-pris-texture-anim-array*))
                   :borrow (new 'static 'level-borrow-info
                     :alias #f
-                    :borrow-size (new 'static 'array uint16 5 #xfa #x0 #x0 #x0 #x0)
-                    :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                    :borrow-size (new 'static 'array uint16 5 #xfa #x120 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(lmhcitya display) '(orbs-mhcitya display) #f #f #f)
                     )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
@@ -5605,8 +5853,8 @@
                   :callback-list '((23 . init-mood-mhcityb))
                   :borrow (new 'static 'level-borrow-info
                     :alias #f
-                    :borrow-size (new 'static 'array uint16 5 #xfa #x0 #x0 #x0 #x0)
-                    :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                    :borrow-size (new 'static 'array uint16 5 #xfa #x120 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(lmhcityb display) '(orbs-mhcityb display) #f #f #f)
                     )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
@@ -5693,7 +5941,7 @@
                 :index 85
                 :task-level #xc
                 :master-level #f
-                :level-flags (level-flags end-mode ocean-near-translucent)
+                :level-flags (level-flags end-mode ocean-near-translucent turbo-board)
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-center)
@@ -5793,7 +6041,11 @@
                   (23 . init-mood-comb)
                   (6 . *comb-field-texture-anim-array*)
                   )
-                :borrow #f
+                :borrow (new 'static 'level-borrow-info
+                  :alias #f
+                  :borrow-size (new 'static 'array uint16 5 #x500 #x0 #x0 #x0 #x0)
+                  :borrow-info (new 'static 'array object 5 '(orbs-comba display) #f #f #f #f)
+                  )
                 :bottom-height (meters -10000)
                 :fog-height (meters 80)
                 :fog-mult 1.0
@@ -5810,7 +6062,7 @@
                 :index 86
                 :task-level #xc
                 :master-level 'comba
-                :level-flags (level-flags ocean-near-translucent)
+                :level-flags (level-flags ocean-near-translucent turbo-board)
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-edge)
@@ -5860,7 +6112,7 @@
                 :index 87
                 :task-level #xc
                 :master-level 'comba
-                :level-flags (level-flags display-wait ocean-near-translucent)
+                :level-flags (level-flags display-wait ocean-near-translucent turbo-board)
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-edge)
@@ -5913,7 +6165,7 @@
                 :index 88
                 :task-level #xc
                 :master-level 'comba
-                :level-flags (level-flags display-wait ocean-near-translucent)
+                :level-flags (level-flags display-wait ocean-near-translucent turbo-board)
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-edge)
@@ -5966,7 +6218,7 @@
                 :index 89
                 :task-level #xc
                 :master-level 'comba
-                :level-flags (level-flags display-wait ocean-near-translucent)
+                :level-flags (level-flags display-wait ocean-near-translucent turbo-board)
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-edge)
@@ -6019,7 +6271,7 @@
                 :index 90
                 :task-level #xc
                 :master-level 'comba
-                :level-flags (level-flags display-wait ocean-near-translucent)
+                :level-flags (level-flags display-wait ocean-near-translucent turbo-board)
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-edge)
@@ -6052,7 +6304,7 @@
                 :index 91
                 :task-level #xc
                 :master-level 'comba
-                :level-flags (level-flags display-wait ocean-near-translucent)
+                :level-flags (level-flags display-wait ocean-near-translucent turbo-board)
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-edge)
@@ -6125,7 +6377,7 @@
                 :index 92
                 :task-level #xc
                 :master-level #f
-                :level-flags (level-flags display-wait ocean-near-translucent)
+                :level-flags (level-flags display-wait ocean-near-translucent turbo-board)
                 :packages '("combx")
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-edge)
@@ -6158,7 +6410,7 @@
                 :index 93
                 :task-level #xc
                 :master-level #f
-                :level-flags (level-flags end-mode ocean-near-translucent)
+                :level-flags (level-flags end-mode ocean-near-translucent turbo-board)
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-center)
@@ -6191,7 +6443,7 @@
                 :index 94
                 :task-level #xc
                 :master-level 'raila
-                :level-flags (level-flags display-wait ocean-near-translucent)
+                :level-flags (level-flags display-wait ocean-near-translucent turbo-board)
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-edge)
@@ -6227,7 +6479,11 @@
                     )
                   )
                 :callback-list '((23 . init-mood-comb))
-                :borrow #f
+                :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x20 #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-railb display) #f #f #f #f)
+                    )
                 :bottom-height (meters -10000)
                 :fog-height (meters 80)
                 :fog-mult 1.0
@@ -6244,7 +6500,7 @@
                  :index 95
                  :task-level #xc
                  :master-level 'raila
-                 :level-flags (level-flags display-wait ocean-near-translucent)
+                 :level-flags (level-flags display-wait ocean-near-translucent turbo-board)
                  :packages '()
                  :run-packages '("common")
                  :memory-mode (level-memory-mode small-edge)
@@ -6297,7 +6553,7 @@
                 :index 96
                 :task-level #xc
                 :master-level 'raila
-                :level-flags (level-flags display-wait ocean-near-translucent)
+                :level-flags (level-flags display-wait ocean-near-translucent turbo-board)
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-edge)
@@ -6350,7 +6606,7 @@
                 :index 97
                 :task-level #xc
                 :master-level 'raila
-                :level-flags (level-flags display-wait ocean-near-translucent)
+                :level-flags (level-flags display-wait ocean-near-translucent turbo-board)
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-edge)
@@ -6403,7 +6659,7 @@
                 :index 98
                 :task-level #xc
                 :master-level 'raila
-                :level-flags (level-flags display-wait ocean-near-translucent)
+                :level-flags (level-flags display-wait ocean-near-translucent turbo-board)
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-edge)
@@ -6440,7 +6696,7 @@
                   )
                 :callback-list '((23 . init-mood-comb))
                 :borrow #f
-                :bottom-height (meters -10000)
+                :bottom-height (meters -5000)
                 :fog-height (meters 80)
                 :fog-mult 1.0
                 :mood-range (new 'static 'mood-range :max-cloud 1.0 :min-fog 0.5 :max-fog 1.0)
@@ -6456,7 +6712,7 @@
                 :index 99
                 :task-level #xc
                 :master-level 'raila
-                :level-flags (level-flags display-wait ocean-near-translucent)
+                :level-flags (level-flags display-wait ocean-near-translucent turbo-board)
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-edge)
@@ -6521,14 +6777,32 @@
                       )
                     :want-sound (new 'static 'array symbol 3 #f #f #f)
                     )
+                  (new 'static 'continue-point
+                    :name "railx-warp"
+                    :level 'railx
+                    :flags (continue-flags no-auto)
+                    :trans (new 'static 'vector :x (meters 16.7056) :y (meters -3546.6889) :z (meters -1328.2020) :w 1.0)
+                    :camera-trans (new 'static 'vector :x (meters 17.5072) :y (meters -3541.6286) :z (meters -1316.0439) :w 1.0)
+                    :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 31664 0 -8428))
+                    :camera-rot (new 'static 'array int16 9 -32690 0 2233 -269 32527 -3942 -2217 -3951 -32452)
+                    :on-goto #f
+                    :vis-nick 'railx
+                    :vehicle-type #x1b
+                    :want-count 2
+                    :want (new 'static 'inline-array level-buffer-state-small 2
+                      (new 'static 'level-buffer-state-small :name 'railx :display? 'display)
+                      (new 'static 'level-buffer-state-small :name 'railcst :display? 'special)
+                      )
+                    :want-sound (new 'static 'array symbol 3 #f #f #f)
+                    )
                   )
                 :callback-list '((23 . init-mood-railx))
                 :borrow (new 'static 'level-borrow-info
                   :alias #f
-                  :borrow-size (new 'static 'array uint16 5 #xa28 #x0 #x0 #x0 #x0)
-                  :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                  :borrow-size (new 'static 'array uint16 5 #xa28 #xa #x0 #x0 #x0)
+                  :borrow-info (new 'static 'array object 5 #f '(orbs-railx display) #f #f #f)
                   )
-                :bottom-height (meters -10000)
+                :bottom-height (meters -3790)
                 :fog-height (meters 80)
                 :fog-mult 1.0
                 :mood-range (new 'static 'mood-range :max-cloud 1.0 :min-fog 0.5 :max-fog 1.0)
@@ -6615,7 +6889,7 @@
                 :packages '("elecgate")
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-edge)
-                :music-bank #f
+                :music-bank 'minexplr
                 :sound-reverb 0.08
                 :extra-sound-bank #f
                 :mood-func 'update-mood-minea
@@ -6664,7 +6938,11 @@
                     )
                   )
                 :callback-list '((23 . init-mood-minea))
-                :borrow #f
+                :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #xa #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-minea display) #f #f #f #f)
+                    )
                 :bottom-height (meters -150)
                 :fog-height (meters 80)
                 :max-rain 1.0
@@ -6719,7 +6997,7 @@
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode large)
-                :music-bank #f
+                :music-bank 'minexplr
                 :sound-reverb 0.08
                 :extra-sound-bank #f
                 :mood-func 'update-mood-mineb
@@ -6822,7 +7100,11 @@
                     )
                   )
                 :callback-list '((35 . mineb-activate) (23 . init-mood-mineb))
-                :borrow #f
+                :borrow (new 'static 'level-borrow-info
+                  :alias #f
+                  :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                  :borrow-info (new 'static 'array object 5 '(orbs-mineb display) #f #f #f #f)
+                  )
                 :bottom-height (meters -150)
                 :fog-height (meters 80)
                 :fog-mult 1.0
@@ -6843,7 +7125,7 @@
                 :packages '("gruntp")
                 :run-packages '("common")
                 :memory-mode (level-memory-mode large)
-                :music-bank #f
+                :music-bank 'minexplr
                 :sound-reverb 0.08
                 :extra-sound-bank #f
                 :mood-func 'update-mood-minec
@@ -6946,7 +7228,11 @@
                     )
                   )
                 :callback-list '((23 . init-mood-minec))
-                :borrow #f
+                :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x32a #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-minec display) #f #f #f #f)
+                    )
                 :bottom-height (meters 40)
                 :fog-height (meters 80)
                 :max-rain 1.0
@@ -6968,7 +7254,7 @@
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode large)
-                :music-bank #f
+                :music-bank 'minexplr
                 :sound-reverb 0.08
                 :extra-sound-bank #f
                 :mood-func 'update-mood-mined
@@ -7035,7 +7321,11 @@
                     )
                   )
                 :callback-list '((23 . init-mood-mined) (2 . *mined-tfrag-texture-anim-array*))
-                :borrow #f
+                :borrow (new 'static 'level-borrow-info
+                  :alias #f
+                  :borrow-size (new 'static 'array uint16 5 #x32a #x0 #x0 #x0 #x0)
+                  :borrow-info (new 'static 'array object 5 '(orbs-mined display) #f #f #f #f)
+                  )
                 :bottom-height (meters -20)
                 :fog-height (meters 80)
                 :fog-mult 1.0
@@ -7056,7 +7346,7 @@
                 :packages '()
                 :run-packages '("common")
                 :memory-mode (level-memory-mode small-edge)
-                :music-bank #f
+                :music-bank 'minexplr
                 :sound-reverb 0.08
                 :extra-sound-bank #f
                 :mood-func 'update-mood-default-interior
@@ -7075,6 +7365,24 @@
                     :camera-trans (new 'static 'vector :x 1290528.8 :y 274293.97 :z -1215116.1 :w 1.0)
                     :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 #x7e82 0 -4970))
                     :camera-rot (new 'static 'array int16 9 -32668 0 #x9c0 -301 #x7f0c -3964 -2480 -3977 -32429)
+                    :on-goto #f
+                    :vis-nick 'mined
+                    :vehicle-type #x1b
+                    :want-count 2
+                    :want (new 'static 'inline-array level-buffer-state-small 2
+                      (new 'static 'level-buffer-state-small :name 'minee :display? 'display)
+                      (new 'static 'level-buffer-state-small :name 'mined :display? 'display)
+                      )
+                    :want-sound (new 'static 'array symbol 3 'mine7 'mine8 'mine9)
+                    )
+                  (new 'static 'continue-point
+                    :name "minee-return"
+                    :level 'minee
+                    :flags (continue-flags no-auto)
+                    :trans (new 'static 'vector :x (meters 313.7073) :y (meters 61.8139) :z (meters -310.3993) :w 1.0)
+                    :camera-trans (new 'static 'vector :x (meters 316.3450) :y (meters 66.3203) :z (meters -320.1348) :w 1.0)
+                    :quat (new 'static 'vector4h :data (new 'static 'array int16 4  0 -424 0 32764))
+                    :camera-rot (new 'static 'array int16 9 31635 0 8538 -1217 32432 4510 -8450 -4672 31311)
                     :on-goto #f
                     :vis-nick 'mined
                     :vehicle-type #x1b
@@ -7315,7 +7623,11 @@
                    )
                  )
                :callback-list '((35 . sewb-activate) (23 . init-mood-sewb))
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-sewb display) #f #f #f #f)
+                     )
                :bottom-height (meters -229)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -7389,7 +7701,11 @@
                    )
                  )
                :callback-list '((35 . sewc-activate) (23 . init-mood-sewc) (6 . *sewc-water-texture-anim-array*))
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-sewc display) #f #f #f #f)
+                     )
                :bottom-height (meters -229)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -7463,7 +7779,11 @@
                    )
                  )
                :callback-list '((23 . init-mood-sewd) (6 . *sewd-water-texture-anim-array*))
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-sewd display) #f #f #f #f)
+                     )
                :bottom-height (meters -229)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -7575,7 +7895,11 @@
                    )
                  )
                :callback-list '((23 . init-mood-sewc) (6 . *sewe-water-texture-anim-array*))
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-sewe display) #f #f #f #f)
+                     )
                :bottom-height (meters -229)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -7647,9 +7971,33 @@
                      )
                    :want-sound (new 'static 'array symbol 3 'sewer2 'sewer3 'sewer4)
                    )
+                 (new 'static 'continue-point
+                   :name "sewf-warp"
+                   :level 'sewf
+                   :flags (continue-flags warp-gate)
+                   :trans (new 'static 'vector :x (meters -488.6250) :y (meters -128.8894) :z (meters 66.3832) :w 1.0)
+                   :camera-trans (new 'static 'vector :x (meters -499.3323) :y (meters -123.8930) :z (meters 61.1231) :w 1.0)
+                   :quat (new 'static 'vector4h :data (new 'static 'array int16 4 3 26313 -4 19526))
+                   :camera-rot (new 'static 'array int16 9 14027 0 -29612 3483 32539 1650 29406 -3855 13930)
+                   :on-goto #f
+                   :vis-nick 'sewf
+                   :vehicle-type #x1b
+                   :want-count 3
+                   :want (new 'static 'inline-array level-buffer-state-small 4
+                     (new 'static 'level-buffer-state-small :name 'sewa :display? 'display)
+                     (new 'static 'level-buffer-state-small :name 'sewf :display? 'display)
+                     (new 'static 'level-buffer-state-small :name 'sewe :display? 'display)
+                     (new 'static 'level-buffer-state-small)
+                     )
+                   :want-sound (new 'static 'array symbol 3 'sewer2 'sewer3 'sewer4)
+                   )
                  )
                :callback-list '((23 . init-mood-sewb))
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                :alias #f
+                :borrow-size (new 'static 'array uint16 5 #x300 #x0 #x0 #x0 #x0)
+                :borrow-info (new 'static 'array object 5 '(orbs-sewf display) #f #f #f #f)
+                )
                :bottom-height (meters -229)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -7723,7 +8071,11 @@
                    )
                  )
                :callback-list '((35 . sewg-activate) (23 . init-mood-sewg) (6 . *sewg-water-texture-anim-array*))
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-sewg display) #f #f #f #f)
+                     )
                :bottom-height (meters -229)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -7797,7 +8149,11 @@
                    )
                  )
                :callback-list '((35 . sewh-activate) (23 . init-mood-sewh) (6 . *sewh-water-texture-anim-array*))
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-sewh display) #f #f #f #f)
+                     )
                :bottom-height (meters -229)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -7851,7 +8207,11 @@
                    )
                  )
                :callback-list '((23 . init-mood-sewc) (6 . *sewi-water-texture-anim-array*))
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-sewi display) #f #f #f #f)
+                     )
                :bottom-height (meters -229)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -7925,7 +8285,11 @@
                    )
                  )
                :callback-list '((35 . sewj-activate) (6 . *sewj-water-texture-anim-array*))
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-sewj display) #f #f #f #f)
+                     )
                :bottom-height (meters -229)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -7997,9 +8361,33 @@
                      )
                    :want-sound (new 'static 'array symbol 3 'sewer5 'sewer4 'sewer6)
                    )
+                 (new 'static 'continue-point
+                   :name "sewk-warp"
+                   :level 'sewk
+                   :flags (continue-flags warp-gate)
+                   :trans (new 'static 'vector :x (meters 488.8886) :y (meters -129.0259) :z (meters 195.4638) :w 1.0)
+                   :camera-trans (new 'static 'vector :x (meters 482.9472) :y (meters -123.8992) :z (meters 184.5606) :w 1.0)
+                   :quat (new 'static 'vector4h :data (new 'static 'array int16 4 4 6461 -4 -32123))
+                   :camera-rot (new 'static 'array int16 9 29182 0 -14902 1749 32540 3425 14799 -3845 28980)
+                   :on-goto #f
+                   :vis-nick 'sewk
+                   :vehicle-type #x1b
+                   :want-count 3
+                   :want (new 'static 'inline-array level-buffer-state-small 4
+                     (new 'static 'level-buffer-state-small :name 'sewa :display? 'display)
+                     (new 'static 'level-buffer-state-small :name 'sewg :display? 'display)
+                     (new 'static 'level-buffer-state-small :name 'sewk :display? 'display)
+                     (new 'static 'level-buffer-state-small)
+                     )
+                   :want-sound (new 'static 'array symbol 3 'sewer5 'sewer4 'sewer6)
+                   )
                  )
                :callback-list '((23 . init-mood-sewb))
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                :alias #f
+                :borrow-size (new 'static 'array uint16 5 #x300 #x0 #x0 #x0 #x0)
+                :borrow-info (new 'static 'array object 5 '(orbs-sewk display) #f #f #f #f)
+                )
                :bottom-height (meters -229)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -8071,7 +8459,11 @@
                    )
                  )
                :callback-list '((35 . sewl-activate) (6 . *sewl-water-texture-anim-array*))
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-sewl display) #f #f #f #f)
+                     )
                :bottom-height (meters -229)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -8163,7 +8555,11 @@
                    )
                  )
                :callback-list '((6 . *sewm-water-texture-anim-array*))
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-sewm display) #f #f #f #f)
+                     )
                :bottom-height (meters -229)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -8235,7 +8631,11 @@
                    )
                  )
                :callback-list '((6 . *sewn-water-texture-anim-array*))
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-sewn display) #f #f #f #f)
+                     )
                :bottom-height (meters -229)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -8305,7 +8705,11 @@
                    )
                  )
                :callback-list '((35 . sewo-activate) (23 . init-mood-sewb))
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                  :alias #f
+                  :borrow-size (new 'static 'array uint16 5 #xa #x0 #x0 #x0 #x0)
+                  :borrow-info (new 'static 'array object 5 '(orbs-sewo display) #f #f #f #f)
+                  )
                :bottom-height (meters -229)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -8581,8 +8985,8 @@
                   :callback-list '((6 . *foresta-water-texture-anim-array*))
                   :borrow (new 'static 'level-borrow-info
                     :alias #f
-                    :borrow-size (new 'static 'array uint16 5 #x79e #x0 #x0 #x0 #x0)
-                    :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                    :borrow-size (new 'static 'array uint16 5 #x79e #x500 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 #f '(orbs-foresta display) #f #f #f)
                     )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
@@ -8736,7 +9140,11 @@
                       )
                     )
                   :callback-list '((6 . *forestb-water-texture-anim-array*))
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-forestb display) #f #f #f #f)
+                    )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
                   :max-rain 1.0
@@ -8930,7 +9338,7 @@
                    :level-flags (level-flags not-physical ocean-near-translucent)
                    :packages '()
                    :run-packages '("common")
-                   :memory-mode (level-memory-mode borrow)
+                   :memory-mode (level-memory-mode small-edge)
                    :music-bank #f
                    :extra-sound-bank #f
                    :mood-func 'update-mood-copy-parent
@@ -8941,7 +9349,26 @@
                    :draw-priority 10.0
                    :base-task-mask (task-mask task0)
                    :bigmap-id (bigmap-id none)
-                   :continues '()
+                   :continues '((new 'static 'continue-point
+                      :name "intpalrf-start"
+                      :level 'intpalrf
+                      :flags (continue-flags no-auto)
+                      :trans (new 'static 'vector :x (meters 150.4281) :y (meters 408.0) :z (meters 503.8) :w 1.0)
+                      :camera-trans (new 'static 'vector :x (meters 160.4281) :y (meters 408.0) :z (meters 503.8) :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 41 21328 30 24874))
+                      :camera-rot (new 'static 'array int16 9 9914 0 -31231 3800 32523 1206 30998 -3987 9840)
+                      :on-goto #f
+                      :vis-nick 'intpalrf
+                      :vehicle-type #x1b
+                      :want-count 1
+                      :want (new 'static 'inline-array level-buffer-state-small 4
+                        (new 'static 'level-buffer-state-small :name 'intpalrf :display? 'display)
+                        (new 'static 'level-buffer-state-small) ;; :name 'ctyfarmb :display? 'display)
+                        (new 'static 'level-buffer-state-small) ;; :name 'ctywide-kg  :display? 'display)
+                        (new 'static 'level-buffer-state-small)
+                        )
+                      :want-sound (new 'static 'array symbol 3 #f #f #f)
+                      ))
                    :callback-list '()
                    :borrow #f
                    :bottom-height (meters -20)
@@ -9384,7 +9811,7 @@
                    :borrow (new 'static 'level-borrow-info
                      :alias #f
                      :borrow-size (new 'static 'array uint16 5 #x258 #x0 #x0 #x0 #x0)
-                     :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                     :borrow-info (new 'static 'array object 5 '(orbs-wascitya display) #f #f #f #f)
                      )
                    :bottom-height (meters -150)
                    :fog-height (meters 80)
@@ -9811,7 +10238,11 @@
                        )
                      )
                    :callback-list '()
-                   :borrow #f
+                   :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #xa #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-wascityb display) #f #f #f #f)
+                     )
                    :bottom-height (meters -150)
                    :fog-height (meters 80)
                    :fog-mult 10.0
@@ -10334,8 +10765,8 @@
                    :callback-list '((36 . wasdoors-deactivate) (35 . wasdoors-activate))
                    :borrow (new 'static 'level-borrow-info
                      :alias #f
-                     :borrow-size (new 'static 'array uint16 5 #x4dd #x0 #x0 #x0 #x0)
-                     :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                     :borrow-size (new 'static 'array uint16 5 #x3dd #x32a #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 #f '(orbs-wasdoors display) #f #f #f)
                      )
                    :bottom-height (meters -150)
                    :fog-height (meters 80)
@@ -10602,10 +11033,10 @@
                        :name "game-start"
                        :level 'wasstada
                        :flags (continue-flags no-auto game-start)
-                       :trans (new 'static 'vector :x 9308096.0 :y 65764.97 :z -1812101.1 :w 1.0)
-                       :camera-trans (new 'static 'vector :x 9265216.0 :y 87102.26 :z -1784114.4 :w 1.0)
-                       :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 -29120 0 -15017))
-                       :camera-rot (new 'static 'array int16 9 -17979 0 -27393 #xdc9 #x7eeb -2313 #x6a1b -4220 -17828)
+                       :trans (new 'static 'vector :x 9301495.0 :y 66149.17 :z -1830771.9 :w 1.0)
+                       :camera-trans (new 'static 'vector :x 9261504.0 :y 87216.125 :z -1862743.6 :w 1.0)
+                       :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 #x38ee 0 #x729e))
+                       :camera-rot (new 'static 'array int16 9 #x4ff2 0 -25587 #xc22 #x7f09 #x9b3 #x6335 -3977 #x4f58)
                        :on-goto '(task-close! "arena-training-1-introduction")
                        :vis-nick 'wasstada
                        :vehicle-type #x1b
@@ -10614,7 +11045,7 @@
                          (new 'static 'level-buffer-state-small :name 'wasall :display? 'special)
                          (new 'static 'level-buffer-state-small :name 'waswide :display? 'display)
                          (new 'static 'level-buffer-state-small :name 'wasstada :display? 'display)
-                         (new 'static 'level-buffer-state-small :name 'arenacst :display? 'special)
+                         (new 'static 'level-buffer-state-small :name 'wascitya :display? #f)
                          )
                        :want-sound (new 'static 'array symbol 3 'wascity1 'wasstad1 'wasstad2)
                        )
@@ -10842,8 +11273,8 @@
                    :callback-list '((5 . *wasstada-alpha-texture-anim-array*))
                    :borrow (new 'static 'level-borrow-info
                      :alias #f
-                     :borrow-size (new 'static 'array uint16 5 #x898 #x0 #x0 #x0 #x0)
-                     :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                     :borrow-size (new 'static 'array uint16 5 #x898 #xa #xa #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(wasstadb display) '(orbs-wasstada display)  '(orbs-wasstadb display) #f #f)
                      )
                    :bottom-height (meters 10)
                    :fog-height (meters 80)
@@ -12488,8 +12919,8 @@
                   :callback-list '((6 . *waspal-water-texture-anim-array*))
                   :borrow (new 'static 'level-borrow-info
                     :alias #f
-                    :borrow-size (new 'static 'array uint16 5 #x52d #x0 #x0 #x0 #x0)
-                    :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                    :borrow-size (new 'static 'array uint16 5 #x22d #x32a #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 #f '(orbs-waspala display) #f #f #f)
                     )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
@@ -14028,7 +14459,11 @@
                      )
                    )
                  :callback-list '((36 . desert-deactivate) (35 . desert-activate) (12 . *hfrag-texture-anim-array*))
-                 :borrow #f
+                 :borrow (new 'static 'level-borrow-info
+                  :alias #f
+                  :borrow-size (new 'static 'array uint16 5 #xaf #x0 #x0 #x0 #x0)
+                  :borrow-info (new 'static 'array object 5 '(orbs-desert display) #f #f #f #f)
+                  )
                  :bottom-height (meters -100)
                  :fog-height (meters 80)
                  :fog-mult 10.0
@@ -14115,7 +14550,11 @@
                       )
                     )
                   :callback-list '()
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-deserta display) #f #f #f #f)
+                     )
                   :bottom-height (meters -20)
                   :fog-height (meters 80)
                   :fog-mult 10.0
@@ -14375,6 +14814,26 @@
                       :want-sound (new 'static 'array symbol 3 'wasall1 'desert1 'desert2)
                       )
                     (new 'static 'continue-point
+                      :name "desertb-warp"
+                      :level 'desertb
+                      :flags (continue-flags warp-gate no-auto)
+                      :trans (new 'static 'vector :x (meters 2315.0617) :y (meters 31.4898) :z (meters 260.6951) :w 1.0)
+                      :camera-trans (new 'static 'vector :x (meters 2322.7880) :y (meters 36.3074) :z (meters 268.8649) :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 11 -2445 48 -32675))
+                      :camera-rot (new 'static 'array int16 9 -22039 0 24247 -3446 32434 -3132 -24001 -4656 -21815)
+                      :on-goto #f
+                      :vis-nick 'desert
+                      :vehicle-type #x1b
+                      :want-count 4
+                      :want (new 'static 'inline-array level-buffer-state-small 4
+                        (new 'static 'level-buffer-state-small :name 'wasall :display? 'special)
+                        (new 'static 'level-buffer-state-small :name 'desert-game :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'wasdoors :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'desertb :display? 'display)
+                        )
+                      :want-sound (new 'static 'array symbol 3 'wasall1 'desert1 'desert2)
+                      )
+                    (new 'static 'continue-point
                       :name "desert-final-boss-res-movie"
                       :level 'desertb
                       :flags (continue-flags scene-wait no-auto vehicle-movie)
@@ -14436,7 +14895,11 @@
                       )
                     )
                   :callback-list '()
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-desertb display) #f #f #f #f)
+                     )
                   :bottom-height (meters -20)
                   :fog-height (meters 80)
                   :fog-mult 10.0
@@ -14489,7 +14952,11 @@
                       )
                     )
                   :callback-list '()
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-desertc display) #f #f #f #f)
+                     )
                   :bottom-height (meters -20)
                   :fog-height (meters 80)
                   :fog-mult 10.0
@@ -14542,7 +15009,11 @@
                       )
                     )
                   :callback-list '((6 . *desertd-water-texture-anim-array*))
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-desertd display) #f #f #f #f)
+                     )
                   :bottom-height (meters -20)
                   :fog-height (meters 80)
                   :fog-mult 10.0
@@ -14597,8 +15068,8 @@
                   :callback-list '()
                   :borrow (new 'static 'level-borrow-info
                     :alias #f
-                    :borrow-size (new 'static 'array uint16 5 #x3e8 #x0 #x0 #x0 #x0)
-                    :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                    :borrow-size (new 'static 'array uint16 5 #x3e8 #x32a #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 #f '(orbs-deserte display) #f #f #f)
                     )
                   :bottom-height (meters -20)
                   :fog-height (meters 80)
@@ -14712,7 +15183,11 @@
                       )
                     )
                   :callback-list '()
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-desertf display) #f #f #f #f)
+                     )
                   :bottom-height (meters -20)
                   :fog-height (meters 80)
                   :fog-mult 10.0
@@ -14885,7 +15360,11 @@
                       )
                     )
                   :callback-list '((23 . init-mood-desertg))
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x32a #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-desertg display) #f #f #f #f)
+                    )
                   :bottom-height (meters -100)
                   :fog-height (meters 80)
                   :fog-mult 10.0
@@ -14972,7 +15451,11 @@
                       )
                     )
                   :callback-list '()
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x200 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-deserth display) #f #f #f #f)
+                     )
                   :bottom-height (meters -20)
                   :fog-height (meters 80)
                   :fog-mult 10.0
@@ -15003,7 +15486,8 @@
                   :draw-priority 10.0
                   :base-task-mask (task-mask task0)
                   :bigmap-id (bigmap-id desert)
-                  :continues '((new 'static 'continue-point
+                  :continues '(
+                    (new 'static 'continue-point
                       :name "deswalk-start"
                       :level 'deswalk
                       :trans (new 'static 'vector :x 10118143.0 :y 247550.36 :z 2623203.0 :w 1.0)
@@ -15013,10 +15497,32 @@
                       :on-goto #f
                       :vis-nick 'desert
                       :vehicle-type #x1b
-                      :want-count 4
-                      :want (new 'static 'inline-array level-buffer-state-small 4
+                      :want-count 5
+                      :want (new 'static 'inline-array level-buffer-state-small 5
                         (new 'static 'level-buffer-state-small :name 'wasall :display? 'special)
-                        (new 'static 'level-buffer-state-small :name 'desert-game :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'desert :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'desinter :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'desertb :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'deswalk :display? 'display)
+                        )
+                      :want-sound (new 'static 'array symbol 3 'wasall1 'desert1 'desert2)
+                      )
+                    (new 'static 'continue-point
+                      :name "deswalk-warp"
+                      :level 'deswalk
+                      :trans (new 'static 'vector :x (meters 2512.4746) :y (meters 60.4491) :z (meters 594.4688) :w 1.0)
+                      :camera-trans (new 'static 'vector :x (meters 2520.7487) :y (meters 65.1839) :z (meters 601.6754) :w 1.0)
+                      ;; :quat (new 'static 'quaternion :x -0.0002 :y -0.1337 :z 0.0015 :w 0.991)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 #x6abc 0 -18077))
+                      :camera-rot (new 'static 'array int16 9 -13027 0 30065 -3655 32523 -1583 -29842 -3983 -12931)
+                      :on-goto #f
+                      :vis-nick 'desert
+                      :vehicle-type #x1b
+                      :want-count 5
+                      :want (new 'static 'inline-array level-buffer-state-small 5
+                        (new 'static 'level-buffer-state-small :name 'wasall :display? 'special)
+                        (new 'static 'level-buffer-state-small :name 'desert :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'desinter :display? 'display)
                         (new 'static 'level-buffer-state-small :name 'desertb :display? 'display)
                         (new 'static 'level-buffer-state-small :name 'deswalk :display? 'display)
                         )
@@ -15024,7 +15530,11 @@
                       )
                     )
                   :callback-list '()
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #xa #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-deswalk display) #f #f #f #f)
+                     )
                   :bottom-height (meters -20)
                   :fog-height (meters 80)
                   :fog-mult 10.0
@@ -16633,7 +17143,11 @@
                    )
                  )
                :callback-list '()
-               :borrow #f
+               :borrow (new 'static 'level-borrow-info
+                :alias #f
+                :borrow-size (new 'static 'array uint16 5 #x20 #x0 #x0 #x0 #x0)
+                :borrow-info (new 'static 'array object 5 '(orbs-nsta display) #f #f #f #f)
+                )
                :bottom-height (meters -150)
                :fog-height (meters 80)
                :fog-mult 1.0
@@ -16769,7 +17283,7 @@
                :borrow (new 'static 'level-borrow-info
                  :alias #f
                  :borrow-size (new 'static 'array uint16 5 #x3e8 #x0 #x0 #x0 #x0)
-                 :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                 :borrow-info (new 'static 'array object 5 '(orbs-nstb display) #f #f #f #f)
                  )
                :bottom-height (meters -150)
                :fog-height (meters 80)
@@ -17105,7 +17619,11 @@
                       )
                     )
                   :callback-list '((6 . *templex-water-texture-anim-array*))
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x40 #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-templex display) #f #f #f #f)
+                    )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
                   :fog-mult 1.0
@@ -17267,8 +17785,8 @@
                     )
                   :borrow (new 'static 'level-borrow-info
                     :alias #f
-                    :borrow-size (new 'static 'array uint16 5 #xa #x0 #x0 #x0 #x0)
-                    :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                    :borrow-size (new 'static 'array uint16 5 #xfa #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-templea display) #f #f #f #f)
                     )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
@@ -17312,10 +17830,11 @@
                       :on-goto #f
                       :vis-nick 'templeb
                       :vehicle-type #x1b
-                      :want-count 2
-                      :want (new 'static 'inline-array level-buffer-state-small 2
+                      :want-count 3
+                      :want (new 'static 'inline-array level-buffer-state-small 3
                         (new 'static 'level-buffer-state-small :name 'templea :display? 'special)
                         (new 'static 'level-buffer-state-small :name 'templeb :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'templec :display? #f)
                         )
                       :want-sound (new 'static 'array symbol 3 'temple3 'temple4 'temple5)
                       )
@@ -17676,7 +18195,11 @@
                       )
                     )
                   :callback-list '((23 . init-mood-templea) (7 . *templeb-warp-texture-anim-array*))
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #xa #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-templeb display) #f #f #f #f)
+                    )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
                   :fog-mult 1.0
@@ -17770,7 +18293,11 @@
                       )
                     )
                   :callback-list '((23 . init-mood-templea) (6 . *templec-water-texture-anim-array*))
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #xa #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-templec display) #f #f #f #f)
+                    )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
                   :fog-mult 1.0
@@ -17897,7 +18424,8 @@
                       :want (new 'static 'inline-array level-buffer-state-small 4
                         (new 'static 'level-buffer-state-small :name 'templea :display? 'special)
                         (new 'static 'level-buffer-state-small :name 'templed :display? 'display)
-                        (new 'static 'level-buffer-state-small :name 'combx :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'templeb :display? 'display)
+                        ;; (new 'static 'level-buffer-state-small :name 'combx :display? 'display)
                         (new 'static 'level-buffer-state-small)
                         )
                       :want-sound (new 'static 'array symbol 3 'temple3 'temple4 'temple5)
@@ -17942,9 +18470,33 @@
                         )
                       :want-sound (new 'static 'array symbol 3 'temple3 'temple4 'temple5)
                       )
+                    (new 'static 'continue-point
+                      :name "templed-elevator"
+                      :level 'templed
+                      :flags (continue-flags no-auto)
+                      :trans (new 'static 'vector :x (meters 4324.6118) :y (meters 77.2344) :z (meters 4509.1796) :w 1.0)
+                      :camera-trans (new 'static 'vector :x (meters 4334.4379) :y (meters 81.7255) :z (meters 4511.1108) :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 24687 0 -21545))
+                      :camera-rot (new 'static 'array int16 9 -6282 0 32159 -4663 32420 -910 -31819 -4751 -6215)
+                      :on-goto #f
+                      :vis-nick 'templed
+                      :vehicle-type #x1b
+                      :want-count 3
+                      :want (new 'static 'inline-array level-buffer-state-small 4
+                        (new 'static 'level-buffer-state-small :name 'templea :display? 'special)
+                        (new 'static 'level-buffer-state-small :name 'templeb :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'templed :display? 'display)
+                        (new 'static 'level-buffer-state-small)
+                        )
+                      :want-sound (new 'static 'array symbol 3 'temple3 'temple4 'temple5)
+                      )
                     )
                   :callback-list '((23 . init-mood-templed))
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x6a0 #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-templed display) #f #f #f #f)
+                    )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
                   :fog-mult 1.0
@@ -18178,7 +18730,11 @@
                        )
                      )
                    :callback-list '((7 . *volcanox-warp-texture-anim-array*))
-                   :borrow #f
+                   :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x6a0 #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-volcanox display) #f #f #f #f)
+                    )
                    :bottom-height (meters -100)
                    :fog-height (meters 80)
                    :fog-mult 1.0
@@ -18537,7 +19093,11 @@
         )
       )
     :callback-list '((5 . *volcanoa-alpha-texture-anim-array*))
-    :borrow #f
+    :borrow (new 'static 'level-borrow-info
+      :alias #f
+      :borrow-size (new 'static 'array uint16 5 #x6a0 #x0 #x0 #x0 #x0)
+      :borrow-info (new 'static 'array object 5 '(orbs-volcanoa display) #f #f #f #f)
+      )
     :bottom-height (meters -100)
     :fog-height (meters 80)
     :fog-mult 1.0
@@ -18625,7 +19185,7 @@
                    :borrow (new 'static 'level-borrow-info
                      :alias #f
                      :borrow-size (new 'static 'array uint16 5 #x285 #x8fc #x0 #x0 #x0)
-                     :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                     :borrow-info (new 'static 'array object 5 '(orbs-lfacrm2 display) '(lfacrm2 display) #f #f #f)
                      )
                    :bottom-height (meters -150)
                    :fog-height (meters 80)
@@ -18713,7 +19273,7 @@
                   :level-flags (level-flags ocean-near-translucent)
                   :packages '()
                   :run-packages '("common")
-                  :memory-mode (level-memory-mode borrow)
+                  :memory-mode (level-memory-mode small-edge)
                   :music-bank #f
                   :extra-sound-bank #f
                   :mood-func 'update-mood-lfacrm1
@@ -18737,7 +19297,26 @@
                       :vehicle-type #x1b
                       :want-count 3
                       :want (new 'static 'inline-array level-buffer-state-small 4
-                        (new 'static 'level-buffer-state-small :name 'towerc :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'lfacrm1 :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'ctywide-ff :display? #f)
+                        (new 'static 'level-buffer-state-small :name 'ctyslumc :display? #f)
+                        (new 'static 'level-buffer-state-small)
+                        )
+                      :want-sound (new 'static 'array symbol 3 'ctyslmch #f #f)
+                      )
+                    (new 'static 'continue-point
+                      :name "lfacrm1-warp"
+                      :level 'lfacrm1
+                      :flags (continue-flags no-auto)
+                      :trans (new 'static 'vector :x (meters 689.1457) :y (meters 2.4221) :z (meters -523.1431) :w 1.0)
+                      :camera-trans (new 'static 'vector  :x (meters 692.6090) :y (meters 6.7159) :z (meters -531.7631) :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 #x7fa3 0 #x985))
+                      :camera-rot (new 'static 'array int16 9 30769 0 11265 -1450 32494 3961 -11172 -4218 30513)
+                      :on-goto #f
+                      :vis-nick 'towerc
+                      :want-count 3
+                      :want (new 'static 'inline-array level-buffer-state-small 4
+                        (new 'static 'level-buffer-state-small :name 'lfacrm1 :display? 'display)
                         (new 'static 'level-buffer-state-small :name 'ctywide-ff :display? #f)
                         (new 'static 'level-buffer-state-small :name 'ctyslumc :display? #f)
                         (new 'static 'level-buffer-state-small)
@@ -18746,7 +19325,11 @@
                       )
                     )
                   :callback-list '()
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #x500 #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-lfacrm1 display) #f #f #f #f)
+                    )
                   :bottom-height (meters -150)
                   :fog-height (meters 80)
                   :fog-mult 1.0
@@ -18788,6 +19371,23 @@
                       :on-goto #f
                       :vis-nick 'lfacrm2
                       :vehicle-type #x1b
+                      :want-count 2
+                      :want (new 'static 'inline-array level-buffer-state-small 2
+                        (new 'static 'level-buffer-state-small :name 'factorya :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'factoryc :display? #f)
+                        )
+                      :want-sound (new 'static 'array symbol 3 'factory4 'factory5 'factory6)
+                      )
+                    (new 'static 'continue-point
+                      :name "lfacrm2-warp"
+                      :level 'lfacrm2
+                      :flags (continue-flags no-auto)
+                      :trans (new 'static 'vector :x 1016789.0 :y 1980975.9 :z 240304.53 :w 1.0)
+                      :camera-trans (new 'static 'vector :x 1015779.75 :y 1996601.8 :z 209614.84 :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 #x161 0 #x7ffb))
+                      :camera-rot (new 'static 'array int16 9 #x7feb 0 -1107 #xde #x7d4b #x1a19 #x439 -6684 #x7d3b)
+                      :on-goto #f
+                      :vis-nick 'lfacrm2
                       :want-count 2
                       :want (new 'static 'inline-array level-buffer-state-small 2
                         (new 'static 'level-buffer-state-small :name 'factorya :display? 'display)
@@ -18913,12 +19513,46 @@
                          )
                        :want-sound (new 'static 'array symbol 3 'factory1 'factory2 'factory3)
                        )
+                      (new 'static 'continue-point
+                       :name "factoryb-warp"
+                       :level 'factoryb
+                       :flags (continue-flags no-auto)
+                       :trans (new 'static 'vector :x (meters 363.14) :y (meters 410.73) :z (meters 409.80) :w 1.0)
+                       :camera-trans (new 'static 'vector :x (meters 367.4524) :y (meters 415.8853) :z (meters 421.5327) :w 1.0)
+                       :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 -23457 0 #x595a))
+                       :camera-rot (new 'static 'array int16 9 -29797 0 13630 -1556 32552 -3402 -13541 -3742 -29602)
+                       :on-goto #f
+                       :vis-nick 'factoryb
+                       :want-count 2
+                       :want (new 'static 'inline-array level-buffer-state-small 2
+                         (new 'static 'level-buffer-state-small :name 'factorya :display? #f)
+                         (new 'static 'level-buffer-state-small :name 'factoryb :display? 'display)
+                         )
+                       :want-sound (new 'static 'array symbol 3 'factory1 'factory2 'factory3)
+                       )
+                      (new 'static 'continue-point
+                       :name "factoryb-warp-2"
+                       :level 'factoryb
+                       :flags (continue-flags no-auto)
+                       :trans (new 'static 'vector :x (meters 375.8821) :y (meters 333.9850) :z (meters 370.6488) :w 1.0)
+                       :camera-trans (new 'static 'vector :x (meters 384.9967) :y (meters 339.1249) :z (meters 362.1145) :w 1.0)
+                       :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 -32325 0 5358))
+                       :camera-rot (new 'static 'array int16 9 19442 0 26375 -3469 32482 2557 -26146 -4310 19273)
+                       :on-goto #f
+                       :vis-nick 'factoryb
+                       :want-count 2
+                       :want (new 'static 'inline-array level-buffer-state-small 2
+                         (new 'static 'level-buffer-state-small :name 'factorya :display? #f)
+                         (new 'static 'level-buffer-state-small :name 'factoryb :display? 'display)
+                         )
+                       :want-sound (new 'static 'array symbol 3 'factory1 'factory2 'factory3)
+                       )
                      )
                    :callback-list '((35 . factoryb-activate) (6 . *factoryb-water-texture-anim-array*))
                    :borrow (new 'static 'level-borrow-info
                      :alias #f
-                     :borrow-size (new 'static 'array uint16 5 #xc4e #x0 #x0 #x0 #x0)
-                     :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                     :borrow-size (new 'static 'array uint16 5 #xc4e #x100 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(lfaccity display) '(orbs-factoryb display) #f #f #f)
                      )
                    :bottom-height (meters -150)
                    :fog-height (meters 80)
@@ -19293,8 +19927,8 @@
       )
     :borrow (new 'static 'level-borrow-info
       :alias #f
-      :borrow-size (new 'static 'array uint16 5 #xc4e #x0 #x0 #x0 #x0)
-      :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+      :borrow-size (new 'static 'array uint16 5 #xc4e #x100 #x0 #x0 #x0)
+      :borrow-info (new 'static 'array object 5 '(lfaccity display) '(orbs-factoryc display)  #f #f #f)
       )
     :bottom-height (meters -150)
     :fog-height (meters 80)
@@ -19346,7 +19980,7 @@
                      (new 'static 'continue-point
                        :name "factoryd-start"
                        :level 'factoryd
-                       :trans (new 'static 'vector :x 1026883.2 :y 2145133.2 :z -377980.1 :w 1.0)
+                       :trans (new 'static 'vector :x (meters 248.07) :y (meters 523.69) :z (meters -92.06)  :w 1.0)
                        :camera-trans (new 'static 'vector :x 1026728.4 :y 2166224.5 :z -330877.34 :w 1.0)
                        :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 #x7fd7 0 -1595))
                        :camera-rot (new 'static 'array int16 9 -32763 0 -98 9 #x7f0c -3958 95 -3958 -32524)
@@ -19376,13 +20010,31 @@
                          (new 'static 'level-buffer-state-small :name 'factoryd :display? 'display)
                          )
                        :want-sound (new 'static 'array symbol 3 'factory7 'factory8 'factory9)
+                       )                      
+                     (new 'static 'continue-point
+                       :name "factoryd-warp"
+                       :level 'factoryd
+                       :flags (continue-flags no-auto warp-gate)
+                       :trans (new 'static 'vector :x (meters 249.6969) :y (meters 523.6241) :z (meters -149.5735) :w 1.0)
+                       :camera-trans (new 'static 'vector :x (meters 255.1974) :y (meters 528.1132) :z (meters -141.2246) :w 1.0)
+                       :quat (new 'static 'vector4h :data (new 'static 'array int16 4 -53 1567 -2 32729))
+                       :camera-rot (new 'static 'array int16 9 -26219 0 19652 -2886 32411 -3851 -19438 -4812 -25935)
+                       :on-goto #f
+                       :vis-nick 'factoryd
+                       :vehicle-type #x1b
+                       :want-count 2
+                       :want (new 'static 'inline-array level-buffer-state-small 2
+                         (new 'static 'level-buffer-state-small :name 'factorya :display? 'display)
+                         (new 'static 'level-buffer-state-small :name 'factoryd :display? 'display)
+                         )
+                       :want-sound (new 'static 'array symbol 3 'factory7 'factory8 'factory9)
                        )
                      )
                    :callback-list '((34 . factoryd-logout) (35 . factoryd-activate) (33 . factoryd-login))
                    :borrow (new 'static 'level-borrow-info
                      :alias #f
                      :borrow-size (new 'static 'array uint16 5 #xc4e #x9c4 #x0 #x0 #x0)
-                     :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                     :borrow-info (new 'static 'array object 5 #f '(orbs-factoryd display) #f #f #f)
                      )
                    :bottom-height (meters 516)
                    :fog-height (meters 80)
@@ -19486,7 +20138,7 @@
                   :level-flags (level-flags sky ocean-near-translucent)
                   :packages '("precura" "dp-bipedalp" "neo-waspp")
                   :run-packages '("common")
-                  :memory-mode (level-memory-mode small-edge)
+                  :memory-mode (level-memory-mode medium)
                   :music-bank 'precship
                   :extra-sound-bank #f
                   :mood-func 'update-mood-precura
@@ -19534,6 +20186,24 @@
                       :want-sound (new 'static 'array symbol 3 'precur1 'precur2 'precur3)
                       )
                     (new 'static 'continue-point
+                      :name "precurab-end"
+                      :level 'precura
+                      :flags (continue-flags no-auto)
+                      :trans (new 'static 'vector :x (meters -191.8890) :y (meters 534.1389) :z (meters -56.8060) :w 1.0)
+                      :camera-trans (new 'static 'vector :x -823754.75 :y 2221199.8 :z -277565.44 :w 1.0)
+                      :quat (new 'static 'vector4h :data (new 'static 'array int16 4 0 #x7765 0 -11805))
+                      :camera-rot (new 'static 'array int16 9 -22212 0 #x5e17 -11524 #x7064 -10626 -21151 -15675 -19502)
+                      :on-goto #f
+                      :vis-nick 'precura
+                      :vehicle-type #x1b
+                      :want-count 2
+                      :want (new 'static 'inline-array level-buffer-state-small 2
+                        (new 'static 'level-buffer-state-small :name 'precura :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'precurb :display? 'display)
+                        )
+                      :want-sound (new 'static 'array symbol 3 'precur1 'precur2 'precur3)
+                      )
+                    (new 'static 'continue-point
                       :name "precura-start"
                       :level 'precura
                       :flags (continue-flags no-auto)
@@ -19547,6 +20217,7 @@
                       :want-count 2
                       :want (new 'static 'inline-array level-buffer-state-small 2
                         (new 'static 'level-buffer-state-small :name 'precura :display? 'display)
+                        (new 'static 'level-buffer-state-small :name 'precurb :display? 'display)
                         (new 'static 'level-buffer-state-small :name 'precurc :display? #f)
                         )
                       :want-sound (new 'static 'array symbol 3 'precur1 'precur2 'precur3)
@@ -19578,8 +20249,8 @@
                     )
                   :borrow (new 'static 'level-borrow-info
                     :alias #f
-                    :borrow-size (new 'static 'array uint16 5 #x258 #x0 #x0 #x0 #x0)
-                    :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                    :borrow-size (new 'static 'array uint16 5 #x384 #xaf #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(lprenme display) '(orbs-precura display) #f #f #f)
                     )
                   :bottom-height (meters -20)
                   :fog-height (meters 80)
@@ -19613,7 +20284,11 @@
                   :bigmap-id (bigmap-id precursor1)
                   :continues '()
                   :callback-list '((23 . init-mood-precurb))
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #xf0 #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-precurb display) #f #f #f #f)
+                    )
                   :bottom-height (meters -20)
                   :fog-height (meters 80)
                   :fog-mult 1.0
@@ -19702,8 +20377,8 @@
                   :callback-list '((23 . init-mood-precurc))
                   :borrow (new 'static 'level-borrow-info
                     :alias #f
-                    :borrow-size (new 'static 'array uint16 5 #x384 #x0 #x0 #x0 #x0)
-                    :borrow-info (new 'static 'array object 5 #f #f #f #f #f)
+                    :borrow-size (new 'static 'array uint16 5 #x384 #xf0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 #f '(orbs-precurc display) #f #f #f)
                     )
                   :bottom-height (meters -20)
                   :fog-height (meters 80)
@@ -19823,7 +20498,11 @@
                       )
                     )
                   :callback-list '((23 . init-mood-precurd))
-                  :borrow #f
+                  :borrow (new 'static 'level-borrow-info
+                     :alias #f
+                     :borrow-size (new 'static 'array uint16 5 #x500 #x0 #x0 #x0 #x0)
+                     :borrow-info (new 'static 'array object 5 '(orbs-precurd display) #f #f #f #f)
+                     )
                   :bottom-height (meters -20)
                   :fog-height (meters 80)
                   :fog-mult 1.0
@@ -19920,10 +20599,31 @@
                          )
                        :want-sound (new 'static 'array symbol 3 #f #f #f)
                        )
+                      (new 'static 'continue-point
+                       :name "halfpipe-warp"
+                       :level 'halfpipe
+                       :trans (new 'static 'vector :x (meters 9.7231) :y (meters -50.5019) :z (meters 104.0750) :w 1.0)
+                       :camera-trans (new 'static 'vector :x (meters 16.9791) :y (meters -45.4516) :z (meters 113.7991) :w 1.0)
+                       :quat (new 'static 'vector4h :data (new 'static 'array int16 4  0 -32435 0 4652))
+                       :camera-rot (new 'static 'array int16 9 -26292 0 19554 -2364 32526 -3178 -19410 -3961 -26100)
+                       :on-goto #f
+                       :vis-nick #f
+                       :vehicle-type #x1b
+                       :want-count 1
+                       :want (new 'static 'inline-array level-buffer-state-small 2
+                         (new 'static 'level-buffer-state-small :name 'halfpipe :display? 'display)
+                         (new 'static 'level-buffer-state-small)
+                         )
+                       :want-sound (new 'static 'array symbol 3 #f #f #f)
+                       )
                      )
                    :callback-list '()
-                   :borrow #f
-                   :bottom-height (meters -10000000)
+                  :borrow (new 'static 'level-borrow-info
+                    :alias #f
+                    :borrow-size (new 'static 'array uint16 5 #xa00 #x0 #x0 #x0 #x0)
+                    :borrow-info (new 'static 'array object 5 '(orbs-halfpipe display) #f #f #f #f)
+                    )
+                   :bottom-height (meters -100)
                    :fog-height (meters 80)
                    :max-rain 1.0
                    :fog-mult 1.0
@@ -20713,6 +21413,255 @@
     )
   )
 
+(defmacro orbs-level (index name visname nick mood-func level-size)
+  "shorthand for setting up an orbs level"
+  `(new 'static 'level-load-info
+    :index ,index
+    :name ,name
+    :visname ,visname
+    :nickname ,nick
+    :dbname ,name
+    :taskname 'default
+    :master-level #f
+    :level-flags (level-flags orb-hunt)
+    :packages '()
+    ;; :run-packages '("common")
+    :memory-mode (level-memory-mode ,level-size)
+    :music-bank #f
+    :extra-sound-bank #f
+    :mood-func 'update-mood-default
+    :special-mood #f
+    :ocean #f
+    :ocean-alpha 1.0
+    :priority 100
+    :draw-priority 10.0
+    :base-task-mask (task-mask task0)
+    :bigmap-id (bigmap-id none)
+    :continues '()
+    :callback-list '()
+    :borrow #f
+    :bottom-height (meters -10000000)
+    :fog-height (meters 80)
+    :max-rain 1.0
+    :fog-mult 1.0
+    :mood-range (new 'static 'mood-range :max-cloud 1.0 :min-fog 0.5 :max-fog 1.0)
+    )
+  )
+
+(defmacro orbs-borrow-level (index name visname nick mood-func)
+  "shorthand for setting up an orbs borrow level"
+ `(orbs-level ,index ,name ,visname ,nick ,mood-func borrow)
+  )
+
+(define orbs-rubblea (orbs-borrow-level 296 'orbs-rubblea 'orbs-rubblea-vis 'o01 'update-mood-default))
+(define orbs-rubblea2 (orbs-borrow-level 297 'orbs-rubblea2 'orbs-rubblea2-vis 'o02 'update-mood-default))
+(define orbs-rubbleb (orbs-borrow-level 298 'orbs-rubbleb 'orbs-rubbleb-vis 'o03 'update-mood-default))
+(define orbs-rubblec (orbs-borrow-level 299 'orbs-rubblec 'orbs-rubblec-vis 'o04 'update-mood-default))
+(define orbs-rublcst (orbs-borrow-level 300 'orbs-rublcst 'orbs-rublcst-vis 'o05 'update-mood-default))
+(define orbs-precurd (orbs-borrow-level 301 'orbs-precurd 'orbs-precurd-vis 'o06 'update-mood-default))
+(define orbs-precurc (orbs-borrow-level 302 'orbs-precurc 'orbs-precurc-vis 'o07 'update-mood-default))
+(define orbs-precurb (orbs-borrow-level 303 'orbs-precurb 'orbs-precurb-vis 'o08 'update-mood-default))
+(define orbs-precura (orbs-borrow-level 304 'orbs-precura 'orbs-precura-vis 'o09 'update-mood-default))
+(define orbs-minec (orbs-borrow-level 305 'orbs-minec 'orbs-minec-vis 'o10 'update-mood-default))
+(define orbs-mineb (orbs-borrow-level 306 'orbs-mineb 'orbs-mineb-vis 'o11 'update-mood-default))
+(define orbs-minea (orbs-borrow-level 307 'orbs-minea 'orbs-minea-vis 'o12 'update-mood-default))
+(define orbs-mined (orbs-borrow-level 308 'orbs-mined 'orbs-mined-vis 'o13 'update-mood-default))
+(define orbs-freehq (orbs-borrow-level 309 'orbs-freehq 'orbs-freehq-vis 'o14 'update-mood-default))
+(define orbs-lfacrm1 (orbs-borrow-level 310 'orbs-lfacrm1 'orbs-lfacrm1-vis 'o15 'update-mood-default))
+(define orbs-wasdoors (orbs-borrow-level 311 'orbs-wasdoors 'orbs-wasdoors-vis 'o16 'update-mood-default))
+(define orbs-gungame (orbs-borrow-level 312 'orbs-gungame 'orbs-gungame-vis 'o17 'update-mood-default))
+(define orbs-halfpipe (orbs-borrow-level 313 'orbs-halfpipe 'orbs-halfpipe-vis 'o18 'update-mood-default))
+(define orbs-foresta (orbs-borrow-level 314 'orbs-foresta 'orbs-foresta-vis 'o19 'update-mood-default))
+(define orbs-forestb (orbs-borrow-level 315 'orbs-forestb 'orbs-forestb-vis 'o20 'update-mood-default))
+(define orbs-ctyindb (orbs-borrow-level 316 'orbs-ctyindb 'orbs-ctyindb-vis 'o21 'update-mood-default))
+(define orbs-ctyinda (orbs-borrow-level 317 'orbs-ctyinda 'orbs-ctyinda-vis 'o22 'update-mood-default))
+(define orbs-ctygenb (orbs-borrow-level 318 'orbs-ctygenb 'orbs-ctygenb-vis 'o23 'update-mood-default))
+(define orbs-mhcityb (orbs-borrow-level 319 'orbs-mhcityb 'orbs-mhcityb-vis 'o24 'update-mood-default))
+(define orbs-mhcitya (orbs-borrow-level 320 'orbs-mhcitya 'orbs-mhcitya-vis 'o25 'update-mood-default))
+(define orbs-towerb (orbs-borrow-level 321 'orbs-towerb 'orbs-towerb-vis 'o26 'update-mood-default))
+(define orbs-ltowera (orbs-borrow-level 322 'orbs-ltowera 'orbs-ltowera-vis 'o27 'update-mood-default))
+(define orbs-ltowerb (orbs-borrow-level 323 'orbs-ltowerb 'orbs-ltowerb-vis 'o28 'update-mood-default))
+(define orbs-nsta (orbs-borrow-level 324 'orbs-nsta 'orbs-nsta-vis 'o29 'update-mood-default))
+(define orbs-nstb (orbs-borrow-level 325 'orbs-nstb 'orbs-nstb-vis 'o30 'update-mood-default))
+(define orbs-templea (orbs-borrow-level 326 'orbs-templea 'orbs-templea-vis 'o31 'update-mood-default))
+(define orbs-templex (orbs-borrow-level 327 'orbs-templex 'orbs-templex-vis 'o32 'update-mood-default))
+(define orbs-templec (orbs-borrow-level 328 'orbs-templec 'orbs-templec-vis 'o33 'update-mood-default))
+(define orbs-templed (orbs-borrow-level 329 'orbs-templed 'orbs-templed-vis 'o34 'update-mood-default))
+(define orbs-templeb (orbs-borrow-level 330 'orbs-templeb 'orbs-templeb-vis 'o35 'update-mood-default))
+(define orbs-hiphog (orbs-borrow-level 331 'orbs-hiphog 'orbs-hiphog-vis 'o36 'update-mood-default))
+(define orbs-ctyslumc (orbs-borrow-level 332 'orbs-ctyslumc 'orbs-ctyslumc-vis 'o37 'update-mood-default))
+(define orbs-ctyslumb (orbs-borrow-level 333 'orbs-ctyslumb 'orbs-ctyslumb-vis 'o38 'update-mood-default))
+(define orbs-powergd (orbs-borrow-level 334 'orbs-powergd 'orbs-powergd-vis 'o40 'update-mood-default))
+(define orbs-ctyport (orbs-borrow-level 335 'orbs-ctyport 'orbs-ctyport-vis 'o41 'update-mood-default))
+(define orbs-vinroom (orbs-borrow-level 336 'orbs-vinroom 'orbs-vinroom-vis 'o42 'update-mood-default))
+(define orbs-sewl (orbs-borrow-level 337 'orbs-sewl 'orbs-sewl-vis 'o43 'update-mood-default))
+(define orbs-sewm (orbs-borrow-level 338 'orbs-sewm 'orbs-sewm-vis 'o44 'update-mood-default))
+(define orbs-sewn (orbs-borrow-level 339 'orbs-sewn 'orbs-sewn-vis 'o45 'update-mood-default))
+(define orbs-sewo (orbs-borrow-level 340 'orbs-sewo 'orbs-sewo-vis 'o46 'update-mood-default))
+(define orbs-sewk (orbs-borrow-level 341 'orbs-sewk 'orbs-sewk-vis 'o47 'update-mood-default))
+(define orbs-sewg (orbs-borrow-level 342 'orbs-sewg 'orbs-sewg-vis 'o48 'update-mood-default))
+(define orbs-sewh (orbs-borrow-level 343 'orbs-sewh 'orbs-sewh-vis 'o49 'update-mood-default))
+(define orbs-sewi (orbs-borrow-level 344 'orbs-sewi 'orbs-sewi-vis 'o50 'update-mood-default))
+(define orbs-sewj (orbs-borrow-level 345 'orbs-sewj 'orbs-sewj-vis 'o51 'update-mood-default))
+(define orbs-sewb (orbs-borrow-level 346 'orbs-sewb 'orbs-sewb-vis 'o52 'update-mood-default))
+(define orbs-sewc (orbs-borrow-level 347 'orbs-sewc 'orbs-sewc-vis 'o53 'update-mood-default))
+(define orbs-sewd (orbs-borrow-level 348 'orbs-sewd 'orbs-sewd-vis 'o54 'update-mood-default))
+(define orbs-sewe (orbs-borrow-level 349 'orbs-sewe 'orbs-sewe-vis 'o55 'update-mood-default))
+(define orbs-ctysluma (orbs-borrow-level 350 'orbs-ctysluma 'orbs-ctysluma-vis 'o57 'update-mood-default))
+(define orbs-wascitya (orbs-borrow-level 351 'orbs-wascitya 'orbs-wascitya-vis 'o58 'update-mood-default))
+(define orbs-wascityb (orbs-borrow-level 352 'orbs-wascityb 'orbs-wascityb-vis 'o59 'update-mood-default))
+(define orbs-wasstada (orbs-borrow-level 353 'orbs-wasstada 'orbs-wasstada-vis 'o60 'update-mood-default))
+(define orbs-waspala (orbs-borrow-level 354 'orbs-waspala 'orbs-waspala-vis 'o61 'update-mood-default))
+(define orbs-stadium (orbs-borrow-level 355 'orbs-stadium 'orbs-stadium-vis 'o62 'update-mood-default))
+(define orbs-stadiumb (orbs-borrow-level 356 'orbs-stadiumb 'orbs-stadiumb-vis 'o63 'update-mood-default))
+(define orbs-comba (orbs-borrow-level 357 'orbs-comba 'orbs-comba-vis 'o64 'update-mood-default))
+(define orbs-combn (orbs-borrow-level 358 'orbs-combn 'orbs-combn-vis 'o65 'update-mood-default))
+(define orbs-combb (orbs-borrow-level 359 'orbs-combb 'orbs-combb-vis 'o66 'update-mood-default))
+(define orbs-combc (orbs-borrow-level 360 'orbs-combc 'orbs-combc-vis 'o67 'update-mood-default))
+(define orbs-combd (orbs-borrow-level 361 'orbs-combd 'orbs-combd-vis 'o68 'update-mood-default))
+(define orbs-combe (orbs-borrow-level 362 'orbs-combe 'orbs-combe-vis 'o69 'update-mood-default))
+(define orbs-railx (orbs-borrow-level 363 'orbs-railx 'orbs-railx-vis 'o70 'update-mood-default))
+(define orbs-railb (orbs-borrow-level 364 'orbs-railb 'orbs-railb-vis 'o71 'update-mood-default))
+(define orbs-railb2 (orbs-borrow-level 365 'orbs-railb2 'orbs-railb2-vis 'o72 'update-mood-default))
+(define orbs-railc (orbs-borrow-level 366 'orbs-railc 'orbs-railc-vis 'o73 'update-mood-default))
+(define orbs-raild (orbs-borrow-level 367 'orbs-raild 'orbs-raild-vis 'o74 'update-mood-default))
+(define orbs-raile (orbs-borrow-level 368 'orbs-raile 'orbs-raile-vis 'o75 'update-mood-default))
+(define orbs-railf (orbs-borrow-level 369 'orbs-railf 'orbs-railf-vis 'o76 'update-mood-default))
+(define orbs-deswalk (orbs-borrow-level 370 'orbs-deswalk 'orbs-deswalk-vis 'o77 'update-mood-default))
+(define orbs-wasstadb (orbs-borrow-level 371 'orbs-wasstadb 'orbs-wasstadb-vis 'o78 'update-mood-default))
+(define orbs-volcanoa (orbs-borrow-level 372 'orbs-volcanoa 'orbs-volcanoa-vis 'o79 'update-mood-default))
+(define orbs-volcanox (orbs-borrow-level 373 'orbs-volcanox 'orbs-volcanox-vis 'o80 'update-mood-default))
+(define orbs-lfacrm2 (orbs-borrow-level 374 'orbs-lfacrm2 'orbs-lfacrm2-vis 'o81 'update-mood-default))
+(define orbs-factoryd (orbs-borrow-level 375 'orbs-factoryd 'orbs-factoryd-vis 'o82 'update-mood-default))
+(define orbs-factoryb (orbs-borrow-level 376 'orbs-factoryb 'orbs-factoryb-vis 'o83 'update-mood-default))
+(define orbs-factoryc (orbs-borrow-level 377 'orbs-factoryc 'orbs-factoryc-vis 'o84 'update-mood-default))
+(define orbs-desert (orbs-borrow-level 378 'orbs-desert 'orbs-desert-vis 'o85 'update-mood-default))
+(define orbs-desertd (orbs-borrow-level 379 'orbs-desertd 'orbs-desertd-vis 'o86 'update-mood-default))
+(define orbs-desertb (orbs-borrow-level 380 'orbs-desertb 'orbs-desertb-vis 'o87 'update-mood-default))
+(define orbs-deserta (orbs-borrow-level 381 'orbs-deserta 'orbs-deserta-vis 'o88 'update-mood-default))
+(define orbs-desertf (orbs-borrow-level 382 'orbs-desertf 'orbs-desertf-vis 'o89 'update-mood-default))
+(define orbs-deserth (orbs-borrow-level 383 'orbs-deserth 'orbs-deserth-vis 'o90 'update-mood-default))
+(define orbs-desertg (orbs-borrow-level 384 'orbs-desertg 'orbs-desertg-vis 'o91 'update-mood-default))
+(define orbs-deserte (orbs-borrow-level 385 'orbs-deserte 'orbs-deserte-vis 'o92 'update-mood-default))
+(define orbs-desertc (orbs-borrow-level 386 'orbs-desertc 'orbs-desertc-vis 'o93 'update-mood-default))
+(define orbs-sewf (orbs-borrow-level 387 'orbs-sewf 'orbs-sewf-vis 'o94 'update-mood-default))
+(define orbs-ctyfarma (orbs-borrow-level 388 'orbs-ctyfarma 'orbs-ctyfarma-vis 'o95 'update-mood-default))
+(define orbs-ctyfarmb (orbs-borrow-level 389 'orbs-ctyfarmb 'orbs-ctyfarmb-vis 'o96 'update-mood-default))
+
+(set! (-> orbs-powergd priority) 10)
+(set! (-> orbs-vinroom priority) 10)
+
+(logior! (-> orbs-comba  level-flags) (level-flags turbo-board))
+(logior! (-> orbs-combn  level-flags) (level-flags turbo-board))
+(logior! (-> orbs-combb  level-flags) (level-flags turbo-board))
+(logior! (-> orbs-combc  level-flags) (level-flags turbo-board))
+(logior! (-> orbs-combd  level-flags) (level-flags turbo-board))
+(logior! (-> orbs-combe  level-flags) (level-flags turbo-board))
+;; (logior! (-> orbs-railx  level-flags) (level-flags turbo-board))
+(logior! (-> orbs-railb  level-flags) (level-flags turbo-board))
+(logior! (-> orbs-railb2 level-flags) (level-flags turbo-board))
+(logior! (-> orbs-railc  level-flags) (level-flags turbo-board))
+(logior! (-> orbs-raild  level-flags) (level-flags turbo-board))
+(logior! (-> orbs-raile  level-flags) (level-flags turbo-board))
+(logior! (-> orbs-railf  level-flags) (level-flags turbo-board))
+
+;; (define otit  (orbs-borrow-level #xe5 'otit  'otit-vis  'o1k 'update-mood-default))
+
 (#when PC_PORT
-  (cons! *level-load-list* 'test-zone)
+  ;; (cons! *level-load-list* 'test-zone)
+
+  (cons! *level-load-list* 'orbs-ctyfarmb)
+  (cons! *level-load-list* 'orbs-ctyfarma)
+  (cons! *level-load-list* 'orbs-sewf)
+  (cons! *level-load-list* 'orbs-desertc)
+  (cons! *level-load-list* 'orbs-deserte)
+  (cons! *level-load-list* 'orbs-desertg)
+  (cons! *level-load-list* 'orbs-deserth)
+  (cons! *level-load-list* 'orbs-desertf)
+  (cons! *level-load-list* 'orbs-deserta)
+  (cons! *level-load-list* 'orbs-desertb)
+  (cons! *level-load-list* 'orbs-desertd)
+  (cons! *level-load-list* 'orbs-desert)
+  (cons! *level-load-list* 'orbs-factoryc)
+  (cons! *level-load-list* 'orbs-factoryb)
+  (cons! *level-load-list* 'orbs-factoryd)
+  (cons! *level-load-list* 'orbs-lfacrm2)
+  (cons! *level-load-list* 'orbs-volcanox)
+  (cons! *level-load-list* 'orbs-volcanoa)
+  (cons! *level-load-list* 'orbs-wasstadb)
+  (cons! *level-load-list* 'orbs-deswalk)
+  (cons! *level-load-list* 'orbs-railf)
+  (cons! *level-load-list* 'orbs-raile)
+  (cons! *level-load-list* 'orbs-raild)
+  (cons! *level-load-list* 'orbs-railc)
+  (cons! *level-load-list* 'orbs-railb2)
+  (cons! *level-load-list* 'orbs-railb)
+  (cons! *level-load-list* 'orbs-railx)
+  (cons! *level-load-list* 'orbs-combe)
+  (cons! *level-load-list* 'orbs-combd)
+  (cons! *level-load-list* 'orbs-combc)
+  (cons! *level-load-list* 'orbs-combb)
+  (cons! *level-load-list* 'orbs-combn)
+  (cons! *level-load-list* 'orbs-comba)
+  (cons! *level-load-list* 'orbs-stadiumb)
+  (cons! *level-load-list* 'orbs-stadium)
+  (cons! *level-load-list* 'orbs-waspala)
+  (cons! *level-load-list* 'orbs-wasstada)
+  (cons! *level-load-list* 'orbs-wascityb)
+  (cons! *level-load-list* 'orbs-wascitya)
+  (cons! *level-load-list* 'orbs-ctysluma)
+  (cons! *level-load-list* 'orbs-sewe)
+  (cons! *level-load-list* 'orbs-sewd)
+  (cons! *level-load-list* 'orbs-sewc)
+  (cons! *level-load-list* 'orbs-sewb)
+  (cons! *level-load-list* 'orbs-sewj)
+  (cons! *level-load-list* 'orbs-sewi)
+  (cons! *level-load-list* 'orbs-sewh)
+  (cons! *level-load-list* 'orbs-sewg)
+  (cons! *level-load-list* 'orbs-sewk)
+  (cons! *level-load-list* 'orbs-sewo)
+  (cons! *level-load-list* 'orbs-sewn)
+  (cons! *level-load-list* 'orbs-sewm)
+  (cons! *level-load-list* 'orbs-sewl)
+  (cons! *level-load-list* 'orbs-vinroom)
+  (cons! *level-load-list* 'orbs-ctyport)
+  (cons! *level-load-list* 'orbs-powergd)
+  (cons! *level-load-list* 'orbs-ctyslumb)
+  (cons! *level-load-list* 'orbs-ctyslumc)
+  (cons! *level-load-list* 'orbs-hiphog)
+  (cons! *level-load-list* 'orbs-templeb)
+  (cons! *level-load-list* 'orbs-templed)
+  (cons! *level-load-list* 'orbs-templec)
+  (cons! *level-load-list* 'orbs-templex)
+  (cons! *level-load-list* 'orbs-templea)
+  (cons! *level-load-list* 'orbs-nstb)
+  (cons! *level-load-list* 'orbs-nsta)
+  (cons! *level-load-list* 'orbs-ltowerb)
+  (cons! *level-load-list* 'orbs-ltowera)
+  (cons! *level-load-list* 'orbs-towerb)
+  (cons! *level-load-list* 'orbs-mhcitya)
+  (cons! *level-load-list* 'orbs-mhcityb)
+  (cons! *level-load-list* 'orbs-ctygenb)
+  (cons! *level-load-list* 'orbs-ctyinda)
+  (cons! *level-load-list* 'orbs-ctyindb)
+  (cons! *level-load-list* 'orbs-forestb)
+  (cons! *level-load-list* 'orbs-foresta)
+  (cons! *level-load-list* 'orbs-halfpipe)
+  (cons! *level-load-list* 'orbs-gungame)
+  (cons! *level-load-list* 'orbs-wasdoors)
+  (cons! *level-load-list* 'orbs-lfacrm1)
+  (cons! *level-load-list* 'orbs-freehq)
+  (cons! *level-load-list* 'orbs-mined)
+  (cons! *level-load-list* 'orbs-minea)
+  (cons! *level-load-list* 'orbs-mineb)
+  (cons! *level-load-list* 'orbs-minec)
+  (cons! *level-load-list* 'orbs-precura)
+  (cons! *level-load-list* 'orbs-precurb)
+  (cons! *level-load-list* 'orbs-precurc)
+  (cons! *level-load-list* 'orbs-precurd)
+  (cons! *level-load-list* 'orbs-rublcst)
+  (cons! *level-load-list* 'orbs-rubblec)
+  (cons! *level-load-list* 'orbs-rubbleb)
+  (cons! *level-load-list* 'orbs-rubblea2)
+  (cons! *level-load-list* 'orbs-rubblea)
   )

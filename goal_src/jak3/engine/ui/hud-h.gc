@@ -15,7 +15,7 @@
   )
 ;; ---hud-flags
 
-
+(define-extern hud-hidden? (function symbol))
 (define-extern hide-hud (function symbol none))
 (define-extern hide-hud-quick (function symbol none))
 (define-extern show-hud (function object none))

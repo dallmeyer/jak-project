@@ -194,7 +194,7 @@
   (gun-upgrade-ammo-yellow 55)
   (gun-upgrade-ammo-blue 56)
   (gun-upgrade-ammo-dark 57)
-  (gs58 58)
+  (board-faster 58)
   (gs59 59)
   (gs60 60)
   (gs61 61)

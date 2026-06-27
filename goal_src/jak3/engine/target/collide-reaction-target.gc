@@ -253,7 +253,7 @@
         (if (and (= (-> arg0 cur-pat mode) (pat-mode halfpipe)) (< (-> arg0 poly-angle) 0.75))
             (send-event (-> arg0 process) 'slide)
             )
-        (let ((sv-240 (< (fabs (-> arg0 surface-angle)) (-> *pat-mode-info* (-> arg0 cur-pat mode) wall-angle))))
+        (let ((sv-240 (< (fabs (-> arg0 surface-angle)) (-> (get-active-pat-mode-info) (-> arg0 cur-pat mode) wall-angle))))
           (if (and sv-240 (and (= (-> arg0 mod-surface mode) 'dive) (< 0.4 (fabs (-> arg0 surface-angle)))))
               (set! sv-240 (the-as symbol #f))
               )

@@ -4,8 +4,23 @@
 (require "engine/game/task/game-task-h.gc")
 (require "pc/pckernel-common.gc")
 (require "pc/features/autosplit-h.gc")
+(define-extern speedrun-practice-spawn (function none)) ;; defined at end of this file
+
+(define-extern speedrun-practice-store-temp-checkpoint (function none)) ;; defined at end of this file
+
+(define *practice-spawn-post-init* (the-as (function none) #f))
+(define *last-checkpoint-load-time* (the time-frame #f))
+(define *last-real-continue-point* (the-as continue-point #f))
+
+(defun generic-post-init ()
+  (when *last-real-continue-point*
+    (set! (-> *game-info* current-continue) *last-real-continue-point*))
+  (none))
+
 (define *speedrun-info*
   (new 'static 'speedrun-info-jak1 :should-display? #t :needs-post-blackout-setup? #f :has-started? #f))
+
+(define-extern *mod-version-text* string)
 
 (define *hub1-cell-list*
   (new 'static
@@ -64,40 +79,42 @@
        'boxed-array
        :type
        game-task
-       (game-task village2-gambler-money)
-       (game-task village2-geologist-money)
-       (game-task village2-warrior-money)
-       (game-task village2-oracle-money1)
-       (game-task village2-oracle-money2)
-       (game-task village2-buzzer)
-       (game-task sunken-room)
-       (game-task sunken-pipe)
-       (game-task sunken-slide)
-       (game-task sunken-sharks)
-       (game-task sunken-platforms)
-       (game-task sunken-top-of-helix)
-       (game-task sunken-spinning-room)
-       (game-task sunken-buzzer)
-       (game-task swamp-flutflut)
-       (game-task swamp-billy)
-       (game-task swamp-battle)
-       (game-task swamp-tether-4)
-       (game-task swamp-tether-1)
-       (game-task swamp-tether-2)
-       (game-task swamp-tether-3)
-       (game-task swamp-buzzer)
-       (game-task rolling-moles)
-       (game-task rolling-robbers)
-       (game-task rolling-race)
-       (game-task rolling-lake)
-       (game-task rolling-plants)
-       (game-task rolling-ring-chase-1)
-       (game-task rolling-ring-chase-2)
-       (game-task rolling-buzzer)
-       (game-task ogre-boss)
-       (game-task ogre-end)
-       (game-task ogre-secret)
-       (game-task ogre-buzzer)))
+       (game-task training-gimmie)
+       (game-task training-door)
+       (game-task training-climb)
+       (game-task training-buzzer)
+       (game-task village1-mayor-money)
+       (game-task village1-uncle-money)
+       (game-task village1-yakow)
+       (game-task village1-oracle-money1)
+       (game-task village1-oracle-money2)
+       (game-task village1-buzzer)
+       (game-task beach-ecorocks)
+       (game-task beach-flutflut)
+       (game-task beach-pelican)
+       (game-task beach-seagull)
+       (game-task beach-cannon)
+       (game-task beach-gimmie)
+       (game-task beach-sentinel)
+       (game-task beach-buzzer)
+       (game-task jungle-lurkerm)
+       (game-task jungle-tower)
+       (game-task jungle-eggtop)
+       (game-task jungle-plant)
+       (game-task jungle-fishgame)
+       (game-task jungle-canyon-end)
+       (game-task jungle-temple-door)
+       (game-task jungle-buzzer)
+       (game-task misty-muse)
+       (game-task misty-boat)
+       (game-task misty-cannon)
+       (game-task misty-warehouse)
+       (game-task misty-bike)
+       (game-task misty-bike-jump)
+       (game-task misty-eco-challenge)
+       (game-task misty-buzzer)
+       (game-task firecanyon-end)
+       (game-task firecanyon-buzzer)))
 
 (define *hub2-buzzer-task-list*
   (new 'static 'boxed-array :type game-task
@@ -421,8 +438,97 @@
     (auto-save-command 'auto-save 0 0 *default-pool*))
   (none))
 
+(defun get-on-flutflut ()
+  (generic-post-init)
+  (case (-> *target* state)
+    ((target-flut-stance target-racing) (send-event *target* 'end-mode))
+    (else (send-event *target* 'change-mode 'flut #f)))
+  (none))
+
+(defun get-on-zoomer ()
+  (generic-post-init)
+  (case (-> *target* state)
+    ((target-flut-stance target-racing) (send-event *target* 'end-mode))
+    (else (send-event *target* 'change-mode 'racing #f)))
+  (none))
+
+(define *baby-mode-orb-dist* (the-as float #f))
+
+(defun draw-closest-orb ()
+  (when (and (-> *setting-control* current allow-pause) (-> *pc-settings* closest-orb?) (main-hud-shown?))
+    (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug-no-zbuf))
+      (if (= *baby-mode-orb-dist* #f)
+        (draw-string-xy (string-format "Closest Orb: N/A") buf 0 210 (font-color transparent) (font-flags kerning))
+        ;; color based on distance
+        (let ((fc (cond
+                    ((< *baby-mode-orb-dist* (meters 10.0)) (font-color orange))
+                    ((< *baby-mode-orb-dist* (meters 20.0)) (font-color progress-yellow))
+                    ((< *baby-mode-orb-dist* (meters 30.0)) (font-color flat-yellow))
+                    ((< *baby-mode-orb-dist* (meters 40.0)) (font-color progress-blue))
+                    ((< *baby-mode-orb-dist* (meters 50.0)) (font-color cyan))
+                    (else (font-color blue)))))
+          (draw-string-xy (string-format "Closest Orb: ~,,2Mm" *baby-mode-orb-dist*) buf 4 214 fc (font-flags kerning))))))
+  (none))
+
+(defun get-active-pat-mode-info ()
+  (case (-> *pc-settings* slip-assist)
+    (((slip-assist-mode normal)) *pat-mode-info*)
+    (((slip-assist-mode no-slip)) *no-slip-pat-mode-info*)
+    (((slip-assist-mode spiderman)) *spiderman-pat-mode-info*)))
+
 (defun hide-speedrun-display ()
   (set! (-> *speedrun-info* should-display?) #f)
+  (none))
+
+(defun speedrun-start-full-game-run ()
+  ;; start a full game speedrun, save file is already selected so don't default to first slot
+  (start-speedrun (speedrun-category full-game))
+  (none))
+
+(define-extern *mod-version-text* string)
+
+(defun speedrun-draw-settings ()
+  "Draw speedrun related settings in the bottom left corner"
+  (when (and (-> *pc-settings* speedrunner-mode?) (not (paused?)) (-> *speedrun-info* should-display?))
+    (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id subtitle))
+      (draw-string-xy (string-format "Speedrunner Mode ~%OrbHunt ~S ~%Category: ~S ~S~%Run Started: ~S"
+                                     *mod-version-text*
+                                     (enum->string speedrun-category (-> *speedrun-info* category))
+                                     (if (-> *pc-settings* skip-movies?) "(CS Skips)" "(No CS Skips)")
+                                     (if (-> *speedrun-info* has-started?) "Yes" "No"))
+                      buf
+                      4
+                      (- 222 (* 8 4))
+                      (font-color flat-yellow)
+                      (font-flags shadow kerning))))
+  (none))
+
+(defun orb-hunt-update ()
+  ;; Draw info to the screen
+  (draw-closest-orb)
+  (when (-> *pc-settings* pseudo-savestates?)
+    ;; if we're stuck continue-ing at a speedrun checkpoint, it might have bad vis so force it
+    (when (and *target* (= (-> *target* state name) 'target-continue)
+              (logtest? (-> *game-info* current-continue flags) (continue-flags speedrun)))
+      (load-state-want-force-vis (-> *game-info* current-continue level) #t)
+      )
+    ;; call post-init function
+    (when (and *practice-spawn-post-init*
+               *target*
+               (-> *setting-control* current allow-pause)
+               (>= (- (-> *display* base-frame-counter) (-> *game-info* blackout-time)) (seconds 0.1)))
+      (*practice-spawn-post-init*)
+      (set! *practice-spawn-post-init* #f))
+    (when (or (and (not *debug-segment*) (cpad-hold? 0 r3))
+              (and *debug-segment* (cpad-hold? 0 l2)))
+      ;; Check for fast reset combo
+      (when (cpad-pressed? 0 up)
+        (format #t "player triggered reset combo~%")
+        (speedrun-practice-spawn))
+      ;; Check for temp checkpoint combo
+      (when (cpad-pressed? 0 down)
+        (format #t "player triggered temp checkpoint combo~%")
+        (speedrun-practice-store-temp-checkpoint))))
   (none))
 
 (defun mark-speedrun-started ()
@@ -456,23 +562,148 @@
     (setup-speedrun-post-blackout))
   (none))
 
-(defun speedrun-start-full-game-run ()
-  ;; start a full game speedrun, save file is already selected so don't default to first slot
-  (start-speedrun (speedrun-category full-game))
+(defun speedrun-reset-common-settings ()
+  ;; disable hints (this seems to be overriden by your slot 1 save though)
+  (set! (-> *setting-control* default play-hints) #f)
+  ;; ensure `force actors` is not enabled
+  (set! (-> *pc-settings* ps2-actor-vis?) #f)
+  ;; force FPS to `60`
+  (set-frame-rate! *pc-settings* 60 #t)
+  ;; skip intro cutscene
+  (close-specific-task! (game-task intro) (task-status need-resolution))
   (none))
 
-(defun speedrun-draw-settings ()
-  "Draw speedrun related settings in the bottom left corner"
-  (when (and (-> *pc-settings* speedrunner-mode?) (not (paused?)) (-> *speedrun-info* should-display?))
-    (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id subtitle))
-      (draw-string-xy (string-format "Speedrunner Mode ~%OpenGOAL Version: ~S ~%Category: ~S ~S~%Run Started: ~S"
-                                     *pc-settings-built-sha*
-                                     (enum->string speedrun-category (-> *speedrun-info* category))
-                                     (if (-> *pc-settings* skip-movies?) "(CS Skips)" "(No CS Skips)")
-                                     (if (-> *speedrun-info* has-started?) "Yes" "No"))
-                      buf
-                      4
-                      (- 222 (* 8 4))
-                      (font-color flat-yellow)
-                      (font-flags shadow kerning))))
+(defun speedrun-start-run ()
+  ;; randomize game id so the autosplitter knows to restart
+  (update-autosplit-jak1-new-game)
+  ;; spawn at the warp gate checkpoint
+  (initialize! *game-info* 'game (the-as game-save #f) "game-start")
+  (speedrun-reset-common-settings)
+  ;; enable auto saving by default
+  (set! (-> *setting-control* default auto-save) #t)
+  (none))
+
+(define *tmp-continue-point*
+  (new 'static
+       'continue-point
+       :name "tmp"
+       :level #f
+       :flags (continue-flags speedrun)
+       :trans
+       (new 'static 'vector :w 1.0)
+       :quat
+       (new 'static 'quaternion :w 1.0)
+       :camera-trans
+       (new 'static 'vector :w 1.0)
+       :camera-rot
+       (new 'static 'array float 9)
+       :load-commands
+       '()
+       :vis-nick #f
+       :lev0 #f
+       :disp0 #f
+       :lev1 #f
+       :disp1 #f))
+
+(define *tmp-flut?* #f)
+
+(define *tmp-zoomer?* #f)
+
+(defun speedrun-practice-temp-checkpoint ()
+  (when (-> *tmp-continue-point* level)
+    (cond
+      (*tmp-flut?* (set! *practice-spawn-post-init* get-on-flutflut))
+      (*tmp-zoomer?* (set! *practice-spawn-post-init* get-on-zoomer))
+      (else (set! *practice-spawn-post-init* generic-post-init)))
+    ;; commented out to prevent malding 
+    ;; (if (cpad-hold? 0 r2)  ;; fully reset game if r2 held too
+    ;;   (initialize! *game-info* 'game (the-as game-save #f) "default")
+    ;;   )
+    (set! (-> *game-info* current-continue) *tmp-continue-point*)
+    (sound-play "select-menu")
+    (initialize! *game-info* 'dead (the-as game-save #f) (the-as string #f))
+    (speedrun-reset-common-settings))
+  (none))
+
+(defun continue-point-copy! ((dst continue-point) (src continue-point))
+  (set! (-> dst level) (-> src level))
+  (set! (-> dst quat y) 0.0)
+  (set! (-> dst quat w) 1.0)
+  (set! (-> dst load-commands) (-> src load-commands))
+  (set! (-> dst vis-nick) (-> src vis-nick))
+  (when (-> *level* level0)
+    (set! (-> dst lev0) (-> *level* level0 name))
+    (set! (-> dst disp0) (-> *level* level0 display?)))
+  (when (-> *level* level1)
+    (set! (-> dst lev1) (-> *level* level1 name))
+    (set! (-> dst disp1) (-> *level* level1 display?)))
+  (none))
+
+(defun camera-rot-copy! ((dst continue-point) (src matrix))
+  (set! (-> dst camera-rot 0) (-> src vector 0 x))
+  (set! (-> dst camera-rot 1) (-> src vector 0 y))
+  (set! (-> dst camera-rot 2) (-> src vector 0 z))
+  (set! (-> dst camera-rot 3) (-> src vector 1 x))
+  (set! (-> dst camera-rot 4) (-> src vector 1 y))
+  (set! (-> dst camera-rot 5) (-> src vector 1 z))
+  (set! (-> dst camera-rot 6) (-> src vector 2 x))
+  (set! (-> dst camera-rot 7) (-> src vector 2 y))
+  (set! (-> dst camera-rot 8) (-> src vector 2 z))
+  (none))
+
+(defun speedrun-practice-store-temp-checkpoint ()
+  (case (-> *target* state)
+    ;; only store temp checkpoint if in one of these states
+    ((target-stance target-duck-stance target-look-around target-wade-stance target-flut-stance target-racing)
+     ;; store cur checkpoint to restore after respawn
+     (when (not (string= (-> *game-info* current-continue name) "tmp"))
+      (set! *last-real-continue-point* (-> *game-info* current-continue)))
+     ;; assume current continue is good enough for the current location
+     (continue-point-copy! *tmp-continue-point* (-> *game-info* current-continue))
+     (vector-copy! (-> *tmp-continue-point* trans) (-> *target* root trans))
+     (quaternion-copy! (-> *tmp-continue-point* quat) (-> *target* control unknown-quaternion00))
+     (vector-copy! (-> *tmp-continue-point* camera-trans) (-> *camera-combiner* trans))
+     (camera-rot-copy! *tmp-continue-point* (-> *camera-combiner* inv-camera-rot))
+     (set! *tmp-flut?* #f)
+     (set! *tmp-zoomer?* #f)
+     (case (-> *target* state)
+       ((target-flut-stance) (set! *tmp-flut?* #t))
+       ((target-racing) (set! *tmp-zoomer?* #t)))
+     (sound-play "select-menu"))
+    (else (sound-play "caught-eel")))
+  (none))
+
+(defun speedrun-practice-spawn ()
+
+  (cond
+    ((or (not (progress-allowed?))
+        ;;  *auto-saving?*
+        ;;  (and *last-auto-save-time* (not (time-elapsed? *last-auto-save-time* (seconds 3))))
+         (logtest? (->  *target* state-flags) (state-flags being-attacked grabbed))
+         )
+      (sound-play "smack-surface")  
+      )
+    ((not *target*)
+      ;; only respawn from no target when in debug
+      (when *debug-segment*
+        (set! *last-checkpoint-load-time* (get-current-time))
+        ;; reset any previous post-target-init callback
+        (set! *practice-spawn-post-init* #f)
+        (speedrun-practice-temp-checkpoint)
+        )
+      )
+    ((or (not *last-checkpoint-load-time*)
+         (time-elapsed? *last-checkpoint-load-time* (seconds 1))
+         )
+      ;; if we havent yet used checkpoint load, or its been more than 1s since last load, OK to load
+      
+      (set! *last-checkpoint-load-time* (get-current-time))
+      ;; reset any previous post-target-init callback
+      (set! *practice-spawn-post-init* #f)
+      (speedrun-practice-temp-checkpoint)
+      )
+    (else
+      (sound-play "smack-surface")
+      )
+    )
   (none))

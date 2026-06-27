@@ -436,10 +436,13 @@
   :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
     (case message
       (('attack)
-       (format 0 "explode-event~%")
        (if (type? proc explosion)
            (go-virtual explode)
            )
+       (case (-> (the-as attack-info (-> block param 1)) mode)
+        (('dark-smack 'bomb)
+          (go-virtual explode))
+        )
        )
       )
     )
@@ -682,6 +685,8 @@
       )
     (logior! (-> self draw status) (draw-control-status no-draw))
     (transform-post)
+    ;; keep this stupid thing dead
+    (process-entity-status! self (entity-perm-status dead) #t)
     (while (-> self child)
       (suspend)
       )
@@ -693,7 +698,7 @@
   "Set up a newly created process from the entity that created it."
   (stack-size-set! (-> this main-thread) 512)
   (let ((s4-0 (new 'process 'collide-shape this (collide-list-enum usually-hit-by-player))))
-    (set! (-> s4-0 penetrated-by) (penetrate))
+    ;; (set! (-> s4-0 penetrated-by) (penetrate jak-dark-nuke jak-dark-shot dark-smack dark-bomb))
     (let ((s3-0 (new 'process 'collide-shape-prim-group s4-0 (the-as uint 1) 0)))
       (set! (-> s4-0 total-prims) (the-as uint 2))
       (set! (-> s3-0 prim-core collide-as) (collide-spec obstacle))
@@ -722,6 +727,8 @@
     (the-as skeleton-group (art-group-get-by-name *level* "skel-precur-generator-a" (the-as (pointer level) #f)))
     (the-as pair 0)
     )
+  ;; keep this stupid thing dead
+  (set! (-> this entity extra perm task) (game-task complete))
   (init-fields this)
   (go (method-of-object this idle))
   )
@@ -773,6 +780,10 @@
        (if (type? proc explosion)
            (go-virtual explode)
            )
+       (case (-> (the-as attack-info (-> block param 1)) mode)
+        (('dark-smack 'bomb)
+          (go-virtual explode))
+        )
        )
       )
     )
@@ -841,6 +852,8 @@
         :unk 0
         )
       )
+    ;; keep this stupid thing dead
+    (process-entity-status! self (entity-perm-status dead) #t)
     (while (-> self child)
       (suspend)
       )
@@ -851,7 +864,7 @@
 (defmethod init-from-entity! ((this precur-generator-b) (arg0 entity-actor))
   "Set up a newly created process from the entity that created it."
   (let ((s4-0 (new 'process 'collide-shape this (collide-list-enum usually-hit-by-player))))
-    (set! (-> s4-0 penetrated-by) (penetrate))
+    ;; (set! (-> s4-0 penetrated-by) (penetrate jak-dark-nuke jak-dark-shot dark-smack dark-bomb))
     (let ((s3-0 (new 'process 'collide-shape-prim-group s4-0 (the-as uint 1) 0)))
       (set! (-> s4-0 total-prims) (the-as uint 2))
       (set! (-> s3-0 prim-core collide-as) (collide-spec obstacle))
@@ -882,6 +895,8 @@
     )
   (init-fields this)
   (set! (-> this shock-distance) 40960.0)
+  ;; keep this stupid thing dead
+  (set! (-> this entity extra perm task) (game-task complete))
   (go (method-of-object this idle))
   )
 
@@ -1048,17 +1063,17 @@
       )
     (when (res-lump-struct (-> self entity) 'art-name structure)
       (logclear! (-> self mask) (process-mask actor-pause))
-      (process-grab? *target* #f)
-      (set-setting! 'entity-name "camera-359" 0.0 0)
-      (suspend-for (seconds 2)
-        )
+      ;; (process-grab? *target* #f)
+      ;; (set-setting! 'entity-name "camera-359" 0.0 0)
+      ;; (suspend-for (seconds 2)
+      ;;   )
       (task-close! "precursor-tour-generator-trigger")
       (send-event (process-by-name "precur-door-b-4" *active-pool*) 'open)
-      (suspend-for (seconds 1)
-        )
-      (set-setting! 'interp-time 'abs 450.0 0)
-      (remove-setting! 'entity-name)
-      (process-release? *target*)
+      ;; (suspend-for (seconds 1)
+      ;;   )
+      ;; (set-setting! 'interp-time 'abs 450.0 0)
+      ;; (remove-setting! 'entity-name)
+      ;; (process-release? *target*)
       (suspend)
       0
       )
@@ -1504,10 +1519,10 @@
   :virtual #t
   :enter (behavior ()
     (set-time! (-> self state-time))
-    (activate! *camera-smush-control* 2048.0 15 1500 1.0 0.9 (-> *display* camera-clock))
-    (persist-with-delay *setting-control* 'blur-a (seconds 5) 'blur-a 'abs 0.8 0)
-    (disable *screen-filter*)
-    (process-grab? *target* #f)
+    ;; (activate! *camera-smush-control* 2048.0 15 1500 1.0 0.9 (-> *display* camera-clock))
+    ;; (persist-with-delay *setting-control* 'blur-a (seconds 5) 'blur-a 'abs 0.8 0)
+    ;; (disable *screen-filter*)
+    ;; (process-grab? *target* #f)
     )
   :code (behavior ()
     (while (not (time-elapsed? (-> self state-time) (seconds 0.5)))
@@ -1541,17 +1556,17 @@
         )
       )
     (sound-play "gem-explode")
-    (setup
-      *screen-filter*
-      (new 'static 'vector :x 255.0 :y 255.0 :z 255.0)
-      (new 'static 'vector :x 255.0 :y 255.0 :z 255.0 :w 128.0)
-      (* 0.033333335 (seconds-per-frame))
-      (bucket-id tex-hud-pris2)
-      #x3fffff
-      #x33001
-      #t
-      )
-    (set-setting! 'allow-blackout #f 0.0 0)
+    ;; (setup
+    ;;   *screen-filter*
+    ;;   (new 'static 'vector :x 255.0 :y 255.0 :z 255.0)
+    ;;   (new 'static 'vector :x 255.0 :y 255.0 :z 255.0 :w 128.0)
+    ;;   (* 0.033333335 (seconds-per-frame))
+    ;;   (bucket-id tex-hud-pris2)
+    ;;   #x3fffff
+    ;;   #x33001
+    ;;   #t
+    ;;   )
+    ;; (set-setting! 'allow-blackout #f 0.0 0)
     (while (not (time-elapsed? (-> self state-time) (seconds 1.5)))
       (suspend)
       )
@@ -1617,7 +1632,7 @@
     (while (not (time-elapsed? (-> self state-time) (seconds 6)))
       (suspend)
       )
-    (process-spawn scene-player :init scene-player-init "precursor-tour-res" #t #f :name "scene-player")
+    ;; (process-spawn scene-player :init scene-player-init "precursor-tour-res" #t #f :name "scene-player")
     )
   )
 
@@ -1958,7 +1973,7 @@
       (('attack)
        (let ((s4-0 (the-as attack-info (-> block param 1))))
          (case (-> s4-0 mode)
-           (('mech-punch 'crush)
+           (('mech-punch 'crush 'dark-smack)
             (let ((s3-0
                     (the-as attack-info (mem-copy! (the-as pointer (new 'stack-no-clear 'attack-info)) (the-as pointer s4-0) 168))
                     )
@@ -1970,9 +1985,9 @@
                 (as-type proc process-drawable)
                 (the-as touching-shapes-entry (-> block param 0))
                 )
-              (if (logtest? (-> s3-0 mask) (attack-mask intersection))
+              ;; (if (logtest? (-> s3-0 mask) (attack-mask intersection))
                   (go-virtual die)
-                  )
+                  ;; )
               )
             )
            )
@@ -2411,14 +2426,14 @@
            )
           )
         )
-  (set! (-> this do-camera?)
-        (the-as
-          symbol
-          (and (res-lump-struct (-> this entity) 'camera-name structure)
-               (task-node-closed? (game-task-node precursor-tour-resolution))
-               )
-          )
-        )
+  (set! (-> this do-camera?) #f)
+        ;; (the-as
+        ;;   symbol
+        ;;   (and (res-lump-struct (-> this entity) 'camera-name structure)
+        ;;        (task-node-closed? (game-task-node precursor-tour-resolution))
+        ;;        )
+        ;;   )
+        ;; )
   (initialize-skeleton
     this
     (the-as skeleton-group (art-group-get-by-name *level* "skel-precura-door-a" (the-as (pointer level) #f)))

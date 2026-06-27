@@ -108,6 +108,7 @@
   (flip-vertical 518)
 
   (disk-tester 600)
+  (skill-per-level 601)
   )
 ;; ---game-save-elt
 
@@ -1543,7 +1544,20 @@
                                                                                                                                                                                                                                                 )
                                                                                                                                                                                                                                           )
                                                                                                                                                                                                                                         )
-                                                                                                                                                                                                                                      (set! (-> save length) (- (+ v1-255 16) (the-as int (the-as pointer (-> save tag)))))
+                                                                                                                                                                                                                                      (let ((v1-256 (+ v1-255 16)))
+                                                                                                                                                                                                                                        (let ((a0-178 (the-as object (+ v1-256 0))))
+                                                                                                                                                                                                                                          (set! (-> (the-as (inline-array game-save-tag) a0-178) 0 elt-type) (game-save-elt skill-per-level))
+                                                                                                                                                                                                                                          (set! (-> (the-as (inline-array game-save-tag) a0-178) 0 elt-count) 128)
+                                                                                                                                                                                                                                          (set! (-> (the-as (inline-array game-save-tag) a0-178) 0 elt-size) (the-as uint 1))
+                                                                                                                                                                                                                                          )
+                                                                                                                                                                                                                                        (let ((a1-260 (the-as object (&+ (the-as game-save-tag v1-256) 16))))
+                                                                                                                                                                                                                                          (dotimes (a0-154 LEVEL_ID_LEN) ;; 94
+                                                                                                                                                                                                                                            (set! (-> (the-as (pointer uint8) (&+ (the-as pointer a1-260) a0-154))) (-> this skill-per-level a0-154))
+                                                                                                                                                                                                                                            )
+                                                                                                                                                                                                                                          ;; add 96 since its the next multiple of 16 after LEVEL_ID_LEN
+                                                                                                                                                                                                                                          (set! (-> save length) (- (+ (the-as int a1-260) 128) (the-as int (the-as pointer (-> save tag)))))
+                                                                                                                                                                                                                                          )
+                                                                                                                                                                                                                                        )
                                                                                                                                                                                                                                       )
                                                                                                                                                                                                                                     )
                                                                                                                                                                                                                                   )
@@ -2146,6 +2160,15 @@
              )
            )
          )
+        (((game-save-elt skill-per-level))
+         (let ((v1-180 (min LEVEL_ID_LEN (-> (the-as (inline-array game-save-tag) s4-0) 0 elt-count))))
+           (dotimes (a0-208 v1-180)
+             (set! (-> this skill-per-level a0-208)
+                   (-> (the-as (pointer uint8) (&+ (the-as pointer (-> (the-as (inline-array game-save-tag) s4-0) 1)) a0-208)))
+                   )
+             )
+           )
+         )
         )
       (set! s4-0
             (&+
@@ -2639,6 +2662,7 @@
   :post auto-save-post
   )
 
+(define-extern runs-on-game-saved (function int none))
 (defstate save (auto-save)
   :virtual #t
   :code (behavior ()
@@ -2698,6 +2722,7 @@
       )
     #f
     (label cfg-18)
+    (runs-on-game-saved (-> self which))
     (go-virtual done)
     )
   :post auto-save-post

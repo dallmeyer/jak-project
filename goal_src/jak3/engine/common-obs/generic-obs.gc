@@ -1757,6 +1757,9 @@
                                                              ((= arg1 'dead)
                                                               'dead
                                                               )
+                                                             ((= arg1 'fuel-cell)
+                                                              'fuel-cell
+                                                              )
                                                              (else
                                                                #t
                                                                )
@@ -2378,8 +2381,9 @@
         (when (not (paused?))
           (vector--float*! (-> self trans) (-> *camera* tpos-curr) (-> *camera* local-down) 28672.0)
           (send-event *camera* 'teleport)
-          (if (and (-> *camera* on-ground) (time-elapsed? gp-0 (seconds 1)))
-              (send-event *camera* 'change-state cam-string (seconds 0.5))
+          (when (and (-> *camera* on-ground) (time-elapsed? gp-0 (seconds 1)))
+              (remove-setting-by-arg0 *setting-control* 'mode-name)
+              ;; (send-event *camera* 'change-state cam-string (seconds 0.5))
               )
           )
         (suspend)
@@ -2478,8 +2482,9 @@
           (set! (-> self trans x) (-> *camera* tpos-curr x))
           (set! (-> self trans z) (-> *camera* tpos-curr z))
           (vector+! (-> self trans) (-> self trans) (-> self view-flat))
-          (if (and (-> *camera* on-ground) (time-elapsed? gp-0 (seconds 1)))
-              (send-event *camera* 'change-state cam-string (seconds 0.5))
+          (when (and (-> *camera* on-ground) (time-elapsed? gp-0 (seconds 1)))
+              (remove-setting-by-arg0 *setting-control* 'mode-name)
+              ;; (send-event *camera* 'change-state cam-string (seconds 0.5))
               )
           )
         (vector-reset! (-> self tracking follow-off))
@@ -3912,21 +3917,21 @@
     (if *bigmap*
         (set-map-indices! *bigmap*)
         )
-    (let ((gp-0 (res-lump-struct (-> self entity) 'on-running structure)))
-      (cond
-        ((or (not gp-0) (and gp-0 (script-eval (the-as pair gp-0))))
-         (if (not (-> self minimap))
-             (set! (-> self minimap) (add-icon! *minimap* self (the-as uint 14) (the-as int #f) (the-as vector #t) 0))
-             )
-         )
-        (else
-          (when (-> self minimap)
-            (logior! (-> self minimap flags) (minimap-flag fade-out))
-            (set! (-> self minimap) #f)
-            )
-          )
-        )
-      )
+    ;; (let ((gp-0 (res-lump-struct (-> self entity) 'on-running structure)))
+    ;;   (cond
+    ;;     ((or (not gp-0) (and gp-0 (script-eval (the-as pair gp-0))))
+    ;;      (if (not (-> self minimap))
+    ;;          (set! (-> self minimap) (add-icon! *minimap* self (the-as uint 14) (the-as int #f) (the-as vector #t) 0))
+    ;;          )
+    ;;      )
+    ;;     (else
+    ;;       (when (-> self minimap)
+    ;;         (logior! (-> self minimap flags) (minimap-flag fade-out))
+    ;;         (set! (-> self minimap) #f)
+    ;;         )
+    ;;       )
+    ;;     )
+    ;;   )
     )
   :code sleep-code
   )

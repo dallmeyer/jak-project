@@ -132,7 +132,7 @@ bool run_build_level(const std::string& input_file,
 
   // COLLIDE
   if (mesh_extract_out.collide.faces.empty()) {
-    lg::error("No collision geometry was found");
+    // lg::error("No collision geometry was found");
   } else {
     auto& collide_drawable_tree = file.drawable_trees.collides.emplace_back();
     collide_drawable_tree.bvh = collide::construct_collide_bvh(mesh_extract_out.collide.faces);

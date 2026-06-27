@@ -1094,7 +1094,7 @@
           (cond
             ((and (-> s4-2 actor)
                   (= (-> s4-2 actor extra level display?) 'display)
-                  (is-object-visible? (-> s4-2 actor extra level) (-> s4-2 actor vis-id))
+                  (is-object-visible? (-> s4-2 actor extra level) (-> s4-2 actor vis-id) (-> s4-2 actor))
                   )
              (if (not (-> this handles s5-3))
                  (set! (-> this handles s5-3)
@@ -1118,7 +1118,7 @@
                 (set! (-> this orb-status s5-4) (the-as uint 1))
                 )
             (cond
-              ((and (is-object-visible? (-> s4-3 actor extra level) (-> s4-3 actor vis-id))
+              ((and (is-object-visible? (-> s4-3 actor extra level) (-> s4-3 actor vis-id) (-> s4-3 actor))
                     (zero? (-> this orb-status s5-4))
                     )
                (if (not (-> this orb-handles s5-4))

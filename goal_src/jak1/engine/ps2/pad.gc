@@ -264,6 +264,14 @@
     0
     `(logior (-> *cpad-history-list* cpads ,pad-idx button0-rel ,(- frames 1)) ,(generate-frame-checks pad-idx (- frames 1)))))
 
+;; the cpad-history for each controller
+(define *cpad-history-list* (new 'global 'cpad-history-list))
+
+(desfun generate-frame-checks (pad-idx frames)
+  (if (= frames 0)
+    0
+    `(logior (-> *cpad-history-list* cpads ,pad-idx button0-rel ,(- frames 1)) ,(generate-frame-checks pad-idx (- frames 1)))))
+
 ;; weird leftover debug thing, enabling overrides the x position of both sticks on all controllers.
 (define *cpad-debug* #f)
 
@@ -401,6 +409,12 @@
 
 (defmacro cpad-hold? (pad-idx &rest buttons)
   `(logtest? (cpad-hold ,pad-idx) (pad-buttons ,@buttons)))
+
+(defmacro set-cpad-pressed! (pad-idx &rest buttons)
+  `(logior! (cpad-pressed ,pad-idx) (pad-buttons ,@buttons)))
+
+(defmacro set-cpad-hold! (pad-idx &rest buttons)
+  `(logior! (cpad-hold ,pad-idx) (pad-buttons ,@buttons)))
 
 (defmacro recently-pressed? (&key (pad-idx (-> self control unknown-cpad-info00 number)) &key (frames 15) &rest buttons)
   "Checks if a (pad-button) was pressed within the last 50ms, based on frames"

@@ -504,6 +504,11 @@
     ;; otherwise don't ignore it.
     `(define ,name (lambda :name ,name :behavior ,process-type ,bindings ,@body))))
 
+(defmacro defevent (name process-type &rest body)
+  "Define an event handler for a process."
+  `(defbehavior ,name ,process-type ((proc process) (argc int) (message symbol) (block event-message-block))
+    ,@body))
+
 (defconstant INVALID_HANDLE (the handle #f))
 
 (defmacro handle->name (handle)

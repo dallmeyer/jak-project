@@ -786,7 +786,7 @@
 
 (defmethod level-link ((this traffic-engine) (arg0 level))
   "Call after loading a level to patch the data in the bsp"
-  (format #t "traffic-engine: level birth ~S~%" (-> arg0 nickname))
+  ;; (format #t "traffic-engine: level birth ~S~%" (-> arg0 nickname))
   (cond
     ((or (not *debug-segment*)
          (not (and (get-nav-graph-editor) (= (-> (get-nav-graph-editor) nav-graph nav_graph_id) 1)))

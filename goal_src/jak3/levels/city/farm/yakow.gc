@@ -1,0 +1,1142 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+;; name: yakow.gc
+;; name in dgo: yakow
+;; dgos: CFB, CFA
+
+;; DECOMP BEGINS
+
+(defskelgroup skel-yakow yakow yakow-lod0-jg yakow-idle-ja
+              ((yakow-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 1 0 4)
+              )
+
+(deftype yakow (nav-enemy)
+  ((incoming-attack-id  uint32)
+   (grazing             basic)
+   )
+  (:state-methods
+    kicked
+    )
+  )
+
+
+(define *yakow-nav-enemy-info*
+  (new 'static 'nav-enemy-info
+    :use-die-falling #f
+    :use-victory #f
+    :use-jump-blocked #f
+    :debug-draw-neck #f
+    :jump-debug-draw #f
+    :move-to-ground #t
+    :hover-if-no-ground #f
+    :idle-anim-script (new 'static 'inline-array idle-control-frame 4
+      (new 'static 'idle-control-frame :command (idle-control-cmd play) :anim #x3 :param0 #x1 :param1 #x1)
+      (new 'static 'idle-control-frame)
+      (new 'static 'idle-control-frame)
+      (new 'static 'idle-control-frame)
+      )
+    :idle-anim 3
+    :notice-anim 3
+    :hostile-anim 6
+    :hit-anim 3
+    :knocked-anim 7
+    :knocked-land-anim 7
+    :die-anim -1
+    :die-falling-anim -1
+    :victory-anim -1
+    :jump-wind-up-anim -1
+    :jump-in-air-anim -1
+    :jump-land-anim -1
+    :neck-joint 5
+    :look-at-joint 6
+    :bullseye-joint 4
+    :sound-hit (static-sound-name "yakow-hit")
+    :sound-die (static-sound-name "yakow-die")
+    :notice-distance (meters 0)
+    :notice-distance-delta (meters 0)
+    :default-hit-points 5.0
+    :gnd-collide-with (collide-spec backgnd)
+    :overlaps-others-collide-with-filter (collide-spec jak bot player-list)
+    :penetrate-knocked (penetrate
+      touch
+      generic-attack
+      lunge
+      flop
+      punch
+      spin
+      roll
+      uppercut
+      bonk
+      tube
+      vehicle
+      flut-attack
+      board
+      mech
+      mech-punch
+      mech-bonk
+      dark-skin
+      dark-punch
+      dark-bomb
+      ;; dark-giant
+      shield
+      explode
+      jak-yellow-shot
+      jak-red-shot
+      jak-blue-shot
+      jak-dark-shot
+      enemy-yellow-shot
+      enemy-dark-shot
+      eco-yellow
+      eco-red
+      eco-blue
+      eco-green
+      knocked
+      ;; too lazy to map these over, just pray we dont need em
+      ;; penetrate-33
+      ;; penetrate-34
+      ;; penetrate-35
+      ;; penetrate-36
+      ;; penetrate-37
+      penetrate38
+      penetrate39
+      penetrate40
+      penetrate41
+      penetrate42
+      penetrate43
+      penetrate44
+      penetrate45
+      penetrate46
+      penetrate47
+      penetrate48
+      penetrate49
+      penetrate50
+      penetrate51
+      penetrate52
+      penetrate53
+      penetrate54
+      penetrate55
+      penetrate56
+      penetrate57
+      penetrate58
+      penetrate59
+      penetrate60
+      penetrate61
+      penetrate64 ;; penetrate62 is named 64 for some reason?
+      penetrate63
+      )
+    :movement-gravity (meters -100)
+    :friction 0.8
+    :attack-shove-back (meters 3)
+    :attack-shove-up (meters 2)
+    :attack-mode 'generic
+    :attack-damage 2
+    :recover-gnd-collide-with (collide-spec backgnd crate obstacle hit-by-others-list pusher)
+    :jump-height-min (meters 3)
+    :jump-height-factor 0.5
+    :knocked-seek-ry-clamp 2730.6667
+    :knocked-soft-vxz-lo 16384.0
+    :knocked-soft-vxz-hi 16384.0
+    :knocked-soft-vy-lo 16384.0
+    :knocked-soft-vy-hi 16384.0
+    :knocked-medium-vxz-lo 16384.0
+    :knocked-medium-vxz-hi 16384.0
+    :knocked-medium-vy-lo 16384.0
+    :knocked-medium-vy-hi 16384.0
+    :knocked-hard-vxz-lo 16384.0
+    :knocked-hard-vxz-hi 16384.0
+    :knocked-hard-vy-lo 16384.0
+    :knocked-hard-vy-hi 16384.0
+    :knocked-huge-vxz-lo 164659.2
+    :knocked-huge-vxz-hi 249036.8
+    :knocked-huge-vy-lo 183500.8
+    :knocked-huge-vy-hi 217907.2
+    :knocked-yellow-vxz-lo 16384.0
+    :knocked-yellow-vxz-hi 16384.0
+    :knocked-yellow-vy-lo 16384.0
+    :knocked-yellow-vy-hi 16384.0
+    :knocked-red-vxz-lo 16384.0
+    :knocked-red-vxz-hi 16384.0
+    :knocked-red-vy-lo 16384.0
+    :knocked-red-vy-hi 16384.0
+    :knocked-blue-vxz-lo 16384.0
+    :knocked-blue-vxz-hi 16384.0
+    :knocked-blue-vy-lo 16384.0
+    :knocked-blue-vy-hi 16384.0
+    :shadow-size (meters 1)
+    :shadow-max-y (meters 1)
+    :shadow-min-y (meters -1)
+    :shadow-locus-dist (meters 150)
+    :gem-joint -1
+    :gem-offset (new 'static 'sphere :r 163840.0)
+    :callback-info #f
+    :use-momentum #t
+    :use-frustration #f
+    :use-stop-chase #f
+    :use-circling #f
+    :use-pacing #f
+    :walk-anim 5
+    :turn-anim -1
+    :run-anim 6
+    :taunt-anim -1
+    :run-travel-speed (meters 6)
+    :run-acceleration (meters 1)
+    :run-turning-acceleration (meters 1)
+    :walk-travel-speed (meters 2.13)
+    :walk-acceleration (meters 1)
+    :walk-turning-acceleration (meters 1)
+    :maximum-rotation-rate (degrees 50.000004)
+    :notice-nav-radius (meters 1)
+    :frustration-distance (meters 8)
+    :frustration-time (seconds 4)
+    :blocked-time (seconds 0.3)
+    :circle-dist-lo 20480.0
+    :circle-dist-hi 61440.0
+    :nav-mesh #f
+    )
+  )
+
+(set! (-> *yakow-nav-enemy-info* fact-defaults) *fact-info-enemy-defaults*)
+
+(defmethod get-damage-from-attack ((this yakow) (arg0 object) (arg1 event-message-block))
+  "@returns the amount of damage taken from an attack.  This can come straight off the [[attack-info]] or via [[penetrate-using->damage]]"
+  0.0
+  )
+
+(defmethod event-handler ((this yakow) (arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
+  "Handles various events for the enemy
+@TODO - unsure if there is a pattern for the events and this should have a more specific name"
+  (case arg2
+    (('attack)
+     (let ((v1-1 (the-as object (-> arg3 param 1))))
+       (when (!= (-> (the-as attack-info v1-1) id) (-> this incoming-attack-id))
+         ;; fart when you're the orb-dropper
+         (cond
+          ((name= (-> this name) "mhcitya-yakow-1")
+            (play-sound-file "fart1.mp3" (the int (* (-> *setting-control* user-current sfx-volume) 100.0)))
+            )
+          ((rand-vu-percent? 0.05)
+            ;; small chance of playing daxter line
+            (play-sound-file "could_be_wrong.mp3" (the int (* (-> *setting-control* user-current sfx-volume) 100.0)))
+            )
+          (else
+            ;; (format 0 "   nope~%")
+            )
+          )
+
+         (set! (-> this incoming-attack-id) (-> (the-as attack-info v1-1) id))
+         (go (method-of-object this kicked))
+         )
+       )
+     )
+    (else
+      ((method-of-type nav-enemy event-handler) this arg0 arg1 arg2 arg3)
+      )
+    )
+  )
+
+(defmethod rnd-chance-for-idle? ((this yakow) (arg0 float))
+  "TODO"
+  (>= arg0 (rand-vu))
+  )
+
+;; this was method-156 in jak 2
+;; WARN: Function (method 156 yakow) has a return type of none, but the expression builder found a return statement.
+(defmethod nav-enemy-method-164 ((this yakow))
+  (dotimes (s5-0 16)
+    (let ((f30-1 (* 4096.0 (rnd-float-range this -10.0 10.0)))
+          (f0-2 (* 4096.0 (rnd-float-range this -10.0 10.0)))
+          (s4-0 (new 'stack-no-clear 'vector))
+          )
+      (set! (-> s4-0 quad) (-> this root trans quad))
+      (+! (-> s4-0 x) f30-1)
+      (+! (-> s4-0 z) f0-2)
+      (let ((v1-7 (-> this nav))
+            (a0-6 s4-0)
+            ;; (a1-2 (new 'stack-no-clear 'nav-find-poly-parms))
+            (a1-5 (new 'stack-no-clear 'nav-poly))
+            )
+        (vector-! (-> a1-5 vertex 0) a0-6 (-> v1-7 state mesh bounds)) ;; (vector-! (-> a1-2 point) a0-6 (-> v1-7 state mesh bounds))
+        (set! (-> a1-5 vertex1 x) (-> v1-7 nearest-y-threshold)) ;; (set! (-> a1-2 y-threshold) (-> v1-7 nearest-y-threshold))
+        (set! (-> a1-5 data 20) (the-as uint 2)) ;; (set! (-> a1-2 ignore) (the-as uint 2))        
+        (when (nav-mesh-method-45 (-> v1-7 state mesh) a1-5) ;; (when (find-poly-containing-point-local (-> v1-7 state mesh) a1-2)
+          (let ((v1-12 (-> this nav state)))
+            (logclear! (-> v1-12 flags) (nav-state-flag directional-mode))
+            (logior! (-> v1-12 flags) (nav-state-flag target-poly-dirty))
+            (set! (-> v1-12 target-pos quad) (-> s4-0 quad)) ;; lol target-post typo in jak 2
+            )
+          0
+          (return #f)
+          )
+        )
+      )
+    )
+  0
+  (none)
+  )
+
+
+(defmethod setup-enemy! ((this yakow) (arg0 nav-enemy-info))
+  (local-vars (sv-16 res-tag))
+  (when (coin-flip? this)
+    (let ((a0-2 (-> this node-list data 2)))
+      (set! (-> a0-2 param0) (the-as (function cspace transformq none) cspace<-parented-matrix-joint-flip-z!))
+      (set! (-> a0-2 param1) #f)
+      (set! (-> a0-2 param2) #f)
+      )
+    (logior! (-> this enemy-flags) (enemy-flag drawn-mirrored))
+    )
+  (logior! (-> this mask) (process-mask enemy))
+  (logior! (-> this mask) (process-mask actor-pause))
+  (logior! (-> this enemy-flags) (enemy-flag actor-pause-backup))
+  (set! (-> this nav-radius-backup) (-> this root nav-radius))
+  (set-enemy-info! this arg0)
+  (set! (-> this enemy-info callback-info) *default-nav-callback-info*)
+  (set! (-> this ragdoll-proc) (the-as handle #f))
+  (let ((a1-2 (-> this enemy-info idle-anim-script)))
+    (if a1-2
+        (init! (-> this idle-anim-player) a1-2)
+        )
+    )
+  (if (-> this draw shadow)
+      (set! (-> this draw shadow-ctrl) (new
+                                         'process
+                                         'shadow-control
+                                         (-> this enemy-info shadow-min-y)
+                                         (-> this enemy-info shadow-max-y)
+                                         (-> this enemy-info shadow-locus-dist)
+                                         (the-as vector #f)
+                                         (shadow-flags shdf00 shdf04)
+                                         245760.0
+                                         )
+            )
+      (set! (-> this draw shadow-ctrl) *nav-enemy-dummy-shadow-control*)
+      )
+  (get-nav-control this (-> arg0 nav-mesh))
+  (set! (-> this water-max-height) (-> this nav state mesh water-max-height))
+  (let ((v1-32 this))
+    (set! (-> v1-32 enemy-flags) (the-as enemy-flag (logclear (-> v1-32 enemy-flags) (enemy-flag ef37))))
+    (set! (-> v1-32 nav callback-info) *null-nav-callback-info*)
+    )
+  0
+  (let ((v1-35 this))
+    (set! (-> v1-35 enemy-flags) (the-as enemy-flag (logior (enemy-flag ef38) (-> v1-35 enemy-flags))))
+    )
+  0
+  (logior! (-> this nav flags) (nav-control-flag display-marks limit-rotation-rate))
+  (logior! (-> this nav flags) (nav-control-flag update-heading-from-facing))
+  (set! (-> this enemy-flags) (the-as enemy-flag (logior (enemy-flag ef44) (-> this enemy-flags))))
+  (let ((v1-46 (-> this nav)))
+    (set! (-> v1-46 target-speed) 0.0)
+    )
+  0
+  (let ((v1-48 (-> this nav)))
+    (set! (-> v1-48 acceleration) (-> this enemy-info walk-acceleration))
+    )
+  0
+  (let ((v1-50 (-> this nav)))
+    (set! (-> v1-50 turning-acceleration) (-> this enemy-info walk-turning-acceleration))
+    )
+  0
+  (let ((v1-52 (-> this nav)))
+    (set! (-> v1-52 max-rotation-rate) (-> this enemy-info maximum-rotation-rate))
+    )
+  0
+  (nav-enemy-method-175 this)
+  (set! (-> this path) (new 'process 'path-control this 'path 0.0 (the-as entity #f) #f))
+  (when (and (zero? (-> this path curve num-cverts)) (-> this entity))
+    (set! (-> this path curve num-cverts) 3)
+    (set! (-> this path curve cverts) (-> (new 'process 'vector-array 3) data))
+    (logclear! (-> this path flags) (path-control-flag not-found))
+    (vector+*! (-> this path curve cverts 0) (-> this entity trans) *x-vector* 6144.0)
+    (vector+*! (-> this path curve cverts 1) (-> this entity trans) *x-vector* -6144.0)
+    (vector+*! (-> this path curve cverts 2) (-> this entity trans) *z-vector* 6144.0)
+    )
+  (if (and (nonzero? (-> this path)) (nonzero? (-> this path curve num-cverts)))
+      (logior! (-> this path flags) (path-control-flag display draw-line draw-point draw-text))
+      )
+  (if (logtest? (-> *game-info* secrets) (game-secrets hero-mode))
+      (set! (-> this hit-points) (* 2.0 (-> this enemy-info default-hit-points)))
+      (set! (-> this hit-points) (-> this enemy-info default-hit-points))
+      )
+  (let* ((v1-94 *game-info*)
+         (a0-42 (+ (-> v1-94 attack-id) 1))
+         )
+    (set! (-> v1-94 attack-id) a0-42)
+    (set! (-> this attack-id) a0-42)
+    )
+  (let* ((v1-95 *game-info*)
+         (a0-44 (+ (-> v1-95 attack-id) 1))
+         )
+    (set! (-> v1-95 attack-id) a0-44)
+    (set! (-> this persistent-attack-id) a0-44)
+    )
+  (set! (-> this gnd-collide-with) (-> this enemy-info gnd-collide-with))
+  (set! (-> this fact) (new 'process 'fact-info-enemy this (the-as (pointer float) (-> arg0 fact-defaults))))
+  (let ((cspec (if (logtest? (enemy-option multi-focus) (-> this fact enemy-options))
+                   (the-as collide-spec (collide-spec jak bot player-list jak-vehicle))
+                   (the-as collide-spec (collide-spec jak player-list jak-vehicle))
+                   )
+               )
+        )
+    (reset-to-collide-spec (-> this focus) (the-as collide-spec cspec))
+    )
+  (set! sv-16 (new 'static 'res-tag))
+  (let ((v1-104 (res-lump-data (-> this entity) 'actor-groups pointer :tag-ptr (& sv-16))))
+    (cond
+      ((and v1-104 (nonzero? (-> sv-16 elt-count)))
+       (set! (-> this actor-group) (the-as (pointer actor-group) v1-104))
+       (set! (-> this actor-group-count) (the-as int (-> sv-16 elt-count)))
+       )
+      (else
+        (set! (-> this actor-group) (the-as (pointer actor-group) #f))
+        (set! (-> this actor-group-count) 0)
+        0
+        )
+      )
+    )
+  (set! (-> this on-notice) (res-lump-struct (-> this entity) 'on-notice pair))
+  (set! (-> this on-active) (res-lump-struct (-> this entity) 'on-active pair))
+  (set! (-> this on-hostile) (res-lump-struct (-> this entity) 'on-hostile pair))
+  (set! (-> this on-death) (res-lump-struct (-> this entity) 'on-death pair))
+  (if (-> this on-notice)
+      (logior! (-> this enemy-flags) (enemy-flag enable-on-notice))
+      )
+  (if (-> this on-active)
+      (logior! (-> this enemy-flags) (enemy-flag enable-on-active))
+      )
+  (if (-> this on-hostile)
+      (logior! (-> this enemy-flags) (enemy-flag enable-on-hostile))
+      )
+  (set! (-> this incoming attacker-handle) (the-as handle #f))
+  (let ((s4-0 (-> this root)))
+    (set! (-> this penetrated-by-all) (-> this root penetrated-by))
+    (set! (-> this root penetrated-by) (get-penetrated-by this))
+    (set! (-> s4-0 event-self) 'touched)
+    )
+  (set! (-> this penetrate-flinch) (-> arg0 penetrate-flinch))
+  (set! (-> this penetrate-knocked) (-> arg0 penetrate-knocked))
+  (set! (-> this reaction-time) (rnd-time-frame this (seconds 0.1) (seconds 0.8)))
+  (let* ((v1-135 (-> this enemy-flags))
+         (a0-61 (-> this fact enemy-options))
+         (v1-136
+           (logior (enemy-flag vulnerable vulnerable-backup use-notice-distance attackable-backup trackable trackable-backup)
+                   v1-135
+                   )
+           )
+         )
+    (if (logtest? (enemy-option multi-focus) a0-61)
+        (set! v1-136 (logior (enemy-flag multi-focus) v1-136))
+        )
+    (if (logtest? (enemy-option has-trigger) a0-61)
+        (set! v1-136 (logior (enemy-flag use-trigger) v1-136))
+        )
+    (set! (-> this enemy-flags) v1-136)
+    )
+  (do-navigation-to-destination (-> this nav state) (-> this root trans))
+  (if (and (should-move-to-ground? this)
+           (not (logtest? (enemy-flag no-initial-move-to-ground) (-> this enemy-flags)))
+           (not (logtest? (enemy-option ambush) (-> this fact enemy-options)))
+           )
+      (move-to-ground this (meters 10) (meters 10) #t (-> this gnd-collide-with))
+      )
+  (if (zero? (-> this draw light-index))
+      (set! (-> this draw light-index) (the-as uint 10))
+      )
+  0
+  )
+
+(defstate idle (yakow)
+  :virtual #t
+  :enter (behavior ()
+    (let ((t9-0 (-> (method-of-type enemy idle) enter)))
+      (if t9-0
+          (t9-0)
+          )
+      )
+    (set! (-> self state-timeout) (seconds 1))
+    (let ((v1-5 self))
+      (set! (-> v1-5 enemy-flags) (the-as enemy-flag (logior (enemy-flag ef38) (-> v1-5 enemy-flags))))
+      )
+    0
+    (let ((v1-7 self))
+      (set! (-> v1-7 enemy-flags) (the-as enemy-flag (logclear (-> v1-7 enemy-flags) (enemy-flag ef37))))
+      (set! (-> v1-7 nav callback-info) *null-nav-callback-info*)
+      )
+    0
+    (nav-enemy-method-178 self)
+    )
+  :code (behavior ()
+    (ja-channel-push! 1 (seconds 0.15))
+    (until #f
+      (let ((f30-0 (rand-vu-float-range 0.9 1.1)))
+        (ja-no-eval :group! yakow-idle-ja :num! (seek! max f30-0) :frame-num 0.0)
+        (until (ja-done? 0)
+          (suspend)
+          (ja :num! (seek! max f30-0))
+          )
+        )
+      (when (rand-vu-percent? 0.25)
+        (ja-channel-push! 1 (seconds 0.1))
+        (ja-no-eval :group! yakow-graze-ja :num! (seek!) :frame-num 0.0)
+        (until (ja-done? 0)
+          (suspend)
+          (ja :num! (seek!))
+          )
+        (ja-channel-push! 1 (seconds 0.1))
+        )
+      )
+    #f
+    )
+  :post (behavior ()
+    (if (and (nonzero? (-> self draw)) (logtest? (-> self draw status) (draw-control-status on-screen)))
+        (set-time! (-> self last-draw-time))
+        )
+    (update-focus self) ;; (enemy-method-129 self)
+    (ja-post)
+    )
+  )
+
+(defstate active (yakow)
+  :virtual #t
+  :trans (behavior ()
+    (when (time-elapsed? (-> self state-time) (seconds 0.1))
+      (if (< (the-as int (-> self focus aware)) 1)
+          (go-virtual idle)
+          )
+      )
+    )    
+  :enter (behavior ()
+    (let ((t9-0 (-> (method-of-type enemy active) enter)))
+      (if t9-0
+          (t9-0)
+          )
+      )
+    (set! (-> self state-timeout) (seconds 1))
+    (logior! (-> self nav state flags) (nav-state-flag at-target))
+    (let ((v1-8 self))
+      (if (not (logtest? (enemy-flag ef37) (-> v1-8 enemy-flags)))
+          (set! (-> v1-8 enemy-flags) (the-as enemy-flag (logior (enemy-flag ef39) (-> v1-8 enemy-flags))))
+          )
+      (set! (-> v1-8 enemy-flags) (the-as enemy-flag (logior (enemy-flag ef37) (-> v1-8 enemy-flags))))
+      (set! (-> v1-8 nav callback-info) (-> v1-8 enemy-info callback-info))
+      )
+    0
+    (let ((v1-11 self))
+      (set! (-> v1-11 enemy-flags) (the-as enemy-flag (logior (enemy-flag ef38) (-> v1-11 enemy-flags))))
+      )
+    0
+    (nav-enemy-method-176 self)
+    )
+  :code (behavior ()
+    (ja-channel-push! 1 (seconds 0.2))
+    (let ((f30-0 (rnd-float-range self 0.9 1.1)))
+      (until #f
+        (ja-no-eval :group! (-> self draw art-group data (-> self enemy-info walk-anim))
+                    :num! (seek! max f30-0)
+                    :frame-num 0.0
+                    )
+        (until (ja-done? 0)
+          (suspend)
+          (ja :num! (seek! max f30-0))
+          )
+        (when (rnd-chance-for-idle? self 0.2)
+          (ja-no-eval :num! (loop!))
+          (ja-channel-push! 1 (seconds 0.6))
+          (let ((v1-37 self))
+            (set! (-> v1-37 enemy-flags) (the-as enemy-flag (logclear (-> v1-37 enemy-flags) (enemy-flag auto-death-phase-out)))) ;; enemy-flag36 ?
+            (set! (-> v1-37 nav callback-info) *null-nav-callback-info*)
+            )
+          0
+          (nav-enemy-method-167 self)
+          (until #f
+            (let ((f28-0 (rand-vu-float-range 0.9 1.1)))
+              (ja-no-eval :group! yakow-idle-ja :num! (seek! max f28-0) :frame-num 0.0)
+              (until (ja-done? 0)
+                (suspend)
+                (ja :num! (seek! max f28-0))
+                )
+              )
+            (when (rand-vu-percent? 0.25)
+              (ja-channel-push! 1 (seconds 0.1))
+              (ja-no-eval :group! yakow-graze-ja :num! (seek!) :frame-num 0.0)
+              (until (ja-done? 0)
+                (suspend)
+                (ja :num! (seek!))
+                )
+              (ja-channel-push! 1 (seconds 0.1))
+              )
+            (if (rnd-chance-for-idle? self 0.2)
+                (goto cfg-15)
+                )
+            )
+          #f
+          (label cfg-15)
+          (let ((v1-97 (-> self nav state)))
+            (set! (-> v1-97 speed) 0.0)
+            )
+          0
+          (let ((a0-23 (-> self nav state))
+                (v1-100 *null-vector*)
+                )
+            (set! (-> a0-23 velocity quad) (-> v1-100 quad))
+            )
+          0
+          (let ((v1-103 self))
+            (if (not (logtest? (enemy-flag auto-death-phase-out) (-> v1-103 enemy-flags))) ;; enemy-flag36
+                (set! (-> v1-103 enemy-flags) (the-as enemy-flag (logior (enemy-flag ef37) (-> v1-103 enemy-flags)))) ;; enemy-flag38 in jak 2
+                )
+            (set! (-> v1-103 enemy-flags) (the-as enemy-flag (logior (enemy-flag auto-death-phase-out) (-> v1-103 enemy-flags)))) ;; enemy-flag36
+            (set! (-> v1-103 nav callback-info) (-> v1-103 enemy-info callback-info))
+            )
+          0
+          (nav-enemy-method-176 self) ;; method 165 in jak 2
+          (ja-no-eval :num! (loop!))
+          (ja-channel-push! 1 (seconds 0.6))
+          (ja-no-eval :group! (-> self draw art-group data (-> self enemy-info walk-anim))
+                      :num! (seek! max f30-0)
+                      :frame-num 0.0
+                      )
+          (until (ja-done? 0)
+            (ja-blend-eval)
+            (suspend)
+            (ja :num! (seek! max f30-0))
+            )
+          )
+        )
+      )
+    #f
+    )
+  :post (behavior ()
+    (enemy-common-post self)
+    (update-transforms (-> self root))
+    )
+  )
+
+(defmethod can-become-hostile-to? ((this yakow) (arg0 process-focusable) (arg1 vector))
+  "Return if this enemy can become hostile to the process."
+  #f
+  )
+
+(defstate kicked (yakow)
+  :virtual #t
+  :event #f
+  :enter (behavior ()
+    (let ((v1-0 self))
+      (set! (-> v1-0 enemy-flags) (the-as enemy-flag (logclear (-> v1-0 enemy-flags) (enemy-flag auto-death-phase-out)))) ;; enemy-flag36
+      (set! (-> v1-0 nav callback-info) *null-nav-callback-info*)
+      )
+    0
+    (set-time! (-> self state-time))
+    )
+  :exit (behavior ()
+    '()
+    )
+  :trans (behavior ()
+    '()
+    )
+  :code (behavior ()
+    (ja-channel-push! 1 (seconds 0.05))
+    (ja-no-eval :group! yakow-kicked-in-place-ja :num! (seek!) :frame-num 0.0)
+    (until (ja-done? 0)
+      (suspend)
+      (ja :num! (seek!))
+      )
+    (go-virtual idle)
+    )
+  :post ja-post
+  )
+
+(defmethod init-enemy-collision! ((this yakow))
+  "Initializes the [[collide-shape-moving]] and any ancillary tasks to make the enemy collide properly"
+  (let ((s5-0 (new 'process 'collide-shape-moving this (collide-list-enum usually-hit-by-player))))
+    (set! (-> s5-0 dynam) (copy *standard-dynamics* 'process))
+    (set! (-> s5-0 reaction) cshape-reaction-default)
+    (set! (-> s5-0 no-reaction)
+          (the-as (function collide-shape-moving collide-query vector vector object) nothing)
+          )
+    (set! (-> s5-0 penetrated-by) (penetrate
+                                    generic-attack
+                                    lunge
+                                    flop
+                                    punch
+                                    spin
+                                    roll
+                                    uppercut
+                                    bonk
+                                    tube
+                                    vehicle
+                                    flut-attack
+                                    board
+                                    mech-punch
+                                    dark-punch
+                                    ;; dark-giant
+                                    )
+          )
+    (let ((v1-7 (new 'process 'collide-shape-prim-sphere s5-0 (the-as uint 0))))
+      (set! (-> v1-7 prim-core collide-as) (collide-spec enemy))
+      (set! (-> v1-7 prim-core collide-with) (collide-spec backgnd jak player-list))
+      (set! (-> v1-7 prim-core action) (collide-action solid no-standon))
+      (set-vector! (-> v1-7 local-sphere) 0.0 4096.0 0.0 10240.0)
+      (set! (-> s5-0 total-prims) (the-as uint 1))
+      (set! (-> s5-0 root-prim) v1-7)
+      )
+    (set! (-> s5-0 nav-radius) 10240.0)
+    (let ((v1-9 (-> s5-0 root-prim)))
+      (set! (-> s5-0 backup-collide-as) (-> v1-9 prim-core collide-as))
+      (set! (-> s5-0 backup-collide-with) (-> v1-9 prim-core collide-with))
+      )
+    (set! (-> s5-0 max-iteration-count) (the-as uint 3))
+    (set! (-> this root) s5-0)
+    )
+  0
+  (none)
+  )
+
+(defmethod init-enemy! ((this yakow))
+  "Common method called to initialize the enemy, typically sets up default field values and calls ancillary helper methods"
+  (initialize-skeleton
+    this
+    (the-as skeleton-group (art-group-get-by-name *level* "skel-yakow" (the-as (pointer level) #f)))
+    (the-as pair 0)
+    )
+  (setup-enemy! this *yakow-nav-enemy-info*)
+  (let ((v1-5 (-> this nav)))
+    (set! (-> v1-5 speed-scale) 1.0)
+    )
+  0
+  (set-gravity-length (-> this root dynam) 327680.0)
+  (when (logtest? (-> this entity extra perm status) (entity-perm-status dead))
+    (deactivate this)
+    )
+  0
+  (none)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; overridden yakow that doesn't try to do nav-enemy stuff, for mhcitya
+
+(deftype yakow-dummy (yakow)
+  ()
+  )
+
+;; this was method-156 in jak 2
+;; WARN: Function (method 156 yakow) has a return type of none, but the expression builder found a return statement.
+(defmethod nav-enemy-method-164 ((this yakow-dummy))
+  (dotimes (s5-0 16)
+    (let ((f30-1 (* 4096.0 (rnd-float-range this -10.0 10.0)))
+          (f0-2 (* 4096.0 (rnd-float-range this -10.0 10.0)))
+          (s4-0 (new 'stack-no-clear 'vector))
+          )
+      (set! (-> s4-0 quad) (-> this root trans quad))
+      (+! (-> s4-0 x) f30-1)
+      (+! (-> s4-0 z) f0-2)
+      ;; (let ((v1-7 (-> this nav))
+      ;;       (a0-6 s4-0)
+      ;;       ;; (a1-2 (new 'stack-no-clear 'nav-find-poly-parms))
+      ;;       (a1-5 (new 'stack-no-clear 'nav-poly))
+      ;;       )
+      ;;   (vector-! (-> a1-5 vertex 0) a0-6 (-> v1-7 state mesh bounds)) ;; (vector-! (-> a1-2 point) a0-6 (-> v1-7 state mesh bounds))
+      ;;   (set! (-> a1-5 vertex1 x) (-> v1-7 nearest-y-threshold)) ;; (set! (-> a1-2 y-threshold) (-> v1-7 nearest-y-threshold))
+      ;;   (set! (-> a1-5 data 20) (the-as uint 2)) ;; (set! (-> a1-2 ignore) (the-as uint 2))        
+      ;;   (when (nav-mesh-method-45 (-> v1-7 state mesh) a1-5) ;; (when (find-poly-containing-point-local (-> v1-7 state mesh) a1-2)
+      ;;     (let ((v1-12 (-> this nav state)))
+      ;;       (logclear! (-> v1-12 flags) (nav-state-flag directional-mode))
+      ;;       (logior! (-> v1-12 flags) (nav-state-flag target-poly-dirty))
+      ;;       (set! (-> v1-12 target-pos quad) (-> s4-0 quad)) ;; lol target-post typo in jak 2
+      ;;       )
+      ;;     0
+      ;;     (return #f)
+      ;;     )
+      ;;   )
+      )
+    )
+  0
+  (none)
+  )
+
+
+(defmethod setup-enemy! ((this yakow-dummy) (arg0 nav-enemy-info))
+  (local-vars (sv-16 res-tag))
+  (when (coin-flip? this)
+    (let ((a0-2 (-> this node-list data 2)))
+      (set! (-> a0-2 param0) (the-as (function cspace transformq none) cspace<-parented-matrix-joint-flip-z!))
+      (set! (-> a0-2 param1) #f)
+      (set! (-> a0-2 param2) #f)
+      )
+    (logior! (-> this enemy-flags) (enemy-flag drawn-mirrored))
+    )
+  (logior! (-> this mask) (process-mask enemy))
+  (logior! (-> this mask) (process-mask actor-pause))
+  (logior! (-> this enemy-flags) (enemy-flag actor-pause-backup))
+  (set! (-> this nav-radius-backup) (-> this root nav-radius))
+  (set-enemy-info! this arg0)
+  (set! (-> this enemy-info callback-info) *default-nav-callback-info*)
+  (set! (-> this ragdoll-proc) (the-as handle #f))
+  (let ((a1-2 (-> this enemy-info idle-anim-script)))
+    (if a1-2
+        (init! (-> this idle-anim-player) a1-2)
+        )
+    )
+  (if (-> this draw shadow)
+      (set! (-> this draw shadow-ctrl) (new
+                                         'process
+                                         'shadow-control
+                                         (-> this enemy-info shadow-min-y)
+                                         (-> this enemy-info shadow-max-y)
+                                         (-> this enemy-info shadow-locus-dist)
+                                         (the-as vector #f)
+                                         (shadow-flags shdf00 shdf04)
+                                         245760.0
+                                         )
+            )
+      (set! (-> this draw shadow-ctrl) *nav-enemy-dummy-shadow-control*)
+      )
+  ;; (get-nav-control this (-> arg0 nav-mesh))
+  ;; (set! (-> this water-max-height) (-> this nav state mesh water-max-height))
+  ;; (let ((v1-32 this))
+  ;;   (set! (-> v1-32 enemy-flags) (the-as enemy-flag (logclear (-> v1-32 enemy-flags) (enemy-flag ef37))))
+  ;;   (set! (-> v1-32 nav callback-info) *null-nav-callback-info*)
+  ;;   )
+  0
+  (let ((v1-35 this))
+    (set! (-> v1-35 enemy-flags) (the-as enemy-flag (logior (enemy-flag ef38) (-> v1-35 enemy-flags))))
+    )
+  0
+  ;; (logior! (-> this nav flags) (nav-control-flag display-marks limit-rotation-rate))
+  ;; (logior! (-> this nav flags) (nav-control-flag update-heading-from-facing))
+  (set! (-> this enemy-flags) (the-as enemy-flag (logior (enemy-flag ef44) (-> this enemy-flags))))
+  ;; (let ((v1-46 (-> this nav)))
+  ;;   (set! (-> v1-46 target-speed) 0.0)
+  ;;   )
+  ;; 0
+  ;; (let ((v1-48 (-> this nav)))
+  ;;   (set! (-> v1-48 acceleration) (-> this enemy-info walk-acceleration))
+  ;;   )
+  ;; 0
+  ;; (let ((v1-50 (-> this nav)))
+  ;;   (set! (-> v1-50 turning-acceleration) (-> this enemy-info walk-turning-acceleration))
+  ;;   )
+  ;; 0
+  ;; (let ((v1-52 (-> this nav)))
+  ;;   (set! (-> v1-52 max-rotation-rate) (-> this enemy-info maximum-rotation-rate))
+  ;;   )
+  ;; 0
+  ;; (nav-enemy-method-175 this)
+  (set! (-> this path) (new 'process 'path-control this 'path 0.0 (the-as entity #f) #f))
+  (when (and (zero? (-> this path curve num-cverts)) (-> this entity))
+    (set! (-> this path curve num-cverts) 3)
+    (set! (-> this path curve cverts) (-> (new 'process 'vector-array 3) data))
+    (logclear! (-> this path flags) (path-control-flag not-found))
+    (vector+*! (-> this path curve cverts 0) (-> this entity trans) *x-vector* 6144.0)
+    (vector+*! (-> this path curve cverts 1) (-> this entity trans) *x-vector* -6144.0)
+    (vector+*! (-> this path curve cverts 2) (-> this entity trans) *z-vector* 6144.0)
+    )
+  (if (and (nonzero? (-> this path)) (nonzero? (-> this path curve num-cverts)))
+      (logior! (-> this path flags) (path-control-flag display draw-line draw-point draw-text))
+      )
+  (if (logtest? (-> *game-info* secrets) (game-secrets hero-mode))
+      (set! (-> this hit-points) (* 2.0 (-> this enemy-info default-hit-points)))
+      (set! (-> this hit-points) (-> this enemy-info default-hit-points))
+      )
+  (let* ((v1-94 *game-info*)
+         (a0-42 (+ (-> v1-94 attack-id) 1))
+         )
+    (set! (-> v1-94 attack-id) a0-42)
+    (set! (-> this attack-id) a0-42)
+    )
+  (let* ((v1-95 *game-info*)
+         (a0-44 (+ (-> v1-95 attack-id) 1))
+         )
+    (set! (-> v1-95 attack-id) a0-44)
+    (set! (-> this persistent-attack-id) a0-44)
+    )
+  (set! (-> this gnd-collide-with) (-> this enemy-info gnd-collide-with))
+  (set! (-> this fact) (new 'process 'fact-info-enemy this (the-as (pointer float) (-> arg0 fact-defaults))))
+  (let ((cspec (if (logtest? (enemy-option multi-focus) (-> this fact enemy-options))
+                   (the-as collide-spec (collide-spec jak bot player-list jak-vehicle))
+                   (the-as collide-spec (collide-spec jak player-list jak-vehicle))
+                   )
+               )
+        )
+    (reset-to-collide-spec (-> this focus) (the-as collide-spec cspec))
+    )
+  (set! sv-16 (new 'static 'res-tag))
+  (let ((v1-104 (res-lump-data (-> this entity) 'actor-groups pointer :tag-ptr (& sv-16))))
+    (cond
+      ((and v1-104 (nonzero? (-> sv-16 elt-count)))
+       (set! (-> this actor-group) (the-as (pointer actor-group) v1-104))
+       (set! (-> this actor-group-count) (the-as int (-> sv-16 elt-count)))
+       )
+      (else
+        (set! (-> this actor-group) (the-as (pointer actor-group) #f))
+        (set! (-> this actor-group-count) 0)
+        0
+        )
+      )
+    )
+  (set! (-> this on-notice) (res-lump-struct (-> this entity) 'on-notice pair))
+  (set! (-> this on-active) (res-lump-struct (-> this entity) 'on-active pair))
+  (set! (-> this on-hostile) (res-lump-struct (-> this entity) 'on-hostile pair))
+  (set! (-> this on-death) (res-lump-struct (-> this entity) 'on-death pair))
+  (if (-> this on-notice)
+      (logior! (-> this enemy-flags) (enemy-flag enable-on-notice))
+      )
+  (if (-> this on-active)
+      (logior! (-> this enemy-flags) (enemy-flag enable-on-active))
+      )
+  (if (-> this on-hostile)
+      (logior! (-> this enemy-flags) (enemy-flag enable-on-hostile))
+      )
+  (set! (-> this incoming attacker-handle) (the-as handle #f))
+  (let ((s4-0 (-> this root)))
+    (set! (-> this penetrated-by-all) (-> this root penetrated-by))
+    (set! (-> this root penetrated-by) (get-penetrated-by this))
+    (set! (-> s4-0 event-self) 'touched)
+    )
+  (set! (-> this penetrate-flinch) (-> arg0 penetrate-flinch))
+  (set! (-> this penetrate-knocked) (-> arg0 penetrate-knocked))
+  (set! (-> this reaction-time) (rnd-time-frame this (seconds 0.1) (seconds 0.8)))
+  (let* ((v1-135 (-> this enemy-flags))
+         (a0-61 (-> this fact enemy-options))
+         (v1-136
+           (logior (enemy-flag vulnerable vulnerable-backup use-notice-distance attackable-backup trackable trackable-backup)
+                   v1-135
+                   )
+           )
+         )
+    (if (logtest? (enemy-option multi-focus) a0-61)
+        (set! v1-136 (logior (enemy-flag multi-focus) v1-136))
+        )
+    (if (logtest? (enemy-option has-trigger) a0-61)
+        (set! v1-136 (logior (enemy-flag use-trigger) v1-136))
+        )
+    (set! (-> this enemy-flags) v1-136)
+    )
+  ;; (do-navigation-to-destination (-> this nav state) (-> this root trans))
+  (if (and (should-move-to-ground? this)
+           (not (logtest? (enemy-flag no-initial-move-to-ground) (-> this enemy-flags)))
+           (not (logtest? (enemy-option ambush) (-> this fact enemy-options)))
+           )
+      (move-to-ground this (meters 10) (meters 10) #t (-> this gnd-collide-with))
+      )
+  (if (zero? (-> this draw light-index))
+      (set! (-> this draw light-index) (the-as uint 10))
+      )
+  0
+  )
+
+(defstate idle (yakow-dummy)
+  :virtual #t
+  :enter (behavior ()
+    (let ((t9-0 (-> (method-of-type enemy idle) enter)))
+      (if t9-0
+          (t9-0)
+          )
+      )
+    (set! (-> self state-timeout) (seconds 1))
+    (let ((v1-5 self))
+      (set! (-> v1-5 enemy-flags) (the-as enemy-flag (logior (enemy-flag ef38) (-> v1-5 enemy-flags))))
+      )
+    0
+    (let ((v1-7 self))
+      (set! (-> v1-7 enemy-flags) (the-as enemy-flag (logclear (-> v1-7 enemy-flags) (enemy-flag ef37))))
+      ;; (set! (-> v1-7 nav callback-info) *null-nav-callback-info*)
+      )
+    0
+    ;; (nav-enemy-method-178 self)
+    )
+  :code (behavior ()
+    (ja-channel-push! 1 (seconds 0.15))
+    (until #f
+      (let ((f30-0 (rand-vu-float-range 0.9 1.1)))
+        (ja-no-eval :group! yakow-idle-ja :num! (seek! max f30-0) :frame-num 0.0)
+        (until (ja-done? 0)
+          (suspend)
+          (ja :num! (seek! max f30-0))
+          )
+        )
+      (when (rand-vu-percent? 0.25)
+        (ja-channel-push! 1 (seconds 0.1))
+        (ja-no-eval :group! yakow-graze-ja :num! (seek!) :frame-num 0.0)
+        (until (ja-done? 0)
+          (suspend)
+          (ja :num! (seek!))
+          )
+        (ja-channel-push! 1 (seconds 0.1))
+        )
+      )
+    #f
+    )
+  :post (behavior ()
+    (if (and (nonzero? (-> self draw)) (logtest? (-> self draw status) (draw-control-status on-screen)))
+        (set-time! (-> self last-draw-time))
+        )
+    ;; (update-focus self) ;; (enemy-method-129 self)
+    (ja-post)
+    )
+  )
+
+(defstate active (yakow-dummy)
+  :virtual #t
+  :trans (behavior ()
+    (when (time-elapsed? (-> self state-time) (seconds 0.1))
+      (if (< (the-as int (-> self focus aware)) 1)
+          (go-virtual idle)
+          )
+      )
+    )    
+  :enter (behavior ()
+    (let ((t9-0 (-> (method-of-type enemy active) enter)))
+      (if t9-0
+          (t9-0)
+          )
+      )
+    (set! (-> self state-timeout) (seconds 1))
+    ;; (logior! (-> self nav state flags) (nav-state-flag at-target))
+    (let ((v1-8 self))
+      (if (not (logtest? (enemy-flag ef37) (-> v1-8 enemy-flags)))
+          (set! (-> v1-8 enemy-flags) (the-as enemy-flag (logior (enemy-flag ef39) (-> v1-8 enemy-flags))))
+          )
+      (set! (-> v1-8 enemy-flags) (the-as enemy-flag (logior (enemy-flag ef37) (-> v1-8 enemy-flags))))
+      ;; (set! (-> v1-8 nav callback-info) (-> v1-8 enemy-info callback-info))
+      )
+    0
+    (let ((v1-11 self))
+      (set! (-> v1-11 enemy-flags) (the-as enemy-flag (logior (enemy-flag ef38) (-> v1-11 enemy-flags))))
+      )
+    0
+    ;; (nav-enemy-method-176 self)
+    )
+  :code (behavior ()
+    (ja-channel-push! 1 (seconds 0.2))
+    (let ((f30-0 (rnd-float-range self 0.9 1.1)))
+      (until #f
+        (ja-no-eval :group! (-> self draw art-group data (-> self enemy-info walk-anim))
+                    :num! (seek! max f30-0)
+                    :frame-num 0.0
+                    )
+        (until (ja-done? 0)
+          (suspend)
+          (ja :num! (seek! max f30-0))
+          )
+        (when (rnd-chance-for-idle? self 0.2)
+          (ja-no-eval :num! (loop!))
+          (ja-channel-push! 1 (seconds 0.6))
+          (let ((v1-37 self))
+            (set! (-> v1-37 enemy-flags) (the-as enemy-flag (logclear (-> v1-37 enemy-flags) (enemy-flag auto-death-phase-out)))) ;; enemy-flag36 ?
+            ;; (set! (-> v1-37 nav callback-info) *null-nav-callback-info*)
+            )
+          0
+          ;; (nav-enemy-method-167 self)
+          (until #f
+            (let ((f28-0 (rand-vu-float-range 0.9 1.1)))
+              (ja-no-eval :group! yakow-idle-ja :num! (seek! max f28-0) :frame-num 0.0)
+              (until (ja-done? 0)
+                (suspend)
+                (ja :num! (seek! max f28-0))
+                )
+              )
+            (when (rand-vu-percent? 0.25)
+              (ja-channel-push! 1 (seconds 0.1))
+              (ja-no-eval :group! yakow-graze-ja :num! (seek!) :frame-num 0.0)
+              (until (ja-done? 0)
+                (suspend)
+                (ja :num! (seek!))
+                )
+              (ja-channel-push! 1 (seconds 0.1))
+              )
+            (if (rnd-chance-for-idle? self 0.2)
+                (goto cfg-15)
+                )
+            )
+          #f
+          (label cfg-15)
+          ;; (let ((v1-97 (-> self nav state)))
+          ;;   (set! (-> v1-97 speed) 0.0)
+          ;;   )
+          ;; 0
+          ;; (let ((a0-23 (-> self nav state))
+          ;;       (v1-100 *null-vector*)
+          ;;       )
+          ;;   (set! (-> a0-23 velocity quad) (-> v1-100 quad))
+          ;;   )
+          ;; 0
+          (let ((v1-103 self))
+            (if (not (logtest? (enemy-flag auto-death-phase-out) (-> v1-103 enemy-flags))) ;; enemy-flag36
+                (set! (-> v1-103 enemy-flags) (the-as enemy-flag (logior (enemy-flag ef37) (-> v1-103 enemy-flags)))) ;; enemy-flag38 in jak 2
+                )
+            (set! (-> v1-103 enemy-flags) (the-as enemy-flag (logior (enemy-flag auto-death-phase-out) (-> v1-103 enemy-flags)))) ;; enemy-flag36
+            ;; (set! (-> v1-103 nav callback-info) (-> v1-103 enemy-info callback-info))
+            )
+          0
+          ;; (nav-enemy-method-176 self) ;; method 165 in jak 2
+          (ja-no-eval :num! (loop!))
+          (ja-channel-push! 1 (seconds 0.6))
+          (ja-no-eval :group! (-> self draw art-group data (-> self enemy-info walk-anim))
+                      :num! (seek! max f30-0)
+                      :frame-num 0.0
+                      )
+          (until (ja-done? 0)
+            (ja-blend-eval)
+            (suspend)
+            (ja :num! (seek! max f30-0))
+            )
+          )
+        )
+      )
+    #f
+    )
+  :post (behavior ()
+    (enemy-common-post self)
+    (update-transforms (-> self root))
+    )
+  )
+
+(defstate kicked (yakow-dummy)
+  :virtual #t
+  :event #f
+  :enter (behavior ()
+    (let ((v1-0 self))
+      (set! (-> v1-0 enemy-flags) (the-as enemy-flag (logclear (-> v1-0 enemy-flags) (enemy-flag auto-death-phase-out)))) ;; enemy-flag36
+      ;; (set! (-> v1-0 nav callback-info) *null-nav-callback-info*)
+      )
+    0
+    (set-time! (-> self state-time))
+    )
+  :exit (behavior ()
+    '()
+    )
+  :trans (behavior ()
+    '()
+    )
+  :code (behavior ()
+    (ja-channel-push! 1 (seconds 0.05))
+    (ja-no-eval :group! yakow-kicked-in-place-ja :num! (seek!) :frame-num 0.0)
+    (until (ja-done? 0)
+      (suspend)
+      (ja :num! (seek!))
+      )
+    (go-virtual idle)
+    )
+  :post ja-post
+  )
+
+(defmethod init-enemy! ((this yakow-dummy))
+  "Common method called to initialize the enemy, typically sets up default field values and calls ancillary helper methods"
+  (initialize-skeleton
+    this
+    (the-as skeleton-group (art-group-get-by-name *level* "skel-yakow" (the-as (pointer level) #f)))
+    (the-as pair 0)
+    )
+  (setup-enemy! this *yakow-nav-enemy-info*)
+  ;; (let ((v1-5 (-> this nav)))
+  ;;   (set! (-> v1-5 speed-scale) 1.0)
+  ;;   )
+  0
+  (set-gravity-length (-> this root dynam) 327680.0)
+  0
+  (none)
+  )

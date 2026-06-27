@@ -7,11 +7,17 @@
 
 ;; initialize was manually fixed.
 
+(define *orb-count-updated?* #f)
+(define-extern increment-skill-per-level-side-mish (function game-task int none))
+(define-extern increment-skill-per-level (function entity-actor none))
+
 (define-extern demo? (function symbol))
 (define-extern task-resolution-close! (function game-task symbol))
 (define-extern *lightning-darkjak-pill* lightning-spec)
 (define-extern lightning-probe-callback (function lightning-tracker none))
 (define-extern process-drawable-shock-effect (function process-drawable lightning-spec (function lightning-tracker none) sparticle-launcher int int float object)) ;; guess
+
+(define-extern runs-on-jak-death (function symbol none))
 
 ;; DECOMP BEGINS
 
@@ -245,39 +251,42 @@
   )
 
 (defmethod calculate-percentage ((this game-info))
-  (let ((story-total 0)
-        (story-complete 0)
-        )
-    0.0
-    (let ((story-min (game-task fortress-escape))
-          (story-max (game-task nest-boss))
-          )
-      (while (>= (the-as uint story-max) (the-as uint story-min))
-        (when (not (or (= story-min (game-task city-blue-gun-training)) (= story-min (game-task city-dark-gun-training))))
-          (+! story-total 1)
-          (if (task-complete? this story-min)
-              (+! story-complete 1)
-              )
-          )
-        (+! story-min 1)
-        )
-      )
-    (let ((percent (/ (* 100.0 (the float story-complete)) (the float story-total))))
-      (when (= story-complete story-total)
-        (let ((bbush-min (game-task city-burning-bush-ring-1))
-              (bbush-max (game-task stadium-burning-bush-race-class1-r))
-              )
-          (while (>= (the-as uint bbush-max) (the-as uint bbush-min))
-            (if (task-complete? this bbush-min)
-                (set! percent (+ 1.0 percent))
-                )
-            (+! bbush-min 1)
-            )
-          )
-        )
-      percent
-      )
-    )
+  ;; (let ((story-total 0)
+  ;;       (story-complete 0)
+  ;;       )
+  ;;   0.0
+  ;;   (let ((story-min (game-task fortress-escape))
+  ;;         (story-max (game-task nest-boss))
+  ;;         )
+  ;;     (while (>= (the-as uint story-max) (the-as uint story-min))
+  ;;       (when (not (or (= story-min (game-task city-blue-gun-training)) (= story-min (game-task city-dark-gun-training))))
+  ;;         (+! story-total 1)
+  ;;         (if (task-complete? this story-min)
+  ;;             (+! story-complete 1)
+  ;;             )
+  ;;         )
+  ;;       (+! story-min 1)
+  ;;       )
+  ;;     )
+  ;;   (let ((percent (/ (* 100.0 (the float story-complete)) (the float story-total))))
+  ;;     (when (= story-complete story-total)
+  ;;       (let ((bbush-min (game-task city-burning-bush-ring-1))
+  ;;             (bbush-max (game-task stadium-burning-bush-race-class1-r))
+  ;;             )
+  ;;         (while (>= (the-as uint bbush-max) (the-as uint bbush-min))
+  ;;           (if (task-complete? this bbush-min)
+  ;;               (set! percent (+ 1.0 percent))
+  ;;               )
+  ;;           (+! bbush-min 1)
+  ;;           )
+  ;;         )
+  ;;       )
+  ;;     percent
+  ;;     )
+  ;;   )
+    
+  ;; 100 * (skill-total / 3125)
+  (* 0.032 (-> *game-info* skill-total))
   )
 
 (defun task-level->string ((arg0 int))
@@ -293,6 +302,91 @@
     )
   )
 
+;; (define *orbhunt-aid-fuckup* 100000)
+;; (define *orbhunt-max-original-aid* 76000)
+;; (defun migrate-perm! ((dest entity-perm) (src entity-perm) (dest-aid actor-id))
+;;   (set! (-> dest quad) (-> src quad))
+;;   (set! (-> dest aid) dest-aid)
+;;   (none)
+;;   )
+
+;; (defun orbhunt-cleanup-aid-perms! ((this game-info))
+;;   (let ((updated-anything? #f)
+;;         (game-perms (-> this perm-list)))
+        
+;;     (dotimes (aid *orbhunt-max-original-aid*)
+;;       (let* ((src-perm (actor-perm this (the actor-id aid)))
+;;              (src-ent (entity-by-aid (the uint aid)))
+;;              (dest-aid (the actor-id (+ aid *orbhunt-aid-fuckup*)))
+;;              (dest-perm (actor-perm this dest-aid))
+;;              (dest-ent (entity-by-aid (the uint dest-aid))))
+;;         (case aid
+;;           ((
+;;             22237 22238 22239 22240 32940 32942 ;; atoll 
+;;             35097 35101 35098 35099 35100 ;; castle
+;;             33200 33201 ;; consite
+;;             29436 29438 29437 34027 29439 29440 29442 29441 ;; dig3a
+;;             33172 33171 33168 33169 33170 ;; drillmid
+;;             35050 35053 35054 35055 35051 35052 35056 35057 35058 ;; forest
+;;             33177 33178 ;; forexita
+;;             33184 33185 33186 21086 ;; forexitb
+;;             33223 33224 33225 33194 33193 33214 33215 33216 33226 33213 33217 33218 33227 33222 33219 33220 33221 ;; mountain
+;;             32998 33003 32999 33004 33000 33001 33002 ;; nest
+;;             33104 33103 ; palcab
+;;             33105 ;; palroof
+;;             33102 ;; palshaft
+;;             33122 33123 ;; prison
+;;             21009 21011 21010 21012 21008 21013 21014 33210 33209 ;; ruins
+;;             35095 35096 ;; sewer
+;;             34233 34228 34227 34229 34230 34231 34232 ;; strip
+;;             33182 33183 33180 33181  ;; tomba
+;;             21369 ;; tombb
+;;             33205 33206 ;; under
+;;             )
+;;             ;; vanilla orbs, don't copy/clear dead status - 15 conflicts here where people could lose (maybe dupe?) orbs
+;;             (dbg-format 0 "skipping known vanilla orb ~D, hope ~D isnt a conflict~%" aid dest-aid)
+;;             )
+;;           (else
+;;             (when (and src-perm (logtest? (-> src-perm status) (entity-perm-status dead bit-15)))
+;;               ;; src is marked dead or bit-15, copy it to dest (may or may not exist, thats okay)
+;;               (cond
+;;                 (dest-perm
+;;                   (dbg-format 0 "copying dead/15 status from ~D to existing ~D~%" aid dest-aid)
+;;                   (migrate-perm! dest-perm src-perm dest-aid)
+;;                   (true! updated-anything?)
+;;                   )
+;;                 ((< (-> game-perms length) (-> game-perms allocated-length))
+;;                   (dbg-format 0 "copying dead/15 status from ~D into new slot ~D~%" aid dest-aid)
+;;                   (migrate-perm! (-> game-perms data (-> game-perms length)) src-perm dest-aid)
+;;                   (+! (-> game-perms length) 1)
+;;                   (true! updated-anything?)
+;;                   )
+;;                 (else
+;;                   (dbg-format 0 "jk there wasn't enough space!~%")
+;;                   )
+;;                 )
+;;               ;; if the entity is in an active level, update its perm too
+;;               (when dest-ent 
+;;                 (migrate-perm! (-> dest-ent extra perm) src-perm dest-aid)
+;;                 )
+
+;;               ;; clear dead status on src entity
+;;               (when src-ent
+;;                 (logclear! (-> src-ent extra perm status) (entity-perm-status dead))
+;;                 )
+;;               (logclear! (-> src-perm status) (entity-perm-status dead))
+;;               )
+;;             )
+;;           )
+;;         )
+;;       )
+
+;;     ;; return whether anything was updated
+;;     updated-anything?
+;;     )
+;;   )
+
+(define-extern *last-hover-time* time-frame)
 (defmethod initialize! ((this game-info) (arg0 symbol) (arg1 game-save) (arg2 string))
   (local-vars (v0-3 int))
   (case arg0
@@ -316,6 +410,7 @@
          (goto cfg-131)
          )
        )
+       (runs-on-jak-death 'blackout)
      )
     (('try)
      (+! (-> this total-trys) 1)
@@ -335,7 +430,7 @@
                                                 (>= (- (-> *display* game-clock frame-counter) (-> this death-time)) (seconds 2))
                                                 )
                                            )
-                                  (format #t "death count inc for ~S~%" (-> sv-96 name))
+                                  ;; (format #t "death count inc for ~S~%" (-> sv-96 name))
                                   (set! v0-3 (seekl (the-as int (-> sv-96 death-count)) #xffff 1))
                                   (set! (-> sv-96 death-count) (the-as uint v0-3))
                                   v0-3
@@ -356,8 +451,9 @@
     (('game)
      (+! (-> this task-counter) 1)
      (reset! (-> *display* total-game-clock))
-     (set! (-> this features) (game-feature sidekick))
-     (set! (-> this debug-features) (game-feature))
+     (set! *last-hover-time* (the time-frame #f))
+     (set! (-> this features) (game-feature sidekick board))
+     (set! (-> this debug-features) (game-feature board))
      (set! (-> this secrets) (game-secrets))
      (set! (-> this purchase-secrets) (game-secrets))
      (set-continue!
@@ -439,6 +535,8 @@
        (set! (-> this level-opened v1-98) (the-as uint 0))
        (nop!)
        )
+     (dotimes (i LEVEL_ID_LEN)
+      (set! (-> this skill-per-level i) (the-as uint 0)))
      (let ((v1-102 (-> *game-info* sub-task-list)))
        (dotimes (a0-41 (-> v1-102 length))
          (when (nonzero? a0-41)
@@ -561,6 +659,7 @@
   this
   )
 
+(define-extern *total-orbs* int)
 (defmethod give ((this game-info) (arg0 symbol) (arg1 float) (arg2 handle))
   (local-vars (ammo-max float))
   (with-pp
@@ -594,6 +693,11 @@
            (+! (-> this skill-total) arg1)
            )
        (set! (-> this skill) (+ (-> this skill) arg1))
+       ;; orb hunt winner winner chicken dinner
+       (when (>= (-> this skill-total) *total-orbs*)
+        (play-sound-file "congrats.mp3" (the int (* (-> *setting-control* user-current sfx-volume) 100.0)))
+        )
+       (-> this skill)
        )
       (('karma)
        (set! (-> this karma) (+ (-> this karma) arg1))
@@ -1126,13 +1230,17 @@
   )
 
 (defmethod copy-perms-from-level! ((this game-info) (arg0 level))
+  (dbg-format 0 "copy-perms-from-level (saving/leaving level) ~A~%" (-> arg0 name))
   (let ((game-perms (-> this perm-list))
         (level-entities (-> arg0 bsp level entity))
         )
     (dotimes (i (-> level-entities length))
-      (let ((entity-perm (-> level-entities data i entity extra perm)))
+      (let* ((entity-perm (-> level-entities data i entity extra perm))
+             (aid (-> entity-perm aid))
+             )
         (when (or (nonzero? (-> entity-perm task)) (logtest? (-> entity-perm status) (entity-perm-status save)))
-          (let ((actor-perm (actor-perm this (-> entity-perm aid))))
+          (dbg-format 0 "copy-perms-from-level on aid ~D~%" aid)
+          (let ((actor-perm (actor-perm this aid)))
             (cond
               (actor-perm
                 (set! (-> actor-perm quad) (-> entity-perm quad))
@@ -1151,6 +1259,7 @@
   )
 
 (defmethod copy-perms-to-level! ((this game-info) (arg0 level))
+  (dbg-format 0 "copy-perms-to-level (loading/entering level) ~A~%" (-> arg0 name))
   (let ((level-entities (-> arg0 bsp level entity)))
     (dotimes (i (-> level-entities length))
       (let* ((entity-perm (-> level-entities data i entity extra perm))
@@ -1198,12 +1307,12 @@
   (let ((v1-1 (level-get-target-inside *level*)))
     (format #t "~%(static-continue-point ~A ()~%" (symbol->string (-> v1-1 name)))
     )
-  (format #t "                       (target ~m ~m ~m " (-> arg0 trans x) (-> arg0 trans y) (-> arg0 trans z))
-  (format #t "~f ~f ~f ~f)~%" (-> arg0 quat x) (-> arg0 quat y) (-> arg0 quat z) (-> arg0 quat w))
+  (format #t "                       (target :x (meters ~m) :y (meters ~m) :z (meters ~m) " (-> arg0 trans x) (-> arg0 trans y) (-> arg0 trans z))
+  (format #t ":x ~f :y ~f :z ~f :w ~f)~%" (-> arg0 quat x) (-> arg0 quat y) (-> arg0 quat z) (-> arg0 quat w))
   (let ((gp-1 *math-camera*))
     (format
       #t
-      "                       (camera ~m ~m ~m ~f ~f ~f "
+      "                       (camera :x (meters ~m) :y (meters ~m) :z (meters ~m) ~% ~f ~f ~f ~%"
       (-> gp-1 trans x)
       (-> gp-1 trans y)
       (-> gp-1 trans z)
@@ -1213,7 +1322,7 @@
       )
     (format
       #t
-      "~f ~f ~f ~f ~f ~f)~%"
+      " ~f ~f ~f ~% ~f ~f ~f)~%"
       (-> gp-1 inv-camera-rot vector 1 x)
       (-> gp-1 inv-camera-rot vector 1 y)
       (-> gp-1 inv-camera-rot vector 1 z)
@@ -1279,13 +1388,43 @@
       )
   ;; og:preserve-this level constant
   (dotimes (s4-2 LEVEL_MAX)
-    (if (or (= (-> *level* level s4-2 status) 'active)
-            (= (-> *level* level s4-2 status) 'alive)
-            (= (-> *level* level s4-2 status) 'loaded)
+    (cond
+      ((= (-> *level* level s4-2 status) 'active)
+        (let ((entities (-> *level* level s4-2 entity))
+              (orbs-collected 0) (orbs-total 0))
+          (dotimes (idx (-> entities length))
+            (let ((entity-link (-> entities data idx)))
+              (when (and (-> entity-link entity) (nonzero? (-> entity-link entity)))
+                (case (-> (the entity-actor (-> entity-link entity)) etype symbol) 
+                  (('skill)
+                    (+! orbs-total 1)
+                    (when (logtest? (-> entity-link status) (entity-perm-status dead))
+                      (+! orbs-collected 1)
+                      )
+                    )
+                  (('skill-crate)
+                    (+! orbs-total 1)
+                    (when (nonzero? (-> entity-link perm user-int8 1))
+                      (+! orbs-collected 1)
+                      )
+                    )
+                  )
+                )
+              )
             )
-        (format arg0 "level ~D ~-8A ~-8A " s4-2 (-> *level* level s4-2 name) (-> *level* level s4-2 display?))
-        (format arg0 "level ~D ~-8A ~-8A " s4-2 #f #f)
+          (format arg0 "level ~D ~-30A ~-8A ~D/~D" s4-2 (-> *level* level s4-2 name) (-> *level* level s4-2 display?) orbs-collected orbs-total)
+          )
         )
+      ((or ;; (= (-> *level* level s4-2 status) 'active)
+          (= (-> *level* level s4-2 status) 'alive)
+          (= (-> *level* level s4-2 status) 'loaded)
+          )
+        (format arg0 "level ~D ~-30A ~-8A" s4-2 (-> *level* level s4-2 name) (-> *level* level s4-2 display?))
+        )
+      (else
+        (format arg0 "level ~D ~-30A ~-8A " s4-2 #f #f)
+        )
+      )
     (if arg2
         (format arg0 "~%")
         )
@@ -1315,6 +1454,61 @@
     (format arg0 "camera-rot ~f ~f ~f ~f" (-> v1-49 x) (-> v1-49 y) (-> v1-49 z) (-> v1-49 w))
     )
   (format arg0 "~%")
+
+  (when (and *target* (name= (-> *target* state name) 'target-look-around)
+             (not (paused?)))
+    (let ((v-cam (new-stack-vector0))
+          (v-tmp (new-stack-vector0))
+          (skill-pos-offset (new-stack-vector0))
+          (dist 0.0)
+          (off 0.0)
+          (ratio 0.0)
+          )
+      ;; figure out where we're looking
+      (vector-matrix*! v-cam (new 'static 'vector :z 1.0) (math-camera-matrix))
+
+      ;; check if any orbs are in our line of sight
+      (dotimes (s4-2 LEVEL_MAX)
+        (cond
+          ((= (-> *level* level s4-2 status) 'active)
+            (let ((entities (-> *level* level s4-2 entity)))
+              (dotimes (idx (-> entities length))
+                (let ((entity-link (-> entities data idx)))
+                  (when (and (-> entity-link entity) (nonzero? (-> entity-link entity))
+                            (-> entity-link process)
+                            (= (-> (the entity-actor (-> entity-link entity)) etype symbol) 'skill)
+                            )
+                    (let ((s (the process-drawable (-> entity-link process))))
+                      (vector-copy! skill-pos-offset (-> s root trans))
+                      (+! (-> skill-pos-offset y) (meters 0.6)) ;; from base of orb to middle
+
+                      ;; we have a live orb, figure out how far away it is relative to camera
+                      (vector-! v-tmp skill-pos-offset (camera-pos))
+                      (set! dist (vector-length v-tmp))
+
+                      ;; project in v-cam direction with length dist, then compare position to actual orb
+                      (vector-copy! v-tmp v-cam)
+                      (vector-normalize! v-tmp dist)
+                      (vector+! v-tmp (camera-pos) v-tmp)
+
+                      (set! off (vector-vector-distance v-tmp skill-pos-offset))
+                      (set! ratio (/ (cube-root dist) off))
+
+                      ;; the closer we are, the less accurate the vectors need to be, so lower threshold
+                      (when (> ratio 0.0125)
+                        (format arg0 "~3Llooking at ~A, dist is ~m, off by ~m, ratio ~f ~%" (-> entity-link process name) dist off ratio)
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+
   0
   (none)
   )
@@ -1747,7 +1941,8 @@
 (let ((gp-0 *game-info*))
   (set! (-> gp-0 task-counter) (the-as uint 1))
   (when (zero? (-> gp-0 perm-list))
-    (set! (-> gp-0 perm-list) (new 'global 'entity-perm-array 4096))
+    (dbg-format 0 "new perm-list~%")
+    (set! (-> gp-0 perm-list) (new 'global 'entity-perm-array 8192))
     (set! (-> gp-0 perm-list length) 0)
     0
     )

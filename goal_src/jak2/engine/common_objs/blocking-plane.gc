@@ -145,6 +145,7 @@
 ;; WARN: Return type mismatch object vs none.
 (defbehavior blocking-plane-init-by-other blocking-plane ((vec-pair (inline-array vector)) (height float))
   "Calls [[blocking-plane::21]] with the given args"
+  (format 0 "BLOCKING PLANE init by other ~A~%" (handle->process (-> self parent)))
   (if (not vec-pair)
       (deactivate self)
       )
@@ -156,11 +157,18 @@
 ;; WARN: Return type mismatch object vs none.
 (defmethod init-from-entity! ((this blocking-plane) (arg0 entity-actor))
   "Typically the method that does the initial setup on the process, potentially using the [[entity-actor]] provided as part of that.
-   This commonly includes things such as:
-   - stack size
-   - collision information
-   - loading the skeleton group / bones
-   - sounds"
+This commonly includes things such as:
+- stack size
+- collision information
+- loading the skeleton group / bones
+- sounds"
+  (case-str (-> this name)
+    (("blocking-plane-6" "blocking-plane-6" "blocking-plane-7" "blocking-plane-8" "blocking-plane-9" "blocking-plane-10" "blocking-plane-11")
+      ;; dont spawn sewers invis walls
+      (deactivate this)
+      )
+    )
+  (dbg-format 0 "BLOCKING PLANE SPAWN ~A~%" arg0)
   (let ((s5-0 (new 'process 'path-control this 'path 0.0 (the-as entity #f) #f))
         (f30-0 (res-lump-float (-> this entity) 'height :default 122880.0))
         )

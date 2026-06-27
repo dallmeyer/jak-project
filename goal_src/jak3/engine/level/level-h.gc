@@ -193,6 +193,8 @@
   (city-borrow-high-priority 19)
   (ocean-all 20)
   (desert 21)
+  (orb-hunt 22)
+  (turbo-board 23)
   )
 ;; ---level-flags
 
@@ -415,7 +417,7 @@
   (:methods
     (deactivate (_type_) _type_)
     (unload! (_type_) _type_)
-    (is-object-visible? (_type_ int) symbol)
+    (is-object-visible? (_type_ int entity) symbol)
     (level-method-12 () none)
     (bsp-name (_type_) symbol)
     (compute-memory-usage! (_type_ symbol) memory-usage-block)

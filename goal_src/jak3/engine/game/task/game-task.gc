@@ -15139,7 +15139,105 @@
             :level 'city
             :task (game-task city-win)
             :name "city-win-resolution"
-            :when-open #f
+            :when-open (new 'static 'boxed-array :type game-task-event
+              (new 'static 'game-task-event
+                  :actor (game-task-actor torn-orbhunt)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              ;; not needed since vanilla tess still spawns in gungame post-game
+              ;; (new 'static 'game-task-event
+              ;;     :actor (game-task-actor tess-orbhunt)
+              ;;     :action (game-task-action idle)
+              ;;     :tex (game-task-icon gaticon-02)
+              ;;     :scene #f
+              ;;     )
+              (new 'static 'game-task-event
+                  :actor (game-task-actor onin-orbhunt)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              (new 'static 'game-task-event
+                  :actor (game-task-actor ashelin-orbhunt)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              (new 'static 'game-task-event
+                  :actor (game-task-actor kleever-orbhunt)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              (new 'static 'game-task-event
+                  :actor (game-task-actor damus-orbhunt)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              (new 'static 'game-task-event
+                  :actor (game-task-actor erol-orbhunt)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              (new 'static 'game-task-event
+                  :actor (game-task-actor vin-orbhunt)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              (new 'static 'game-task-event
+                  :actor (game-task-actor pecker-orbhunt)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              (new 'static 'game-task-event
+                  :actor (game-task-actor seem-orbhunt)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              (new 'static 'game-task-event
+                  :actor (game-task-actor samos-orbhunt)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              (new 'static 'game-task-event
+                  :actor (game-task-actor keira-orbhunt)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              (new 'static 'game-task-event
+                  :actor (game-task-actor jinx-orbhunt)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              (new 'static 'game-task-event
+                  :actor (game-task-actor sig-orbhunt)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              (new 'static 'game-task-event
+                  :actor (game-task-actor veger-orbhunt)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              (new 'static 'game-task-event
+                  :actor (game-task-actor unused-slot-23)
+                  :action (game-task-action idle)
+                  :tex (game-task-icon gaticon-02)
+                  :scene #f
+                  )
+              )
             :flags (game-task-node-flag close-task save-on-life no-percent act3)
             :parent-node (new 'static 'array game-task-node 4
               (game-task-node city-win-introduction)
@@ -18137,7 +18235,7 @@
             :name "city-bbush-get-to-28-introduction"
             :when-open (new 'static 'boxed-array :type game-task-event
               (new 'static 'game-task-event
-                :actor (game-task-actor burning-bush-genb-3)
+                :actor (game-task-actor burning-bush-genb-3) ;; should this be genb-2?
                 :action (game-task-action show)
                 :tex (game-task-icon gaticon-04)
                 :scene "t-bb10i"
@@ -18261,7 +18359,7 @@
             :name "city-bbush-get-to-29-introduction"
             :when-open (new 'static 'boxed-array :type game-task-event
               (new 'static 'game-task-event
-                :actor (game-task-actor burning-bush-genb-4)
+                :actor (game-task-actor burning-bush-genb-4) ;; should this be genb-3?
                 :action (game-task-action show)
                 :tex (game-task-icon gaticon-04)
                 :scene "t-bb04i"
@@ -18385,7 +18483,7 @@
             :name "city-bbush-get-to-30-introduction"
             :when-open (new 'static 'boxed-array :type game-task-event
               (new 'static 'game-task-event
-                :actor (game-task-actor burning-bush-genb-5)
+                :actor (game-task-actor burning-bush-genb-5) ;; should this be genb-4?
                 :action (game-task-action show)
                 :tex (game-task-icon gaticon-04)
                 :scene "t-bb06i"

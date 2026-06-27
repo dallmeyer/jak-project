@@ -381,3 +381,51 @@
     (logclear! (-> *pc-settings* cheats-revealed) (pc-cheats ,@cheats))
     )
   )
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; mod-settings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; CHANGE THE FILENAME SO YOUR SETTINGS DON'T CONFLICT WITH OTHER MODS' SETTINGS
+(define *mod-settings-filename* "orbhunt-settings.gc")
+
+(defconstant LEVEL_ID_LEN 96)
+
+(defenum slip-assist-mode
+  :type uint8
+  (normal)
+  (no-slip)
+  (spiderman)
+  )
+
+;; ;; Overall settings file for the mod, contains an array of 4 mod-save-files for per-save data
+(deftype mod-settings-jak3 (basic)
+  (
+    (orb-autosave?                symbol)
+    (skill-starburst?             symbol)
+    (orb-ghosts?                  symbol)
+    (closest-orb?                 symbol)
+    (mini-map?                    symbol)
+    (orb-map-icons?               symbol)
+    (pseudo-savestates?           symbol)
+    (easy-abah?                   symbol)
+    (collision-renderer-toggle?   symbol)
+    (hover-restriction?           symbol)
+    (slip-assist                  slip-assist-mode)
+    )
+  (:methods
+    (new (symbol type) _type_)
+    (initialize (_type_) _type_)
+    (reset (_type_ symbol) int)
+    (read-from-file (_type_ string) symbol)
+    (commit-to-file (_type_) none)
+    (write-to-file (_type_ string) symbol)
+    (handle-input-settings (_type_ file-stream) object)
+    (handle-output-settings (_type_ file-stream) object)
+    (load-settings (_type_) int)
+    )
+  )
+
+(define *mod-settings* (the mod-settings-jak3 #f))

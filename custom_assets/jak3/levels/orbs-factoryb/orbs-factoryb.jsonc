@@ -1,0 +1,334 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-factoryb",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O83",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o83", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-factoryb/orbs-factoryb.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 183000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": ["hellcat-ag", "cty-door-ag", "warp-gate-ag"],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [ 376.34,  412.5711,  408.22 ], // hellcat to lfacrm1
+      "etype": "desoasis-hellcat",
+      "game_task": 0, 
+      "quat" : [0.0000, 0.8419, 0.0000, 0.5395],
+      "bsphere": [ 376.34,  412.5711,  408.22 , 10],
+      "lump": {
+        "name":"factoryb-hellcat-1"
+      }
+    },
+    {
+      "trans": [ 376.34,  412.5711,  408.22 ], // warp to lfacrm1 (back to city)
+      "etype": "warp-gate",
+      "game_task": 0, 
+      "quat" : [ 0.0000,      -0.8683,       0.0000,       0.4959],
+      "bsphere": [  376.34,  412.5711,  408.22 , 10],
+      "lump": {
+        "name":"factoryb-warp-gate-1"
+      }
+    },
+    {
+      "trans": [ 376.15,  334.52,  379.83 ], // warp to lfacrm2 (inside factory)
+      "etype": "warp-gate",
+      "game_task": 0, 
+      "quat" : [ 0.0000,      -0.8683,       0.0000,       0.4959],
+      "bsphere": [ 376.15,  334.52,  379.83  , 10],
+      "lump": {
+        "name":"factoryb-warp-gate-2"
+      }
+    },
+    {
+      "trans": [ 375.8096, 333.9394, 379.8299], // door to lfacrm2 (inside factory)
+      "etype": "cty-door",
+      "game_task": 0, 
+      "quat" : [ 0.0000,      0.0,       0.0000,       -1.0],
+      "bsphere": [ 375.8096, 333.9394, 379.8299  , 10],
+      "lump": {
+        "name":"factoryb-cty-door-1",
+        "scale": ["float", 1.6]
+      }
+    },
+
+    // assume hellcat is parked in SW corner as reference point
+    {
+      "trans": [ 344.3623, 352.4402, 403.7684], // pipe along SW tower, abah from ground
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  344.3623, 352.4402, 403.7684, 10],
+      "lump": {
+        "name":"factoryb-skill-01",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 344.3623, 364.3188, 413.6615], // taller pipe along SW tower, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  344.3623, 364.3188, 413.6615, 10],
+      "lump": {
+        "name":"factoryb-skill-02",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 321.8909, 377.5333, 408.5950], // pipe under walkway from SW tower, abah from ^ and slide/concussor across
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  321.8909, 377.5333, 408.5950, 10],
+      "lump": {
+        "name":"factoryb-skill-03"
+      }
+    },
+    {
+      "trans": [ 188.0114, 358.4666, 283.7725], // on little thing next to pipe
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 188.0114, 358.4666, 283.7725, 10],
+      "lump": {
+        "name":"factoryb-skill-04",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 187.8275, 372.1441, 290.2658], // on pipe, abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 187.8275, 372.1441, 290.2658, 10],
+      "lump": {
+        "name":"factoryb-skill-05",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 189.5741, 391.9312, 296.5134], // on pipe, abah from ^o
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 189.5741, 391.9312, 296.5134, 10],
+      "lump": {
+        "name":"factoryb-skill-06"
+      }
+    },
+    {
+      "trans": [ 409.1518, 341.0495, 305.0527], // pipe climb towards "netting"
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 409.1518, 341.0495, 305.0527, 10],
+      "lump": {
+        "name":"factoryb-skill-07"
+      }
+    },
+    {
+      "trans": [ 427.8795, 345.7503, 301.0349], // pipe climb towards "netting"
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 427.8795, 345.7503, 301.0349, 10],
+      "lump": {
+        "name":"factoryb-skill-08"
+      }
+    },
+    {
+      "trans": [ 398.9792, 352.0890, 304.8318], // pipe climb towards "netting"
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 398.9792, 352.0890, 304.8318, 10],
+      "lump": {
+        "name":"factoryb-skill-09"
+      }
+    },
+    {
+      "trans": [ 404.4197, 358.5709, 299.9859], // pipe climb towards "netting"
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 404.4197, 358.5709, 299.9859, 10],
+      "lump": {
+        "name":"factoryb-skill-10",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 395.0596, 375.9482, 301.2639], // pipe climb towards "netting", abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 395.0596, 375.9482, 301.2639, 10],
+      "lump": {
+        "name":"factoryb-skill-11",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 411.2000, 396.4063, 313.4512], // pipe climb towards "netting", abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 411.2000, 396.4063, 313.4512, 10],
+      "lump": {
+        "name":"factoryb-skill-12",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 404.3649, 422.4868, 310.0812], // pipe climb towards "netting", abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 404.3649, 422.4868, 310.0812, 10],
+      "lump": {
+        "name":"factoryb-skill-13"
+      }
+    },
+    {
+      "trans": [ 390.9460, 423.1149, 311.6278], // pipe climb towards "netting", on metal frame above, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 390.9460, 423.1149, 311.6278, 10],
+      "lump": {
+        "name":"factoryb-skill-14"
+      }
+    },
+    {
+      "trans": [ 422.5665, 433.5360, 312.3540], // pipe climb towards "netting", on metal frame V above, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 422.5665, 433.5360, 312.3540, 10],
+      "lump": {
+        "name":"factoryb-skill-15"
+      }
+    },
+    {
+      "trans": [ 406.5615, 412.5056, 291.5561], // pipe climb towards "netting", on lamp near top
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 406.5615, 412.5056, 291.5561, 10],
+      "lump": {
+        "name":"factoryb-skill-16"
+      }
+    },
+
+    // HOVER
+    {
+      "trans": [ 299.8281, 493.9741, 325.5416], // center of pattern on edge of highest roof
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 299.8281, 493.9741, 325.5416, 10],
+      "lump": {
+        "name":"factoryb-skill-hover-01",
+        "pickup-amount": ["float", 3.0] // hover
+      }
+    },
+    {
+      "trans": [ 299.8048, 470.4941, 166.8487], // just down a bit from ^, on tall cylinder
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 299.8048, 470.4941, 166.8487, 10],
+      "lump": {
+        "name":"factoryb-skill-hover-02",
+        "pickup-amount": ["float", 3.0] // hover
+      }
+    },
+    {
+      "trans": [ 247.7128, 438.8254, 256.5929], // on pipe near cylinder near ceiling
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 247.7128, 438.8254, 256.5929, 10],
+      "lump": {
+        "name":"factoryb-skill-hover-03",
+        "pickup-amount": ["float", 3.0] // hover
+      }
+    },
+    {
+      "trans": [ 197.6215, 421.2240, 262.7589], // on cylinder up high
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 197.6215, 421.2240, 262.7589, 10],
+      "lump": {
+        "name":"factoryb-skill-hover-04",
+        "pickup-amount": ["float", 3.0] // hover
+      }
+    }//,
+    
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

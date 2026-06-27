@@ -97,6 +97,30 @@
     (the-as pair 0)
     )
   (set! (-> this draw light-index) (the-as uint 30))
+  (logior! (-> this draw status) (draw-control-status no-draw-bounds2)) ;; hide until flying pecker lands and dies
+  0
+  (none)
+  )
+
+(defskelgroup skel-factory-boss errol-lowres errol-lowres-lod0-jg errol-lowres-idle30-ja
+              ((errol-lowres-lod0-mg (meters 20)) (errol-lowres-lod1-mg (meters 999999)))
+              :bounds (static-spherem 0 0 0 4)
+              )
+
+(deftype erol-npc (process-taskable)
+  ()
+  )
+
+(defmethod get-art-element ((this erol-npc))
+  (-> this draw art-group data 3)
+  )
+
+(defmethod init-skeleton! ((this erol-npc))
+  (initialize-skeleton
+    this
+    (the-as skeleton-group (art-group-get-by-name *level* "skel-factory-boss" (the-as (pointer level) #f)))
+    (the-as pair 0)
+    )
   0
   (none)
   )
@@ -229,7 +253,7 @@
     (((game-task-actor damus-wasdoors))
      (-> this draw art-group data 9)
      )
-    (else
+    (else ;; waspala
       (let ((v1-6 (if (> (-> this skel active-channels) 0)
                       (-> this skel root-channel 0 frame-group)
                       )
@@ -346,7 +370,7 @@
     (((game-task-actor torn-hipbar))
      (-> this draw art-group data 6)
      )
-    (((game-task-actor torn-hipbooth))
+    (((game-task-actor torn-hipbooth) (game-task-actor torn-orbhunt))
      (-> this draw art-group data 5)
      )
     (else
@@ -430,7 +454,7 @@
 
 (defmethod get-art-element ((this sig-npc))
   (case (-> this task actor)
-    (((game-task-actor sig-wasdoors))
+    (((game-task-actor sig-wasdoors) (game-task-actor sig-orbhunt))
      (-> this draw art-group data 4)
      )
     (else
@@ -602,7 +626,7 @@
     (((game-task-actor kleever-arena))
      (-> this draw art-group data 9)
      )
-    (else
+    (else ;; garage?
       (let ((v1-6 (if (> (-> this skel active-channels) 0)
                       (-> this skel root-channel 0 frame-group)
                       )
@@ -799,7 +823,7 @@
 
 (defmethod get-art-element ((this jinx-npc))
   (case (-> this task actor)
-    (((game-task-actor jinx-hiphog))
+    (((game-task-actor jinx-hiphog) (game-task-actor jinx-orbhunt))
      (-> this draw art-group data 3)
      )
     (else
@@ -912,22 +936,28 @@
               :origin-joint-index 3
               )
 
+(defskelgroup skel-vin-effect vin-effect vin-effect-lod0-jg vin-effect-idle-ja
+              ((vin-effect-lod0-mg (meters 999999)))
+              :bounds (static-spherem 0 0 0 8)
+              :origin-joint-index 3
+              )
+
 (deftype vin-npc (process-taskable)
   ()
   )
 
 
 (defmethod get-art-element ((this vin-npc))
-  (-> this draw art-group data 5)
+  (-> this draw art-group data 0)
   )
 
 (defmethod init-skeleton! ((this vin-npc))
   (initialize-skeleton
     this
-    (the-as skeleton-group (art-group-get-by-name *level* "skel-sidekick" (the-as (pointer level) #f)))
+    (the-as skeleton-group (art-group-get-by-name *level* "skel-vin-effect" (the-as (pointer level) #f)))
     (the-as pair 0)
     )
-  (logior! (-> this draw status) (draw-control-status no-draw-bounds2))
+  ;; (logior! (-> this draw status) (draw-control-status no-draw-bounds2))
   0
   (none)
   )

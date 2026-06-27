@@ -111,6 +111,9 @@
   "Does any necessary initial platform setup.
    For example for an elevator pre-compute the distance between the first and last points (both ways) and clear the sound."
   (set! (-> this sound-id) (new-sound-id))
+  (when (name= (-> (level-get-target-inside *level*) name) 'casboss)
+    (go (method-of-object this dormant))
+    )
   0
   (none)
   )

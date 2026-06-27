@@ -1,0 +1,213 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-desertg",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O91",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o91", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-desertg/orbs-desertg.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 191000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": ["sig-highres-ag"],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [  2257.7849, 23.1451, 2203.8393], // under lip of rock wall just outside cave, near sig
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  2257.7849, 23.1451, 2203.8393, 10],
+      "lump": {
+        "name":"desertg-skill-01",
+        "bob-scale": ["float", 0.25]
+      }
+    },
+    {
+      "trans": [ 2961.6870, 22.4323, 2931.2519], // "patio" on deserth side
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2961.6870, 22.4323, 2931.2519, 10],
+      "lump": {
+        "name":"desertg-skill-02",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 2919.4831, 36.5909, 2928.8276], // behind big invis wall on rooftop near deserth, follow ^ and cactus rooftops to get over
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2919.4831, 36.5909, 2928.8276, 10],
+      "lump": {
+        "name":"desertg-skill-02"
+      }
+    },
+    {
+      "trans": [ 2936.1892, 41.2820, 2881.4958], // "window" in inner part of buildings south central cluster
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2936.1892, 41.2820, 2881.4958, 10],
+      "lump": {
+        "name":"desertg-skill-03"
+      }
+    },
+    {
+      "trans": [ 2944.7531, 39.5359, 2858.5112], // on small ledge in inner part of buildings south central cluster
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2944.7531, 39.5359, 2858.5112, 10],
+      "lump": {
+        "name":"desertg-skill-04"
+      }
+    },
+    {
+      "trans": [ 2906.4802, 47.8080, 2854.6232], // in between rooftops in inner buildings south central cluster
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2906.4802, 47.8080, 2854.6232, 10],
+      "lump": {
+        "name":"desertg-skill-05"
+      }
+    },
+    {
+      "trans": [ 2906.5236, 41.8507, 2790.1640], // on rooftop in south central with tall invis wall, extendo from rooftops ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2906.5236, 41.8507, 2790.1640, 10],
+      "lump": {
+        "name":"desertg-skill-06"
+      }
+    },
+    {
+      "trans": [ 3001.8337, 36.4772, 2745.1044], // above entrance to leaper pen
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3001.8337, 36.4772, 2745.1044, 10],
+      "lump": {
+        "name":"desertg-skill-07"
+      }
+    },
+    {
+      "trans": [ 2755.0957, 54.0268, 2564.2668], // on top of arch in "oob" part of buildings
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2755.0957, 54.0268, 2564.2668, 10],
+      "lump": {
+        "name":"desertg-skill-08"
+      }
+    },
+    {
+      "trans": [ 2794.9018, 26.3831, 2754.2900], // between rock and wall, crawl between
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2794.9018, 26.3831, 2754.2900, 10],
+      "lump": {
+        "name":"desertg-skill-09"
+      }
+    },
+    {
+      "trans": [ 2781.5769, 70.2615, 2793.1503], // on top of rock in "oob" part
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2781.5769, 70.2615, 2793.1503, 10],
+      "lump": {
+        "name":"desertg-skill-10"
+      }
+    },
+    
+    {
+      "trans": [ 2296.5859, 17.8694, 2222.8425], // sig by nest cave
+      "etype": "sig-npc",
+      "game_task": 0, 
+      "quat" : [  0.0, 0.0, 0.0, -1.0],
+      "bsphere": [ 2296.5859, 17.8694, 2222.8425 , 6.928242206573486 ],
+      "lump": {
+        "name": "desertg-sig-npc",
+        "task-actor": ["int32", 67]
+      }
+    },
+    {
+      "trans": [ 2296.5859, 22.2694, 2222.8425], // 
+      "etype": "fuel-cell",
+      "game_task": 0, 
+      "quat" : [ 0.0, 0.21679742634296417, 0.0, 0.9762166142463684],
+      "bsphere": [ 2296.5859, 22.2694, 2222.8425, 6.928242206573486 ],
+      "lump": {
+        "name": "desertg-fuel-cell",
+        "level-idx": ["int32", 93],
+        "alt-actor": "desertg-sig-npc",
+        "vag": "sig148"
+      }
+    }//,
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

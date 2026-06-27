@@ -6,8 +6,6 @@
 (require "engine/gfx/foreground/bones-h.gc")
 (require "engine/gfx/mood/mood-tables.gc")
 
-;; note: modified for high fps
-
 ;; DECOMP BEGINS
 
 (defun clear-mood-times ((arg0 mood-context))
@@ -1835,4 +1833,307 @@
               (vector4-lerp! (-> s5-3 0 dir0 color) a1-14 (-> s5-3 0 dir0 color) f0-101))
             (set! (-> s5-3 0 dir1 levels x) 0.0))))))
   (update-mood-itimes arg0)
+  (none))
+
+;; TFL note: CUSTOM LEVEL UPDATE-MOOD STUFF
+
+(define *crystalc-ship-dir2* (new 'static 'rgbaf :r 1.5 :g 0.0 :b 1.2 :a 1.0))
+
+(define *crystalc-ship-ambi* (new 'static 'rgbaf :r 0.2 :g 0.2 :b 0.7 :a 1.0))
+
+(defun update-mood-crystal-cave ((arg0 mood-context) (arg1 float) (arg2 int))
+  (when (not (paused?))
+    (clear-mood-times arg0)
+    (set! (-> arg0 times 0 w) 1.0)
+    (update-mood-quick arg0 0 0 0 arg2)
+    (update-mood-itimes arg0)
+    ;;(update-mood-sky-texture arg0 arg1) ;; Break metalic effect for now because no textures
+    ;;(update-mood-palette arg0 arg1 arg2) ;; This update the actor lighting with time of day
+    )
+  ;; CUSTOM LIGHT-INDEX FOR DIFFERENT ACTOR LIGHTING (see update-mood-jungleb) :
+  ;; WELL LIT "light-index": ["int32", 1]
+  (let ((s5-1 (-> arg0 light-group 1))) ;; INDEX NUMBER TO USE FOR THE ENTITY IN THE JSONC
+    (quad-copy! (the-as pointer s5-1) (the-as pointer (-> arg0 light-group)) 12) ;; idk?
+    (let ((v1-34 (-> s5-1 dir2))) ;; KEY LIGHT DIRECTION
+      (set! (-> v1-34 direction x) -0.8)
+      (set! (-> v1-34 direction y) 0.9)
+      (set! (-> v1-34 direction z) -0.3)
+      (set! (-> v1-34 direction w) 1.0))
+    (set-vector! (-> s5-1 dir2 color) 1.3 1.0 1.1 1.0) ;; COLOR OF THE KEY LIGHT
+    (set! (-> s5-1 dir2 levels x) 1.0)
+    (set-vector! (-> s5-1 ambi color) 0.3 0.4 0.3 1.0) ;; COLOR OF THE AMBIANT LIGHT
+    )
+  ;; ORANGE (shrooms) "light-index": ["int32", 2]
+  (let ((s5-2 (-> arg0 light-group 2))) ;; INDEX NUMBER TO USE FOR THE ENTITY IN THE JSONC
+    (quad-copy! (the-as pointer s5-2) (the-as pointer (-> arg0 light-group)) 12) ;; idk?
+    (let ((v1-34 (-> s5-2 dir2))) ;; KEY LIGHT DIRECTION
+      (set! (-> v1-34 direction x) -0.014)
+      (set! (-> v1-34 direction y) 0.815)
+      (set! (-> v1-34 direction z) -0.240)
+      (set! (-> v1-34 direction w) 0.527))
+    (set-vector! (-> s5-2 dir2 color) 1.2 0.6 0.3 1.0) ;; COLOR OF THE KEY LIGHT
+    (set! (-> s5-2 dir2 levels x) 1.0)
+    (set-vector! (-> s5-2 ambi color) 0.4 0.2 0.1 1.0) ;; COLOR OF THE AMBIANT LIGHT
+    )
+  ;; PURPLE (shrooms) "light-index": ["int32", 3]
+  (let ((s5-3 (-> arg0 light-group 3))) ;; INDEX NUMBER TO USE FOR THE ENTITY IN THE JSONC
+    (quad-copy! (the-as pointer s5-3) (the-as pointer (-> arg0 light-group)) 12) ;; idk?
+    (let ((v1-34 (-> s5-3 dir2))) ;; KEY LIGHT DIRECTION
+      (set! (-> v1-34 direction x) -0.8)
+      (set! (-> v1-34 direction y) 0.9)
+      (set! (-> v1-34 direction z) -0.3)
+      (set! (-> v1-34 direction w) 1.0))
+    (set-vector! (-> s5-3 dir2 color) 0.8 0.2 1.2 1.0) ;; COLOR OF THE KEY LIGHT
+    (set! (-> s5-3 dir2 levels x) 1.0)
+    (set-vector! (-> s5-3 ambi color) 0.6 0.1 0.4 1.0) ;; COLOR OF THE AMBIANT LIGHT
+    )
+  ;; PURPLE AND BLUE (ship) "light-index": ["int32", 4]
+  (let ((s5-4 (-> arg0 light-group 4))) ;; INDEX NUMBER TO USE FOR THE ENTITY IN THE JSONC
+    (quad-copy! (the-as pointer s5-4) (the-as pointer (-> arg0 light-group)) 12) ;; idk?
+    (let ((v1-34 (-> s5-4 dir2))) ;; KEY LIGHT DIRECTION
+      (set! (-> v1-34 direction x) -0.8)
+      (set! (-> v1-34 direction y) 0.9)
+      (set! (-> v1-34 direction z) -0.3)
+      (set! (-> v1-34 direction w) 1.0))
+    (vector-copy! (-> s5-4 dir2 color) *crystalc-ship-dir2*) ;; COLOR OF THE KEY LIGHT
+    (set! (-> s5-4 dir2 levels x) 1.0)
+    (vector-copy! (-> s5-4 ambi color) *crystalc-ship-ambi*) ;; COLOR OF THE AMBIANT LIGHT
+    )
+  ;; YELLOW (trusters) "light-index": ["int32", 5]
+  (let ((s5-5 (-> arg0 light-group 5))) ;; INDEX NUMBER TO USE FOR THE ENTITY IN THE JSONC
+    (quad-copy! (the-as pointer s5-5) (the-as pointer (-> arg0 light-group)) 12) ;; idk?
+    (let ((v1-35 (-> s5-5 dir2))) ;; KEY LIGHT DIRECTION
+      (set! (-> v1-35 direction x) -0.8)
+      (set! (-> v1-35 direction y) 0.9)
+      (set! (-> v1-35 direction z) -0.3)
+      (set! (-> v1-35 direction w) 1.0))
+    (set-vector! (-> s5-5 dir2 color) 1.3 1.3 0.2 1.0) ;; COLOR OF THE KEY LIGHT
+    (set! (-> s5-5 dir2 levels x) 1.0)
+    (set-vector! (-> s5-5 ambi color) 0.6 0.6 0.2 1.0) ;; COLOR OF THE AMBIANT LIGHT
+    )
+  ;; DARK GREEN (breakaway) "light-index": ["int32", 6]
+  (let ((s5-6 (-> arg0 light-group 6))) ;; INDEX NUMBER TO USE FOR THE ENTITY IN THE JSONC
+    (quad-copy! (the-as pointer s5-6) (the-as pointer (-> arg0 light-group)) 12) ;; idk?
+    (let ((v1-36 (-> s5-6 dir2))) ;; KEY LIGHT DIRECTION
+      (set! (-> v1-36 direction x) -0.8)
+      (set! (-> v1-36 direction y) 0.9)
+      (set! (-> v1-36 direction z) -0.3)
+      (set! (-> v1-36 direction w) 1.0))
+    (set-vector! (-> s5-6 dir2 color) -0.6 -0.2 -0.5 1.0) ;; COLOR OF THE KEY LIGHT
+    (set! (-> s5-6 dir2 levels x) 1.0)
+    (set-vector! (-> s5-6 ambi color) -0.3 -0.1 -0.2 1.0) ;; COLOR OF THE AMBIANT LIGHT
+    )
+  ;; CHECK JAK POSITION FOR INDEX-LIGHT
+  (let ((light-zone (new 'stack-no-clear 'vector))
+        (jak-pos (target-joint-pos)))
+    0.0
+    ;; WELL LIT (middle)
+    (set-vector! light-zone (meters -170.91) (meters 128.38) (meters -47.12) 1.0) ;; Position of the center of the sphere
+    (let ((jak-distance (vector-vector-distance light-zone jak-pos)) ;; Calculate the distance between jak and center
+          (max-distance (meters 56.0)) ;; Diameter of the "sphere"
+          (fade-distance (meters 30.0)) ;; Fade distance on the edges
+          (index-strength 0.75) ;; How strong the light affect Jak
+          )
+      (when (< jak-distance max-distance) ;; When Jak is in the sphere
+        (when (> jak-distance (- max-distance fade-distance)) ;; When Jak is in the fade distance
+          (set! index-strength
+                (- index-strength (* (- jak-distance (- max-distance fade-distance)) (/ index-strength fade-distance))) ;; Math to fade the index-strength
+                ))
+        (set-target-light-index 1) ;; Index to change Jak's lighting
+        (set! (-> *time-of-day-context* target-interp) index-strength) ;; Blend the index light onto jak
+        ))
+    ;; ORANGE (shroom)
+    (set-vector! light-zone (meters -382.65) (-> jak-pos y) (meters -109.45) 1.0) ;; Position of the center of the sphere
+    (let ((jak-distance (vector-vector-distance light-zone jak-pos)) ;; Calculate the distance between jak and center
+          (max-distance (meters 100.0)) ;; Diameter of the "sphere"
+          (fade-distance (meters 30.0)) ;; Fade distance on the edges
+          (index-strength 0.85) ;; How strong the light affect Jak
+          )
+      (when (< jak-distance max-distance) ;; When Jak is in the sphere
+        (when (> jak-distance (- max-distance fade-distance)) ;; When Jak is in the fade distance
+          (set! index-strength
+                (- index-strength (* (- jak-distance (- max-distance fade-distance)) (/ index-strength fade-distance))) ;; Math to fade the index-strength
+                ))
+        (set-target-light-index 2) ;; Index to change Jak's lighting
+        (set! (-> *time-of-day-context* target-interp) index-strength) ;; Blend the index light onto jak
+        ))
+    ;; PURPLE (shroom)
+    (set-vector! light-zone (meters -254.23) (-> jak-pos y) (meters -109.45) 1.0) ;; Position of the center of the sphere
+    (let ((jak-distance (vector-vector-distance light-zone jak-pos)) ;; Calculate the distance between jak and center
+          (max-distance (meters 50.0)) ;; Diameter of the "sphere"
+          (fade-distance (meters 15.0)) ;; Fade distance on the edges
+          (index-strength 0.70) ;; How strong the light affect Jak
+          )
+      (when (< jak-distance max-distance) ;; When Jak is in the sphere
+        (when (> jak-distance (- max-distance fade-distance)) ;; When Jak is in the fade distance
+          (set! index-strength
+                (- index-strength (* (- jak-distance (- max-distance fade-distance)) (/ index-strength fade-distance))) ;; Math to fade the index-strength
+                ))
+        (set-target-light-index 3) ;; Index to change Jak's lighting
+        (set! (-> *time-of-day-context* target-interp) index-strength) ;; Blend the index light onto jak
+        ))
+    ;; PURPLE AND BLUE (ship)
+    (set-vector! light-zone (meters -156.69) (meters 101.3) (meters -133.57) 1.0) ;; Position of the center of the sphere
+    (let ((jak-distance (vector-vector-distance light-zone jak-pos)) ;; Calculate the distance between jak and center
+          (max-distance (meters 27.0)) ;; Diameter of the "sphere"
+          (fade-distance (meters 3.0)) ;; Fade distance on the edges
+          (index-strength 0.80) ;; How strong the light affect Jak
+          )
+      (when (< jak-distance max-distance) ;; When Jak is in the sphere
+        (when (> jak-distance (- max-distance fade-distance)) ;; When Jak is in the fade distance
+          (set! index-strength
+                (- index-strength (* (- jak-distance (- max-distance fade-distance)) (/ index-strength fade-distance))) ;; Math to fade the index-strength
+                ))
+        (set-target-light-index 4) ;; Index to change Jak's lighting
+        (set! (-> *time-of-day-context* target-interp) index-strength) ;; Blend the index light onto jak
+        ))
+    ;; Yellow (truster right)
+    (set-vector! light-zone (meters -136.16) (meters 92.11) (meters -101.96) 1.0) ;; Position of the center of the sphere
+    (let ((jak-distance (vector-vector-distance light-zone jak-pos)) ;; Calculate the distance between jak and center
+          (max-distance (meters 10.0)) ;; Diameter of the "sphere"
+          (fade-distance (meters 4.0)) ;; Fade distance on the edges
+          (index-strength 1.25) ;; How strong the light affect Jak
+          )
+      (when (< jak-distance max-distance) ;; When Jak is in the sphere
+        (when (> jak-distance (- max-distance fade-distance)) ;; When Jak is in the fade distance
+          (set! index-strength
+                (- index-strength (* (- jak-distance (- max-distance fade-distance)) (/ index-strength fade-distance))) ;; Math to fade the index-strength
+                ))
+        (set-target-light-index 5) ;; Index to change Jak's lighting
+        (set! (-> *time-of-day-context* target-interp) index-strength) ;; Blend the index light onto jak
+        ))
+    ;; Yellow (truster left)
+    (set-vector! light-zone (meters -188.86) (meters 86.88) (meters -109.2) 1.0) ;; Position of the center of the sphere
+    (let ((jak-distance (vector-vector-distance light-zone jak-pos)) ;; Calculate the distance between jak and center
+          (max-distance (meters 15.0)) ;; Diameter of the "sphere"
+          (fade-distance (meters 8.0)) ;; Fade distance on the edges
+          (index-strength 1.15) ;; How strong the light affect Jak
+          )
+      (when (< jak-distance max-distance) ;; When Jak is in the sphere
+        (when (> jak-distance (- max-distance fade-distance)) ;; When Jak is in the fade distance
+          (set! index-strength
+                (- index-strength (* (- jak-distance (- max-distance fade-distance)) (/ index-strength fade-distance))) ;; Math to fade the index-strength
+                ))
+        (set-target-light-index 5) ;; Index to change Jak's lighting
+        (set! (-> *time-of-day-context* target-interp) index-strength) ;; Blend the index light onto jak
+        )))
+  0
+  (none))
+
+(defun update-mood-crescent-top ((arg0 mood-context) (arg1 float) (arg2 int))
+  (when (not (paused?))
+    (clear-mood-times arg0)
+    (set! (-> arg0 times 0 w) 1.0)
+    (update-mood-quick arg0 0 0 0 arg2)
+    (update-mood-itimes arg0)
+    ;;(update-mood-sky-texture arg0 arg1) ;; Break metalic effect for now because no textures
+    ;;(update-mood-palette arg0 arg1 arg2) ;; This update the actor lighting with time of day
+    )
+  ;; CUSTOM LIGHT-INDEX FOR DIFFERENT ACTOR LIGHTING (see update-mood-jungleb) :
+  ;; undeground lighting "light-index": ["int32", 1]
+  (let ((s5-1 (-> arg0 light-group 1))) ;; INDEX NUMBER TO USE FOR THE ENTITY IN THE JSONC
+    (quad-copy! (the-as pointer s5-1) (the-as pointer (-> arg0 light-group)) 12) ;; idk?
+    (let ((v1-34 (-> s5-1 dir2))) ;; KEY LIGHT DIRECTION
+      (set! (-> v1-34 direction x) -0.8)
+      (set! (-> v1-34 direction y) 0.9)
+      (set! (-> v1-34 direction z) -0.3)
+      (set! (-> v1-34 direction w) 1.0))
+    (set-vector! (-> s5-1 dir2 color) -0.4 -0.6 -0.8 1.0) ;; COLOR OF THE KEY LIGHT
+    (set! (-> s5-1 dir2 levels x) 1.0)
+    (set-vector! (-> s5-1 ambi color) 0.3 0.1 0.0 1.0) ;; COLOR OF THE AMBIANT LIGHT
+    )
+  ;; near lava lighting index "light-index": ["int32", 2]
+  (let ((s5-1 (-> arg0 light-group 2))) ;; INDEX NUMBER TO USE FOR THE ENTITY IN THE JSONC
+    (quad-copy! (the-as pointer s5-1) (the-as pointer (-> arg0 light-group)) 12) ;; idk?
+    (let ((v1-34 (-> s5-1 dir2))) ;; KEY LIGHT DIRECTION
+      (set! (-> v1-34 direction x) 0.052)
+      (set! (-> v1-34 direction y) 0.392)
+      (set! (-> v1-34 direction z) 0.095)
+      (set! (-> v1-34 direction w) 0.913))
+    (set-vector! (-> s5-1 dir2 color) 2.8 0.8 0.2 1.0) ;; COLOR OF THE KEY LIGHT
+    (set! (-> s5-1 dir2 levels x) 1.0)
+    (set-vector! (-> s5-1 ambi color) 0.8 0.3 0.2 1.0) ;; COLOR OF THE AMBIANT LIGHT
+    )
+  ;; inbetween 1-2 lighting index "light-index": ["int32", 3]
+  (let ((s5-1 (-> arg0 light-group 3))) ;; INDEX NUMBER TO USE FOR THE ENTITY IN THE JSONC
+    (quad-copy! (the-as pointer s5-1) (the-as pointer (-> arg0 light-group)) 12) ;; idk?
+    (let ((v1-34 (-> s5-1 dir2))) ;; KEY LIGHT DIRECTION
+      (set! (-> v1-34 direction x) -0.8)
+      (set! (-> v1-34 direction y) 0.9)
+      (set! (-> v1-34 direction z) -0.3)
+      (set! (-> v1-34 direction w) 1.0))
+    (set-vector! (-> s5-1 dir2 color) 2.8 0.8 0.2 1.0) ;; COLOR OF THE KEY LIGHT
+    (set! (-> s5-1 dir2 levels x) 1.0)
+    (set-vector! (-> s5-1 ambi color) 0.8 0.3 0.2 1.0) ;; COLOR OF THE AMBIANT LIGHT
+    )
+  ;; boulder "recolor" "light-index": ["int32", 4]
+  (let ((s5-1 (-> arg0 light-group 4))) ;; INDEX NUMBER TO USE FOR THE ENTITY IN THE JSONC
+    (quad-copy! (the-as pointer s5-1) (the-as pointer (-> arg0 light-group)) 12) ;; idk?
+    (let ((v1-34 (-> s5-1 dir2))) ;; KEY LIGHT DIRECTION
+      (set! (-> v1-34 direction x) -0.8)
+      (set! (-> v1-34 direction y) 0.9)
+      (set! (-> v1-34 direction z) -0.3)
+      (set! (-> v1-34 direction w) 1.0))
+    (set-vector! (-> s5-1 dir2 color) 0.20 0.35 0.50 1.0) ;; COLOR OF THE KEY LIGHT
+    (set! (-> s5-1 dir2 levels x) 1.0)
+    (set-vector! (-> s5-1 ambi color) -0.05 0.10 0.25 1.0) ;; COLOR OF THE AMBIANT LIGHT
+    )
+  ;; CHECK JAK POSITION FOR INDEX-LIGHT
+  (let ((light-zone (new 'stack-no-clear 'vector))
+        (light-zone-in1 (new 'stack-no-clear 'vector))
+        (jak-pos (target-joint-pos)))
+    0.0
+    ;; Underground position
+    (set-vector! light-zone (meters 58.23) (meters 106.43) (meters 406.68) 1.0) ;; Position of the center of the sphere
+    (set-vector! light-zone-in1 (meters 156.61) (meters 174.21) (meters 383.45) 1.0) ;; Position of the 2nd sphere
+    (let ((jak-distance (vector-vector-distance light-zone jak-pos)) ;; Calculate the distance between jak and center
+          (max-distance (meters 135.0)) ;; Diameter of the "sphere"
+          (fade-distance (meters 15.0)) ;; Fade distance on the edges
+          (index-strength 0.8) ;; How strong the light affect Jak
+          (jak-in-y-range 0) ;; Used if the zone is within a closed cylinder
+          (jak-in-lightzone 0)
+          (lightgroup1 (-> arg0 light-group 1))
+          (lightgroup2 (-> arg0 light-group 2))
+          (lightgroup3 (-> arg0 light-group 3)))
+      (if (and (< (-> jak-pos y) (meters 214.0)) ;; Check if Jak is within the height of the cylinder
+               (> (-> jak-pos y) (meters 150.0)))
+        (set! jak-in-y-range 1))
+      (cond
+        ((and (< jak-distance max-distance) (= jak-in-y-range 1)) ;; When Jak is in the sphere
+         (when (> jak-distance (- max-distance fade-distance)) ;; When Jak is in the fade distance
+           (set! index-strength
+                 (- index-strength (* (- jak-distance (- max-distance fade-distance)) (/ index-strength fade-distance))) ;; Math to fade the index-strength
+                 ))
+         (set-target-light-index 1) ;; Index to change Jak's lighting
+         (set! (-> *time-of-day-context* target-interp) index-strength) ;; Blend the index light onto jak
+         (set! jak-in-lightzone 1))
+        (else (set! jak-in-lightzone 0)))
+      (if (= jak-in-lightzone 1)
+        (let ((jak-distance-in1 (vector-vector-distance light-zone-in1 jak-pos)) ;; Calculate the distance between jak and center
+              (max-distance-in1 (meters 95.0)) ;; Diameter of the "sphere"
+              (fade-distance-in1 (meters 15.0)) ;; Fade distance on the edges
+              )
+          (when (> jak-distance-in1 max-distance-in1) ;; When Jak is out of the sphere for the near lava lighting
+            (cond
+              ((< jak-distance-in1 (+ max-distance-in1 fade-distance-in1)) ;; When Jak is in the fade distance
+               (let ((fade-strenght-in1 (/ (- jak-distance-in1 max-distance-in1) fade-distance-in1)) ;; Set the fade strenght from 0.0 to 1.0 depending on whee in the fade-distance you are
+                     )
+                 (set-vector! (-> lightgroup3 dir2 color) ;; set lg3 to a value inbetween lg1 and lg2 depending on the fade-strenght
+                              (+ (-> lightgroup1 dir2 color x) (* (- (-> lightgroup2 dir2 color x) (-> lightgroup1 dir2 color x)) fade-strenght-in1))
+                              (+ (-> lightgroup1 dir2 color y) (* (- (-> lightgroup2 dir2 color y) (-> lightgroup1 dir2 color y)) fade-strenght-in1))
+                              (+ (-> lightgroup1 dir2 color z) (* (- (-> lightgroup2 dir2 color z) (-> lightgroup1 dir2 color z)) fade-strenght-in1))
+                              (+ (-> lightgroup1 dir2 color w) (* (- (-> lightgroup2 dir2 color w) (-> lightgroup1 dir2 color w)) fade-strenght-in1)))
+                 (set-vector! (-> lightgroup3 ambi color)
+                              (+ (-> lightgroup1 ambi color x) (* (- (-> lightgroup2 ambi color x) (-> lightgroup1 ambi color x)) fade-strenght-in1))
+                              (+ (-> lightgroup1 ambi color y) (* (- (-> lightgroup2 ambi color y) (-> lightgroup1 ambi color y)) fade-strenght-in1))
+                              (+ (-> lightgroup1 ambi color z) (* (- (-> lightgroup2 ambi color z) (-> lightgroup1 ambi color z)) fade-strenght-in1))
+                              (+ (-> lightgroup1 ambi color w) (* (- (-> lightgroup2 ambi color w) (-> lightgroup1 ambi color w)) fade-strenght-in1)))
+                 (set-target-light-index 3) ;; if you're in the fade-distance, set it the inbetween index
+                 ))
+              (else
+               (set-target-light-index 2) ;; if you're past the fade-distance, set it directly to the near lava index
+               ))
+            (set! (-> *time-of-day-context* target-interp) index-strength) ;; Blend the index light onto jak
+            )))))
+  0
   (none))

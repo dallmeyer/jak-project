@@ -227,7 +227,7 @@
     (set-time! (-> self state-time))
     (while (or (not (time-elapsed? (-> self state-time) (seconds 30)))
                (let ((a0-3 (level-get-target-inside *level*)))
-                 (when (not (and a0-3 (logtest? (-> a0-3 info level-flags) 1)))
+                 (when (not (and a0-3 (logtest? (-> a0-3 info level-flags) (level-load-flags city))))
                    (set-time! (-> self state-time))
                    #t
                    )

@@ -211,6 +211,10 @@
   (temple-defend-door-2 174)
   (temple-defend-door-3 175)
   (palace-ruins 176)
+  
+  (orba 177)
+  (orba-blue 178)
+  (orba-gold 179)
   )
 
 (declare-type minimap-class-node structure)

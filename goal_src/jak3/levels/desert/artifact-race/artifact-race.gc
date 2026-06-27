@@ -46,10 +46,10 @@
               :bounds (static-spherem 0 0 0 4)
               )
 
-(defskelgroup skel-pre-artifact-d pre-artifact-d pre-artifact-d-lod0-jg pre-artifact-d-idle-ja
-              ((pre-artifact-d-lod0-mg (meters 999999)))
-              :bounds (static-spherem 0 0 0 4)
-              )
+;; (defskelgroup skel-pre-artifact-d pre-artifact-d pre-artifact-d-lod0-jg pre-artifact-d-idle-ja
+;;               ((pre-artifact-d-lod0-mg (meters 999999)))
+;;               :bounds (static-spherem 0 0 0 4)
+;;               )
 
 (defskelgroup skel-gauntlets gauntlets gauntlets-lod0-jg gauntlets-idle-ja
               ((gauntlets-lod0-mg (meters 999999)))

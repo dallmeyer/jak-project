@@ -1,0 +1,215 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-deserta",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O88",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o88", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-deserta/orbs-deserta.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 188000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [  1491.8719, 130.8742, 376.4342], // on top of big rocks in middle
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1491.8719, 130.8742, 376.4342, 10],
+      "lump": {
+        "name":"deserta-skill-01"
+        // "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  1250.1019, 85.8152, 261.7496], // on big plateau on big rock in middle, closer to water
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1250.1019, 85.8152, 261.7496, 10],
+      "lump": {
+        "name":"deserta-skill-02"
+      }
+    },
+    {
+      "trans": [  1398.5217, 45.8524, 169.6265], // deep in rock crevice on northern wall leading to ocean
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1398.5217, 45.8524, 169.6265, 10],
+      "lump": {
+        "name":"deserta-skill-03"
+      }
+    },
+    {
+      "trans": [  1122.5799, 27.2728, 72.0925], // on rock near end of northern wall leading to ocean, hint for going over to next orb vvv
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1122.5799, 27.2728, 72.0925, 10],
+      "lump": {
+        "name":"deserta-skill-04"
+      }
+    },
+    {
+      "trans": [  1114.4761, 5.6584, 60.7743], // in water behind rock near end of northern wall leading to ocean, jump over from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1114.4761, 5.6584, 60.7743, 10],
+      "lump": {
+        "name":"deserta-skill-05"
+      }
+    },
+    {
+      "trans": [  72.9211, 0.6607, 51.2396], // deep in water on island in ocean, right before tentacle navmesh
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  72.9211, 0.6607, 51.2396, 10],
+      "lump": {
+        "name":"deserta-skill-06"
+      }
+    },
+    {
+      "trans": [ 74.5770, 46.8478, 856.9710], // start of climb around invis wall ocean side between deserta/desertc 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 74.5770, 46.8478, 856.9710, 10],
+      "lump": {
+        "name":"deserta-skill-07",
+        "author": "blahpy"
+      }
+    },
+    {
+      "trans": [ 49.7216, 37.0210, 894.5222], // follow from ^ path along invis wall ocean side 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 49.7216, 37.0210, 894.5222, 10],
+      "lump": {
+        "name":"deserta-skill-08",
+        "author": "blahpy"
+      }
+    },
+    {
+      "trans": [ 54.3759, 16.0205, 946.9612], // down low on sand between rock pillars, further along from ^ (safe spot from tentacle) 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 54.3759, 16.0205, 946.9612, 10],
+      "lump": {
+        "name":"deserta-skill-09",
+        "author": "blahpy"
+      }
+    },
+    // {
+    //   "trans": [ 166.5079, 63.1188, 813.3165], // TODO: make this a side mission 
+    //   "etype": "skill",
+    //   "game_task": 0,
+    //   "quat": [0, 0, 0, 1],
+    //   "bsphere": [ 166.5079, 63.1188, 813.3165, 10],
+    //   "lump": {
+    //     "name":"deserta-skill-10",
+    //     "author": "blahpy"
+    //   }
+    // },
+    {
+      "trans": [ 119.8585, 76.1632, 818.1397], // behind invis wall on stone, follow from ^^ 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 119.8585, 76.1632, 818.1397, 10],
+      "lump": {
+        "name":"deserta-skill-10",
+        "author": "blahpy"
+      }
+    },
+    {
+      "trans": [ 86.6913, 40.5130, 860.4833], // down in crevice of stone pillar behind invis wall, follow from ^^^ 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 86.6913, 40.5130, 860.4833, 10],
+      "lump": {
+        "name":"deserta-skill-16",
+        "author": "blahpy"
+      }
+    },
+    {
+      "trans": [ 218.8594, 76.3857, 1123.6574], // up on sandy mountain between real and fake rock walls, follow from ^^^^ 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 218.8594, 76.3857, 1123.6574, 10],
+      "lump": {
+        "name":"deserta-skill-17",
+        "author": "blahpy"
+      }
+    }//,
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // 
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

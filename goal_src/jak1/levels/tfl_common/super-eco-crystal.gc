@@ -1,0 +1,361 @@
+;;-*-Lisp-*-
+(in-package goal)
+(defconstant SUPER_ECO_BLUE_R 0.0)
+
+(defconstant SUPER_ECO_BLUE_G 7.0)
+
+(defconstant SUPER_ECO_BLUE_B 16.0)
+
+(defconstant SUPER_ECO_YELLOW_R 3.0)
+
+(defconstant SUPER_ECO_YELLOW_G 8.0)
+
+(defconstant SUPER_ECO_YELLOW_B 0.0)
+
+(defconstant SUPER_ECO_RED_R (/ 192.0 256.0))
+
+(defconstant SUPER_ECO_RED_G (/ 80.0 256.0))
+
+(defconstant SUPER_ECO_RED_B 0.0)
+
+(defconstant SUPER_ECO_GREEN_R 0.0)
+
+(defconstant SUPER_ECO_GREEN_G 30.0)
+
+(defconstant SUPER_ECO_GREEN_B (/ 96.0 256.0))
+
+(deftype super-eco-crystal (process-drawable)
+  ((cshape        collide-shape :overlay-at root)
+   (birth-time    time-frame)
+   (base          vector :inline)
+   (old-base      vector :inline)
+   (eco-type      symbol)
+   (sound-name    sound-spec)
+   (ambient-part  uint16)
+   (explode-part  uint16)
+   (respawn-timer time-frame)
+   (color         rgbaf :inline)
+   (bob-offset    int64)
+   (bob-amount    float))
+  (:methods
+   (init-collision! (_type_) none)
+   (give-powerup (_type_) none)
+   (respawn-blocked? (_type_) basic)
+   (do-lighting! (_type_) none))
+  (:states
+   super-eco-crystal-idle
+   super-eco-crystal-break
+   super-eco-crystal-respawn))
+
+(defskelgroup *super-eco-crystal-sg*
+  dark-crystal
+  dark-crystal-lod0-jg
+  -1
+  ((dark-crystal-lod0-mg (meters 999999)))
+  :bounds (static-spherem 0 3.4 0 3.8))
+
+(defskelgroup *super-eco-crystal-explode-sg*
+  dark-crystal
+  dark-crystal-explode-lod0-jg
+  -1
+  ((dark-crystal-explode-lod0-mg (meters 999999)))
+  :bounds (static-spherem 0 -15 0 50))
+
+(define *super-eco-crystal-exploder-params*
+  (new 'static
+       'joint-exploder-static-params
+       :joints
+       (new 'static
+            'boxed-array
+            :type
+            joint-exploder-static-joint-params
+            (new 'static 'joint-exploder-static-joint-params :joint-index 3 :parent-joint-index -1)
+            (new 'static 'joint-exploder-static-joint-params :joint-index 4 :parent-joint-index -1)
+            (new 'static 'joint-exploder-static-joint-params :joint-index 5 :parent-joint-index -1)
+            (new 'static 'joint-exploder-static-joint-params :joint-index 6 :parent-joint-index -1)
+            (new 'static 'joint-exploder-static-joint-params :joint-index 7 :parent-joint-index -1)
+            (new 'static 'joint-exploder-static-joint-params :joint-index 8 :parent-joint-index -1)
+            (new 'static 'joint-exploder-static-joint-params :joint-index 9 :parent-joint-index -1)
+            (new 'static 'joint-exploder-static-joint-params :joint-index 10 :parent-joint-index -1)
+            (new 'static 'joint-exploder-static-joint-params :joint-index 11 :parent-joint-index -1)
+            (new 'static 'joint-exploder-static-joint-params :joint-index 12 :parent-joint-index -1)
+            (new 'static 'joint-exploder-static-joint-params :joint-index 13 :parent-joint-index -1)
+            (new 'static 'joint-exploder-static-joint-params :joint-index 14 :parent-joint-index -1)
+            (new 'static 'joint-exploder-static-joint-params :joint-index 15 :parent-joint-index -1)
+            (new 'static 'joint-exploder-static-joint-params :joint-index 16 :parent-joint-index -1)
+            (new 'static 'joint-exploder-static-joint-params :joint-index 17 :parent-joint-index -1))))
+
+;; (defmethod deactivate super-eco-crystal ((this super-eco-crystal))
+;;   (call-parent-method this)
+;;   (none)
+;;   )
+
+;; (defmethod relocate ((this super-eco-crystal) (off int))
+;;   (call-parent-method this off)
+;;   )
+
+(defmethod init-collision! ((this super-eco-crystal))
+  (let ((cshape (new 'process 'collide-shape this (collide-list-enum usually-hit-by-player))))
+    (let ((prim-mesh (new 'process 'collide-shape-prim-mesh cshape (the uint 0) (the uint 0))))
+      (set! (-> prim-mesh prim-core collide-as) (collide-kind wall-object))
+      (set! (-> prim-mesh collide-with) (collide-kind target))
+      (set! (-> prim-mesh prim-core action) (collide-action solid))
+      (set! (-> prim-mesh prim-core offense) (collide-offense touch))
+      (set! (-> prim-mesh transform-index) 0)
+      (set-vector! (-> prim-mesh local-sphere) 0.0 (meters 1.7) 0.0 (meters 2))
+      (set-root-prim! cshape prim-mesh))
+    (set! (-> cshape nav-radius) (* 0.75 (-> cshape root-prim local-sphere w)))
+    (backup-collide-with-as cshape)
+    (set! (-> this cshape) cshape))
+  (none))
+
+(defbehavior super-eco-crystal-init-by-other super-eco-crystal ((pos vector) (eco-type symbol) (respawn-time int))
+  (init-collision! self)
+  (logior! (-> self mask) (process-mask pause attackable))
+  (vector-copy! (-> self cshape trans) pos)
+  (quaternion-identity! (-> self cshape quat))
+  (vector-identity! (-> self cshape scale))
+  (initialize-skeleton self *super-eco-crystal-sg* '())
+  (set! (-> self eco-type) (aif eco-type it 'blue))
+  (set! (-> self respawn-timer) (aif respawn-time (seconds it) (seconds 20)))
+  (set! (-> self bob-amount) 1024.0)
+  (set! (-> self bob-offset)
+        (+ (the int (-> self cshape trans x)) (the int (-> self cshape trans y)) (the int (-> self cshape trans z))))
+  (set-time! (-> self birth-time))
+  (vector-copy! (-> self base) (-> self cshape trans))
+  (vector-copy! (-> self old-base) (-> self cshape trans))
+  (set-vector! (-> self cshape scale) 0.65 0.65 0.65 1.0)
+  (case (-> self eco-type)
+    (('blue)
+     (set-vector! (-> self color) SUPER_ECO_BLUE_R SUPER_ECO_BLUE_G SUPER_ECO_BLUE_B 0.0)
+     (set! (-> self sound-name) (static-sound-spec "blue-eco-idle" :fo-max 15))
+     (set! (-> self ambient-part) 952)
+     (set! (-> self explode-part) 953))
+    (('yellow)
+     (set-vector! (-> self color) SUPER_ECO_YELLOW_R SUPER_ECO_YELLOW_G SUPER_ECO_YELLOW_B 0.0)
+     (set! (-> self sound-name) (static-sound-spec "yel-eco-idle" :fo-max 15))
+     (set! (-> self ambient-part) 954)
+     (set! (-> self explode-part) 955))
+    (('red)
+     (set-vector! (-> self color) SUPER_ECO_RED_R SUPER_ECO_RED_G SUPER_ECO_RED_B 0.0)
+     (set! (-> self sound-name) (static-sound-spec "red-eco-idle" :fo-max 15))
+     (set! (-> self ambient-part) 956)
+     (set! (-> self explode-part) 957))
+    (('green)
+     (set-vector! (-> self color) SUPER_ECO_GREEN_R SUPER_ECO_GREEN_G SUPER_ECO_GREEN_B 0.0)
+     (set! (-> self sound-name) (static-sound-spec "green-eco-idle" :fo-max 15))
+     (set! (-> self ambient-part) 950)
+     (set! (-> self explode-part) 951)))
+  (if (-> self sound-name) (set! (-> self sound) (new 'process 'ambient-sound (-> self sound-name) (-> self cshape trans))))
+  (if (nonzero? (-> self ambient-part))
+    (set! (-> self part) (create-launch-control (-> *part-group-id-table* (-> self ambient-part)) self)))
+  (if (-> self color) (vector-copy! (-> self draw color-mult) (-> self color)))
+  (transform-post)
+  (go super-eco-crystal-idle)
+  (none))
+
+(defmethod init-from-entity! super-eco-crystal
+  ((this super-eco-crystal) (entity entity-actor))
+  (init-collision! this)
+  (process-drawable-from-entity! this entity)
+  (initialize-skeleton this *super-eco-crystal-sg* '())
+  (logior! (-> this mask) (process-mask pause attackable))
+  ;; default to super blue eco and 20 second respawn
+  (set! (-> this eco-type) (aif (res-lump-struct (-> this entity) 'eco-type symbol :time -1000000000.0) it 'blue))
+  (set! (-> this respawn-timer)
+        (aif (res-lump-value (-> this entity) 'respawn-timer int32 :time -1000000000.0) (seconds it) (seconds 20)))
+  (set! (-> this bob-amount) 1024.0)
+  (set! (-> this bob-offset)
+        (+ (the int (-> this cshape trans x)) (the int (-> this cshape trans y)) (the int (-> this cshape trans z))))
+  (set-time! (-> this birth-time))
+  (vector-copy! (-> this base) (-> this cshape trans))
+  (vector-copy! (-> this old-base) (-> this cshape trans))
+  (set-vector! (-> this cshape scale) 0.65 0.65 0.65 1.0)
+  (case (-> this eco-type)
+    (('blue)
+     (set-vector! (-> this color) SUPER_ECO_BLUE_R SUPER_ECO_BLUE_G SUPER_ECO_BLUE_B 0.0)
+     (set! (-> this sound-name) (static-sound-spec "blue-eco-idle" :fo-max 15))
+     (set! (-> this ambient-part) 952)
+     (set! (-> this explode-part) 953))
+    (('yellow)
+     (set-vector! (-> this color) SUPER_ECO_YELLOW_R SUPER_ECO_YELLOW_G SUPER_ECO_YELLOW_B 0.0)
+     (set! (-> this sound-name) (static-sound-spec "yel-eco-idle" :fo-max 15))
+     (set! (-> this ambient-part) 954)
+     (set! (-> this explode-part) 955))
+    (('red)
+     (set-vector! (-> this color) SUPER_ECO_RED_R SUPER_ECO_RED_G SUPER_ECO_RED_B 0.0)
+     (set! (-> this sound-name) (static-sound-spec "red-eco-idle" :fo-max 15))
+     (set! (-> this ambient-part) 956)
+     (set! (-> this explode-part) 957))
+    (('green)
+     (set-vector! (-> this color) SUPER_ECO_GREEN_R SUPER_ECO_GREEN_G SUPER_ECO_GREEN_B 0.0)
+     (set! (-> this sound-name) (static-sound-spec "green-eco-idle" :fo-max 15))
+     (set! (-> this ambient-part) 950)
+     (set! (-> this explode-part) 951)))
+  (if (-> this sound-name) (set! (-> this sound) (new 'process 'ambient-sound (-> this sound-name) (-> this cshape trans))))
+  (if (nonzero? (-> this ambient-part))
+    (set! (-> this part) (create-launch-control (-> *part-group-id-table* (-> this ambient-part)) this)))
+  (if (-> this color) (set! (-> this draw color-mult quad) (-> this color quad)))
+  (transform-post)
+  (go super-eco-crystal-idle)
+  (none))
+
+(defmethod give-powerup ((this super-eco-crystal))
+  (case (-> this eco-type)
+    (('blue) (send-event *target* 'get-pickup (pickup-type super-eco-blue) (-> *FACT-bank* eco-full-inc)))
+    (('red) (send-event *target* 'get-pickup (pickup-type super-eco-red) (-> *FACT-bank* eco-full-inc)))
+    (('yellow) (send-event *target* 'get-pickup (pickup-type super-eco-yellow) (-> *FACT-bank* eco-full-inc)))
+    (('green) (send-event *target* 'get-pickup (pickup-type super-eco-green) (-> *FACT-bank* eco-full-inc))))
+  (none))
+
+(defmethod respawn-blocked? ((this super-eco-crystal))
+  (restore-collide-with-as (-> this cshape))
+  (let ((overlap (new 'stack 'overlaps-others-params)))
+    (set! (-> overlap options) (the uint 0))
+    (set! (-> overlap tlist) *touching-list*)
+    (when (find-overlapping-shapes (-> this cshape) overlap)
+      (clear-collide-with-as (-> this cshape))
+      (return #t)))
+  #f)
+
+(defmethod do-lighting! ((this super-eco-crystal))
+  (let* ((eco-type (-> this eco-type))
+         (flicker-speed 0.75)
+         (flicker-amp 1.5)
+         (min-blue (case eco-type
+                     (('green) 0.125)
+                     (('red 'yellow) 0.0)
+                     (('blue) 0.7)))
+         (max-blue (case eco-type
+                     (('green) 0.25)
+                     (('red 'yellow) 0.0)
+                     (('blue) 1.3)))
+         (min-red (case eco-type
+                    (('green 'yellow 'blue) 0.0)
+                    (('red) 0.7)))
+         (max-red (case eco-type
+                    (('green 'blue) 0.0)
+                    (('red) 1.3)
+                    (('yellow) 0.5)))
+         (min-green (case eco-type
+                      (('red 'blue) 0.0)
+                      (('green) 1.0)
+                      (('yellow) 0.125)))
+         (max-green (case eco-type
+                      (('green) 2.3)
+                      (('red) 0.3)
+                      (('yellow) 0.375)
+                      (('blue) 1.3)))
+         (r (case eco-type
+              (('green 'blue) 0.0)
+              (('red 'yellow)
+               (+ 0.2
+                  (lerp-clamp min-red
+                              max-red
+                              (+ -0.1 (- 1.0 (* flicker-amp (/ (+ 1.0 (sin (* flicker-speed (degrees (-> *display* game-frame-counter))))) 2.0)))))))))
+         (g (lerp-clamp min-green
+                        max-green
+                        (+ -0.1 (- 1.0 (* flicker-amp (/ (+ 1.0 (sin (* flicker-speed (degrees (-> *display* game-frame-counter))))) 2.0))))))
+         (b (case eco-type
+              (('blue 'green)
+               (+ 0.2
+                  (lerp-clamp min-blue
+                              max-blue
+                              (+ -0.1 (- 1.0 (* flicker-amp (/ (+ 1.0 (sin (* flicker-speed (degrees (-> *display* game-frame-counter))))) 2.0)))))))
+              (('red 'yellow) 0.0)))
+         (clr (new-stack-vector0)))
+    (set-vector! clr r g b 1.0)
+    (vector-copy! (-> this draw color-emissive) clr)
+    ;; (format *stdcon* "~A crystal: flicker-speed ~f flicker-amp ~f r ~f g ~f b ~f~%" (-> this eco-type) flicker-speed flicker-amp (-> clr x) (-> clr y) (-> clr z))
+    )
+  (none))
+
+(defbehavior should-draw? super-eco-crystal ()
+  (= (-> self next-state name) 'super-eco-crystal-idle))
+
+(defbehavior super-eco-crystal-post super-eco-crystal ()
+  (if (should-draw?)
+    (logclear! (-> self draw status) (draw-status hidden))
+    (logior! (-> self draw status) (draw-status hidden)))
+  (ja-post)
+  (none))
+
+(defstatehandler super-eco-crystal :post super-eco-crystal-post)
+
+(defstate super-eco-crystal-idle (super-eco-crystal)
+  :event
+    (behavior ((proc process) (arg1 int) (event-type symbol) (event event-message-block))
+      (case event-type
+        (('attack) (if (or (= (-> proc type) target) (= (-> proc type) projectile-yellow)) (go super-eco-crystal-break)))))
+  :trans
+    (behavior ()
+      (do-lighting! self)
+      (spawn (-> self part) (-> self cshape trans))
+      (update! (-> self sound)))
+  :enter
+    (behavior ()
+      (ja-channel-push! 1 0)
+      (let ((jcontrol (-> self skel root-channel 0)))
+        (joint-control-channel-group-eval! jcontrol (the art-joint-anim dark-crystal-idle-ja) num-func-identity)
+        (set! (-> jcontrol frame-num) 0.0)))
+  :code
+    (behavior ()
+      (loop
+        (quaternion-rotate-y! (-> self cshape quat) (-> self cshape quat) (* (degrees 45) (seconds-per-frame)))
+        (let ((bob (-> self bob-amount)))
+          (when (< 0.0 bob)
+            (set! (-> self cshape trans y)
+                  (+ (-> self base y)
+                     (* bob
+                        (sin (* 109.22667 (the float (mod (+ (- (current-time) (-> self birth-time)) (-> self bob-offset)) (seconds 2))))))))
+            (update-transforms! (-> self cshape))))
+        (suspend))))
+
+(defstate super-eco-crystal-break (super-eco-crystal)
+  :code
+    (behavior ()
+      (set! (-> self state-time) (current-time))
+      (vector-copy! (-> self base) (-> self old-base))
+      (vector-copy! (-> self cshape trans) (-> self base))
+      (clear-collide-with-as (-> self cshape))
+      (give-powerup self)
+      (let ((explode (the process-drawable
+                          (ppointer->process (process-spawn joint-exploder
+                                                            *super-eco-crystal-explode-sg*
+                                                            5
+                                                            (new 'stack 'joint-exploder-tuning 0)
+                                                            *super-eco-crystal-exploder-params*
+                                                            :to
+                                                            self)))))
+        (vector-copy! (-> explode draw color-mult) (-> self draw color-mult))
+        (vector-copy! (-> explode draw color-emissive) (-> self draw color-emissive)))
+      (activate! *camera-smush-control* 819.2 37 210 1.0 0.995)
+      (sound-play "crystal-explode")
+      (suspend)
+      (ja-channel-set! 0)
+      (ja-post)
+      (process-spawn part-tracker
+                     :init
+                     part-tracker-init
+                     (-> *part-group-id-table* (-> self explode-part))
+                     -1
+                     #f
+                     #f
+                     #f
+                     (-> self cshape trans)
+                     :to
+                     *entity-pool*)
+      (until (not (-> self child))
+        (suspend))
+      (go super-eco-crystal-respawn))
+  :enter
+    (behavior ()
+      (stop! (-> self sound))))
+
+(defstate super-eco-crystal-respawn (super-eco-crystal)
+  :code
+    (behavior ()
+      (set! (-> self state-time) (current-time))
+      (until (and (time-elapsed? (-> self state-time) (-> self respawn-timer)) (not (respawn-blocked? self)))
+        (suspend))
+      (go super-eco-crystal-idle)))

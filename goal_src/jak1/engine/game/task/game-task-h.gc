@@ -124,4 +124,30 @@
   (plunger-lurker-hit 113)
   (leaving-misty 114)
   (assistant-village3 115)
-  (max 116))
+  ;; CUSTOM TASKS
+  (dummy 116)
+  ;; CRYSTAL CAVE
+  (crystalc-middle 117)
+  (crystalc-river 118)
+  (crystalc-ship 119)
+  (crystalc-shrooms 120)
+  (crystalc-buzzer 121)
+  ;; CRESCENT TOP
+  (crescent-observatory 122)
+  (crescent-robot 123)
+  (crescent-lava 124)
+  (crescent-zoomer 125)
+  (crescent-orange-ring 126)
+  (crescent-buzzer 127)
+  ;; ENERGY BAY
+  (energy-bay-turbine1 128)
+  (energy-bay-turbine2 129)
+  (energy-bay-turbine3 130)
+  (energy-bay-turbine4 131)
+  (energy-bay-kill 132)
+  (energy-bay-green-ring 133)
+  (energy-bay-buzzer 134)
+  (crystalc-hidden 135)
+  (crystalc-gondola 136)
+  (max 137) ;;change max to last +1
+  )

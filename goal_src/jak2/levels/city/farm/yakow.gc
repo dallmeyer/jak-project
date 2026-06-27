@@ -210,6 +210,11 @@
     (('attack)
      (let ((v1-1 (the-as object (-> arg3 param 1))))
        (when (!= (-> (the-as attack-info v1-1) id) (-> this incoming-attack-id))
+         ;; fart when you're the orb-dropper
+         (when (name= (-> this name) "yakow-8")
+          (play-sound-file "fart1.mp3" (the int (* (-> *setting-control* user-current sfx-volume) 100.0)))
+          )
+
          (set! (-> this incoming-attack-id) (-> (the-as attack-info v1-1) id))
          (go (method-of-object this kicked))
          )

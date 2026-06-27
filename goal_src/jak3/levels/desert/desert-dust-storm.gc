@@ -687,6 +687,7 @@
         )
       )
     (when (and (-> *setting-control* user-current duststorm-push-player?)
+               (nonzero? *duststorm-wind-vel*) ;; dont send event if no wind (allow first person)
                (not (focus-test? *target* pilot-riding))
                (not (and (-> this next-state) (= (-> this next-state name) 'hold-pos)))
                )

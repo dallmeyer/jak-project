@@ -720,6 +720,9 @@
       )
     (cleanup-for-death self)
     )
+  :enter (behavior ()
+    (set-time! (-> self state-time))
+    )
   )
 
 (defmethod init-from-entity! ((this wstd-training-dummy) (arg0 entity-actor))

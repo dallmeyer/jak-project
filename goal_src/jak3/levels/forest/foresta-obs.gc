@@ -763,7 +763,7 @@
       (set! (-> v1-39 prim-core collide-as) (collide-spec obstacle camera-blocker pusher))
       (set! (-> v1-39 prim-core collide-with) (collide-spec jak player-list))
       (set! (-> v1-39 prim-core action) (collide-action solid))
-      (set! (-> v1-39 transform-index) 14)
+      (set! (-> v1-39 transform-index) 14) ;; middle-ball-a
       (set-vector! (-> v1-39 local-sphere) 0.0 0.0 0.0 24576.0)
       )
     (let ((v1-41 (new 'process 'collide-shape-prim-mesh s5-0 (the-as uint 9) (the-as uint 0))))
@@ -777,7 +777,7 @@
       (set! (-> v1-43 prim-core collide-as) (collide-spec obstacle camera-blocker pusher))
       (set! (-> v1-43 prim-core collide-with) (collide-spec jak player-list))
       (set! (-> v1-43 prim-core action) (collide-action solid))
-      (set! (-> v1-43 transform-index) 16)
+      (set! (-> v1-43 transform-index) 16) ;; smaller-ball-a
       (set-vector! (-> v1-43 local-sphere) 0.0 0.0 0.0 24576.0)
       )
     (let ((v1-45 (new 'process 'collide-shape-prim-mesh s5-0 (the-as uint 11) (the-as uint 0))))

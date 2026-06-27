@@ -739,9 +739,9 @@
 (defstate running (min-falling-elevator)
   :virtual #t
   :enter (behavior ()
-    (if (task-node-closed? (game-task-node mine-blow-resolution))
-        (go-virtual dormant)
-        )
+    ;; (if (task-node-closed? (game-task-node mine-blow-resolution))
+    ;;     (go-virtual dormant)
+    ;;     )
     (let ((t9-2 (-> (method-of-type elevator running) enter)))
       (if t9-2
           (t9-2)

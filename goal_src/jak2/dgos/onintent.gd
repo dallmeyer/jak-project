@@ -1,5 +1,6 @@
 ("ONINTENT.DGO"
  ("onintent-part.o"
+  "onintent-obs.o"
   "onintent-scenes.o"
   "onin-game.o"
   "onin-game+0-ag.go"

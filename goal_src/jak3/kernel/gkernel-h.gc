@@ -687,8 +687,16 @@
   `(set! ,time (current-time))
   )
 
+(defmacro set-g-time! (time)
+  `(set! ,time (get-current-time))
+  )
+
 (defmacro time-elapsed? (time duration)
   `(>= (- (current-time) ,time) ,duration)
+  )
+  
+(defmacro g-time-elapsed? (time duration)
+  `(>= (- (get-current-time) ,time) ,duration)
   )
 
 (defmacro suspend-for (time &rest body)

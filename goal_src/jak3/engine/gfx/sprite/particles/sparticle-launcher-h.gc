@@ -121,12 +121,12 @@
   :bitfield #t
   :type uint16
   (is-3d)
-  (sp1)
-  (sp2)
-  (sp3)
+  (sp1) ;; bit1 ?
+  (sp2) ;; start-dead ?
+  (sp3) ;; launch-asap ?
   (sp4)
   (sp5)
-  (sp6)
+  (sp6) ;; bit6 ?
   (sp7)
   (sp8)
   (sp9)

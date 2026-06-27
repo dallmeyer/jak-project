@@ -2,7 +2,9 @@
 (in-package goal)
 (bundles "ENGINE.CGO" "GAME.CGO")
 (require "engine/target/logic-target.gc")
-(define-extern target-powerup-effect (function symbol none :behavior target))
+
+;; TFL note: changed behavior type to process-drawable
+(define-extern target-powerup-effect (function symbol none :behavior process-drawable))
 
 ;; DECOMP BEGINS
 
@@ -180,12 +182,18 @@
   arg0)
 
 (defbehavior target-attacked target ((arg0 symbol) (arg1 attack-info) (arg2 process) (arg3 touching-shapes-entry) (arg4 (state symbol attack-info target)))
+  ;; TFL note: added super green eco invuln
+  ;; TFL TODO see if we might need to add more attack modes here
+  (when (and (target-powerup? super-eco-green) (not (nmember (-> arg1 mode) '(endlessfall melt dark-eco-pool))))
+    (return #f))
   (when (not (logtest? (-> self state-flags) (state-flags being-attacked)))
     (cond
       ((or (logtest? (-> self state-flags) (state-flags invulnerable timed-invulnerable invuln-powerup))
            (and (logtest? (-> arg1 mask) (attack-mask mode))
                 (= (-> arg1 mode) 'darkeco)
-                (and (and (= (-> self fact eco-type) (pickup-type eco-red)) (>= (-> self fact eco-level) 1.0))
+                ;; TFL note: added super eco case
+                (and (and (or (= (-> self fact eco-type) (pickup-type eco-red)) (target-powerup? super-eco-red))
+                          (>= (-> self fact eco-level) 1.0))
                      (logtest? (state-flags dangerous flop-hit-ground) (-> self state-flags)))))
        (case arg0
          (('attack-or-shove))

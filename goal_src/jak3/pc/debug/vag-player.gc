@@ -162,7 +162,9 @@
     )
   -1)
 
-
+(defun get-vag-thing ((vag string))
+  (-> *vag-list* (get-vag-index-from-name vag))
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;  states

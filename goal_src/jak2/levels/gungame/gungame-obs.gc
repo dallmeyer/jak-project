@@ -90,7 +90,7 @@
     ((= (-> (level-get-target-inside *level*) name) 'gungame)
      (if (zero? (-> this gui-id))
          (set! (-> this gui-id)
-               (add-process *gui-control* this (gui-channel message) (gui-action play) (-> this name) 81920.0 0)
+               (add-process *gui-control* this (gui-channel query) (gui-action play) (-> this name) 81920.0 0)
                )
          )
      )
@@ -196,7 +196,7 @@
   (cond
     ((= (-> (level-get-target-inside *level*) name) 'gungame)
      (when (or (zero? (-> this in-out)) (= (-> this in-out) 1))
-       (set-setting! 'minimap 'clear 0.0 (minimap-flag minimap))
+      ;;  (set-setting! 'minimap 'clear 0.0 (minimap-flag minimap))
        (set! (-> this in-out) (the-as uint 2))
        )
      )
@@ -206,7 +206,7 @@
           (send-event (handle->process (-> this voicebox)) 'die)
           (set! (-> this voicebox) (the-as handle #f))
           )
-        (remove-setting! 'minimap)
+        ;; (remove-setting! 'minimap)
         (set! (-> this in-out) (the-as uint 1))
         )
       )
@@ -817,7 +817,7 @@
     (set! (-> self egg-count) 0)
     (if (not (task-node-open? (game-task-node sewer-enemy-resolution)))
         (set! (-> self last-sound-id)
-              (add-process *gui-control* self (gui-channel sig) (gui-action play) "cityv178" -99.0 0)
+              (add-process *gui-control* self (gui-channel sig) (gui-action play) "cityv178" -99.0 0) ;; care to try for the course record?
               )
         )
     (until #f
@@ -1556,7 +1556,8 @@
           )
         ;; og:preserve-this give skill directly
         (#when PC_PORT
-          (send-event *target* 'get-pickup (pickup-type skill) (* (the float (-> self egg-count)) (-> *FACT-bank* super-skill-inc))))
+          (send-event *target* 'get-pickup (pickup-type skill) (* (the float (-> self egg-count)) (-> *FACT-bank* super-skill-inc)))
+          (increment-skill-per-level-side-mish  (-> *game-info* sub-task-list (-> self task-bronze) task) (* (-> self egg-count) (-> *FACT-bank* super-skill-inc))))
         (go-virtual end-course)
         )
       )

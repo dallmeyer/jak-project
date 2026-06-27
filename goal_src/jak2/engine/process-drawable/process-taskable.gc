@@ -129,6 +129,10 @@
              (static-attack-info ((id (new-attack-id)) (shove-back (meters 3)) (shove-up (meters 1))))
              )
            )
+        ;; orb hunt - borrow code from crates and yakows
+       (let ((atk (the-as attack-info (-> block param 1))))
+          (set! (-> self incoming-attack-id) (-> atk id))
+          )
        )
       (('touch)
        (send-shoves (-> self root) proc (the-as touching-shapes-entry (-> block param 0)) 0.7 6144.0 16384.0)

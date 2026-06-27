@@ -38,6 +38,7 @@
    (target              handle)
    (child-count         int32)
    (victory-anim        spool-anim)
+   (minimap             connection-minimap) ;; added orbhunt
    )
   (:state-methods
     hide
@@ -445,6 +446,7 @@
   :init-specs ((:scalevel-x (meters -0.0033333334)) (:scalevel-y :copy scalevel-x) (:fade-a -3.4))
   )
 
+(define-extern try-play-no-hover-zone-audio (function none))
 (defbehavior crate-standard-event-handler crate ((arg0 process) (arg1 int) (arg2 symbol) (arg3 event-message-block))
   (case arg2
     (('track)
@@ -455,6 +457,15 @@
             (s4-0 (-> v1-3 id))
             (s5-0 (-> v1-3 count))
             )
+       ;; orb hunt - prevent breaking crate if hovered recently
+       (when (and (= (-> self type symbol) 'skill-crate)
+                  (not (logtest? (-> self entity extra perm status) (entity-perm-status subtask-complete)))
+                  (hover-need-to-cooldown?))
+          (try-play-no-hover-zone-audio)
+          (activate! (-> self smush) 0.1 90 150 1.0 1.0 (-> self clock))
+          (go-virtual bounce-on)
+          (return #f)
+          )
        (case (-> self defense)
          (('iron)
           (case (-> v1-3 mode)
@@ -620,13 +631,16 @@
     (suspend)
     (update-transforms (the-as collide-shape-moving (-> self root)))
     (carry-info-method-9 (-> self carry))
-    (logior! (-> self mask) (process-mask sleep))
+    ;; (logior! (-> self mask) (process-mask sleep))
     (until #f
       (suspend)
       )
     #f
     )
-  :post ja-post
+  :post (behavior () 
+    (ja-post)
+    (update-transforms (the-as collide-shape-moving (-> self root)))
+    )
   )
 
 (defstate carry (crate)
@@ -802,6 +816,12 @@
 
 (defstate die (crate)
   :virtual #t
+  :enter (behavior ()
+    (when (and (-> self minimap) (nonzero? (-> self minimap)))
+      (logior! (-> self minimap flags) (minimap-flag fade-out))
+      (set! (-> self minimap) #f)
+      )
+    )
   :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
     (case message
       (('touched)
@@ -906,6 +926,22 @@
     )
   )
 
+;;mod-base-change
+(defbehavior collectable-count crate ((arg0 process-tree))
+  (set! *global-search-count* 0)
+  (iterate-process-tree
+    arg0
+    (lambda ((arg0 process))
+      (if (type? arg0 collectable)
+          (set! *global-search-count* (+ *global-search-count* 1))
+          )
+      #t
+      )
+    *null-kernel-context*
+    )
+  *global-search-count*
+  )
+
 (defstate special-contents-die (crate)
   :virtual #t
   :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
@@ -923,6 +959,7 @@
                   )
               (process-entity-status! self (entity-perm-status dead) #t)
               (process-entity-status! self (entity-perm-status subtask-complete) #t)
+              (process-entity-status! self (entity-perm-status bit-15) #f) ;;mod-base-change
               (set! (-> gp-0 user-int8 0) 2)
               (let ((v0-0 (logclear (-> self mask) (process-mask sleep))))
                 (set! (-> self mask) v0-0)
@@ -962,9 +999,14 @@
       )
     0
     (logior! (-> self draw status) (draw-control-status no-draw))
+    (when (= (-> self fact pickup-type) (pickup-type skill))
+      (logior! (-> self fact options) (actor-option fade-out))
+      (set! (-> self fact fade-time) (the-as time-frame 0)) 
+      )
     (drop-pickup (-> self fact) #t self (the-as fact-info #f) 0)
-    (set! (-> self child-count) (+ (process-count self) -1))
+    (set! (-> self child-count) (collectable-count self)) ;;mod-base-change
     (process-entity-status! self (entity-perm-status bit-4) #t)
+    (process-entity-status! self (entity-perm-status bit-15) #t) ;;mod-base-change
     (when (-> self entity)
       (let ((v1-32 (-> self entity extra perm)))
         (logior! (-> v1-32 status) (entity-perm-status bit-5))
@@ -1097,6 +1139,24 @@
   (set! (-> this carry max-pull) 3686.4)
   (set! (-> this carry carry-radius) 3276.8)
   (set! (-> this target) (the-as handle #f))
+  ;; orb hunt - add to minimap if containing orbs
+  (when (= (-> this fact pickup-type) (pickup-type skill))
+    (set! (-> this minimap) (add-icon! *minimap* this 
+      (the uint (cond
+        ((= (-> this fact pickup-amount) 2.0)  ;; abah hint
+          (minimap-class orba-blue)
+          )
+        ((>= (-> this fact pickup-amount) (-> *FACT-bank* super-skill-inc))
+          (minimap-class orba-gold)
+          )
+        (else
+          (minimap-class orba)
+          )
+        ))
+      (the-as int #f)
+      (the-as vector #t)
+      0))
+    )
   (none)
   )
 
@@ -1173,7 +1233,9 @@
 
 (defmethod crate-method-38 ((this crate))
   (when (-> this entity)
-    (if (>= (-> this entity extra perm user-int8 0) 1)
+    (if (and (>= (-> this entity extra perm user-int8 0) 1)
+             (logtest? (-> this entity extra perm status) (entity-perm-status bit-15)) ;;mod-base-change
+             )
         (go (method-of-object this die) #t 0)
         )
     )
@@ -1273,4 +1335,9 @@
       )
     #f
     )
+  )
+
+;; added orb-hunt - makes it easier to count up orbs per level
+(deftype skill-crate (crate)
+  ()
   )

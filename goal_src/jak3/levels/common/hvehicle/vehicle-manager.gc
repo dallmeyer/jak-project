@@ -255,6 +255,7 @@
          )
        )
       (else
+        ;; (format 0 "vehicle-spawn level-get fail case~%")
         0
         )
       )

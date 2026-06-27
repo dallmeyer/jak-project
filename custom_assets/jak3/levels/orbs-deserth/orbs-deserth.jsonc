@@ -1,0 +1,469 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-deserth",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O90",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o90", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-deserth/orbs-deserth.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 190000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [  2610.1918, 82.3485, 3212.7746], // up on top of stone sentinels on right (facing temple)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  2610.1918, 82.3485, 3212.7746, 10],
+      "lump": {
+        "name":"deserth-skill-01",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  2414.7385, 88.7723, 3242.9313], // up on top of stone sentinels on right (facing temple)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  2414.7385, 88.7723, 3242.9313, 10],
+      "lump": {
+        "name":"deserth-skill-02"
+      }
+    },
+    {
+      "trans": [  2356.3666, 75.7526, 3321.5380], // up on top of stone sentinels on right (facing temple)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  2356.3666, 75.7526, 3321.5380, 10],
+      "lump": {
+        "name":"deserth-skill-03"
+      }
+    },
+    {
+      "trans": [ 3267.5544, 11.3319, 3986.8962], // down right side of stone bridge on way to temple
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3267.5544, 11.3319, 3986.8962, 10],
+      "lump": {
+        "name":"deserth-skill-04"
+      }
+    },
+    {
+      "trans": [ 3269.7722, 8.9290, 3935.1145], // down left side of stone bridge on way to temple (corners are IJ)
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3269.7722, 8.9290, 3935.1145, 10],
+      "lump": {
+        "name":"deserth-skill-05"
+      }
+    },
+    {
+      "trans": [ 4203.2739, 11.8084, 3795.8125], // small ledge on side near ocean, right before line in sand towards temple
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 4203.2739, 11.8084, 3795.8125, 10],
+      "lump": {
+        "name":"deserth-skill-06"
+      }
+    },
+    {
+      "trans": [ 4062.6096, 40.6033, 3890.6635], // mountain wall just before line in sand towards temple
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 4062.6096, 40.6033, 3890.6635, 10],
+      "lump": {
+        "name":"deserth-skill-07",
+        "bob-scale": ["float", -1.0] // no bob
+      }
+    },
+    {
+      "trans": [ 4060.6530, 51.2223, 3896.4157], // mountain wall, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 4060.6530, 51.2223, 3896.4157, 10],
+      "lump": {
+        "name":"deserth-skill-08"
+      }
+    },
+    {
+      "trans": [ 4034.9548, 46.0286, 3894.2561], // mountain wall, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 4034.9548, 46.0286, 3894.2561, 10],
+      "lump": {
+        "name":"deserth-skill-09"
+      }
+    },
+    {
+      "trans": [ 4019.7819, 49.6016, 3920.0031], // mountain wall, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 4019.7819, 49.6016, 3920.0031, 10],
+      "lump": {
+        "name":"deserth-skill-10"
+      }
+    },
+    {
+      "trans": [ 3975.4782, 28.1415, 3948.6313], // mountain wall, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3975.4782, 28.1415, 3948.6313, 10],
+      "lump": {
+        "name":"deserth-skill-11",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 3957.6821, 43.1137, 3970.2299], // mountain wall, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3957.6821, 43.1137, 3970.2299, 10],
+      "lump": {
+        "name":"deserth-skill-12"
+      }
+    },
+    {
+      "trans": [ 3936.7314, 30.2608, 3965.9284], // mountain wall, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3936.7314, 30.2608, 3965.9284, 10],
+      "lump": {
+        "name":"deserth-skill-13"
+      }
+    },{
+      "trans": [ 3972.6901, 26.5882, 3869.3562], // in crack behind rocks on last island on path leading to temple
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3972.6901, 26.5882, 3869.3562, 10],
+      "lump": {
+        "name":"deserth-skill-14"
+      }
+    },
+    {
+      "trans": [ 3342.8491, 55.8859, 4047.0468], // coconut, smaller tree on island towards temple
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3342.8491, 55.8859, 4047.0468, 10],
+      "lump": {
+        "name":"deserth-skill-15"
+      }
+    },
+    {
+      "trans": [ 3549.7395, 63.4088, 3968.1125], // on rock below big tree on island towards temple
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3549.7395, 63.4088, 3968.1125, 10],
+      "lump": {
+        "name":"deserth-skill-16",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 3562.8012, 79.3195, 3957.6350], // coconut, big tree. abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3562.8012, 79.3195, 3957.6350, 10],
+      "lump": {
+        "name":"deserth-skill-17"
+      }
+    },
+    {
+      "trans": [ 3039.7871, 23.2867, 3925.1757], // evil crevice behind pair of trees on MF doom island
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3039.7871, 23.2867, 3925.1757, 10],
+      "lump": {
+        "name":"deserth-skill-18"
+      }
+    },
+    {
+      "trans": [ 3049.7353, 44.9170, 3932.9489], // up on rocks behind pair of trees on MF doom island
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3049.7353, 44.9170, 3932.9489, 10],
+      "lump": {
+        "name":"deserth-skill-19",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 3062.1640, 66.8344, 3927.7246], // up higher on rocks, abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3062.1640, 66.8344, 3927.7246 , 10],
+      "lump": {
+        "name":"deserth-skill-20",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 3050.8774, 81.9408, 3919.5703], // up on tree, abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3050.8774, 81.9408, 3919.5703, 10],
+      "lump": {
+        "name":"deserth-skill-21"
+      }
+    },
+    {
+      "trans": [ 3181.8315, 62.0327, 3393.8688], // crack on far right of right side sentinels
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3181.8315, 62.0327, 3393.8688, 10],
+      "lump": {
+        "name":"deserth-skill-22",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 3174.4245, 77.8788, 3389.3784], // on top of far right of right side sentinels, abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3174.4245, 77.8788, 3389.3784, 10],
+      "lump": {
+        "name":"deserth-skill-23"
+      }
+    },
+    {
+      "trans": [ 3104.1477, 58.8154, 3382.7683], // crack on right/mid of right side sentinels
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3104.1477, 58.8154, 3382.7683, 10],
+      "lump": {
+        "name":"deserth-skill-24",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 3107.8974, 77.7929, 3378.5351], // on top of right/mid of right side sentinels, abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3107.8974, 77.7929, 3378.5351, 10],
+      "lump": {
+        "name":"deserth-skill-25"
+      }
+    },
+    {
+      "trans": [ 3098.6442, 28.0146, 3394.7185], // behind base of tree between right side sentinels
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3098.6442, 28.0146, 3394.7185, 10],
+      "lump": {
+        "name":"deserth-skill-26"
+      }
+    },
+    {
+      "trans": [ 2940.9792, 10.0785, 3513.2050], // gap between rocks near ocean line, by torch closest to right side sentinels
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2940.9792, 10.0785, 3513.2050, 10],
+      "lump": {
+        "name":"deserth-skill-27"
+      }
+    },
+    {
+      "trans": [ 2681.1423, 3.5948, 3822.6694], // underwater a bit, where tentacle won't grab you, by first torch coming from oasis->temple
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2681.1423, 3.5948, 3822.6694, 10],
+      "lump": {
+        "name":"deserth-skill-28"
+      }
+    },
+    {
+      "trans": [ 3718.3981, 49.5514, 3863.0932], // rock climb on 2nd to last island before templex 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3718.3981, 49.5514, 3863.0932, 10],
+      "lump": {
+        "name":"deserth-skill-29"
+      }
+    },
+    {
+      "trans": [ 3352.4516, 45.3285, 3963.3525], // rock climb on 4th to last island before templex 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3352.4516, 45.3285, 3963.3525, 10],
+      "lump": {
+        "name":"deserth-skill-30",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 3345.7517, 65.3691, 3956.6186], // rock climb on 4th to last island before templex, abah from ^ 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3345.7517, 65.3691, 3956.6186, 10],
+      "lump": {
+        "name":"deserth-skill-31",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 3340.8852, 79.4993, 3964.8132], // rock climb on 4th to last island before templex, abah from ^ 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 3340.8852, 79.4993, 3964.8132, 10],
+      "lump": {
+        "name":"deserth-skill-32"
+      }
+    },
+    {
+      "trans": [ 2269.0927, 44.6214, 3627.9860], // in crevice at base of tree against rocks
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2269.0927, 44.6214, 3627.9860, 10],
+      "lump": {
+        "name":"deserth-skill-33"
+      }
+    },
+    {
+      "trans": [ 2138.5798, 124.6472, 3619.0383], // up on slippery rocks near stronghold/sea, prob need dark jak at the top
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2138.5798, 124.6472, 3619.0383, 10],
+      "lump": {
+        "name":"deserth-skill-34"
+      }
+    },
+    {
+      "trans": [ 2048.3327, 106.1803, 3716.2309], // up on mountain on corner near stronghold/sea
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2048.3327, 106.1803, 3716.2309, 10],
+      "lump": {
+        "name":"deserth-skill-35",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 2059.2829, 123.3785, 3711.2443], // up on mountain, abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2059.2829, 123.3785, 3711.2443, 10],
+      "lump": {
+        "name":"deserth-skill-36"
+      }
+    },
+    {
+      "trans": [ 2067.3071, 126.3533, 3705.5292], // in crack up on mountain, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2067.3071, 126.3533, 3705.5292, 10],
+      "lump": {
+        "name":"deserth-skill-37"
+      }
+    },
+    {
+      "trans": [ 2063.5278, 120.1296, 3690.8359], // further in crack up on mountain, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 2063.5278, 120.1296, 3690.8359, 10],
+      "lump": {
+        "name":"deserth-skill-38"
+      }
+    }
+    //,
+    
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

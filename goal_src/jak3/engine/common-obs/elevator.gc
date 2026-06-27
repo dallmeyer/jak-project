@@ -766,6 +766,8 @@
               )
       (cond
         ((and (logtest? (-> self params flags) (elevator-flags ef1))
+              ;; idk what elevators you'd want to go direclty from arrived to running, but lets skip for factoryc ones
+              (!= (-> self type symbol) 'fac-elevator-a)
               (!= (-> self move-pos 1) (-> self params start-pos))
               )
          (set! (-> self move-pos 0) (-> self move-pos 1))

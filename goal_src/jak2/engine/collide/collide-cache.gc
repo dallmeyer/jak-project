@@ -78,7 +78,7 @@
           )
       (return #f)
       )
-    (when (< 460 (+ (-> this num-tris) 2))
+    (when (< (- BIG_COLLIDE_CACHE_SIZE 1) (+ (-> this num-tris) 2))
       (if (= *cheat-mode* 'debug)
           (print-exceeded-max-cache-tris)
           )

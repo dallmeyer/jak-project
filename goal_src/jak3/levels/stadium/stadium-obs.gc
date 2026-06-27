@@ -620,6 +620,20 @@
          (impact-breaks-door? self (the-as rigid-body-impact a1-4) (the-as wvehicle proc))
          )
        )
+      (('attack 'attack-invinc)
+        (case (-> (the-as attack-info (-> block param 1)) mode)
+          (('dark-smack 'eco-dark)
+            (go-virtual explode))
+          (else
+            (dbg-format 0 "rub-rhino-door attacked ~A~%" (-> (the-as attack-info (-> block param 1)) mode))
+            #f
+            )
+          )
+        )
+      (else
+        (dbg-format 0 "rub-rhino-door other event ~A~%" message)
+        #f
+        )
       )
     )
   :code (behavior ()
@@ -671,6 +685,7 @@
 
 (defmethod go-explode ((this rub-rhino-door))
   (logclear! (-> this mask) (process-mask actor-pause))
+  (logior! (-> this mask) (process-mask crate)) ;; orbhunt - so attacks target it
   (let ((v1-3 (-> this root root-prim)))
     (set! (-> v1-3 prim-core collide-as) (collide-spec))
     (set! (-> v1-3 prim-core collide-with) (collide-spec))
@@ -719,7 +734,7 @@
 
 (defmethod init-collision! ((this rub-rhino-door))
   (let ((s5-0 (new 'process 'collide-shape this (collide-list-enum usually-hit-by-player))))
-    (set! (-> s5-0 penetrated-by) (penetrate))
+    ;; (set! (-> s5-0 penetrated-by) (penetrate jak-dark-shot jak-dark-nuke dark-smack))
     (let ((s4-0 (new 'process 'collide-shape-prim-group s5-0 (the-as uint 1) 0)))
       (set! (-> s5-0 total-prims) (the-as uint 2))
       (set! (-> s4-0 prim-core collide-as) (collide-spec obstacle camera-blocker))

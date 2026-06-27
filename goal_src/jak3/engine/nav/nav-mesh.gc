@@ -241,7 +241,8 @@
             )
         )
       (else
-        (if (-> arg0 entity)
+        (when (-> arg0 entity)
+            ;; (format 0 "nav-mesh-connect-from-ent error~%")
             (logior! (-> arg0 entity extra perm status) (entity-perm-status error))
             )
         #f

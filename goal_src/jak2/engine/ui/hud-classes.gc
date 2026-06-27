@@ -8,10 +8,16 @@
 ;; DECOMP BEGINS
 
 (defmethod draw ((this hud-map))
+  (when *show-mini-bigmap*
+    ;; (disable-drawing *bigmap*)
+    (dbg-format 0 "disabling drawing 2~%")
+    (set! *mini-bigmap-toggle-time* (get-current-time))
+    )
+  (false! *show-mini-bigmap*) ;; changed orbhunt - ensure mini-bigmap is disabled
   (set-hud-piece-position!
     (-> this sprites 1)
     (the int (+ 492.0 (* 140.0 (-> this offset))))
-    (the int (+ 281.0 (* 140.0 (-> this offset))))
+    (- (the int (+ 281.0 (* 140.0 (-> this offset)))) 10) ;; changed orbhunt - give more room for orb count display
     )
   (set-as-offset-from! (-> this sprites 0) (-> this sprites 1 pos) 11 -11)
   (set! (-> this sprites 0 color w)
@@ -354,7 +360,7 @@
       (the int (+ 299.0 (* 130.0 f30-0)))
       )
     (cond
-      ((or (= (-> this values 2 target) 100) (= (-> *target* game eco-pill-dark) 100.0))
+      ((or (= (-> this values 2 target) 100)) ;; (= (-> *target* game eco-pill-dark) 100.0))
        (set! (-> this sprites 0 tex) (get-texture hud-darkjak-head-01 level-default-minimap))
        (set-hud-piece-position!
          (-> this sprites 0)
@@ -411,7 +417,7 @@
            )
       (set! (-> this values 2 target) 100)
       )
-  (if (= (-> this values 2 target) 100)
+  (if (and (focus-test? *target* dark) (= (-> this values 2 target) 100))
       (+! (-> this values 4 target) 1)
       )
   ((method-of-type hud update-values) this)

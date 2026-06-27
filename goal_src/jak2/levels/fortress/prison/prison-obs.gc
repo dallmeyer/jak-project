@@ -344,15 +344,19 @@
 (defstate idle (prsn-cell-door)
   :virtual #t
   :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
-    (case message
-      (('open)
-       (set! (-> self desired) 1.0)
-       (format #t "open~%")
-       )
-      (('close)
-       (set! (-> self desired) 0.0)
-       (format #t "close~%")
-       )
+    (let ((prev-desired (-> self desired)))
+      (case message
+        (('open)
+        (set! (-> self desired) 1.0)
+        ;;  (format #t "open~%")
+        )
+        (('close)
+        (set! (-> self desired) 0.0)
+        ;;  (format #t "close~%")
+        )
+        )
+      ;; return true if we changed desired state
+      (!= prev-desired (-> self desired))
       )
     )
   :code (behavior ()

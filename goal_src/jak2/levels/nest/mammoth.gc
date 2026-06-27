@@ -80,8 +80,8 @@
     :hit-anim 6
     :knocked-anim 6
     :knocked-land-anim 6
-    :die-anim -1
-    :die-falling-anim -1
+    :die-anim 6
+    :die-falling-anim 6
     :victory-anim 6
     :jump-wind-up-anim -1
     :jump-in-air-anim -1
@@ -368,6 +368,10 @@
     (until #f
       (ja-no-eval :group! mammoth-idle0-ja :num! (seek!) :frame-num 0.0)
       (until (ja-done? 0)
+        ;; start moving if target gets close
+        (when (< (vector-vector-distance (-> self root trans) (target-pos 0)) (meters 100.0))
+          (go-virtual wait-to-walk)
+          )
         (suspend)
         (ja :num! (seek!))
         )
@@ -686,8 +690,9 @@
      (logclear! (-> this enemy-flags) (enemy-flag use-notice-distance))
      (logior! (-> this enemy-flags) (enemy-flag alert))
      (logior! (-> this focus-status) (focus-status hit))
-     (if (zero? (-> this hit-points))
+     (when (zero? (-> this hit-points))
          (logior! (-> this focus-status) (focus-status dead))
+         (go-process-virtual this die)
          )
      (logclear! (-> this enemy-flags) (enemy-flag lock-focus))
      (enemy-method-62 this)

@@ -1,0 +1,220 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-sewl",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O43",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o43", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-sewl/orbs-sewl.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 143000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [  546.7879, -114.3852, -266.0503], // pipe against wall 
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  546.7879, -114.3852, -266.0503, 10],
+      "lump": {
+        "name":"sewl-skill-01"
+      }
+    },
+    {
+      "trans": [  542.2599, -109.8351, -262.7460], // up on pipe, up from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  542.2599, -109.8351, -262.7460, 10],
+      "lump": {
+        "name":"sewl-skill-02"
+      }
+    },
+    {
+      "trans": [ 479.6517, -130.4048, -257.1627], // on invis pipe in middle of room
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 479.6517, -130.4048, -257.1627, 10],
+      "lump": {
+        "name":"sewl-skill-03"
+      }
+    },
+    {
+      "trans": [  450.0819, -118.1712, -311.6354], // in big open pipe, in water, need a super good extended FF cancel into dismount
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  450.0819, -118.1712, -311.6354, 10],
+      "lump": {
+        "name":"sewl-skill-04"
+      }
+    },
+    {
+      "trans": [  451.4067, -92.1946, -309.9861], // top of big open pipe, IJ from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 451.4067, -92.1946, -309.9861, 10],
+      "lump": {
+        "name":"sewl-skill-05"
+      }
+    },
+    {
+      "trans": [  519.7190, -107.1442, -314.4421], // atop elevator frame
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  519.7190, -107.1442, -314.4421, 10],
+      "lump": {
+        "name":"sewl-skill-06",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  519.0423, -86.4484, -316.4452], // up on wall above elevator, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 519.0423, -86.4484, -316.4452, 10],
+      "lump": {
+        "name":"sewl-skill-07"
+      }
+    },
+    {
+      "trans": [ 432.2034, -110.0692, -260.3256], // lamp on right side of halfpipe 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 432.2034, -110.0692, -260.3256, 10],
+      "lump": {
+        "name":"sewl-skill-08"
+      }
+    },
+    {
+      "trans": [ 435.3493, -118.2764, -228.3925], // ledge on left side of halfpipe 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 435.3493, -118.2764, -228.3925, 10],
+      "lump": {
+        "name":"sewl-skill-09",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 440.1193, -101.6323, -222.5845], // up on beam on wall left side of halfpipe, abah from ^ 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 440.1193, -101.6323, -222.5845, 10],
+      "lump": {
+        "name":"sewl-skill-10"
+      }
+    },
+    {
+      "trans": [ 460.4498, -137.3768, -229.9334], // under walkway steps, concussor boosted from wall side 
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 460.4498, -137.3768, -229.9334, 10],
+      "lump": {
+        "name":"sewl-skill-11"
+      }
+    },
+    {
+      "trans": [514.6091, -121.7733, -320.8834], // in corner next to elevator
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 514.6091, -121.7733, -320.8834, 10],
+      "lump": {
+        "name":"sewl-skill-12"
+      }
+    },
+    {
+      "trans": [ 400.4458, -112.1940, -218.9731], // top of lamp above door exit after halfpipe
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 400.4458, -112.1940, -218.9731, 10],
+      "lump": {
+        "name":"sewl-skill-13",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 408.5495, -98.2338, -220.6676], // up in corner above door exit after halfpipe, abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 408.5495, -98.2338, -220.6676, 10],
+      "lump": {
+        "name":"sewl-skill-14"
+      }
+    }//,
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

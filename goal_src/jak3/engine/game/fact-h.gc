@@ -74,6 +74,8 @@
   (no-distance-check-fadeout 26) ;; 1024
   (no-track                  27) ;; hi 2048
   (dont-override-fact        28)
+  
+  (force-bob        31) ;; hi 32768
   )
 ;; ---actor-option
 

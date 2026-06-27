@@ -204,12 +204,28 @@
       )
     )
   :enter (behavior ()
-    (set-setting! 'borrow '((precurc 0 lprecurc copy)) 0.0 0)
-    (apply-settings *setting-control*)
+    ;; (set-setting! 'borrow '((precurc 0 lprecurc copy)) 0.0 0)
+    ;; (apply-settings *setting-control*)
+    (format 0 "hacking in lprecurc~%")
+    (set! (-> precurc borrow borrow-info 0) '(lprecurc display))
+      ;; (new 'static 'level-borrow-info
+      ;;               :alias #f
+      ;;               :borrow-size (new 'static 'array uint16 5 #x384 #xf0 #x0 #x0 #x0)
+      ;;               :borrow-info (new 'static 'array object 5 '(lprecurc display) '(orbs-precurc display) #f #f #f)
+      ;;               )
+      ;; )
     )
   :exit (behavior ()
-    (remove-setting! 'borrow)
-    (apply-settings *setting-control*)
+    ;; (remove-setting! 'borrow)
+    ;; (apply-settings *setting-control*)
+    (format 0 "hacking out lprecurc~%")
+    (set! (-> precurc borrow borrow-info 0) #f)
+      ;; (new 'static 'level-borrow-info
+      ;;               :alias #f
+      ;;               :borrow-size (new 'static 'array uint16 5 #x384 #xf0 #x0 #x0 #x0)
+      ;;               :borrow-info (new 'static 'array object 5 #f '(orbs-precurc display) #f #f #f)
+      ;;               )
+      ;; )
     )
   :code sleep-code
   )

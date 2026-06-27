@@ -1257,8 +1257,9 @@
       (set-vector! (-> v1-10 local-sphere) 0.0 0.0 0.0 28672.0)
       )
     (let ((v1-12 (new 'process 'collide-shape-prim-mesh s4-0 (the-as uint 2) (the-as uint 0))))
-      (set! (-> v1-12 prim-core collide-as) (collide-spec obstacle-for-jak))
-      (set! (-> v1-12 prim-core action) (collide-action solid))
+      ;; orb hunt - no collision on this weird invis blocking wall
+      (set! (-> v1-12 prim-core collide-as) (collide-spec)) ;; obstacle-for-jak
+      (set! (-> v1-12 prim-core action) (collide-action)) ;; solid
       (set! (-> v1-12 transform-index) 3)
       (set-vector! (-> v1-12 local-sphere) 0.0 8192.0 0.0 36864.0)
       )

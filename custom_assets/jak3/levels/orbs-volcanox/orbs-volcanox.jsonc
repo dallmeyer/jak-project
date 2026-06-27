@@ -1,0 +1,139 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-volcanox",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O80",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o80", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-volcanox/orbs-volcanox.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 180000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [  -98.8240, 25.0396, -453.9938], // ledge up above vanilla dark precursor statue, under volcano hole
+      "etype": "skill",
+      "game_task": 0,   
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -98.8240, 25.0396, -453.9938, 10],
+      "lump": {
+        "name":"volcanox-skill-01",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ -98.6411, 44.9123, -466.8801], // way up in volcano hole, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -98.6411, 44.9123, -466.8801, 10],
+      "lump": {
+        "name":"volcanox-skill-02"
+      }
+    },
+    {
+      "trans": [ -68.8859, 10.4835, -436.7312], // in corner along wall, right of vanilla dark precursor statue, behind rock
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -68.8859, 10.4835, -436.7312, 10],
+      "lump": {
+        "name":"volcanox-skill-03"
+      }
+    },
+    {
+      "trans": [ -99.3399, 33.3312, -402.6849], // up in crevice on left wall as you approach broken glider
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -99.3399, 33.3312, -402.6849, 10],
+      "lump": {
+        "name":"volcanox-skill-04"
+      }
+    },
+    {
+      "trans": [ -126.9686, 30.9408, -403.6281], // up in crevice on right wall as you approach broken glider
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -126.9686, 30.9408, -403.6281, 10],
+      "lump": {
+        "name":"volcanox-skill-05"
+      }
+    },
+    {
+      "trans": [ -130.7878, 0.2987, -437.3604], // crevice on left wall approaching warp gate (behind eye gate)
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -130.7878, 0.2987, -437.3604, 10],
+      "lump": {
+        "name":"volcanox-skill-06"
+      }
+    }//,
+    
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

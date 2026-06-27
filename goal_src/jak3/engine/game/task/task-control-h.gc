@@ -522,8 +522,8 @@
     (((game-task-actor burning-bush-genb-2))
      "burning-bush-genb-2"
      )
-    (((game-task-actor unused-slot-18))
-     "unused-slot-18"
+    (((game-task-actor samos-orbhunt))
+     "samos-orbhunt"
      )
     (((game-task-actor burning-bush-wasb-3))
      "burning-bush-wasb-3"
@@ -531,11 +531,11 @@
     (((game-task-actor burning-bush-desd-3))
      "burning-bush-desd-3"
      )
-    (((game-task-actor unused-slot-17))
-     "unused-slot-17"
+    (((game-task-actor seem-orbhunt))
+     "seem-orbhunt"
      )
-    (((game-task-actor unused-slot-15))
-     "unused-slot-15"
+    (((game-task-actor vin-orbhunt))
+     "vin-orbhunt"
      )
     (((game-task-actor burning-bush-inda-1))
      "burning-bush-inda-1"
@@ -546,8 +546,8 @@
     (((game-task-actor burning-bush-desb-2))
      "burning-bush-desb-2"
      )
-    (((game-task-actor unused-slot-16))
-     "unused-slot-16"
+    (((game-task-actor pecker-orbhunt))
+     "pecker-orbhunt"
      )
     (((game-task-actor burning-bush-desf))
      "burning-bush-desf"
@@ -558,8 +558,8 @@
     (((game-task-actor wascity-leaper))
      "wascity-leaper"
      )
-    (((game-task-actor unused-slot-8))
-     "unused-slot-8"
+    (((game-task-actor torn-orbhunt))
+     "torn-orbhunt"
      )
     (((game-task-actor burning-bush-slumb-2))
      "burning-bush-slumb-2"
@@ -594,8 +594,8 @@
     (((game-task-actor burning-bush-wasa-1))
      "burning-bush-wasa-1"
      )
-    (((game-task-actor unused-slot-20))
-     "unused-slot-20"
+    (((game-task-actor jinx-orbhunt))
+     "jinx-orbhunt"
      )
     (((game-task-actor vin-vinroom))
      "vin-vinroom"
@@ -609,8 +609,8 @@
     (((game-task-actor burning-bush-desc-5))
      "burning-bush-desc-5"
      )
-    (((game-task-actor unused-slot-19))
-     "unused-slot-19"
+    (((game-task-actor keira-orbhunt))
+     "keira-orbhunt"
      )
     (((game-task-actor monk-mummy))
      "monk-mummy"
@@ -630,8 +630,8 @@
     (((game-task-actor kleever-arena))
      "kleever-arena"
      )
-    (((game-task-actor unused-slot-21))
-     "unused-slot-21"
+    (((game-task-actor sig-orbhunt))
+     "sig-orbhunt"
      )
     (((game-task-actor burning-bush-indb-2))
      "burning-bush-indb-2"
@@ -681,8 +681,8 @@
     (((game-task-actor sig-nest))
      "sig-nest"
      )
-    (((game-task-actor unused-slot-22))
-     "unused-slot-22"
+    (((game-task-actor veger-orbhunt))
+     "veger-orbhunt"
      )
     (((game-task-actor burning-bush-slumb))
      "burning-bush-slumb"
@@ -876,8 +876,8 @@
     (((game-task-actor unused-slot-29))
      "unused-slot-29"
      )
-    (((game-task-actor unused-slot-10))
-     "unused-slot-10"
+    (((game-task-actor onin-orbhunt))
+     "onin-orbhunt"
      )
     (((game-task-actor burning-bush-inda-2))
      "burning-bush-inda-2"
@@ -912,8 +912,8 @@
     (((game-task-actor burning-bush-wasa-4))
      "burning-bush-wasa-4"
      )
-    (((game-task-actor unused-slot-12))
-     "unused-slot-12"
+    (((game-task-actor kleever-orbhunt))
+     "kleever-orbhunt"
      )
     (((game-task-actor onin-freehq))
      "onin-freehq"
@@ -924,8 +924,8 @@
     (((game-task-actor burning-bush-port-6))
      "burning-bush-port-6"
      )
-    (((game-task-actor unused-slot-11))
-     "unused-slot-11"
+    (((game-task-actor ashelin-orbhunt))
+     "ashelin-orbhunt"
      )
     (((game-task-actor unused-slot-31))
      "unused-slot-31"
@@ -987,11 +987,11 @@
     (((game-task-actor kleever-wasdoors))
      "kleever-wasdoors"
      )
-    (((game-task-actor unused-slot-14))
-     "unused-slot-14"
+    (((game-task-actor erol-orbhunt))
+     "erol-orbhunt"
      )
-    (((game-task-actor unused-slot-13))
-     "unused-slot-13"
+    (((game-task-actor damus-orbhunt))
+     "damus-orbhunt"
      )
     (((game-task-actor burning-bush-dese))
      "burning-bush-dese"

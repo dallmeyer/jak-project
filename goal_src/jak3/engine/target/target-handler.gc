@@ -684,12 +684,21 @@
        (let ((s4-1 (-> arg3 param 0))
              (f28-0 (the-as float (-> arg3 param 1)))
              )
-         (if (!= (pickup-collectable! (-> self fact) (the-as pickup-type s4-1) 0.0 (the-as handle #f))
-                 (pickup-collectable! (-> self fact) (the-as pickup-type s4-1) f28-0 (process->handle arg0))
-                 )
-             #t
-             'full
-             )
+         (cond
+          ;; orb hunt avoid counting cell twice idk
+          ((= s4-1 (pickup-type fuel-cell))
+            (pickup-collectable! (-> self fact) (the-as pickup-type s4-1) f28-0 (process->handle arg0))
+            #t
+            )
+          (else
+            (if (!= (pickup-collectable! (-> self fact) (the-as pickup-type s4-1) 0.0 (the-as handle #f))
+                    (pickup-collectable! (-> self fact) (the-as pickup-type s4-1) f28-0 (process->handle arg0))
+                    )
+                #t
+                'full
+                )
+            )
+          )
          )
        )
      )
@@ -711,6 +720,9 @@
         )
        )
      )
+    (('vector-turn-to)
+      (vector-turn-to (the-as vector (-> arg3 param 0)))
+      )
     (('level-deactivate)
      (cond
        ((and (focus-test? self pilot) (let ((a0-19 (lookup-level-info (the-as symbol (-> arg3 param 0)))))
@@ -809,6 +821,12 @@
      (when (not (focus-test? self dead))
        (logior! (-> self focus-status) (focus-status teleporting))
        (go target-continue (the-as continue-point (-> arg3 param 0)))
+       )
+     )
+    (('go-continue)
+     (when (not (focus-test? self dead))
+       (logior! (-> self focus-status) (focus-status teleporting))
+       (go target-continue (get-continue-by-name *game-info* (the-as string (-> arg3 param 0))))
        )
      )
     (('query)
@@ -1200,13 +1218,15 @@
                  #t
                  )
                 ((= v1-0 'launch)
-                 (vector-copy! (-> self control transv) (the-as vector (-> arg3 param 3)))
-                 (go
-                   target-jump
-                   (the-as float (-> arg3 param 0))
-                   (the-as float (-> arg3 param 1))
-                   (the-as surface (-> arg3 param 2))
-                   )
+                ;;  (vector-copy! (-> self control transv) (the-as vector (-> arg3 param 3)))
+                 (set! (-> self control jump-kind) 'launch)
+                 (set! (-> self control unknown-dword07) (the int (-> arg3 param 0))) ;; spring height
+                ;;  (go
+                ;;    target-jump
+                ;;    (the-as float (-> arg3 param 0))
+                ;;    (the-as float (-> arg3 param 1))
+                ;;    (the-as surface (-> arg3 param 2))
+                ;;    )
                  )
                 ((= v1-0 'launch-dir)
                  (when (not (focus-test? self board))
@@ -1254,7 +1274,10 @@
                      (set! v0-0 (when (not (focus-test? self dead))
                                   (if (not (-> arg3 param 1))
                                       #t
-                                      (go target-grab 'stance)
+                                      (if (= (-> arg3 param 1) 'fuel-cell)
+                                        (go target-grab 'fuel-cell)
+                                        (go target-grab 'stance)
+                                        )
                                       )
                                   )
                            )

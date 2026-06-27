@@ -100,6 +100,10 @@
   (ruins-hut 68)
   (forest-samos 69)
   (metalhead 70)
+  (orba 71)
+  (orba-blue 72)
+  (orba-gold 73)
+  (max 74)
   )
 
 (declare-type process-drawable process)

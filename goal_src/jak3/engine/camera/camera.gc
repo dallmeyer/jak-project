@@ -246,7 +246,9 @@
        )
       ((get-curve-data! arg0 s5-0 'campath 'campath-k -1000000000.0)
        (if (logtest? (cam-slave-get-flags arg0 'flags) 4)
-           cam-tube-sled
+           (if (focus-test? *target* pilot) ;; orb hunt - normal cam when not piloting
+              cam-tube-sled
+              cam-string)
            cam-spline
            )
        )

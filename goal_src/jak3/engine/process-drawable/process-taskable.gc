@@ -17,10 +17,17 @@
 
 (defbehavior process-taskable-anim-loop process-taskable ((arg0 (function process-taskable object)))
   (while (arg0 self)
-    (let ((s5-0 (get-art-element self)))
-      (when (!= (ja-group) s5-0)
-        (ja-channel-push! 1 0)
-        (set! (-> self skel root-channel 0 frame-group) (the-as art-joint-anim s5-0))
+    (case (-> self type symbol)
+      (('vin-npc)
+        ;; do nothing
+        )
+      (else
+        (let ((s5-0 (get-art-element self)))
+          (when (!= (ja-group) s5-0)
+            (ja-channel-push! 1 0)
+            (set! (-> self skel root-channel 0 frame-group) (the-as art-joint-anim s5-0))
+            )
+          )
         )
       )
     (suspend)
@@ -148,6 +155,9 @@
          v0-0
          )
        )
+      (('show)
+        (logclear! (-> self draw status) (draw-control-status no-draw-bounds no-draw-bounds2))
+        )
       )
     )
   :enter (behavior ()
@@ -164,7 +174,7 @@
     (let ((gp-1 (get-current-task-event (-> self task))))
       (cond
         ((= (-> gp-1 action) (game-task-action hide))
-         (if (or (not (logtest? (-> self draw status) (draw-control-status on-screen)))
+         (when (or (not (logtest? (-> self draw status) (draw-control-status on-screen)))
                  (logtest? (-> gp-1 flags) (game-task-flags gatflag-01))
                  )
              (go-virtual hide)

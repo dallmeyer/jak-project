@@ -328,7 +328,6 @@
 
 (deftype red-sagecage (citb-sage) ())
 
-
 (defmethod process-taskable-method-52 ((this red-sagecage))
   (let ((v1-1 (-> this draw shadow-ctrl)))
     (when v1-1
@@ -395,7 +394,6 @@
   (none))
 
 (deftype blue-sagecage (citb-sage) ())
-
 
 (defmethod process-taskable-method-52 ((this blue-sagecage))
   (let ((v1-1 (-> this draw shadow-ctrl)))
@@ -473,7 +471,6 @@
 
 (deftype yellow-sagecage (citb-sage) ())
 
-
 (defmethod process-taskable-method-52 ((this yellow-sagecage))
   (let ((v1-1 (-> this draw shadow-ctrl)))
     (when v1-1
@@ -545,7 +542,6 @@
    (evilsis     handle)
    (robotboss   handle)
    (exitplat    handle)))
-
 
 (defmethod process-taskable-method-45 ((this green-sagecage))
   (set! (-> *part-id-table* 2469 init-specs 14 initial-valuef) (-> this rot-y))

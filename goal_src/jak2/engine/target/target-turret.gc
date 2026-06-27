@@ -904,7 +904,7 @@
                              (not (logtest? (focus-status teleporting) (-> *target* focus-status)))
                              )
                         )
-                   (and (not (task-node-closed? (game-task-node drill-ship-resolution)))
+                   (and ;; (not (task-node-closed? (game-task-node drill-ship-resolution)))
                         (can-display-query? self (the-as string #f) -99.0)
                         (not (focus-test? *target* in-head board mech dark))
                         (let ((f28-0 24576.0)

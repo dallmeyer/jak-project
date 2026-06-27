@@ -471,7 +471,8 @@
 (defbehavior plant-boss-vine-init plant-boss-arm ((arg0 vector) (arg1 vector) (arg2 float) (arg3 int))
   (stack-size-set! (-> self main-thread) 128)
   (set! (-> self root) (the-as collide-shape (new 'process 'trsqv)))
-  (set-vector! (-> self root scale) arg2 arg2 arg2 1.0)
+  (set-vector! (-> self root scale) arg2 arg2 -1.0 1.0) ;; barg - rotated for new position
+  (set! (-> self root scale z) -1.0) ;; barg - rotated for new position
   (set! (-> self root trans quad) (-> arg0 quad))
   (quaternion-zxy! (-> self root quat) arg1)
   (set! (-> self side) arg3)
@@ -483,6 +484,8 @@
   (stack-size-set! (-> self main-thread) 128)
   (set! (-> self root) (the-as collide-shape (new 'process 'trsqv)))
   (set! (-> self root scale quad) (-> arg2 quad))
+  (set! (-> self root scale z) -1.0) ;; barg - rotated for new position
+  (set! (-> self root scale z) -1.0) ;; barg - rotated for new position
   (set! (-> self root trans quad) (-> arg0 quad))
   (quaternion-zxy! (-> self root quat) arg1)
   (set! (-> self side) arg3)
@@ -714,30 +717,42 @@
       (set-mode! (-> self body) (joint-mod-handler-mode world-look-at))
       (b! #t cfg-17 :delay (nop!))
       (label cfg-5)
-      (if (not (handle->process (-> self cam-tracker)))
-        (set! (-> self cam-tracker)
-              (ppointer->handle (process-spawn camera-tracker
-                                               :init
-                                               camera-tracker-init
-                                               (lambda :behavior camera-tracker ()
-                                                 (while (not (process-grab? *target*))
-                                                   (suspend))
-                                                 (ambient-hint-spawn "gamcam28" (the-as vector #f) *entity-pool* 'ambient)
-                                                 (send-event *camera* 'blend-from-as-fixed)
-                                                 (camera-look-at (the-as pair (ppointer->process (-> self parent))) (the-as uint 13))
-                                                 (camera-change-to "camera-220" 0 #f)
-                                                 (while (not (send-event *camera* 'intro-done?))
-                                                   (suspend))
-                                                 (camera-change-to "camera-222" 600 #f)
-                                                 (suspend-for (seconds 2))
-                                                 (while (not (process-release? (handle->process (-> self grab-target))))
-                                                   (suspend))
-                                                 (send-event *camera* 'blend-from-as-fixed)
-                                                 (camera-look-at (the-as pair *target*) (the-as uint 0))
-                                                 (camera-change-to (the-as string 'base) 150 #f)
-                                                 (none))
-                                               :to
-                                               self))))
+      ;; (if (not (handle->process (-> self cam-tracker)))
+      ;;     (set! (-> self cam-tracker)
+      ;;           (ppointer->handle (process-spawn
+      ;;                               camera-tracker
+      ;;                               :init camera-tracker-init
+      ;;                               (lambda :behavior camera-tracker
+      ;;                                 ()
+      ;;                                 (while (not (process-grab? *target*))
+      ;;                                   (suspend)
+      ;;                                   )
+      ;;                                 (ambient-hint-spawn "gamcam28" (the-as vector #f) *entity-pool* 'ambient)
+      ;;                                 (send-event *camera* 'blend-from-as-fixed)
+      ;;                                 (camera-look-at (the-as pair (ppointer->process (-> self parent))) (the-as uint 13))
+      ;;                                 (camera-change-to "camera-220" 0 #f)
+      ;;                                 (while (not (send-event *camera* 'intro-done?))
+      ;;                                   (suspend)
+      ;;                                   )
+      ;;                                 (camera-change-to "camera-222" 600 #f)
+      ;;                                 (let ((gp-0 (current-time)))
+      ;;                                   (until (time-elapsed? gp-0 (seconds 2))
+      ;;                                     (suspend)
+      ;;                                     )
+      ;;                                   )
+      ;;                                 (while (not (process-release? (handle->process (-> self grab-target))))
+      ;;                                   (suspend)
+      ;;                                   )
+      ;;                                 (send-event *camera* 'blend-from-as-fixed)
+      ;;                                 (camera-look-at (the-as pair *target*) (the-as uint 0))
+      ;;                                 (camera-change-to (the-as string 'base) 150 #f)
+      ;;                                 (none)
+      ;;                                 )
+      ;;                               :to self
+      ;;                               )
+      ;;                             )
+      ;;           )
+      ;;     )
       (let ((v1-37 (-> self neck))) (set! (-> v1-37 blend) 0.0))
       (let ((v1-38 (-> self body))) (set! (-> v1-38 blend) 0.0))
       (set-mode! (-> self neck) (joint-mod-handler-mode world-look-at))
@@ -773,6 +788,14 @@
     (behavior ()
       (let ((f30-0 (vector-vector-distance (target-pos 0) (-> self root trans))))
         (if (< 409600.0 f30-0) (go plant-boss-far-idle))
+        ;; relocate stray aphids
+        (let ((gp-0 (-> self child)))
+          (while gp-0
+            (let ((s5-0 (ppointer->process gp-0)))
+              (set! gp-0 (-> gp-0 0 brother))
+              (when (and (type-type? (-> s5-0 type) aphid)
+                         (< 200000.0 (vector-vector-distance (-> (the aphid s5-0) root trans) (-> self root trans))))
+                (set-vector! (-> (the aphid s5-0) root trans) (meters 434.6) (meters -44.1) (meters -254.4) 1.0)))))
         (if (and (< f30-0 143360.0)
                  (time-elapsed? (-> self state-time)
                                 (cond
@@ -863,7 +886,13 @@
                  ((= v1-7 1) 3)
                  (else 1)))))
         ((time-elapsed? (-> self aphid-spawn-time) (seconds 1.4))
-         (when (process-spawn aphid self (-> self root trans) (target-pos 0) :to self)
+         ;; barg - modified aphid spawn point
+         (when (process-spawn aphid
+                              self
+                              (new 'static 'vector :x (meters 434.6) :y (meters -44.1) :z (meters -254.4) :w 1.0)
+                              (target-pos 0)
+                              :to
+                              self)
            (+! (-> self aphid-count) 1)
            (seekl! (-> self want-aphid-count) 0 1)
            (set-time! (-> self aphid-spawn-time))))))
@@ -948,6 +977,17 @@
            (when (send-event proc 'attack-or-shove (-> block param 0) (static-attack-info ((mode 'plant-boss))))
              (let ((v0-1 (the-as object #t))) (set! (-> self ate) (the-as symbol v0-1)) v0-1))))
         (else (plant-boss-default-event-handler proc argc message block))))
+  :trans
+    (behavior ()
+      ;; relocate stray aphids
+      (let ((gp-0 (-> self child)))
+        (while gp-0
+          (let ((s5-0 (ppointer->process gp-0)))
+            (set! gp-0 (-> gp-0 0 brother))
+            (when (and (type-type? (-> s5-0 type) aphid)
+                       (< 200000.0 (vector-vector-distance (-> (the aphid s5-0) root trans) (-> self root trans))))
+              (set-vector! (-> (the aphid s5-0) root trans) (meters 434.6) (meters -44.1) (meters -254.4) 1.0)))))
+      (none))
   :code
     (behavior ((arg0 int))
       (local-vars (v1-64 symbol))
@@ -1124,7 +1164,7 @@
          (ja :group! plant-boss-main-die-ja :num! max)
          (suspend)
          (if (not (task-complete? *game-info* (-> self entity extra perm task)))
-           (birth-pickup-at-point (-> self node-list data 42 bone transform vector 3)
+           (birth-pickup-at-point (new 'static 'vector :x (meters 434.3) :y (meters -10.9) :z (meters -250.5) :w 1.0) ;; barg - fall from the ceiling in orig eco switch room
                                   (pickup-type fuel-cell)
                                   (the float (-> self entity extra perm task))
                                   #f
@@ -1151,7 +1191,7 @@
                (process-entity-status! self (entity-perm-status complete) #t)
                (when (not (task-complete? *game-info* (-> self entity extra perm task)))
                  (set! s5-2 #t)
-                 (birth-pickup-at-point (-> self node-list data 42 bone transform vector 3)
+                 (birth-pickup-at-point (new 'static 'vector :x (meters 434.3) :y (meters -10.9) :z (meters -250.5) :w 1.0) ;; barg - fall from the ceiling in orig eco switch room
                                         (pickup-type fuel-cell)
                                         (the float (-> self entity extra perm task))
                                         #f
@@ -1187,7 +1227,7 @@
   :event
     (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
       (case message
-        (('bonk)
+        (('bonk 'touch)
          (go plant-boss-dead-bounce
              (lerp-scale (the-as float 0.1)
                          (the-as float 1.0)
@@ -1210,14 +1250,30 @@
   :code
     (behavior ((arg0 float))
       (let ((v1-2 (-> self entity extra perm)))
-        (if (and (< 0.3 arg0) (and (not (handle->process (-> self money))) (< (-> v1-2 user-int8 1) 5)))
-          (set! (-> self money)
-                (ppointer->handle (birth-pickup-at-point (-> self node-list data 42 bone transform vector 3)
-                                                         (pickup-type money)
-                                                         (the-as float 1.0)
-                                                         #t
-                                                         self
-                                                         (the-as fact-info #f))))))
+        (when (and (< 0.3 arg0) (and (not (handle->process (-> self money))) (< (-> v1-2 user-int8 1) 5)))
+          (set! (-> self money) ;; barg - plant boss relocated, randomize money spawn points ^_^
+                (ppointer->handle (case (knuth-rand-int-range 0 3)
+                                    ((0) ;; left vine
+                                     (birth-pickup-at-point (new 'static 'vector :x (meters 450.4) :y (meters -34.5) :z (meters -234.8) :w 1.0)
+                                                            (pickup-type money)
+                                                            (the-as float 1.0)
+                                                            #t
+                                                            self
+                                                            (the-as fact-info #f)))
+                                    ((1) ;; plant butt
+                                     (birth-pickup-at-point (new 'static 'vector :x (meters 434.3) :y (meters -34.5) :z (meters -253.0) :w 1.0)
+                                                            (pickup-type money)
+                                                            (the-as float 1.0)
+                                                            #t
+                                                            self
+                                                            (the-as fact-info #f)))
+                                    (else ;; right vine
+                                     (birth-pickup-at-point (new 'static 'vector :x (meters 418.3) :y (meters -34.5) :z (meters -234.6) :w 1.0)
+                                                            (pickup-type money)
+                                                            (the-as float 1.0)
+                                                            #t
+                                                            self
+                                                            (the-as fact-info #f))))))))
       (ja-channel-set! 2)
       (ja :group! plant-boss-main-bounce-ja :num! min)
       (ja :chan 1 :group! plant-boss-main-die-ja :num! max :frame-interp (- 1.0 arg0))

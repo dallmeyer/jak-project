@@ -879,7 +879,7 @@
   (set! (-> this path) (new 'process 'path-control this 'path 0.0))
   (logior! (-> this path flags) (path-control-flag display draw-line draw-point draw-text))
   (set! (-> this link) (new 'process 'actor-link-info this))
-  (set! (-> this targetnum) (+ (-> arg0 extra perm user-int8 0) 1))
+  (set! (-> this targetnum) (max 3 (+ (-> arg0 extra perm user-int8 0) 1))) ;; barg modified to start on 3rd sentinel
   (eval-path-curve-div! (-> this path) (-> this trans) (the float (+ (-> this targetnum) -1)) 'interp)
   (set! (-> this target quad) (-> this trans quad))
   (set! (-> this max-lift) 20480.0)

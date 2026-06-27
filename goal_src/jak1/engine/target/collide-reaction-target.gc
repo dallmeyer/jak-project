@@ -152,7 +152,7 @@
         (collide-shape-moving-angle-set! arg0 sv-84 (-> sv-88 vector 0))
         (if (< (-> arg0 poly-angle) -0.2) (logior! moving-flags (cshape-moving-flags t-ceil)))
         (if (< (-> arg0 poly-angle) 0.0) (logior! moving-flags (cshape-moving-flags t-ceil-sticky)))
-        (let ((sv-160 (< (fabs (-> arg0 surface-angle)) (-> *pat-mode-info* (-> arg0 cur-pat mode) wall-angle))))
+        (let ((sv-160 (< (fabs (-> arg0 surface-angle)) (-> (get-active-pat-mode-info) (-> arg0 cur-pat mode) wall-angle))))
           (if (and sv-160 (and (= (-> arg0 mod-surface mode) 'dive) (< 0.2 (fabs (-> arg0 surface-angle)))))
             (set! sv-160 (the-as symbol #f)))
           (if sv-160 (logior! react-flags (cshape-reaction-flags csrf01)))

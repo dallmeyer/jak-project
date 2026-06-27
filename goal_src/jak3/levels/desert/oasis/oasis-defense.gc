@@ -784,7 +784,9 @@
       )
     (set! (-> this root) s4-0)
     )
-  (add-process-drawable-to-nav-mesh (nav-mesh-from-res-tag (-> this entity) 'nav-mesh-actor 0) this #f)
+  (let ((nm (nav-mesh-from-res-tag (-> this entity) 'nav-mesh-actor 0)))
+    (when nm
+      (add-process-drawable-to-nav-mesh nm this #f)))
   (process-drawable-from-entity! this arg0)
   (initialize-skeleton
     this

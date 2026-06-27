@@ -1,0 +1,348 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-ctyslumb",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O38",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o38", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-ctyslumb/orbs-ctyslumb.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 138000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": ["samos-highres-ag"],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [  548.8572, 16.9844, -259.3113], // support beam for grind rail
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  548.8572, 16.9844, -259.3113, 10],
+      "lump": {
+        "name":"ctyslumb-skill-01",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  549.7073, 36.4378, -261.6217], // abah from ^ up over sign to next orb
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  549.7073, 36.4378, -261.6217, 10],
+      "lump": {
+        "name":"ctyslumb-skill-02"
+      }
+    },
+    {
+      "trans": [   540.9146, 31.2421, -277.2693], // behind bushes up on windowsill, abah from ^^ to concussor bullshit
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  540.9146, 31.2421, -277.2693, 10],
+      "lump": {
+        "name":"ctyslumb-skill-03"
+      }
+    },
+    {
+      "trans": [  395.9884,  37.2598,  -11.5370], // more up on ledge behind billboard near ctygenb, concussor up from skill-205
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  395.9884,  37.2598,  -11.5370, 10],
+      "lump": {
+        "name":"ctyslumb-skill-04",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  464.0697, 53.4630, -3.3176], // up on top of buildings, abah from ^ and sliiiiiide
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   464.0697, 53.4630, -3.3176, 10],
+      "lump": {
+        "name":"ctyslumb-skill-05"
+      }
+    },
+    {
+      "trans": [ 567.2470, 28.3205, -201.9453], // up behind FF guard sign in middle of level, zoomer launch to concussor
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 567.2470, 28.3205, -201.9453, 10],
+      "lump": {
+        "name":"ctyslumb-skill-06"
+      }
+    },
+    {
+      "trans": [ 583.9307, 37.4115, -201.8180], // up a level from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 583.9307, 37.4115, -201.8180, 10],
+      "lump": {
+        "name":"ctyslumb-skill-07",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 564.0508, 52.1599, -194.6345], // further up on rooftop, abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 564.0508, 52.1599, -194.6345, 10],
+      "lump": {
+        "name":"ctyslumb-skill-08"
+      }
+    },
+    {
+      "trans": [ 613.8526, 52.4575, -166.9483], // around rooftop to left from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 613.8526, 52.4575, -166.9483, 10],
+      "lump": {
+        "name":"ctyslumb-skill-09"
+      }
+    },
+    {
+      "trans": [  615.1626, 43.7958, -97.1635], // up on high ledge in middle tall buildings, kinda SE, follow from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  615.1626, 43.7958, -97.1635, 10],
+      "lump": {
+        "name":"ctyslumb-skill-10"
+      }
+    },
+    {
+      "trans": [ 555.4297, 43.8601, -61.6336], // rooftop -1, up around on right from ^^^ or you can slide around from white barrier side
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 555.4297, 43.8601, -61.6336, 10],
+      "lump": {
+        "name":"ctyslumb-skill-11"
+      }
+    },
+    {
+      "trans": [ 728.7114, 14.6952, -67.8931], // on pipe near ctysluma
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 728.7114, 14.6952, -67.8931, 10],
+      "lump": {
+        "name":"ctyslumb-skill-12",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 731.5977, 36.7880, -65.7111], // up atop sign near ctysluma, abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 731.5977, 36.7880, -65.7111, 10],
+      "lump": {
+        "name":"ctyslumb-skill-13"
+      }
+    },
+    {
+      "trans": [ 666.0471, 80.00, -237.4304], // floating in middle of air above proxy spot :D jetboard
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 666.0471, 80.00, -237.4304, 10],
+      "lump": {
+        "name":"ctyslumb-skill-14"
+      }
+    },
+    {
+      "trans": [ 758.8826, 20.9102, -214.4959], // on pipe on eastern wall/corner
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 758.8826, 20.9102, -214.4959, 10],
+      "lump": {
+        "name":"ctyslumb-skill-15"
+      }
+    },
+    {
+      "trans": [ 730.0534, 9.8886, -401.0729], // behind overhang/sign in NE corner
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 730.0534, 9.8886, -401.0729, 10],
+      "lump": {
+        "name":"ctyslumb-skill-16"
+      }
+    },
+    {
+      "trans": [ 390.5670, 1.2167, -373.8990], // tucked away in corner between walkway/wall/water in NW
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 390.5670, 1.2167, -373.8990, 10],
+      "lump": {
+        "name":"ctyslumb-skill-17"
+      }
+    },
+    {
+      "trans": [ 596.7053, 7.3794, -387.1659], // on lightpole along central northern wall, bring zoomer over, first person in and out for easier abah lineup
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 596.7053, 7.3794, -387.1659, 10],
+      "lump": {
+        "name":"ctyslumb-skill-18",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 602.6367, 28.4029, -391.2508], // up on high ledge on central northern wall, abah->concussor from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 602.6367, 28.4029, -391.2508, 10],
+      "lump": {
+        "name":"ctyslumb-skill-19"
+      }
+    },
+    {
+      "trans": [ 592.6199, 37.3578, -391.1350], // up on higher ledge from ^, central northern wall
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 592.6199, 37.3578, -391.1350, 10],
+      "lump": {
+        "name":"ctyslumb-skill-20",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 567.9226, 52.3457, -398.4243], // rooftop central northern wall, abah from ^ and slide over
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 567.9226, 52.3457, -398.4243, 10],
+      "lump": {
+        "name":"ctyslumb-skill-21"
+      }
+    },
+    {
+      "trans": [ 555.3049, 55.9882, -383.1008], // on top of pipe central northern wall, follow from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 555.3049, 55.9882, -383.1008, 10],
+      "lump": {
+        "name":"ctyslumb-skill-22"
+      }
+    },
+    {
+      "trans": [ 755.7696, 55.9868, -393.7449], // on top of pipe NE corner, slide across from ^^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 755.7696, 55.9868, -393.7449, 10],
+      "lump": {
+        "name":"ctyslumb-skill-23"
+      }
+    },
+    {
+      "trans": [ 758.7501, 56.0035, -214.8005], // on top of pipe eastern wall, slide across from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 758.7501, 56.0035, -214.8005, 10],
+      "lump": {
+        "name":"ctyslumb-skill-24"
+      }
+    },
+    
+
+
+    {
+      "trans": [ 393.6899, 7.9418, -53.9724 ], // samos by white barrier
+      "etype": "samos-npc",
+      "game_task": 0, 
+      "quat" : [  0.0000, 0.6918, 0.0000, -0.7220],
+      "bsphere": [ 393.6899, 7.9418, -53.9724 , 6.928242206573486 ],
+      "lump": {
+        "name": "ctyslumb-samos-npc",
+        "task-actor": ["int32", 64]
+      }
+    },
+    {
+      "trans": [ 393.6899, 10.9418, -53.9724 ], // 
+      "etype": "fuel-cell",
+      "game_task": 0, 
+      "quat" : [ 0.0, 0.21679742634296417, 0.0, 0.9762166142463684],
+      "bsphere": [ 393.6899, 10.9418, -53.9724 , 6.928242206573486 ],
+      "lump": {
+        "name": "ctyslumb-fuel-cell",
+        "level-idx": ["int32", 40],
+        "alt-actor": "ctyslumb-samos-npc"
+      }
+    }//,
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

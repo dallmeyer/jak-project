@@ -56,7 +56,12 @@
   (fuel-cell)
   (eco-pill)
   (buzzer)
-  (eco-pill-random))
+  (eco-pill-random)
+  ;; TFL note: added values for super eco
+  (super-eco-yellow)
+  (super-eco-red)
+  (super-eco-blue)
+  (super-eco-green))
 
 (defun pickup-type->string ((arg0 pickup-type))
   (enum->string pickup-type arg0))

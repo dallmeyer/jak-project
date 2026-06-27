@@ -1,0 +1,283 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-minea",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O12",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o12", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-minea/orbs-minea.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 112000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [ 346.8703, 102.3812, -128.3062], // upper elevator before robot, right door
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 346.8703, 102.3812, -128.3062, 10],
+      "lump": {
+        "name":"minea-skill-01",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 342.14,  117.62,  -116.08 ], // upper elevator before robot, on top of right door, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 342.14,  117.62,  -116.08 , 10],
+      "lump": {
+        "name":"minea-skill-02"
+      }
+    },
+    {
+      "trans": [   332.6077, 128.5252, -102.4798], // upper elevator before robot, up on wall behind beam / above right door
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  332.6077, 128.5252, -102.4798, 10],
+      "lump": {
+        "name":"minea-skill-03"
+      }
+    },
+    {
+      "trans": [   320.0363, 102.1075, -96.7323], // upper elevator before robot, behind steel beams in right corner
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  320.0363, 102.1075, -96.7323, 10],
+      "lump": {
+        "name":"minea-skill-04"
+      }
+    },
+    {
+      "trans": [  328.4420, 103.3994, -170.0015], // upper elevator before robot, between left/mid doors
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  328.4420, 103.3994, -170.0015, 10],
+      "lump": {
+        "name":"minea-skill-05",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 313.59,  117.62,  -168.53 ], // upper elevator before robot, on top of left door, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 313.59,  117.62,  -168.53 , 10],
+      "lump": {
+        "name":"minea-skill-06"
+      }
+    },
+    {
+      "trans": [ 344.57,  117.62,  -152.47 ], // upper elevator before robot, on top of mid door, abah from ^^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 344.57,  117.62,  -152.47  , 10],
+      "lump": {
+        "name":"minea-skill-07"
+      }
+    },
+    {
+      "trans": [  299.6251, 122.6341, -165.2689], // upper elevator before robot, on bolts above left door
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  299.6251, 122.6341, -165.2689 , 10],
+      "lump": {
+        "name":"minea-skill-08"
+      }
+    },
+    {
+      "trans": [ 293.90,  116.21,  -146.14 ], // upper elevator before robot, mid pipe near left door, jump from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 293.90,  116.21,  -146.14 , 10],
+      "lump": {
+        "name":"minea-skill-09",
+        "pickup-amount": ["float", 2.0 ] // abah hint
+      }
+    },
+    {
+      "trans": [293.29,  133.65,  -144.39 ], // upper elevator before robot, up high on pipe near left door, abah from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [293.29,  133.65,  -144.39 , 10],
+      "lump": {
+        "name":"minea-skill-10"
+      }
+    },
+    {
+      "trans": [  311.2515, 137.7857, -134.2803], // upper elevator before robot, up high beam near ceiling, IJ from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  311.2515, 137.7857, -134.2803, 10],
+      "lump": {
+        "name":"minea-skill-11"
+      }
+    },
+    {
+      "trans": [  350.0605, 123.9559, -132.9443], // upper elevator before robot, up on beam joint between mid/right doors
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  350.0605, 123.9559, -132.9443, 10],
+      "lump": {
+        "name":"minea-skill-12"
+      }
+    },
+    {
+      "trans": [ 319.72,  120.33,  -96.01 ], // upper elevator before robot, on steel beams in corner, jump around from skill-03^^^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 319.72,  120.33,  -96.01 , 10],
+      "lump": {
+        "name":"minea-skill-13",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  311.5857, 131.5794, -110.2170], // upper elevator before robot, up high on pipe near right door, abah (to IJ) from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  311.5857, 131.5794, -110.2170, 10],
+      "lump": {
+        "name":"minea-skill-14"
+      }
+    },
+    {
+      "trans": [ 268.95,  122.10,  -133.80 ], // upper elevator before robot, on I beam in corner near entrance, IJ from above is easy
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  268.95,  122.10,  -133.80 , 10],
+      "lump": {
+        "name":"minea-skill-15"
+      }
+    },
+    {
+      "trans": [ 290.2584, 63.7590, -142.2108], // lower elevator before robot, in box
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 290.2584, 63.7590, -142.2108, 10],
+      "lump": {
+        "name":"minea-skill-16"
+      }
+    },
+    {
+      "trans": [ 337.5830, 60.3490, -130.4477], // lower elevator before robot, behind box
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 337.5830, 60.3490, -130.4477, 10],
+      "lump": {
+        "name":"minea-skill-17"
+      }
+    },
+    {
+      "trans": [  331.6168, 78.7872, -148.4505], // lower elevator before robot, atop lamp
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  331.6168, 78.7872, -148.4505, 10],
+      "lump": {
+        "name":"minea-skill-18",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  313.2148, 89.1440, -117.7733], // lower elevator before robot, on ceiling in back, abah to IJ from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  313.2148, 89.1440, -117.7733, 10],
+      "lump": {
+        "name":"minea-skill-19"
+      }
+    },
+    {
+      "trans": [  285.8742, 137.4551, -98.5618], // upper elevator before robot, in corner on pipe by ceiling, IJ from skill-14^^^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  285.8742, 137.4551, -98.5618, 10],
+      "lump": {
+        "name":"minea-skill-20"
+      }
+    }//,
+    
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

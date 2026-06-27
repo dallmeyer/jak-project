@@ -1,0 +1,463 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-stadiumb",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O63",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o63", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-stadiumb/orbs-stadiumb.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 163000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [ -166.79,  46.59,  -410.96 ], // on top of tower near exit to BTR
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -166.79,  46.59,  -410.96 , 10],
+      "lump": {
+        "name":"stadiumb-skill-01"
+        // "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ -146.22,  -20.53,  -424.01 ], // down a floor in tower, tucked away inside, not far from exit to BTR
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -146.22,  -20.53,  -424.01 , 10],
+      "lump": {
+        "name":"stadiumb-skill-02"
+      }
+    },
+    {
+      "trans": [  -212.4293, 32.1565, -405.8528], // among stones in rubble near exit to BTR (behind invis wall, yolo from tall tower^^)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -212.4293, 32.1565, -405.8528, 10],
+      "lump": {
+        "name":"stadiumb-skill-03"
+      }
+    },
+    {
+      "trans": [ -193.74,  10.38,  -462.65 ], // on solid ledge on walkway around stadium, follow from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -193.74,  10.38,  -462.65 , 10],
+      "lump": {
+        "name":"stadiumb-skill-04"
+      }
+    },
+    {
+      "trans": [ -250.91,  12.80,  -504.60 ], // on inner lil ledge along walkway around stadium, jump along ^ those ledges
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -250.91,  12.80,  -504.60 , 10],
+      "lump": {
+        "name":"stadiumb-skill-05"
+      }
+    },
+    {
+      "trans": [ -250.95,  12.80,  -647.43 ], // on inner lil ledge along walkway around stadium, follow from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -250.95,  12.80,  -647.43 , 10],
+      "lump": {
+        "name":"stadiumb-skill-06"
+      }
+    },
+    {
+      "trans": [-188.31,  16.13,  -685.90 ], // on stone at right end of walkway around stadium, following from ^^^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -188.31,  16.13,  -685.90 , 10],
+      "lump": {
+        "name":"stadiumb-skill-07"
+      }
+    },
+    {
+      "trans": [ -115.14,  -12.22,  -718.04 ], // down below at right end of walkway around stadium, follow from ^ 
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -115.14,  -12.22,  -718.04  , 10],
+      "lump": {
+        "name":"stadiumb-skill-08"
+      }
+    },
+    {
+      "trans": [ -135.27,  13.86,  -436.34 ], // on random "island" with big invis wall around (yolo from nearby tower)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -135.27,  13.86,  -436.34  , 10],
+      "lump": {
+        "name":"stadiumb-skill-09"
+      }
+    },
+    {
+      "trans": [  -195.1987, 31.7421, -536.2962 ], // top of tower in middle but towards end (BTR), leading to IJ disc ceiling
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -195.1987, 31.7421, -536.2962, 10],
+      "lump": {
+        "name":"stadiumb-skill-10"
+      }
+    },
+    {
+      "trans": [  -167.1148, 43.1524, -628.7824 ], // IJ disc ceiling, follow from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -167.1148, 43.1524, -628.7824, 10],
+      "lump": {
+        "name":"stadiumb-skill-11"
+      }
+    },
+    {
+      "trans": [ -128.5223, 39.0512, -602.6972 ], // beams sticking out of IJ disc ceiling, follow from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -128.5223, 39.0512, -602.6972, 10],
+      "lump": {
+        "name":"stadiumb-skill-12"
+      }
+    },
+    {
+      "trans": [  -99.9412, 45.7132, -624.7459 ], // around corner of IJ disc ceiling, right up against invis wall (hint for proxy over to next orb)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -99.9412, 45.7132, -624.7459, 10],
+      "lump": {
+        "name":"stadiumb-skill-13"
+      }
+    },
+    {
+      "trans": [ -108.40,  53.37,  -639.64 ], // on tower behind invis wall near top of disc IJ ceiling, proxy from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -108.40,  53.37,  -639.64 , 10],
+      "lump": {
+        "name":"stadiumb-skill-14"
+      }
+    },
+    {
+      "trans": [  -180.5119, 67.0811, -649.8502], // further around disc IJ ceiling, follow from ^ (hint for dropping behind invis wall to next orb)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -180.5119, 67.0811, -649.8502 , 10],
+      "lump": {
+        "name":"stadiumb-skill-15"
+      }
+    },
+    {
+      "trans": [ -160.32,  0.95,  -643.27 ], // at bottom of tower behind invis wall, drop down from ^ (disc IJ ceiling)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ -160.32,  0.95,  -643.27 , 10],
+      "lump": {
+        "name":"stadiumb-skill-16"
+      }
+    },
+    {
+      "trans": [ 49.6015, -5.1312, -468.5884], // in rubble against wall in between grindrail sections, before first dark eco vent
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 49.6015, -5.1312, -468.5884, 10],
+      "lump": {
+        "name":"stadiumb-skill-17",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 59.2477, 14.3886, -471.6919], // up on stadium walkway near seating, abah from ^
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 59.2477, 14.3886, -471.6919, 10],
+      "lump": {
+        "name":"stadiumb-skill-18"
+      }
+    },
+    {
+      "trans": [ 126.4647, 13.7559, -559.4351], // up at end of stadium walkway railing behind bunch of exposed rebar, just before first dark eco vent
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 126.4647, 13.7559, -559.4351, 10],
+      "lump": {
+        "name":"stadiumb-skill-19"
+      }
+    },
+    {
+      "trans": [ 33.4274, -11.2418, -591.9105], // behind/below H towers at first dark eco vent, behind pipe
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 33.4274, -11.2418, -591.9105, 10],
+      "lump": {
+        "name":"stadiumb-skill-20"
+      }
+    },
+    {
+      "trans": [ 32.7166, 13.6731, -414.4248], // around corner where stadium hallway opens up to stadiumb
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 32.7166, 13.6731, -414.4248, 10],
+      "lump": {
+        "name":"stadiumb-skill-21"
+      }
+    },
+    {
+      "trans": [ 62.7895, 25.5854, -420.2716], // follow further back from ^, in crevice between wall and pillar
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 62.7895, 25.5854, -420.2716, 10],
+      "lump": {
+        "name":"stadiumb-skill-22"
+      }
+    },
+    {
+      "trans": [ 64.0643, 15.2830, -409.7607], // follow from ^^, behind/under invis wall in rubble near void
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 64.0643, 15.2830, -409.7607, 10],
+      "lump": {
+        "name":"stadiumb-skill-23"
+      }
+    },
+    {
+      "trans": [ 63.1345, 16.7309, -370.1849], // follow from ^, behind/under invis wall in back corner of rubble
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 63.1345, 16.7309, -370.1849, 10],
+      "lump": {
+        "name":"stadiumb-skill-24"
+      }
+    },
+    {
+      "trans": [ 40.5947, -14.2866, -396.4908], // follow from ^, down low on rubble behind/under invis wall
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 40.5947, -14.2866, -396.4908, 10],
+      "lump": {
+        "name":"stadiumb-skill-25"
+      }
+    },
+    {
+      "trans": [ 18.7916, -4.8222, -418.5855], // on ledge under collapsing plats near start of stadiumb
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 18.7916, -4.8222, -418.5855, 10],
+      "lump": {
+        "name":"stadiumb-skill-26"
+      }
+    },
+    {
+      "trans": [ -17.6254, 18.0395, -422.2070], // in pocket of rubble above collapsing plats at start of stadiumb
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -17.6254, 18.0395, -422.2070, 10],
+      "lump": {
+        "name":"stadiumb-skill-27"
+      }
+    },
+    {
+      "trans": [ -20.5738, 18.9383, -439.3125], // follow from ^, up around rubble on weird surface that acts like an escalator
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -20.5738, 18.9383, -439.3125, 10],
+      "lump": {
+        "name":"stadiumb-skill-28"
+      }
+    },
+    {
+      "trans": [ 16.0521, 14.3787, -462.9549], // up on edge of stadium walkway near seating, after U bend at start of stadiumb
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 16.0521, 14.3787, -462.9549, 10],
+      "lump": {
+        "name":"stadiumb-skill-29"
+      }
+    },
+    {
+      "trans": [ -61.8446, -17.6572, -505.6109], // on small ledge / behind metal sheet near U bend at start of stadiumb
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -61.8446, -17.6572, -505.6109, 10],
+      "lump": {
+        "name":"stadiumb-skill-30"
+      }
+    },
+    {
+      "trans": [ -6.2892, -13.3585, -562.8723], // at base of H tower in middle of void, extended FF from U bend area
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -6.2892, -13.3585, -562.8723, 10],
+      "lump": {
+        "name":"stadiumb-skill-31"
+      }
+    },
+    {
+      "trans": [ -17.7981, 17.5084, -573.4830], // up from ^ on top of H tower in middle of void
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -17.7981, 17.5084, -573.4830, 10],
+      "lump": {
+        "name":"stadiumb-skill-32"
+      }
+    },
+    {
+      "trans": [ -16.7202, 16.8756, -650.6279], // near first dark eco vent/dark strike wall, H tower IJ hints
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -16.7202, 16.8756, -650.6279, 10],
+      "lump": {
+        "name":"stadiumb-skill-33"
+      }
+    },
+    {
+      "trans": [ -15.7402, 34.2957, -650.9812], // follow from ^, near first dark eco vent/dark strike wall, H tower IJ hints
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -15.7402, 34.2957, -650.9812, 10],
+      "lump": {
+        "name":"stadiumb-skill-34"
+      }
+    },
+    {
+      "trans": [ -12.6759, 45.8660, -646.4723], // follow from ^, near first dark eco vent/dark strike wall, top of H tower
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -12.6759, 45.8660, -646.4723, 10],
+      "lump": {
+        "name":"stadiumb-skill-35"
+      }
+    },
+    {
+      "trans": [ -19.9463, 12.6020, -634.3616], // follow from ^, drop down in middle between H towers
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -19.9463, 12.6020, -634.3616, 10],
+      "lump": {
+        "name":"stadiumb-skill-36"
+      }
+    },
+    
+    // HOVER
+    {
+      "trans": [ -3.74,  48.57,  -434.66 ], // up on top of H towers at U bend at start of stadiumb
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -3.74,  48.57,  -434.66 , 10],
+      "lump": {
+        "name":"stadiumb-skill-hover-01",
+        "pickup-amount": ["float", 3.0]
+      }
+    },
+    {
+      "trans": [ 40.60,  22.72,  -450.43 ], // drop down from ^ onto rubble near walkway around stadium seating
+      "etype": "skill",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ 40.60,  22.72,  -450.43 , 10],
+      "lump": {
+        "name":"stadiumb-skill-hover-02",
+        "pickup-amount": ["float", 3.0]
+      }
+    }//,
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

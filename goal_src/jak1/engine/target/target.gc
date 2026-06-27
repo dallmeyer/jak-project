@@ -29,7 +29,63 @@
 
 (define-extern target-bonk-event-handler (function process int symbol event-message-block object :behavior target))
 
+;; TFL note: added constants
+(defconstant SUPER_ECO_RED_SPIN_UP (meters 25))
+
+(defconstant SUPER_ECO_RED_SPIN_DOWN (meters 30))
+
 ;; DECOMP BEGINS
+
+;; TFL note: added behaviors
+(defbehavior target-super-eco-trident-attack target ()
+  (mlet ((TIME_ALIVE (seconds 0.4))
+         (SEEK_SPEED (meters 42.5))
+         (ANGLE_LEFT (degrees 45))
+         (ANGLE_RIGHT (degrees -45))
+         (SPHERE_RADIUS (meters 1.25)))
+        (let ((ttracker-left (the touch-tracker
+                                  (ppointer->process (process-spawn touch-tracker :init touch-tracker-init (-> self control trans) (meters 1) TIME_ALIVE :to self))))
+              (ttracker-right (the touch-tracker
+                                   (ppointer->process (process-spawn touch-tracker :init touch-tracker-init (-> self control trans) (meters 1) TIME_ALIVE :to self)))))
+          (send-event ttracker-left 'event 'attack 'punch)
+          (send-event ttracker-right 'event 'attack 'punch)
+          (send-event ttracker-left
+                      'exit
+                      (lambda :behavior touch-tracker ()
+                        (let* ((ttrans (-> self root trans))
+                               (trident-left-end (vector-copy! (new-stack-vector0) ttrans)))
+                          (vector-matrix*! trident-left-end
+                                           (new 'static 'vector :y (meters 3.25) :z (meters 7.5) :w 1.0)
+                                           (-> *target* control unknown-matrix01))
+                          (vector-rotate-y! trident-left-end trident-left-end ANGLE_LEFT)
+                          (vector-float*! trident-left-end trident-left-end 0.5)
+                          (vector+! trident-left-end trident-left-end (-> *target* control trans))
+                          (vector-seek! ttrans trident-left-end (* SEEK_SPEED (-> *display* seconds-per-frame)))
+                          (process-spawn part-tracker :init part-tracker-init (-> *part-group-id-table* 3) -1 #f #f #f ttrans :to *entity-pool*))
+                        (< (- (current-time) (-> self state-time)) (-> self duration))))
+          (send-event ttracker-right
+                      'exit
+                      (lambda :behavior touch-tracker ()
+                        (let* ((ttrans (-> self root trans))
+                               (trident-right-end (vector-copy! (new-stack-vector0) ttrans)))
+                          (vector-matrix*! trident-right-end
+                                           (new 'static 'vector :y (meters 3.25) :z (meters 7.5) :w 1.0)
+                                           (-> *target* control unknown-matrix01))
+                          (vector-rotate-y! trident-right-end trident-right-end ANGLE_RIGHT)
+                          (vector-float*! trident-right-end trident-right-end 0.5)
+                          (vector+! trident-right-end trident-right-end (-> *target* control trans))
+                          (vector-seek! ttrans trident-right-end (* SEEK_SPEED (-> *display* seconds-per-frame)))
+                          (process-spawn part-tracker :init part-tracker-init (-> *part-group-id-table* 3) -1 #f #f #f ttrans :to *entity-pool*))
+                        (< (- (current-time) (-> self state-time)) (-> self duration))))
+          (send-event ttracker-left
+                      'function
+                      (lambda ((t touch-tracker))
+                        (set! (-> t root root-prim local-sphere w) SPHERE_RADIUS)))
+          (send-event ttracker-right
+                      'function
+                      (lambda ((t touch-tracker))
+                        (set! (-> t root root-prim local-sphere w) SPHERE_RADIUS)))))
+  (none))
 
 (defbehavior target-falling-anim target ((arg0 time-frame) (arg1 time-frame))
   (let ((v1-2 (ja-group)))
@@ -1160,7 +1216,10 @@
         (else
          (let ((f0-1 (vector-dot (-> self control dynam gravity-normal)
                                  (vector-! (new 'stack-no-clear 'vector) (-> self control last-trans-any-surf) (-> self control trans)))))
-           (if (and (< (-> *TARGET-bank* fall-far) f0-1) (not (logtest? (-> self control status) (cshape-moving-flags on-water))))
+           ;; TFL note: added super eco case
+           (if (and (not (target-powerup? super-eco-green))
+                    (< (-> *TARGET-bank* fall-far) f0-1)
+                    (not (logtest? (-> self control status) (cshape-moving-flags on-water))))
              (go target-hit-ground-hard f0-1)))))
       (cond
         ((= arg0 'stuck))
@@ -1220,7 +1279,9 @@
                   (seek! max (-> self control current-surface align-speed))
                   :frame-num 0.0)
       (until (ja-done? 0)
-        (when (and (= (-> self fact eco-type) (pickup-type eco-red)) (>= (-> self fact eco-level) 1.0))
+        ;; TFL note: added super eco case
+        (when (and (or (target-powerup? super-eco-red) (= (-> self fact eco-type) (pickup-type eco-red)))
+                   (>= (-> self fact eco-level) 1.0))
           (effect-control-method-10 (-> self skel effect) 'group-red-eco-spinkick (ja-frame-num 0) 74)
           (cpad-set-buzz! (-> *cpad-list* cpads 0) 1 153 (seconds 0.1))
           (level-hint-spawn (text-id misty-eco-red-first-use) "sksp0072" (the-as entity #f) *entity-pool* (game-task none)))
@@ -1265,10 +1326,17 @@
         (else (target-dangerous-event-handler proc argc message block))))
   :enter
     (behavior ()
-      (if (or (and (= (-> self fact eco-type) (pickup-type eco-yellow)) (>= (-> self fact eco-level) 1.0))
-              (not (time-elapsed? (-> self control unknown-dword82) (seconds 1.5))))
+      ;; TFL note: added super-eco-yellow case
+      (if (and (not (target-powerup? super-eco-yellow))
+               (or (and (= (-> self fact eco-type) (pickup-type eco-yellow)) (>= (-> self fact eco-level) 1.0))
+                   (< (- (-> *display* base-frame-counter) (-> self control unknown-dword82)) (seconds 1.5))))
         (go target-yellow-blast))
-      (set-time! (-> self state-time))
+      ;; TFL note: added super-eco-yellow case
+      (if (or (target-powerup? super-eco-yellow)
+              ;; (< (- (current-time) (-> self control unknown-dword82)) (seconds 0.45))
+              )
+        (go target-super-yellow-blast))
+      (set! (-> self state-time) (-> *display* base-frame-counter))
       (set! (-> self control unknown-uint20) (the-as uint 0))
       (set! (-> self control did-move-to-pole-or-max-jump-height) 0)
       (set! (-> self control unknown-uint31) (the-as uint 0))
@@ -1277,6 +1345,9 @@
       (set! (-> *run-attack-mods* turnvv) 655360.0)
       (target-start-attack)
       (target-danger-set! 'punch #f)
+      ;; TFL note: added super eco trident attack
+      (when (target-powerup? super-eco-red)
+        (target-super-eco-trident-attack))
       (if (or (< (fabs (-> self control local-slope-x)) 0.3) (< 0.3 (fabs (-> self control local-slope-z))))
         (set! (-> self control bend-target) 1.0)))
   :exit
@@ -1326,7 +1397,9 @@
                          (vector<-cspace! (new 'stack-no-clear 'vector) (joint-node eichar-lod0-jg mouth))
                          0
                          (-> self control transv)))
-        (when (and (= (-> self fact eco-type) (pickup-type eco-red)) (>= (-> self fact eco-level) 1.0))
+        ;; TFL note: added super eco case
+        (when (and (or (target-powerup? super-eco-red) (= (-> self fact eco-type) (pickup-type eco-red)))
+                   (>= (-> self fact eco-level) 1.0))
           (effect-control-method-10 (-> self skel effect) 'group-red-eco-spinkick (ja-frame-num 0) 23)
           (cpad-set-buzz! (-> *cpad-list* cpads 0) 1 153 (seconds 0.1))
           (level-hint-spawn (text-id misty-eco-red-first-use) "sksp0072" (the-as entity #f) *entity-pool* (game-task none)))))
@@ -1406,7 +1479,8 @@
                (vector-! gp-1 (-> self control transv) (vector-float*! gp-1 (-> self control dynam gravity-normal) f0-3)))
              (let* ((f0-4 (vector-length gp-1))
                     (f1-2 f0-4)
-                    (f2-0 33775.48))
+                    ;; TFL note: added super eco case
+                    (f2-0 (if (target-powerup? super-eco-red) SUPER_ECO_RED_SPIN_DOWN 33775.48)))
                (vector+! (-> self control transv)
                          (vector-float*! (-> self control transv) (-> self control dynam gravity-normal) f2-0)
                          (vector-float*! gp-1 gp-1 (/ f0-4 f1-2))))))
@@ -1425,7 +1499,8 @@
                  (vector-! gp-2 (-> self control transv) (vector-float*! gp-2 (-> self control dynam gravity-normal) f0-8)))
                (let* ((f0-9 (vector-length gp-2))
                       (f1-11 f0-9)
-                      (f2-7 (+ 1024.0 (sqrtf (* 245760.0 (+ 2048.0 f30-0))))))
+                      ;; TFL note: added super eco case
+                      (f2-7 (if (target-powerup? super-eco-red) SUPER_ECO_RED_SPIN_UP (+ 1024.0 (sqrtf (* 245760.0 (+ 2048.0 f30-0)))))))
                  (vector+! (-> self control transv)
                            (vector-float*! (-> self control transv) (-> self control dynam gravity-normal) f2-7)
                            (vector-float*! gp-2 gp-2 (/ f0-9 f1-11)))))))))
@@ -1450,7 +1525,9 @@
                     (vector-dot (-> self control dynam gravity-normal) (-> self control transv))))
         (set! (-> self control dynam gravity-max) (-> self control standard-dynamics gravity-max))
         (set! (-> self control dynam gravity-length) (-> self control standard-dynamics gravity-length)))
-      (when (and (= (-> self fact eco-type) (pickup-type eco-red)) (>= (-> self fact eco-level) 1.0))
+      ;; TFL note: added super eco case
+      (when (and (or (target-powerup? super-eco-red) (= (-> self fact eco-type) (pickup-type eco-red)))
+                 (>= (-> self fact eco-level) 1.0))
         (effect-control-method-10 (-> self skel effect) 'group-red-eco-spinkick (ja-frame-num 0) 70)
         (cpad-set-buzz! (-> *cpad-list* cpads 0) 1 153 (seconds 0.1))
         (level-hint-spawn (text-id misty-eco-red-first-use) "sksp0072" (the-as entity #f) *entity-pool* (game-task none))))
@@ -1548,7 +1625,9 @@
                (>= (ja-aframe-num 0) 12.0))
         (go target-attack-air 'uppercut))
       (mod-var-jump #t #t (cpad-hold? (-> self control cpad number) x) (-> self control transv))
-      (when (and (= (-> self fact eco-type) (pickup-type eco-red)) (>= (-> self fact eco-level) 1.0))
+      ;; TFL note: added super eco case
+      (when (and (or (target-powerup? super-eco-red) (= (-> self fact eco-type) (pickup-type eco-red)))
+                 (>= (-> self fact eco-level) 1.0))
         (effect-control-method-10 (-> self skel effect) 'group-red-eco-spinkick (ja-frame-num 0) 23)
         (cpad-set-buzz! (-> *cpad-list* cpads 0) 1 153 (seconds 0.1)))
       (if (and (= (-> self control danger-mode) 'uppercut)
@@ -1593,7 +1672,9 @@
           (else (target-dangerous-event-handler proc argc message block)))))
   :enter
     (behavior ((arg0 float) (arg1 float) (arg2 float))
-      (if (and (= (-> self fact eco-type) (pickup-type eco-yellow)) (>= (-> self fact eco-level) 1.0))
+      ;; TFL note: added super-eco-yellow case
+      (if (and (or (= (-> self fact eco-type) (pickup-type eco-yellow)) (target-powerup? super-eco-yellow))
+               (>= (-> self fact eco-level) 1.0))
         (go target-yellow-jump-blast))
       (if (= arg2 0.0) (set-forward-vel arg2) (set-forward-vel (-> self control ctrl-xz-vel)))
       (set-time! (-> self state-time))
@@ -1633,7 +1714,9 @@
             (set! gp-1 'stuck)))
         (when gp-1
           (logior! (-> self control status) (cshape-moving-flags onsurf))
-          (when (and (= (-> self fact eco-type) (pickup-type eco-red)) (>= (-> self fact eco-level) 1.0))
+          ;; TFL note: added super eco case
+          (when (and (or (target-powerup? super-eco-red) (= (-> self fact eco-type) (pickup-type eco-red)))
+                     (>= (-> self fact eco-level) 1.0))
             (cpad-set-buzz! (-> *cpad-list* cpads 0) 1 255 (seconds 0.5))
             (effect-control-method-10 (-> self skel effect) 'group-red-eco-strike-ground (ja-frame-num 0) 0)
             (let ((s5-1 (process-spawn touch-tracker :init touch-tracker-init (-> self control trans) 4096.0 30 :to self)))
@@ -1648,7 +1731,9 @@
                               (set! (-> arg0 control root-prim local-sphere w) f0-3)
                               f0-3)))))
           (go target-flop-hit-ground gp-1)))
-      (when (and (= (-> self fact eco-type) (pickup-type eco-red)) (>= (-> self fact eco-level) 1.0))
+      ;; TFL note: added super eco case
+      (when (and (or (target-powerup? super-eco-red) (= (-> self fact eco-type) (pickup-type eco-red)))
+                 (>= (-> self fact eco-level) 1.0))
         (effect-control-method-10 (-> self skel effect)
                                   'group-red-eco-spinkick
                                   (ja-frame-num 0)
@@ -1738,7 +1823,8 @@
     (behavior ((arg0 symbol))
       (let ((f0-1 (vector-dot (-> self control dynam gravity-normal)
                               (vector-! (new 'stack-no-clear 'vector) (-> self control highest-jump-mark) (-> self control trans)))))
-        (if (< (-> *TARGET-bank* fall-far) f0-1) (go target-hit-ground-hard f0-1)))
+        ;; TFL note: added super eco case
+        (if (and (not (target-powerup? super-eco-green)) (< (-> *TARGET-bank* fall-far) f0-1)) (go target-hit-ground-hard f0-1)))
       (target-land-effect)
       (cpad-set-buzz! (-> *cpad-list* cpads 0) 1 255 (seconds 0.1))
       (set-time! (-> self state-time))
@@ -1752,7 +1838,9 @@
     (behavior ()
       (when (!= (-> self control unknown-spoolanim00) 'stuck)
         (if (and (cpad-pressed? (-> self control cpad number) circle) (can-feet?)) (go target-attack-air 'flop)))
-      (when (and (and (= (-> self fact eco-type) (pickup-type eco-red)) (>= (-> self fact eco-level) 1.0))
+      ;; TFL note: added super eco case
+      (when (and (and (or (= (-> self fact eco-type) (pickup-type eco-red)) (target-powerup? super-eco-red))
+                      (>= (-> self fact eco-level) 1.0))
                  (not (time-elapsed? (-> self state-time) (seconds 0.25))))
         (effect-control-method-10 (-> self skel effect)
                                   'group-red-eco-spinkick

@@ -2044,9 +2044,9 @@
     (cond
       ((not *target*)
        )
-      ((string= (-> *game-info* current-continue name) "mountain-aval")
-       (go-virtual fall)
-       )
+      ;; ((string= (-> *game-info* current-continue name) "mountain-aval")
+      ;;  (go-virtual fall)
+      ;;  )
       )
     )
   :code (behavior ()

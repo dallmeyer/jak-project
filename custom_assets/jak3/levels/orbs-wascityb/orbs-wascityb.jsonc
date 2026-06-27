@@ -1,0 +1,339 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-wascityb",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O59",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o59", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-wascityb/orbs-wascityb.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 159000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": [],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [   1704.7836, 101.6447, -180.4451], // lil ledge up from peninsula rooftop where vanilla has orbs
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   1704.7836, 101.6447, -180.4451, 10],
+      "lump": {
+        "name":"wascityb-skill-01",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [ 1718.24,  106.75,  -149.81 ], // up on rooftop behind invis wall, up from ^
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1718.24,  106.75,  -149.81 , 10],
+      "lump": {
+        "name":"wascityb-skill-02"
+      }
+    },
+    {
+      "trans": [  2022.01,  59.11,  -368.67 ], // window awning from torch on wall right side leading to throne room
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  2022.01,  59.11,  -368.67 , 10],
+      "lump": {
+        "name":"wascityb-skill-03",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  1446.22,  45.12,  -541.99 ], // coconut on tree west beach (boosted/extended/concussor)
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1446.22,  45.12,  -541.99 , 10],
+      "lump": {
+        "name":"wascityb-skill-04",
+        "pickup-amount": ["float", 2.0] // abah hint
+      }
+    },
+    {
+      "trans": [  1656.6596, 121.4460, -200.1462], // boost jump mega extendo ff from higher rail
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1656.6596, 121.4460, -200.1462, 10],
+      "lump": {
+        "name":"wascityb-skill-05"
+      }
+    },
+    {
+      "trans": [  1607.3668, 64.7340, -483.4711], // under turret
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1607.3668, 64.7340, -483.4711, 10],
+      "lump": {
+        "name":"wascityb-skill-06"
+      }
+    },
+    {
+      "trans": [ 1659.9693, 120.9813, -82.2111], // up in corner, mid south
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1659.9693, 120.9813, -82.2111, 10],
+      "lump": {
+        "name":"wascityb-skill-07"
+      }
+    },
+    {
+      "trans": [ 1576.88,  59.52,  -318.42 ], // pocket of rooftop on biggest "island" of houses
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1576.88,  59.52,  -318.42 , 10],
+      "lump": {
+        "name":"wascityb-skill-08"
+      }
+    },
+    {
+      "trans": [  1617.3322, 92.5506, -202.4370], // rooftop under grind rail on medium "island" of houses
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1617.3322, 92.5506, -202.4370, 10],
+      "lump": {
+        "name":"wascityb-skill-09"
+      }
+    },
+    {
+      "trans": [ 1583.5533, 68.9588, -216.8838], // inside tizard on medium "island" of houses
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1583.5533, 68.9588, -216.8838, 10],
+      "lump": {
+        "name":"wascityb-skill-10",
+        "alt-actor": "tizard-7"
+      }
+    },
+    {
+      "trans": [ 1765.8718, 32.9198, -295.3297], // inside dogat near fruit stands
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1765.8718, 32.9198, -295.3297, 10],
+      "lump": {
+        "name":"wascityb-skill-11",
+        "alt-actor": "dogat-9"
+      }
+    },
+
+    //  
+    
+    {
+      "trans": [1878.06,  34.31,  -533.06 ], // eastern edge of beach over invis wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [1878.06,  34.31,  -533.06 , 10],
+      "lump": {
+        "name":"wascityb-hover-skill-01",
+        "pickup-amount": ["float", 3.0] 
+      }
+    },
+    {
+      "trans": [ 1890.7644, 13.0880, -535.4968], // further down from ^, lower crevice
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1890.7644, 13.0880, -535.4968, 10],
+      "lump": {
+        "name":"wascityb-hover-skill-02",
+        "pickup-amount": ["float", 3.0] 
+      }
+    },
+    {
+      "trans": [1932.6053, -1.42, -548.5115], // very end from ^^, dive
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [1932.6053, -1.42, -548.5115, 10],
+      "lump": {
+        "name":"wascityb-hover-skill-03",
+        "pickup-amount": ["float", 3.0] 
+      }
+    },
+    {
+      "trans": [ 1416.07,  27.93,  -540.70 ], // western edge of beach, over invis wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1416.07,  27.93,  -540.70 , 10],
+      "lump": {
+        "name":"wascityb-hover-skill-04",
+        "pickup-amount": ["float", 3.0] 
+      }
+    },
+    {
+      "trans": [ 1382.67,  21.77,  -545.84 ], // western edge of beach, over invis wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1382.67,  21.77,  -545.84 , 10],
+      "lump": {
+        "name":"wascityb-hover-skill-05",
+        "pickup-amount": ["float", 3.0] 
+      }
+    },
+    {
+      "trans": [ 1830.15,  98.25,  -166.82 ], // back rooftop leading towards path to wascitya, over/behind invis wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1830.15,  98.25,  -166.82 , 10],
+      "lump": {
+        "name":"wascityb-hover-skill-06",
+        "pickup-amount": ["float", 3.0] 
+      }
+    },
+    {
+      "trans": [ 1824.96,  98.25,  -195.69  ], // follow from ^, back rooftop leading towards path to wascitya, over/behind invis wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1824.96,  98.25,  -195.69 , 10],
+      "lump": {
+        "name":"wascityb-hover-skill-07",
+        "pickup-amount": ["float", 3.0] 
+      }
+    },
+    {
+      "trans": [  1825.48,  88.19,  -218.14 ], // follow from ^, back rooftop leading towards path to wascitya, over/behind invis wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1825.48,  88.19,  -218.14 , 10],
+      "lump": {
+        "name":"wascityb-hover-skill-08",
+        "pickup-amount": ["float", 3.0] 
+      }
+    },
+    {
+      "trans": [   1832.60,  86.07,  -261.66  ], // follow from ^, chimney on back rooftop leading towards path to wascitya, over/behind invis wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1832.60,  86.07,  -261.66 , 10],
+      "lump": {
+        "name":"wascityb-hover-skill-09",
+        "pickup-amount": ["float", 3.0] 
+      }
+    },
+    {
+      "trans": [ 1848.86,  58.18,  -367.11 ], // rooftop of wall neat east beach, over/behind invis wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1848.86,  58.18,  -367.11 , 10],
+      "lump": {
+        "name":"wascityb-hover-skill-10",
+        "pickup-amount": ["float", 3.0] 
+      }
+    },
+    {
+      "trans": [ 1834.21,  58.56,  -434.11 ], // follow from ^, over/behind invis wall
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [ 1834.21,  58.56,  -434.11  , 10],
+      "lump": {
+        "name":"wascityb-hover-skill-11",
+        "pickup-amount": ["float", 3.0] 
+      }
+    },
+    {
+      "trans": [  1746.1263, 25.0622, -709.9893], // island in water over invis wall, must dodge tentacle too
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1746.1263, 25.0622, -709.9893, 10],
+      "lump": {
+        "name":"wascityb-hover-skill-12",
+        "pickup-amount": ["float", 3.0] 
+      }
+    },
+    {
+      "trans": [  1669.9162, 27.0004, -748.5343], // island in water over invis wall, must dodge tentacle too
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  1669.9162, 27.0004, -748.5343 , 10],
+      "lump": {
+        "name":"wascityb-hover-skill-13",
+        "pickup-amount": ["float", 3.0] 
+      }
+    }//,
+    
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

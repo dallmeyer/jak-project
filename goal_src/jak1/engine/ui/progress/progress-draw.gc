@@ -145,7 +145,7 @@
                               (the int (* 128.0 f30-0)))
       (+! (-> s4-1 origin y) 15.0)
       (let ((s5-2 print-game-text-scaled))
-        (format (clear *temp-string*) "~D/~D" (the int (-> *game-info* money-total)) (-> this total-nb-of-orbs))
+        (format (clear *temp-string*) "~D/~D" (the int (-> *game-info* money-total)) 2000) ;; (-> this total-nb-of-orbs))
         (s5-2 *temp-string* f30-0 s4-1 (the int (* 128.0 f30-0))))))
   0
   (none))
@@ -192,7 +192,7 @@
                                 (the int (* 128.0 f30-0)))
         (+! (-> s4-1 origin y) 15.0)
         (let ((s5-2 print-game-text-scaled))
-          (format (clear *temp-string*) "~D/~D" (the int (-> *game-info* buzzer-total)) (-> this total-nb-of-buzzers))
+          (format (clear *temp-string*) "~D/~D" (the int (-> *game-info* buzzer-total)) 112) ;; (-> this total-nb-of-buzzers))
           (s5-2 *temp-string* f30-0 s4-1 (the int (* 128.0 f30-0)))))))
   0
   (none))
@@ -311,7 +311,7 @@
   (when (or (< (mod (-> *display* real-frame-counter) 300) 150) (!= (-> this transition-percentage-invert) 1.0))
     (let ((a1-1 (text-id loading-data)))
       (case (-> this display-state)
-        (((progress-screen memcard-saving)) (set! a1-1 (text-id saving-data)))
+        (((progress-screen memcard-saving) (progress-screen memcard-saving-and-loading)) (set! a1-1 (text-id saving-data)))
         (((progress-screen memcard-formatting)) (set! a1-1 (text-id formatting)))
         (((progress-screen memcard-creating)) (set! a1-1 (text-id creating-save-data))))
       (print-game-text-scaled (lookup-text! *common-text* a1-1 #f) (-> this transition-percentage-invert) arg0 128)))
@@ -445,17 +445,19 @@
                   (let ((sv-80 format))
                     (sv-80 (clear *temp-string*)
                            "/~D"
-                           (if (< 100 (the int (-> s3-3 file s1-0 fuel-cell-count))) (-> this total-nb-of-power-cells) 100)))
+                           (if (< 100 (the int (-> s3-3 file s1-0 fuel-cell-count)))
+                                 101 ;; (-> obj total-nb-of-power-cells) ;; hide TFL
+                                 100)))
                   (s0-6 *temp-string* arg0 #f s4-1 22))
                 ;; og:preserve-this when custom-aspect use same offsets from counts for totals
                 (set! (-> arg0 origin x) (the float (- (if (-> *pc-settings* use-vis?) 150 1) (-> this left-x-offset))))
                 (let ((s0-7 print-game-text))
-                  (format (clear *temp-string*) "/~D" (-> this total-nb-of-orbs))
+                  (format (clear *temp-string*) "/~D" 2000) ;; (-> obj total-nb-of-orbs)) ;; hide TFL
                   (s0-7 *temp-string* arg0 #f s4-1 22))
                 ;; og:preserve-this when custom-aspect use same offsets from counts for totals
                 (set! (-> arg0 origin x) (the float (- (if (-> *pc-settings* use-vis?) 238 79) (-> this left-x-offset))))
                 (let ((s0-8 print-game-text))
-                  (format (clear *temp-string*) "/~D" (-> this total-nb-of-buzzers))
+                  (format (clear *temp-string*) "/~D" 112) ;; (-> obj total-nb-of-buzzers)) ;; hide TFL
                   (s0-8 *temp-string* arg0 #f s4-1 22))
                 (+! (-> arg0 origin y) 15.0))
                (else
@@ -793,15 +795,16 @@
         (((progress-screen memcard-format)) (draw-memcard-format this a1-1))
         (((progress-screen memcard-no-space) (progress-screen memcard-not-inserted) (progress-screen memcard-not-formatted))
          (draw-memcard-storage-error this a1-1))
-        (((progress-screen memcard-data-exists)) (draw-memcard-data-exists this a1-1))
+        (((progress-screen memcard-data-exists) (progress-screen memcard-data-exists-save-and-load)) (draw-memcard-data-exists this a1-1))
         (((progress-screen memcard-no-data)) (draw-memcard-no-data this a1-1))
         (((progress-screen memcard-loading)
           (progress-screen memcard-saving)
+          (progress-screen memcard-saving-and-loading)
           (progress-screen memcard-formatting)
           (progress-screen memcard-creating))
          (draw-memcard-accessing this a1-1))
         (((progress-screen memcard-insert)) (draw-memcard-insert this a1-1))
-        (((progress-screen load-game) (progress-screen save-game) (progress-screen save-game-title))
+        (((progress-screen load-game) (progress-screen save-game) (progress-screen save-and-load-game) (progress-screen save-game-title))
          (draw-memcard-file-select this a1-1))
         (((progress-screen memcard-auto-save-error)) (draw-memcard-auto-save-error this a1-1))
         (((progress-screen memcard-removed)) (draw-memcard-removed this a1-1))

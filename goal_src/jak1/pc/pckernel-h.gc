@@ -270,7 +270,7 @@
 
 (define *display-text-box* #f)
 
-(define *display-sha* *debug-segment*)
+(define *display-sha* #f) ;; *debug-segment*)
 
 ;; collision renderer things. debug only.
 (define *collision-renderer* #f)

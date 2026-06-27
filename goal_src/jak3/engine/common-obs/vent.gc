@@ -27,7 +27,7 @@
     )
   )
 
-
+(define-extern mod-override-init-position (function process-drawable entity-actor none))
 (defmethod init! ((this vent) (arg0 entity-actor) (arg1 pickup-type))
   (stack-size-set! (-> this main-thread) 128)
   (logior! (-> this mask) (process-mask actor-pause))
@@ -46,6 +46,7 @@
       )
     (set! (-> this root) s3-0)
     )
+  (when (not *entity-placer-active?*) (mod-override-init-position this arg0))
   (vector-copy! (-> this root trans) (-> arg0 extra trans))
   (update-transforms (-> this root))
   (set! (-> this root pause-adjust-distance) 409600.0)

@@ -577,10 +577,14 @@
             (let ((v1-14 (-> s4-0 info borrow borrow-info s3-1)))
               (when v1-14
                 (when (car (cdr v1-14))
-                  (let ((v1-15 (level-status? this (the-as symbol (car v1-14)) arg1)))
-                    (if (!= v1-15 (-> s4-0 status))
-                        (return v1-15)
+                  (let ((ll (lookup-level-info (the-as symbol (car v1-14)))))
+                    (when (not (and (logtest? (-> ll level-flags) (level-flags orb-hunt)) (side-mish-active?)))
+                      (let ((v1-15 (level-status? this (the-as symbol (car v1-14)) arg1)))
+                        (if (!= v1-15 (-> s4-0 status))
+                            (return v1-15)
+                            )
                         )
+                      )
                     )
                   )
                 )
@@ -994,6 +998,25 @@
       )
     )
   0
+  (none)
+  )
+
+(defun print-level-bits ()
+  (dotimes (s5-1 11)
+    (let ((s4-51 (-> *level* level s5-1)))
+      (when (!= (-> s4-51 status) 'inactive)
+        (format 0 "~Tlevel ~2D ~16S " s5-1 (-> s4-51 name))
+        (format
+          0
+          "~16S bits #b~18,'0B~%"
+          (if (nonzero? (-> s4-51 info))
+              (level-memory-mode->string (-> s4-51 info memory-mode))
+              )
+          (-> s4-51 memory-mask)
+          )
+        )
+      )
+    )
   (none)
   )
 
@@ -2425,8 +2448,22 @@
   this
   )
 
-(defmethod is-object-visible? ((this level) (arg0 int))
+(defmethod is-object-visible? ((this level) (arg0 int) (actor entity))
   "Is drawable arg0 visible? Note that this will return #f if the visibility data is not loaded."
+  ;; hack to force visibility of stuff moved (rather than update visibility data)
+  (case (-> (the entity-actor actor) etype symbol)
+    (('skill 'crate 'skill-crate 'skill-ghost 'fuel-cell 'launcher
+      'market-crate 'wascity-market-crate 'wascity-market-sack-a 'market-sack-a 'market-basket-a
+      'wascity-market-basket-a 'wascity-market-sack-b 'market-sack-b 'market-basket-b 'wascity-market-basket-b
+      'urn-a 'urn-b 'urn-c 'dark-eco-vent 'light-eco-vent 'ecovent 'dark-maker-idol 'precur-warp-effect
+      'burning-bush 'des-burning-bush 'des-cactus-obstacle 'parking-spot
+      'fac-drop-plat 'ladder 'sew-fan
+      'warp-gate 'air-train 'desoasis-hellcat 'cty-door 'pre-sled-dummy 'arcade 'barge
+      'yakow-dummy 'farm-marrow 'farm-beetree 'farm-cabbage 'farm-small-cabbage 'farm-chilirots
+      'torn-npc 'onin-npc 'ashelin-npc 'kleever-npc 'damus-npc 'erol-npc 'vin-npc 'pecker-npc 'seem-npc 'samos-npc 'keira-npc 
+      'veger-npc 'jinx-npc 'sig-npc)
+     (return #t)))
+
   ;; check the vis bits!
   (let* (;; lwu v1, 388(a0)
             (vis-data (-> this vis-bits))

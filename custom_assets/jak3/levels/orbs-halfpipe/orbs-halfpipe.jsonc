@@ -1,0 +1,386 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "orbs-halfpipe",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "O18",
+  // The nickname, should be exactly 3 characters
+  "nickname": "o18", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak3/levels/orbs-halfpipe/orbs-halfpipe.glb", // wascitya
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": true,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag data types:
+  // int32, float, meters, vector, vector4m (meters)
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a vector tag 'movie-pos':
+  // "movie-pos": ["vector", [4096000.0, -176128.0, 1353973.76, 1.0]]
+
+   // The base actor id for your custom level. If you have multiple levels, this should be unique!
+   "base_id": 118000,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Removed so that the release builds don't have to double-decompile the game
+  //"art_groups": ["prsn-torture-ag"],
+  "art_groups": ["air-train-ag", "warp-gate-ag"],
+
+   // Any textures you want to include in your custom level.
+   // This is mainly useful for textures which are not in the common level files and have no art group associated with them.
+   // To get a list of all the textures, you can extract all of the game's textures
+   // by setting "save_texture_pngs" to true in the decompiler config.
+   "textures": [],
+
+  "actors" : [
+    {
+      "trans": [  2.5, -50.15, 113.29], // 
+      "etype": "air-train",
+      "game_task": 0, 
+      "quat" : [0, 0.6314, 0, 0.7754],
+      "bsphere": [ 2.5, -50.15, 113.29, 10],
+      "lump": {
+        "name":"halfpipe-air-train-01",
+        "distance": ["meters", 15.0]
+      }
+    },
+    {
+      "trans": [  2.5, -50.15, 113.29], // 
+      "etype": "warp-gate",
+      "game_task": 0, 
+      "quat" : [0, 0.6314, 0, 0.7754],
+      "bsphere": [ 2.5, -50.15, 113.29, 10],
+      "lump": {
+        "name":"halfpipe-warp-gate-01",
+        "distance": ["meters", 10.0]
+      }
+    },    
+    {
+      "trans": [  124.01, -34.0, -50.04 ], // on middle platforms, lined up with YO
+      "etype": "launcher",
+      "game_task": 0, 
+      "quat" : [0, 0.6314, 0, 0.7754],
+      "bsphere": [ 124.01, -34.0, -50.04 , 10],
+      "lump": {
+        "name":"halfpipe-launcher-01"
+      }
+    },
+
+    {
+      "trans": [ 19.2675, -61.3299, 99.5403  ], // in bottom corner of water
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [19.2675, -61.3299, 99.5403, 10],
+      "lump": {
+        "name":"halfpipe-skill-01"
+      }
+    },
+    {
+      "trans": [   88.11, -37.40, -50.03 ], // under blocky staircase
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  88.11, -37.40, -50.03, 10],
+      "lump": {
+        "name":"halfpipe-skill-02"
+      }
+    },
+    {
+      "trans": [       172.2170, -10.8629, 39.2295 ], // off right big launch ramp, extended frontflip
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [      172.2170, -10.8629, 39.2295, 10],
+      "lump": {
+        "name":"halfpipe-skill-03"
+      }
+    },
+    {
+      "trans": [      2.1127, -17.8612, -57.1274], // above swingpoles
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [      2.1127, -17.8612, -57.1274, 10],
+      "lump": {
+        "name":"halfpipe-skill-04"
+      }
+    },
+    {
+      "trans": [    126.1612, -41.40, -10.1083], // Y
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   126.1612, -41.40, -10.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-05"
+      }
+    },
+    {
+      "trans": [    126.1612, -41.40, -11.1083], // Y
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   126.1612, -41.40, -11.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-06"
+      }
+    },
+    {
+      "trans": [    126.1612, -41.40, -12.1083], // Y
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   126.1612, -41.40, -12.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-07"
+      }
+    },
+    {
+      "trans": [    127.1612, -41.40, -9.1083], // Y
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   127.1612, -41.40, -9.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-08"
+      }
+    },
+    {
+      "trans": [    125.1612, -41.40, -9.1083], // Y
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   125.1612, -41.40, -9.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-09"
+      }
+    },
+    {
+      "trans": [    128.1612, -41.40, -8.1083], // Y
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   128.1612, -41.40, -8.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-10"
+      }
+    },
+    {
+      "trans": [    124.1612, -41.40, -8.1083], // Y
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   124.1612, -41.40, -8.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-11"
+      }
+    },
+    {
+      "trans": [    122.6612, -41.40, -10.1083], // O
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   122.6612, -41.40, -10.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-12"
+      }
+    },
+    {
+      "trans": [    122.6612, -41.40, -11.1083], // O
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   122.6612, -41.40, -11.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-13"
+      }
+    },
+    {
+      "trans": [    122.6612, -41.40, -9.1083], // O
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   122.6612, -41.40, -9.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-14"
+      }
+    },
+    {
+      "trans": [    121.6612, -41.40, -12.1083], // O
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   121.6612, -41.40, -12.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-15"
+      }
+    },
+    {
+      "trans": [    120.6612, -41.40, -12.1083], // O
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   120.6612, -41.40, -12.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-16"
+      }
+    },
+    {
+      "trans": [    119.6612, -41.40, -12.1083], // O
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   119.6612, -41.40, -12.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-17"
+      }
+    },
+    {
+      "trans": [    121.6612, -41.40, -8.1083], // O
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   121.6612, -41.40, -8.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-18"
+      }
+    },
+    {
+      "trans": [    120.6612, -41.40, -8.1083], // O
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   120.6612, -41.40, -8.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-19"
+      }
+    },
+    {
+      "trans": [    119.6612, -41.40, -8.1083], // O
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   119.6612, -41.40, -8.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-20"
+      }
+    },    
+    {
+      "trans": [    118.6612, -41.40, -10.1083], // O
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   118.6612, -41.40, -10.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-21"
+      }
+    },
+    {
+      "trans": [    118.6612, -41.40, -11.1083], // O
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   118.6612, -41.40, -11.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-22"
+      }
+    },
+    {
+      "trans": [    118.6612, -41.40, -9.1083], // O
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [   118.6612, -41.40, -9.1083, 10],
+      "lump": {
+        "name":"halfpipe-skill-23"
+      }
+    },
+    {
+      "trans": [   -3.38, -42.62, 118.35], // on kg transport :P
+      "etype": "skill",
+      "game_task": 0, 
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [  -3.38, -42.62, 118.35, 10],
+      "lump": {
+        "name":"halfpipe-skill-24"
+      }
+    },
+
+    
+    // CRATES
+    {
+      "trans": [   49.860, -3.440,  -26.721], // halfpipe right 3rd from left side
+      "etype": "skill-crate",
+      "game_task": 0, 
+      "quat" : [   -0.4723,  0.5263,  -0.4731,  -0.5254],
+      "bsphere": [  49.860, -3.440,  -26.721, 10],
+      "lump": {
+        "name": "halfpipe-crate-1",
+        "crate-type": "iron",
+        "eco-info": [
+          "int32",
+          24, // (pickup-type skill)
+          1 // amount?
+        ]
+      }
+    },
+    {
+      "trans": [   -49.860, -3.440,  11.0566], // halfpipe left 4th from left side
+      "etype": "skill-crate",
+      "game_task": 0, 
+      "quat" : [   0.4723,  0.5263,  -0.4731,  0.5254],
+      "bsphere": [  -49.860, -3.440,  -26.721, 10],
+      "lump": {
+        "name": "halfpipe-crate-2",
+        "crate-type": "iron",
+        "eco-info": [
+          "int32",
+          24, // (pickup-type skill)
+          1 // amount?
+        ]
+      }
+    }//,
+    
+    
+
+    // GHOSTS
+    // {
+    //   "trans": [   2429.1813, 56.9144, -110.1102], // slippery ledge out from building w tall windmill
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2429.1813, 56.9144, -110.1102, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-1",
+    //     "pickup-amount": ["float", 2.0], // abah hint
+    //     "alt-actor":"wascitya-skill-1"
+    //   }
+    // },
+    // {
+    //   "trans": [  2430.0915, 72.5804, -96.9893], // way up on edge of tall building near tall windmill, abah from ^
+    //   "etype": "skill-ghost",
+    //   "game_task": 0, 
+    //   "quat" : [0, 0, 0, 1],
+    //   "bsphere": [  2430.0915, 72.5804, -96.9893, 10],
+    //   "lump": {
+    //     "name":"wascitya-skill-ghost-2",
+    //     "alt-actor":"wascitya-skill-2"
+    //   }
+    // }
+    
+  ]
+}

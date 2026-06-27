@@ -915,6 +915,7 @@
 (defconstant group-sew-moving-step-b-wake (-> *part-group-id-table* 1497))
 (defconstant group-tpl-break-door-a (-> *part-group-id-table* 673))
 (defconstant group-skill-glow-red (-> *part-group-id-table* 132))
+(defconstant group-skill-glow-purp (-> *part-group-id-table* 2000))
 (defconstant group-part-wascity-door-big-steam1 (-> *part-group-id-table* 389))
 (defconstant group-sew-grate-bubbles (-> *part-group-id-table* 1498))
 (defconstant group-tpl-break-door-explode (-> *part-group-id-table* 674))
