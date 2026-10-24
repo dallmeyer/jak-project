@@ -242,5 +242,6 @@
     [240, "vector"]
   ],
   "(method 14 ragdoll)": [[144, "vector"]],
-  "(method 10 ragdoll)": [[16, "vector"]]
+  "(method 10 ragdoll)": [[16, "vector"]],
+  "(trans idle keyboard-control)": [[16, "symbol"]] // ?
 }

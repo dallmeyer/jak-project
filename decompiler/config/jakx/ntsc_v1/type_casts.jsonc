@@ -819,5 +819,7 @@
     [111, "v1", "float"]
   ],
   "(method 9 plane-volume)": [["_stack_", 148, "float"]],
-  "ragdoll-joint-callback": [[93, "t9", "(function cspace transformq none)"]]
+  "ragdoll-joint-callback": [[93, "t9", "(function cspace transformq none)"]],
+  "(code idle keyboard-control)": [[10, "v1", "art-joint-anim"]],
+  "(code cancel keyboard-control)": [[29, "v1", "art-joint-anim"]]
 }

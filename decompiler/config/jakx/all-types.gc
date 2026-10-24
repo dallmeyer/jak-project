@@ -102,10 +102,12 @@
 
 (declare-type cpad-info basic)
 (declare-type mouse-info basic)
+(declare-type keybd-info basic)
 (define-extern cpad-open (function cpad-info int cpad-info))
 (define-extern cpad-get-data (function cpad-info cpad-info))
 (define-extern scf-get-territory (function int)) ;; not actually a scf function...
 (define-extern mouse-get-data (function mouse-info none))
+(define-extern keybd-get-data (function keybd-info none))
 (define-extern file-stream-open (function file-stream string symbol file-stream))
 (define-extern file-stream-close (function file-stream file-stream))
 (define-extern file-stream-length (function file-stream int))
@@ -815,7 +817,7 @@
   )
 
 (deftype handle-wrapper (structure)
-  ((handle uint64  :offset-assert 0)
+  ((handle handle  :offset-assert 0)
    )
   :method-count-assert 9
   :size-assert         #x8
@@ -4952,7 +4954,6 @@
   )
 ;; ---pad:mouse-buttons
 
-#|
 (deftype scf-time (structure)
   ((stat   uint8  :offset-assert 0)
    (second uint8  :offset-assert 1)
@@ -4967,7 +4968,6 @@
   :size-assert         #x8
   :flag-assert         #x900000008
   )
-|#
 
 (deftype hw-cpad (basic)
   ((valid   uint8     :offset-assert 4)
@@ -5014,7 +5014,7 @@
   :size-assert         #x98
   :flag-assert         #xa00000098
   (:methods
-    (new (symbol type) _type_) ;; 0 ;; (new (symbol type int) _type_)
+    (new (symbol type int) _type_) ;; 0 ;; (new (symbol type int) _type_)
     (cpad-info-method-9 () none) ;; 9 ;; (adjust-to-screen-flip (_type_) int)
     )
   )
@@ -5048,7 +5048,7 @@
    (deltax             int8            :offset-assert 22)
    (deltay             int8            :offset-assert 23)
    (wheel              uint8           :offset-assert 24)
-   (change-time        uint64          :offset-assert 32) ;; time-frame
+   (change-time        time-frame      :offset-assert 32)
    (button0-abs        mouse-buttons 3 :offset-assert 40) ;; guessed by decompiler
    (button0-shadow-abs mouse-buttons 1 :offset-assert 52) ;; guessed by decompiler
    (button0-rel        mouse-buttons 3 :offset-assert 56) ;; guessed by decompiler
@@ -5056,7 +5056,7 @@
   ;;  (UNKNOWN            UNKNOWN         :offset-assert -1) ;; field could not be read.
    (posx               float           :offset 80)
    (posy               float           :offset 84)
-   (oldposx            float           :offset 96)
+   (oldposx            float           :offset 96 :do-not-decompile)
    (oldposy            float           :offset 100)
    (speedx             float           :offset 92)
    (speedy             float           :offset 108)
@@ -5078,22 +5078,22 @@
   )
 
 (define-extern *cheat-mode* symbol) ;; 
-;; (define-extern cpad-invalid! function) ;; (function cpad-info cpad-info)
-;; (define-extern analog-input function) ;; (function int float float float float float)
-;; (define-extern cpad-set-buzz! function) ;; (function cpad-info int int time-frame none)
+(define-extern cpad-invalid! (function cpad-info cpad-info)) ;; (function cpad-info cpad-info)
+(define-extern analog-input (function int float float float float float)) ;; (function int float float float float float)
+(define-extern cpad-set-buzz! (function cpad-info int int time-frame int)) ;; (function cpad-info int int time-frame none)
 (define-extern *cpad-list* cpad-list) ;; 
 (define-extern *cpad-debug* symbol) ;; 
-;; (define-extern service-cpads function) ;; (function cpad-list)
-;; (define-extern buzz-stop! function) ;; (function int none)
+(define-extern service-cpads (function cpad-list)) ;; (function cpad-list)
+(define-extern buzz-stop! (function int int)) ;; (function int none)
 (define-extern *mouse* mouse-info) ;; 
-;; (define-extern service-mouse function) ;; (function none)
+(define-extern service-mouse (function mouse-info)) ;; (function none)
 (define-extern *keybd* keybd-info) ;; 
-;; (define-extern service-keybd function) ;; (function none)
-;; (define-extern *usb-to-ascii-map* object)
-;; (define-extern *keybd-last-key* object)
-;; (define-extern *keybd-hold-ct* object)
-;; (define-extern *keybd-ungetc* object)
-;; (define-extern keybd-read-ascii function)
+(define-extern service-keybd (function keybd-info)) ;; (function none)
+(define-extern *usb-to-ascii-map* (pointer uint32))
+(define-extern *keybd-last-key* uint8)
+(define-extern *keybd-hold-ct* uint8)
+(define-extern *keybd-ungetc* uint8)
+(define-extern keybd-read-ascii (function int))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; gs                             ;;
@@ -35871,10 +35871,10 @@
 ;; (define-extern joint-anim-inspect-elt function) ;; (function joint-anim float joint-anim)
 ;; (define-extern jacc-mem-usage function) ;; (function joint-anim-compressed-control memory-usage-block int joint-anim-compressed-control)
 ;; (define-extern joint-control-cleanup function) ;; (function joint-control kheap art-joint-anim symbol)
-;; (define-extern joint-control-channel-eval function) ;; (function joint-control-channel float :behavior process)
-;; (define-extern joint-control-channel-eval! function) ;; (function joint-control-channel (function joint-control-channel float float float float) float :behavior process)
-;; (define-extern joint-control-channel-group-eval! function) ;; (function joint-control-channel art-joint-anim (function joint-control-channel float float float float) int)
-;; (define-extern joint-control-channel-group! function) ;; (function joint-control-channel art-joint-anim (function joint-control-channel float float float float) int)
+(define-extern joint-control-channel-eval (function joint-control-channel float :behavior process))
+(define-extern joint-control-channel-eval! (function joint-control-channel (function joint-control-channel float float float float) float :behavior process))
+(define-extern joint-control-channel-group-eval! (function joint-control-channel art-joint-anim (function joint-control-channel float float float float) int))
+(define-extern joint-control-channel-group! (function joint-control-channel art-joint-anim (function joint-control-channel float float float float) int))
 ;; (define-extern joint-control-copy! function) ;; (function joint-control joint-control joint-control)
 ;; (define-extern joint-control-remap! function) ;; (function joint-control art-group art-group pair int string symbol)
 ;; (define-extern flatten-joint-control-to-spr function) ;; (function joint-control int)
@@ -37940,7 +37940,7 @@
 ;; settings                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (define-extern get-current-language function) ;; (function language-enum)
+(define-extern get-current-language (function language-enum)) ;; (function language-enum)
 (define-extern *setting-control* setting-control) ;; 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -47394,13 +47394,12 @@
 ;; keyboard                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype keyboard-key (structure)
-  ((data  UNKNOWN 4 :offset-assert 0)
-   (char  uint8     :offset-assert 0)
-   (char2 uint8     :offset-assert 1)
-   (char3 uint8     :offset-assert 2)
-   (char4 uint8     :offset-assert 3)
+  ((data  uint8 4   :offset-assert 0)
+   (char  uint8     :offset 0)
+   (char2 uint8     :offset 1)
+   (char3 uint8     :offset 2)
+   (char4 uint8     :offset 3)
    (pos-x int8      :offset-assert 4)
    (pos-y int8      :offset-assert 5)
    (size  int8      :offset-assert 6)
@@ -47413,9 +47412,7 @@
   :size-assert         #x14
   :flag-assert         #x900000014
   )
-|#
 
-#|
 (deftype keyboard-control (process-drawable)
   ((selected      int32                       :offset-assert 248)
    (pos-x         int32                       :offset-assert 252)
@@ -47429,8 +47426,7 @@
    (left-count    int32                       :offset-assert 284)
    (right-count   int32                       :offset-assert 288)
    (layout-select int32                       :offset-assert 292)
-   (name          basic                       :offset-assert 4)
-   (screen-pos-x  int32                       :offset-assert 300)
+   (screen-pos-x  int32                       :offset 300)
    (screen-pos-y  int32                       :offset-assert 304)
    (max-chars     int32                       :offset-assert 308)
    (flags         uint64                      :offset-assert 312)
@@ -47440,32 +47436,31 @@
   :method-count-assert 55
   :size-assert         #x190
   :flag-assert         #x3701000190
-  (:methods
-    (keyboard-control-method-53 () none) ;; 53
-    (keyboard-control-method-54 () none) ;; 54
-    )
   (:state-methods
+    idle ;; 50
     done ;; 51
     cancel ;; 52
-    idle ;; 50
+    )
+  (:methods
+    (keyboard-control-method-53 (_type_) int)
+    (keyboard-control-method-54 (_type_) int)
     )
   )
-|#
 
-;; (define-extern cpad-or-kbd-pressed-var? function)
-;; (define-extern kbd-clear! function)
-;; (define-extern cpad-or-kbd-clear-func! function)
-;; (define-extern *keyboard-proc* object)
-;; (define-extern *keyboard-string-buf* object)
-;; (define-extern *keyboard-init-state* object)
-;; (define-extern *keyboard-layout-default* array)
-;; (define-extern char-allowed function)
-;; (define-extern set-keyboard-jmod function)
-;; (define-extern render-entered-text function)
-;; (define-extern keyboard-control-init-by-other function)
-;; (define-extern keyboard-control-spawn function)
-;; (define-extern kill-keyboard-control function)
-;; (define-extern get-keyboard-control function)
+(define-extern cpad-or-kbd-pressed-var? (function uint8 pad-buttons symbol))
+(define-extern kbd-clear! (function int int))
+(define-extern cpad-or-kbd-clear-func! (function uint8 pad-buttons int))
+(define-extern *keyboard-proc* handle-wrapper)
+(define-extern *keyboard-string-buf* string)
+(define-extern *keyboard-init-state* symbol)
+(define-extern *keyboard-layout-default* (array keyboard-key))
+(define-extern char-allowed (function int uint symbol))
+(define-extern set-keyboard-jmod (function keyboard-control float))
+(define-extern render-entered-text (function keyboard-control font-context int :behavior keyboard-control))
+(define-extern keyboard-control-init-by-other (function int uint string object :behavior keyboard-control))
+(define-extern keyboard-control-spawn (function symbol vector symbol symbol int))
+(define-extern kill-keyboard-control (function symbol))
+(define-extern get-keyboard-control (function process))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; lobby-menu-manager-h           ;;
@@ -47708,7 +47703,7 @@
 ;; (define-extern lobby-vehicle-flag->string function)
 ;; (define-extern *lobby-reset-mode* object)
 ;; (define-extern *net-mgr-finish-mode* object)
-;; (define-extern *lobby-menu-manager* object)
+(define-extern *lobby-menu-manager* (pointer lobby-menu-manager))
 ;; (define-extern get-selected-local-player-count function)
 ;; (define-extern kiosk-code? function)
 ;; (define-extern min-max-wrap-around function) ;; (function int int int int)

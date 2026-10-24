@@ -780,5 +780,7 @@
     ["L295", "vector"],
     ["L294", "vector"]
   ],
-  "net-time-trial-h": [["L5", "(inline-array timetrial-snapshot)", 938]]
+  "net-time-trial-h": [["L5", "(inline-array timetrial-snapshot)", 938]],
+  "pad": [["L116", "(pointer uint32)", 192]],
+  "keyboard": [["L273", "(pointer uint32)", 32]]
 }
