@@ -1983,5 +1983,26 @@
     [[3, 8], "a2", "dma-packet"],
     [[13, 16], "a2", "gs-gif-tag"]
   ],
-  "hflip-z-buf": [[[8, 13], "a0", "dma-packet"]]
+  "hflip-z-buf": [[[8, 13], "a0", "dma-packet"]],
+  "should-suppress-eco?": [[[10,74], "s4", "net-play-mode"]],
+  "v-wpn-get-mask": [
+    [[183,220], "s5", "net-player"],
+    [195, "v0", "uint"],
+    [205, "v0", "wvehicle"]
+  ],
+  "v-wpn-base-common-trans": [[[6,10], "a0", "wvehicle"]],
+  "(method 10 vehicle-weapon-slot)": [
+    [[7, 11], "a1", "wvehicle"],
+    [23, "a2", "process-drawable"]
+  ],
+  "(method 58 vehicle-weapon-slot)": [[[8,12], "a0", "wvehicle"]],
+  "seismic-blaster-affects-player?": [
+    [9, "a0", "wvehicle"],
+    [12, "a0", "wvehicle"]
+  ],
+  "gunmount-event-handler": [[24, "v0", "vector"]],
+  "gunmount-common-trans": [[[6,10], "a1", "wvehicle"]],
+  "gunmount-common-post": [[[11,15], "a0", "wvehicle"]],
+  "(method 52 v-wpn-yellow-chain-gun)": [[[19,36], "v1", "wvehicle"]],
+  "vws-focus-search-base": [[13, "a1", "wvehicle"]]
 }

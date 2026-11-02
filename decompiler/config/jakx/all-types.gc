@@ -45297,13 +45297,36 @@
 ;; wvehicle-weapons-h             ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; +++v-wpn-type
+(defenum v-wpn-type
+  :type uint8
+  (vwt-0 0)
+  (vwt-1 1)
+  (vwt-2 2)
+  (vwt-3 3)
+  (vwt-4 4)
+  (vwt-5 5)
+  (vwt-6 6)
+  (vwt-7 7)
+  (vwt-8 8)
+  (vwt-9 9)
+  (vwt-10 10)
+  (vwt-11 11)
+  (vwt-12 12)
+  (vwt-13 13)
+  (vwt-14 14)
+  (vwt-15 15)
+  )
+;; ---v-wpn-type
+
+(declare-type rapid-fire-control basic)
 (deftype vehicle-weapon-slot (process-drawable)
-  ((owning-vehicle uint64  :offset-assert 248)
-   (ammunition     int8    :offset-assert 256)
-   (flags          uint8   :offset-assert 257)
-   (in-slot        uint8   :offset-assert 258)
-   (powerup-level  uint8   :offset-assert 259)
-   (my-type        uint8   :offset-assert 260)
+  ((owning-vehicle handle       :offset-assert 248)
+   (ammunition     int8         :offset-assert 256)
+   (flags          uint8        :offset-assert 257)
+   (in-slot        uint8        :offset-assert 258)
+   (powerup-level  uint8        :offset-assert 259)
+   (my-type        v-wpn-type   :offset-assert 260)
    )
   :method-count-assert 60
   :size-assert         #x105
@@ -45312,20 +45335,20 @@
     idle ;; 50
     )
   (:methods
-    (vehicle-weapon-slot-method-51 () none) ;; 51
-    (vehicle-weapon-slot-method-52 () none) ;; 52
-    (vehicle-weapon-slot-method-53 () none) ;; 53
-    (vehicle-weapon-slot-method-54 () none) ;; 54
-    (vehicle-weapon-slot-method-55 () none) ;; 55
+    (vehicle-weapon-slot-method-51 (_type_ vector) vector) ;; 51
+    (vehicle-weapon-slot-method-52 (_type_ vector) object) ;; 52
+    (get-ammo-remaining (_type_) int) ;; 53
+    (vehicle-weapon-slot-method-54 (_type_) int) ;; 54
+    (vehicle-weapon-slot-method-55 (_type_) rapid-fire-control) ;; 55
     (vehicle-weapon-slot-method-56 () none) ;; 56
-    (vehicle-weapon-slot-method-57 () none) ;; 57
-    (vehicle-weapon-slot-method-58 () none) ;; 58
+    (vehicle-weapon-slot-method-57 (_type_) symbol) ;; 57
+    (vehicle-weapon-slot-method-58 (_type_ object) int) ;; 58
     (vehicle-weapon-slot-method-59 () none) ;; 59
     )
   )
 
 (deftype gunmount-drawable (process-drawable)
-  ((mounted-on uint64  :offset-assert 248)
+  ((mounted-on handle  :offset-assert 248)
    (hardpoint  int8    :offset-assert 256)
    )
   :method-count-assert 54
@@ -45333,15 +45356,15 @@
   :flag-assert         #x3600800101
   (:methods
     (gunmount-drawable-method-50 () none) ;; 50
-    (gunmount-drawable-method-51 () none) ;; 51
-    (gunmount-drawable-method-52 () none) ;; 52
-    (gunmount-drawable-method-53 () none) ;; 53
+    (gunmount-drawable-method-51 (_type_) int) ;; 51
+    (gunmount-drawable-method-52 (_type_) bone) ;; 52
+    (gunmount-drawable-method-53 (_type_ draw-control-status draw-control-status) int) ;; 53
     )
   )
 
 (deftype gunmount-generic-drawable (gunmount-drawable)
   ((config          uint8   :offset-assert 257)
-   (flash           uint64  :offset-assert 264)
+   (flash           handle  :offset-assert 264)
    (changeover-anim int32   :offset-assert 272)
    (powerup-level   int8    :offset-assert 276)
    )
@@ -45381,7 +45404,7 @@
   )
 
 (deftype rapid-fire-control (basic)
-  ((owner          uint64                    :offset-assert 8)
+  ((owner          handle                    :offset-assert 8)
    (params         rapid-fire-params         :offset-assert 16)
    (shot-clock     uint16                    :offset-assert 20)
    (next-shot-from int8                      :offset-assert 22)
@@ -45412,9 +45435,9 @@
   )
 
 (deftype vehicle-weapon-drone (process-focusable)
-  ((owning-vehicle    uint64             :offset-assert 256)
+  ((owning-vehicle    handle             :offset-assert 256)
    (owning-slot       uint64             :offset-assert 264)
-   (target            uint64             :offset-assert 272)
+   (target            handle             :offset-assert 272)
    (orbit-height      float              :offset-assert 280)
    (orbit-radius      float              :offset-assert 284)
    (orbit-period      uint32             :offset-assert 288)
@@ -45426,7 +45449,7 @@
    (last-gaze-time    uint64             :offset-assert 328)
    (pitch-bend        float              :offset-assert 336)
    (sweep-loop        uint32             :offset-assert 340)
-   (muzzle-flashes    uint64     4       :offset-assert 344)
+   (muzzle-flashes    handle     4       :offset-assert 344)
    (next-target-poll  uint64             :offset-assert 376)
    (firecontrol       basic              :offset-assert 384)
    (blam              uint32             :offset-assert 388)
@@ -45451,6 +45474,7 @@
    (weapon-type uint8   :offset-assert 2)
    (pad1        uint8   :offset-assert 3)
    )
+  :pack-me
   :method-count-assert 9
   :size-assert         #x4
   :flag-assert         #x900000004
@@ -45459,7 +45483,7 @@
 (deftype v-wpn-ptable (structure)
   ((entries-count int8    :offset-assert 0)
    (total-chance  uint16  :offset-assert 2)
-   (entries-array uint32  :offset-assert 4)
+   (entries-array (inline-array v-wpn-ptable-entry)  :offset-assert 4)
    )
   :method-count-assert 9
   :size-assert         #x8
@@ -45479,15 +45503,19 @@
   )
 
 (deftype v-wpn-net-info (structure)
-  ()
+  ((left-type   uint8)
+   (right-type  uint8)
+   (left-power  uint8)
+   (right-power uint8)
+   )
   :method-count-assert 9
   )
 
 (define-extern V_R_MINE1_ARMED? symbol)
-;; (define-extern weapon-mask->type function)
+;; (define-extern weapon-mask->type (function uint uint)) ;; weird plzcw case
 (define-extern *weapon-suppression-table* (pointer (array symbol)))
-;; (define-extern v-wpn-base-common-trans function)
-;; (define-extern v-wpn-event-base function)
+(define-extern v-wpn-base-common-trans (function uint :behavior vehicle-weapon-slot))
+(define-extern v-wpn-event-base (function process int symbol event-message-block object :behavior vehicle-weapon-slot))
 (define-extern *cheat-defaultgun-in-race* symbol)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -45722,14 +45750,15 @@
    (pad13 uint32 5)
    (wpn-current-target             handle                            :offset-assert 4488)
    (wpn-current-target-acquired    handle                            :offset-assert 4496)
-   (wpn-left                       handle                            :offset-assert 4504)
-   (wpn-right                      handle                            :offset-assert 4512)
-   (wpn-shield                     handle                            :offset-assert 4520)
-   (wpn-drone                      handle                            :offset-assert 4528)
-   (wpn-oil                        handle                            :offset-assert 4536)
-   (wpn-turbo                      handle                            :offset-assert 4544)
-   (wpn-bulldog-gun                handle                            :offset-assert 4552)
-   (wpn-drawables                  handle                   2       :offset-assert 4560)
+   (wpns-list                      handle                   7        :offset-assert 4504)
+   (wpn-left                       handle                            :offset        4504)
+   (wpn-right                      handle                            :offset        4512)
+   (wpn-shield                     handle                            :offset        4520)
+   (wpn-drone                      handle                            :offset        4528)
+   (wpn-oil                        handle                            :offset        4536)
+   (wpn-turbo                      handle                            :offset        4544)
+   (wpn-bulldog-gun                handle                            :offset        4552)
+   (wpn-drawables                  handle                   2        :offset-assert 4560)
    (wpn-drawable-left              handle                            :offset 4560)
    (wpn-drawable-right             handle                            :offset 4568)
    (wpn-spin-done-left             int32                             :offset-assert 4576)
@@ -45976,7 +46005,7 @@
 (define-extern net-player-init-remote (function process none :behavior net-player))
 (define-extern *msg-map-net-player* (array symbol))
 (define-extern *net-process-class-info-net-player* net-process-class-info)
-(define-extern *net-players* (array symbol))
+(define-extern *net-players* (array net-player))
 (define-extern *active-net-player-count* int)
 (define-extern *active-net-players* (array net-player))
 (define-extern *active-net-non-spectator-count* int)
@@ -53902,38 +53931,38 @@
 ;; wvehicle-weapons-data          ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (define-extern V_YELLOW_GUIDED_MISSILE_STANDOFF_TIME object)
-;; (define-extern V_WPN_SHIELD_COLOR_LEVEL_I object)
-;; (define-extern V_WPN_SHIELD_COLOR_LEVEL_II object)
-;; (define-extern *v-wpn-available-yellow* array)
-;; (define-extern *v-wpn-available-red* array)
-;; (define-extern *v-wpn-available-purple* array)
-;; (define-extern *weapon-select-table-yellow-even* object)
-;; (define-extern *weapon-select-table-red-even* object)
-;; (define-extern *weapon-select-table-yellow-default* object)
-;; (define-extern *weapon-select-table-red-default* object)
-;; (define-extern *weapon-select-table-yellow-training* object)
-;; (define-extern *weapon-select-table-red-training* object)
-;; (define-extern *weapon-select-table-red-deathrace* object)
-;; (define-extern *weapon-select-table-yellow-deathrace* object)
-;; (define-extern *weapon-select-table-yellow-race-first* object)
-;; (define-extern *weapon-select-table-red-race-first* object)
-;; (define-extern *weapon-select-table-yellow-race-second* object)
-;; (define-extern *weapon-select-table-red-race-second* object)
-;; (define-extern *weapon-select-table-yellow-race-middle* object)
-;; (define-extern *weapon-select-table-red-race-middle* object)
-;; (define-extern *weapon-select-table-yellow-race-penultimate* object)
-;; (define-extern *weapon-select-table-red-race-penultimate* object)
-;; (define-extern *weapon-select-table-yellow-race-last* object)
-;; (define-extern *weapon-select-table-red-race-last* object)
-;; (define-extern *weapon-select-table-yellow-deathmatch-leading* object)
-;; (define-extern *weapon-select-table-red-deathmatch-leading* object)
-;; (define-extern *weapon-select-table-yellow-deathmatch-middle* object)
-;; (define-extern *weapon-select-table-red-deathmatch-middle* object)
-;; (define-extern *weapon-select-table-yellow-deathmatch-tailing* object)
-;; (define-extern *weapon-select-table-red-deathmatch-tailing* object)
-;; (define-extern *weapon-select-table-red-boss-battle* object)
-;; (define-extern *weapon-select-table-yellow-boss-battle* object)
+(define-extern V_YELLOW_GUIDED_MISSILE_STANDOFF_TIME time-frame)
+(define-extern V_WPN_SHIELD_COLOR_LEVEL_I rgbaf)
+(define-extern V_WPN_SHIELD_COLOR_LEVEL_II rgbaf)
+(define-extern *v-wpn-available-yellow* (pointer uint32))
+(define-extern *v-wpn-available-red* (pointer uint32))
+(define-extern *v-wpn-available-purple* (pointer uint32))
+(define-extern *weapon-select-table-yellow-even* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-red-even* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-yellow-default* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-red-default* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-yellow-training* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-red-training* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-red-deathrace* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-yellow-deathrace* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-yellow-race-first* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-red-race-first* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-yellow-race-second* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-red-race-second* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-yellow-race-middle* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-red-race-middle* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-yellow-race-penultimate* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-red-race-penultimate* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-yellow-race-last* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-red-race-last* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-yellow-deathmatch-leading* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-red-deathmatch-leading* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-yellow-deathmatch-middle* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-red-deathmatch-middle* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-yellow-deathmatch-tailing* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-red-deathmatch-tailing* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-red-boss-battle* v-wpn-ptable-quad)
+(define-extern *weapon-select-table-yellow-boss-battle* v-wpn-ptable-quad)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; net-hud                        ;;
@@ -57854,9 +57883,8 @@
 ;; wvehicle-weapons               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype muzzle-flash (process-drawable)
-  ((glued-to       uint64             :offset-assert 248)
+  ((glued-to       handle             :offset-assert 248)
    (glued-joint    int32              :offset-assert 256)
    (local-rotation quaternion :inline :offset-assert 272)
    )
@@ -57868,13 +57896,11 @@
     lit ;; 50
     )
   )
-|#
 
-#|
 (deftype v-wpn-yellow-chain-gun (vehicle-weapon-slot)
-  ((last-fire-event uint64  :offset-assert 264)
-   (firecontrol     basic   :offset-assert 272)
-   (blam            uint32  :offset-assert 276)
+  ((last-fire-event uint64              :offset-assert 264)
+   (firecontrol     rapid-fire-control  :offset-assert 272)
+   (blam            uint32              :offset-assert 276)
    )
   :method-count-assert 61
   :size-assert         #x118
@@ -57884,13 +57910,12 @@
     firing ;; 60
     )
   )
-|#
 
 #|
 (deftype v-wpn-yellow-default-gun (vehicle-weapon-slot)
-  ((last-fire-event uint64  :offset-assert 264)
-   (firecontrol     basic   :offset-assert 272)
-   (blam            uint32  :offset-assert 276)
+  ((last-fire-event uint64              :offset-assert 264)
+   (firecontrol     rapid-fire-control  :offset-assert 272)
+   (blam            uint32              :offset-assert 276)
    )
   :method-count-assert 61
   :size-assert         #x118
@@ -57949,25 +57974,25 @@
   )
 |#
 
-;; (define-extern vws-focus-search-base function)
-;; (define-extern gunmount-common-trans function)
-;; (define-extern gunmount-common-post function)
-;; (define-extern gunmount-drawable-init-by-other function)
-;; (define-extern gunmount-event-handler function)
-;; (define-extern muzzle-flash-event-handler function)
-;; (define-extern muzzle-flash-init-by-other function)
-;; (define-extern gunmount-get-change-anim function)
-;; (define-extern gunmount-generic-event-handler function)
-;; (define-extern v-wpn-yellow-chain-gun-I-rapid-fire-control-params object)
-;; (define-extern v-wpn-yellow-chain-gun-II-rapid-fire-control-params object)
+;; (define-extern vws-focus-search-base (function vehicle-weapon-slot int int int vector int none))
+(define-extern gunmount-common-trans (function object :behavior gunmount-generic-drawable))
+(define-extern gunmount-common-post (function none :behavior gunmount-generic-drawable))
+;; (define-extern gunmount-drawable-init-by-other (function wvehicle int int object :behavior gunmount-generic-drawable))
+(define-extern gunmount-event-handler (function process int symbol event-message-block object :behavior gunmount-drawable))
+;; (define-extern muzzle-flash-event-handler (function process int symbol event-message-block object :behavior muzzle-flash))
+(define-extern muzzle-flash-init-by-other (function handle int object :behavior muzzle-flash))
+(define-extern gunmount-get-change-anim (function int int int))
+;; (define-extern gunmount-generic-event-handler (function process int symbol event-message-block uint :behavior gunmount-generic-drawable))
+(define-extern v-wpn-yellow-chain-gun-I-rapid-fire-control-params rapid-fire-params)
+(define-extern v-wpn-yellow-chain-gun-II-rapid-fire-control-params rapid-fire-params)
 ;; (define-extern hack-sparticle-track-gun function)
-;; (define-extern v-wpn-yellow-default-gun-rapid-fire-control-params object)
+(define-extern v-wpn-yellow-default-gun-rapid-fire-control-params rapid-fire-params)
 ;; (define-extern v-wpn-yellow-guided-missile-init-remote function)
 ;; (define-extern *msg-map-v-wpn-yellow-guided-missile* array)
 ;; (define-extern *net-process-class-info-v-wpn-yellow-guided-missile* net-process-class-info)
 ;; (define-extern guided-missile-gen-proj-no-targ-helper function)
 ;; (define-extern guided-missile-gen-proj-targ-helper function)
-;; (define-extern seismic-blaster-affects-player? function)
+(define-extern seismic-blaster-affects-player? (function vehicle-weapon-slot net-player-race symbol))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons-aux           ;;
@@ -58142,26 +58167,26 @@
 
 ;; (define-extern v-wpn-base-init-by-other function)
 ;; (define-extern warning-hud-draw function)
-;; (define-extern v-wpn-type->color function)
-;; (define-extern v-wpn-type->gunmount-config function)
+(define-extern v-wpn-type->color (function v-wpn-type int))
+(define-extern v-wpn-type->gunmount-config (function v-wpn-type int))
 ;; (define-extern v-wpn-missile-init-by-other function)
 ;; (define-extern make-vehicle-weapon-slot function)
 ;; (define-extern v-wpn-choose-increasing-lethality function)
-;; (define-extern v-wpn-get-mask function)
-;; (define-extern v-wpn-num-available function)
-;; (define-extern v-wpn-choose-random function)
+;; (define-extern v-wpn-get-mask (function wvehicle uint))
+;; (define-extern v-wpn-num-available (function vehicle uint))
+;; (define-extern v-wpn-choose-random (function wvehicle uint uint))
 ;; (define-extern v-wpn-get-available-types function)
 ;; (define-extern race-player-behind-more-than function)
-;; (define-extern v-wpn-get-selection-table function)
-;; (define-extern v-wpn-mask-selection-table! function)
-;; (define-extern v-wpn-pack-msg function)
+;; (define-extern v-wpn-get-selection-table (function int int v-wpn-ptable-quad))
+;; (define-extern v-wpn-mask-selection-table! (function int v-wpn-ptable-quad int none))
+(define-extern v-wpn-pack-msg (function wvehicle mem-buffer none))
 ;; (define-extern v-wpn-unpack-msg! function)
-;; (define-extern vehicle-get-weapon-level function)
-;; (define-extern global-turbo-suppressor-set! function)
-;; (define-extern should-suppress-eco? function)
+(define-extern vehicle-get-weapon-level (function vehicle int int))
+(define-extern global-turbo-suppressor-set! (function int none))
+(define-extern should-suppress-eco? (function symbol symbol)) ;; uses some kind of weapons bitfield enum (game-task-advanced-options)
 ;; (define-extern rapid-fire-control-emitter-from-world function)
 ;; (define-extern rapid-fire-control-initialize-from-vehicle function)
-;; (define-extern is-friendly-fire-helper function)
+(define-extern is-friendly-fire-helper (function vehicle vehicle symbol))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wcar-skel                      ;;
@@ -58931,8 +58956,8 @@
    (minimap        connection-minimap         :offset-assert 260)
    (visible        basic                      :offset-assert 264)
    (last-sent-time int32                      :offset-assert 268)
-   (prox           basic                      :offset-assert 168)
-   (mesh           basic                      :offset-assert 276)
+  ;;  (prox           basic                      :offset-assert 168) ;; defined in process-nettable
+   (mesh           basic                      :offset 276)
    (slice-id       int16                      :offset-assert 280)
    (race-line      race-line                  :offset-assert 284)
    (lap-dist       float                      :offset-assert 288)
@@ -58945,6 +58970,10 @@
   :method-count-assert 79
   :size-assert         #x164
   :flag-assert         #x4f00e00164
+  (:state-methods
+    tracking ;; 50
+    die ;; 51
+    )
   (:methods
     (raceline-weapon-method-52 () none) ;; 52
     (raceline-weapon-method-53 () none) ;; 53
@@ -58973,10 +59002,6 @@
     (raceline-weapon-method-76 () none) ;; 76
     (raceline-weapon-method-77 () none) ;; 77
     (raceline-weapon-method-78 () none) ;; 78
-    )
-  (:state-methods
-    tracking ;; 50
-    die ;; 51
     )
   )
 |#

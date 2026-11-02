@@ -342,5 +342,12 @@
     [16, ["inline-array", "mem-buffer", 1]],
     [32, ["inline-array", "mem-buffer", 1]]
   ],
-  "(enter cam-vehicle)": [[16, ["inline-array", "vector", 1]]]
+  "(enter cam-vehicle)": [[16, ["inline-array", "vector", 1]]],
+  "v-wpn-get-mask": [[16, "event-message-block"]],
+  "(method 58 vehicle-weapon-slot)": [
+    [16, "event-message-block"],
+    [96, "vector"]
+  ],
+  "gunmount-common-trans": [[16, "vector"]],
+  "(method 52 v-wpn-yellow-chain-gun)": [[16, "event-message-block"]]
 }
