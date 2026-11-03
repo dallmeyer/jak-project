@@ -349,5 +349,45 @@
     [96, "vector"]
   ],
   "gunmount-common-trans": [[16, "vector"]],
-  "(method 52 v-wpn-yellow-chain-gun)": [[16, "event-message-block"]]
+  "(method 52 v-wpn-yellow-chain-gun)": [[16, "event-message-block"]],
+  "(method 52 v-wpn-yellow-default-gun)": [[16, "event-message-block"]],
+  "(method 52 v-wpn-yellow-grenade)": [[16, "event-message-block"]],
+  "(method 61 v-toad-shot)": [
+    [16, "vector"],
+    [32, "light-trail-tracker-spawn-params"]
+  ],
+  "(event explode explosion)": [
+    [16, "mystery-cquery-type0"],
+    [608, ["inline-array", "vector", 2]],
+    [640, "event-message-block"],
+    [720, ["inline-array", "vector", 2]]
+  ],
+  "find-closest-solid-sphere-prim": [[16, "vector"]],
+  "explosion-handle-touch-without-ccheck": [
+    [16, ["inline-array", "vector", 2]],
+    [64, "event-message-block"]
+  ],
+  "explosion-handle-touch-with-ccheck": [
+    [16, "mystery-cquery-type0"],
+    [608, ["inline-array", "vector", 2]],
+    [640, "event-message-block"]
+  ],
+  "gunmount-generic-event-handler": [[16, "matrix3"]],
+  "(method 52 v-wpn-yellow-guided-missile)": [[16, "event-message-block"]],
+  "(method 56 v-wpn-yellow-guided-missile)": [[16, "mystery-proj-params-type0"]],
+  "(method 61 v-yellow-guided-missile)": [
+    [16, "vector"],
+    [32, "light-trail-tracker-spawn-params"]
+  ],
+  "(method 72 v-yellow-guided-missile)": [
+    [16, "vector"],
+    [32, "vector"]
+  ],
+  "(method 78 v-yellow-guided-missile)": [
+    [16, "vector"],
+    [80, "collide-query"],
+    [768, "vector"]
+  ],
+  "doppler-pitch-shift": [[16, ["inline-array", "vector", 2]]],
+  "(anon-function 3 wvehicle-weapons-proj)": [[16, "explosion-init-params"]]
 }

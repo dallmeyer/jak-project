@@ -29086,8 +29086,8 @@
   (:methods
     (process-nettable-method-15 (_type_ mem-buffer) none) ;; 15
     (process-nettable-method-16 (_type_) none) ;; 16
-    (process-nettable-method-17 (_type_ symbol mem-buffer) none) ;; 17
-    (process-nettable-method-18 (_type_) none) ;; 18
+    (process-nettable-method-17 (_type_ symbol mem-buffer int) object) ;; 17
+    (process-nettable-method-18 (_type_ mem-buffer) none) ;; 18
     (process-nettable-method-19 (_type_) none) ;; 19
     (process-nettable-method-20 (_type_) none) ;; 20
     (process-nettable-method-21 (_type_) none) ;; 21
@@ -29096,15 +29096,15 @@
     (process-nettable-method-24 (_type_) none) ;; 24
     (process-nettable-method-25 (_type_) none) ;; 25
     (process-nettable-method-26 (_type_) none) ;; 26
-    (process-nettable-method-27 (_type_) none) ;; 27
+    (process-nettable-method-27 (_type_) mem-buffer) ;; 27
     (process-nettable-method-28 (_type_) none) ;; 28
-    (process-nettable-method-29 (_type_) none) ;; 29
+    (process-nettable-method-29 (_type_ mem-buffer int int) none) ;; 29
     (process-nettable-method-30 (_type_) none) ;; 30
     (process-nettable-method-31 (_type_) none) ;; 31
     (process-nettable-method-32 (_type_) none) ;; 32
     (process-nettable-method-33 (_type_) none) ;; 33
     (process-nettable-method-34 (_type_ int rgba) none) ;; TODO - guess on the rgba
-    (process-nettable-method-35 (_type_ int) none) ;; TODO - guess on the int, find a caller to net-enemy-init-remote
+    (process-nettable-method-35 (_type_ int) process-tree) ;; TODO - guess on the int, find a caller to net-enemy-init-remote
     (process-nettable-method-36 (_type_) none) ;; 36
     (process-nettable-method-37 (_type_ net-process-class-info) none) ;; 37
     (process-nettable-method-38 () none) ;; 38
@@ -30935,10 +30935,12 @@
   :method-count-assert 53
   :size-assert         #x1d4
   :flag-assert         #x35015001d4
+  (:state-methods
+    explode
+    )
   (:methods
-    (explosion-method-50 () none) ;; 50
     (explosion-method-51 () none) ;; 51
-    (explosion-method-52 () none) ;; 52
+    (explosion-method-52 (_type_) int) ;; 52
     )
   )
 
@@ -31319,6 +31321,7 @@
   (turret 32)
   (no-gravity 33)
   (gun-no-target 34)
+  (fs-35 35) ;; (method 58 v-toad-shot) ?
   )
 ;; ---process-focusable:focus-status
 
@@ -31981,20 +31984,20 @@
     (projectile-method-55 (_type_) none) ;; 55
     (projectile-method-56 (_type_) none) ;; 56
     (projectile-method-57 (_type_) none) ;; 57
-    (projectile-method-58 (_type_) none) ;; 58
+    (projectile-method-58 (_type_ int) int) ;; 58
     (projectile-method-59 (_type_) none) ;; 59
-    (projectile-method-60 (_type_) none) ;; 60
-    (projectile-method-61 (_type_) none) ;; 61
-    (projectile-method-62 (_type_) none) ;; 62
+    (projectile-method-60 (_type_) float) ;; 60
+    (projectile-method-61 (_type_) int) ;; 61
+    (projectile-method-62 (_type_) object) ;; 62
     (projectile-method-63 (_type_) none) ;; 63
     (projectile-method-64 (_type_) none) ;; 64
     (projectile-method-65 (_type_) none) ;; 65
-    (projectile-method-66 (_type_) none) ;; 66
-    (projectile-method-67 (_type_) none) ;; 67
+    (projectile-method-66 (_type_ process-drawable event-message-block) object) ;; 66
+    (projectile-method-67 (_type_ process-drawable) symbol) ;; 67
     (projectile-method-68 (_type_) none) ;; 68
     (projectile-method-69 (_type_) none) ;; 69
-    (projectile-method-70 (_type_) none) ;; 70
-    (projectile-method-71 (_type_) none) ;; 71
+    (projectile-method-70 (_type_) object) ;; 70
+    (projectile-method-71 (_type_) int) ;; 71
     )
   )
 
@@ -32019,6 +32022,14 @@
   :method-count-assert 9
   :size-assert         #x7d
   :flag-assert         #x90000007d
+  )
+
+(deftype mystery-proj-params-type0 (structure)
+  ((vec1      vector :inline)
+   (vec2      vector :inline)
+   (vec3      vector :inline)
+   (params    projectile-init-by-other-params :inline :offset-assert 48)
+   )
   )
 
 (deftype projectile-bounce (projectile)
@@ -32129,8 +32140,8 @@
    (excitement              float                                                                             :offset-assert 408)
    (shock-effect-time       time-frame                                                                        :offset-assert 416) ;; time-frame
    (fp-hud                  handle                                                                            :offset-assert 424) ;; handle
-   (no-load-wait            handle                                                                            :offset-assert 432) ;; time-frame
-   (no-look-around-wait     handle                                                                            :offset-assert 440) ;; time-frame
+   (no-load-wait            time-frame                                                                        :offset-assert 432) ;; time-frame
+   (no-look-around-wait     time-frame                                                                        :offset-assert 440) ;; time-frame
    (burn-proc               handle                                                                            :offset-assert 448) ;; handle
    (pre-joint-hook          (function none :behavior target)                                                  :offset-assert 456) ;; guessed by decompiler
    (notify                  handle                                                                            :offset-assert 464) ;; handle
@@ -36430,7 +36441,7 @@
 ;; (define-extern show-iop-memory function) ;; (function dma-buffer int)
 ;; (define-extern ear-trans function) ;; (function int vector)
 ;; (define-extern make-sqrt-table function) ;; (function none)
-;; (define-extern doppler-pitch-shift function) ;; (function vector vector float)
+(define-extern doppler-pitch-shift (function vector vector float))
 ;; (define-extern sound-bank-reload function) ;; (function none)
 ;; (define-extern sound-bank-reload-common function)
 (define-extern *jukebox-onoff* symbol)
@@ -40734,6 +40745,16 @@
 ;; generic-obs                    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(deftype mystery-cquery-type0 (structure)
+  "(event explode explosion)"
+  ((cquery          collide-query :inline)
+   (explosion-trans vector        :inline)
+   (proc-trans      vector        :inline)
+   (probe           float)
+   (dist            float)
+   )
+  )
+
 (deftype target-start (process-hidden)
   ()
   :method-count-assert 16
@@ -41316,7 +41337,7 @@
 ;; (define-extern *dist-cache-array* object) ;; (pointer float)
 ;; (define-extern *total-length* object) ;; float
 ;; (define-extern light-trail-tracker-common-post function) ;; (function object :behavior light-trail-tracker)
-;; (define-extern estimate-light-trail-mem-usage function) ;; (function uint uint int)
+(define-extern estimate-light-trail-mem-usage (function uint uint uint))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; lightning-new                  ;;
@@ -45339,8 +45360,8 @@
     (vehicle-weapon-slot-method-52 (_type_ vector) object) ;; 52
     (get-ammo-remaining (_type_) int) ;; 53
     (vehicle-weapon-slot-method-54 (_type_) int) ;; 54
-    (vehicle-weapon-slot-method-55 (_type_) rapid-fire-control) ;; 55
-    (vehicle-weapon-slot-method-56 () none) ;; 56
+    (vehicle-weapon-slot-method-55 (_type_) int) ;; 55
+    (vehicle-weapon-slot-method-56 (_type_) none) ;; 56
     (vehicle-weapon-slot-method-57 (_type_) symbol) ;; 57
     (vehicle-weapon-slot-method-58 (_type_ object) int) ;; 58
     (vehicle-weapon-slot-method-59 () none) ;; 59
@@ -45354,8 +45375,10 @@
   :method-count-assert 54
   :size-assert         #x101
   :flag-assert         #x3600800101
+  (:state-methods
+    gunmount-drawable-method-50
+    )
   (:methods
-    (gunmount-drawable-method-50 () none) ;; 50
     (gunmount-drawable-method-51 (_type_) int) ;; 51
     (gunmount-drawable-method-52 (_type_) bone) ;; 52
     (gunmount-drawable-method-53 (_type_ draw-control-status draw-control-status) int) ;; 53
@@ -45371,8 +45394,10 @@
   :method-count-assert 56
   :size-assert         #x115
   :flag-assert         #x3800900115
+  (:state-methods
+    gunmount-generic-drawable-method-54
+    )
   (:methods
-    (gunmount-generic-drawable-method-54 () none) ;; 54
     (gunmount-generic-drawable-method-55 () none) ;; 55
     )
   )
@@ -47155,7 +47180,7 @@
   :size-assert         #x231
   :flag-assert         #x4b01b00231
   (:methods
-    (net-projectile-method-72 () none) ;; 72
+    (net-projectile-method-72 (_type_ vector vector vector vector symbol) vector) ;; 72
     (net-projectile-method-73 () none) ;; 73
     (net-projectile-method-74 () none) ;; 74
     )
@@ -50348,7 +50373,6 @@
   )
 |#
 
-#|
 (deftype rigid-body-move-work (structure)
   ((cquery          collide-query      :inline :offset-assert 0)
    (mat             matrix             :inline :offset-assert 544)
@@ -50382,7 +50406,6 @@
   :size-assert         #x3b4
   :flag-assert         #x9000003b4
   )
-|#
 
 ;; (define-extern *debug-move-rigid-body* object)
 ;; (define-extern *rigid-body-work* object) ;; rigid-body-work
@@ -53919,13 +53942,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define-extern *explosion-effect-suppress* symbol)
-;; (define-extern explosion-init-by-other function) ;; (function explosion-init-params object :behavior explosion)
-;; (define-extern explosion-spawn-legacy-version function) ;; (function process-drawable type explosion-init-params (pointer process))
-;; (define-extern explosion-spawn function) ;; (function explosion-init-params process-drawable none)
-;; (define-extern find-closest-solid-sphere-prim function) ;; (function collide-shape vector collide-spec collide-shape-prim)
-;; (define-extern *explosion-debug-sphere* object) ;; sphere
-;; (define-extern explosion-handle-touch-with-ccheck function)
-;; (define-extern explosion-handle-touch-without-ccheck function)
+(define-extern explosion-init-by-other (function explosion-init-params process object :behavior explosion))
+(define-extern explosion-spawn-legacy-version (function process-drawable type explosion-init-params (pointer process)))
+(define-extern explosion-spawn (function explosion-init-params process-drawable process))
+(define-extern find-closest-solid-sphere-prim (function collide-shape vector collide-spec collide-shape-prim))
+(define-extern *explosion-debug-sphere* sphere)
+(define-extern explosion-handle-touch-with-ccheck (function explosion process-drawable int symbol event-message-block symbol :behavior explosion))
+(define-extern explosion-handle-touch-without-ccheck (function explosion process-drawable int symbol event-message-block symbol :behavior explosion))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons-data          ;;
@@ -56768,9 +56791,9 @@
 (define-extern *curve-toad-linear-up-red* curve2d-piecewise) ;; 
 (define-extern *trail-color-curve-grenade-yellow* curve-color-fast)
 (define-extern *curve-grenade-linear-toad-trail* curve2d-fast) ;; curve2d-fast
-(define-extern *grenade-1-trail* curve-color-fast)
+(define-extern *grenade-1-trail* light-trail-composition)
 (define-extern *trail-color-curve-grenade-purple* curve-color-fast)
-(define-extern *grenade-2-trail* curve-color-fast)
+(define-extern *grenade-2-trail* light-trail-composition)
 (define-extern *curve-yellow-tracker-linear-up-red* curve2d-piecewise)
 (define-extern *trail-color-curve-yellow-tracker-grenade* curve-color-fast)
 (define-extern *trail-color-curve-red-mine* curve-color-fast)
@@ -56780,8 +56803,8 @@
 (define-extern *trail-color-curve-car-missile* curve-color-fast)
 (define-extern *trail-color-curve-car-missile-II* curve-color-fast)
 (define-extern *curve-missile-trail-width* curve2d-fast)
-(define-extern *car-missile-trail* curve-color-fast)
-(define-extern *car-missile-trail-II* curve-color-fast)
+(define-extern *car-missile-trail* light-trail-composition)
+(define-extern *car-missile-trail-II* light-trail-composition)
 (define-extern *trail-color-curve-success-seeker* curve-color-fast)
 (define-extern *success-seeker-trail* curve-color-fast)
 (define-extern *curve-mine-width* curve2d-piecewise)
@@ -57465,9 +57488,8 @@
 ;; wcar-projectiles               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype v-toad-shot (net-projectile)
-  ((trail-tracker    uint64         :offset-assert 568) ;; handle
+  ((trail-tracker    handle         :offset-assert 568) ;; handle
    (blast-radius     float          :offset-assert 576)
    (powerup-level    uint8          :offset-assert 580)
    (initial-velocity vector :inline :offset-assert 592)
@@ -57477,18 +57499,17 @@
   :size-assert         #x264
   :flag-assert         #x4c01e00264
   (:methods
-    (v-toad-shot-method-75 () none) ;; 75
+    (v-toad-shot-method-75 (_type_) float) ;; 75
     )
   (:state-methods
     impact ;; 52
     die ;; 50
     )
   )
-|#
 
-;; (define-extern v-toad-shot-init-remote function)
-;; (define-extern *msg-map-v-toad-shot* array)
-;; (define-extern *net-process-class-info-v-toad-shot* net-process-class-info)
+(define-extern v-toad-shot-init-remote (function int int :behavior v-toad-shot))
+(define-extern *msg-map-v-toad-shot* (array symbol))
+(define-extern *net-process-class-info-v-toad-shot* net-process-class-info)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons-proj          ;;
@@ -57507,14 +57528,14 @@
   :method-count-assert 64
   :size-assert         #x16c
   :flag-assert         #x4000e0016c
-  (:methods
-    (mine-a-method-62 () none) ;; 62
-    (mine-a-method-63 () none) ;; 63
-    )
   (:state-methods
     idle ;; 59
     falling ;; 60
     die ;; 61
+    )
+  (:methods
+    (mine-a-method-62 () none) ;; 62
+    (mine-a-method-63 () none) ;; 63
     )
   )
 |#
@@ -57537,10 +57558,6 @@
   :method-count-assert 67
   :size-assert         #x194
   :flag-assert         #x4301100194
-  (:methods
-    (mine-b-method-65 () none) ;; 65
-    (mine-b-method-66 () none) ;; 66
-    )
   (:state-methods
     idle ;; 59
     leaping-onto ;; 61
@@ -57549,30 +57566,28 @@
     shake-off ;; 63
     die ;; 64
     )
+  (:methods
+    (mine-b-method-65 () none) ;; 65
+    (mine-b-method-66 () none) ;; 66
+    )
   )
 |#
 
-#|
 (deftype v-yellow-guided-missile (net-projectile)
-  ((trail-tracker        uint64                       :offset-assert 568)
+  ((trail-tracker        handle                       :offset-assert 568)
    (blast-radius         float                        :offset-assert 576)
    (initial-velocity     float                        :offset-assert 580)
-   (time-of-next-pitch   uint64                       :offset-assert 584)
+   (time-of-next-pitch   time-frame                   :offset-assert 584)
    (time-strike-standoff int32                        :offset-assert 592)
    (next-rot             quaternion           :inline :offset-assert 608)
-   (previous-target      uint64                       :offset-assert 624)
-   (pred                 net-predictor-simple :inline :offset-assert 640)
+   (previous-target      handle                       :offset-assert 624)
+   (pred                 net-predictor-simple :inline :offset-assert 640)   
    (defer-kaboom         uint64                       :offset-assert 952)
-   (last-hit             uint64                       :offset-assert 960)
+   (last-hit             handle                       :offset-assert 960)
    )
   :method-count-assert 81
   :size-assert         #x3c8
   :flag-assert         #x51034003c8
-  (:methods
-    (v-yellow-guided-missile-method-78 () none) ;; 78
-    (v-yellow-guided-missile-method-79 () none) ;; 79
-    (v-yellow-guided-missile-method-80 () none) ;; 80
-    )
   (:state-methods
     moving ;; 53
     tracking ;; 77
@@ -57582,8 +57597,12 @@
     launching ;; 75
     die ;; 50
     )
+  (:methods
+    (v-yellow-guided-missile-method-78 (_type_) object) ;; 78
+    (v-yellow-guided-missile-method-79 (_type_) vector) ;; 79
+    (v-yellow-guided-missile-method-80 (_type_) int) ;; 80
+    )
   )
-|#
 
 ;; (define-extern mine-a-init-remote function)
 ;; (define-extern *msg-map-mine-a* array)
@@ -57595,15 +57614,17 @@
 ;; (define-extern mine-b-common-trans function)
 ;; (define-extern *mine-b-hack* object)
 ;; (define-extern mine-b-init-by-other function)
-;; (define-extern v-yellow-guided-missile-init-remote function)
-;; (define-extern *msg-map-v-yellow-guided-missile* array)
-;; (define-extern *net-process-class-info-v-yellow-guided-missile* net-process-class-info)
-;; (define-extern guided-missile-moving-event-handler function)
-;; (define-extern guided-missile-base-trans function)
-;; (define-extern v-yellow-defaultgun-hitspang-params object)
-;; (define-extern v-wpn-yellow-chaingun-1-hitspang-params object)
-;; (define-extern v-wpn-yellow-chaingun-2-hitspang-params object)
-;; (define-extern v-wpn-bulldog-hitspang-params object)
+(define-extern v-yellow-guided-missile-init-remote (function int int :behavior v-yellow-guided-missile))
+(define-extern *msg-map-v-yellow-guided-missile* (array symbol))
+(define-extern *net-process-class-info-v-yellow-guided-missile* net-process-class-info)
+(define-extern spawn-text-display-deflected-view-1 (function process))
+(define-extern spawn-text-display-deflected-view-2 (function process))
+(define-extern guided-missile-moving-event-handler (function process int symbol event-message-block object :behavior v-yellow-guided-missile))
+(define-extern guided-missile-base-trans (function int :behavior v-yellow-guided-missile))
+(define-extern v-yellow-defaultgun-hitspang-params rapid-fire-callback-gun-hitspang-params)
+(define-extern v-wpn-yellow-chaingun-1-hitspang-params rapid-fire-callback-gun-hitspang-params)
+(define-extern v-wpn-yellow-chaingun-2-hitspang-params rapid-fire-callback-gun-hitspang-params)
+(define-extern v-wpn-bulldog-hitspang-params rapid-fire-callback-gun-hitspang-params)
 ;; (define-extern rapid-fire-callback-gun-hitspang function)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -57911,7 +57932,6 @@
     )
   )
 
-#|
 (deftype v-wpn-yellow-default-gun (vehicle-weapon-slot)
   ((last-fire-event uint64              :offset-assert 264)
    (firecontrol     rapid-fire-control  :offset-assert 272)
@@ -57925,9 +57945,7 @@
     firing ;; 60
     )
   )
-|#
 
-#|
 (deftype v-wpn-yellow-grenade (vehicle-weapon-slot)
   ((next-shot-allowed uint64  :offset-assert 264)
    (next-to-fire      uint8   :offset-assert 272)
@@ -57939,13 +57957,11 @@
     idle ;; 50
     )
   )
-|#
 
-#|
 (deftype v-wpn-yellow-guided-missile (vehicle-weapon-slot)
   ((next-shot-allowed        uint64    :offset-assert 264)
    (next-to-fire             uint8     :offset-assert 272)
-   (targ-list                UNKNOWN 4 :offset-assert 280)
+   (targ-list                handle 4  :offset-assert 280)
    (run-targeting-this-frame int8      :offset-assert 312)
    )
   :method-count-assert 61
@@ -57956,9 +57972,7 @@
     firing ;; 60
     )
   )
-|#
 
-#|
 (deftype v-wpn-yellow-seismic-blaster (vehicle-weapon-slot)
   ((fire-at      uint32  :offset-assert 264)
    (on-hud-indic int8    :offset-assert 268)
@@ -57972,24 +57986,23 @@
     backfiring ;; 61
     )
   )
-|#
 
 ;; (define-extern vws-focus-search-base (function vehicle-weapon-slot int int int vector int none))
 (define-extern gunmount-common-trans (function object :behavior gunmount-generic-drawable))
 (define-extern gunmount-common-post (function none :behavior gunmount-generic-drawable))
-;; (define-extern gunmount-drawable-init-by-other (function wvehicle int int object :behavior gunmount-generic-drawable))
+(define-extern gunmount-drawable-init-by-other (function wvehicle int int object :behavior gunmount-generic-drawable))
 (define-extern gunmount-event-handler (function process int symbol event-message-block object :behavior gunmount-drawable))
-;; (define-extern muzzle-flash-event-handler (function process int symbol event-message-block object :behavior muzzle-flash))
+(define-extern muzzle-flash-event-handler (function process int symbol event-message-block object :behavior muzzle-flash))
 (define-extern muzzle-flash-init-by-other (function handle int object :behavior muzzle-flash))
 (define-extern gunmount-get-change-anim (function int int int))
-;; (define-extern gunmount-generic-event-handler (function process int symbol event-message-block uint :behavior gunmount-generic-drawable))
+(define-extern gunmount-generic-event-handler (function process int symbol event-message-block object :behavior gunmount-generic-drawable))
 (define-extern v-wpn-yellow-chain-gun-I-rapid-fire-control-params rapid-fire-params)
 (define-extern v-wpn-yellow-chain-gun-II-rapid-fire-control-params rapid-fire-params)
 ;; (define-extern hack-sparticle-track-gun function)
 (define-extern v-wpn-yellow-default-gun-rapid-fire-control-params rapid-fire-params)
-;; (define-extern v-wpn-yellow-guided-missile-init-remote function)
-;; (define-extern *msg-map-v-wpn-yellow-guided-missile* array)
-;; (define-extern *net-process-class-info-v-wpn-yellow-guided-missile* net-process-class-info)
+(define-extern v-wpn-yellow-guided-missile-init-remote (function int int :behavior v-wpn-yellow-guided-missile))
+(define-extern *msg-map-v-wpn-yellow-guided-missile* (array symbol))
+(define-extern *net-process-class-info-v-wpn-yellow-guided-missile* net-process-class-info)
 ;; (define-extern guided-missile-gen-proj-no-targ-helper function)
 ;; (define-extern guided-missile-gen-proj-targ-helper function)
 (define-extern seismic-blaster-affects-player? (function vehicle-weapon-slot net-player-race symbol))
@@ -58186,7 +58199,7 @@
 (define-extern should-suppress-eco? (function symbol symbol)) ;; uses some kind of weapons bitfield enum (game-task-advanced-options)
 ;; (define-extern rapid-fire-control-emitter-from-world function)
 ;; (define-extern rapid-fire-control-initialize-from-vehicle function)
-(define-extern is-friendly-fire-helper (function vehicle vehicle symbol))
+(define-extern is-friendly-fire-helper (function process-drawable process-drawable symbol))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wcar-skel                      ;;

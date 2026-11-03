@@ -2004,5 +2004,89 @@
   "gunmount-common-trans": [[[6,10], "a1", "wvehicle"]],
   "gunmount-common-post": [[[11,15], "a0", "wvehicle"]],
   "(method 52 v-wpn-yellow-chain-gun)": [[[19,36], "v1", "wvehicle"]],
-  "vws-focus-search-base": [[13, "a1", "wvehicle"]]
+  "(method 52 v-wpn-yellow-default-gun)": [[[8,12], "a0", "wvehicle"]],
+  "(method 52 v-wpn-yellow-grenade)": [[[8,12], "a0", "wvehicle"]],
+  "(method 56 v-wpn-yellow-grenade)": [
+    [[7,11], "a0", "wvehicle"],
+    [[24,28], "a0", "wvehicle"]
+  ],
+  "vws-focus-search-base": [[13, "a1", "wvehicle"]],
+  "(method 58 v-toad-shot)": [[[13,17], "a0", "process-focusable"]],
+  "(method 66 v-toad-shot)": [[[2,63], "s4", "touching-shapes-entry"]],
+  "explosion-init-by-other": [
+    [109, "v1", "collide-shape"],
+    [77, "a0", "collide-shape"]
+  ],
+  "(trans explode explosion)": [[4, "gp", "collide-shape"]],
+  "(enter explode explosion)": [
+    [[6,18], "a0", "collide-shape"],
+    [22, "v1", "collide-shape"]
+  ],
+  "(event explode explosion)": [
+    [13, "a0", "collide-shape"],
+    [23, "s1", "process-drawable"],
+    [23, "s1", "process-drawable"],
+    [80, "s1", "process-focusable"],
+    [97, "s1", "collide-shape"],
+    [275, "s4", "vehicle"],
+    [287, "s5", "net-enemy"],
+    [[308,320], "s2", "process-drawable"],
+    [314, "s3", "collide-shape"],
+    [322, "v1", "collide-shape"],
+    [464, "s4", "vehicle"],
+    [479, "v1", "net-enemy"],
+    [[326,405], "s3", "vector"]
+  ],
+  "find-closest-solid-sphere-prim": [
+    [12, "v1", "collide-shape-prim-group"]
+  ],
+  "explosion-handle-touch-without-ccheck": [
+    [17, "s3", "collide-shape"],
+    [25, "v1", "collide-shape"],
+    [[29,108], "s3", "vector"],
+    [167, "s4", "vehicle"],
+    [179, "s5", "net-enemy"]
+  ],
+  "explosion-handle-touch-with-ccheck": [
+    [6, "a0", "collide-shape"],
+    [73, "s1", "process-focusable"],
+    [90, "s1", "collide-shape"],
+    [268, "s4", "vehicle"],
+    [280, "s5", "net-enemy"]
+  ],
+  "is-friendly-fire-helper": [
+    [26, "gp", "vehicle"],
+    [31, "s5", "vehicle"],
+    [72, "s5", "vehicle"],
+    [76, "gp", "vehicle"]
+  ],
+  "gunmount-generic-event-handler": [[11, "s5", "vector"]],
+  "muzzle-flash-event-handler": [[[10,30], "v1", "vehicle"]],
+  "(method 52 v-wpn-yellow-guided-missile)": [[18, "s4", "wvehicle"]],
+  "(method 56 v-wpn-yellow-guided-missile)": [[10, "a0", "wvehicle"]],
+  "(method 35 v-yellow-guided-missile)": [[28, "s5", "process-nettable"]],
+  "(method 58 v-yellow-guided-missile)": [[33, "gp", "process-focusable"]],
+  "(method 61 v-yellow-guided-missile)": [[85, "v1", "float"]],
+  "(method 70 v-yellow-guided-missile)": [[57, "s4", "process-focusable"]],
+  "(method 78 v-yellow-guided-missile)": [
+    [40, "s5", "process-focusable"],
+    [181, "s4", "wvehicle"],
+    [222, "s4", "collide-shape-prim"],
+    [[421,430], "s5", "wvehicle"]
+  ],
+  "(method 79 v-yellow-guided-missile)": [
+    [223, "v1", "float"],
+    [244, "v1", "float"],
+    [267, "v1", "float"],
+    [288, "v1", "float"]
+  ],
+  "(anon-function 3 wvehicle-weapons-proj)": [
+    [[118, 136], "s3", "wvehicle"],
+    [[167, 172], "s2", "wvehicle"]
+  ],
+  "guided-missile-moving-event-handler": [
+    [22, "s5", "vehicle"],
+    [64, "a0", "process-drawable"],
+    [132, "gp", "vehicle"]
+  ]
 }

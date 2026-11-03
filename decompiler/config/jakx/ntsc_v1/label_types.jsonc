@@ -902,5 +902,15 @@
     ["L59", "v-wpn-ptable"],
     ["L61", "v-wpn-ptable"],
     ["L63", "v-wpn-ptable"]
+  ],
+  "explosion": [
+    ["L111", "attack-info"],
+    ["L112", "attack-info"],
+    ["L113", "attack-info"],
+    ["L114", "attack-info"]
+  ],
+  "wvehicle-weapons-proj": [
+    ["L686", "vector"],
+    ["L687", "vector"]
   ]
 }

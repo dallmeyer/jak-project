@@ -456,5 +456,8 @@
   "scene": [
     [3, "(function symbol :behavior scene-player)"],
     [4, "(function symbol :behavior scene-player)"]
+  ],
+  "wvehicle-weapons-proj": [
+    [3, "(function object :behavior v-yellow-guided-missile)"]
   ]
 }
