@@ -2088,5 +2088,42 @@
     [22, "s5", "vehicle"],
     [64, "a0", "process-drawable"],
     [132, "gp", "vehicle"]
-  ]
+  ],
+  "(method 15 mine-a)": [
+    [37, "s5", "process-nettable"]
+  ],
+  "(anon-function 4 wvehicle-weapons-proj)": [
+    [[4,7], "t9", "(function process-drawable none)"]
+  ],
+  "(anon-function 67 wvehicle-weapons-proj)": [
+    [[3,140], "gp", "rigid-body-impact"],
+    [27, "a0", "wvehicle"],
+    [86, "a0", "wvehicle"]
+  ],
+  "(anon-function 100 wvehicle-weapons-proj)": [[[32,48], "v1", "attack-info"]],
+  "(anon-function 102 wvehicle-weapons-proj)": [
+    [36, "v0", "process-drawable"],
+    [76, "v0", "process-drawable"]
+  ],
+  "(anon-function 61 wvehicle-weapons-proj)": [[[3,19], "v1", "attack-info"]],
+  "(anon-function 63 wvehicle-weapons-proj)": [[9, "a1", "wvehicle"]],
+  "(anon-function 64 wvehicle-weapons-proj)": [
+    [34, "a1", "process-drawable"],
+    [49, "a0", "wvehicle"],
+    [167, "a0", "wvehicle"]
+  ],
+  "(anon-function 70 wvehicle-weapons-proj)": [
+    [26, "a0", "wvehicle"],
+    [126, "a1", "wvehicle"]
+  ],
+  "(anon-function 74 wvehicle-weapons-proj)": [
+    [44, "v0", "process-drawable"],
+    [84, "v0", "process-drawable"]
+  ],
+  "(anon-function 77 wvehicle-weapons-proj)": [
+    [[35,42], "gp", "wvehicle"],
+    [[114,118], "v1", "attack-info"]
+  ],
+  "(anon-function 105 wvehicle-weapons-proj)": [[[35,39], "v1", "attack-info"]],
+  "(method 65 projectile)": [[[3,6], "a1", "process"]]
 }

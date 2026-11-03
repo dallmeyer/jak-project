@@ -28777,7 +28777,7 @@
     (read-uint32 (_type_ ) uint) ;; 38
     (read-uint64 (_type_) uint) ;; 39
     (read-float (_type_) float) ;; 40
-    (read-vector (_type_ mem-buffer) none) ;; 41
+    (read-vector (_type_ vector) none) ;; 41
     (read-vector-scaled (_type_ vector vector) none) ;; 42
     (read-quaternion (_type_ quaternion) none) ;; 43
     (read-level-pos (_type_ mem-buffer) none) ;; 44
@@ -29104,7 +29104,7 @@
     (process-nettable-method-32 (_type_) none) ;; 32
     (process-nettable-method-33 (_type_) none) ;; 33
     (process-nettable-method-34 (_type_ int rgba) none) ;; TODO - guess on the rgba
-    (process-nettable-method-35 (_type_ int) process-tree) ;; TODO - guess on the int, find a caller to net-enemy-init-remote
+    (process-nettable-method-35 (_type_ mem-buffer) process-tree) ;; TODO - guess on the int, find a caller to net-enemy-init-remote
     (process-nettable-method-36 (_type_) none) ;; 36
     (process-nettable-method-37 (_type_ net-process-class-info) none) ;; 37
     (process-nettable-method-38 () none) ;; 38
@@ -30592,7 +30592,7 @@
     (pull-rider! (_type_ pull-rider-info) none) ;; 43
     (pull-riders! (_type_) symbol) ;; 44
     (do-push-aways (_type_) collide-spec) ;; 45
-    (update-transforms (_type_) none) ;; 46
+    (update-transforms (_type_) int) ;; 46
     (set-collide-with! (_type_ collide-spec) none) ;; 47
     (set-collide-as! (_type_ collide-spec) none) ;; 48
     (modify-collide-as! (_type_ int collide-spec collide-spec) none) ;; 49
@@ -30668,8 +30668,8 @@
     (collide-shape-moving-method-61 () none) ;; 61 ;; (move-to-ground-point (_type_ vector vector vector) none)
     (collide-shape-moving-method-62 () none) ;; 62 ;; (compute-acc-due-to-gravity (_type_ vector float) vector)
     (collide-shape-moving-method-63 () none) ;; 63 ;; (rbody-collision (_type_ rigid-body-control float) none)
-    (collide-shape-moving-method-64 () none) ;; 64 ;; (try-snap-to-surface (_type_ vector float float float) symbol)
-    (collide-shape-moving-method-65 () none) ;; 65 ;; (fill-and-try-snap-to-surface (_type_ vector float float float collide-query) symbol)
+    (collide-shape-moving-method-64 (_type_ vector float float float collide-query) symbol) ;; 64 ;; (try-snap-to-surface (_type_ vector float float float) symbol)
+    (collide-shape-moving-method-65 (_type_ vector vector float) float) ;; 65 ;; (fill-and-try-snap-to-surface (_type_ vector float float float collide-query) symbol)
     (collide-shape-moving-method-66 () none) ;; 66 ;; (step-collision! (_type_ vector vector float int) float)
     )
   )
@@ -31981,7 +31981,7 @@
     moving)
   (:methods
     (projectile-method-54 (_type_) none) ;; 54
-    (projectile-method-55 (_type_) none) ;; 55
+    (projectile-method-55 (_type_) int) ;; 55
     (projectile-method-56 (_type_) none) ;; 56
     (projectile-method-57 (_type_) none) ;; 57
     (projectile-method-58 (_type_ int) int) ;; 58
@@ -31991,10 +31991,10 @@
     (projectile-method-62 (_type_) object) ;; 62
     (projectile-method-63 (_type_) none) ;; 63
     (projectile-method-64 (_type_) none) ;; 64
-    (projectile-method-65 (_type_) none) ;; 65
+    (projectile-method-65 (_type_ process int symbol event-message-block) object) ;; 65
     (projectile-method-66 (_type_ process-drawable event-message-block) object) ;; 66
     (projectile-method-67 (_type_ process-drawable) symbol) ;; 67
-    (projectile-method-68 (_type_) none) ;; 68
+    (projectile-method-68 (_type_ int int) object) ;; 68
     (projectile-method-69 (_type_) none) ;; 69
     (projectile-method-70 (_type_) object) ;; 70
     (projectile-method-71 (_type_) int) ;; 71
@@ -44936,7 +44936,7 @@
     (vehicle-method-148 () none) ;; 148 ;; (vehicle-method-148 (_type_) none)
     (vehicle-method-149 () none) ;; 149 ;; (vehicle-method-149 (_type_) none)
     (vehicle-method-150 () none) ;; 150 ;; (vehicle-method-150 (_type_) none)
-    (vehicle-method-151 () none) ;; 151 ;; (set-hit-points (_type_ float) none)
+    (vehicle-method-151 (_type_ vector int) none) ;; 151 ;; (set-hit-points (_type_ float) none)
     (vehicle-method-152 () none) ;; 152
     (vehicle-method-153 () none) ;; 153
     (vehicle-method-154 () none) ;; 154
@@ -45829,11 +45829,11 @@
     (wvehicle-method-225 () none) ;; 225
     (wvehicle-method-226 () none) ;; 226
     (wvehicle-method-227 () none) ;; 227
-    (wvehicle-method-228 () none) ;; 228
-    (wvehicle-method-229 () none) ;; 229
-    (wvehicle-method-230 () none) ;; 230
-    (wvehicle-method-231 () none) ;; 231
-    (wvehicle-method-232 () none) ;; 232
+    (wvehicle-method-228 (_type_ vector int) none) ;; 228
+    (wvehicle-method-229 (_type_ vector int) none) ;; 229
+    (wvehicle-method-230 (_type_ vector) int) ;; 230
+    (wvehicle-method-231 (_type_ vector) none) ;; 231
+    (wvehicle-method-232 (_type_) none) ;; 232
     (wvehicle-method-233 () none) ;; 233
     (wvehicle-method-234 () none) ;; 234
     (wvehicle-method-235 () none) ;; 235
@@ -57515,14 +57515,20 @@
 ;; wvehicle-weapons-proj          ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
+(deftype mystery-mine-a-type0 (structure)
+  ((v vector      :inline :offset-assert 0)
+   (q quaternion  :inline :offset-assert 16)
+   (h uint16              :offset-assert 32)
+   )
+  )
+
 (deftype mine-a (process-focusable)
-  ((shooter           uint64             :offset-assert 256)
+  ((shooter           handle             :offset-assert 256)
    (destination-point vector     :inline :offset-assert 272)
    (destination-rot   quaternion :inline :offset-assert 288)
    (traj              trajectory :inline :offset-assert 304)
-   (beepy             uint32             :offset-assert 344)
-   (trail-tracker     uint64             :offset-assert 352)
+   (beepy             sound-id           :offset-assert 344)
+   (trail-tracker     handle             :offset-assert 352)
    (warning           basic              :offset-assert 360)
    )
   :method-count-assert 64
@@ -57534,25 +57540,27 @@
     die ;; 61
     )
   (:methods
-    (mine-a-method-62 () none) ;; 62
-    (mine-a-method-63 () none) ;; 63
+    (mine-a-method-62 (_type_) object) ;; 62
+    (mine-a-method-63 (_type_ vehicle) quaternion) ;; 63
     )
   )
-|#
 
-#|
+(deftype mystery-mine-b-type0 (structure)
+  ((v vector      :inline :offset-assert 0))
+  )
+
 (deftype mine-b (process-focusable)
-  ((shooter           uint64             :offset-assert 256)
-   (glued-to          uint64             :offset-assert 264)
+  ((shooter           handle             :offset-assert 256)
+   (glued-to          handle             :offset-assert 264)
    (destination-point vector     :inline :offset-assert 272)
    (destination-rot   quaternion :inline :offset-assert 288)
    (traj              trajectory :inline :offset-assert 304)
    (cached-rp-trans   vector     :inline :offset-assert 352)
-   (trail-tracker     uint64             :offset-assert 368)
-   (beepy             uint32             :offset-assert 376)
+   (trail-tracker     handle             :offset-assert 368)
+   (beepy             sound-id           :offset-assert 376)
    (attach-point      int32              :offset-assert 380)
    (looseness         int32              :offset-assert 384)
-   (expires-on        uint64             :offset-assert 392)
+   (expires-on        time-frame         :offset-assert 392)
    (warning           basic              :offset-assert 400)
    )
   :method-count-assert 67
@@ -57567,11 +57575,10 @@
     die ;; 64
     )
   (:methods
-    (mine-b-method-65 () none) ;; 65
-    (mine-b-method-66 () none) ;; 66
+    (mine-b-method-65 (_type_) object) ;; 65
+    (mine-b-method-66 (_type_ vehicle) quaternion) ;; 66
     )
   )
-|#
 
 (deftype v-yellow-guided-missile (net-projectile)
   ((trail-tracker        handle                       :offset-assert 568)
@@ -57604,16 +57611,16 @@
     )
   )
 
-;; (define-extern mine-a-init-remote function)
-;; (define-extern *msg-map-mine-a* array)
-;; (define-extern *net-process-class-info-mine-a* net-process-class-info)
-;; (define-extern mine-a-init-by-other function)
-;; (define-extern mine-b-init-remote function)
-;; (define-extern *msg-map-mine-b* array)
-;; (define-extern *net-process-class-info-mine-b* net-process-class-info)
-;; (define-extern mine-b-common-trans function)
-;; (define-extern *mine-b-hack* object)
-;; (define-extern mine-b-init-by-other function)
+(define-extern mine-a-init-remote (function int int :behavior mine-a))
+(define-extern *msg-map-mine-a* (array symbol))
+(define-extern *net-process-class-info-mine-a* net-process-class-info)
+(define-extern mine-a-init-by-other (function vector quaternion process-drawable object :behavior mine-a))
+(define-extern mine-b-init-remote (function int int :behavior mine-b))
+(define-extern *msg-map-mine-b* (array symbol))
+(define-extern *net-process-class-info-mine-b* net-process-class-info)
+(define-extern mine-b-common-trans (function int :behavior mine-b))
+(define-extern *mine-b-hack* rigid-body-impact)
+(define-extern mine-b-init-by-other (function vector quaternion process-drawable object :behavior mine-b))
 (define-extern v-yellow-guided-missile-init-remote (function int int :behavior v-yellow-guided-missile))
 (define-extern *msg-map-v-yellow-guided-missile* (array symbol))
 (define-extern *net-process-class-info-v-yellow-guided-missile* net-process-class-info)
@@ -57625,7 +57632,7 @@
 (define-extern v-wpn-yellow-chaingun-1-hitspang-params rapid-fire-callback-gun-hitspang-params)
 (define-extern v-wpn-yellow-chaingun-2-hitspang-params rapid-fire-callback-gun-hitspang-params)
 (define-extern v-wpn-bulldog-hitspang-params rapid-fire-callback-gun-hitspang-params)
-;; (define-extern rapid-fire-callback-gun-hitspang function)
+;; (define-extern rapid-fire-callback-gun-hitspang (function int collide-query int rapid-fire-callback-gun-hitspang-params none))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons-oil           ;;

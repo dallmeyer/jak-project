@@ -389,5 +389,23 @@
     [768, "vector"]
   ],
   "doppler-pitch-shift": [[16, ["inline-array", "vector", 2]]],
-  "(anon-function 3 wvehicle-weapons-proj)": [[16, "explosion-init-params"]]
+  "(anon-function 3 wvehicle-weapons-proj)": [[16, "explosion-init-params"]],
+  "(anon-function 6 wvehicle-weapons-proj)": [[16, "event-message-block"]],
+  "(anon-function 17 wvehicle-weapons-proj)": [[16, "event-message-block"]],
+  "(anon-function 58 wvehicle-weapons-proj)": [[16, "quaternion"]],
+  "(anon-function 59 wvehicle-weapons-proj)": [[16, "light-trail-tracker-spawn-params"]],
+  "(anon-function 64 wvehicle-weapons-proj)": [
+    [16, "mystery-mine-b-type0"],
+    [32, "matrix3"]
+  ],
+  "(anon-function 67 wvehicle-weapons-proj)": [[64, "vector"]],
+  "(anon-function 70 wvehicle-weapons-proj)": [[16, "mystery-mine-b-type0"]],
+  "(anon-function 97 wvehicle-weapons-proj)": [[16, "quaternion"]],
+  "(anon-function 99 wvehicle-weapons-proj)": [[16, "light-trail-tracker-spawn-params"]],
+  "(method 35 mine-a)": [[16, "mystery-mine-a-type0"]],
+  "(method 69 projectile)": [[16, "collide-query"]],
+  "(method 65 collide-shape-moving)": [
+    [560, "vector"],
+    [576, "vector"]
+  ]
 }
