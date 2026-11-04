@@ -5,7 +5,7 @@
   "expected_elf_name": "SCUS_974.29",
   // if you want to filter to only some object names.
   // it will make the decompiler much faster.
-  "allowed_objects": ["math-camera","drawable","wvehicle-weapons-h","wvehicle-weapons-util","wvehicle-h","light-trails","light-trails-h","explosion","wvehicle-weapons-proj","wvehicle-weapons", "wcar-projectiles", "wvehicle-weapons-util","wvehicle-util", "wvehicle-weapons-data","wvehicle-weapons-chicken-drone","raceline-weapon","net-projectile","net-projectile-h","projectile","collide-shape-h","collide-shape","wcar-projectiles","projectile-h","wvehicle-weapons-part","gsound"],
+  "allowed_objects": ["math-camera","drawable","raceline-weapon","race-manager","race-h","wvehicle-weapons-h","wvehicle-weapons-util","wvehicle-h","light-trails","light-trails-h","explosion","wvehicle-weapons-proj","wvehicle-weapons", "wcar-projectiles", "wvehicle-weapons-util","wvehicle-util", "wvehicle-weapons-data","wvehicle-weapons-chicken-drone","raceline-weapon","net-projectile","net-projectile-h","projectile","collide-shape-h","collide-shape","wcar-projectiles","projectile-h","wvehicle-weapons-part","gsound"],
   // net-mgr-medius-rooms: cfg_builder.cppL187 (clean_up_return_final)
   "banned_objects": ["net-mgr-medius-rooms"],
   ////////////////////////////

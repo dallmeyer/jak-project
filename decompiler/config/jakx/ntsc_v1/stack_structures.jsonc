@@ -414,5 +414,9 @@
   "(method 72 net-projectile)": [
     [16, "vector"],
     [32, "vector"]
+  ],
+  "(method 54 raceline-weapon)": [
+    [16,"mystery-race-mesh-type0"],
+    [144,"mystery-race-line-type0"]
   ]
 }

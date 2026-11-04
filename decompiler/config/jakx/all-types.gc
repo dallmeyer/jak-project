@@ -45084,11 +45084,15 @@
    (current-slice       int32          :offset-assert 88)
    (current-line        basic          :offset-assert 92)
    (total-angle-delta   float          :offset-assert 96)
-   (skip-gaps?          symbol          :offset-assert 100)
+   (skip-gaps?          symbol         :offset-assert 100)
    )
   :method-count-assert 9
   :size-assert         #x68
   :flag-assert         #x900000068
+  )
+
+(deftype mystery-race-line-type0 (structure)
+  ((query race-line-query-info :inline))
   )
 
 (deftype race-line (structure)
@@ -45112,8 +45116,8 @@
   (:methods
     (race-line-method-9 () none) ;; 9
     (race-line-method-10 () none) ;; 10
-    (race-line-method-11 () none) ;; 11
-    (race-line-method-12 () none) ;; 12
+    (race-line-method-11 (_type_ race-line) none) ;; 11
+    (race-line-method-12 (_type_ race-line-query-info) none) ;; 12
     (race-line-method-13 () none) ;; 13
     (race-line-method-14 () none) ;; 14
     )
@@ -45203,6 +45207,7 @@
   :flag-assert         #x900000090
   )
 
+
 (deftype race-mesh-slice-query (structure)
   ((search-sphere sphere    :inline :offset-assert 0)
    (slice-range   uint16   2       :offset-assert 16)
@@ -45215,6 +45220,13 @@
   :method-count-assert 9
   :size-assert         #x76
   :flag-assert         #x900000076
+  )
+
+(deftype mystery-race-mesh-type0 (structure)
+  ((query race-mesh-slice-query :inline)
+   (pad1   uint32 :offset-assert 120)
+   (pad2   uint32 :offset-assert 124)
+   )
   )
 
 (deftype race-mesh-edge (structure)
@@ -45279,7 +45291,7 @@
   (:methods
     (race-mesh-method-9 () none) ;; 9 ;; (debug-draw-path (_type_ int int rgba rgba) none)
     (race-mesh-method-10 () none) ;; 10 ;; (debug-draw-path-from-history (_type_ int int) symbol)
-    (race-mesh-method-11 () none) ;; 11 ;; (debug-draw-slice (_type_ int) none)
+    (race-mesh-method-11 (_type_ race-mesh-slice-query) none) ;; 11 ;; (debug-draw-slice (_type_ int) none)
     (race-mesh-method-12 () none) ;; 12 ;; (debug-draw-edges (_type_) none)
     (race-mesh-method-13 () none) ;; 13 ;; (race-mesh-method-13 (_type_ race-mesh-slice-query) none)
     (race-mesh-method-14 () none) ;; 14 ;; (race-mesh-method-14 (_type_ race-mesh-slice-query) none)
@@ -53580,7 +53592,7 @@
 ;; race-manager                   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (define-extern *race-state* object) ;; race-state
+(define-extern *race-state* race-state)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; net-anim                       ;;
@@ -58985,7 +58997,6 @@
 ;; raceline-weapon                ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype raceline-weapon (process-drawable)
   ((owner-id       int8                       :offset-assert 248)
    (delta-height   float                      :offset-assert 252)
@@ -58994,7 +59005,7 @@
    (visible        basic                      :offset-assert 264)
    (last-sent-time int32                      :offset-assert 268)
   ;;  (prox           basic                      :offset-assert 168) ;; defined in process-nettable
-   (mesh           basic                      :offset 276)
+   (mesh           race-mesh                  :offset 276)
    (slice-id       int16                      :offset-assert 280)
    (race-line      race-line                  :offset-assert 284)
    (lap-dist       float                      :offset-assert 288)
@@ -59012,20 +59023,20 @@
     die ;; 51
     )
   (:methods
-    (raceline-weapon-method-52 () none) ;; 52
-    (raceline-weapon-method-53 () none) ;; 53
-    (raceline-weapon-method-54 () none) ;; 54
-    (raceline-weapon-method-55 () none) ;; 55
+    (raceline-weapon-method-52 (_type_) int) ;; 52
+    (raceline-weapon-method-53 (_type_) float) ;; 53
+    (raceline-weapon-method-54 (_type_) vector) ;; 54
+    (raceline-weapon-method-55 (_type_) object) ;; 55
     (raceline-weapon-method-56 () none) ;; 56
     (raceline-weapon-method-57 () none) ;; 57
     (raceline-weapon-method-58 () none) ;; 58
     (raceline-weapon-method-59 () none) ;; 59
     (raceline-weapon-method-60 () none) ;; 60
-    (raceline-weapon-method-61 () none) ;; 61
+    (raceline-weapon-method-61 (_type_) float) ;; 61
     (raceline-weapon-method-62 () none) ;; 62
     (raceline-weapon-method-63 () none) ;; 63
     (raceline-weapon-method-64 () none) ;; 64
-    (raceline-weapon-method-65 () none) ;; 65
+    (raceline-weapon-method-65 (_type_) wvehicle) ;; 65
     (raceline-weapon-method-66 () none) ;; 66
     (raceline-weapon-method-67 () none) ;; 67
     (raceline-weapon-method-68 () none) ;; 68
@@ -59041,11 +59052,10 @@
     (raceline-weapon-method-78 () none) ;; 78
     )
   )
-|#
 
 ;; (define-extern raceline-weapon-init-remote function)
-;; (define-extern *msg-map-raceline-weapon* array)
-;; (define-extern *net-process-class-info-raceline-weapon* net-process-class-info)
+(define-extern *msg-map-raceline-weapon* (array symbol))
+(define-extern *net-process-class-info-raceline-weapon* net-process-class-info)
 ;; (define-extern raceline-weapon-init-by-other function)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

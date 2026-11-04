@@ -2129,5 +2129,8 @@
   "(method 15 net-projectile)": [
     [35, "s2", "process-nettable"],
     [64, "s2", "process-nettable"]
+  ],
+  "(method 53 raceline-weapon)": [
+    [[35,39], "s5", "net-player-race"]
   ]
 }
