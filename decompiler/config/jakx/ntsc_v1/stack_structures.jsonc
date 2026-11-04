@@ -408,10 +408,9 @@
     [560, "vector"],
     [576, "vector"]
   ],
-  // "(method 35 net-projectile)": [
-  //   [16, "vector"],
-  //   [32, "vector"]
-  // ],
+  "(method 35 net-projectile)": [
+    [16, "mystery-net-proj-params-type0"]
+  ],
   "(method 72 net-projectile)": [
     [16, "vector"],
     [32, "vector"]

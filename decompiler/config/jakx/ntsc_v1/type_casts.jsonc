@@ -2125,5 +2125,9 @@
     [[114,118], "v1", "attack-info"]
   ],
   "(anon-function 105 wvehicle-weapons-proj)": [[[35,39], "v1", "attack-info"]],
-  "(method 65 projectile)": [[[3,6], "a1", "process"]]
+  "(method 65 projectile)": [[[3,6], "a1", "process"]],
+  "(method 15 net-projectile)": [
+    [35, "s2", "process-nettable"],
+    [64, "s2", "process-nettable"]
+  ]
 }

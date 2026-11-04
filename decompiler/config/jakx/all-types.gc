@@ -45975,7 +45975,7 @@
     (net-player-method-46 () none) ;; 46
     (net-player-method-47 () none) ;; 47
     (net-player-method-48 () none) ;; 48
-    (net-player-method-49 () none) ;; 49
+    (net-player-method-49 (_type_) wvehicle) ;; 49
     (net-player-method-50 () none) ;; 50
     (net-player-method-51 () none) ;; 51
     (net-player-method-52 () none) ;; 52
@@ -47186,7 +47186,24 @@
     )
   )
 
-(define-extern net-projectile-init-remote (function process none :behavior net-projectile))
+(deftype mystery-net-proj-params-type0 (structure)
+  ((params                  projectile-init-by-other-params :inline :offset-assert 0)
+   (pos                     vector :inline :offset-assert 128)
+   (vel                     vector :inline :offset-assert 144)
+   (target-handle           handle :offset-assert 160)
+   (owner-ignore-handle     handle :offset-assert 168)
+   (attack-id               uint32 :offset-assert 176)
+   (pad                     uint32 :offset-assert 180)
+   (options                 projectile-options :offset-assert 184)
+   (damage                  float  :offset-assert 192)
+   (vehicle-damage-factor   float  :offset-assert 196)
+   (vehicle-impulse-factor  float  :offset-assert 200)
+   (time1                   int32  :offset-assert 204)
+   (wpn-type                uint8  :offset-assert 208)
+   )
+  )
+
+(define-extern net-projectile-init-remote (function process int :behavior net-projectile))
 (define-extern *msg-map-net-projectile* (array symbol))
 (define-extern *net-process-class-info-net-projectile* net-process-class-info)
 (define-extern spawn-net-projectile (function type projectile-init-by-other-params process-tree dead-pool (pointer process)))
@@ -50052,7 +50069,7 @@
 ;; net-projectile                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define-extern net-projectile-init-by-other (function process none :behavior net-projectile))
+(define-extern net-projectile-init-by-other (function projectile-init-by-other-params int object :behavior net-projectile))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; udp-layer                      ;;
@@ -58185,22 +58202,22 @@
 ;; wvehicle-weapons-util          ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (define-extern v-wpn-base-init-by-other function)
+(define-extern v-wpn-base-init-by-other (function process-drawable v-wpn-type uint object :behavior vehicle-weapon-slot))
 ;; (define-extern warning-hud-draw function)
 (define-extern v-wpn-type->color (function v-wpn-type int))
 (define-extern v-wpn-type->gunmount-config (function v-wpn-type int))
-;; (define-extern v-wpn-missile-init-by-other function)
-;; (define-extern make-vehicle-weapon-slot function)
-;; (define-extern v-wpn-choose-increasing-lethality function)
+(define-extern v-wpn-missile-init-by-other (function process-drawable v-wpn-type uint object :behavior v-wpn-yellow-guided-missile))
+;; (define-extern make-vehicle-weapon-slot (function process-drawable wvehicle uint object :behavior vehicle-weapon-slot))
+;; (define-extern v-wpn-choose-increasing-lethality (function object object object :behavior vehicle-weapon-slot))
 ;; (define-extern v-wpn-get-mask (function wvehicle uint))
 ;; (define-extern v-wpn-num-available (function vehicle uint))
 ;; (define-extern v-wpn-choose-random (function wvehicle uint uint))
 ;; (define-extern v-wpn-get-available-types function)
-;; (define-extern race-player-behind-more-than function)
+(define-extern race-player-behind-more-than (function uint float symbol))
 ;; (define-extern v-wpn-get-selection-table (function int int v-wpn-ptable-quad))
 ;; (define-extern v-wpn-mask-selection-table! (function int v-wpn-ptable-quad int none))
 (define-extern v-wpn-pack-msg (function wvehicle mem-buffer none))
-;; (define-extern v-wpn-unpack-msg! function)
+(define-extern v-wpn-unpack-msg! (function vector4ub mem-buffer none))
 (define-extern vehicle-get-weapon-level (function vehicle int int))
 (define-extern global-turbo-suppressor-set! (function int none))
 (define-extern should-suppress-eco? (function symbol symbol)) ;; uses some kind of weapons bitfield enum (game-task-advanced-options)
