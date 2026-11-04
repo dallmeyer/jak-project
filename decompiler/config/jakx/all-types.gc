@@ -47180,9 +47180,9 @@
   :size-assert         #x231
   :flag-assert         #x4b01b00231
   (:methods
-    (net-projectile-method-72 (_type_ vector vector vector vector symbol) vector) ;; 72
-    (net-projectile-method-73 () none) ;; 73
-    (net-projectile-method-74 () none) ;; 74
+    (net-projectile-method-72 (_type_ vector vector vector vector time-frame) vector) ;; 72
+    (net-projectile-method-73 (_type_) symbol) ;; 73
+    (net-projectile-method-74 (_type_) none) ;; 74
     )
   )
 
