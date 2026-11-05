@@ -919,5 +919,12 @@
     ["L538", "vector"]
   ],
   "wvehicle-weapons-util": [["L353", "attack-info"]],
-  "wvehicle-weapons-aux": [["L358", "vector"]]
+  "wvehicle-weapons-aux": [["L358", "vector"]],
+  "wvehicle-weapons": [
+    ["L916", "mystery-vws-type0"],
+    ["L917", "mystery-vws-type0"],
+    ["L918", "mystery-vws-type0"],
+    ["L919", "mystery-vws-type0"],
+    ["L920", "mystery-vws-type0"]
+  ]
 }

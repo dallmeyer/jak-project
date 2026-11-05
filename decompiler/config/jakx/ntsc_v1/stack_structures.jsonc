@@ -451,7 +451,9 @@
   "(method 66 vehicle-weapon-drone)": [
    [16, "vector"], // pointer to pointer to vector?
     [144, ["array", "float", 1]]
-  ]
+  ],
+  "guided-missile-gen-proj-targ-helper": [[16, "mystery-proj-params-type0"]],
+  "guided-missile-gen-proj-no-targ-helper": [[16, "mystery-proj-params-type0"]]
 
 
 }

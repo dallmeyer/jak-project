@@ -45372,8 +45372,8 @@
     (get-ammo-remaining (_type_) int) ;; 53
     (get-ammo-max (_type_) int) ;; 54
     (vehicle-weapon-slot-method-55 (_type_) int) ;; 55
-    (vehicle-weapon-slot-method-56 (_type_) none) ;; 56
-    (vehicle-weapon-slot-method-57 (_type_) symbol) ;; 57
+    (vehicle-weapon-slot-method-56 (_type_) none) ;; 56 ;; needs rigid-body-queue-manager
+    (vehicle-weapon-slot-method-57 (_type_) symbol) ;; 57 ;; needs vws-focus-search-base
     (vehicle-weapon-slot-method-58 (_type_ object) int) ;; 58
     (vehicle-weapon-slot-method-59 () none) ;; 59
     )
@@ -45387,7 +45387,7 @@
   :size-assert         #x101
   :flag-assert         #x3600800101
   (:state-methods
-    gunmount-drawable-method-50
+    idle ;; 50
     )
   (:methods
     (gunmount-drawable-method-51 (_type_) int) ;; 51
@@ -45406,10 +45406,10 @@
   :size-assert         #x115
   :flag-assert         #x3800900115
   (:state-methods
-    gunmount-generic-drawable-method-54
+    changing
+    lobby
     )
   (:methods
-    (gunmount-generic-drawable-method-55 () none) ;; 55
     )
   )
 
@@ -57948,6 +57948,9 @@
 ;; wvehicle-weapons               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(deftype mystery-vws-type0 (structure)
+  ((data uint64)))
+
 (deftype muzzle-flash (process-drawable)
   ((glued-to       handle             :offset-assert 248)
    (glued-joint    int32              :offset-assert 256)
@@ -57957,8 +57960,8 @@
   :size-assert         #x120
   :flag-assert         #x3400900120
   (:state-methods
-    idle ;; 51
     lit ;; 50
+    idle ;; 51
     )
   )
 
@@ -58047,8 +58050,8 @@
 (define-extern v-wpn-yellow-guided-missile-init-remote (function mem-buffer int :behavior v-wpn-yellow-guided-missile))
 (define-extern *msg-map-v-wpn-yellow-guided-missile* (array symbol))
 (define-extern *net-process-class-info-v-wpn-yellow-guided-missile* net-process-class-info)
-;; (define-extern guided-missile-gen-proj-no-targ-helper function)
-;; (define-extern guided-missile-gen-proj-targ-helper function)
+(define-extern guided-missile-gen-proj-no-targ-helper (function vehicle-weapon-slot process-drawable process-drawable int))
+(define-extern guided-missile-gen-proj-targ-helper (function vehicle-weapon-slot process-drawable process-drawable int))
 (define-extern seismic-blaster-affects-player? (function vehicle-weapon-slot net-player-race symbol))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
