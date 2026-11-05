@@ -45472,6 +45472,12 @@
     )
   )
 
+(deftype mystery-v-wpn-drone-type0 (structure)
+  ((glow-data sprite-glow-data :inline  :offset-assert 0)
+   (vec       vector           :inline  :offset-assert 64)
+   )
+  )
+
 (deftype vehicle-weapon-drone (process-focusable)
   ((owning-vehicle    handle             :offset-assert 256)
    (owning-slot       uint64             :offset-assert 264)
@@ -45495,15 +45501,17 @@
   :method-count-assert 67
   :size-assert         #x188
   :flag-assert         #x4301000188
+  (:state-methods
+    popping-out ;; 59
+    orbiting ;; 60
+    going-in ;; 61
+    bulldog-firing ;; 62
+    )
   (:methods
-    (vehicle-weapon-drone-method-59 () none) ;; 59
-    (vehicle-weapon-drone-method-60 () none) ;; 60
-    (vehicle-weapon-drone-method-61 () none) ;; 61
-    (vehicle-weapon-drone-method-62 () none) ;; 62
-    (vehicle-weapon-drone-method-63 () none) ;; 63
-    (vehicle-weapon-drone-method-64 () none) ;; 64
-    (vehicle-weapon-drone-method-65 () none) ;; 65
-    (vehicle-weapon-drone-method-66 () none) ;; 66
+    (init-collision! (_type_) collide-shape-moving) ;; 63
+    (add-sprites (_type_) none) ;; 64
+    (vehicle-weapon-drone-method-65 () none) ;; 65 ;; missing?
+    (vehicle-weapon-drone-method-66 (_type_) none) ;; 66 ;; needs find-sorted-targets-faster!
     )
   )
 
@@ -56842,8 +56850,8 @@
 (define-extern *mine-trail-red* curve-color-fast)
 (define-extern *mine-trail-purple* curve-color-fast)
 ;; (define-extern shield-flash-part-callback function)
-;; (define-extern *weapon-drone-glow-template* object)
-;; (define-extern *weapon-drone-visor-template* object)
+(define-extern *weapon-drone-glow-template* sprite-glow-data)
+(define-extern *weapon-drone-visor-template* sprite-glow-data)
 ;; (define-extern *wasted-missile-colors* object)
 ;; (define-extern *wasted-missile-vec* object)
 ;; (define-extern *wasted-missile-origin?* object)
@@ -58047,20 +58055,19 @@
 ;; wvehicle-weapons-aux           ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype red-sentry-bot (process-focusable)
   ((destination-point       vector     :inline :offset-assert 256)
    (destination-rot         quaternion :inline :offset-assert 272)
    (traj                    trajectory :inline :offset-assert 288)
    (next-target-poll        uint64             :offset-assert 328)
-   (targ-handle             uint64             :offset-assert 336)
+   (targ-handle             handle             :offset-assert 336)
    (yaw                     float              :offset-assert 344)
    (pitch                   float              :offset-assert 348)
    (expire-at               int32              :offset-assert 352)
    (hitpoints               float              :offset-assert 356)
    (hitpoints-last          float              :offset-assert 360)
    (hitpoints-prev-msg-time uint64             :offset-assert 368)
-   (flash                   UNKNOWN    2       :offset-assert 376)
+   (flash                   handle     2       :offset-assert 376)
    (last-fired              uint64             :offset-assert 392)
    (gun-loop                uint32             :offset-assert 400)
    (warning                 basic              :offset-assert 404)
@@ -58072,11 +58079,6 @@
   :method-count-assert 67
   :size-assert         #x1a0
   :flag-assert         #x43011001a0
-  (:methods
-    (red-sentry-bot-method-64 () none) ;; 64
-    (red-sentry-bot-method-65 () none) ;; 65
-    (red-sentry-bot-method-66 () none) ;; 66
-    )
   (:state-methods
     falling ;; 59
     idle ;; 60
@@ -58084,26 +58086,30 @@
     firing-missiles ;; 62
     die ;; 63
     )
+  (:methods
+    (init! (_type_ vector quaternion vector quaternion int int) object) ;; 64
+    (red-sentry-bot-method-65 () none) ;; 65
+    (take-damage (_type_ float) object) ;; 66
+    )
   )
-|#
 
-;; (define-extern red-sentry-bot-init-remote function)
-;; (define-extern *msg-map-red-sentry-bot* array)
-;; (define-extern *net-process-class-info-red-sentry-bot* net-process-class-info)
-;; (define-extern v-wpn-sentrybot-rapid-fire-control-params object)
-;; (define-extern sentrybot-poke-yaw! function)
-;; (define-extern sentrybot-poke-pitch! function)
-;; (define-extern red-sentry-bot-init-by-other function)
-;; (define-extern red-sentry-bot-common-trans function)
-;; (define-extern red-sentry-bot-poll-target function)
-;; (define-extern sentry-bot-base-handler function)
-;; (define-extern v-wpn-yellow-bulldog-rapid-fire-control-params object)
-;; (define-extern v-wpn-yellow-bulldog-II-rapid-fire-control-params object)
-;; (define-extern drone-compute-pos! function)
-;; (define-extern drone-trans-set-pos function)
-;; (define-extern drone-trans-twitchy-rot function)
-;; (define-extern drone-trans-rot-at-target function)
-;; (define-extern drone-base-post function)
+(define-extern red-sentry-bot-init-remote (function mem-buffer int :behavior red-sentry-bot))
+(define-extern *msg-map-red-sentry-bot* (array symbol))
+(define-extern *net-process-class-info-red-sentry-bot* net-process-class-info)
+(define-extern v-wpn-sentrybot-rapid-fire-control-params rapid-fire-params)
+(define-extern sentrybot-poke-yaw! (function cspace transformq none :behavior red-sentry-bot))
+(define-extern sentrybot-poke-pitch! (function cspace transformq none :behavior red-sentry-bot))
+(define-extern red-sentry-bot-init-by-other (function vector quaternion vehicle int object :behavior red-sentry-bot))
+;; (define-extern red-sentry-bot-common-trans (function none :behavior red-sentry-bot)) ;; needs warning-hud-draw
+;; (define-extern red-sentry-bot-poll-target (function int :behavior red-sentry-bot)) ;; needs find-sorted-targets-faster!
+(define-extern sentry-bot-base-handler (function process int symbol event-message-block object :behavior red-sentry-bot))
+(define-extern v-wpn-yellow-bulldog-rapid-fire-control-params rapid-fire-params)
+(define-extern v-wpn-yellow-bulldog-II-rapid-fire-control-params rapid-fire-params)
+(define-extern drone-compute-pos! (function vehicle-weapon-drone vector vector :behavior vehicle-weapon-drone))
+(define-extern drone-trans-set-pos (function object :behavior vehicle-weapon-drone))
+(define-extern drone-trans-twitchy-rot (function quaternion :behavior vehicle-weapon-drone))
+(define-extern drone-trans-rot-at-target (function quaternion :behavior vehicle-weapon-drone))
+(define-extern drone-base-post (function int :behavior vehicle-weapon-drone))
 ;; (define-extern vehicle-weapon-drone-init-by-other function)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

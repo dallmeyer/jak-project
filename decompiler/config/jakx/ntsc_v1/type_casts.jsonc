@@ -2063,7 +2063,7 @@
   "gunmount-generic-event-handler": [[11, "s5", "vector"]],
   "muzzle-flash-event-handler": [[[10,30], "v1", "vehicle"]],
   "(method 52 v-wpn-yellow-guided-missile)": [[18, "s4", "wvehicle"]],
-  "(method 56 v-wpn-yellow-guided-missile)": [[10, "a0", "wvehicle"]],
+  "(method 56 v-wpn-yellow-guided-missile)": [[[7,11], "a0", "wvehicle"]],
   "(method 35 v-yellow-guided-missile)": [[28, "s5", "process-nettable"]],
   "(method 58 v-yellow-guided-missile)": [[33, "gp", "process-focusable"]],
   "(method 61 v-yellow-guided-missile)": [[85, "v1", "float"]],
@@ -2097,8 +2097,8 @@
   ],
   "(anon-function 67 wvehicle-weapons-proj)": [
     [[3,140], "gp", "rigid-body-impact"],
-    [27, "a0", "wvehicle"],
-    [86, "a0", "wvehicle"]
+    [[24,28], "a0", "wvehicle"],
+    [[83,87], "a0", "wvehicle"]
   ],
   "(anon-function 100 wvehicle-weapons-proj)": [[[32,48], "v1", "attack-info"]],
   "(anon-function 102 wvehicle-weapons-proj)": [
@@ -2106,15 +2106,15 @@
     [76, "v0", "process-drawable"]
   ],
   "(anon-function 61 wvehicle-weapons-proj)": [[[3,19], "v1", "attack-info"]],
-  "(anon-function 63 wvehicle-weapons-proj)": [[9, "a1", "wvehicle"]],
+  "(anon-function 63 wvehicle-weapons-proj)": [[[6,10], "a1", "wvehicle"]],
   "(anon-function 64 wvehicle-weapons-proj)": [
-    [34, "a1", "process-drawable"],
-    [49, "a0", "wvehicle"],
-    [167, "a0", "wvehicle"]
+    [[31,35], "a1", "process-drawable"],
+    [[46,50], "a0", "wvehicle"],
+    [[164,168], "a0", "wvehicle"]
   ],
   "(anon-function 70 wvehicle-weapons-proj)": [
-    [26, "a0", "wvehicle"],
-    [126, "a1", "wvehicle"]
+    [[23,27], "a0", "wvehicle"],
+    [[123,127], "a1", "wvehicle"]
   ],
   "(anon-function 74 wvehicle-weapons-proj)": [
     [44, "v0", "process-drawable"],
@@ -2151,7 +2151,7 @@
   "(method 52 success-seeker)": [
     [[83,86], "v1", "float"]
   ],
-  "success-seeker-local-space": [[10, "a0", "success-seeker"]],
+  "success-seeker-local-space": [[[7,11], "a0", "success-seeker"]],
   "(method 52 turbodash-seeker)": [
     [53, "v1", "net-player-race"],
     [64, "a1", "net-player-race"]
@@ -2163,6 +2163,27 @@
   ],
   "(method 75 turbodash-seeker)": [[7, "v1", "collide-shape"]],
   "fire-seeker": [[21, "s4", "wvehicle"]],
-  "fire-drone": [[21, "s4", "wvehicle"]]
-
+  "fire-drone": [[21, "s4", "wvehicle"]],
+  "sentry-bot-base-handler": [
+    [4, "v1", "rigid-body-impact"],
+    [8, "v1", "rigid-body-impact"],
+    [15, "v1", "rigid-body-impact"],
+    [[32,37], "v1", "attack-info"]
+  ],
+  "sentrybot-poke-yaw!": [[[2,6], "v1", "red-sentry-bot"]],
+  "sentrybot-poke-pitch!": [[[2,6], "v1", "red-sentry-bot"]],
+  "red-sentry-bot-poll-target": [
+    [21, "a0", "process-drawable"],
+    [46, "gp", "vehicle"]
+  ],
+  "drone-compute-pos!": [[[8,12], "a0", "wvehicle"]],
+  "drone-trans-twitchy-rot": [
+    [[16,19], "v1", "float"],
+    [[35,38], "v1", "float"],
+    [[54,57], "v1", "float"],
+    [[112,116], "a1", "wvehicle"]
+  ],
+  "drone-trans-rot-at-target": [[16, "gp", "process-focusable"]],
+  "drone-base-post": [[[14,18], "a1", "wvehicle"]],
+  "(method 66 vehicle-weapon-drone)": [[[8,12], "a0", "wvehicle"]]
 }

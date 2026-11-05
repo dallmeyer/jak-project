@@ -918,5 +918,6 @@
     ["L535", "vector"],
     ["L538", "vector"]
   ],
-  "wvehicle-weapons-util": [["L353", "attack-info"]]
+  "wvehicle-weapons-util": [["L353", "attack-info"]],
+  "wvehicle-weapons-aux": [["L358", "vector"]]
 }

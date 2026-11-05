@@ -435,6 +435,23 @@
   "fire-drone": [
     [16,  ["inline-array", "vector", 1]],
     [32, "event-message-block"]
+  ],
+  "(method 35 red-sentry-bot)": [
+    [16, "vector"],
+    [32, "quaternion"],
+    [48, "vector"],
+    [64, "quaternion"]
+  ],
+  "red-sentry-bot-init-by-other": [[16, ["inline-array", "quaternion", 3]]],
+  "red-sentry-bot-poll-target": [[16, "vector"]],
+  "drone-compute-pos!": [[16, "vector"]],
+  "drone-trans-twitchy-rot": [[32, "vector"]],
+  "drone-trans-rot-at-target": [[16, ["inline-array", "vector", 1]]],
+  "(method 64 vehicle-weapon-drone)": [[16, "mystery-v-wpn-drone-type0"]],
+  "(method 66 vehicle-weapon-drone)": [
+   [16, "vector"], // pointer to pointer to vector?
+    [144, ["array", "float", 1]]
   ]
+
 
 }
