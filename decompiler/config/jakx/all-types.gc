@@ -42228,7 +42228,7 @@
 (define-extern set-master-mode (function symbol none)) ;; 
 ;; (define-extern pause-allowed? function) ;; (function symbol)
 ;; (define-extern toggle-pause function) ;; (function int)
-;; (define-extern *screen-filter-array* array)
+(define-extern *screen-filter-array* (array screen-filter))
 (define-extern *screen-filter* screen-filter)
 (define-extern *master-exit* symbol)
 ;; (define-extern *progress-cheat* object) ;; symbol
@@ -45090,10 +45090,6 @@
   :method-count-assert 9
   :size-assert         #x68
   :flag-assert         #x900000068
-  )
-
-(deftype mystery-race-line-type0 (structure)
-  ((query race-line-query-info :inline))
   )
 
 (deftype race-line (structure)
@@ -58022,6 +58018,8 @@
     )
   )
 
+(define-extern display-supernova-backfire-text-to-view (function none)) ;; TODO, from hud-widgets 3
+(define-extern display-sblastered-text-to-view (function none)) ;; TODO, from hud-widgets 3
 (deftype v-wpn-yellow-seismic-blaster (vehicle-weapon-slot)
   ((fire-at      uint32  :offset-assert 264)
    (on-hud-indic int8    :offset-assert 268)
@@ -58031,7 +58029,7 @@
   :flag-assert         #x3e0080010d
   (:state-methods
     idle ;; 50
-    firing ;; 60
+    (firing symbol)  ;; 60
     backfiring ;; 61
     )
   )

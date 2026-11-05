@@ -2190,5 +2190,26 @@
   "(method 15 net-projectile)": [
     [35, "s2", "process-nettable"],
     [64, "s2", "process-nettable"]
+  ],
+  "(code backfiring v-wpn-yellow-seismic-blaster)": [
+    [9, "a0", "wvehicle"],
+    [64, "a0", "wvehicle"]
+  ],
+  "(enter backfiring v-wpn-yellow-seismic-blaster)": [
+    [12, "a0", "wvehicle"]
+  ],
+  "(event backfiring v-wpn-yellow-seismic-blaster)": [
+    [17, "a0", "wvehicle"]
+  ],
+  "(post firing v-wpn-yellow-seismic-blaster)": [
+    [58, "a0", "wvehicle"],
+    [235, "s4", "wvehicle"]
+  ],
+  "(exit firing v-wpn-yellow-seismic-blaster)": [
+    [9, "a0", "wvehicle"]
+  ],
+  "(enter firing v-wpn-yellow-seismic-blaster)": [
+    [33, "a0", "wvehicle"],
+    [89, "a0", "wvehicle"]
   ]
 }
