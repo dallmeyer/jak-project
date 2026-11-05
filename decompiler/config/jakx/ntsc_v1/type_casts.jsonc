@@ -2186,5 +2186,9 @@
   "drone-trans-rot-at-target": [[16, "gp", "process-focusable"]],
   "drone-base-post": [[[14,18], "a1", "wvehicle"]],
   "(method 66 vehicle-weapon-drone)": [[[8,12], "a0", "wvehicle"]],
-  "(method 55 v-wpn-yellow-seismic-blaster)": [[38, "v0", "particle-local-space-info"]]
+  "(method 55 v-wpn-yellow-seismic-blaster)": [[38, "v0", "particle-local-space-info"]],
+  "(method 15 net-projectile)": [
+    [35, "s2", "process-nettable"],
+    [64, "s2", "process-nettable"]
+  ]
 }

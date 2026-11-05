@@ -45085,7 +45085,7 @@
    (current-slice       int32          :offset-assert 88)
    (current-line        basic          :offset-assert 92)
    (total-angle-delta   float          :offset-assert 96)
-   (skip-gaps?          symbol          :offset-assert 100)
+   (skip-gaps?          symbol         :offset-assert 100)
    )
   :method-count-assert 9
   :size-assert         #x68
@@ -45093,13 +45093,7 @@
   )
 
 (deftype mystery-race-line-type0 (structure)
-  ((vec1 vector :inline)
-   (vec2 vector :inline :offset-assert 16)
-   (pad1 uint128        :offset-assert 32) ;; ?
-   (pad2 uint128        :offset-assert 48)
-   (word1 uint32        :offset-assert 64)
-   (half1 uint16        :offset 64)
-   )
+  ((query race-line-query-info :inline))
   )
 
 (deftype race-line (structure)
@@ -45123,8 +45117,8 @@
   (:methods
     (race-line-method-9 (_type_ int) int) ;; 9
     (race-line-method-10 (_type_ int) none) ;; 10 - TODO, figure out what slices is
-    (race-line-method-11 () none) ;; 11
-    (race-line-method-12 (_type_ vector) none) ;; 12
+    (race-line-method-11 (_type_ race-line) none) ;; 11
+    (race-line-method-12 (_type_ race-line-query-info) none) ;; 12
     (race-line-method-13 () none) ;; 13
     (race-line-method-14 (_type_) none) ;; 14 ;; TODO
     )
@@ -45214,6 +45208,7 @@
   :flag-assert         #x900000090
   )
 
+
 (deftype race-mesh-slice-query (structure)
   ((search-sphere sphere    :inline :offset-assert 0)
    (slice-range   uint16   2       :offset-assert 16)
@@ -45226,6 +45221,13 @@
   :method-count-assert 9
   :size-assert         #x76
   :flag-assert         #x900000076
+  )
+
+(deftype mystery-race-mesh-type0 (structure)
+  ((query race-mesh-slice-query :inline)
+   (pad1   uint32 :offset-assert 120)
+   (pad2   uint32 :offset-assert 124)
+   )
   )
 
 (deftype race-mesh-edge (structure)
@@ -45290,7 +45292,7 @@
   (:methods
     (race-mesh-method-9 () none) ;; 9 ;; (debug-draw-path (_type_ int int rgba rgba) none)
     (race-mesh-method-10 () none) ;; 10 ;; (debug-draw-path-from-history (_type_ int int) symbol)
-    (race-mesh-method-11 (_type_ sphere) none) ;; 11 ;; (debug-draw-slice (_type_ int) none)
+    (race-mesh-method-11 (_type_ race-mesh-slice-query) none) ;; 11 ;; (debug-draw-slice (_type_ int) none)
     (race-mesh-method-12 () none) ;; 12 ;; (debug-draw-edges (_type_) none)
     (race-mesh-method-13 () none) ;; 13 ;; (race-mesh-method-13 (_type_ race-mesh-slice-query) none)
     (race-mesh-method-14 () none) ;; 14 ;; (race-mesh-method-14 (_type_ race-mesh-slice-query) none)
@@ -47219,7 +47221,7 @@
    (damage                  float               :offset-assert 192)
    (vehicle-damage-factor   float               :offset-assert 196)
    (vehicle-impulse-factor  float               :offset-assert 200)
-   (ent                     entity              :offset-assert 204)
+   (unk-time                int32               :offset-assert 204)
    (wpn-type                uint8               :offset-assert 208)
    )
   )
@@ -58223,22 +58225,22 @@
 ;; wvehicle-weapons-util          ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (define-extern v-wpn-base-init-by-other function)
+(define-extern v-wpn-base-init-by-other (function process-drawable v-wpn-type uint object :behavior vehicle-weapon-slot))
 ;; (define-extern warning-hud-draw function)
 (define-extern v-wpn-type->color (function v-wpn-type int))
 (define-extern v-wpn-type->gunmount-config (function v-wpn-type int))
-;; (define-extern v-wpn-missile-init-by-other function)
-;; (define-extern make-vehicle-weapon-slot function)
-;; (define-extern v-wpn-choose-increasing-lethality function)
+(define-extern v-wpn-missile-init-by-other (function process-drawable v-wpn-type uint object :behavior v-wpn-yellow-guided-missile))
+;; (define-extern make-vehicle-weapon-slot (function process-drawable wvehicle uint object :behavior vehicle-weapon-slot))
+;; (define-extern v-wpn-choose-increasing-lethality (function object object object :behavior vehicle-weapon-slot))
 ;; (define-extern v-wpn-get-mask (function wvehicle uint))
 ;; (define-extern v-wpn-num-available (function vehicle uint))
 ;; (define-extern v-wpn-choose-random (function wvehicle uint uint))
 ;; (define-extern v-wpn-get-available-types function)
-;; (define-extern race-player-behind-more-than function)
+(define-extern race-player-behind-more-than (function uint float symbol))
 ;; (define-extern v-wpn-get-selection-table (function int int v-wpn-ptable-quad))
 ;; (define-extern v-wpn-mask-selection-table! (function int v-wpn-ptable-quad int none))
 (define-extern v-wpn-pack-msg (function wvehicle mem-buffer none))
-;; (define-extern v-wpn-unpack-msg! function)
+(define-extern v-wpn-unpack-msg! (function vector4ub mem-buffer none))
 (define-extern vehicle-get-weapon-level (function vehicle int int))
 (define-extern global-turbo-suppressor-set! (function int none))
 (define-extern should-suppress-eco? (function symbol symbol)) ;; uses some kind of weapons bitfield enum (game-task-advanced-options)

@@ -415,7 +415,7 @@
     [16, "race-mesh-slice-query"],
     [144, "race-line-query-info"]
   ],
-  "(method 14 race-line)": [[16,  "mystery-race-line-type0"]],
+  "(method 14 race-line)": [[16,  "race-line-query-info"]],
   "(method 57 raceline-weapon)": [[16,  ["inline-array", "vector", 1]]],
   "(method 77 raceline-weapon)": [[16,  ["inline-array", "matrix", 1]]],
   "rapid-fire-callback-gun-hitspang": [[48, "vector"]],
