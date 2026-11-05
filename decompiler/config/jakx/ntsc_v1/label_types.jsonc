@@ -912,5 +912,11 @@
   "wvehicle-weapons-proj": [
     ["L686", "vector"],
     ["L687", "vector"]
-  ]
+  ],
+  "raceline-weapon": [["L154", "attack-info"]],
+  "wvehicle-weapons-chicken-drone": [
+    ["L535", "vector"],
+    ["L538", "vector"]
+  ],
+  "wvehicle-weapons-util": [["L353", "attack-info"]]
 }

@@ -408,12 +408,33 @@
     [560, "vector"],
     [576, "vector"]
   ],
-  // "(method 35 net-projectile)": [
-  //   [16, "vector"],
-  //   [32, "vector"]
-  // ],
+  "(method 35 net-projectile)": [
+    [16, "mystery-net-projectile-type0"]
+  ],
+  "(method 54 raceline-weapon)": [
+    [16, "race-mesh-slice-query"],
+    [144, "race-line-query-info"]
+  ],
+  "(method 14 race-line)": [[16,  "mystery-race-line-type0"]],
+  "(method 57 raceline-weapon)": [[16,  ["inline-array", "vector", 1]]],
+  "(method 77 raceline-weapon)": [[16,  ["inline-array", "matrix", 1]]],
+  "rapid-fire-callback-gun-hitspang": [[48, "vector"]],
   "(method 72 net-projectile)": [
     [16, "vector"],
     [32, "vector"]
+  ],
+  "(method 57 chicken-drone)": [[48, "vector"]],
+  "(method 79 turbodash-seeker)": [[16, "event-message-block"]],
+  "(method 80 turbodash-seeker)": [[16, "light-trail-tracker-spawn-params"]],
+  "(method 11 rapid-fire-control)": [[48, ["inline-array", "quaternion", 3]]],
+  "(method 12 rapid-fire-control)": [[32, "collide-query"]],
+  "fire-seeker": [
+    [16,  ["inline-array", "vector", 1]],
+    [32, "event-message-block"]
+  ],
+  "fire-drone": [
+    [16,  ["inline-array", "vector", 1]],
+    [32, "event-message-block"]
   ]
+
 }

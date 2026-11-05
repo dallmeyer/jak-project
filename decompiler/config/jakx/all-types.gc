@@ -28750,7 +28750,7 @@
     (bytes-used (_type_) int) ;; 11
     (bytes-remaining (_type_) uint) ;; 12
     (reset! (_type_) none) ;; 13
-    (write-int8 (_type_ int) none) ;; 14
+    (write-int8 (_type_ int) int) ;; 14
     (write-int16 (_type_ int) none) ;; 15
     (write-int32 (_type_ int) none) ;; 16
     (write-int64 (_type_ int) none) ;; 17
@@ -29058,7 +29058,7 @@
   :size-assert         #x18
   :flag-assert         #xa00000018
   (:methods
-    (proximity-ownership-params-method-9 () none) ;; 9
+    (init! (_type_) int) ;; 9
     )
   )
 
@@ -29096,7 +29096,7 @@
     (process-nettable-method-24 (_type_) none) ;; 24
     (process-nettable-method-25 (_type_) none) ;; 25
     (process-nettable-method-26 (_type_) none) ;; 26
-    (process-nettable-method-27 (_type_) mem-buffer) ;; 27
+    (process-nettable-method-27 (_type_ symbol) mem-buffer) ;; 27
     (process-nettable-method-28 (_type_) none) ;; 28
     (process-nettable-method-29 (_type_ mem-buffer int int) none) ;; 29
     (process-nettable-method-30 (_type_) none) ;; 30
@@ -29104,13 +29104,13 @@
     (process-nettable-method-32 (_type_) none) ;; 32
     (process-nettable-method-33 (_type_) none) ;; 33
     (process-nettable-method-34 (_type_ int rgba) none) ;; TODO - guess on the rgba
-    (process-nettable-method-35 (_type_ mem-buffer) process-tree) ;; TODO - guess on the int, find a caller to net-enemy-init-remote
-    (process-nettable-method-36 (_type_) none) ;; 36
+    (init-from-buffer! (_type_ mem-buffer) object) ;; 35
+    (process-nettable-method-36 (_type_) int) ;; 36
     (process-nettable-method-37 (_type_ net-process-class-info) none) ;; 37
-    (process-nettable-method-38 () none) ;; 38
+    (process-nettable-method-38 (_type_ symbol) int) ;; 38
     (process-nettable-method-39 () none) ;; 39
     (process-nettable-method-40 (_type_) net-process-class-info) ;; 40
-    (process-nettable-method-41 (_type_ int) process) ;; TODO - guess on the int, find a caller to net-enemy-init-remote
+    (spawn-from-buffer (_type_ mem-buffer) process) ;; 41
     )
   )
 
@@ -29198,7 +29198,7 @@
     (relocate-nav (_type_ int) none) ;; 45
     (process-drawable-method-46 (_type_ float float float symbol) symbol) ;; 46
     (process-drawable-method-47 (_type_) none) ;; 47
-    (process-drawable-method-48 () int) ;; 48
+    (process-drawable-method-48 (_type_) float) ;; 48
     (process-drawable-method-49 (_type_) none) ;; 49
     )
   (:states
@@ -30216,13 +30216,14 @@
 ;; collide-mesh-h                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(declare-type collide-shape-prim basic)
 (deftype collide-tri-result (structure)
   "A triangle result of a collision."
   ((vertex      vector      3 :inline :offset-assert 0) ;; guessed by decompiler
    (intersect   vector      :inline :offset-assert 48)
    (normal      vector      :inline :offset-assert 64)
    (pat         pat-surface         :offset-assert 80) ;; guessed by decompiler
-   (collide-ptr basic               :offset-assert 84)
+   (collide-ptr collide-shape-prim  :offset-assert 84)
    )
   :method-count-assert 9
   :size-assert         #x58
@@ -34745,7 +34746,7 @@
   :size-assert         #x10
   :flag-assert         #xb00000010
   (:methods
-    (sparticle-launcher-method-9 () none) ;; 9 ;; (get-field-spec-by-id (_type_ sp-field-id) sp-field-init-spec)
+    (sparticle-launcher-method-9 (_type_ sp-field-id) none) ;; 9 ;; (get-field-spec-by-id (_type_ sp-field-id) sp-field-init-spec)
     (sparticle-launcher-method-10 () none) ;; 10 ;; (setup-special-textures (_type_ string) none)
     )
   )
@@ -34841,7 +34842,7 @@
     (sparticle-launch-control-method-17 () none) ;; 17 ;; (spawn-from-mat (_type_ matrix) none)
     (sparticle-launch-control-method-18 () none) ;; 18 ;; (spawn-from-cspace (_type_ cspace) none)
     (sparticle-launch-control-method-19 (_type_) none) ;; 19 ;; (kill-particles (_type_) none)
-    (sparticle-launch-control-method-20 () none) ;; 20 ;; (set-local-space-info (_type_ particle-local-space-info) none)
+    (set-local-space-info (_type_ particle-local-space-info) particle-local-space-info) ;; 20
     (sparticle-launch-control-method-21 (_type_) none) ;; 21
     )
   )
@@ -45017,7 +45018,7 @@
    )
   )
 
-(define-extern vehicle-init-remote (function int none :behavior vehicle))
+(define-extern vehicle-init-remote (function mem-buffer int :behavior vehicle))
 (define-extern *msg-map-vehicle* (array symbol))
 (define-extern *net-process-class-info-vehicle* net-process-class-info)
 (define-extern vehicle-get-flag-attach-point (function vehicle vector))
@@ -45091,6 +45092,16 @@
   :flag-assert         #x900000068
   )
 
+(deftype mystery-race-line-type0 (structure)
+  ((vec1 vector :inline)
+   (vec2 vector :inline :offset-assert 16)
+   (pad1 uint128        :offset-assert 32) ;; ?
+   (pad2 uint128        :offset-assert 48)
+   (word1 uint32        :offset-assert 64)
+   (half1 uint16        :offset 64)
+   )
+  )
+
 (deftype race-line (structure)
   ((scale            vector :inline :offset-assert 0)
    (offset           vector :inline :offset-assert 16)
@@ -45101,7 +45112,7 @@
    (gap-index-count  int16          :offset-assert 42)
    (slice-count      int16          :offset-assert 44)
    (extra-points     int16          :offset-assert 46)
-   (points           uint32         :offset-assert 48)
+   (points           uint32          :offset-assert 48)
    (gap-indices      uint32         :offset-assert 52)
    (slices           uint32         :offset-assert 56)
    (pad              uint32         :offset-assert 60)
@@ -45110,12 +45121,12 @@
   :size-assert         #x40
   :flag-assert         #xf00000040
   (:methods
-    (race-line-method-9 () none) ;; 9
-    (race-line-method-10 () none) ;; 10
+    (race-line-method-9 (_type_ int) int) ;; 9
+    (race-line-method-10 (_type_ int) none) ;; 10 - TODO, figure out what slices is
     (race-line-method-11 () none) ;; 11
-    (race-line-method-12 () none) ;; 12
+    (race-line-method-12 (_type_ vector) none) ;; 12
     (race-line-method-13 () none) ;; 13
-    (race-line-method-14 () none) ;; 14
+    (race-line-method-14 (_type_) none) ;; 14 ;; TODO
     )
   )
 
@@ -45128,7 +45139,7 @@
   ((position                vector    :inline :offset-assert 0)
    (start-position          vector    :inline :offset-assert 16)
    (last-race-mesh-position vector    :inline :offset-assert 32)
-   (racer                   uint64            :offset-assert 48) ;; handle
+   (racer                   handle            :offset-assert 48) ;; handle
    (lap-distance            float             :offset-assert 56)
    (lap                     float             :offset-assert 60)
    (prev-racer-lap          float             :offset-assert 64)
@@ -45279,7 +45290,7 @@
   (:methods
     (race-mesh-method-9 () none) ;; 9 ;; (debug-draw-path (_type_ int int rgba rgba) none)
     (race-mesh-method-10 () none) ;; 10 ;; (debug-draw-path-from-history (_type_ int int) symbol)
-    (race-mesh-method-11 () none) ;; 11 ;; (debug-draw-slice (_type_ int) none)
+    (race-mesh-method-11 (_type_ sphere) none) ;; 11 ;; (debug-draw-slice (_type_ int) none)
     (race-mesh-method-12 () none) ;; 12 ;; (debug-draw-edges (_type_) none)
     (race-mesh-method-13 () none) ;; 13 ;; (race-mesh-method-13 (_type_ race-mesh-slice-query) none)
     (race-mesh-method-14 () none) ;; 14 ;; (race-mesh-method-14 (_type_ race-mesh-slice-query) none)
@@ -45359,7 +45370,7 @@
     (vehicle-weapon-slot-method-51 (_type_ vector) vector) ;; 51
     (vehicle-weapon-slot-method-52 (_type_ vector) object) ;; 52
     (get-ammo-remaining (_type_) int) ;; 53
-    (vehicle-weapon-slot-method-54 (_type_) int) ;; 54
+    (get-ammo-max (_type_) int) ;; 54
     (vehicle-weapon-slot-method-55 (_type_) int) ;; 55
     (vehicle-weapon-slot-method-56 (_type_) none) ;; 56
     (vehicle-weapon-slot-method-57 (_type_) symbol) ;; 57
@@ -45410,13 +45421,24 @@
   :flag-assert         #x900000044
   )
 
+(deftype rapid-fire-callback-gun-hitspang-params (structure)
+  ((bits-part-id  uint32  :offset-assert 0)
+   (dust-part-id  uint32  :offset-assert 4)
+   (group-part-id uint32  :offset-assert 8)
+   )
+  :method-count-assert 9
+  :size-assert         #xc
+  :flag-assert         #x90000000c
+  )
+
+(declare-type rapid-fire-control basic)
 (deftype rapid-fire-params (structure)
   ((rof                    uint16  :offset-assert 0)
    (shot-radius            float   :offset-assert 4)
    (shot-range             float   :offset-assert 8)
    (beam-effect            uint16  :offset-assert 12)
-   (impact-callback        basic   :offset-assert 16)
-   (impact-callback-params basic   :offset-assert 20)
+   (impact-callback        (function rapid-fire-control prim-work float rapid-fire-callback-gun-hitspang-params none)   :offset-assert 16)
+   (impact-callback-params rapid-fire-callback-gun-hitspang-params   :offset-assert 20)
    (shot-sound             uint16  :offset-assert 24)
    (hit-sound              uint16  :offset-assert 26)
    (wpn-type               uint8   :offset-assert 28)
@@ -45436,27 +45458,18 @@
    (hit-spang-part basic                     :offset-assert 24)
    (old-origin     vector            :inline :offset-assert 32)
    (old-rot        quaternion        :inline :offset-assert 48)
-   (emitters       basic                     :offset-assert 64)
+   (emitters       (array int)                     :offset-assert 64)
    )
   :method-count-assert 13
   :size-assert         #x44
   :flag-assert         #xd00000044
   (:methods
-    (rapid-fire-control-method-9 () none) ;; 9
-    (rapid-fire-control-method-10 () none) ;; 10
-    (rapid-fire-control-method-11 () none) ;; 11
-    (rapid-fire-control-method-12 () none) ;; 12
+    (new (symbol _type_ rapid-fire-params int) _type_) ;; 0
+    (rapid-fire-control-method-9 (_type_ int vector) none) ;; 9
+    (rapid-fire-control-method-10 (_type_ vector vector) none) ;; 10
+    (rapid-fire-control-method-11 (_type_ vector quaternion float process-drawable vector) none) ;; 11
+    (rapid-fire-control-method-12 (_type_ vector quaternion float process-drawable vector) object) ;; 12
     )
-  )
-
-(deftype rapid-fire-callback-gun-hitspang-params (structure)
-  ((bits-part-id  uint32  :offset-assert 0)
-   (dust-part-id  uint32  :offset-assert 4)
-   (group-part-id uint32  :offset-assert 8)
-   )
-  :method-count-assert 9
-  :size-assert         #xc
-  :flag-assert         #x90000000c
   )
 
 (deftype vehicle-weapon-drone (process-focusable)
@@ -45975,7 +45988,7 @@
     (net-player-method-46 () none) ;; 46
     (net-player-method-47 () none) ;; 47
     (net-player-method-48 () none) ;; 48
-    (net-player-method-49 () none) ;; 49
+    (net-player-method-49 (_type_) wvehicle) ;; 49
     (net-player-method-50 () none) ;; 50
     (net-player-method-51 () none) ;; 51
     (net-player-method-52 () none) ;; 52
@@ -46027,7 +46040,7 @@
     )
   )
 
-(define-extern net-player-init-remote (function process none :behavior net-player))
+(define-extern net-player-init-remote (function mem-buffer int :behavior net-player))
 (define-extern *msg-map-net-player* (array symbol))
 (define-extern *net-process-class-info-net-player* net-process-class-info)
 (define-extern *net-players* (array net-player))
@@ -46415,7 +46428,7 @@
 
 (define-extern *powerup-static-hash* spatial-hash)
 (define-extern *powerup-dynamic-hash* spatial-hash)
-(define-extern net-powerup-init-remote (function process none :behavior net-powerup))
+(define-extern net-powerup-init-remote (function mem-buffer int :behavior net-powerup))
 (define-extern *msg-map-net-powerup* (array symbol))
 (define-extern *net-process-class-info-net-powerup* net-process-class-info)
 (define-extern powerup-draw-init-by-other (function process vector process none :behavior powerup-draw))
@@ -46498,7 +46511,7 @@
     )
   )
 
-(define-extern net-game-mgr-init-remote (function int none :behavior net-game-mgr))
+(define-extern net-game-mgr-init-remote (function mem-buffer int :behavior net-game-mgr))
 (define-extern *msg-map-net-game-mgr* (array symbol))
 (define-extern *net-process-class-info-net-game-mgr* net-process-class-info)
 (define-extern *net-game-mgr* net-game-mgr)
@@ -46577,10 +46590,10 @@
     )
   )
 
-(define-extern net-player-race-init-remote (function int none :behavior net-player-race))
+(define-extern net-player-race-init-remote (function mem-buffer int :behavior net-player-race))
 (define-extern *msg-map-net-player-race* (array symbol))
 (define-extern *net-process-class-info-net-player-race* net-process-class-info)
-(define-extern net-game-mgr-race-init-remote (function int none :behavior net-game-mgr-race))
+(define-extern net-game-mgr-race-init-remote (function mem-buffer int :behavior net-game-mgr-race))
 (define-extern *msg-map-net-game-mgr-race* (array symbol))
 (define-extern *net-process-class-info-net-game-mgr-race* net-process-class-info)
 
@@ -47065,46 +47078,46 @@
 (define-extern *ctf-flag* symbol)
 (define-extern *ctf-red-base* symbol)
 (define-extern *ctf-blue-base* symbol)
-(define-extern net-player-ctf-init-remote (function int none :behavior net-player-ctf))
+(define-extern net-player-ctf-init-remote (function mem-buffer int :behavior net-player-ctf))
 (define-extern *msg-map-net-player-ctf* (array symbol))
 (define-extern *net-process-class-info-net-player-ctf* net-process-class-info)
-(define-extern net-game-mgr-ctf-init-remote (function int none :behavior net-game-mgr-ctf))
+(define-extern net-game-mgr-ctf-init-remote (function mem-buffer int :behavior net-game-mgr-ctf))
 (define-extern *msg-map-net-game-mgr-ctf* (array symbol))
 (define-extern *net-process-class-info-net-game-mgr-ctf* net-process-class-info)
-(define-extern ctf-flag-init-remote (function int none :behavior ctf-flag))
+(define-extern ctf-flag-init-remote (function mem-buffer int :behavior ctf-flag))
 (define-extern *msg-map-ctf-flag* (array symbol))
 (define-extern *net-process-class-info-ctf-flag* net-process-class-info)
-(define-extern net-player-rushhour-init-remote (function int none :behavior net-player-rushhour))
+(define-extern net-player-rushhour-init-remote (function mem-buffer int :behavior net-player-rushhour))
 (define-extern *msg-map-net-player-rushhour* (array symbol))
 (define-extern *net-process-class-info-net-player-rushhour* net-process-class-info)
-(define-extern net-game-mgr-rushhour-init-remote (function int none :behavior net-game-mgr-rushhour))
+(define-extern net-game-mgr-rushhour-init-remote (function mem-buffer int :behavior net-game-mgr-rushhour))
 (define-extern *msg-map-net-game-mgr-rushhour* (array symbol))
 (define-extern *net-process-class-info-net-game-mgr-rushhour* net-process-class-info)
-(define-extern net-game-mgr-king-of-hill-init-remote (function int none :behavior net-game-mgr-king-of-hill))
+(define-extern net-game-mgr-king-of-hill-init-remote (function mem-buffer int :behavior net-game-mgr-king-of-hill))
 (define-extern *msg-map-net-game-mgr-king-of-hill* (array symbol))
 (define-extern *net-process-class-info-net-game-mgr-king-of-hill* net-process-class-info)
-(define-extern net-player-king-of-hill-init-remote (function int none :behavior net-player-king-of-hill))
+(define-extern net-player-king-of-hill-init-remote (function mem-buffer int :behavior net-player-king-of-hill))
 (define-extern *msg-map-net-player-king-of-hill* (array symbol))
 (define-extern *net-process-class-info-net-player-king-of-hill* net-process-class-info)
-(define-extern net-player-time-box-init-remote (function int none :behavior net-player-time-box))
+(define-extern net-player-time-box-init-remote (function mem-buffer int :behavior net-player-time-box))
 (define-extern *msg-map-net-player-time-box* (array symbol))
 (define-extern *net-process-class-info-net-player-time-box* net-process-class-info)
-(define-extern net-game-mgr-time-box-init-remote (function int none :behavior net-game-mgr-time-box))
+(define-extern net-game-mgr-time-box-init-remote (function mem-buffer int :behavior net-game-mgr-time-box))
 (define-extern *msg-map-net-game-mgr-time-box* (array symbol))
 (define-extern *net-process-class-info-net-game-mgr-time-box* net-process-class-info)
-(define-extern net-player-time-trial-init-remote (function int none :behavior net-player-time-trial))
+(define-extern net-player-time-trial-init-remote (function mem-buffer int :behavior net-player-time-trial))
 (define-extern *msg-map-net-player-time-trial* (array symbol))
 (define-extern *net-process-class-info-net-player-time-trial* net-process-class-info)
-(define-extern net-game-mgr-time-trial-init-remote (function int none :behavior net-game-mgr-time-trial))
+(define-extern net-game-mgr-time-trial-init-remote (function mem-buffer int :behavior net-game-mgr-time-trial))
 (define-extern *msg-map-net-game-mgr-time-trial* (array symbol))
 (define-extern *net-process-class-info-net-game-mgr-time-trial* net-process-class-info)
-(define-extern net-game-mgr-training-init-remote (function int none :behavior net-game-mgr-training))
+(define-extern net-game-mgr-training-init-remote (function mem-buffer int :behavior net-game-mgr-training))
 (define-extern *msg-map-net-game-mgr-training* (array symbol))
 (define-extern *net-process-class-info-net-game-mgr-training* net-process-class-info)
-(define-extern net-player-boss-battle-init-remote (function int none :behavior net-player-boss-battle))
+(define-extern net-player-boss-battle-init-remote (function mem-buffer int :behavior net-player-boss-battle))
 (define-extern *msg-map-net-player-boss-battle* (array symbol))
 (define-extern *net-process-class-info-net-player-boss-battle* net-process-class-info)
-(define-extern net-game-mgr-boss-battle-init-remote (function int none :behavior net-game-mgr-boss-battle))
+(define-extern net-game-mgr-boss-battle-init-remote (function mem-buffer int :behavior net-game-mgr-boss-battle))
 (define-extern *msg-map-net-game-mgr-boss-battle* (array symbol))
 (define-extern *net-process-class-info-net-game-mgr-boss-battle* net-process-class-info)
 
@@ -47150,7 +47163,7 @@
     )
   )
 
-(define-extern net-simple-destruct-mgr-init-remote (function int none :behavior net-simple-destruct-mgr))
+(define-extern net-simple-destruct-mgr-init-remote (function mem-buffer int :behavior net-simple-destruct-mgr))
 (define-extern *msg-map-net-simple-destruct-mgr* (array symbol))
 (define-extern *net-process-class-info-net-simple-destruct-mgr* net-process-class-info)
 (define-extern *net-simple-destruct-mgr* net-simple-destruct-mgr)
@@ -47186,7 +47199,24 @@
     )
   )
 
-(define-extern net-projectile-init-remote (function process none :behavior net-projectile))
+(deftype mystery-net-projectile-type0 (structure)
+  ((params                  projectile-init-by-other-params :inline)
+   (pos                     vector :inline      :offset-assert 128)
+   (vel                     vector :inline      :offset-assert 144)
+   (target-handle           handle              :offset-assert 160)
+   (owner-ignore-handle     handle              :offset-assert 168)
+   (attack-id               uint32              :offset-assert 176)
+   (pad                     uint32              :offset-assert 180)
+   (options                 projectile-options  :offset-assert 184)
+   (damage                  float               :offset-assert 192)
+   (vehicle-damage-factor   float               :offset-assert 196)
+   (vehicle-impulse-factor  float               :offset-assert 200)
+   (ent                     entity              :offset-assert 204)
+   (wpn-type                uint8               :offset-assert 208)
+   )
+  )
+
+(define-extern net-projectile-init-remote (function mem-buffer int :behavior net-projectile))
 (define-extern *msg-map-net-projectile* (array symbol))
 (define-extern *net-process-class-info-net-projectile* net-process-class-info)
 (define-extern spawn-net-projectile (function type projectile-init-by-other-params process-tree dead-pool (pointer process)))
@@ -47294,7 +47324,7 @@
     )
   )
 
-(define-extern eco-mgr-init-remote (function process none :behavior eco-mgr))
+(define-extern eco-mgr-init-remote (function mem-buffer int :behavior eco-mgr))
 (define-extern *msg-map-eco-mgr* (array symbol))
 (define-extern *net-process-class-info-eco-mgr* net-process-class-info)
 
@@ -49842,7 +49872,7 @@
     )
   )
 
-(define-extern net-test-init-remote (function object :behavior net-test))
+(define-extern net-test-init-remote (function mem-buffer int :behavior net-test))
 (define-extern *msg-map-net-test* (array symbol))
 (define-extern *net-process-class-info-net-test* net-process-class-info)
 (define-extern net-test-init-by-other (function object :behavior net-test))
@@ -50052,7 +50082,7 @@
 ;; net-projectile                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define-extern net-projectile-init-by-other (function process none :behavior net-projectile))
+(define-extern net-projectile-init-by-other (function projectile-init-by-other-params int object :behavior net-projectile))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; udp-layer                      ;;
@@ -53563,7 +53593,7 @@
 ;; race-manager                   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (define-extern *race-state* object) ;; race-state
+(define-extern *race-state* race-state)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; net-anim                       ;;
@@ -53745,8 +53775,7 @@
   )
 
 (define-extern *tmp-construct-transition* net-enemy-transition)
-;; TODO - unknown type passed to process-nettable::35
-(define-extern net-enemy-init-remote (function int none :behavior process-focusable))
+(define-extern net-enemy-init-remote (function mem-buffer int :behavior process-focusable))
 (define-extern *msg-map-net-enemy* (array symbol))
 (define-extern *net-process-class-info-net-enemy* net-process-class-info)
 (define-extern *net-enemy-list* linked-list)
@@ -56832,7 +56861,6 @@
 ;; wvehicle-effects               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype wvehicle-wheel-launcher-spec (structure)
   ((mat                    matrix              :offset-assert 0)
    (particle-system        sparticle-system    :offset-assert 4) ;; guessed by decompiler
@@ -56850,13 +56878,12 @@
    (ptr-part-birth-accum   uint32              :offset-assert 52)
    (ptr-streak-birth-accum uint32              :offset-assert 56)
    )
+  :allow-misaligned
   :method-count-assert 9
   :size-assert         #x3c
   :flag-assert         #x90000003c
   )
-|#
 
-#|
 (deftype wvehicle-part-work (structure)
   ((streak             spark-launch-params          :inline :offset-assert 0)
    (local-mat          matrix                       :inline :offset-assert 80)
@@ -56912,7 +56939,6 @@
   :size-assert         #x3b0
   :flag-assert         #x9000003b0
   )
-|#
 
 #|
 (deftype tire-trail-crumb (light-trail-breadcrumb)
@@ -57507,7 +57533,7 @@
     )
   )
 
-(define-extern v-toad-shot-init-remote (function int int :behavior v-toad-shot))
+(define-extern v-toad-shot-init-remote (function mem-buffer int :behavior v-toad-shot))
 (define-extern *msg-map-v-toad-shot* (array symbol))
 (define-extern *net-process-class-info-v-toad-shot* net-process-class-info)
 
@@ -57611,17 +57637,17 @@
     )
   )
 
-(define-extern mine-a-init-remote (function int int :behavior mine-a))
+(define-extern mine-a-init-remote (function mem-buffer int :behavior mine-a))
 (define-extern *msg-map-mine-a* (array symbol))
 (define-extern *net-process-class-info-mine-a* net-process-class-info)
 (define-extern mine-a-init-by-other (function vector quaternion process-drawable object :behavior mine-a))
-(define-extern mine-b-init-remote (function int int :behavior mine-b))
+(define-extern mine-b-init-remote (function mem-buffer int :behavior mine-b))
 (define-extern *msg-map-mine-b* (array symbol))
 (define-extern *net-process-class-info-mine-b* net-process-class-info)
 (define-extern mine-b-common-trans (function int :behavior mine-b))
 (define-extern *mine-b-hack* rigid-body-impact)
 (define-extern mine-b-init-by-other (function vector quaternion process-drawable object :behavior mine-b))
-(define-extern v-yellow-guided-missile-init-remote (function int int :behavior v-yellow-guided-missile))
+(define-extern v-yellow-guided-missile-init-remote (function mem-buffer int :behavior v-yellow-guided-missile))
 (define-extern *msg-map-v-yellow-guided-missile* (array symbol))
 (define-extern *net-process-class-info-v-yellow-guided-missile* net-process-class-info)
 (define-extern spawn-text-display-deflected-view-1 (function process))
@@ -57632,7 +57658,10 @@
 (define-extern v-wpn-yellow-chaingun-1-hitspang-params rapid-fire-callback-gun-hitspang-params)
 (define-extern v-wpn-yellow-chaingun-2-hitspang-params rapid-fire-callback-gun-hitspang-params)
 (define-extern v-wpn-bulldog-hitspang-params rapid-fire-callback-gun-hitspang-params)
-;; (define-extern rapid-fire-callback-gun-hitspang (function int collide-query int rapid-fire-callback-gun-hitspang-params none))
+
+
+(define-extern sparticle-set-conerot (function sparticle-launcher vector none))
+(define-extern rapid-fire-callback-gun-hitspang (function int collide-query int rapid-fire-callback-gun-hitspang-params int))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons-oil           ;;
@@ -58007,7 +58036,7 @@
 (define-extern v-wpn-yellow-chain-gun-II-rapid-fire-control-params rapid-fire-params)
 ;; (define-extern hack-sparticle-track-gun function)
 (define-extern v-wpn-yellow-default-gun-rapid-fire-control-params rapid-fire-params)
-(define-extern v-wpn-yellow-guided-missile-init-remote (function int int :behavior v-wpn-yellow-guided-missile))
+(define-extern v-wpn-yellow-guided-missile-init-remote (function mem-buffer int :behavior v-wpn-yellow-guided-missile))
 (define-extern *msg-map-v-wpn-yellow-guided-missile* (array symbol))
 (define-extern *net-process-class-info-v-wpn-yellow-guided-missile* net-process-class-info)
 ;; (define-extern guided-missile-gen-proj-no-targ-helper function)
@@ -58968,16 +58997,15 @@
 ;; raceline-weapon                ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype raceline-weapon (process-drawable)
   ((owner-id       int8                       :offset-assert 248)
    (delta-height   float                      :offset-assert 252)
    (birth-time     int32                      :offset-assert 256)
    (minimap        connection-minimap         :offset-assert 260)
-   (visible        basic                      :offset-assert 264)
+   (visible        symbol                     :offset-assert 264)
    (last-sent-time int32                      :offset-assert 268)
   ;;  (prox           basic                      :offset-assert 168) ;; defined in process-nettable
-   (mesh           basic                      :offset 276)
+   (mesh           race-mesh                  :offset 276)
    (slice-id       int16                      :offset-assert 280)
    (race-line      race-line                  :offset-assert 284)
    (lap-dist       float                      :offset-assert 288)
@@ -58995,80 +59023,74 @@
     die ;; 51
     )
   (:methods
-    (raceline-weapon-method-52 () none) ;; 52
-    (raceline-weapon-method-53 () none) ;; 53
-    (raceline-weapon-method-54 () none) ;; 54
-    (raceline-weapon-method-55 () none) ;; 55
-    (raceline-weapon-method-56 () none) ;; 56
-    (raceline-weapon-method-57 () none) ;; 57
-    (raceline-weapon-method-58 () none) ;; 58
-    (raceline-weapon-method-59 () none) ;; 59
-    (raceline-weapon-method-60 () none) ;; 60
-    (raceline-weapon-method-61 () none) ;; 61
-    (raceline-weapon-method-62 () none) ;; 62
-    (raceline-weapon-method-63 () none) ;; 63
-    (raceline-weapon-method-64 () none) ;; 64
-    (raceline-weapon-method-65 () none) ;; 65
-    (raceline-weapon-method-66 () none) ;; 66
-    (raceline-weapon-method-67 () none) ;; 67
-    (raceline-weapon-method-68 () none) ;; 68
-    (raceline-weapon-method-69 () none) ;; 69
-    (raceline-weapon-method-70 () none) ;; 70
-    (raceline-weapon-method-71 () none) ;; 71
-    (raceline-weapon-method-72 () none) ;; 72
-    (raceline-weapon-method-73 () none) ;; 73
-    (raceline-weapon-method-74 () none) ;; 74
-    (raceline-weapon-method-75 () none) ;; 75
-    (raceline-weapon-method-76 () none) ;; 76
-    (raceline-weapon-method-77 () none) ;; 77
-    (raceline-weapon-method-78 () none) ;; 78
+    (init! (_type_) none) ;; 52
+    (raceline-weapon-method-53 (_type_) float) ;; 53
+    (raceline-weapon-method-54 (_type_) vector) ;; 54
+    (raceline-weapon-method-55 (_type_) float) ;; 55
+    (update-target-pos! (_type_) int) ;; 56
+    (raceline-weapon-method-57 (_type_) none) ;; 57
+    (update-visibility! (_type_) symbol) ;; 58
+    (raceline-weapon-method-59 () int) ;; 59
+    (raceline-weapon-method-60 (_type_) int) ;; 60
+    (raceline-weapon-method-61 (_type_) float) ;; 61
+    (raceline-weapon-method-62 (_type_ vector) float) ;; 62
+    (raceline-weapon-method-63 (_type_ vector) object) ;; 63
+    (raceline-weapon-method-64 (_type_ int) float) ;; 64
+    (get-target-wvehicle (_type_) wvehicle) ;; 65
+    (get-owner-wvehicle (_type_) wvehicle) ;; 66
+    (get-damage (_type_) float) ;; 67
+    (raceline-weapon-method-68 (_type_) float) ;; 68
+    (attack (_type_ wvehicle) object) ;; 69
+    (raceline-weapon-method-70 (_type_) float) ;; 70
+    (maybe-attack (_type_) symbol) ;; 71
+    (reset-target-pos! (_type_) int) ;; 72
+    (update-target-pos-from-wvehicle! (_type_ wvehicle) int) ;; 73
+    (show! (_type_) none) ;; 74
+    (hide! (_type_) none) ;; 75
+    (write-to-buffer (_type_ mem-buffer) none) ;; 76
+    (read-from-buffer (_type_ mem-buffer) vector) ;; 77
+    (init-start-speed! (_type_) float) ;; 78
     )
   )
-|#
 
-;; (define-extern raceline-weapon-init-remote function)
-;; (define-extern *msg-map-raceline-weapon* array)
-;; (define-extern *net-process-class-info-raceline-weapon* net-process-class-info)
-;; (define-extern raceline-weapon-init-by-other function)
+(define-extern raceline-weapon-init-remote (function mem-buffer int :behavior raceline-weapon))
+(define-extern *msg-map-raceline-weapon* (array symbol))
+(define-extern *net-process-class-info-raceline-weapon* net-process-class-info)
+(define-extern raceline-weapon-init-by-other (function vector quaternion int8 object :behavior raceline-weapon))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons-chicken-drone ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype chicken-drone (raceline-weapon)
-  ((beam-fire-control basic          :offset-assert 356)
-   (machinegun-sound  uint32         :offset-assert 360)
-   (particle-matrix   matrix :inline :offset-assert 368)
-   (sound-id          uint32         :offset-assert 432)
+  ((beam-fire-control rapid-fire-control  :offset-assert 356)
+   (machinegun-sound  uint32              :offset-assert 360)
+   (particle-matrix   matrix :inline      :offset-assert 368)
+   (sound-id          sound-id            :offset-assert 432)
    )
   :method-count-assert 81
   :size-assert         #x1b4
   :flag-assert         #x51013001b4
   (:methods
-    (chicken-drone-method-79 () none) ;; 79
-    (chicken-drone-method-80 () none) ;; 80
+    (chicken-drone-method-79 (_type_) float) ;; 79
+    (chicken-drone-method-80 (_type_) particle-local-space-info) ;; 80
     )
   (:state-methods
     tracking ;; 50
     die ;; 51
     )
   )
-|#
 
-#|
 (deftype chicken-drone-2 (chicken-drone)
   ()
   :method-count-assert 81
   :size-assert         #x1b4
   :flag-assert         #x51013001b4
   )
-|#
 
-#|
 (deftype seeker (raceline-weapon)
-  ((sound-id    uint32  :offset-assert 356)
-   (start-speed float   :offset-assert 360)
+  ((sound-id    sound-id  :offset-assert 356)
+   (start-speed float     :offset-assert 360)
    )
   :method-count-assert 79
   :size-assert         #x16c
@@ -59078,79 +59100,70 @@
     tracking ;; 50
     )
   )
-|#
 
-#|
 (deftype lightning-point (structure)
-  ((active         basic          :offset-assert 0)
-   (vehicle-id     int8           :offset-assert 4)
-   (sound-id       uint32         :offset-assert 8)
-   (point          vector :inline :offset-assert 16)
-   (l-control      basic          :offset-assert 32)
-   (next-test-time int32          :offset-assert 36)
+  ((active         basic              :offset-assert 0)
+   (vehicle-id     int8               :offset-assert 4)
+   (sound-id       sound-id           :offset-assert 8)
+   (point          vector :inline     :offset-assert 16)
+   (l-control      lightning-control  :offset-assert 32)
+   (next-test-time int32              :offset-assert 36)
    )
   :method-count-assert 9
   :size-assert         #x28
   :flag-assert         #x900000028
   )
-|#
 
-#|
 (deftype success-seeker (seeker)
-  ((last-had-target-time int32           :offset-assert 364)
-   (lightning-point      UNKNOWN 3       :offset-assert 368)
-   (particle-matrix      matrix  :inline :offset-assert 512)
-   (lost-target          basic           :offset-assert 576)
-   (center-quad          basic           :offset-assert 580)
+  ((last-had-target-time int32                      :offset-assert 364)
+   (lightning-point      lightning-point 3 :inline  :offset-assert 368)
+   (particle-matrix      matrix  :inline            :offset-assert 512)
+   (lost-target          basic                      :offset-assert 576)
+   (center-quad          camera-facing-quad         :offset-assert 580)
    )
   :method-count-assert 84
   :size-assert         #x248
   :flag-assert         #x5401c00248
   (:methods
-    (success-seeker-method-79 () none) ;; 79
-    (success-seeker-method-80 () none) ;; 80
-    (success-seeker-method-81 () none) ;; 81
-    (success-seeker-method-82 () none) ;; 82
-    (success-seeker-method-83 () none) ;; 83
+    (success-seeker-method-79 (_type_) int) ;; 79
+    (success-seeker-method-80 (_type_) int) ;; 80
+    (success-seeker-method-81 (_type_) symbol) ;; 81
+    (success-seeker-method-82 (_type_) float) ;; 82
+    (success-seeker-method-83 (_type_) texture-id) ;; 83
     )
   (:state-methods
     tracking ;; 50
     )
   )
-|#
 
-#|
 (deftype success-seeker-2 (success-seeker)
   ()
   :method-count-assert 84
   :size-assert         #x248
   :flag-assert         #x5401c00248
   )
-|#
 
-#|
 (deftype turbodash-seeker (seeker)
-  ((trail-tracker uint64  :offset-assert 368)
-   (target-id     int8    :offset-assert 376)
-   (center-quad   basic   :offset-assert 380)
+  ((trail-tracker handle              :offset-assert 368)
+   (target-id     int8                :offset-assert 376)
+   (center-quad   camera-facing-quad  :offset-assert 380)
    )
   :method-count-assert 81
   :size-assert         #x180
   :flag-assert         #x5100f00180
   (:methods
-    (turbodash-seeker-method-79 () none) ;; 79
-    (turbodash-seeker-method-80 () none) ;; 80
+    (turbodash-seeker-method-79 (_type_) none) ;; 79
+    (turbodash-seeker-method-80 (_type_) int) ;; 80
     )
   (:state-methods
     tracking ;; 50
     die ;; 51
     )
   )
-|#
 
-#|
 (deftype v-wpn-success-seeker (vehicle-weapon-slot)
-  ((next-shot-time int32  :offset-assert 268)
+  ((pad            uint32 :offset-assert 264)
+   (next-shot-time int32  :offset-assert 268)
    (next-to-fire   uint8  :offset-assert 272)
    )
   :method-count-assert 60
@@ -59160,11 +59173,10 @@
     idle ;; 50
     )
   )
-|#
 
-#|
 (deftype v-wpn-chicken-drone (vehicle-weapon-slot)
-  ((next-shot-time int32  :offset-assert 268)
+  ((pad            uint32 :offset-assert 264)
+   (next-shot-time int32  :offset-assert 268)
    (next-to-fire   uint8  :offset-assert 272)
    )
   :method-count-assert 60
@@ -59174,36 +59186,37 @@
     idle ;; 50
     )
   )
-|#
 
-;; (define-extern chicken-drone-init-remote function)
-;; (define-extern *msg-map-chicken-drone* array)
-;; (define-extern *net-process-class-info-chicken-drone* net-process-class-info)
-;; (define-extern v-wpn-chicken-drone-rapid-fire-control-params object)
-;; (define-extern chicken-drone-spawn function)
-;; (define-extern chicken-drone-local-space function)
-;; (define-extern chicken-drone-2-init-remote function)
-;; (define-extern *msg-map-chicken-drone-2* array)
-;; (define-extern *net-process-class-info-chicken-drone-2* net-process-class-info)
-;; (define-extern chicken-drone-2-spawn function)
-;; (define-extern seeker-init-remote function)
-;; (define-extern *msg-map-seeker* array)
-;; (define-extern *net-process-class-info-seeker* net-process-class-info)
-;; (define-extern success-seeker-init-remote function)
-;; (define-extern *msg-map-success-seeker* array)
-;; (define-extern *net-process-class-info-success-seeker* net-process-class-info)
-;; (define-extern success-seeker-1-spawn function)
-;; (define-extern success-seeker-local-space function)
-;; (define-extern success-seeker-2-init-remote function)
-;; (define-extern *msg-map-success-seeker-2* array)
-;; (define-extern *net-process-class-info-success-seeker-2* net-process-class-info)
-;; (define-extern success-seeker-2-spawn function)
-;; (define-extern turbodash-seeker-init-remote function)
-;; (define-extern *msg-map-turbodash-seeker* array)
-;; (define-extern *net-process-class-info-turbodash-seeker* net-process-class-info)
-;; (define-extern turbodash-seeker-spawn function)
-;; (define-extern fire-seeker function)
-;; (define-extern fire-drone function)
+(define-extern chicken-drone-init-remote (function mem-buffer int :behavior chicken-drone))
+(define-extern v-wpn-chicken-drone-rapid-fire-control-params rapid-fire-params)
+(define-extern *msg-map-chicken-drone* (array symbol))
+(define-extern *net-process-class-info-chicken-drone* net-process-class-info)
+(define-extern chicken-drone-spawn (function vector quaternion int8 process))
+(define-extern chicken-drone-local-space (function particle-local-space-info int :behavior chicken-drone))
+(define-extern chicken-drone-2-init-remote (function mem-buffer int :behavior chicken-drone-2))
+(define-extern *msg-map-chicken-drone-2* (array symbol))
+(define-extern *net-process-class-info-chicken-drone-2* net-process-class-info)
+(define-extern chicken-drone-2-spawn (function vector quaternion int8 process))
+(define-extern seeker-init-remote (function mem-buffer int :behavior seeker))
+(define-extern *msg-map-seeker* (array symbol))
+(define-extern *net-process-class-info-seeker* net-process-class-info)
+(define-extern success-seeker-init-remote (function mem-buffer int :behavior success-seeker))
+(define-extern *msg-map-success-seeker* (array symbol))
+(define-extern *net-process-class-info-success-seeker* net-process-class-info)
+(define-extern success-seeker-1-spawn (function vector quaternion int8 process))
+(define-extern success-seeker-local-space (function particle-local-space-info int :behavior success-seeker))
+(define-extern success-seeker-2-init-remote (function mem-buffer int :behavior success-seeker-2))
+(define-extern *msg-map-success-seeker-2* (array symbol))
+(define-extern *net-process-class-info-success-seeker-2* net-process-class-info)
+(define-extern success-seeker-2-spawn (function vector quaternion int8 process))
+(define-extern turbodash-seeker-init-remote (function mem-buffer int :behavior turbodash-seeker))
+(define-extern *msg-map-turbodash-seeker* (array symbol))
+(define-extern *net-process-class-info-turbodash-seeker* net-process-class-info)
+(define-extern turbodash-seeker-spawn (function vector quaternion int8 process))
+(define-extern fire-seeker (function object :behavior v-wpn-success-seeker))
+(define-extern fire-drone (function object :behavior v-wpn-chicken-drone))
+
+;; need rigid-body-queue-manager for these two
 ;; (define-extern spawn-success-seeker-weapon function)
 ;; (define-extern spawn-chicken-drone-weapon function)
 

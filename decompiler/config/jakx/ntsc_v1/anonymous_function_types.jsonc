@@ -520,5 +520,11 @@
     [103, "(function int :behavior mine-a)"],
     [104, "(function time-frame :behavior mine-a)"],
     [105, "(function process int symbol event-message-block object :behavior mine-a)"]
+  ],
+  "wvehicle-weapons-chicken-drone": [
+    // [91, "(function symbol :behavior chicken-drone)"],
+    [92, "(function none :behavior chicken-drone)"],
+    // [109, "(function none :behavior chicken-drone)"],
+    [110, "(function int :behavior chicken-drone)"]
   ]
 }

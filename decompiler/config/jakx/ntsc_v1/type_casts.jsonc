@@ -2125,5 +2125,44 @@
     [[114,118], "v1", "attack-info"]
   ],
   "(anon-function 105 wvehicle-weapons-proj)": [[[35,39], "v1", "attack-info"]],
-  "(method 65 projectile)": [[[3,6], "a1", "process"]]
+  "(method 65 projectile)": [[[3,6], "a1", "process"]],
+  "(method 53 raceline-weapon)": [[[35,39], "s5", "net-player-race"]],
+  "(method 73 raceline-weapon)": [[12, "v1", "net-player-race"]],
+  "chicken-drone-local-space": [[13, "a1", "chicken-drone"]],
+  "(method 74 chicken-drone)": [
+    [7, "v1", "collide-shape"],
+    [9, "a0", "collide-shape"],
+    [12, "a0", "collide-shape"]
+  ],
+  "(method 75 chicken-drone)": [[7, "v1", "collide-shape"]],
+  "(method 57 chicken-drone)": [
+    [[210,213], "v1", "float"],
+    [[234,237], "v1", "float"]
+  ],
+  "(method 80 chicken-drone)": [[21, "v0", "particle-local-space-info"]],
+  "(method 80 chicken-drone-2)": [[21, "v0", "particle-local-space-info"]],
+  "(anon-function 92 wvehicle-weapons-chicken-drone)": [[6, "v1", "collide-shape"]],
+  "(method 80 success-seeker)": [
+    [[37,40], "v1", "float"],
+    [[61,64], "v1", "float"],
+    [[100,103], "v1", "float"]
+  ],
+  "(method 65 success-seeker)": [[54, "s5", "wvehicle"]],
+  "(method 52 success-seeker)": [
+    [[83,86], "v1", "float"]
+  ],
+  "success-seeker-local-space": [[10, "a0", "success-seeker"]],
+  "(method 52 turbodash-seeker)": [
+    [53, "v1", "net-player-race"],
+    [64, "a1", "net-player-race"]
+  ],
+  "(method 74 turbodash-seeker)": [
+    [7, "v1", "collide-shape"],
+    [9, "a0", "collide-shape"],
+    [12, "a0", "collide-shape"]
+  ],
+  "(method 75 turbodash-seeker)": [[7, "v1", "collide-shape"]],
+  "fire-seeker": [[21, "s4", "wvehicle"]],
+  "fire-drone": [[21, "s4", "wvehicle"]]
+
 }
