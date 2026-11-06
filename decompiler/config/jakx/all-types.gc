@@ -59123,8 +59123,8 @@
   :size-assert         #x16c
   :flag-assert         #x4f00e0016c
   (:state-methods
-    die ;; 51
     tracking ;; 50
+    die ;; 51
     )
   )
 
@@ -59151,15 +59151,15 @@
   :method-count-assert 84
   :size-assert         #x248
   :flag-assert         #x5401c00248
+  (:state-methods
+    tracking ;; 50
+    )
   (:methods
     (success-seeker-method-79 (_type_) int) ;; 79
     (success-seeker-method-80 (_type_) int) ;; 80
     (success-seeker-method-81 (_type_) symbol) ;; 81
     (success-seeker-method-82 (_type_) float) ;; 82
     (success-seeker-method-83 (_type_) texture-id) ;; 83
-    )
-  (:state-methods
-    tracking ;; 50
     )
   )
 
@@ -59178,13 +59178,13 @@
   :method-count-assert 81
   :size-assert         #x180
   :flag-assert         #x5100f00180
-  (:methods
-    (turbodash-seeker-method-79 (_type_) none) ;; 79
-    (turbodash-seeker-method-80 (_type_) int) ;; 80
-    )
   (:state-methods
     tracking ;; 50
     die ;; 51
+    )
+  (:methods
+    (turbodash-seeker-method-79 (_type_) none) ;; 79
+    (turbodash-seeker-method-80 (_type_) int) ;; 80
     )
   )
 

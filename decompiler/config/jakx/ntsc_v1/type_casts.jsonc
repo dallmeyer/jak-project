@@ -2286,7 +2286,12 @@
   "(code falling red-sentry-bot)": [
     [97, "v1", "art-joint-anim"],
     [200, "v1", "art-joint-anim"]
-  ]
+  ],
+  "(event idle v-wpn-chicken-drone)": [[[54,58], "a1", "vehicle"]],
+  "(event idle v-wpn-success-seeker)": [[[54,58], "a1", "vehicle"]],
+  "(enter die turbodash-seeker)": [[6, "v1", "collide-shape"]],
+  "(event tracking turbodash-seeker)": [[56, "gp", "wvehicle"]],
+  "(enter die chicken-drone)": [[6, "v1", "collide-shape"]]
 
 
 }
