@@ -31344,7 +31344,7 @@
     (get-water-height "Get the height of the water that we're in." (_type_) meters) ;; 55
     (get-notice-time (_type_) time-frame) ;; 56
     (process-focusable-method-57 () none) ;; 57
-    (process-focusable-method-58 () none) ;; 58
+    (process-focusable-method-58 (_type_) float) ;; 58
     )
   )
 
@@ -32069,13 +32069,25 @@
    (required-flags     uint32         :offset-assert 64)
    (priority-flags     uint32         :offset-assert 68)
    (weights            vector :inline :offset-assert 80)
-   (validate           basic          :offset-assert 96)
+   (validate           (function basic process-drawable vector vector none)          :offset-assert 96)
    (validator-params   basic          :offset-assert 100)
    )
   :method-count-assert 9
   :size-assert         #x68
   :flag-assert         #x900000068
   ;; field validator-params uses ~A with a signed load.
+  )
+
+(deftype mystery-find-sorted-targets-type0 (structure)
+  ((params find-sorted-targets-params :inline)
+   (vec1 vector :inline :offset-assert 112)
+   (vec2 vector :inline :offset-assert 128)
+   )
+  )
+  
+(deftype mystery-find-sorted-targets-type1 (structure)
+  ((params find-sorted-targets-params :inline)
+   )
   )
 
 (define-extern *HACK-find-nearest-focusable-ignore* symbol)
@@ -40749,10 +40761,10 @@
 (deftype mystery-cquery-type0 (structure)
   "(event explode explosion)"
   ((cquery          collide-query :inline)
-   (explosion-trans vector        :inline)
-   (proc-trans      vector        :inline)
-   (probe           float)
-   (dist            float)
+   (explosion-trans vector        :inline :offset-assert 544)
+   (proc-trans      vector        :inline :offset-assert 560)
+   (probe           float                 :offset-assert 576)
+   (dist            float                 :offset-assert 580)
    )
   )
 
@@ -44861,6 +44873,7 @@
    (pad10 uint32 7)
    (water-height                    float                                       :offset-assert 856)
    (sections                        vehicle-section                  12 :inline :offset 1024)
+   (unk-handle                      handle                                      :offset 1792)
    (pred                            net-predictor-sphcol                :inline :offset 1808)
    (next-reliable-send-time         int32                                       :offset-assert 2116)
    (player-id                       int8                                        :offset-assert 2120)
@@ -45366,7 +45379,7 @@
     )
   (:methods
     (vehicle-weapon-slot-method-51 (_type_ vector) vector) ;; 51
-    (vehicle-weapon-slot-method-52 (_type_ vector) object) ;; 52
+    (vehicle-weapon-slot-method-52 (_type_ vector) matrix) ;; 52
     (get-ammo-remaining (_type_) int) ;; 53
     (get-ammo-max (_type_) int) ;; 54
     (vehicle-weapon-slot-method-55 (_type_) int) ;; 55
@@ -45465,7 +45478,7 @@
     (new (symbol _type_ rapid-fire-params int) _type_) ;; 0
     (rapid-fire-control-method-9 (_type_ int vector) none) ;; 9
     (rapid-fire-control-method-10 (_type_ vector vector) none) ;; 10
-    (rapid-fire-control-method-11 (_type_ vector quaternion float process-drawable vector) none) ;; 11
+    (rapid-fire-control-method-11 (_type_ vector quaternion float process-drawable vector) int) ;; 11
     (rapid-fire-control-method-12 (_type_ vector quaternion float process-drawable vector) object) ;; 12
     )
   )
@@ -51381,11 +51394,10 @@
 ;; find-nearest                   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype search-info (structure)
   ((point        vector            :inline :offset-assert 0)
    (best-point   vector            :inline :offset-assert 16)
-   (match-handle uint64                    :offset-assert 32) ;; handle
+   (match-handle handle                    :offset-assert 32)
    (match        process-focusable         :offset-assert 40) ;; guessed by decompiler
    (best         float                     :offset-assert 44)
    (radius       float                     :offset-assert 48)
@@ -51400,18 +51412,17 @@
   :size-assert         #x64
   :flag-assert         #x900000064
   )
-|#
 
-;; (define-extern *search-info* object) ;; search-info
+(define-extern *search-info* search-info)
 (define-extern find-nearest-focusable (function (array collide-shape) vector float search-info-flag search-info-flag vector vector float process-focusable)) ;; 
-;; (define-extern in-process-array? function)
-;; (define-extern fst-insertion-helper function)
-;; (define-extern find-sorted-targets! function)
-;; (define-extern find-sorted-targets-faster! function)
-;; (define-extern sorted-targ-validator-test-collision function)
-;; (define-extern sorted-targ-validator-is-player-vehicle function)
-;; (define-extern sorted-targ-validator-is-any-vehicle function)
-;; (define-extern sorted-targ-validator-player-needs-los function)
+(define-extern in-process-array? (function (array process-drawable) process-drawable symbol))
+(define-extern fst-insertion-helper (function (array float) (array float) float float float))
+(define-extern find-sorted-targets! (function (array process-drawable) (array float) (array process-focusable) find-sorted-targets-params (array process-focusable) object))
+(define-extern find-sorted-targets-faster! (function (array process-drawable) (array float) find-sorted-targets-params (array process-focusable) object))
+(define-extern sorted-targ-validator-test-collision (function basic process-drawable vector vector symbol))
+(define-extern sorted-targ-validator-is-player-vehicle (function basic process-drawable vector vector symbol))
+(define-extern sorted-targ-validator-is-any-vehicle (function basic process-drawable vector vector symbol))
+(define-extern sorted-targ-validator-player-needs-los (function basic process-drawable vector vector symbol))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; glist-h                        ;;
@@ -58014,7 +58025,7 @@
   :flag-assert         #x3d00b00139
   (:state-methods
     idle ;; 50
-    firing ;; 60
+    firing ;; 60 ;; needs sorted-targ-validator-player-needs-los, find-sorted-targets-faster!
     )
   )
 
@@ -58034,7 +58045,7 @@
     )
   )
 
-;; (define-extern vws-focus-search-base (function vehicle-weapon-slot int int int vector int none))
+(define-extern vws-focus-search-base (function vehicle-weapon-slot int float float vector float int))
 (define-extern gunmount-common-trans (function object :behavior gunmount-generic-drawable))
 (define-extern gunmount-common-post (function none :behavior gunmount-generic-drawable))
 (define-extern gunmount-drawable-init-by-other (function wvehicle int int object :behavior gunmount-generic-drawable))
@@ -58045,7 +58056,7 @@
 (define-extern gunmount-generic-event-handler (function process int symbol event-message-block object :behavior gunmount-generic-drawable))
 (define-extern v-wpn-yellow-chain-gun-I-rapid-fire-control-params rapid-fire-params)
 (define-extern v-wpn-yellow-chain-gun-II-rapid-fire-control-params rapid-fire-params)
-;; (define-extern hack-sparticle-track-gun function)
+(define-extern hack-sparticle-track-gun (function vehicle-weapon-slot sparticle-cpuinfo matrix none))
 (define-extern v-wpn-yellow-default-gun-rapid-fire-control-params rapid-fire-params)
 (define-extern v-wpn-yellow-guided-missile-init-remote (function mem-buffer int :behavior v-wpn-yellow-guided-missile))
 (define-extern *msg-map-v-wpn-yellow-guided-missile* (array symbol))
@@ -58223,6 +58234,13 @@
 ;; wvehicle-weapons-util          ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(deftype mystery-rapid-fire-control-type0 (structure)
+  ((mat   matrix :inline)
+   (vec   vector :inline      :offset-assert 64)
+   (quat  quaternion :inline  :offset-assert 80)
+   )
+  )
+
 (define-extern v-wpn-base-init-by-other (function process-drawable v-wpn-type uint object :behavior vehicle-weapon-slot))
 ;; (define-extern warning-hud-draw function)
 (define-extern v-wpn-type->color (function v-wpn-type int))
@@ -58243,7 +58261,7 @@
 (define-extern global-turbo-suppressor-set! (function int none))
 (define-extern should-suppress-eco? (function symbol symbol)) ;; uses some kind of weapons bitfield enum (game-task-advanced-options)
 ;; (define-extern rapid-fire-control-emitter-from-world function)
-;; (define-extern rapid-fire-control-initialize-from-vehicle function)
+(define-extern rapid-fire-control-initialize-from-vehicle (function rapid-fire-control wvehicle symbol :behavior rapid-fire-control))
 (define-extern is-friendly-fire-helper (function process-drawable process-drawable symbol))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

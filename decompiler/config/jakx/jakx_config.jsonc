@@ -7,6 +7,7 @@
   // it will make the decompiler much faster.
   "allowed_objects": [
     "collide-shape-h","collide-shape","gsound",
+    "find-nearest",
     "light-trails","light-trails-h","explosion",
     "sparticle-launcher-h","sparticle-launcher",
     "process-nettable",

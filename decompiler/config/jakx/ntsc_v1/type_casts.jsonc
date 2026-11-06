@@ -2010,7 +2010,10 @@
     [[7,11], "a0", "wvehicle"],
     [[24,28], "a0", "wvehicle"]
   ],
-  "vws-focus-search-base": [[13, "a1", "wvehicle"]],
+  "vws-focus-search-base": [
+    [[10,14], "a1", "wvehicle"],
+    [126, "s5", "(pointer process-drawable)"]
+  ],
   "(method 58 v-toad-shot)": [[[13,17], "a0", "process-focusable"]],
   "(method 66 v-toad-shot)": [[[2,63], "s4", "touching-shapes-entry"]],
   "explosion-init-by-other": [
@@ -2192,24 +2195,67 @@
     [64, "s2", "process-nettable"]
   ],
   "(code backfiring v-wpn-yellow-seismic-blaster)": [
-    [9, "a0", "wvehicle"],
-    [64, "a0", "wvehicle"]
+    [[6,10], "a0", "wvehicle"],
+    [[61,65], "a0", "wvehicle"]
   ],
-  "(enter backfiring v-wpn-yellow-seismic-blaster)": [
-    [12, "a0", "wvehicle"]
-  ],
-  "(event backfiring v-wpn-yellow-seismic-blaster)": [
-    [17, "a0", "wvehicle"]
-  ],
+  "(enter backfiring v-wpn-yellow-seismic-blaster)": [[[9,13], "a0", "wvehicle"]],
+  "(event backfiring v-wpn-yellow-seismic-blaster)": [[[14,18], "a0", "wvehicle"]],
   "(post firing v-wpn-yellow-seismic-blaster)": [
-    [58, "a0", "wvehicle"],
-    [235, "s4", "wvehicle"]
+    [[55,59], "a0", "wvehicle"],
+    [[232,236], "s4", "wvehicle"]
   ],
-  "(exit firing v-wpn-yellow-seismic-blaster)": [
-    [9, "a0", "wvehicle"]
-  ],
+  "(exit firing v-wpn-yellow-seismic-blaster)": [[[6,10], "a0", "wvehicle"]],
   "(enter firing v-wpn-yellow-seismic-blaster)": [
-    [33, "a0", "wvehicle"],
-    [89, "a0", "wvehicle"]
+    [[30,34], "a0", "wvehicle"],
+    [[86,90], "a0", "wvehicle"]
+  ],
+  "(exit idle v-wpn-yellow-seismic-blaster)": [[[6,10], "a0", "wvehicle"]],
+  "(post idle v-wpn-yellow-seismic-blaster)": [[[6,10], "a0", "wvehicle"]],
+  "(trans idle v-wpn-yellow-seismic-blaster)": [[[6,10], "a0", "wvehicle"]],
+  "(event idle v-wpn-yellow-seismic-blaster)": [[[10,14], "a1", "wvehicle"]],
+  "(post firing v-wpn-yellow-guided-missile)": [
+    [[8,12], "a0", "wvehicle"],
+    [29, "s5", "process-focusable"],
+    [207, "s1", "(pointer process-drawable)"]
+  ],
+  "find-nearest-focusable": [[46, "s2", "process-focusable"]],
+  "find-sorted-targets!": [
+    [20, "s0", "process-focusable"],
+    [61, "s1", "vehicle"]
+  ],
+  "find-sorted-targets-faster!": [
+    [[49, 53], "a0", "process-focusable"],
+    [96, "s1", "vehicle"]
+  ],
+  "sorted-targ-validator-is-player-vehicle": [[7, "gp", "vehicle"]],
+  "sorted-targ-validator-player-needs-los": [[14, "s2", "vehicle"]],
+  "(event idle v-wpn-yellow-guided-missile)": [
+    [[9,13], "a1", "vehicle"],
+    [[31,35], "a0", "wvehicle"]
+  ],
+  "(event idle v-wpn-yellow-grenade)": [
+    [[9,13], "a1", "vehicle"],
+    [[34,38], "a0", "wvehicle"]
+  ],
+  "(post firing v-wpn-yellow-default-gun)": [
+    [[6,10], "a0", "wvehicle"],
+    [[51,55], "a1", "vehicle-weapon-slot"],
+    [[77,81], "a0", "vehicle-weapon-slot"],
+    [[188,191], "v1", "float"],
+    [[210,213], "v1", "float"],
+    [[264,267], "v1", "float"],
+    [[286,289], "v1", "float"]
+  ],
+  "(code firing v-wpn-yellow-default-gun)": [[[6,10], "a0", "vehicle"]],
+  "rapid-fire-control-initialize-from-vehicle": [
+    [[18,22], "a0", "vehicle-weapon-slot"],
+    [[29,33], "a0", "vehicle-weapon-slot"]
+  ],
+  "(event idle v-wpn-yellow-default-gun)": [[[9,13], "a0", "wvehicle"]],
+  "hack-sparticle-track-gun": [
+    [5, "v1", "vehicle-weapon-slot"],
+    [[11,15], "a0", "wvehicle"],
+    [[27,31], "a0", "vehicle-weapon-slot"]
   ]
+
 }

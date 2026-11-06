@@ -454,7 +454,24 @@
   ],
   "guided-missile-gen-proj-targ-helper": [[16, "mystery-proj-params-type0"]],
   "guided-missile-gen-proj-no-targ-helper": [[16, "mystery-proj-params-type0"]],
-  "(post firing v-wpn-yellow-seismic-blaster)": [[16, "event-message-block"]]
+  "(post firing v-wpn-yellow-seismic-blaster)": [[16, "event-message-block"]],
+  "(exit idle v-wpn-yellow-seismic-blaster)": [[16, "event-message-block"]],
+  "(post firing v-wpn-yellow-guided-missile)": [[48, "mystery-find-sorted-targets-type0"]],
+  "find-sorted-targets-faster!": [[32, ["inline-array", "vector", 3]]],
+  "find-sorted-targets!": [[32, ["inline-array", "vector", 3]]],
+  "find-nearest-focusable": [
+    [48, "vector"]
+  ],
+  "(event idle v-wpn-yellow-guided-missile)": [[16, "event-message-block"]],
+  "(post firing v-wpn-yellow-default-gun)": [
+    [16, "event-message-block"],
+    [96, "matrix"]
+  ],
+  "rapid-fire-control-initialize-from-vehicle": [[16, "mystery-rapid-fire-control-type0"]],
+  "vws-focus-search-base": [
+    [16, ["inline-array", "vector", 6]],
+    [128, "mystery-find-sorted-targets-type1"]
+  ]
 
 
 }
