@@ -45401,7 +45401,7 @@
     idle ;; 50
     )
   (:methods
-    (gunmount-drawable-method-51 (_type_) int) ;; 51
+    (gunmount-drawable-method-51 (_type_) particle-local-space-info) ;; 51
     (gunmount-drawable-method-52 (_type_) bone) ;; 52
     (gunmount-drawable-method-53 (_type_ draw-control-status draw-control-status) int) ;; 53
     )

@@ -471,7 +471,7 @@
   "vws-focus-search-base": [
     [16, ["inline-array", "vector", 6]],
     [128, "mystery-find-sorted-targets-type1"]
-  ]
-
-
+  ],
+  "(post firing v-wpn-yellow-chain-gun)": [[96, ["inline-array", "vector", 3]]]
+  
 }

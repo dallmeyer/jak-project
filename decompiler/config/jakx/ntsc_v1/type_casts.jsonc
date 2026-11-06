@@ -2256,6 +2256,20 @@
     [5, "v1", "vehicle-weapon-slot"],
     [[11,15], "a0", "wvehicle"],
     [[27,31], "a0", "vehicle-weapon-slot"]
-  ]
+  ],
+  "(event idle v-wpn-yellow-chain-gun)": [[[9,13], "a0", "wvehicle"]],
+  "(post firing v-wpn-yellow-chain-gun)": [
+    [[6,10], "a0", "wvehicle"],
+    [55, "s3", "process-focusable"],
+    [[72,76], "a1", "vehicle-weapon-slot"],
+    [[189, 192], "v1", "float"],
+    [[211, 214], "v1", "float"],
+    [[265, 268], "v1", "float"],
+    [[287, 290], "v1", "float"]
+  ],
+  "(code firing v-wpn-yellow-chain-gun)": [[[6,10], "a0", "wvehicle"]],
+  "(trans lit muzzle-flash)": [[[3,17], "v1", "wvehicle"]],
+  "(method 51 gunmount-generic-drawable)": [[70, "v0", "particle-local-space-info"]],
+  "(code changing gunmount-generic-drawable)": [[16, "v1", "art-joint-anim"]]
 
 }
