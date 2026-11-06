@@ -2177,7 +2177,9 @@
   "sentrybot-poke-pitch!": [[[2,6], "v1", "red-sentry-bot"]],
   "red-sentry-bot-poll-target": [
     [21, "a0", "process-drawable"],
-    [46, "gp", "vehicle"]
+    [46, "gp", "vehicle"],
+    [[140,143], "s5", "(pointer process-drawable)"],
+    [200, "gp", "process-focusable"]
   ],
   "drone-compute-pos!": [[[8,12], "a0", "wvehicle"]],
   "drone-trans-twitchy-rot": [
@@ -2188,7 +2190,10 @@
   ],
   "drone-trans-rot-at-target": [[16, "gp", "process-focusable"]],
   "drone-base-post": [[[14,18], "a1", "wvehicle"]],
-  "(method 66 vehicle-weapon-drone)": [[[8,12], "a0", "wvehicle"]],
+  "(method 66 vehicle-weapon-drone)": [
+    [[8,12], "a0", "wvehicle"],
+    [97, "s3", "(pointer process-drawable)"]    
+  ],
   "(method 55 v-wpn-yellow-seismic-blaster)": [[38, "v0", "particle-local-space-info"]],
   "(method 15 net-projectile)": [
     [35, "s2", "process-nettable"],
@@ -2270,6 +2275,18 @@
   "(code firing v-wpn-yellow-chain-gun)": [[[6,10], "a0", "wvehicle"]],
   "(trans lit muzzle-flash)": [[[3,17], "v1", "wvehicle"]],
   "(method 51 gunmount-generic-drawable)": [[70, "v0", "particle-local-space-info"]],
-  "(code changing gunmount-generic-drawable)": [[16, "v1", "art-joint-anim"]]
+  "(code changing gunmount-generic-drawable)": [[16, "v1", "art-joint-anim"]],
+  "(post bulldog-firing vehicle-weapon-drone)": [[[15,19], "a1", "process-focusable"]],
+  "(trans bulldog-firing vehicle-weapon-drone)": [
+    [[134,138], "a1", "process-focusable"],
+    [166, "gp", "process-focusable"]
+  ],
+  "(event popping-out vehicle-weapon-drone)": [[[43,47], "a0", "wvehicle"]],
+  "(event orbiting vehicle-weapon-drone)": [[[43,47], "a0", "wvehicle"]],
+  "(code falling red-sentry-bot)": [
+    [97, "v1", "art-joint-anim"],
+    [200, "v1", "art-joint-anim"]
+  ]
+
 
 }

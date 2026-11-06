@@ -45469,13 +45469,13 @@
    (hit-spang-part basic                     :offset-assert 24)
    (old-origin     vector            :inline :offset-assert 32)
    (old-rot        quaternion        :inline :offset-assert 48)
-   (emitters       (array int)                     :offset-assert 64)
+   (emitters       vector-array              :offset-assert 64)
    )
   :method-count-assert 13
   :size-assert         #x44
   :flag-assert         #xd00000044
   (:methods
-    (new (symbol _type_ rapid-fire-params int) _type_) ;; 0
+    (new (symbol type rapid-fire-params int process) _type_) ;; 0
     (rapid-fire-control-method-9 (_type_ int vector) none) ;; 9
     (rapid-fire-control-method-10 (_type_ vector vector) none) ;; 10
     (rapid-fire-control-method-11 (_type_ vector quaternion float process-drawable vector) int) ;; 11
@@ -45491,7 +45491,7 @@
 
 (deftype vehicle-weapon-drone (process-focusable)
   ((owning-vehicle    handle             :offset-assert 256)
-   (owning-slot       uint64             :offset-assert 264)
+   (owning-slot       handle             :offset-assert 264)
    (target            handle             :offset-assert 272)
    (orbit-height      float              :offset-assert 280)
    (orbit-radius      float              :offset-assert 284)
@@ -45506,7 +45506,7 @@
    (sweep-loop        uint32             :offset-assert 340)
    (muzzle-flashes    handle     4       :offset-assert 344)
    (next-target-poll  uint64             :offset-assert 376)
-   (firecontrol       basic              :offset-assert 384)
+   (firecontrol       rapid-fire-control :offset-assert 384)
    (blam              uint32             :offset-assert 388)
    )
   :method-count-assert 67
@@ -45521,8 +45521,8 @@
   (:methods
     (init-collision! (_type_) collide-shape-moving) ;; 63
     (add-sprites (_type_) none) ;; 64
-    (vehicle-weapon-drone-method-65 () none) ;; 65 ;; missing?
-    (vehicle-weapon-drone-method-66 (_type_) none) ;; 66 ;; needs find-sorted-targets-faster!
+    (vehicle-weapon-drone-method-65 () none) ;; 65
+    (vehicle-weapon-drone-method-66 (_type_) none) ;; 66
     )
   )
 
@@ -58085,7 +58085,7 @@
    (last-fired              uint64             :offset-assert 392)
    (gun-loop                uint32             :offset-assert 400)
    (warning                 basic              :offset-assert 404)
-   (firecontrol             basic              :offset-assert 408)
+   (firecontrol             rapid-fire-control :offset-assert 408)
    (ammo                    int16              :offset-assert 412)
    (powerup-level           uint8              :offset-assert 414)
    (shooter-id              int8               :offset-assert 415)
@@ -58094,7 +58094,7 @@
   :size-assert         #x1a0
   :flag-assert         #x43011001a0
   (:state-methods
-    falling ;; 59
+    (falling int) ;; 59
     idle ;; 60
     firing ;; 61
     firing-missiles ;; 62
@@ -58102,7 +58102,7 @@
     )
   (:methods
     (init! (_type_ vector quaternion vector quaternion int int) object) ;; 64
-    (red-sentry-bot-method-65 () none) ;; 65
+    (init-collision! (_type_) collide-shape) ;; 65
     (take-damage (_type_ float) object) ;; 66
     )
   )
@@ -58115,7 +58115,7 @@
 (define-extern sentrybot-poke-pitch! (function cspace transformq none :behavior red-sentry-bot))
 (define-extern red-sentry-bot-init-by-other (function vector quaternion vehicle int object :behavior red-sentry-bot))
 ;; (define-extern red-sentry-bot-common-trans (function none :behavior red-sentry-bot)) ;; needs warning-hud-draw
-;; (define-extern red-sentry-bot-poll-target (function int :behavior red-sentry-bot)) ;; needs find-sorted-targets-faster!
+(define-extern red-sentry-bot-poll-target (function symbol :behavior red-sentry-bot))
 (define-extern sentry-bot-base-handler (function process int symbol event-message-block object :behavior red-sentry-bot))
 (define-extern v-wpn-yellow-bulldog-rapid-fire-control-params rapid-fire-params)
 (define-extern v-wpn-yellow-bulldog-II-rapid-fire-control-params rapid-fire-params)
@@ -58124,7 +58124,7 @@
 (define-extern drone-trans-twitchy-rot (function quaternion :behavior vehicle-weapon-drone))
 (define-extern drone-trans-rot-at-target (function quaternion :behavior vehicle-weapon-drone))
 (define-extern drone-base-post (function int :behavior vehicle-weapon-drone))
-;; (define-extern vehicle-weapon-drone-init-by-other function)
+(define-extern vehicle-weapon-drone-init-by-other (function process-drawable object :behavior vehicle-weapon-drone))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons2              ;;
@@ -58260,7 +58260,7 @@
 (define-extern vehicle-get-weapon-level (function vehicle int int))
 (define-extern global-turbo-suppressor-set! (function int none))
 (define-extern should-suppress-eco? (function symbol symbol)) ;; uses some kind of weapons bitfield enum (game-task-advanced-options)
-;; (define-extern rapid-fire-control-emitter-from-world function)
+(define-extern rapid-fire-control-emitter-from-world (function rapid-fire-control process-drawable vector int vector quaternion  none))
 (define-extern rapid-fire-control-initialize-from-vehicle (function rapid-fire-control wvehicle symbol :behavior rapid-fire-control))
 (define-extern is-friendly-fire-helper (function process-drawable process-drawable symbol))
 

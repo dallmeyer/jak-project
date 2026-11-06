@@ -449,7 +449,7 @@
   "drone-trans-rot-at-target": [[16, ["inline-array", "vector", 1]]],
   "(method 64 vehicle-weapon-drone)": [[16, "mystery-v-wpn-drone-type0"]],
   "(method 66 vehicle-weapon-drone)": [
-   [16, "vector"], // pointer to pointer to vector?
+    [16, "mystery-find-sorted-targets-type1"],
     [144, ["array", "float", 1]]
   ],
   "guided-missile-gen-proj-targ-helper": [[16, "mystery-proj-params-type0"]],
@@ -472,6 +472,9 @@
     [16, ["inline-array", "vector", 6]],
     [128, "mystery-find-sorted-targets-type1"]
   ],
-  "(post firing v-wpn-yellow-chain-gun)": [[96, ["inline-array", "vector", 3]]]
+  "(post firing v-wpn-yellow-chain-gun)": [[96, ["inline-array", "vector", 3]]],
+  "(post bulldog-firing vehicle-weapon-drone)": [[16, "vector"]],
+  "(trans bulldog-firing vehicle-weapon-drone)": [[16, "vector"]],
+  "(code falling red-sentry-bot)": [[16, ["inline-array", "quaternion", 1]]]
   
 }
