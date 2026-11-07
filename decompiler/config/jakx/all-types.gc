@@ -30761,17 +30761,17 @@
    (mat             matrix                         :inline :offset-assert 160)
    (offset          vector                         :inline :offset-assert 224)
    (local-offset    vector                         :inline :offset-assert 240)
-   (userdata        uint64                                 :offset-assert 256)
+   (userdata        handle                                 :offset-assert 256)
    (user-time       time-frame                     2       :offset-assert 264) ;; guessed by decompiler
    (user-vector     vector                         :inline :offset-assert 288)
    (user-handle     uint32                         2       :offset 320) ;; guessed by decompiler
    (part            sparticle-launch-control               :offset-assert 328) ;; guessed by decompiler
    (callback        (function part-tracker vector)         :offset-assert 332) ;; guessed by decompiler
    (linger-callback (function part-tracker vector)         :offset-assert 336) ;; guessed by decompiler
-   (duration        uint64                                 :offset-assert 344) ;; time-frame
-   (linger-duration uint64                                 :offset-assert 352) ;; time-frame
-   (state-time      uint64                                 :offset-assert 360) ;; time-frame
-   (target          uint64                                 :offset-assert 368) ;; handle
+   (duration        time-frame                             :offset-assert 344) ;; time-frame
+   (linger-duration time-frame                             :offset-assert 352) ;; time-frame
+   (state-time      time-frame                             :offset-assert 360) ;; time-frame
+   (target          handle                                 :offset-assert 368) ;; handle
    (target-joint    int32                                  :offset-assert 376)
    )
   :method-count-assert 19
@@ -56901,7 +56901,7 @@
 (define-extern *trail-color-red-mine* curve-color-fast)
 (define-extern *mine-trail-red* curve-color-fast)
 (define-extern *mine-trail-purple* curve-color-fast)
-;; (define-extern shield-flash-part-callback function)
+(define-extern shield-flash-part-callback (function part-tracker vector))
 (define-extern *weapon-drone-glow-template* sprite-glow-data)
 (define-extern *weapon-drone-visor-template* sprite-glow-data)
 ;; (define-extern *wasted-missile-colors* object)

@@ -2394,7 +2394,11 @@
   ],
   "(event firing v-wpn-purple-shield)": [
     [[8,187], "gp", "rigid-body-impact"],
-    [[67,71], "v1", "wvehicle"]
+    [[67,71], "v1", "wvehicle"],
+    [[296,300], "a1", "wvehicle"]
+  ],
+  "shield-flash-part-callback": [
+    [[7,11], "a1", "process-drawable"]
   ]
 
 
