@@ -58228,11 +58228,10 @@
 ;; wvehicle-weapons3              ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype v-wpn-purple-shield (vehicle-weapon-slot)
   ((mysound          uint32  :offset-assert 264)
    (zap-interval     uint64  :offset-assert 272)
-   (jiggle-start     uint64  :offset-assert 280)
+   (jiggle-start     handle  :offset-assert 280)
    (jiggle-amplitude float   :offset-assert 288)
    )
   :method-count-assert 61
@@ -58243,14 +58242,12 @@
     firing ;; 60
     )
   )
-|#
 
-#|
 (deftype v-wpn-red-tractor-beam (vehicle-weapon-slot)
-  ((firing-at      uint64  :offset-assert 264)
+  ((firing-at      handle  :offset-assert 264)
    (duration-left  int32   :offset-assert 272)
    (using-side     uint8   :offset-assert 276)
-   (part-on-me     basic   :offset-assert 224)
+   (part-on-me     sparticle-launch-control   :offset 224)
    (part-on-target basic   :offset-assert 280)
    )
   :method-count-assert 61
@@ -58261,9 +58258,8 @@
     firing ;; 60
     )
   )
-|#
 
-;; (define-extern shield-jiggle-scale! function)
+(define-extern shield-jiggle-scale! (function vector v-wpn-purple-shield vector))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons-util          ;;

@@ -2384,6 +2384,17 @@
   ],
   "local-space-proc-vehicle-turbo": [
     [[7,11], "a0", "wvehicle"]
+  ],
+  "(trans idle v-wpn-purple-shield)": [
+    [[6,10], "a0", "wvehicle"]
+  ],
+  "(event idle v-wpn-purple-shield)": [
+    [[9,13], "a0", "wvehicle"],
+    [[82,86], "a0", "wvehicle"]
+  ],
+  "(event firing v-wpn-purple-shield)": [
+    [[8,187], "gp", "rigid-body-impact"],
+    [[67,71], "v1", "wvehicle"]
   ]
 
 

@@ -933,5 +933,8 @@
     ["L918", "mystery-vws-type0"],
     ["L919", "mystery-vws-type0"],
     ["L920", "mystery-vws-type0"]
+  ],
+  "wvehicle-weapons3": [
+    ["L219", "attack-info"]
   ]
 }

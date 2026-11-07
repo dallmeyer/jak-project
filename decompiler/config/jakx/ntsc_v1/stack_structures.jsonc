@@ -516,7 +516,8 @@
   "(code firing v-wpn-red-drone-gun)": [[16, "event-message-block"]],
   "(code firing v-wpn-red-mine-launcher)": [[16, "event-message-block"]],
   "(code firing v-wpn-red-turbo-preventor)": [[16, "event-message-block"]],
-  "(post firing v-wpn-red-turbo-preventor)": [[16, "vector"]]
+  "(post firing v-wpn-red-turbo-preventor)": [[16, "vector"]],
+  "(event idle v-wpn-purple-shield)": [[16, "event-message-block"]]
 
 
 }
