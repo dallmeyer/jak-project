@@ -41669,7 +41669,7 @@
     (rigid-body-control-method-21 () none) ;; 21 ;; (rigid-body-control-method-21 (_type_ vector vector float) none)
     (rigid-body-control-method-22 () none) ;; 22 ;; (rigid-body-control-method-22 (_type_ vector vector) none)
     (rigid-body-control-method-23 () none) ;; 23 ;; (rigid-body-control-method-23 (_type_ vector vector) none)
-    (rigid-body-control-method-24 () none) ;; 24 ;; (rigid-body-control-method-24 (_type_ vector vector) none)
+    (rigid-body-control-method-24 (_type_ vector vector) none) ;; 24 ;; (rigid-body-control-method-24 (_type_ vector vector) none)
     (rigid-body-control-method-25 () none) ;; 25 ;; (rigid-body-control-method-25 (_type_ vector) vector)
     (rigid-body-control-method-26 () none) ;; 26 ;; (rigid-body-control-method-26 (_type_) none)
     (rigid-body-control-method-27 () none) ;; 27 ;; (init! (_type_ rigid-body-info vector quaternion (function rigid-body-object float)) none)
@@ -57655,7 +57655,7 @@
   (:state-methods
     idle ;; 59
     falling ;; 60
-    leaping-onto ;; 61
+    (leaping-onto symbol int32) ;; 61
     attached ;; 62
     shake-off ;; 63
     die ;; 64

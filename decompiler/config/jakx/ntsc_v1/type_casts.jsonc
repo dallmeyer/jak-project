@@ -2306,6 +2306,33 @@
   ],
   "(enter impact v-yellow-guided-missile)": [[[126,130], "a0", "process-drawable"]],
   "(post launching v-yellow-guided-missile)": [[[42,45], "t9", "(function none)"]],
-  "(post moving v-yellow-guided-missile)": [[[42,45], "t9", "(function none)"]]
+  "(post moving v-yellow-guided-missile)": [[[42,45], "t9", "(function none)"]],
+  "(event falling mine-b)": [[[6,19], "v1", "attack-info"]],
+  "(exit attached mine-b)": [[[6, 10], "a1", "wvehicle"]],
+  "(code attached mine-b)": [
+    [[31, 35], "a1", "wvehicle"],
+    [[46, 50], "a0", "wvehicle"],
+    [[164, 168], "a0", "wvehicle"]
+  ],
+  "(event attached mine-b)": [
+    [[5,17], "gp", "rigid-body-impact"],
+    [[74,140], "gp", "rigid-body-impact"],
+    [[24,28], "a0", "wvehicle"],
+    [[83,87], "a0", "wvehicle"]
+  ],
+  "(code leaping-onto mine-b)": [
+    [[23,27], "a0", "wvehicle"],
+    [[123,127], "a1", "wvehicle"]
+  ],
+  "(code idle mine-b)": [
+    [44, "v0", "process-drawable"],
+    [84, "v0", "process-drawable"]
+  ],
+  "(event idle mine-b)": [
+    [35, "gp", "vehicle"],
+    [41, "gp", "wvehicle"],
+    [117, "v1", "attack-info"]
+  ]
+
 
 }

@@ -489,5 +489,19 @@
     [144, "vector"],
     [160, "collide-query"]
   ],
-  "(post launching v-yellow-guided-missile)": [[16, "event-message-block"]]
+  "(post launching v-yellow-guided-missile)": [[16, "event-message-block"]],
+  "(code falling mine-b)": [[16, ["inline-array", "quaternion", 1]]],
+  "(code attached mine-b)": [
+    [16, ["inline-array", "vector", 1]],
+    [32, ["inline-array", "quaternion", 2]]
+  ],
+  "(enter falling mine-b)": [[16, "light-trail-tracker-spawn-params"]],
+  "(event attached mine-b)": [
+    [16, "vector"],
+    [32, "vector"],
+    [64, "vector"]
+  ],
+  "(code leaping-onto mine-b)": [
+    [16, ["inline-array", "vector", 1]]
+  ]
 }
