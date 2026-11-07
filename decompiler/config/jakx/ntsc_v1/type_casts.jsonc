@@ -2332,6 +2332,17 @@
     [35, "gp", "vehicle"],
     [41, "gp", "wvehicle"],
     [117, "v1", "attack-info"]
+  ],
+  "(event falling mine-a)": [
+    [35, "v1", "attack-info"],
+    [47, "v1", "attack-info"]
+  ],
+  "(code idle mine-a)": [
+    [36, "v0", "process-drawable"],
+    [76, "v0", "process-drawable"]
+  ],
+  "(event idle mine-a)": [
+    [[36, 39], "v1", "attack-info"]
   ]
 
 
