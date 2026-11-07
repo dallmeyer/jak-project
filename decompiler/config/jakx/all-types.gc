@@ -16578,7 +16578,7 @@
 (define-extern update-math-camera (function math-camera symbol symbol float math-camera)) ;; 
 ;; (define-extern math-cam-start-smoothing function) ;; (function float float quaternion)
 ;; (define-extern move-target-from-pad function) ;; (function transform int transform)
-;; (define-extern transform-point-vector! function) ;; (function vector vector symbol)
+(define-extern transform-point-vector! (function vector vector symbol))
 (define-extern transform-point-qword! (function vector4w vector symbol)) ;; 
 ;; (define-extern transform-point-vector-scale! function) ;; (function vector vector float)
 ;; (define-extern reverse-transform-point! function) ;; (function vector vector vector vector none)
@@ -35211,7 +35211,7 @@
   :size-assert         #x34
   :flag-assert         #xb00000034
   (:methods
-    (hud-sprite-method-9 () none) ;; 9 ;; (draw (_type_ dma-buffer level symbol) none)
+    (hud-sprite-method-9 (_type_ dma-buffer vector) none) ;; 9 ;; (draw (_type_ dma-buffer level symbol) none)
     (hud-sprite-method-10 () none) ;; 10 ;; (hud-sprite-method-10 (_type_ dma-buffer level int int int int) object)
     )
   )
@@ -42114,7 +42114,7 @@
 
 (define-extern sphere-cull (function vector symbol)) ;; 
 ;; (define-extern guard-band-cull function) ;; (function vector symbol)
-;; (define-extern sphere-in-view-frustum? function) ;; (function sphere symbol)
+(define-extern sphere-in-view-frustum? (function sphere symbol))
 ;; (define-extern line-in-view-frustum? function) ;; (function vector vector symbol)
 ;; (define-extern sphere-in-view-frustum-any? function)
 ;; (define-extern line-in-view-frustum-any? function)
@@ -58285,7 +58285,7 @@
   )
 
 (define-extern v-wpn-base-init-by-other (function process-drawable v-wpn-type uint object :behavior vehicle-weapon-slot))
-;; (define-extern warning-hud-draw function)
+(define-extern warning-hud-draw (function warning-hud-icon sphere vector int))
 (define-extern v-wpn-type->color (function v-wpn-type v-wpn-color))
 (define-extern v-wpn-type->gunmount-config (function v-wpn-type int))
 (define-extern v-wpn-missile-init-by-other (function process-drawable v-wpn-type uint object :behavior v-wpn-yellow-guided-missile))

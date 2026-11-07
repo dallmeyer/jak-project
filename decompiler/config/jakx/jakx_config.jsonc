@@ -13,6 +13,7 @@
     "process-nettable",
     "net-player-h",
     "projectile",
+    "drawable", "math-camera",
     "net-projectile","net-projectile-h","projectile","projectile-h",
     "wvehicle-h","wvehicle-util",
     "wvehicle-weapons-proj", "wcar-projectiles",

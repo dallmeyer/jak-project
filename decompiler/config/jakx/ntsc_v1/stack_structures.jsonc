@@ -505,6 +505,10 @@
     [16, ["inline-array", "vector", 1]]
   ],
   "(code falling mine-a)": [[16, ["inline-array", "quaternion", 1]]],
-  "(enter falling mine-a)": [[16, "light-trail-tracker-spawn-params"]]
+  "(enter falling mine-a)": [[16, "light-trail-tracker-spawn-params"]],
+  "warning-hud-draw": [
+    [16, ["inline-array", "vector", 1]],
+    [32, "vector"]
+  ]
 
 }

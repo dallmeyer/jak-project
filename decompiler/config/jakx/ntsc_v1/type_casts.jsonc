@@ -2343,6 +2343,9 @@
   ],
   "(event idle mine-a)": [
     [[36, 39], "v1", "attack-info"]
+  ],
+  "warning-hud-draw": [
+    [[147,151], "v1", "(inline-array vector4w)"]
   ]
 
 
