@@ -2346,6 +2346,44 @@
   ],
   "warning-hud-draw": [
     [[147,151], "v1", "(inline-array vector4w)"]
+  ],
+  "(method 55 v-wpn-red-turbo-preventor)": [
+    [[13,17], "a0", "wvehicle"]
+  ],
+  "spawn-mine": [
+    [[161,164], "v1", "float"],
+    [[229,232], "v1", "float"],
+    [[326,329], "v1", "float"],
+    [[394,397], "v1", "float"]
+  ],
+  "(method 56 v-wpn-red-sentry-gun)": [
+    [17, "s4", "wvehicle"]
+  ],
+  "(event idle v-wpn-red-mine-launcher)": [
+    [[13,17], "a1", "wvehicle"]
+  ],
+  "(event idle v-wpn-red-turbo-preventor)": [
+    [[9,13], "a0", "wvehicle"]
+  ],
+  "(event idle v-wpn-red-sentry-gun)": [
+    [[9,13], "a1", "wvehicle"]
+  ],
+  "(code firing v-wpn-red-drone-gun)": [
+    [30, "v0", "handle"],
+    [[64,68], "a0", "wvehicle"]
+  ],
+  "(code firing v-wpn-red-mine-launcher)": [
+    [[20,24], "a2", "wvehicle"]
+  ],
+  "(code firing v-wpn-red-turbo-preventor)": [
+    [[73,77], "a0", "wvehicle"],
+    [286, "s5", "process-focusable"]
+  ],
+  "(post firing v-wpn-red-turbo-preventor)": [
+    [[25,29], "a0", "wvehicle"]
+  ],
+  "local-space-proc-vehicle-turbo": [
+    [[7,11], "a0", "wvehicle"]
   ]
 
 

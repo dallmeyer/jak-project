@@ -509,6 +509,14 @@
   "warning-hud-draw": [
     [16, ["inline-array", "vector", 1]],
     [32, "vector"]
-  ]
+  ],
+  "mine-compute-landing-point": [[16, "collide-query"]],
+  "spawn-mine": [[16, ["inline-array", "quaternion", 6]]],
+  "(method 56 v-wpn-red-sentry-gun)": [[16, ["inline-array", "quaternion", 6]]],
+  "(code firing v-wpn-red-drone-gun)": [[16, "event-message-block"]],
+  "(code firing v-wpn-red-mine-launcher)": [[16, "event-message-block"]],
+  "(code firing v-wpn-red-turbo-preventor)": [[16, "event-message-block"]],
+  "(post firing v-wpn-red-turbo-preventor)": [[16, "vector"]]
+
 
 }

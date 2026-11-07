@@ -32621,7 +32621,7 @@
   (:methods
     (new (symbol type int int) _type_)
     (collide-cache-method-9 () none) ;; 9 ;; (debug-draw (_type_) none)
-    (fill-and-probe-using-line-sphere (_type_ collide-query) float)
+    (fill-and-probe-using-line-sphere (_type_ collide-query) float) ;; 10
     (collide-cache-method-11 () none) ;; 11 ;; (fill-and-probe-using-spheres (_type_ collide-query) symbol)
     (fill-using-bounding-box (_type_ collide-query) none)
     (collide-cache-method-13 (_type_ collide-query) none) ;; 13 ;; (fill-using-line-sphere (_type_ collide-query) none)
@@ -41775,7 +41775,7 @@
     (rigid-body-object-method-78 () none) ;; 78
     (rigid-body-object-method-79 () none) ;; 79
     (rigid-body-object-method-80 (_type_ object) none) ;; 80
-    (rigid-body-object-method-81 () none) ;; 81
+    (rigid-body-object-method-81 (_type_ process int symbol event-message-block) object) ;; 81
     (rigid-body-object-method-82 (_type_ object object) none) ;; 82
     (rigid-body-object-method-83 () none) ;; 83
     (rigid-body-object-method-84 () none) ;; 84
@@ -44950,7 +44950,7 @@
     (vehicle-method-147 () none) ;; 147 ;; (vehicle-method-147 (_type_) none)
     (vehicle-method-148 () none) ;; 148 ;; (vehicle-method-148 (_type_) none)
     (vehicle-method-149 () none) ;; 149 ;; (vehicle-method-149 (_type_) none)
-    (vehicle-method-150 () none) ;; 150 ;; (vehicle-method-150 (_type_) none)
+    (vehicle-method-150 (_type_ vector int) none) ;; 150 ;; (vehicle-method-150 (_type_) none)
     (vehicle-method-151 (_type_ vector int) none) ;; 151 ;; (set-hit-points (_type_ float) none)
     (vehicle-method-152 () none) ;; 152
     (vehicle-method-153 () none) ;; 153
@@ -45426,8 +45426,8 @@
     (get-ammo-remaining (_type_) int) ;; 53
     (get-ammo-max (_type_) int) ;; 54
     (vehicle-weapon-slot-method-55 (_type_) int) ;; 55
-    (vehicle-weapon-slot-method-56 (_type_) none) ;; 56 ;; needs rigid-body-queue-manager
-    (vehicle-weapon-slot-method-57 (_type_) symbol) ;; 57 ;; needs vws-focus-search-base
+    (vehicle-weapon-slot-method-56 (_type_) handle) ;; 56
+    (vehicle-weapon-slot-method-57 (_type_) symbol) ;; 57
     (vehicle-weapon-slot-method-58 (_type_ object) int) ;; 58
     (vehicle-weapon-slot-method-59 () none) ;; 59
     )
@@ -51311,17 +51311,17 @@
 ;; vehicle                        ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (define-extern *debug-vehicle-work* debug-vehicle-work) ;; debug-vehicle-work
-;; (define-extern *tmp-vehicle-info* object)
-;; (define-extern *tmp-rigid-body-control* object)
-;; (define-extern *vehicle-shadow-control* shadow-control) ;; shadow-control
-;; (define-extern *vehicle-shadow-control-disabled* shadow-control) ;; shadow-control
-;; (define-extern vehicle-event-handler function) ;; (function process int symbol event-message-block object :behavior vehicle)
-;; (define-extern get-player-id function)
+(define-extern *debug-vehicle-work* debug-vehicle-work)
+(define-extern *tmp-vehicle-info* net-vehicle)
+(define-extern *tmp-rigid-body-control* rigid-body-control)
+(define-extern *vehicle-shadow-control* shadow-control)
+(define-extern *vehicle-shadow-control-disabled* shadow-control)
+(define-extern vehicle-event-handler (function process int symbol event-message-block object :behavior vehicle))
+(define-extern get-player-id (function vehicle int))
 ;; (define-extern twiddle-collision-cache-verts function)
 ;; (define-extern vehicle-damage-local-space-0 function)
 ;; (define-extern vehicle-damage-local-space-1 function)
-;; (define-extern get-vehicle-player-id function)
+(define-extern get-vehicle-player-id (function vehicle int))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wcar-skel-template             ;;
@@ -57297,7 +57297,7 @@
 ;; (define-extern vehicle-respawn-invul-spawn function)
 ;; (define-extern vehicle-suppress-look-init-by-other function)
 ;; (define-extern suppress-look-start function)
-;; (define-extern local-space-proc-vehicle-turbo function)
+(define-extern local-space-proc-vehicle-turbo (function particle-local-space-info int))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-ai                    ;;
@@ -58173,11 +58173,10 @@
 ;; wvehicle-weapons2              ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype v-wpn-red-turbo-preventor (vehicle-weapon-slot)
-  ((sound-id  uint32  :offset-assert 264)
-   (player-id int8    :offset-assert 268)
-   (snd-loop  uint32  :offset-assert 272)
+  ((sound-id  sound-id  :offset-assert 264)
+   (player-id int8      :offset-assert 268)
+   (snd-loop  uint32    :offset-assert 272)
    )
   :method-count-assert 61
   :size-assert         #x114
@@ -58187,12 +58186,10 @@
     firing ;; 60
     )
   )
-|#
 
-#|
 (deftype v-wpn-red-mine-launcher (vehicle-weapon-slot)
-  ((salvo-count uint8   :offset-assert 261)
-   (last-fired  uint64  :offset-assert 264)
+  ((salvo-count uint8       :offset-assert 261)
+   (last-fired  time-frame  :offset-assert 264)
    )
   :method-count-assert 61
   :size-assert         #x110
@@ -58202,9 +58199,7 @@
     firing ;; 60
     )
   )
-|#
 
-#|
 (deftype v-wpn-red-sentry-gun (vehicle-weapon-slot)
   ()
   :method-count-assert 60
@@ -58214,9 +58209,7 @@
     idle ;; 50
     )
   )
-|#
 
-#|
 (deftype v-wpn-red-drone-gun (vehicle-weapon-slot)
   ()
   :method-count-assert 61
@@ -58227,10 +58220,9 @@
     firing ;; 60
     )
   )
-|#
 
-;; (define-extern mine-compute-landing-point! function)
-;; (define-extern spawn-mine function)
+(define-extern mine-compute-landing-point! (function vector vector vector vector vector float symbol))
+(define-extern spawn-mine (function wvehicle uint uint handle))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons3              ;;
@@ -58289,7 +58281,7 @@
 (define-extern v-wpn-type->color (function v-wpn-type v-wpn-color))
 (define-extern v-wpn-type->gunmount-config (function v-wpn-type int))
 (define-extern v-wpn-missile-init-by-other (function process-drawable v-wpn-type uint object :behavior v-wpn-yellow-guided-missile))
-;; (define-extern make-vehicle-weapon-slot (function process-drawable wvehicle uint object :behavior vehicle-weapon-slot))
+(define-extern make-vehicle-weapon-slot (function process-drawable wvehicle uint object :behavior vehicle-weapon-slot))
 (define-extern v-wpn-choose-increasing-lethality (function v-wpn-color (array uint8) int))
 (define-extern v-wpn-get-mask (function wvehicle uint))
 (define-extern v-wpn-num-available (function v-wpn-color wvehicle int))
