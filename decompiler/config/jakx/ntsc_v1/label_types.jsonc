@@ -76,7 +76,7 @@
     ["L533", "uint64", true]
   ],
   "rigid-body-surface-h": [["L4", "(pointer int8)", 34]],
-  "wvehicle-weapons-h": [["L34", "(pointer (array symbol))", 21]],
+  "wvehicle-weapons-h": [["L34", "(pointer (array symbol))", 21]], // 21 x 17 array of symbols
   "wcar-base": [
     ["L11", "vector"],
     ["L10", "vector"],
@@ -911,7 +911,10 @@
   ],
   "wvehicle-weapons-proj": [
     ["L686", "vector"],
-    ["L687", "vector"]
+    ["L687", "vector"],
+    ["L768", "uint64", true],
+    ["L769", "uint64", true],
+    ["L770", "uint64", true]
   ],
   "raceline-weapon": [["L154", "attack-info"]],
   "wvehicle-weapons-chicken-drone": [

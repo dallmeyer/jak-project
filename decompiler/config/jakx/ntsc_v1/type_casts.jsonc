@@ -1986,7 +1986,7 @@
   "hflip-z-buf": [[[8, 13], "a0", "dma-packet"]],
   "should-suppress-eco?": [[[10,74], "s4", "net-play-mode"]],
   "v-wpn-get-mask": [
-    [[183,220], "s5", "net-player"],
+    [183, "v1", "(pointer net-player)"],
     [195, "v0", "uint"],
     [205, "v0", "wvehicle"]
   ],
@@ -2291,7 +2291,21 @@
   "(event idle v-wpn-success-seeker)": [[[54,58], "a1", "vehicle"]],
   "(enter die turbodash-seeker)": [[6, "v1", "collide-shape"]],
   "(event tracking turbodash-seeker)": [[56, "gp", "wvehicle"]],
-  "(enter die chicken-drone)": [[6, "v1", "collide-shape"]]
-
+  "(enter die chicken-drone)": [[6, "v1", "collide-shape"]],
+  "v-wpn-get-selection-table": [
+    [39, "v1", "(pointer net-player)"],
+    [48, "v1", "net-player-race"],
+    [463, "a3", "(pointer net-player)"],
+    [486, "v1", "(pointer net-player)"]
+  ],
+  "v-wpn-type->color": [[[20, 72], "v0", "v-wpn-color"]],
+  "v-wpn-type->gunmount-config": [[[12, 30], "v0", "gunmount-config"]],
+  "(post impact v-yellow-guided-missile)": [
+    [[118,136], "s3", "wvehicle"],
+    [[167,172], "s2", "wvehicle"]
+  ],
+  "(enter impact v-yellow-guided-missile)": [[[126,130], "a0", "process-drawable"]],
+  "(post launching v-yellow-guided-missile)": [[[42,45], "t9", "(function none)"]],
+  "(post moving v-yellow-guided-missile)": [[[42,45], "t9", "(function none)"]]
 
 }

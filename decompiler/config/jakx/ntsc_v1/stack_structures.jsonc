@@ -475,6 +475,19 @@
   "(post firing v-wpn-yellow-chain-gun)": [[96, ["inline-array", "vector", 3]]],
   "(post bulldog-firing vehicle-weapon-drone)": [[16, "vector"]],
   "(trans bulldog-firing vehicle-weapon-drone)": [[16, "vector"]],
-  "(code falling red-sentry-bot)": [[16, ["inline-array", "quaternion", 1]]]
-  
+  "(code falling red-sentry-bot)": [[16, ["inline-array", "quaternion", 1]]],
+  "v-wpn-num-available": [
+    [16, ["inline-array", "v-wpn-ptable-entry", 17]],
+    [96, "v-wpn-ptable"]
+  ],
+  "v-wpn-choose-random": [
+    [16, ["inline-array", "v-wpn-ptable-entry", 17]],
+    [96, "v-wpn-ptable"]
+  ],
+  "(post impact v-yellow-guided-missile)": [
+    [16, "explosion-init-params"],
+    [144, "vector"],
+    [160, "collide-query"]
+  ],
+  "(post launching v-yellow-guided-missile)": [[16, "event-message-block"]]
 }
