@@ -16015,6 +16015,7 @@
    (shield-vu-lights   vu-lights    :inline :offset-assert 208)
    (shield-light-group light-group  :inline :offset-assert 320)
    )
+  :allow-misaligned
   :method-count-assert 22
   :size-assert         #x200
   :flag-assert         #x1600000200
@@ -44830,7 +44831,7 @@
 ;; TODO - jakx more misaligned inline arrays?
 (deftype vehicle (rigid-body-object)
   ((info rigid-body-vehicle-constants :override)
-   (car-info                        car-info-full                               :offset 284)
+   (car-info                        car-info-full                               :offset 288)
    (v-flags                         vehicle-flag                                :offset 264 :score 999) ;; rigid-body-object-flag
    (pad1 uint32 2)
    (damage-matrix                   matrix                              2       :inline :offset-assert 304)
@@ -58248,7 +58249,7 @@
    (duration-left  int32   :offset-assert 272)
    (using-side     uint8   :offset-assert 276)
    (part-on-me     sparticle-launch-control   :offset 224)
-   (part-on-target basic   :offset-assert 280)
+   (part-on-target sparticle-launch-control   :offset-assert 280)
    )
   :method-count-assert 61
   :size-assert         #x11c

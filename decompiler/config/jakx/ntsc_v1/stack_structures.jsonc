@@ -518,7 +518,13 @@
   "(code firing v-wpn-red-turbo-preventor)": [[16, "event-message-block"]],
   "(post firing v-wpn-red-turbo-preventor)": [[16, "vector"]],
   "(event idle v-wpn-purple-shield)": [[16, "event-message-block"]],
-  "(event firing v-wpn-purple-shield)": [[32, "event-message-block"]]
-
+  "(event firing v-wpn-purple-shield)": [[32, "event-message-block"]],
+  "(code firing v-wpn-purple-shield)": [[16, "event-message-block"]],
+  "(exit firing v-wpn-purple-shield)": [[16, "event-message-block"]],
+  "(enter firing v-wpn-purple-shield)": [[16, "event-message-block"]],
+  "(method 57 v-wpn-red-tractor-beam)": [
+    [16, ["inline-array", "vector", 8]],
+    [144, "mystery-find-sorted-targets-type1"]
+  ]
 
 }

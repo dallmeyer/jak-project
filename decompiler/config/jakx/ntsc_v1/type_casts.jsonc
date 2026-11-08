@@ -2399,7 +2399,31 @@
   ],
   "shield-flash-part-callback": [
     [[7,11], "a1", "process-drawable"]
+  ],
+  "(enter firing v-wpn-purple-shield)": [
+    [[46, 50], "a0", "wvehicle"]
+  ],
+  "(trans firing v-wpn-purple-shield)": [
+    [[8,12], "a0", "wvehicle"],
+    [[30,34], "a0", "wvehicle"],
+    [[30,34], "a0", "wvehicle"]
+  ],
+  "(exit firing v-wpn-purple-shield)": [
+    [[57,61], "a0", "wvehicle"]
+  ],
+  "(post firing v-wpn-purple-shield)": [
+    [[11,15], "a0", "wvehicle"]
+  ],
+  "(code firing v-wpn-purple-shield)": [
+    [[36,40], "a0", "wvehicle"],
+    [80, "v1", "art-joint-anim"],
+    [[156,160], "a1", "wvehicle"],
+    [193, "v1", "art-joint-anim"]
+  ],
+  "(method 57 v-wpn-red-tractor-beam)": [
+    [[6,10], "a1", "wvehicle"],
+    [129, "gp", "vehicle"],
+    [113, "s4", "(pointer process-drawable)"]
   ]
-
 
 }
