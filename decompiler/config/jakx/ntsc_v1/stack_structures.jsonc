@@ -518,10 +518,32 @@
   "(code firing v-wpn-red-turbo-preventor)": [[16, "event-message-block"]],
   "(post firing v-wpn-red-turbo-preventor)": [[16, "vector"]],
   "(event idle v-wpn-purple-shield)": [[16, "event-message-block"]],
+  "(event idle v-wpn-red-tractor-beam)": [[16, "mystery-red-tractor-beam-type0"]],
+  "(post firing v-wpn-red-tractor-beam)": [
+    [32, "matrix"],
+    [96, ["inline-array", "matrix", 0]],
+    [240, "vector"],
+    [256, "race-line-query-info"]
+  ],
+/*
+s4-2
+0: vector
+48: vector/float
+64: vector/float
+80: float
+84: float
+88: word (int from racer-state)
+92: word (#f)
+100: word (#t)
+
+
+*/
+
   "(event firing v-wpn-purple-shield)": [[32, "event-message-block"]],
   "(code firing v-wpn-purple-shield)": [[16, "event-message-block"]],
   "(exit firing v-wpn-purple-shield)": [[16, "event-message-block"]],
   "(enter firing v-wpn-purple-shield)": [[16, "event-message-block"]],
+  "(method 52 v-wpn-red-tractor-beam)": [[16, "event-message-block"]],
   "(method 57 v-wpn-red-tractor-beam)": [
     [16, ["inline-array", "vector", 8]],
     [144, "mystery-find-sorted-targets-type1"]

@@ -31345,7 +31345,7 @@
     (process-focusable-method-54 () none) ;; 54
     (get-water-height "Get the height of the water that we're in." (_type_) meters) ;; 55
     (get-notice-time (_type_) time-frame) ;; 56
-    (process-focusable-method-57 () none) ;; 57
+    (process-focusable-method-57 (_type_) float) ;; 57
     (process-focusable-method-58 (_type_) float) ;; 58
     )
   )
@@ -34853,7 +34853,7 @@
     (sparticle-launch-control-method-14 () none) ;; 14 ;; (initialize (_type_ sparticle-launch-group process-drawable) none)
     (sparticle-launch-control-method-15 () none) ;; 15 ;; (is-visible? (_type_ vector) symbol)
     (sparticle-launch-control-method-16 (_type_ vector) none) ;; 16 ;; (spawn (_type_ vector) object)
-    (sparticle-launch-control-method-17 () none) ;; 17 ;; (spawn-from-mat (_type_ matrix) none)
+    (sparticle-launch-control-method-17 (_type_ matrix) none) ;; 17 ;; (spawn-from-mat (_type_ matrix) none)
     (sparticle-launch-control-method-18 () none) ;; 18 ;; (spawn-from-cspace (_type_ cspace) none)
     (sparticle-launch-control-method-19 (_type_) none) ;; 19 ;; (kill-particles (_type_) none)
     (set-local-space-info (_type_ particle-local-space-info) particle-local-space-info) ;; 20
@@ -58244,6 +58244,13 @@
     )
   )
 
+(deftype mystery-red-tractor-beam-type0 (structure)
+  ((vec1        vector    :inline)
+   (vec-array   vector 3  :inline)
+   (vec2        vector    :inline)
+   )
+  )
+
 (deftype v-wpn-red-tractor-beam (vehicle-weapon-slot)
   ((firing-at      handle  :offset-assert 264)
    (duration-left  int32   :offset-assert 272)
@@ -58256,7 +58263,7 @@
   :flag-assert         #x3d0090011c
   (:state-methods
     idle ;; 50
-    firing ;; 60
+    (firing symbol) ;; 60 ;; unsupported rsqrt in post handler :(
     )
   )
 

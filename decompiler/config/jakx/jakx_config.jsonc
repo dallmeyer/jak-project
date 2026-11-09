@@ -12,7 +12,7 @@
     "sparticle-launcher-h","sparticle-launcher",
     "process-nettable",
     "net-player-h",
-    "projectile",
+    "projectile", "process-focusable",
     "drawable", "math-camera",
     "net-projectile","net-projectile-h","projectile","projectile-h",
     "vehicle", "vehicle-h",

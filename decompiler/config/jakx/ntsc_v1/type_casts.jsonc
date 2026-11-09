@@ -2341,53 +2341,33 @@
     [36, "v0", "process-drawable"],
     [76, "v0", "process-drawable"]
   ],
-  "(event idle mine-a)": [
-    [[36, 39], "v1", "attack-info"]
-  ],
+  "(event idle mine-a)": [[[36, 39], "v1", "attack-info"]],
   "warning-hud-draw": [
     [[147,151], "v1", "(inline-array vector4w)"]
   ],
-  "(method 55 v-wpn-red-turbo-preventor)": [
-    [[13,17], "a0", "wvehicle"]
-  ],
+  "(method 55 v-wpn-red-turbo-preventor)": [[[13,17], "a0", "wvehicle"]],
   "spawn-mine": [
     [[161,164], "v1", "float"],
     [[229,232], "v1", "float"],
     [[326,329], "v1", "float"],
     [[394,397], "v1", "float"]
   ],
-  "(method 56 v-wpn-red-sentry-gun)": [
-    [17, "s4", "wvehicle"]
-  ],
-  "(event idle v-wpn-red-mine-launcher)": [
-    [[13,17], "a1", "wvehicle"]
-  ],
-  "(event idle v-wpn-red-turbo-preventor)": [
-    [[9,13], "a0", "wvehicle"]
-  ],
-  "(event idle v-wpn-red-sentry-gun)": [
-    [[9,13], "a1", "wvehicle"]
-  ],
+  "(method 56 v-wpn-red-sentry-gun)": [[17, "s4", "wvehicle"]],
+  "(event idle v-wpn-red-mine-launcher)": [[[13,17], "a1", "wvehicle"]],
+  "(event idle v-wpn-red-turbo-preventor)": [[[9,13], "a0", "wvehicle"]],
+  "(event idle v-wpn-red-sentry-gun)": [[[9,13], "a1", "wvehicle"]],
   "(code firing v-wpn-red-drone-gun)": [
     [30, "v0", "handle"],
     [[64,68], "a0", "wvehicle"]
   ],
-  "(code firing v-wpn-red-mine-launcher)": [
-    [[20,24], "a2", "wvehicle"]
-  ],
+  "(code firing v-wpn-red-mine-launcher)": [[[20,24], "a2", "wvehicle"]],
   "(code firing v-wpn-red-turbo-preventor)": [
     [[73,77], "a0", "wvehicle"],
     [286, "s5", "process-focusable"]
   ],
-  "(post firing v-wpn-red-turbo-preventor)": [
-    [[25,29], "a0", "wvehicle"]
-  ],
-  "local-space-proc-vehicle-turbo": [
-    [[7,11], "a0", "wvehicle"]
-  ],
-  "(trans idle v-wpn-purple-shield)": [
-    [[6,10], "a0", "wvehicle"]
-  ],
+  "(post firing v-wpn-red-turbo-preventor)": [[[25,29], "a0", "wvehicle"]],
+  "local-space-proc-vehicle-turbo": [[[7,11], "a0", "wvehicle"]],
+  "(trans idle v-wpn-purple-shield)": [[[6,10], "a0", "wvehicle"]],
   "(event idle v-wpn-purple-shield)": [
     [[9,13], "a0", "wvehicle"],
     [[82,86], "a0", "wvehicle"]
@@ -2397,28 +2377,30 @@
     [[67,71], "v1", "wvehicle"],
     [[296,300], "a1", "wvehicle"]
   ],
-  "shield-flash-part-callback": [
-    [[7,11], "a1", "process-drawable"]
-  ],
-  "(enter firing v-wpn-purple-shield)": [
-    [[46, 50], "a0", "wvehicle"]
-  ],
+  "shield-flash-part-callback": [[[7,11], "a1", "process-drawable"]],
+  "(enter firing v-wpn-purple-shield)": [[[46, 50], "a0", "wvehicle"]],
   "(trans firing v-wpn-purple-shield)": [
     [[8,12], "a0", "wvehicle"],
     [[30,34], "a0", "wvehicle"],
     [[30,34], "a0", "wvehicle"]
   ],
-  "(exit firing v-wpn-purple-shield)": [
-    [[57,61], "a0", "wvehicle"]
-  ],
-  "(post firing v-wpn-purple-shield)": [
-    [[11,15], "a0", "wvehicle"]
-  ],
+  "(exit firing v-wpn-purple-shield)": [[[57,61], "a0", "wvehicle"]],
+  "(post firing v-wpn-purple-shield)": [[[11,15], "a0", "wvehicle"]],
   "(code firing v-wpn-purple-shield)": [
     [[36,40], "a0", "wvehicle"],
     [80, "v1", "art-joint-anim"],
     [[156,160], "a1", "wvehicle"],
     [193, "v1", "art-joint-anim"]
+  ],
+  "(method 52 v-wpn-red-tractor-beam)": [[[7,11], "a1", "wvehicle"]],
+  "(event idle v-wpn-red-tractor-beam)": [[[9,13], "a0", "wvehicle"]],
+  "(trans idle v-wpn-red-tractor-beam)": [[[8,12], "a1", "wvehicle"]],
+  "(enter firing v-wpn-red-tractor-beam)": [[[7,11], "a0", "wvehicle"]],
+  "(trans firing v-wpn-red-tractor-beam)": [[[8,12], "a1", "wvehicle"]],
+  "(exit firing v-wpn-red-tractor-beam)": [[[6,10], "a0", "wvehicle"]],
+  "(post firing v-wpn-red-tractor-beam)": [
+    [[6,10], "a0", "wvehicle"],
+    [[18,22], "a0", "process-focusable"]
   ],
   "(method 57 v-wpn-red-tractor-beam)": [
     [[6,10], "a1", "wvehicle"],
