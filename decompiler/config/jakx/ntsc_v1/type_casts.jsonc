@@ -2406,6 +2406,14 @@
     [[6,10], "a1", "wvehicle"],
     [129, "gp", "vehicle"],
     [113, "s4", "(pointer process-drawable)"]
-  ]
+  ],
+  "projectile-update-velocity-space-wars": [
+    [[54,58], "a1", "process-focusable"]
+  ],
+  "(method 43 smoke-system)": [
+    [[15,19], "a0", "process-drawable"],
+    [57, "v0", "particle-local-space-info"]
+  ],
+  "(method 16 oil-emitter)": [[[7,11],"a0","wvehicle"]]
 
 }

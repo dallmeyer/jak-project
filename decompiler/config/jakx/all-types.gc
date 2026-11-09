@@ -30661,13 +30661,13 @@
   ;; field penetrate is likely a value type. field penetrate is likely a value type.
   (:methods
     (new (symbol type process-drawable collide-list-enum) _type_) ;; 0
-    (collide-shape-moving-method-55 () none) ;; 55 ;; (find-ground (_type_ collide-query collide-spec float float float process) symbol)
+    (collide-shape-moving-method-55 (_type_ collide-query collide-spec float float float process) symbol) ;; 55 ;; (find-ground (_type_ collide-query collide-spec float float float process) symbol)
     (collide-shape-moving-method-56 () none) ;; 56 ;; (react-to-pat! (_type_ pat-surface) cshape-reaction-flags)
     (collide-shape-moving-method-57 () none) ;; 57 ;; (integrate-no-collide! (_type_ vector) none)
     (collide-shape-moving-method-58 () none) ;; 58 ;; (integrate-for-enemy-no-mtg (_type_ vector overlaps-others-params) symbol)
     (collide-shape-moving-method-59 () none) ;; 59 ;; (move-above-ground (_type_ vector move-above-ground-params) none)
     (collide-shape-moving-method-60 () none) ;; 60 ;; (move-to-ground (_type_ float float symbol collide-spec) none)
-    (collide-shape-moving-method-61 () none) ;; 61 ;; (move-to-ground-point (_type_ vector vector vector) none)
+    (collide-shape-moving-method-61 (_type_ vector vector vector) vector) ;; 61 ;; (move-to-ground-point (_type_ vector vector vector) none)
     (collide-shape-moving-method-62 () none) ;; 62 ;; (compute-acc-due-to-gravity (_type_ vector float) vector)
     (collide-shape-moving-method-63 () none) ;; 63 ;; (rbody-collision (_type_ rigid-body-control float) none)
     (collide-shape-moving-method-64 (_type_ vector float float float collide-query) symbol) ;; 64 ;; (try-snap-to-surface (_type_ vector float float float) symbol)
@@ -41456,7 +41456,7 @@
 (define-extern projectile-event-handler (function process int symbol event-message-block projectile :behavior projectile))
 (define-extern projectile-move-fill-all-dirs (function projectile none))
 (define-extern projectile-move-fill-line-sphere (function projectile none))
-(define-extern projectile-update-velocity-add-gravity (function projectile none))
+(define-extern projectile-update-velocity-add-gravity (function projectile object object vector int))
 (define-extern projectile-update-velocity-space-wars (function projectile none))
 (define-extern projectile-base-code (function symbol :behavior projectile))
 (define-extern projectile-init-by-other (function projectile-init-by-other-params object :behavior projectile))
@@ -57728,30 +57728,27 @@
 ;; wvehicle-weapons-oil           ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype smoke-particle (structure)
   ((pos        vector :inline :offset-assert 0)
+   (size       float          :offset 12)
    (vel        vector :inline :offset-assert 16)
-   (size-delta float          :offset-assert 28)
-   (size       float          :offset-assert 12)
+   (size-delta float          :offset 28)
    (decay      float          :offset-assert 32)
    (rot        float          :offset-assert 36)
    (rot-delta  float          :offset-assert 40)
-   (color      uint32         :offset-assert 44)
+   (color      rgba           :offset-assert 44)
    )
   :method-count-assert 9
   :size-assert         #x30
   :flag-assert         #x900000030
   )
-|#
 
-#|
 (deftype particle-buffer (prim-client)
-  ((tex-id           uint32     :offset-assert 4)
-   (smoke-part-count int32      :offset-assert 8)
-   (smoke-parts      UNKNOWN 50 :offset-assert 16)
-   (strip            basic      :offset-assert 2416)
-   (single-strip     UNKNOWN 3  :offset-assert 2420)
+  ((tex-id           uint32                     :offset-assert 4)
+   (smoke-part-count int32                      :offset-assert 8)
+   (smoke-parts      smoke-particle 50  :inline :offset 16)
+   (strip            basic                      :offset-assert 2416)
+   (single-strip     prim-strip 3               :offset-assert 2420)
    )
   :method-count-assert 14
   :size-assert         #x980
@@ -57763,38 +57760,34 @@
     (particle-buffer-method-13 () none) ;; 13
     )
   )
-|#
 
-#|
 (deftype smoke-system (process-nettable)
-  ((owning-vehicle            uint64         :offset-assert 192)
+  ((owning-vehicle            handle         :offset-assert 192)
    (part-count                float          :offset-assert 200)
    (emit-rate                 float          :offset-assert 204)
    (start-time                int32          :offset-assert 208)
    (last-pos                  vector :inline :offset-assert 224)
    (buffer                    basic          :offset-assert 240)
    (smoke-screen-sound        uint32         :offset-assert 244)
-   (lightning-sound-id        uint32         :offset-assert 248)
+   (lightning-sound-id        sound-id       :offset-assert 248)
    (last-size                 float          :offset-assert 252)
    (damage                    float          :offset-assert 256)
    (last-lightning-sphere-pos vector :inline :offset-assert 272)
-   (part-subsampler           basic          :offset-assert 288)
-   (smoke-electric            basic          :offset-assert 292)
+   (part-subsampler           sparticle-subsampler          :offset-assert 288)
+   (smoke-electric            engine         :offset-assert 292)
    (smoke-matrix              matrix :inline :offset-assert 304)
    )
   :method-count-assert 44
   :size-assert         #x170
   :flag-assert         #x2c00e00170
-  (:methods
-    (smoke-system-method-43 () none) ;; 43
-    )
   (:state-methods
     idle ;; 42
     )
+  (:methods
+    (smoke-system-method-43 (_type_) none) ;; 43
+    )
   )
-|#
 
-#|
 (deftype z-index (structure)
   ((z     float  :offset-assert 0)
    (index int32  :offset-assert 4)
@@ -57803,21 +57796,19 @@
   :size-assert         #x8
   :flag-assert         #x900000008
   )
-|#
 
-#|
 (deftype lightning-sphere (process-drawable)
-  ((last-touched-by uint64         :offset-assert 248)
+  ((last-touched-by handle         :offset-assert 248)
    (start-time      int32          :offset-assert 256)
    (damage          float          :offset-assert 260)
-   (l-control       basic          :offset-assert 264)
+   (l-control       lightning-control          :offset-assert 264)
    (lightning-time  int32          :offset-assert 268)
    (start           vector :inline :offset-assert 272)
    (end             vector :inline :offset-assert 288)
    (zap-target      uint64         :offset-assert 304)
    (lightning-on    basic          :offset-assert 312)
    (sound-id        uint32         :offset-assert 316)
-   (owner-handle    uint64         :offset-assert 320)
+   (owner-handle    handle         :offset-assert 320)
    )
   :method-count-assert 51
   :size-assert         #x148
@@ -57826,9 +57817,7 @@
     idle ;; 50
     )
   )
-|#
 
-#|
 (deftype v-wpn-red-smoke (vehicle-weapon-slot)
   ((smoke-system uint64  :offset-assert 264)
    (wait-time    int32   :offset-assert 272)
@@ -57836,37 +57825,33 @@
   :method-count-assert 62
   :size-assert         #x114
   :flag-assert         #x3e00900114
-  (:methods
-    (v-wpn-red-smoke-method-61 () none) ;; 61
-    )
   (:state-methods
     idle ;; 50
     wait-delay ;; 60
     )
+  (:methods
+    (v-wpn-red-smoke-method-61 () none) ;; 61
+    )
   )
-|#
 
-#|
 (deftype strip-segment (structure)
   ((strip-length int8      :offset-assert 0)
    (strip-index  int8      :offset-assert 1)
    (birth-time   int32     :offset-assert 4)
-   (points       UNKNOWN 3 :offset-assert 16)
+   (points       vector 3 :inline :offset-assert 16)
    )
   :method-count-assert 9
   :size-assert         #x40
   :flag-assert         #x900000040
   )
-|#
 
-#|
 (deftype oil-trail (prim-client)
   ((tex-id                   uint32          :offset-assert 4)
    (segment-count            int32           :offset-assert 8)
    (last-segment-last-point  vector  :inline :offset-assert 16)
    (last-segment-first-point vector  :inline :offset-assert 32)
-   (segments                 UNKNOWN 50      :offset-assert 48)
-   (strip                    basic           :offset-assert 3248)
+   (segments                 strip-segment 50      :inline :offset-assert 48)
+   (strip                    prim-strip      :offset-assert 3248)
    )
   :method-count-assert 17
   :size-assert         #xcb4
@@ -57881,14 +57866,12 @@
     (oil-trail-method-16 () none) ;; 16
     )
   )
-|#
 
-#|
 (deftype slip-object (process-drawable)
   ((start-time   int32   :offset-assert 248)
    (damage       float   :offset-assert 252)
    (fire-sound   basic   :offset-assert 256)
-   (owner-handle uint64  :offset-assert 264)
+   (owner-handle handle  :offset-assert 264)
    )
   :method-count-assert 51
   :size-assert         #x110
@@ -57897,11 +57880,9 @@
     idle ;; 50
     )
   )
-|#
 
-#|
 (deftype oil-slick (process-drawable)
-  ((vehicle uint64  :offset-assert 248)
+  ((vehicle handle  :offset-assert 248)
    )
   :method-count-assert 51
   :size-assert         #x100
@@ -57910,12 +57891,10 @@
     idle ;; 50
     )
   )
-|#
 
-#|
 (deftype oil-emitter (process)
   ((emitting            basic                 :offset-assert 144)
-   (owning-vehicle      uint64                :offset-assert 152)
+   (owning-vehicle      handle                :offset-assert 152)
    (oil-trail           basic                 :offset-assert 160)
    (last-surface-pos    vector        :inline :offset-assert 176)
    (last-slip-spawn-pos vector        :inline :offset-assert 192)
@@ -57924,29 +57903,27 @@
    (state-time          int32                 :offset-assert 276)
    (spill-sound-id      uint32                :offset-assert 280)
    (damage              float                 :offset-assert 284)
-   (oil-slick           uint64                :offset-assert 288)
+   (oil-slick           handle                :offset-assert 288)
    )
   :method-count-assert 19
   :size-assert         #x128
   :flag-assert         #x1300a00128
-  (:methods
-    (oil-emitter-method-9 () none) ;; 9
-    (oil-emitter-method-10 () none) ;; 10
-    (oil-emitter-method-11 () none) ;; 11
-    (oil-emitter-method-12 () none) ;; 12
-    (oil-emitter-method-13 () none) ;; 13
-    (oil-emitter-method-14 () none) ;; 14
-    (oil-emitter-method-16 () none) ;; 16
-    (oil-emitter-method-17 () none) ;; 17
-    (oil-emitter-method-18 () none) ;; 18
-    )
   (:state-methods
     emit-oil ;; 15
     )
+  (:methods
+    ;; (oil-emitter-method-9 () none) ;; 9
+    ;; (oil-emitter-method-10 () none) ;; 10
+    ;; (oil-emitter-method-11 () none) ;; 11
+    ;; (oil-emitter-method-12 () none) ;; 12
+    ;; (oil-emitter-method-13 () none) ;; 13
+    ;; (oil-emitter-method-14 () none) ;; 14
+    (oil-emitter-method-16 (_type_) none) ;; 16
+    (oil-emitter-method-17 (_type_ process-drawable) none) ;; 17
+    (oil-emitter-method-18 (_type_ process-drawable) none) ;; 18
+    )
   )
-|#
 
-#|
 (deftype oil-flame-emitter (oil-emitter)
   ((last-flame-spawn-pos vector :inline :offset-assert 304)
    (flame-distance-emit  float          :offset-assert 320)
@@ -57955,33 +57932,30 @@
   :size-assert         #x144
   :flag-assert         #x1300c00144
   )
-|#
 
-#|
 (deftype v-wpn-red-oil (vehicle-weapon-slot)
-  ((oil-emitter uint64  :offset-assert 264)
+  ((oil-emitter handle  :offset-assert 264)
    (wait-time   int32   :offset-assert 272)
    )
   :method-count-assert 62
   :size-assert         #x114
   :flag-assert         #x3e00900114
-  (:methods
-    (v-wpn-red-oil-method-61 () none) ;; 61
-    )
   (:state-methods
     idle ;; 50
     wait-delay ;; 60
     )
+  (:methods
+    (v-wpn-red-oil-method-61 (_type_) none) ;; 61
+    )
   )
-|#
 
-;; (define-extern smoke-system-local-space function)
+(define-extern smoke-system-local-space (function particle-local-space-info int :behavior smoke-system))
 ;; (define-extern sift-down function)
 ;; (define-extern heap-sort function)
 (define-extern clear-strip (function prim-strip none))
 ;; (define-extern lightning-sphere-init-by-other function)
 ;; (define-extern lightning-sphere-spawn function)
-;; (define-extern vector+float*-ignore-w! function)
+(define-extern vector+float*-ignore-w! (function vector vector vector float vector))
 ;; (define-extern smoke-update function)
 ;; (define-extern smoke-render function)
 ;; (define-extern smoke-spawn function)
@@ -57993,9 +57967,9 @@
 ;; (define-extern oil-slick-spawn function)
 ;; (define-extern oil-trail-emit function)
 ;; (define-extern oil-emitter-init-by-other function)
-;; (define-extern oil-emitter-spawn function)
+(define-extern oil-emitter-spawn (function process process process))
 ;; (define-extern oil-flame-emitter-init-by-other function)
-;; (define-extern oil-flame-emitter-spawn function)
+(define-extern oil-flame-emitter-spawn (function process process process))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons               ;;

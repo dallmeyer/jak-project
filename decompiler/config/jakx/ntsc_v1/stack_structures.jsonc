@@ -525,20 +525,6 @@
     [240, "vector"],
     [256, "race-line-query-info"]
   ],
-/*
-s4-2
-0: vector
-48: vector/float
-64: vector/float
-80: float
-84: float
-88: word (int from racer-state)
-92: word (#f)
-100: word (#t)
-
-
-*/
-
   "(event firing v-wpn-purple-shield)": [[32, "event-message-block"]],
   "(code firing v-wpn-purple-shield)": [[16, "event-message-block"]],
   "(exit firing v-wpn-purple-shield)": [[16, "event-message-block"]],
@@ -547,6 +533,9 @@ s4-2
   "(method 57 v-wpn-red-tractor-beam)": [
     [16, ["inline-array", "vector", 8]],
     [144, "mystery-find-sorted-targets-type1"]
-  ]
+  ],
+  "projectile-update-velocity-space-wars": [[32, "vector"]],
+  "(method 18 oil-flame-emitter)": [[16, ["inline-array", "matrix", 1]]],
+  "(method 16 oil-emitter)": [[16, "mystery-cquery-type0"]]
 
 }
