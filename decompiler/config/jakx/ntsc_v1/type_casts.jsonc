@@ -2414,6 +2414,13 @@
     [[15,19], "a0", "process-drawable"],
     [57, "v0", "particle-local-space-info"]
   ],
-  "(method 16 oil-emitter)": [[[7,11],"a0","wvehicle"]]
+  "(method 16 oil-emitter)": [
+    [[7,11],"a0","wvehicle"],
+    [110, "v1", "(pointer float)"],
+    [114, "v1", "(pointer float)"]
+  ],
+  "smoke-system-local-space": [
+    [[7,11], "a0", "wvehicle"]
+  ]
 
 }

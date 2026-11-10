@@ -536,6 +536,11 @@
   ],
   "projectile-update-velocity-space-wars": [[32, "vector"]],
   "(method 18 oil-flame-emitter)": [[16, ["inline-array", "matrix", 1]]],
-  "(method 16 oil-emitter)": [[16, "mystery-cquery-type0"]]
+  "(method 16 oil-emitter)": [
+    [16, "mystery-cquery-type0"],
+    [592, "matrix"]
+  ],
+  "sift-down": [[16, "vector3"]],
+  "heap-sort": [[16, "vector3"]]
 
 }

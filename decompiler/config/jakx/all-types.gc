@@ -57918,7 +57918,7 @@
     ;; (oil-emitter-method-12 () none) ;; 12
     ;; (oil-emitter-method-13 () none) ;; 13
     ;; (oil-emitter-method-14 () none) ;; 14
-    (oil-emitter-method-16 (_type_) none) ;; 16
+    (oil-emitter-method-16 (_type_) symbol) ;; 16
     (oil-emitter-method-17 (_type_ process-drawable) none) ;; 17
     (oil-emitter-method-18 (_type_ process-drawable) none) ;; 18
     )
@@ -57950,8 +57950,8 @@
   )
 
 (define-extern smoke-system-local-space (function particle-local-space-info int :behavior smoke-system))
-;; (define-extern sift-down function)
-;; (define-extern heap-sort function)
+(define-extern sift-down (function pointer int int symbol))
+(define-extern heap-sort (function pointer int symbol))
 (define-extern clear-strip (function prim-strip none))
 ;; (define-extern lightning-sphere-init-by-other function)
 ;; (define-extern lightning-sphere-spawn function)
