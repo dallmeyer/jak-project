@@ -1001,5 +1001,190 @@
     [128, "vector"]
   ],
   "(code idle-texture fmv-player)": [[128, ["array", "int32", 4]]],
-  "(code idle fmv-player)": [[144, ["array", "int32", 4]]]
+  "(code idle fmv-player)": [[144, ["array", "int32", 4]]],
+  "v-wpn-get-mask": [[16, "event-message-block"]],
+  "(method 58 vehicle-weapon-slot)": [
+    [16, "event-message-block"],
+    [96, "vector"]
+  ],
+  "gunmount-common-trans": [[16, "vector"]],
+  "(method 52 v-wpn-yellow-chain-gun)": [[16, "event-message-block"]],
+  "(method 52 v-wpn-yellow-default-gun)": [[16, "event-message-block"]],
+  "(method 52 v-wpn-yellow-grenade)": [[16, "event-message-block"]],
+  "(method 61 v-toad-shot)": [
+    [16, "vector"],
+    [32, "light-trail-tracker-spawn-params"]
+  ],
+  "gunmount-generic-event-handler": [[16, "matrix3"]],
+  "(method 52 v-wpn-yellow-guided-missile)": [[16, "event-message-block"]],
+  "(method 56 v-wpn-yellow-guided-missile)": [[16, "mystery-proj-params-type0"]],
+  "(method 61 v-yellow-guided-missile)": [
+    [16, "vector"],
+    [32, "light-trail-tracker-spawn-params"]
+  ],
+  "(method 72 v-yellow-guided-missile)": [
+    [16, "vector"],
+    [32, "vector"]
+  ],
+  "(method 78 v-yellow-guided-missile)": [
+    [16, "vector"],
+    [80, "collide-query"],
+    [768, "vector"]
+  ],
+  "(anon-function 3 wvehicle-weapons-proj)": [[16, "explosion-init-params"]],
+  "(anon-function 6 wvehicle-weapons-proj)": [[16, "event-message-block"]],
+  "(anon-function 17 wvehicle-weapons-proj)": [[16, "event-message-block"]],
+  "(anon-function 58 wvehicle-weapons-proj)": [[16, "quaternion"]],
+  "(anon-function 59 wvehicle-weapons-proj)": [[16, "light-trail-tracker-spawn-params"]],
+  "(anon-function 64 wvehicle-weapons-proj)": [
+    [16, "mystery-mine-b-type0"],
+    [32, "matrix3"]
+  ],
+  "(anon-function 67 wvehicle-weapons-proj)": [[64, "vector"]],
+  "(anon-function 70 wvehicle-weapons-proj)": [[16, "mystery-mine-b-type0"]],
+  "(anon-function 97 wvehicle-weapons-proj)": [[16, "quaternion"]],
+  "(anon-function 99 wvehicle-weapons-proj)": [[16, "light-trail-tracker-spawn-params"]],
+  "(method 35 mine-a)": [[16, "mystery-mine-a-type0"]],
+  "(method 35 net-projectile)": [
+    [16, "mystery-net-projectile-type0"]
+  ],
+  "(method 54 raceline-weapon)": [
+    [16, "race-mesh-slice-query"],
+    [144, "race-line-query-info"]
+  ],
+  "(method 14 race-line)": [[16,  "race-line-query-info"]],
+  "(method 57 raceline-weapon)": [[16,  ["inline-array", "vector", 1]]],
+  "(method 77 raceline-weapon)": [[16,  ["inline-array", "matrix", 1]]],
+  "rapid-fire-callback-gun-hitspang": [[48, "vector"]],
+  "(method 72 net-projectile)": [
+    [16, "vector"],
+    [32, "vector"]
+  ],
+  "(method 57 chicken-drone)": [[48, "vector"]],
+  "(method 79 turbodash-seeker)": [[16, "event-message-block"]],
+  "(method 80 turbodash-seeker)": [[16, "light-trail-tracker-spawn-params"]],
+  "(method 11 rapid-fire-control)": [[48, ["inline-array", "quaternion", 3]]],
+  "(method 12 rapid-fire-control)": [[32, "collide-query"]],
+  "fire-seeker": [
+    [16,  ["inline-array", "vector", 1]],
+    [32, "event-message-block"]
+  ],
+  "fire-drone": [
+    [16,  ["inline-array", "vector", 1]],
+    [32, "event-message-block"]
+  ],
+  "(method 35 red-sentry-bot)": [
+    [16, "vector"],
+    [32, "quaternion"],
+    [48, "vector"],
+    [64, "quaternion"]
+  ],
+  "red-sentry-bot-init-by-other": [[16, ["inline-array", "quaternion", 3]]],
+  "red-sentry-bot-poll-target": [[16, "vector"]],
+  "drone-compute-pos!": [[16, "vector"]],
+  "drone-trans-twitchy-rot": [[32, "vector"]],
+  "drone-trans-rot-at-target": [[16, ["inline-array", "vector", 1]]],
+  "(method 64 vehicle-weapon-drone)": [[16, "mystery-v-wpn-drone-type0"]],
+  "(method 66 vehicle-weapon-drone)": [
+    [16, ["inline-array", "find-sorted-targets-params", 1]],
+    [144, ["array", "float", 1]]
+  ],
+  "guided-missile-gen-proj-targ-helper": [[16, "mystery-proj-params-type0"]],
+  "guided-missile-gen-proj-no-targ-helper": [[16, "mystery-proj-params-type0"]],
+  "(post firing v-wpn-yellow-seismic-blaster)": [[16, "event-message-block"]],
+  "(exit idle v-wpn-yellow-seismic-blaster)": [[16, "event-message-block"]],
+  "(post firing v-wpn-yellow-guided-missile)": [[48, "yellow-guided-missilie-find-sorted-targets-stack"]],
+  "(event idle v-wpn-yellow-guided-missile)": [[16, "event-message-block"]],
+  "(post firing v-wpn-yellow-default-gun)": [
+    [16, "event-message-block"],
+    [96, "matrix"]
+  ],
+  "rapid-fire-control-initialize-from-vehicle": [[16, "mystery-rapid-fire-control-type0"]],
+  "vws-focus-search-base": [
+    [16, ["inline-array", "vector", 6]],
+    [128, ["inline-array", "find-sorted-targets-params", 1]]
+  ],
+  "(post firing v-wpn-yellow-chain-gun)": [[96, ["inline-array", "vector", 3]]],
+  "(post bulldog-firing vehicle-weapon-drone)": [[16, "vector"]],
+  "(trans bulldog-firing vehicle-weapon-drone)": [[16, "vector"]],
+  "(code falling red-sentry-bot)": [[16, ["inline-array", "quaternion", 1]]],
+  "v-wpn-num-available": [
+    [16, ["inline-array", "v-wpn-ptable-entry", 17]],
+    [96, "v-wpn-ptable"]
+  ],
+  "v-wpn-choose-random": [
+    [16, ["inline-array", "v-wpn-ptable-entry", 17]],
+    [96, "v-wpn-ptable"]
+  ],
+  "(post impact v-yellow-guided-missile)": [
+    [16, "explosion-init-params"],
+    [144, "vector"],
+    [160, "collide-query"]
+  ],
+  "(post launching v-yellow-guided-missile)": [[16, "event-message-block"]],
+  "(code falling mine-b)": [[16, ["inline-array", "quaternion", 1]]],
+  "(code attached mine-b)": [
+    [16, ["inline-array", "vector", 1]],
+    [32, ["inline-array", "quaternion", 2]]
+  ],
+  "(enter falling mine-b)": [[16, "light-trail-tracker-spawn-params"]],
+  "(event attached mine-b)": [
+    [16, "vector"],
+    [32, "vector"],
+    [64, "vector"]
+  ],
+  "(code leaping-onto mine-b)": [
+    [16, ["inline-array", "vector", 1]]
+  ],
+  "(code falling mine-a)": [[16, ["inline-array", "quaternion", 1]]],
+  "(enter falling mine-a)": [[16, "light-trail-tracker-spawn-params"]],
+  "warning-hud-draw": [
+    [16, ["inline-array", "vector", 1]],
+    [32, "vector"]
+  ],
+  "mine-compute-landing-point": [[16, "collide-query"]],
+  "spawn-mine": [[16, ["inline-array", "quaternion", 6]]],
+  "(method 56 v-wpn-red-sentry-gun)": [[16, ["inline-array", "quaternion", 6]]],
+  "(code firing v-wpn-red-drone-gun)": [[16, "event-message-block"]],
+  "(code firing v-wpn-red-mine-launcher)": [[16, "event-message-block"]],
+  "(code firing v-wpn-red-turbo-preventor)": [[16, "event-message-block"]],
+  "(post firing v-wpn-red-turbo-preventor)": [[16, "vector"]],
+  "(event idle v-wpn-purple-shield)": [[16, "event-message-block"]],
+  "(event idle v-wpn-red-tractor-beam)": [[16, "mystery-red-tractor-beam-type0"]],
+  "(post firing v-wpn-red-tractor-beam)": [
+    [32, "matrix"],
+    [96, ["inline-array", "matrix", 0]],
+    [240, "vector"],
+    [256, "race-line-query-info"]
+  ],
+  "(event firing v-wpn-purple-shield)": [[32, "event-message-block"]],
+  "(code firing v-wpn-purple-shield)": [[16, "event-message-block"]],
+  "(exit firing v-wpn-purple-shield)": [[16, "event-message-block"]],
+  "(enter firing v-wpn-purple-shield)": [[16, "event-message-block"]],
+  "(method 52 v-wpn-red-tractor-beam)": [[16, "event-message-block"]],
+  "(method 57 v-wpn-red-tractor-beam)": [
+    [16, ["inline-array", "vector", 8]],
+    [144, ["inline-array", "find-sorted-targets-params", 1]]
+  ],
+  "(method 18 oil-flame-emitter)": [[16, ["inline-array", "matrix", 1]]],
+  "(method 16 oil-emitter)": [
+    [16, "explosion-cquery-stack"],
+    [592, "matrix"]
+  ],
+  "sift-down": [[16, "vector3"]],
+  "heap-sort": [[16, "vector3"]],
+  "(method 230 wvehicle)": [[16, "find-closest-attach-point-wvehicle-stack"]],
+  "(method 13 oil-trail)": [
+    [32, ["array", "uint32", 3]],
+    [48, ["inline-array", "vector", 1]],
+    [64, ["inline-array", "vector", 2]],
+    [96, ["inline-array", "vector", 2]]
+  ]
+
+  /*
+  s4-0
+    0: int32
+    4: (u)int32
+    8: int32
+  */
 }

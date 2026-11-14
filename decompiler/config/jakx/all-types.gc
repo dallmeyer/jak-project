@@ -16236,6 +16236,7 @@
    (shield-vu-lights   vu-lights    :inline :offset-assert 208)
    (shield-light-group light-group  :inline :offset-assert 320)
    )
+  :allow-misaligned
   :method-count-assert 22
   :size-assert         #x200
   :flag-assert         #x1600000200
@@ -29153,7 +29154,7 @@
     (bytes-used (_type_) int) ;; 11
     (bytes-remaining (_type_) uint) ;; 12
     (reset! (_type_) none) ;; 13
-    (write-int8 (_type_ int) none) ;; 14
+    (write-int8 (_type_ int) int) ;; 14
     (write-int16 (_type_ int) none) ;; 15
     (write-int32 (_type_ int) none) ;; 16
     (write-int64 (_type_ int) none) ;; 17
@@ -29180,7 +29181,7 @@
     (read-uint32 (_type_ ) uint) ;; 38
     (read-uint64 (_type_) uint) ;; 39
     (read-float (_type_) float) ;; 40
-    (read-vector (_type_ mem-buffer) none) ;; 41
+    (read-vector (_type_ vector) none) ;; 41
     (read-vector-scaled (_type_ vector vector) none) ;; 42
     (read-quaternion (_type_ quaternion) none) ;; 43
     (read-level-pos (_type_ mem-buffer) none) ;; 44
@@ -29463,7 +29464,7 @@
   :size-assert         #x18
   :flag-assert         #xa00000018
   (:methods
-    (proximity-ownership-params-method-9 () none) ;; 9
+    (init! (_type_) int) ;; 9
     )
   )
 
@@ -29491,8 +29492,8 @@
   (:methods
     (process-nettable-method-15 (_type_ mem-buffer) none) ;; 15
     (process-nettable-method-16 (_type_) none) ;; 16
-    (process-nettable-method-17 (_type_ symbol mem-buffer) none) ;; 17
-    (process-nettable-method-18 (_type_) none) ;; 18
+    (process-nettable-method-17 (_type_ symbol mem-buffer int) object) ;; 17
+    (process-nettable-method-18 (_type_ mem-buffer) none) ;; 18
     (process-nettable-method-19 (_type_) none) ;; 19
     (process-nettable-method-20 (_type_) none) ;; 20
     (process-nettable-method-21 (_type_) none) ;; 21
@@ -29509,13 +29510,13 @@
     (process-nettable-method-32 (_type_ entity-actor) none) ;; 32 (method 13 entity-more-perm-hash)
     (process-nettable-method-33 (_type_ entity-actor) none) ;; 33 entity-more-perm-hash-method-14
     (process-nettable-method-34 (_type_ int rgba) none) ;; TODO - guess on the rgba
-    (process-nettable-method-35 (_type_ mem-buffer) none)
-    (process-nettable-method-36 (_type_) none) ;; 36
+    (init-from-buffer! (_type_ mem-buffer) object) ;; 35
+    (process-nettable-method-36 (_type_) int) ;; 36
     (process-nettable-method-37 (_type_ net-process-class-info) none) ;; 37
-    (process-nettable-method-38 () none) ;; 38
+    (process-nettable-method-38 (_type_ symbol) int) ;; 38
     (process-nettable-method-39 () none) ;; 39
     (process-nettable-method-40 (_type_) net-process-class-info) ;; 40
-    (process-nettable-method-41 (_type_ mem-buffer) process)
+    (spawn-from-buffer (_type_ mem-buffer) process) ;; 41
     )
   )
 
@@ -29591,7 +29592,7 @@
    (sound       ambient-sound             :offset-assert 228) ;; guessed by decompiler
    (rbody       rigid-body-control        :offset-assert 232) ;; guessed by decompiler
    (state-flags state-flags               :offset-assert 236) ;; guessed by decompiler
-   (state-time  time-frame                    :offset-assert 240) ;; time-frame
+   (state-time  time-frame                :offset-assert 240) ;; time-frame
    )
   :method-count-assert 50
   :size-assert         #xf8
@@ -29603,7 +29604,7 @@
     (relocate-nav (_type_ int) none) ;; 45
     (process-drawable-method-46 (_type_ float float float symbol) symbol) ;; 46
     (process-drawable-method-47 (_type_) none) ;; 47
-    (process-drawable-method-48 () int) ;; 48
+    (process-drawable-method-48 (_type_) float) ;; 48
     (process-drawable-method-49 (_type_) none) ;; 49
     )
   (:states
@@ -29874,9 +29875,9 @@
    (attacker-velocity      vector           :inline :offset-assert 32)
    (intersection           vector           :inline :offset-assert 48)
    (attacker               handle                   :offset-assert 64)
-   (attack-time            time-frame               :offset-assert 72) ;; time-frame
-   (invinc-time            time-frame               :offset-assert 80) ;; time-frame
-   (mask                   attack-mask              :offset-assert 88) ;; attack-mask
+   (attack-time            time-frame               :offset-assert 72)
+   (invinc-time            time-frame               :offset-assert 80)
+   (mask                   attack-mask              :offset-assert 88)
    (mode                   symbol                   :offset-assert 92) ;; guessed by decompiler
    (shove-back             meters                   :offset-assert 96)
    (shove-up               meters                   :offset-assert 100)
@@ -29884,16 +29885,16 @@
    (dist                   meters                   :offset-assert 108)
    (control                float                    :offset-assert 112)
    (angle                  symbol                   :offset-assert 116) ;; guessed by decompiler
-   (rotate-to              degrees                  :offset-assert 120) ;; degrees
+   (rotate-to              degrees                  :offset-assert 120)
    (prev-state             state                    :offset-assert 124) ;; guessed by decompiler
    (id                     uint32                   :offset-assert 128)
-   (count                  uint8                   :offset-assert 132)
+   (wpn-type               uint8                    :offset-assert 132) ;; was "count" ?
    (penetrate-using        penetrate                :offset-assert 136) ;; penetrate
    (damage                 float                    :offset-assert 144)
    (shield-damage          float                    :offset-assert 148)
    (vehicle-damage-factor  float                    :offset-assert 152)
    (vehicle-impulse-factor float                    :offset-assert 156)
-   (knock                  knocked-type             :offset-assert 160) ;; knocked-type
+   (knock                  knocked-type             :offset-assert 160)
    (test                   symbol                   :offset-assert 164) ;; guessed by decompiler
    )
   :method-count-assert 10
@@ -30621,13 +30622,14 @@
 ;; collide-mesh-h                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(declare-type collide-shape-prim basic)
 (deftype collide-tri-result (structure)
   "A triangle result of a collision."
   ((vertex      vector      3 :inline :offset-assert 0) ;; guessed by decompiler
    (intersect   vector      :inline :offset-assert 48)
    (normal      vector      :inline :offset-assert 64)
    (pat         pat-surface         :offset-assert 80) ;; guessed by decompiler
-   (collide-ptr basic               :offset-assert 84)
+   (collide-ptr collide-shape-prim  :offset-assert 84)
    )
   :method-count-assert 9
   :size-assert         #x58
@@ -31209,17 +31211,17 @@
    (mat             matrix                         :inline :offset-assert 160)
    (offset          vector                         :inline :offset-assert 224)
    (local-offset    vector                         :inline :offset-assert 240)
-   (userdata        uint64                                 :offset-assert 256)
+   (userdata        uint64                                 :offset-assert 256) ;; used as handle in shield-flash-part-callback
    (user-time       time-frame                     2       :offset-assert 264) ;; guessed by decompiler
    (user-vector     vector                         :inline :offset-assert 288)
    (user-handle     uint32                         2       :offset 320) ;; guessed by decompiler
    (part            sparticle-launch-control               :offset-assert 328) ;; guessed by decompiler
    (callback        (function part-tracker vector)         :offset-assert 332) ;; guessed by decompiler
    (linger-callback (function part-tracker vector)         :offset-assert 336) ;; guessed by decompiler
-   (duration        time-frame                                 :offset-assert 344) ;; time-frame
-   (linger-duration time-frame                                 :offset-assert 352) ;; time-frame
-   (state-time      time-frame                                 :offset-assert 360) ;; time-frame
-   (target          handle                                 :offset-assert 368) ;; handle
+   (duration        time-frame                             :offset-assert 344)
+   (linger-duration time-frame                             :offset-assert 352)
+   (state-time      time-frame                             :offset-assert 360)
+   (target          handle                                 :offset-assert 368)
    (target-joint    int32                                  :offset-assert 376)
    )
   :method-count-assert 19
@@ -31347,6 +31349,7 @@
     )
   )
 
+(declare-type v-wpn-type-s8 int8)
 (deftype explosion-init-params (structure)
   ((spawn-point            vector                 :inline :offset-assert 0)
    (spawn-quat             quaternion             :inline :offset-assert 16)
@@ -31363,7 +31366,7 @@
    (velocity               vector                 :inline :offset-assert 80)
    (ignore-proc            handle                         :offset-assert 96 :handle-type process-drawable)
    (attacker               handle                         :offset-assert 104 :handle-type process-drawable)
-   (wpn-type               int8                           :offset-assert 112)
+   (wpn-type               v-wpn-type-s8                  :offset-assert 112)
    )
   :method-count-assert 9
   :size-assert         #x71
@@ -31389,8 +31392,8 @@
     explode
     )
   (:methods
-    (explosion-method-51 (_type_) none) ;; 51
-    (explosion-method-52 (_type_) none) ;; 52
+    (explosion-method-51 () none) ;; 51
+    (explosion-method-52 (_type_) int) ;; 52
     )
   )
 
@@ -31772,7 +31775,7 @@
   (turret 32)
   (no-gravity 33)
   (gun-no-target 34)
-  (fs35 35)
+  (fs-35 35) ;; (method 58 v-toad-shot) ?
   )
 ;; ---process-focusable:focus-status
 
@@ -32393,6 +32396,7 @@
   )
 ;; ---projectile-h:projectile-options
 
+(declare-type v-wpn-type uint8)
 (deftype projectile (process-drawable)
   ((parent                 (pointer process-drawable)         :override)
    (root                   collide-shape-moving               :override)
@@ -32401,13 +32405,13 @@
    (target-pos             vector                     :inline :offset-assert 288)
    (base-target-pos        vector                     :inline :offset-assert 304)
    (pre-move-transv        vector                     :inline :offset-assert 320)
-   (timeout                time-frame                             :offset-assert 336) ;; time-frame
-   (spawn-time             time-frame                             :offset-assert 344) ;; time-frame
-   (options                projectile-options                             :offset-assert 352) ;; projectile-options
-   (last-target            handle                             :offset-assert 360) ;; handle
-   (notify-handle          handle                             :offset-assert 368) ;; handle
-   (owner-handle           handle                             :offset-assert 376) ;; handle
-   (ignore-handle          handle                             :offset-assert 384) ;; handle
+   (timeout                time-frame                         :offset-assert 336)
+   (spawn-time             time-frame                         :offset-assert 344)
+   (options                projectile-options                 :offset-assert 352)
+   (last-target            handle                             :offset-assert 360)
+   (notify-handle          handle                             :offset-assert 368)
+   (owner-handle           handle                             :offset-assert 376)
+   (ignore-handle          handle                             :offset-assert 384)
    (update-velocity        (function projectile none)         :offset-assert 392) ;; guessed by decompiler
    (move                   (function projectile none)         :offset-assert 396) ;; guessed by decompiler
    (pick-target            (function projectile none)         :offset-assert 400) ;; guessed by decompiler
@@ -32425,10 +32429,10 @@
    (charge-level           float                              :offset-assert 508)
    (sound-id               sound-id                           :offset-assert 512) ;; guessed by decompiler
    (stop-speed             meters                             :offset-assert 516)
-   (invinc-time            time-frame                             :offset-assert 520) ;; time-frame
-   (desired-target         handle                             :offset-assert 528) ;; handle
+   (invinc-time            time-frame                         :offset-assert 520)
+   (desired-target         handle                             :offset-assert 528)
    (desired-target-pos     vector                     :inline :offset-assert 544)
-   (wpn-type               uint8                              :offset-assert 560)
+   (wpn-type               v-wpn-type                         :offset-assert 560)
    )
   :method-count-assert 72
   :size-assert         #x231
@@ -32440,22 +32444,22 @@
     moving)
   (:methods
     (projectile-method-54 (_type_) none) ;; 54
-    (projectile-method-55 (_type_) none) ;; 55
+    (projectile-method-55 (_type_) int) ;; 55
     (projectile-method-56 (_type_) none) ;; 56
     (projectile-method-57 (_type_) none) ;; 57
-    (projectile-method-58 (_type_ int) none) ;; 58
+    (projectile-method-58 (_type_ int) int) ;; 58
     (projectile-method-59 (_type_) none) ;; 59
-    (projectile-method-60 (_type_) none) ;; 60
-    (projectile-method-61 (_type_) none) ;; 61
-    (projectile-method-62 (_type_) none) ;; 62
+    (projectile-method-60 (_type_) float) ;; 60
+    (projectile-method-61 (_type_) int) ;; 61
+    (projectile-method-62 (_type_) object) ;; 62
     (projectile-method-63 (_type_) none) ;; 63
     (projectile-method-64 (_type_) symbol) ;; 64
     (proj-event-handler (_type_ process int symbol event-message-block) object) ;; 65
     (projectile-method-66 (_type_ process event-message-block) none) ;; 66
-    (projectile-method-67 (_type_) none) ;; 67
+    (projectile-method-67 (_type_ process) symbol) ;; 67
     (projectile-method-68 (_type_ process object) object) ;; 68
     (projectile-method-69 (_type_) object) ;; 69
-    (projectile-method-70 (_type_) none) ;; 70
+    (projectile-method-70 (_type_) object) ;; 70
     (projectile-method-71 (_type_) int) ;; 71
     )
   )
@@ -32468,19 +32472,27 @@
    (ent                    entity         :offset-assert 56) ;; guessed by decompiler
    (charge                 float          :offset-assert 60)
    (attack-id              uint32         :offset-assert 64)
-   (options                projectile-options         :offset-assert 72) ;; projectile-options
-   (notify-handle          handle         :offset-assert 80) ;; handle
-   (owner-handle           handle         :offset-assert 88) ;; handle
-   (ignore-handle          handle         :offset-assert 96) ;; handle
-   (timeout                time-frame     :offset-assert 104) ;; time-frame
+   (options                projectile-options         :offset-assert 72)
+   (notify-handle          handle         :offset-assert 80)
+   (owner-handle           handle         :offset-assert 88)
+   (ignore-handle          handle         :offset-assert 96)
+   (timeout                time-frame     :offset-assert 104)
    (damage                 float          :offset-assert 112)
    (vehicle-damage-factor  float          :offset-assert 116)
    (vehicle-impulse-factor float          :offset-assert 120)
-   (wpn-type               uint8          :offset-assert 124)
+   (wpn-type               v-wpn-type     :offset-assert 124)
    )
   :method-count-assert 9
   :size-assert         #x7d
   :flag-assert         #x90000007d
+  )
+
+(deftype mystery-proj-params-type0 (structure)
+  ((vec1      vector :inline)
+   (vec2      vector :inline)
+   (vec3      vector :inline)
+   (params    projectile-init-by-other-params :inline :offset-assert 48)
+   )
   )
 
 (deftype projectile-bounce (projectile)
@@ -32519,7 +32531,7 @@
    (required-flags     uint32         :offset-assert 64)
    (priority-flags     uint32         :offset-assert 68)
    (weights            vector :inline :offset-assert 80)
-   (validate           (function find-sorted-targets-params process vector object object)          :offset-assert 96)
+   (validate           (function find-sorted-targets-params process-drawable vector vector symbol)          :offset-assert 96)
    (validator-params   find-sorted-targets-params :offset-assert 100)
    )
   :method-count-assert 9
@@ -32527,6 +32539,18 @@
   :flag-assert         #x900000068
   ;; field validator-params uses ~A with a signed load.
   )
+
+(deftype yellow-guided-missilie-find-sorted-targets-stack (structure)
+  ((params find-sorted-targets-params :inline)
+   (vec1 vector :inline :offset-assert 112)
+   (vec2 vector :inline :offset-assert 128)
+   )
+  )
+  
+;; (deftype vehicle-weapon-slot-find-sorted-targets-stack (structure)
+;;   ((params find-sorted-targets-params :inline)
+;;    )
+;;   )
 
 (define-extern *HACK-find-nearest-focusable-ignore* symbol)
 
@@ -32591,8 +32615,8 @@
    (excitement              float                                                                             :offset-assert 408)
    (shock-effect-time       time-frame                                                                        :offset-assert 416) ;; time-frame
    (fp-hud                  handle                                                                            :offset-assert 424) ;; handle
-   (no-load-wait            handle                                                                            :offset-assert 432) ;; time-frame
-   (no-look-around-wait     handle                                                                            :offset-assert 440) ;; time-frame
+   (no-load-wait            time-frame                                                                        :offset-assert 432) ;; time-frame
+   (no-look-around-wait     time-frame                                                                        :offset-assert 440) ;; time-frame
    (burn-proc               handle                                                                            :offset-assert 448) ;; handle
    (pre-joint-hook          (function none :behavior target)                                                  :offset-assert 456) ;; guessed by decompiler
    (notify                  handle                                                                            :offset-assert 464) ;; handle
@@ -41835,7 +41859,7 @@
 (define-extern projectile-event-handler (function process int symbol event-message-block projectile :behavior projectile))
 (define-extern projectile-move-fill-all-dirs (function projectile none))
 (define-extern projectile-move-fill-line-sphere (function projectile none))
-(define-extern projectile-update-velocity-add-gravity (function projectile none))
+(define-extern projectile-update-velocity-add-gravity (function projectile object object vector int))
 (define-extern projectile-update-velocity-space-wars (function projectile none))
 (define-extern projectile-base-code (function symbol :behavior projectile))
 (define-extern projectile-init-by-other (function projectile-init-by-other-params object :behavior projectile))
@@ -45282,7 +45306,7 @@
 (deftype vehicle (rigid-body-object)
   ((self                            vehicle                                     :override)
    (info                            rigid-body-vehicle-constants                :override)
-   (car-info                        car-info-full                               :offset 284)
+   (car-info                        car-info-full                               :offset 288)
    (v-flags                         vehicle-flag                                :offset 264 :score 999) ;; rigid-body-object-flag
    (pad1 uint32 2)
    (damage-matrix                   matrix                              2       :inline :offset-assert 304)
@@ -45348,6 +45372,7 @@
    (vehicle-uint32-1 uint32 :offset 892)
    (vehicle-sound-2 sound-id :offset 896)
    (vehicle-float-1 float :offset 904)
+   (vehicle-unk-handle2             handle                                      :offset 1792)
    (pred                            net-predictor-sphcol                :inline :offset-assert 1808)
    (next-reliable-send-time         int32                                       :offset-assert 2116)
    (player-id                       int8                                        :offset-assert 2120)
@@ -45436,8 +45461,8 @@
     (vehicle-method-147 (_type_) none) ;; 147 ;; (vehicle-method-147 (_type_) none)
     (vehicle-method-148 (_type_) none) ;; 148 ;; (vehicle-method-148 (_type_) none)
     (vehicle-method-149 (_type_ vector int) none) ;; 149 ;; (vehicle-method-149 (_type_) none)
-    (vehicle-method-150 (_type_) none) ;; 150 ;; (vehicle-method-150 (_type_) none)
-    (vehicle-method-151 (_type_) none) ;; 151 ;; (set-hit-points (_type_ float) none)
+    (vehicle-method-150 (_type_ vector int) none) ;; 150 ;; (vehicle-method-150 (_type_) none)
+    (vehicle-method-151 (_type_ vector int) none) ;; 151 ;; (set-hit-points (_type_ float) none)
     (vehicle-method-152 (_type_) none) ;; 152
     (vehicle-method-153 (_type_) none) ;; 153
     (vehicle-method-154 (_type_ symbol) none) ;; 154
@@ -45585,7 +45610,7 @@
    (current-slice       int32          :offset-assert 88)
    (current-line        basic          :offset-assert 92)
    (total-angle-delta   float          :offset-assert 96)
-   (skip-gaps?          symbol          :offset-assert 100)
+   (skip-gaps?          symbol         :offset-assert 100)
    )
   :method-count-assert 9
   :size-assert         #x68
@@ -45611,12 +45636,12 @@
   :size-assert         #x40
   :flag-assert         #xf00000040
   (:methods
-    (race-line-method-9 () none) ;; 9
-    (race-line-method-10 () none) ;; 10
-    (race-line-method-11 () none) ;; 11
-    (race-line-method-12 (_type_) none) ;; 12
+    (race-line-method-9 (_type_ int) int) ;; 9
+    (race-line-method-10 (_type_ int) none) ;; 10 - TODO, figure out what slices is
+    (race-line-method-11 (_type_ race-line) none) ;; 11
+    (race-line-method-12 (_type_ race-line-query-info) none) ;; 12
     (race-line-method-13 () none) ;; 13
-    (race-line-method-14 () none) ;; 14
+    (race-line-method-14 (_type_) none) ;; 14 ;; TODO
     )
   )
 
@@ -45629,7 +45654,7 @@
   ((position                vector    :inline :offset-assert 0)
    (start-position          vector    :inline :offset-assert 16)
    (last-race-mesh-position vector    :inline :offset-assert 32)
-   (racer                   uint64            :offset-assert 48) ;; handle
+   (racer                   handle            :offset-assert 48) ;; handle
    (lap-distance            float             :offset-assert 56)
    (lap                     float             :offset-assert 60)
    (prev-racer-lap          float             :offset-assert 64)
@@ -45704,6 +45729,7 @@
   :flag-assert         #x900000090
   )
 
+
 (deftype race-mesh-slice-query (structure)
   ((search-sphere sphere    :inline :offset-assert 0)
    (slice-range   uint16   2       :offset-assert 16)
@@ -45716,6 +45742,13 @@
   :method-count-assert 9
   :size-assert         #x76
   :flag-assert         #x900000076
+  )
+
+(deftype mystery-race-mesh-type0 (structure)
+  ((query race-mesh-slice-query :inline)
+   (pad1   uint32 :offset-assert 120)
+   (pad2   uint32 :offset-assert 124)
+   )
   )
 
 (deftype race-mesh-edge (structure)
@@ -45780,7 +45813,7 @@
   (:methods
     (race-mesh-method-9 () none) ;; 9 ;; (debug-draw-path (_type_ int int rgba rgba) none)
     (race-mesh-method-10 () none) ;; 10 ;; (debug-draw-path-from-history (_type_ int int) symbol)
-    (race-mesh-method-11 () none) ;; 11 ;; (debug-draw-slice (_type_ int) none)
+    (race-mesh-method-11 (_type_ race-mesh-slice-query) none) ;; 11 ;; (debug-draw-slice (_type_ int) none)
     (race-mesh-method-12 () none) ;; 12 ;; (debug-draw-edges (_type_) none)
     (race-mesh-method-13 () none) ;; 13 ;; (race-mesh-method-13 (_type_ race-mesh-slice-query) none)
     (race-mesh-method-14 () none) ;; 14 ;; (race-mesh-method-14 (_type_ race-mesh-slice-query) none)
@@ -45819,13 +45852,85 @@
 ;; wvehicle-weapons-h             ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; +++v-wpn-color
+(defenum v-wpn-color
+  :type uint8
+  (default 0)
+  (yellow 1)
+  (red 2)
+  (purple 3)
+  )
+;; ---v-wpn-color
+
+;; +++gunmount-config
+(defenum gunmount-config
+  :type uint8
+  (gc-0 0)
+  (gc-1 1)
+  (gc-2 2)
+  )
+;; ---gunmount-config
+
+;; +++v-wpn-type
+(defenum v-wpn-type
+  :type uint8
+  (chicken-drone 0) ;; not sure about this one
+  (yellow-default-gun 1)
+  (yellow-chain-gun 2)
+  (yellow-3 3)
+  (yellow-4 4)
+  (yellow-5 5)
+  (red-6 6) ;; missing from *v-wpn-available-red* ?
+  (vwt-7 7)
+  (red-8 8)
+  (red-sentry-bot 9)
+  (red-or-purple-10 10) ;; only entry in *v-wpn-available-purple* ?
+  (red-11 11)
+  (red-12 12)
+  (bulldog 13)
+  (red-14 14) ;; missing from *v-wpn-available-red* ?
+  (yellow-15 15)
+  )
+;; ---v-wpn-type
+
+;; +++v-wpn-type-s8
+(defenum v-wpn-type-s8
+  :type int8
+  :copy-entries v-wpn-type
+  )
+;; ---v-wpn-type-s8
+
+;; +++v-wpn-type-mask
+(defenum v-wpn-type-mask
+  :type uint16
+  :bitfield #t
+  (chicken-drone 0) ;; not sure about this one
+  (yellow-default-gun 1)
+  (yellow-chain-gun 2)
+  (yellow-3 3)
+  (yellow-4 4)
+  (yellow-5 5)
+  (red-6 6) ;; missing from *v-wpn-available-red* ?
+  (vwt-7 7)
+  (red-8 8)
+  (red-sentry-bot 9)
+  (red-or-purple-10 10) ;; only entry in *v-wpn-available-purple* ?
+  (red-11 11)
+  (red-12 12)
+  (bulldog 13)
+  (red-14 14) ;; missing from *v-wpn-available-red* ?
+  (yellow-15 15)
+  )
+;; ---v-wpn-type-mask
+
+(declare-type rapid-fire-control basic)
 (deftype vehicle-weapon-slot (process-drawable)
-  ((owning-vehicle handle  :offset-assert 248)
-   (ammunition     int8    :offset-assert 256)
-   (flags          uint8   :offset-assert 257)
-   (in-slot        uint8   :offset-assert 258)
-   (powerup-level  uint8   :offset-assert 259)
-   (my-type        uint8   :offset-assert 260)
+  ((owning-vehicle handle       :offset-assert 248  :handle-type wvehicle)
+   (ammunition     int8         :offset-assert 256)
+   (flags          uint8        :offset-assert 257)
+   (in-slot        uint8        :offset-assert 258)
+   (powerup-level  uint8        :offset-assert 259)
+   (my-type        v-wpn-type   :offset-assert 260)
    )
   :method-count-assert 60
   :size-assert         #x105
@@ -45834,45 +45939,49 @@
     idle ;; 50
     )
   (:methods
-    (vehicle-weapon-slot-method-51 () none) ;; 51
-    (vehicle-weapon-slot-method-52 () none) ;; 52
-    (vehicle-weapon-slot-method-53 () none) ;; 53
-    (vehicle-weapon-slot-method-54 () none) ;; 54
-    (vehicle-weapon-slot-method-55 () none) ;; 55
-    (vehicle-weapon-slot-method-56 () none) ;; 56
-    (vehicle-weapon-slot-method-57 () none) ;; 57
-    (vehicle-weapon-slot-method-58 () none) ;; 58
+    (vehicle-weapon-slot-method-51 (_type_ vector) vector) ;; 51
+    (vehicle-weapon-slot-method-52 (_type_ vector) matrix) ;; 52
+    (get-ammo-remaining (_type_) int) ;; 53
+    (get-ammo-max (_type_) int) ;; 54
+    (vehicle-weapon-slot-method-55 (_type_) int) ;; 55
+    (vehicle-weapon-slot-method-56 (_type_) handle) ;; 56
+    (vehicle-weapon-slot-method-57 (_type_) symbol) ;; 57
+    (vehicle-weapon-slot-method-58 (_type_ object) int) ;; 58
     (vehicle-weapon-slot-method-59 () none) ;; 59
     )
   )
 
 (deftype gunmount-drawable (process-drawable)
-  ((mounted-on uint64  :offset-assert 248)
+  ((mounted-on handle  :offset-assert 248)
    (hardpoint  int8    :offset-assert 256)
    )
   :method-count-assert 54
   :size-assert         #x101
   :flag-assert         #x3600800101
+  (:state-methods
+    idle ;; 50
+    )
   (:methods
-    (gunmount-drawable-method-50 () none) ;; 50
-    (gunmount-drawable-method-51 () none) ;; 51
-    (gunmount-drawable-method-52 () none) ;; 52
-    (gunmount-drawable-method-53 () none) ;; 53
+    (gunmount-drawable-method-51 (_type_) particle-local-space-info) ;; 51
+    (gunmount-drawable-method-52 (_type_) bone) ;; 52
+    (gunmount-drawable-method-53 (_type_ draw-control-status draw-control-status) int) ;; 53
     )
   )
 
 (deftype gunmount-generic-drawable (gunmount-drawable)
   ((config          uint8   :offset-assert 257)
-   (flash           uint64  :offset-assert 264)
+   (flash           handle  :offset-assert 264)
    (changeover-anim int32   :offset-assert 272)
    (powerup-level   int8    :offset-assert 276)
    )
   :method-count-assert 56
   :size-assert         #x115
   :flag-assert         #x3800900115
+  (:state-methods
+    changing
+    lobby
+    )
   (:methods
-    (gunmount-generic-drawable-method-54 () none) ;; 54
-    (gunmount-generic-drawable-method-55 () none) ;; 55
     )
   )
 
@@ -45887,17 +45996,28 @@
     )
   )
 
+(deftype rapid-fire-callback-gun-hitspang-params (structure)
+  ((bits-part-id  uint32  :offset-assert 0)
+   (dust-part-id  uint32  :offset-assert 4)
+   (group-part-id uint32  :offset-assert 8)
+   )
+  :method-count-assert 9
+  :size-assert         #xc
+  :flag-assert         #x90000000c
+  )
+
+(declare-type rapid-fire-control basic)
 (deftype rapid-fire-params (structure)
-  ((rof                    uint16  :offset-assert 0)
-   (shot-radius            float   :offset-assert 4)
-   (shot-range             float   :offset-assert 8)
-   (beam-effect            uint16  :offset-assert 12)
-   (impact-callback        basic   :offset-assert 16)
-   (impact-callback-params basic   :offset-assert 20)
-   (shot-sound             uint16  :offset-assert 24)
-   (hit-sound              uint16  :offset-assert 26)
-   (wpn-type               uint8   :offset-assert 28)
-   (wpn-powerup-level      int8    :offset-assert 29)
+  ((rof                    uint16       :offset-assert 0)
+   (shot-radius            float        :offset-assert 4)
+   (shot-range             float        :offset-assert 8)
+   (beam-effect            uint16       :offset-assert 12)
+   (impact-callback        (function rapid-fire-control prim-work float rapid-fire-callback-gun-hitspang-params none)   :offset-assert 16)
+   (impact-callback-params rapid-fire-callback-gun-hitspang-params   :offset-assert 20)
+   (shot-sound             uint16       :offset-assert 24)
+   (hit-sound              uint16       :offset-assert 26)
+   (wpn-type               v-wpn-type   :offset-assert 28)
+   (wpn-powerup-level      int8         :offset-assert 29)
    )
   :method-count-assert 9
   :size-assert         #x1e
@@ -45913,33 +46033,30 @@
    (hit-spang-part basic                     :offset-assert 24)
    (old-origin     vector            :inline :offset-assert 32)
    (old-rot        quaternion        :inline :offset-assert 48)
-   (emitters       basic                     :offset-assert 64)
+   (emitters       vector-array              :offset-assert 64)
    )
   :method-count-assert 13
   :size-assert         #x44
   :flag-assert         #xd00000044
   (:methods
-    (rapid-fire-control-method-9 () none) ;; 9
-    (rapid-fire-control-method-10 () none) ;; 10
-    (rapid-fire-control-method-11 () none) ;; 11
-    (rapid-fire-control-method-12 () none) ;; 12
+    (new (symbol type rapid-fire-params int process) _type_) ;; 0
+    (rapid-fire-control-method-9 (_type_ int vector) none) ;; 9
+    (rapid-fire-control-method-10 (_type_ vector vector) none) ;; 10
+    (rapid-fire-control-method-11 (_type_ vector quaternion float process-drawable vector) int) ;; 11
+    (rapid-fire-control-method-12 (_type_ vector quaternion float process-drawable vector) object) ;; 12
     )
   )
 
-(deftype rapid-fire-callback-gun-hitspang-params (structure)
-  ((bits-part-id  uint32  :offset-assert 0)
-   (dust-part-id  uint32  :offset-assert 4)
-   (group-part-id uint32  :offset-assert 8)
+(deftype mystery-v-wpn-drone-type0 (structure)
+  ((glow-data sprite-glow-data :inline  :offset-assert 0)
+   (vec       vector           :inline  :offset-assert 64)
    )
-  :method-count-assert 9
-  :size-assert         #xc
-  :flag-assert         #x90000000c
   )
 
 (deftype vehicle-weapon-drone (process-focusable)
-  ((owning-vehicle    uint64             :offset-assert 256)
-   (owning-slot       uint64             :offset-assert 264)
-   (target            uint64             :offset-assert 272)
+  ((owning-vehicle    handle             :offset-assert 256)
+   (owning-slot       handle             :offset-assert 264)
+   (target            handle             :offset-assert 272)
    (orbit-height      float              :offset-assert 280)
    (orbit-radius      float              :offset-assert 284)
    (orbit-period      uint32             :offset-assert 288)
@@ -45951,30 +46068,32 @@
    (last-gaze-time    uint64             :offset-assert 328)
    (pitch-bend        float              :offset-assert 336)
    (sweep-loop        uint32             :offset-assert 340)
-   (muzzle-flashes    uint64     4       :offset-assert 344)
+   (muzzle-flashes    handle     4       :offset-assert 344)
    (next-target-poll  uint64             :offset-assert 376)
-   (firecontrol       basic              :offset-assert 384)
+   (firecontrol       rapid-fire-control :offset-assert 384)
    (blam              uint32             :offset-assert 388)
    )
   :method-count-assert 67
   :size-assert         #x188
   :flag-assert         #x4301000188
+  (:state-methods
+    popping-out ;; 59
+    orbiting ;; 60
+    going-in ;; 61
+    bulldog-firing ;; 62
+    )
   (:methods
-    (vehicle-weapon-drone-method-59 () none) ;; 59
-    (vehicle-weapon-drone-method-60 () none) ;; 60
-    (vehicle-weapon-drone-method-61 () none) ;; 61
-    (vehicle-weapon-drone-method-62 () none) ;; 62
-    (vehicle-weapon-drone-method-63 () none) ;; 63
-    (vehicle-weapon-drone-method-64 () none) ;; 64
+    (init-collision! (_type_) collide-shape-moving) ;; 63
+    (add-sprites (_type_) none) ;; 64
     (vehicle-weapon-drone-method-65 () none) ;; 65
-    (vehicle-weapon-drone-method-66 () none) ;; 66
+    (vehicle-weapon-drone-method-66 (_type_) none) ;; 66
     )
   )
 
 (deftype v-wpn-ptable-entry (structure)
-  ((chance      uint16  :offset-assert 0)
-   (weapon-type uint8   :offset-assert 2)
-   (pad1        uint8   :offset-assert 3)
+  ((chance      uint16      :offset-assert 0)
+   (weapon-type v-wpn-type  :offset-assert 2)
+   (pad1        uint8       :offset-assert 3)
    )
   :pack-me
   :method-count-assert 9
@@ -46005,15 +46124,19 @@
   )
 
 (deftype v-wpn-net-info (structure)
-  ()
+  ((left-type   uint8)
+   (right-type  uint8)
+   (left-power  uint8)
+   (right-power uint8)
+   )
   :method-count-assert 9
   )
 
 (define-extern V_R_MINE1_ARMED? symbol)
-(define-extern weapon-mask->type (function int int))
+(define-extern weapon-mask->type (function int int)) ;; weird plzcw case
 (define-extern *weapon-suppression-table* (pointer (array symbol)))
-;; (define-extern v-wpn-base-common-trans function)
-;; (define-extern v-wpn-event-base (function process int symbol event-message-block object :behavior vehicle-weapon-slot))
+(define-extern v-wpn-base-common-trans (function uint :behavior vehicle-weapon-slot))
+(define-extern v-wpn-event-base (function process int symbol event-message-block object :behavior vehicle-weapon-slot))
 (define-extern *cheat-defaultgun-in-race* symbol)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -46159,6 +46282,14 @@
   :flag-assert         #x900000004
   )
 
+(deftype find-closest-attach-point-wvehicle-stack (structure)
+  ((tmp-vec       vector  :inline :offset-assert 0)
+   (closest-dist  float           :offset-assert 16)
+   (tmp-dist      float           :offset-assert 20)
+   (closest-idx   int8            :offset-assert 24)
+   )
+  )
+
 (declare-type wvehicle-probe-work structure)
 (declare-type wvehicle-physics-work structure)
 (declare-type wvehicle-part-work structure)
@@ -46257,14 +46388,15 @@
    (pad13 uint32 5)
    (wpn-current-target             handle                            :offset-assert 4488)
    (wpn-current-target-acquired    handle                            :offset-assert 4496)
-   (wpn-left                       handle                            :offset-assert 4504)
-   (wpn-right                      handle                            :offset-assert 4512)
-   (wpn-shield                     handle                            :offset-assert 4520)
-   (wpn-drone                      handle                            :offset-assert 4528)
-   (wpn-oil                        handle                            :offset-assert 4536)
-   (wpn-turbo                      handle                            :offset-assert 4544)
-   (wpn-bulldog-gun                handle                            :offset-assert 4552)
-   (wpn-drawables                  handle                   2       :offset-assert 4560)
+   (wpns-list                      handle                   7        :offset-assert 4504)
+   (wpn-left                       handle                            :offset        4504)
+   (wpn-right                      handle                            :offset        4512)
+   (wpn-shield                     handle                            :offset        4520)
+   (wpn-drone                      handle                            :offset        4528)
+   (wpn-oil                        handle                            :offset        4536)
+   (wpn-turbo                      handle                            :offset        4544)
+   (wpn-bulldog-gun                handle                            :offset        4552)
+   (wpn-drawables                  handle                   2        :offset-assert 4560)
    (wpn-drawable-left              handle                            :offset 4560)
    (wpn-drawable-right             handle                            :offset 4568)
    (wpn-spin-done-left             int32                             :offset-assert 4576)
@@ -46313,7 +46445,7 @@
     (get-rider-attach-point-count (_type_) int) ;; 227
     (wvehicle-method-228 (_type_ vector int) none) ;; 228
     (wvehicle-method-229 (_type_ vector int) none) ;; 229
-    (wvehicle-method-230 (_type_ vector) none) ;; 230
+    (find-closest-empty-attach-point (_type_ vector) int) ;; 230
     (wvehicle-method-231 (_type_ int) process) ;; 231
     (wvehicle-method-232 (_type_ int object) none) ;; 232
     (wvehicle-method-233 (_type_ object) none) ;; 233
@@ -46457,7 +46589,7 @@
     (net-player-method-46 () none) ;; 46
     (net-player-method-47 () none) ;; 47
     (net-player-method-48 (_type_ object object symbol event-message-block) none) ;; 48 event handler
-    (net-player-method-49 (_type_) process-drawable) ;; 49
+    (net-player-method-49 (_type_) wvehicle) ;; 49
     (net-player-method-50 () none) ;; 50
     (net-player-method-51 () none) ;; 51
     (net-player-method-52 () none) ;; 52
@@ -46949,7 +47081,7 @@
    (scheduled-finish-mode basic      :offset-assert 192)
    (sorted-ct             int8       :offset-assert 196)
    (human-ct              int8       :offset-assert 197)
-   (sorted-ids            uint8 24 :offset-assert 198)
+   (sorted-ids            int8 24    :offset-assert 198)
    (intro-end-time        int32      :offset-assert 224)
    (hud-player-indicators handle 2  :offset-assert 232)
    (net-players           (array net-player)      :offset-assert 248)
@@ -47086,7 +47218,7 @@
 (define-extern net-player-race-init-remote (function mem-buffer none :behavior net-player-race))
 (define-extern *msg-map-net-player-race* (array symbol))
 (define-extern *net-process-class-info-net-player-race* net-process-class-info)
-(define-extern net-game-mgr-race-init-remote (function int none :behavior net-game-mgr-race))
+(define-extern net-game-mgr-race-init-remote (function mem-buffer none :behavior net-game-mgr-race))
 (define-extern *msg-map-net-game-mgr-race* (array symbol))
 (define-extern *net-process-class-info-net-game-mgr-race* net-process-class-info)
 
@@ -47579,7 +47711,7 @@
 (define-extern net-game-mgr-ctf-init-remote (function mem-buffer none :behavior net-game-mgr-ctf))
 (define-extern *msg-map-net-game-mgr-ctf* (array symbol))
 (define-extern *net-process-class-info-net-game-mgr-ctf* net-process-class-info)
-(define-extern ctf-flag-init-remote (function int none :behavior ctf-flag))
+(define-extern ctf-flag-init-remote (function mem-buffer none :behavior ctf-flag))
 (define-extern *msg-map-ctf-flag* (array symbol))
 (define-extern *net-process-class-info-ctf-flag* net-process-class-info)
 (define-extern net-player-rushhour-init-remote (function mem-buffer none :behavior net-player-rushhour))
@@ -47689,10 +47821,27 @@
   :size-assert         #x231
   :flag-assert         #x4b01b00231
   (:methods
-    (net-projectile-method-72 () none) ;; 72
-    (net-projectile-method-73 () none) ;; 73
-    (net-projectile-method-74 () none) ;; 74
+    (net-projectile-method-72 (_type_ vector vector vector vector time-frame) vector) ;; 72
+    (net-projectile-method-73 (_type_) symbol) ;; 73
+    (net-projectile-method-74 (_type_) none) ;; 74
     )
+  )
+
+(deftype mystery-net-projectile-type0 (structure)
+  ((params                  projectile-init-by-other-params :inline)
+   (pos                     vector :inline      :offset-assert 128)
+   (vel                     vector :inline      :offset-assert 144)
+   (target-handle           handle              :offset-assert 160)
+   (owner-ignore-handle     handle              :offset-assert 168)
+   (attack-id               uint32              :offset-assert 176)
+   (pad                     uint32              :offset-assert 180)
+   (options                 projectile-options  :offset-assert 184)
+   (damage                  float               :offset-assert 192)
+   (vehicle-damage-factor   float               :offset-assert 196)
+   (vehicle-impulse-factor  float               :offset-assert 200)
+   (unk-time                int32               :offset-assert 204)
+   (wpn-type                v-wpn-type          :offset-assert 208)
+   )
   )
 
 (define-extern net-projectile-init-remote (function mem-buffer none :behavior net-projectile))
@@ -50329,7 +50478,7 @@
     )
   )
 
-(define-extern net-test-init-remote (function object :behavior net-test))
+(define-extern net-test-init-remote (function mem-buffer none :behavior net-test))
 (define-extern *msg-map-net-test* (array symbol))
 (define-extern *net-process-class-info-net-test* net-process-class-info)
 (define-extern net-test-init-by-other (function object :behavior net-test))
@@ -50539,7 +50688,7 @@
 ;; net-projectile                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define-extern net-projectile-init-by-other (function process none :behavior net-projectile))
+(define-extern net-projectile-init-by-other (function projectile-init-by-other-params int object :behavior net-projectile))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; udp-layer                      ;;
@@ -51780,12 +51929,12 @@
 ;; vehicle                        ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define-extern *debug-vehicle-work* debug-vehicle-work) ;; debug-vehicle-work
-(define-extern *tmp-vehicle-info* structure) ;; there are like a million different vehicle info structs, can this be any of them?
+(define-extern *debug-vehicle-work* debug-vehicle-work)
+(define-extern *tmp-vehicle-info* net-vehicle) ;; there are like a million different vehicle info structs, can this be any of them?
 (define-extern *tmp-rigid-body-control* rigid-body-control)
-(define-extern *vehicle-shadow-control* shadow-control) ;; shadow-control
-(define-extern *vehicle-shadow-control-disabled* shadow-control) ;; shadow-control
-(define-extern vehicle-event-handler (function process int symbol event-message-block object :behavior vehicle)) ;; 
+(define-extern *vehicle-shadow-control* shadow-control)
+(define-extern *vehicle-shadow-control-disabled* shadow-control)
+(define-extern vehicle-event-handler (function process int symbol event-message-block object :behavior vehicle))
 (define-extern get-player-id (function vehicle int))
 ;; (define-extern twiddle-collision-cache-verts function)
 ;; (define-extern vehicle-damage-local-space-0 function)
@@ -51905,7 +52054,7 @@
 (deftype search-info (structure)
   ((point        vector            :inline :offset-assert 0)
    (best-point   vector            :inline :offset-assert 16)
-   (match-handle handle                    :offset-assert 32) ;; handle
+   (match-handle handle                    :offset-assert 32)
    (match        process-focusable         :offset-assert 40) ;; guessed by decompiler
    (best         float                     :offset-assert 44)
    (radius       float                     :offset-assert 48)
@@ -51927,10 +52076,10 @@
 (define-extern fst-insertion-helper (function (array process-drawable) (array float) process-drawable float float))
 (define-extern find-sorted-targets! (function (array process-drawable) (array float) (array collide-shape) find-sorted-targets-params (array process-focusable) object))
 (define-extern find-sorted-targets-faster! (function (array process-drawable) (array float) find-sorted-targets-params (array process-focusable) object))
-(define-extern sorted-targ-validator-test-collision (function object process-drawable vector symbol))
-(define-extern sorted-targ-validator-is-player-vehicle (function object vehicle symbol))
-(define-extern sorted-targ-validator-is-any-vehicle (function object process symbol))
-(define-extern sorted-targ-validator-player-needs-los (function find-sorted-targets-params process vector object symbol))
+(define-extern sorted-targ-validator-test-collision (function find-sorted-targets-params process-drawable vector vector symbol))
+(define-extern sorted-targ-validator-is-player-vehicle (function find-sorted-targets-params process-drawable vector vector symbol))
+(define-extern sorted-targ-validator-is-any-vehicle (function find-sorted-targets-params process-drawable vector vector symbol))
+(define-extern sorted-targ-validator-player-needs-los (function find-sorted-targets-params process-drawable vector vector symbol))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; glist-h                        ;;
@@ -54207,7 +54356,7 @@
 ;; race-manager                   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define-extern *race-state* race-state) ;; 
+(define-extern *race-state* race-state)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; net-anim                       ;;
@@ -54603,19 +54752,19 @@
 (define-extern explosion-spawn (function explosion-init-params process-drawable explosion))
 (define-extern find-closest-solid-sphere-prim (function collide-shape vector collide-spec collide-shape-prim))
 (define-extern *explosion-debug-sphere* sphere)
-(define-extern explosion-handle-touch-with-ccheck (function explosion process object object event-message-block object :behavior process))
-(define-extern explosion-handle-touch-without-ccheck (function explosion vehicle object object event-message-block object :behavior process))
+(define-extern explosion-handle-touch-with-ccheck (function explosion process int symbol event-message-block symbol :behavior process))
+(define-extern explosion-handle-touch-without-ccheck (function explosion vehicle int symbol event-message-block symbol :behavior process))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons-data          ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define-extern V_YELLOW_GUIDED_MISSILE_STANDOFF_TIME int)
-(define-extern V_WPN_SHIELD_COLOR_LEVEL_I vector)
-(define-extern V_WPN_SHIELD_COLOR_LEVEL_II vector)
-(define-extern *v-wpn-available-yellow* (array uint8))
-(define-extern *v-wpn-available-red* (array uint8))
-(define-extern *v-wpn-available-purple* (array uint8))
+(define-extern V_YELLOW_GUIDED_MISSILE_STANDOFF_TIME time-frame)
+(define-extern V_WPN_SHIELD_COLOR_LEVEL_I rgbaf)
+(define-extern V_WPN_SHIELD_COLOR_LEVEL_II rgbaf)
+(define-extern *v-wpn-available-yellow* (array v-wpn-type))
+(define-extern *v-wpn-available-red* (array v-wpn-type))
+(define-extern *v-wpn-available-purple* (array v-wpn-type))
 (define-extern *weapon-select-table-yellow-even* v-wpn-ptable)
 (define-extern *weapon-select-table-red-even* v-wpn-ptable)
 (define-extern *weapon-select-table-yellow-default* v-wpn-ptable)
@@ -57443,7 +57592,7 @@
 (define-extern check-scorp-shell-level2 (function sparticle-system sparticle-cpuinfo vector none)) ;; (function sparticle-system sparticle-cpuinfo vector none)
 (define-extern *curve-toad-linear-up-red* curve2d-piecewise) ;; 
 (define-extern *trail-color-curve-grenade-yellow* curve-color-fast)
-(define-extern *curve-grenade-linear-toad-trail* light-trail-composition) ;; curve2d-fast
+(define-extern *curve-grenade-linear-toad-trail* curve2d-fast)
 (define-extern *grenade-1-trail* light-trail-composition)
 (define-extern *trail-color-curve-grenade-purple* curve-color-fast)
 (define-extern *grenade-2-trail* light-trail-composition)
@@ -57809,7 +57958,7 @@
 (define-extern vehicle-respawn-invul-spawn (function vehicle none))
 ;; (define-extern vehicle-suppress-look-init-by-other function)
 ;; (define-extern suppress-look-start function)
-;; (define-extern local-space-proc-vehicle-turbo function)
+(define-extern local-space-proc-vehicle-turbo (function particle-local-space-info int))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-ai                    ;;
@@ -58080,9 +58229,8 @@
 ;; wcar-projectiles               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype v-toad-shot (net-projectile)
-  ((trail-tracker    uint64         :offset-assert 568) ;; handle
+  ((trail-tracker    handle         :offset-assert 568) ;; handle
    (blast-radius     float          :offset-assert 576)
    (powerup-level    uint8          :offset-assert 580)
    (initial-velocity vector :inline :offset-assert 592)
@@ -58091,207 +58239,209 @@
   :method-count-assert 76
   :size-assert         #x264
   :flag-assert         #x4c01e00264
-  (:methods
-    (v-toad-shot-method-75 () none) ;; 75
-    )
   (:state-methods
-    impact ;; 52
     die ;; 50
+    impact ;; 52
+    )
+  (:methods
+    (v-toad-shot-method-75 (_type_) float) ;; 75
     )
   )
-|#
 
-;; (define-extern v-toad-shot-init-remote function)
-;; (define-extern *msg-map-v-toad-shot* array)
-;; (define-extern *net-process-class-info-v-toad-shot* net-process-class-info)
+(define-extern v-toad-shot-init-remote (function mem-buffer none :behavior v-toad-shot))
+(define-extern *msg-map-v-toad-shot* (array symbol))
+(define-extern *net-process-class-info-v-toad-shot* net-process-class-info)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons-proj          ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
+(deftype mystery-mine-a-type0 (structure)
+  ((v vector      :inline :offset-assert 0)
+   (q quaternion  :inline :offset-assert 16)
+   (h uint16              :offset-assert 32)
+   )
+  )
+
 (deftype mine-a (process-focusable)
-  ((shooter           uint64             :offset-assert 256)
+  ((shooter           handle             :offset-assert 256)
    (destination-point vector     :inline :offset-assert 272)
    (destination-rot   quaternion :inline :offset-assert 288)
    (traj              trajectory :inline :offset-assert 304)
-   (beepy             uint32             :offset-assert 344)
-   (trail-tracker     uint64             :offset-assert 352)
+   (beepy             sound-id           :offset-assert 344)
+   (trail-tracker     handle             :offset-assert 352)
    (warning           basic              :offset-assert 360)
    )
   :method-count-assert 64
   :size-assert         #x16c
   :flag-assert         #x4000e0016c
-  (:methods
-    (mine-a-method-62 () none) ;; 62
-    (mine-a-method-63 () none) ;; 63
-    )
   (:state-methods
     idle ;; 59
     falling ;; 60
     die ;; 61
     )
+  (:methods
+    (mine-a-method-62 (_type_) object) ;; 62
+    (mine-a-method-63 (_type_ vehicle) quaternion) ;; 63
+    )
   )
-|#
 
-#|
+(deftype mystery-mine-b-type0 (structure)
+  ((v vector      :inline :offset-assert 0))
+  )
+
 (deftype mine-b (process-focusable)
-  ((shooter           uint64             :offset-assert 256)
-   (glued-to          uint64             :offset-assert 264)
+  ((shooter           handle             :offset-assert 256)
+   (glued-to          handle             :offset-assert 264)
    (destination-point vector     :inline :offset-assert 272)
    (destination-rot   quaternion :inline :offset-assert 288)
    (traj              trajectory :inline :offset-assert 304)
    (cached-rp-trans   vector     :inline :offset-assert 352)
-   (trail-tracker     uint64             :offset-assert 368)
-   (beepy             uint32             :offset-assert 376)
+   (trail-tracker     handle             :offset-assert 368)
+   (beepy             sound-id           :offset-assert 376)
    (attach-point      int32              :offset-assert 380)
    (looseness         int32              :offset-assert 384)
-   (expires-on        uint64             :offset-assert 392)
+   (expires-on        time-frame         :offset-assert 392)
    (warning           basic              :offset-assert 400)
    )
   :method-count-assert 67
   :size-assert         #x194
   :flag-assert         #x4301100194
-  (:methods
-    (mine-b-method-65 () none) ;; 65
-    (mine-b-method-66 () none) ;; 66
-    )
   (:state-methods
     idle ;; 59
-    leaping-onto ;; 61
-    attached ;; 62
     falling ;; 60
+    (leaping-onto symbol int32) ;; 61
+    attached ;; 62
     shake-off ;; 63
     die ;; 64
     )
+  (:methods
+    (mine-b-method-65 (_type_) object) ;; 65
+    (mine-b-method-66 (_type_ vehicle) quaternion) ;; 66
+    )
   )
-|#
 
-#|
 (deftype v-yellow-guided-missile (net-projectile)
-  ((trail-tracker        uint64                       :offset-assert 568)
+  ((trail-tracker        handle                       :offset-assert 568)
    (blast-radius         float                        :offset-assert 576)
    (initial-velocity     float                        :offset-assert 580)
-   (time-of-next-pitch   uint64                       :offset-assert 584)
+   (time-of-next-pitch   time-frame                   :offset-assert 584)
    (time-strike-standoff int32                        :offset-assert 592)
    (next-rot             quaternion           :inline :offset-assert 608)
-   (previous-target      uint64                       :offset-assert 624)
-   (pred                 net-predictor-simple :inline :offset-assert 640)
+   (previous-target      handle                       :offset-assert 624)
+   (pred                 net-predictor-simple :inline :offset-assert 640)   
    (defer-kaboom         uint64                       :offset-assert 952)
-   (last-hit             uint64                       :offset-assert 960)
+   (last-hit             handle                       :offset-assert 960)
    )
   :method-count-assert 81
   :size-assert         #x3c8
   :flag-assert         #x51034003c8
-  (:methods
-    (v-yellow-guided-missile-method-78 () none) ;; 78
-    (v-yellow-guided-missile-method-79 () none) ;; 79
-    (v-yellow-guided-missile-method-80 () none) ;; 80
-    )
   (:state-methods
-    moving ;; 53
-    tracking ;; 77
-    wild ;; 76
-    impact ;; 52
-    dissipate ;; 51
-    launching ;; 75
     die ;; 50
+    dissipate ;; 51
+    impact ;; 52
+    moving ;; 53
+    launching ;; 75
+    wild ;; 76
+    tracking ;; 77
+    )
+  (:methods
+    (v-yellow-guided-missile-method-78 (_type_) object) ;; 78
+    (v-yellow-guided-missile-method-79 (_type_) vector) ;; 79
+    (v-yellow-guided-missile-method-80 (_type_) int) ;; 80
     )
   )
-|#
 
-;; (define-extern mine-a-init-remote function)
-;; (define-extern *msg-map-mine-a* array)
-;; (define-extern *net-process-class-info-mine-a* net-process-class-info)
-;; (define-extern mine-a-init-by-other function)
-;; (define-extern mine-b-init-remote function)
-;; (define-extern *msg-map-mine-b* array)
-;; (define-extern *net-process-class-info-mine-b* net-process-class-info)
-;; (define-extern mine-b-common-trans function)
-;; (define-extern *mine-b-hack* object)
-;; (define-extern mine-b-init-by-other function)
-;; (define-extern v-yellow-guided-missile-init-remote function)
-;; (define-extern *msg-map-v-yellow-guided-missile* array)
-;; (define-extern *net-process-class-info-v-yellow-guided-missile* net-process-class-info)
-;; (define-extern guided-missile-moving-event-handler function)
-;; (define-extern guided-missile-base-trans function)
-;; (define-extern v-yellow-defaultgun-hitspang-params object)
-;; (define-extern v-wpn-yellow-chaingun-1-hitspang-params object)
-;; (define-extern v-wpn-yellow-chaingun-2-hitspang-params object)
-;; (define-extern v-wpn-bulldog-hitspang-params object)
-;; (define-extern rapid-fire-callback-gun-hitspang function)
+(define-extern mine-a-init-remote (function mem-buffer none :behavior mine-a))
+(define-extern *msg-map-mine-a* (array symbol))
+(define-extern *net-process-class-info-mine-a* net-process-class-info)
+(define-extern mine-a-init-by-other (function vector quaternion process-drawable object :behavior mine-a))
+(define-extern mine-b-init-remote (function mem-buffer none :behavior mine-b))
+(define-extern *msg-map-mine-b* (array symbol))
+(define-extern *net-process-class-info-mine-b* net-process-class-info)
+(define-extern mine-b-common-trans (function int :behavior mine-b))
+(define-extern *mine-b-hack* rigid-body-impact)
+(define-extern mine-b-init-by-other (function vector quaternion process-drawable object :behavior mine-b))
+(define-extern v-yellow-guided-missile-init-remote (function mem-buffer none :behavior v-yellow-guided-missile))
+(define-extern *msg-map-v-yellow-guided-missile* (array symbol))
+(define-extern *net-process-class-info-v-yellow-guided-missile* net-process-class-info)
+(define-extern spawn-text-display-deflected-view-1 (function process))
+(define-extern spawn-text-display-deflected-view-2 (function process))
+(define-extern guided-missile-moving-event-handler (function process int symbol event-message-block object :behavior v-yellow-guided-missile))
+(define-extern guided-missile-base-trans (function int :behavior v-yellow-guided-missile))
+(define-extern v-yellow-defaultgun-hitspang-params rapid-fire-callback-gun-hitspang-params)
+(define-extern v-wpn-yellow-chaingun-1-hitspang-params rapid-fire-callback-gun-hitspang-params)
+(define-extern v-wpn-yellow-chaingun-2-hitspang-params rapid-fire-callback-gun-hitspang-params)
+(define-extern v-wpn-bulldog-hitspang-params rapid-fire-callback-gun-hitspang-params)
+
+
+(define-extern sparticle-set-conerot (function sparticle-launcher vector none))
+(define-extern rapid-fire-callback-gun-hitspang (function int collide-query int rapid-fire-callback-gun-hitspang-params int))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons-oil           ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype smoke-particle (structure)
   ((pos        vector :inline :offset-assert 0)
+   (size       float          :offset 12)
    (vel        vector :inline :offset-assert 16)
-   (size-delta float          :offset-assert 28)
-   (size       float          :offset-assert 12)
+   (size-delta float          :offset 28)
    (decay      float          :offset-assert 32)
    (rot        float          :offset-assert 36)
    (rot-delta  float          :offset-assert 40)
-   (color      uint32         :offset-assert 44)
+   (color      rgba           :offset-assert 44)
    )
   :method-count-assert 9
   :size-assert         #x30
   :flag-assert         #x900000030
   )
-|#
 
-#|
 (deftype particle-buffer (prim-client)
-  ((tex-id           uint32     :offset-assert 4)
-   (smoke-part-count int32      :offset-assert 8)
-   (smoke-parts      UNKNOWN 50 :offset-assert 16)
-   (strip            basic      :offset-assert 2416)
-   (single-strip     UNKNOWN 3  :offset-assert 2420)
+  ((tex-id           uint32                     :offset-assert 4)
+   (smoke-part-count int32                      :offset-assert 8)
+   (smoke-parts      smoke-particle 50  :inline :offset 16)
+   (strip            prim-strip                 :offset-assert 2416)
+   (single-strip     prim-strip 3               :offset-assert 2420)
    )
   :method-count-assert 14
   :size-assert         #x980
   :flag-assert         #xe00000980
   (:methods
-    (particle-buffer-method-10 () none) ;; 10
-    (particle-buffer-method-11 () none) ;; 11
-    (particle-buffer-method-12 () none) ;; 12
-    (particle-buffer-method-13 () none) ;; 13
+    (particle-buffer-method-10 (_type_ texture-id) none) ;; 10
+    (particle-buffer-method-11 (_type_) connection) ;; 11
+    (particle-buffer-method-12 (_type_ prim-strip vector int float float) none) ;; 12
+    (particle-buffer-method-13 (_type_ prim-strip prim-strip float float) symbol) ;; 13
     )
   )
-|#
 
-#|
 (deftype smoke-system (process-nettable)
-  ((owning-vehicle            uint64         :offset-assert 192)
-   (part-count                float          :offset-assert 200)
-   (emit-rate                 float          :offset-assert 204)
-   (start-time                int32          :offset-assert 208)
-   (last-pos                  vector :inline :offset-assert 224)
-   (buffer                    basic          :offset-assert 240)
-   (smoke-screen-sound        uint32         :offset-assert 244)
-   (lightning-sound-id        uint32         :offset-assert 248)
-   (last-size                 float          :offset-assert 252)
-   (damage                    float          :offset-assert 256)
-   (last-lightning-sphere-pos vector :inline :offset-assert 272)
-   (part-subsampler           basic          :offset-assert 288)
-   (smoke-electric            basic          :offset-assert 292)
-   (smoke-matrix              matrix :inline :offset-assert 304)
+  ((owning-vehicle            handle          :offset-assert 192 :handle-type vehicle)
+   (part-count                float           :offset-assert 200)
+   (emit-rate                 float           :offset-assert 204)
+   (start-time                int32           :offset-assert 208)
+   (last-pos                  vector :inline  :offset-assert 224)
+   (buffer                    particle-buffer :offset-assert 240)
+   (smoke-screen-sound        uint32          :offset-assert 244)
+   (lightning-sound-id        sound-id        :offset-assert 248)
+   (last-size                 float           :offset-assert 252)
+   (damage                    float           :offset-assert 256)
+   (last-lightning-sphere-pos vector :inline  :offset-assert 272)
+   (part-subsampler           sparticle-subsampler          :offset-assert 288)
+   (smoke-electric            engine          :offset-assert 292)
+   (smoke-matrix              matrix :inline  :offset-assert 304)
    )
   :method-count-assert 44
   :size-assert         #x170
   :flag-assert         #x2c00e00170
-  (:methods
-    (smoke-system-method-43 () none) ;; 43
-    )
   (:state-methods
     idle ;; 42
     )
+  (:methods
+    (smoke-system-method-43 (_type_) none) ;; 43
+    )
   )
-|#
 
-#|
 (deftype z-index (structure)
   ((z     float  :offset-assert 0)
    (index int32  :offset-assert 4)
@@ -58300,21 +58450,19 @@
   :size-assert         #x8
   :flag-assert         #x900000008
   )
-|#
 
-#|
 (deftype lightning-sphere (process-drawable)
-  ((last-touched-by uint64         :offset-assert 248)
+  ((last-touched-by handle         :offset-assert 248)
    (start-time      int32          :offset-assert 256)
    (damage          float          :offset-assert 260)
-   (l-control       basic          :offset-assert 264)
+   (l-control       lightning-control          :offset-assert 264)
    (lightning-time  int32          :offset-assert 268)
    (start           vector :inline :offset-assert 272)
    (end             vector :inline :offset-assert 288)
    (zap-target      uint64         :offset-assert 304)
-   (lightning-on    basic          :offset-assert 312)
+   (lightning-on    symbol         :offset-assert 312)
    (sound-id        uint32         :offset-assert 316)
-   (owner-handle    uint64         :offset-assert 320)
+   (owner-handle    handle         :offset-assert 320)
    )
   :method-count-assert 51
   :size-assert         #x148
@@ -58323,69 +58471,61 @@
     idle ;; 50
     )
   )
-|#
 
-#|
 (deftype v-wpn-red-smoke (vehicle-weapon-slot)
-  ((smoke-system uint64  :offset-assert 264)
+  ((smoke-system handle  :offset-assert 264)
    (wait-time    int32   :offset-assert 272)
    )
   :method-count-assert 62
   :size-assert         #x114
   :flag-assert         #x3e00900114
-  (:methods
-    (v-wpn-red-smoke-method-61 () none) ;; 61
-    )
   (:state-methods
     idle ;; 50
     wait-delay ;; 60
     )
+  (:methods
+    (v-wpn-red-smoke-method-61 (_type_) none) ;; 61
+    )
   )
-|#
 
-#|
 (deftype strip-segment (structure)
   ((strip-length int8      :offset-assert 0)
    (strip-index  int8      :offset-assert 1)
    (birth-time   int32     :offset-assert 4)
-   (points       UNKNOWN 3 :offset-assert 16)
+   (points       vector 3 :inline :offset-assert 16)
    )
   :method-count-assert 9
   :size-assert         #x40
   :flag-assert         #x900000040
   )
-|#
 
-#|
 (deftype oil-trail (prim-client)
   ((tex-id                   uint32          :offset-assert 4)
    (segment-count            int32           :offset-assert 8)
    (last-segment-last-point  vector  :inline :offset-assert 16)
    (last-segment-first-point vector  :inline :offset-assert 32)
-   (segments                 UNKNOWN 50      :offset-assert 48)
-   (strip                    basic           :offset-assert 3248)
+   (segments                 strip-segment 50      :inline :offset-assert 48)
+   (strip                    prim-strip      :offset-assert 3248)
    )
   :method-count-assert 17
   :size-assert         #xcb4
   :flag-assert         #x1100000cb4
   (:methods
-    (oil-trail-method-10 () none) ;; 10
-    (oil-trail-method-11 () none) ;; 11
-    (oil-trail-method-12 () none) ;; 12
-    (oil-trail-method-13 () none) ;; 13
-    (oil-trail-method-14 () none) ;; 14
-    (oil-trail-method-15 () none) ;; 15
-    (oil-trail-method-16 () none) ;; 16
+    (oil-trail-method-10 (_type_ texture-id) none) ;; 10
+    (oil-trail-method-11 (_type_) connection) ;; 11
+    (oil-trail-method-12 (_type_ prim-strip vector int float float) none) ;; 12
+    (oil-trail-method-13 (_type_ strip-segment strip-segment float) symbol) ;; 13
+    (oil-trail-method-14 (_type_ object symbol) none) ;; 14
+    (oil-trail-method-15 (_type_ strip-segment) none) ;; 15
+    (oil-trail-method-16 (_type_) none) ;; 16
     )
   )
-|#
 
-#|
 (deftype slip-object (process-drawable)
   ((start-time   int32   :offset-assert 248)
    (damage       float   :offset-assert 252)
    (fire-sound   basic   :offset-assert 256)
-   (owner-handle uint64  :offset-assert 264)
+   (owner-handle handle  :offset-assert 264)
    )
   :method-count-assert 51
   :size-assert         #x110
@@ -58394,11 +58534,9 @@
     idle ;; 50
     )
   )
-|#
 
-#|
 (deftype oil-slick (process-drawable)
-  ((vehicle uint64  :offset-assert 248)
+  ((vehicle handle  :offset-assert 248)
    )
   :method-count-assert 51
   :size-assert         #x100
@@ -58407,13 +58545,11 @@
     idle ;; 50
     )
   )
-|#
 
-#|
 (deftype oil-emitter (process)
   ((emitting            basic                 :offset-assert 144)
-   (owning-vehicle      uint64                :offset-assert 152)
-   (oil-trail           basic                 :offset-assert 160)
+   (owning-vehicle      handle                :offset-assert 152)
+   (oil-trail           oil-trail             :offset-assert 160)
    (last-surface-pos    vector        :inline :offset-assert 176)
    (last-slip-spawn-pos vector        :inline :offset-assert 192)
    (current-segment     strip-segment :inline :offset-assert 208)
@@ -58421,29 +58557,21 @@
    (state-time          int32                 :offset-assert 276)
    (spill-sound-id      uint32                :offset-assert 280)
    (damage              float                 :offset-assert 284)
-   (oil-slick           uint64                :offset-assert 288)
+   (oil-slick           handle                :offset-assert 288)
    )
   :method-count-assert 19
   :size-assert         #x128
   :flag-assert         #x1300a00128
-  (:methods
-    (oil-emitter-method-9 () none) ;; 9
-    (oil-emitter-method-10 () none) ;; 10
-    (oil-emitter-method-11 () none) ;; 11
-    (oil-emitter-method-12 () none) ;; 12
-    (oil-emitter-method-13 () none) ;; 13
-    (oil-emitter-method-14 () none) ;; 14
-    (oil-emitter-method-16 () none) ;; 16
-    (oil-emitter-method-17 () none) ;; 17
-    (oil-emitter-method-18 () none) ;; 18
-    )
   (:state-methods
     emit-oil ;; 15
     )
+  (:methods
+    (oil-emitter-method-16 (_type_) symbol) ;; 16
+    (oil-emitter-method-17 (_type_ process-drawable) none) ;; 17
+    (oil-emitter-method-18 (_type_ process-drawable) none) ;; 18
+    )
   )
-|#
 
-#|
 (deftype oil-flame-emitter (oil-emitter)
   ((last-flame-spawn-pos vector :inline :offset-assert 304)
    (flame-distance-emit  float          :offset-assert 320)
@@ -58452,55 +58580,54 @@
   :size-assert         #x144
   :flag-assert         #x1300c00144
   )
-|#
 
-#|
 (deftype v-wpn-red-oil (vehicle-weapon-slot)
-  ((oil-emitter uint64  :offset-assert 264)
+  ((oil-emitter handle  :offset-assert 264)
    (wait-time   int32   :offset-assert 272)
    )
   :method-count-assert 62
   :size-assert         #x114
   :flag-assert         #x3e00900114
-  (:methods
-    (v-wpn-red-oil-method-61 () none) ;; 61
-    )
   (:state-methods
     idle ;; 50
     wait-delay ;; 60
     )
+  (:methods
+    (v-wpn-red-oil-method-61 (_type_) none) ;; 61
+    )
   )
-|#
 
-;; (define-extern smoke-system-local-space function)
-;; (define-extern sift-down function)
-;; (define-extern heap-sort function)
+(define-extern smoke-system-local-space (function particle-local-space-info int :behavior smoke-system))
+(define-extern sift-down (function pointer int int symbol))
+(define-extern heap-sort (function pointer int symbol))
 (define-extern clear-strip (function prim-strip none))
 ;; (define-extern lightning-sphere-init-by-other function)
 ;; (define-extern lightning-sphere-spawn function)
-;; (define-extern vector+float*-ignore-w! function)
+(define-extern vector+float*-ignore-w! (function vector vector vector float vector))
 ;; (define-extern smoke-update function)
 ;; (define-extern smoke-render function)
 ;; (define-extern smoke-spawn function)
-;; (define-extern smoke-system-init-by-other function)
-;; (define-extern smoke-system-spawn function)
+(define-extern smoke-system-init-by-other (function process float object :behavior smoke-system))
+(define-extern smoke-system-spawn (function process float process))
 ;; (define-extern slip-object-init-by-other function)
 ;; (define-extern slip-object-spawn function)
 ;; (define-extern oil-slick-init-by-other function)
 ;; (define-extern oil-slick-spawn function)
 ;; (define-extern oil-trail-emit function)
-;; (define-extern oil-emitter-init-by-other function)
-;; (define-extern oil-emitter-spawn function)
-;; (define-extern oil-flame-emitter-init-by-other function)
-;; (define-extern oil-flame-emitter-spawn function)
+(define-extern oil-emitter-init-by-other (function process object :behavior oil-emitter))
+(define-extern oil-emitter-spawn (function process process process))
+(define-extern oil-flame-emitter-init-by-other (function process object :behavior oil-flame-emitter))
+(define-extern oil-flame-emitter-spawn (function process process process))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
+(deftype mystery-vws-type0 (structure)
+  ((data uint64)))
+
 (deftype muzzle-flash (process-drawable)
-  ((glued-to       uint64             :offset-assert 248)
+  ((glued-to       handle             :offset-assert 248)
    (glued-joint    int32              :offset-assert 256)
    (local-rotation quaternion :inline :offset-assert 272)
    )
@@ -58508,17 +58635,15 @@
   :size-assert         #x120
   :flag-assert         #x3400900120
   (:state-methods
-    idle ;; 51
     lit ;; 50
+    idle ;; 51
     )
   )
-|#
 
-#|
 (deftype v-wpn-yellow-chain-gun (vehicle-weapon-slot)
-  ((last-fire-event uint64  :offset-assert 264)
-   (firecontrol     basic   :offset-assert 272)
-   (blam            uint32  :offset-assert 276)
+  ((last-fire-event uint64              :offset-assert 264)
+   (firecontrol     rapid-fire-control  :offset-assert 272)
+   (blam            uint32              :offset-assert 276)
    )
   :method-count-assert 61
   :size-assert         #x118
@@ -58528,13 +58653,11 @@
     firing ;; 60
     )
   )
-|#
 
-#|
 (deftype v-wpn-yellow-default-gun (vehicle-weapon-slot)
-  ((last-fire-event uint64  :offset-assert 264)
-   (firecontrol     basic   :offset-assert 272)
-   (blam            uint32  :offset-assert 276)
+  ((last-fire-event uint64              :offset-assert 264)
+   (firecontrol     rapid-fire-control  :offset-assert 272)
+   (blam            uint32              :offset-assert 276)
    )
   :method-count-assert 61
   :size-assert         #x118
@@ -58544,9 +58667,7 @@
     firing ;; 60
     )
   )
-|#
 
-#|
 (deftype v-wpn-yellow-grenade (vehicle-weapon-slot)
   ((next-shot-allowed uint64  :offset-assert 264)
    (next-to-fire      uint8   :offset-assert 272)
@@ -58558,13 +58679,11 @@
     idle ;; 50
     )
   )
-|#
 
-#|
 (deftype v-wpn-yellow-guided-missile (vehicle-weapon-slot)
   ((next-shot-allowed        uint64    :offset-assert 264)
    (next-to-fire             uint8     :offset-assert 272)
-   (targ-list                UNKNOWN 4 :offset-assert 280)
+   (targ-list                handle 4  :offset-assert 280)
    (run-targeting-this-frame int8      :offset-assert 312)
    )
   :method-count-assert 61
@@ -58572,12 +58691,12 @@
   :flag-assert         #x3d00b00139
   (:state-methods
     idle ;; 50
-    firing ;; 60
+    firing ;; 60 ;; needs sorted-targ-validator-player-needs-los, find-sorted-targets-faster!
     )
   )
-|#
 
-#|
+(define-extern display-supernova-backfire-text-to-view (function none)) ;; TODO, from hud-widgets 3
+(define-extern display-sblastered-text-to-view (function none)) ;; TODO, from hud-widgets 3
 (deftype v-wpn-yellow-seismic-blaster (vehicle-weapon-slot)
   ((fire-at      uint32  :offset-assert 264)
    (on-hud-indic int8    :offset-assert 268)
@@ -58587,54 +58706,52 @@
   :flag-assert         #x3e0080010d
   (:state-methods
     idle ;; 50
-    firing ;; 60
+    (firing symbol)  ;; 60
     backfiring ;; 61
     )
   )
-|#
 
-;; (define-extern vws-focus-search-base function)
-;; (define-extern gunmount-common-trans function)
-;; (define-extern gunmount-common-post function)
-;; (define-extern gunmount-drawable-init-by-other function)
-;; (define-extern gunmount-event-handler function)
-;; (define-extern muzzle-flash-event-handler function)
-;; (define-extern muzzle-flash-init-by-other function)
-;; (define-extern gunmount-get-change-anim function)
-;; (define-extern gunmount-generic-event-handler function)
-;; (define-extern v-wpn-yellow-chain-gun-I-rapid-fire-control-params object)
-;; (define-extern v-wpn-yellow-chain-gun-II-rapid-fire-control-params object)
-;; (define-extern hack-sparticle-track-gun function)
-;; (define-extern v-wpn-yellow-default-gun-rapid-fire-control-params object)
-;; (define-extern v-wpn-yellow-guided-missile-init-remote function)
-;; (define-extern *msg-map-v-wpn-yellow-guided-missile* array)
-;; (define-extern *net-process-class-info-v-wpn-yellow-guided-missile* net-process-class-info)
-;; (define-extern guided-missile-gen-proj-no-targ-helper function)
-;; (define-extern guided-missile-gen-proj-targ-helper function)
-;; (define-extern seismic-blaster-affects-player? function)
+(define-extern vws-focus-search-base (function vehicle-weapon-slot int float float vector float int))
+(define-extern gunmount-common-trans (function object :behavior gunmount-generic-drawable))
+(define-extern gunmount-common-post (function none :behavior gunmount-generic-drawable))
+(define-extern gunmount-drawable-init-by-other (function wvehicle int int object :behavior gunmount-generic-drawable))
+(define-extern gunmount-event-handler (function process int symbol event-message-block object :behavior gunmount-drawable))
+(define-extern muzzle-flash-event-handler (function process int symbol event-message-block object :behavior muzzle-flash))
+(define-extern muzzle-flash-init-by-other (function handle int object :behavior muzzle-flash))
+(define-extern gunmount-get-change-anim (function int int int))
+(define-extern gunmount-generic-event-handler (function process int symbol event-message-block object :behavior gunmount-generic-drawable))
+(define-extern v-wpn-yellow-chain-gun-I-rapid-fire-control-params rapid-fire-params)
+(define-extern v-wpn-yellow-chain-gun-II-rapid-fire-control-params rapid-fire-params)
+(define-extern hack-sparticle-track-gun (function vehicle-weapon-slot sparticle-cpuinfo matrix none))
+(define-extern v-wpn-yellow-default-gun-rapid-fire-control-params rapid-fire-params)
+(define-extern v-wpn-yellow-guided-missile-init-remote (function mem-buffer none :behavior v-wpn-yellow-guided-missile))
+(define-extern *msg-map-v-wpn-yellow-guided-missile* (array symbol))
+(define-extern *net-process-class-info-v-wpn-yellow-guided-missile* net-process-class-info)
+(define-extern guided-missile-gen-proj-no-targ-helper (function vehicle-weapon-slot process-drawable process-drawable int))
+(define-extern guided-missile-gen-proj-targ-helper (function vehicle-weapon-slot process-drawable process-drawable int))
+(define-extern seismic-blaster-affects-player? (function vehicle-weapon-slot net-player-race symbol))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons-aux           ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype red-sentry-bot (process-focusable)
   ((destination-point       vector     :inline :offset-assert 256)
    (destination-rot         quaternion :inline :offset-assert 272)
    (traj                    trajectory :inline :offset-assert 288)
    (next-target-poll        uint64             :offset-assert 328)
-   (targ-handle             uint64             :offset-assert 336)
+   (targ-handle             handle             :offset-assert 336)
    (yaw                     float              :offset-assert 344)
    (pitch                   float              :offset-assert 348)
    (expire-at               int32              :offset-assert 352)
    (hitpoints               float              :offset-assert 356)
    (hitpoints-last          float              :offset-assert 360)
    (hitpoints-prev-msg-time uint64             :offset-assert 368)
-   (flash                   UNKNOWN    2       :offset-assert 376)
+   (flash                   handle     2       :offset-assert 376)
    (last-fired              uint64             :offset-assert 392)
    (gun-loop                uint32             :offset-assert 400)
    (warning                 basic              :offset-assert 404)
-   (firecontrol             basic              :offset-assert 408)
+   (firecontrol             rapid-fire-control :offset-assert 408)
    (ammo                    int16              :offset-assert 412)
    (powerup-level           uint8              :offset-assert 414)
    (shooter-id              int8               :offset-assert 415)
@@ -58642,49 +58759,47 @@
   :method-count-assert 67
   :size-assert         #x1a0
   :flag-assert         #x43011001a0
-  (:methods
-    (red-sentry-bot-method-64 () none) ;; 64
-    (red-sentry-bot-method-65 () none) ;; 65
-    (red-sentry-bot-method-66 () none) ;; 66
-    )
   (:state-methods
-    falling ;; 59
+    (falling int) ;; 59
     idle ;; 60
     firing ;; 61
     firing-missiles ;; 62
     die ;; 63
     )
+  (:methods
+    (init! (_type_ vector quaternion vector quaternion int int) object) ;; 64
+    (init-collision! (_type_) collide-shape) ;; 65
+    (take-damage (_type_ float) object) ;; 66
+    )
   )
-|#
 
-;; (define-extern red-sentry-bot-init-remote function)
-;; (define-extern *msg-map-red-sentry-bot* array)
-;; (define-extern *net-process-class-info-red-sentry-bot* net-process-class-info)
-;; (define-extern v-wpn-sentrybot-rapid-fire-control-params object)
-;; (define-extern sentrybot-poke-yaw! function)
-;; (define-extern sentrybot-poke-pitch! function)
-;; (define-extern red-sentry-bot-init-by-other function)
-;; (define-extern red-sentry-bot-common-trans function)
-;; (define-extern red-sentry-bot-poll-target function)
-;; (define-extern sentry-bot-base-handler function)
-;; (define-extern v-wpn-yellow-bulldog-rapid-fire-control-params object)
-;; (define-extern v-wpn-yellow-bulldog-II-rapid-fire-control-params object)
-;; (define-extern drone-compute-pos! function)
-;; (define-extern drone-trans-set-pos function)
-;; (define-extern drone-trans-twitchy-rot function)
-;; (define-extern drone-trans-rot-at-target function)
-;; (define-extern drone-base-post function)
-;; (define-extern vehicle-weapon-drone-init-by-other function)
+(define-extern red-sentry-bot-init-remote (function mem-buffer none :behavior red-sentry-bot))
+(define-extern *msg-map-red-sentry-bot* (array symbol))
+(define-extern *net-process-class-info-red-sentry-bot* net-process-class-info)
+(define-extern v-wpn-sentrybot-rapid-fire-control-params rapid-fire-params)
+(define-extern sentrybot-poke-yaw! (function cspace transformq none :behavior red-sentry-bot))
+(define-extern sentrybot-poke-pitch! (function cspace transformq none :behavior red-sentry-bot))
+(define-extern red-sentry-bot-init-by-other (function vector quaternion vehicle int object :behavior red-sentry-bot))
+;; (define-extern red-sentry-bot-common-trans (function none :behavior red-sentry-bot)) ;; needs warning-hud-draw
+(define-extern red-sentry-bot-poll-target (function symbol :behavior red-sentry-bot))
+(define-extern sentry-bot-base-handler (function process int symbol event-message-block object :behavior red-sentry-bot))
+(define-extern v-wpn-yellow-bulldog-rapid-fire-control-params rapid-fire-params)
+(define-extern v-wpn-yellow-bulldog-II-rapid-fire-control-params rapid-fire-params)
+(define-extern drone-compute-pos! (function vehicle-weapon-drone vector vector :behavior vehicle-weapon-drone))
+(define-extern drone-trans-set-pos (function object :behavior vehicle-weapon-drone))
+(define-extern drone-trans-twitchy-rot (function quaternion :behavior vehicle-weapon-drone))
+(define-extern drone-trans-rot-at-target (function quaternion :behavior vehicle-weapon-drone))
+(define-extern drone-base-post (function int :behavior vehicle-weapon-drone))
+(define-extern vehicle-weapon-drone-init-by-other (function process-drawable object :behavior vehicle-weapon-drone))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons2              ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype v-wpn-red-turbo-preventor (vehicle-weapon-slot)
-  ((sound-id  uint32  :offset-assert 264)
-   (player-id int8    :offset-assert 268)
-   (snd-loop  uint32  :offset-assert 272)
+  ((sound-id  sound-id  :offset-assert 264)
+   (player-id int8      :offset-assert 268)
+   (snd-loop  uint32    :offset-assert 272)
    )
   :method-count-assert 61
   :size-assert         #x114
@@ -58694,12 +58809,10 @@
     firing ;; 60
     )
   )
-|#
 
-#|
 (deftype v-wpn-red-mine-launcher (vehicle-weapon-slot)
-  ((salvo-count uint8   :offset-assert 261)
-   (last-fired  uint64  :offset-assert 264)
+  ((salvo-count uint8       :offset-assert 261)
+   (last-fired  time-frame  :offset-assert 264)
    )
   :method-count-assert 61
   :size-assert         #x110
@@ -58709,9 +58822,7 @@
     firing ;; 60
     )
   )
-|#
 
-#|
 (deftype v-wpn-red-sentry-gun (vehicle-weapon-slot)
   ()
   :method-count-assert 60
@@ -58721,9 +58832,7 @@
     idle ;; 50
     )
   )
-|#
 
-#|
 (deftype v-wpn-red-drone-gun (vehicle-weapon-slot)
   ()
   :method-count-assert 61
@@ -58734,20 +58843,18 @@
     firing ;; 60
     )
   )
-|#
 
-;; (define-extern mine-compute-landing-point! function)
-;; (define-extern spawn-mine function)
+(define-extern mine-compute-landing-point! (function vector vector vector vector vector float symbol))
+(define-extern spawn-mine (function wvehicle uint uint handle))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons3              ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype v-wpn-purple-shield (vehicle-weapon-slot)
   ((mysound          uint32  :offset-assert 264)
    (zap-interval     uint64  :offset-assert 272)
-   (jiggle-start     uint64  :offset-assert 280)
+   (jiggle-start     handle  :offset-assert 280)
    (jiggle-amplitude float   :offset-assert 288)
    )
   :method-count-assert 61
@@ -58758,54 +58865,65 @@
     firing ;; 60
     )
   )
-|#
 
-#|
+(deftype mystery-red-tractor-beam-type0 (structure)
+  ((vec1        vector    :inline)
+   (vec-array   vector 3  :inline)
+   (vec2        vector    :inline)
+   )
+  )
+
 (deftype v-wpn-red-tractor-beam (vehicle-weapon-slot)
-  ((firing-at      uint64  :offset-assert 264)
+  ((firing-at      handle  :offset-assert 264)
    (duration-left  int32   :offset-assert 272)
    (using-side     uint8   :offset-assert 276)
-   (part-on-me     basic   :offset-assert 224)
-   (part-on-target basic   :offset-assert 280)
+   (part-on-me     sparticle-launch-control   :offset 224)
+   (part-on-target sparticle-launch-control   :offset-assert 280)
    )
   :method-count-assert 61
   :size-assert         #x11c
   :flag-assert         #x3d0090011c
   (:state-methods
     idle ;; 50
-    firing ;; 60
+    (firing symbol) ;; 60 ;; unsupported rsqrt in post handler :(
     )
   )
-|#
 
-;; (define-extern shield-jiggle-scale! function)
+(define-extern shield-jiggle-scale! (function vector v-wpn-purple-shield vector))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons-util          ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (define-extern v-wpn-base-init-by-other function)
-;; (define-extern warning-hud-draw function)
-;; (define-extern v-wpn-type->color function)
-;; (define-extern v-wpn-type->gunmount-config function)
-;; (define-extern v-wpn-missile-init-by-other function)
-;; (define-extern make-vehicle-weapon-slot function)
-;; (define-extern v-wpn-choose-increasing-lethality function)
-;; (define-extern v-wpn-get-mask function)
-;; (define-extern v-wpn-num-available function)
-;; (define-extern v-wpn-choose-random function)
-;; (define-extern v-wpn-get-available-types function)
-;; (define-extern race-player-behind-more-than function)
-;; (define-extern v-wpn-get-selection-table function)
-;; (define-extern v-wpn-mask-selection-table! function)
+(deftype mystery-rapid-fire-control-type0 (structure)
+  ((mat   matrix :inline)
+   (vec   vector :inline      :offset-assert 64)
+   (quat  quaternion :inline  :offset-assert 80)
+   )
+  )
+
+(define-extern v-wpn-base-init-by-other (function process-drawable v-wpn-type uint object :behavior vehicle-weapon-slot))
+(define-extern warning-hud-draw (function warning-hud-icon sphere vector int))
+(define-extern v-wpn-type->color (function v-wpn-type v-wpn-color))
+(define-extern v-wpn-type->gunmount-config (function v-wpn-type int))
+(define-extern v-wpn-missile-init-by-other (function process-drawable v-wpn-type uint object :behavior v-wpn-yellow-guided-missile))
+(define-extern make-vehicle-weapon-slot (function process-drawable wvehicle uint object :behavior vehicle-weapon-slot))
+(define-extern v-wpn-choose-increasing-lethality (function v-wpn-color (array uint8) int))
+(define-extern v-wpn-get-mask (function wvehicle uint))
+(define-extern v-wpn-num-available (function v-wpn-color wvehicle int))
+(define-extern v-wpn-choose-random (function v-wpn-color wvehicle int))
+(define-extern v-wpn-get-available-types (function v-wpn-color (array uint8)))
+(define-extern race-player-behind-more-than (function uint float symbol))
+(define-extern v-wpn-get-selection-table (function v-wpn-color wvehicle v-wpn-ptable))
+(define-extern v-wpn-mask-selection-table! (function v-wpn-ptable v-wpn-ptable v-wpn-ptable-quad v-wpn-ptable))
 (define-extern v-wpn-pack-msg (function wvehicle mem-buffer none))
-;; (define-extern v-wpn-unpack-msg! function)
-(define-extern vehicle-get-weapon-level (function vehicle uint int))
-;; (define-extern global-turbo-suppressor-set! function)
-;; (define-extern should-suppress-eco? function)
-;; (define-extern rapid-fire-control-emitter-from-world function)
-;; (define-extern rapid-fire-control-initialize-from-vehicle function)
-(define-extern is-friendly-fire-helper (function object wvehicle symbol))
+(define-extern v-wpn-unpack-msg! (function vector4ub mem-buffer uint))
+(define-extern vehicle-get-weapon-level (function vehicle int int))
+(define-extern global-turbo-suppressor-set! (function int none))
+(define-extern should-suppress-eco? (function symbol symbol)) ;; uses some kind of weapons bitfield enum (game-task-advanced-options)
+(define-extern rapid-fire-control-emitter-from-world (function rapid-fire-control process-drawable vector int vector quaternion  none))
+(define-extern rapid-fire-control-initialize-from-vehicle (function rapid-fire-control wvehicle symbol :behavior rapid-fire-control))
+(define-extern is-friendly-fire-helper (function process-drawable process-drawable symbol))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wcar-skel                      ;;
@@ -59570,16 +59688,15 @@
 ;; raceline-weapon                ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype raceline-weapon (process-drawable)
   ((owner-id       int8                       :offset-assert 248)
    (delta-height   float                      :offset-assert 252)
    (birth-time     int32                      :offset-assert 256)
    (minimap        connection-minimap         :offset-assert 260)
-   (visible        basic                      :offset-assert 264)
+   (visible        symbol                     :offset-assert 264)
    (last-sent-time int32                      :offset-assert 268)
-   (prox           basic                      :offset-assert 168)
-   (mesh           basic                      :offset-assert 276)
+  ;;  (prox           basic                      :offset-assert 168) ;; defined in process-nettable
+   (mesh           race-mesh                  :offset 276)
    (slice-id       int16                      :offset-assert 280)
    (race-line      race-line                  :offset-assert 284)
    (lap-dist       float                      :offset-assert 288)
@@ -59592,167 +59709,152 @@
   :method-count-assert 79
   :size-assert         #x164
   :flag-assert         #x4f00e00164
-  (:methods
-    (raceline-weapon-method-52 () none) ;; 52
-    (raceline-weapon-method-53 () none) ;; 53
-    (raceline-weapon-method-54 () none) ;; 54
-    (raceline-weapon-method-55 () none) ;; 55
-    (raceline-weapon-method-56 () none) ;; 56
-    (raceline-weapon-method-57 () none) ;; 57
-    (raceline-weapon-method-58 () none) ;; 58
-    (raceline-weapon-method-59 () none) ;; 59
-    (raceline-weapon-method-60 () none) ;; 60
-    (raceline-weapon-method-61 () none) ;; 61
-    (raceline-weapon-method-62 () none) ;; 62
-    (raceline-weapon-method-63 () none) ;; 63
-    (raceline-weapon-method-64 () none) ;; 64
-    (raceline-weapon-method-65 () none) ;; 65
-    (raceline-weapon-method-66 () none) ;; 66
-    (raceline-weapon-method-67 () none) ;; 67
-    (raceline-weapon-method-68 () none) ;; 68
-    (raceline-weapon-method-69 () none) ;; 69
-    (raceline-weapon-method-70 () none) ;; 70
-    (raceline-weapon-method-71 () none) ;; 71
-    (raceline-weapon-method-72 () none) ;; 72
-    (raceline-weapon-method-73 () none) ;; 73
-    (raceline-weapon-method-74 () none) ;; 74
-    (raceline-weapon-method-75 () none) ;; 75
-    (raceline-weapon-method-76 () none) ;; 76
-    (raceline-weapon-method-77 () none) ;; 77
-    (raceline-weapon-method-78 () none) ;; 78
-    )
   (:state-methods
     tracking ;; 50
     die ;; 51
     )
+  (:methods
+    (init! (_type_) none) ;; 52
+    (raceline-weapon-method-53 (_type_) float) ;; 53
+    (raceline-weapon-method-54 (_type_) vector) ;; 54
+    (raceline-weapon-method-55 (_type_) float) ;; 55
+    (update-target-pos! (_type_) int) ;; 56
+    (raceline-weapon-method-57 (_type_) none) ;; 57
+    (update-visibility! (_type_) symbol) ;; 58
+    (raceline-weapon-method-59 (_type_) int) ;; 59
+    (raceline-weapon-method-60 (_type_) int) ;; 60
+    (raceline-weapon-method-61 (_type_) float) ;; 61
+    (raceline-weapon-method-62 (_type_ vector) float) ;; 62
+    (raceline-weapon-method-63 (_type_ vector) object) ;; 63
+    (raceline-weapon-method-64 (_type_ int) float) ;; 64
+    (get-target-wvehicle (_type_) wvehicle) ;; 65
+    (get-owner-wvehicle (_type_) wvehicle) ;; 66
+    (get-damage (_type_) float) ;; 67
+    (raceline-weapon-method-68 (_type_) float) ;; 68
+    (attack (_type_ wvehicle) object) ;; 69
+    (raceline-weapon-method-70 (_type_) float) ;; 70
+    (maybe-attack (_type_) symbol) ;; 71
+    (reset-target-pos! (_type_) int) ;; 72
+    (update-target-pos-from-wvehicle! (_type_ wvehicle) int) ;; 73
+    (show! (_type_) none) ;; 74
+    (hide! (_type_) none) ;; 75
+    (write-to-buffer (_type_ mem-buffer) none) ;; 76
+    (read-from-buffer (_type_ mem-buffer) vector) ;; 77
+    (init-start-speed! (_type_) float) ;; 78
+    )
   )
-|#
 
-;; (define-extern raceline-weapon-init-remote function)
-;; (define-extern *msg-map-raceline-weapon* array)
-;; (define-extern *net-process-class-info-raceline-weapon* net-process-class-info)
-;; (define-extern raceline-weapon-init-by-other function)
+(define-extern raceline-weapon-init-remote (function mem-buffer none :behavior raceline-weapon))
+(define-extern *msg-map-raceline-weapon* (array symbol))
+(define-extern *net-process-class-info-raceline-weapon* net-process-class-info)
+(define-extern raceline-weapon-init-by-other (function vector quaternion int8 object :behavior raceline-weapon))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wvehicle-weapons-chicken-drone ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#|
 (deftype chicken-drone (raceline-weapon)
-  ((beam-fire-control basic          :offset-assert 356)
-   (machinegun-sound  uint32         :offset-assert 360)
-   (particle-matrix   matrix :inline :offset-assert 368)
-   (sound-id          uint32         :offset-assert 432)
+  ((beam-fire-control rapid-fire-control  :offset-assert 356)
+   (machinegun-sound  uint32              :offset-assert 360)
+   (particle-matrix   matrix :inline      :offset-assert 368)
+   (sound-id          sound-id            :offset-assert 432)
    )
   :method-count-assert 81
   :size-assert         #x1b4
   :flag-assert         #x51013001b4
   (:methods
-    (chicken-drone-method-79 () none) ;; 79
-    (chicken-drone-method-80 () none) ;; 80
+    (chicken-drone-method-79 (_type_) float) ;; 79
+    (chicken-drone-method-80 (_type_) particle-local-space-info) ;; 80
     )
   (:state-methods
     tracking ;; 50
     die ;; 51
     )
   )
-|#
 
-#|
 (deftype chicken-drone-2 (chicken-drone)
   ()
   :method-count-assert 81
   :size-assert         #x1b4
   :flag-assert         #x51013001b4
   )
-|#
 
-#|
 (deftype seeker (raceline-weapon)
-  ((sound-id    uint32  :offset-assert 356)
-   (start-speed float   :offset-assert 360)
+  ((sound-id    sound-id  :offset-assert 356)
+   (start-speed float     :offset-assert 360)
    )
   :method-count-assert 79
   :size-assert         #x16c
   :flag-assert         #x4f00e0016c
   (:state-methods
-    die ;; 51
     tracking ;; 50
+    die ;; 51
     )
   )
-|#
 
-#|
 (deftype lightning-point (structure)
-  ((active         basic          :offset-assert 0)
-   (vehicle-id     int8           :offset-assert 4)
-   (sound-id       uint32         :offset-assert 8)
-   (point          vector :inline :offset-assert 16)
-   (l-control      basic          :offset-assert 32)
-   (next-test-time int32          :offset-assert 36)
+  ((active         symbol             :offset-assert 0)
+   (vehicle-id     int8               :offset-assert 4)
+   (sound-id       sound-id           :offset-assert 8)
+   (point          vector :inline     :offset-assert 16)
+   (l-control      lightning-control  :offset-assert 32)
+   (next-test-time int32              :offset-assert 36)
    )
   :method-count-assert 9
   :size-assert         #x28
   :flag-assert         #x900000028
   )
-|#
 
-#|
 (deftype success-seeker (seeker)
-  ((last-had-target-time int32           :offset-assert 364)
-   (lightning-point      UNKNOWN 3       :offset-assert 368)
-   (particle-matrix      matrix  :inline :offset-assert 512)
-   (lost-target          basic           :offset-assert 576)
-   (center-quad          basic           :offset-assert 580)
+  ((last-had-target-time int32                      :offset-assert 364)
+   (lightning-point      lightning-point 3 :inline  :offset-assert 368)
+   (particle-matrix      matrix  :inline            :offset-assert 512)
+   (lost-target          symbol                     :offset-assert 576)
+   (center-quad          camera-facing-quad         :offset-assert 580)
    )
   :method-count-assert 84
   :size-assert         #x248
   :flag-assert         #x5401c00248
-  (:methods
-    (success-seeker-method-79 () none) ;; 79
-    (success-seeker-method-80 () none) ;; 80
-    (success-seeker-method-81 () none) ;; 81
-    (success-seeker-method-82 () none) ;; 82
-    (success-seeker-method-83 () none) ;; 83
-    )
   (:state-methods
     tracking ;; 50
     )
+  (:methods
+    (success-seeker-method-79 (_type_) int) ;; 79
+    (success-seeker-method-80 (_type_) int) ;; 80
+    (success-seeker-method-81 (_type_) symbol) ;; 81
+    (success-seeker-method-82 (_type_) float) ;; 82
+    (success-seeker-method-83 (_type_) texture-id) ;; 83
+    )
   )
-|#
 
-#|
 (deftype success-seeker-2 (success-seeker)
   ()
   :method-count-assert 84
   :size-assert         #x248
   :flag-assert         #x5401c00248
   )
-|#
 
-#|
 (deftype turbodash-seeker (seeker)
-  ((trail-tracker uint64  :offset-assert 368)
-   (target-id     int8    :offset-assert 376)
-   (center-quad   basic   :offset-assert 380)
+  ((trail-tracker handle              :offset-assert 368)
+   (target-id     int8                :offset-assert 376)
+   (center-quad   camera-facing-quad  :offset-assert 380)
    )
   :method-count-assert 81
   :size-assert         #x180
   :flag-assert         #x5100f00180
-  (:methods
-    (turbodash-seeker-method-79 () none) ;; 79
-    (turbodash-seeker-method-80 () none) ;; 80
-    )
   (:state-methods
     tracking ;; 50
     die ;; 51
     )
+  (:methods
+    (turbodash-seeker-method-79 (_type_) none) ;; 79
+    (turbodash-seeker-method-80 (_type_) int) ;; 80
+    )
   )
-|#
 
-#|
 (deftype v-wpn-success-seeker (vehicle-weapon-slot)
-  ((next-shot-time int32  :offset-assert 268)
+  ((pad            uint32 :offset-assert 264)
+   (next-shot-time int32  :offset-assert 268)
    (next-to-fire   uint8  :offset-assert 272)
    )
   :method-count-assert 60
@@ -59762,11 +59864,10 @@
     idle ;; 50
     )
   )
-|#
 
-#|
 (deftype v-wpn-chicken-drone (vehicle-weapon-slot)
-  ((next-shot-time int32  :offset-assert 268)
+  ((pad            uint32 :offset-assert 264)
+   (next-shot-time int32  :offset-assert 268)
    (next-to-fire   uint8  :offset-assert 272)
    )
   :method-count-assert 60
@@ -59776,38 +59877,37 @@
     idle ;; 50
     )
   )
-|#
 
-;; (define-extern chicken-drone-init-remote function)
-;; (define-extern *msg-map-chicken-drone* array)
-;; (define-extern *net-process-class-info-chicken-drone* net-process-class-info)
-;; (define-extern v-wpn-chicken-drone-rapid-fire-control-params object)
-;; (define-extern chicken-drone-spawn function)
-;; (define-extern chicken-drone-local-space function)
-;; (define-extern chicken-drone-2-init-remote function)
-;; (define-extern *msg-map-chicken-drone-2* array)
-;; (define-extern *net-process-class-info-chicken-drone-2* net-process-class-info)
-;; (define-extern chicken-drone-2-spawn function)
-;; (define-extern seeker-init-remote function)
-;; (define-extern *msg-map-seeker* array)
-;; (define-extern *net-process-class-info-seeker* net-process-class-info)
-;; (define-extern success-seeker-init-remote function)
-;; (define-extern *msg-map-success-seeker* array)
-;; (define-extern *net-process-class-info-success-seeker* net-process-class-info)
-;; (define-extern success-seeker-1-spawn function)
-;; (define-extern success-seeker-local-space function)
-;; (define-extern success-seeker-2-init-remote function)
-;; (define-extern *msg-map-success-seeker-2* array)
-;; (define-extern *net-process-class-info-success-seeker-2* net-process-class-info)
-;; (define-extern success-seeker-2-spawn function)
-;; (define-extern turbodash-seeker-init-remote function)
-;; (define-extern *msg-map-turbodash-seeker* array)
-;; (define-extern *net-process-class-info-turbodash-seeker* net-process-class-info)
-;; (define-extern turbodash-seeker-spawn function)
-;; (define-extern fire-seeker function)
-;; (define-extern fire-drone function)
-;; (define-extern spawn-success-seeker-weapon function)
-;; (define-extern spawn-chicken-drone-weapon function)
+(define-extern chicken-drone-init-remote (function mem-buffer none :behavior chicken-drone))
+(define-extern v-wpn-chicken-drone-rapid-fire-control-params rapid-fire-params)
+(define-extern *msg-map-chicken-drone* (array symbol))
+(define-extern *net-process-class-info-chicken-drone* net-process-class-info)
+(define-extern chicken-drone-spawn (function vector quaternion int8 process))
+(define-extern chicken-drone-local-space (function particle-local-space-info int :behavior chicken-drone))
+(define-extern chicken-drone-2-init-remote (function mem-buffer none :behavior chicken-drone-2))
+(define-extern *msg-map-chicken-drone-2* (array symbol))
+(define-extern *net-process-class-info-chicken-drone-2* net-process-class-info)
+(define-extern chicken-drone-2-spawn (function vector quaternion int8 process))
+(define-extern seeker-init-remote (function mem-buffer none :behavior seeker))
+(define-extern *msg-map-seeker* (array symbol))
+(define-extern *net-process-class-info-seeker* net-process-class-info)
+(define-extern success-seeker-init-remote (function mem-buffer none :behavior success-seeker))
+(define-extern *msg-map-success-seeker* (array symbol))
+(define-extern *net-process-class-info-success-seeker* net-process-class-info)
+(define-extern success-seeker-1-spawn (function vector quaternion int8 process))
+(define-extern success-seeker-local-space (function particle-local-space-info int :behavior success-seeker))
+(define-extern success-seeker-2-init-remote (function mem-buffer none :behavior success-seeker-2))
+(define-extern *msg-map-success-seeker-2* (array symbol))
+(define-extern *net-process-class-info-success-seeker-2* net-process-class-info)
+(define-extern success-seeker-2-spawn (function vector quaternion int8 process))
+(define-extern turbodash-seeker-init-remote (function mem-buffer none :behavior turbodash-seeker))
+(define-extern *msg-map-turbodash-seeker* (array symbol))
+(define-extern *net-process-class-info-turbodash-seeker* net-process-class-info)
+(define-extern turbodash-seeker-spawn (function vector quaternion int8 process))
+(define-extern fire-seeker (function object :behavior v-wpn-success-seeker))
+(define-extern fire-drone (function object :behavior v-wpn-chicken-drone))
+(define-extern spawn-success-seeker-weapon (function process-drawable v-wpn-type int8 (pointer process)))
+(define-extern spawn-chicken-drone-weapon (function process-drawable v-wpn-type int8 (pointer process)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; football                       ;;

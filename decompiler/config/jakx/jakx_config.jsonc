@@ -5,7 +5,26 @@
   "expected_elf_name": "SCUS_974.29",
   // if you want to filter to only some object names.
   // it will make the decompiler much faster.
-  "allowed_objects": [],
+  "allowed_objects": [
+    "keyboard",
+    "hud-h",
+    "collide-shape-h","collide-shape","gsound",
+    "find-nearest",
+    "light-trails","light-trails-h","explosion",
+    "sparticle-launcher-h","sparticle-launcher",
+    "process-nettable",
+    "net-player-h",
+    "projectile", "process-focusable", "collide-shape-h",
+    "drawable", "math-camera",
+    "net-projectile","net-projectile-h","projectile","projectile-h",
+    "vehicle", "vehicle-h",
+    "wvehicle-h","wvehicle-util",
+    "wvehicle-weapons-proj", "wcar-projectiles",
+    "wvehicle-weapons-oil", "wvehicle-weapons2", "wvehicle-weapons3",
+    "wvehicle-weapons-h","wvehicle-weapons","wvehicle-weapons-data","wvehicle-weapons-util","wvehicle-weapons-part",
+    "wvehicle-weapons-chicken-drone", "wvehicle-weapons-aux",
+    "raceline-weapon","race-h","race-manager","race-mesh-h", "race-line-h","race-line"
+  ],
   "banned_objects": [],
   ////////////////////////////
   // CODE ANALYSIS OPTIONS
