@@ -596,6 +596,9 @@
     [8, "(function medius-create-game-response object)"],
     [10, "(function pointer object)"]
   ],
+  "wvehicle-weapons-oil": [
+    [50, "(function v-wpn-red-smoke none)"]
+  ],
   "wvehicle-weapons-proj": [
     // [2, "(function object :behavior v-yellow-guided-missile)"],
     // [3, "(function object :behavior v-yellow-guided-missile)"],

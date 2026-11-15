@@ -5498,6 +5498,41 @@
     [114, "v1", "(pointer float)"]
   ],
   "smoke-system-local-space": [[[7,11], "a0", "wvehicle"]],
-  "smoke-system-init-by-other": [[26, "gp", "process-drawable"]]
-
+  "smoke-system-init-by-other": [[26, "gp", "process-drawable"]],
+  "smoke-spawn": [
+    [[147, 150], "v1", "float"],
+    [[164, 167], "v1", "float"],
+    [[193, 196], "v1", "float"],
+    [[217, 220], "v1", "float"],
+    [[244, 247], "v1", "float"],
+    [[272, 275], "v1", "float"],
+    [[301, 304], "v1", "float"],
+    [[354, 357], "v1", "float"],
+    [[376, 379], "v1", "float"],
+    [[417, 420], "v1", "float"],
+    [[437, 440], "v1", "float"]
+  ],
+  "(event idle lightning-sphere)": [
+    [[26,60], "v1", "touching-shapes-entry"]
+  ],
+  "(event idle slip-object)": [
+    [[26,146], "gp", "touching-shapes-entry"],
+    [60, "s4", "vehicle"]
+  ],
+  "(trans idle lightning-sphere)": [
+    [[381, 388], "v1", "handle"],
+    [[100, 103], "v1", "float"],
+    [[213, 216], "v1", "float"],
+    [[236, 239], "v1", "float"],
+    [[259, 262], "v1", "float"],
+    [[509, 512], "v1", "float"],
+    [[532, 535], "v1", "float"],
+    [[555, 558], "v1", "float"]
+  ],
+  "(method 9 particle-buffer)": [
+    [44, "v1", "(pointer float)"],
+    [47, "v1", "(pointer float)"],
+    [64, "a0", "(pointer float)"],
+    [65, "a0", "int"]
+  ]
 }

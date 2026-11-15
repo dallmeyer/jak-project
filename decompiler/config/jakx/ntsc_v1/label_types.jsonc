@@ -1298,6 +1298,9 @@
     ["L219", "attack-info"]
   ],
   "wvehicle-weapons-oil": [
-    ["L559", "vector"]
+    ["L559", "vector"],
+    ["L577", "vector"],
+    ["L569", "attack-info"],
+    ["L581", "attack-info"]
   ]
 }

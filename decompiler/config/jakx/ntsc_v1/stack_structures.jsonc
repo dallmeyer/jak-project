@@ -1179,12 +1179,16 @@
     [48, ["inline-array", "vector", 1]],
     [64, ["inline-array", "vector", 2]],
     [96, ["inline-array", "vector", 2]]
+  ],
+  "(method 13 particle-buffer)": [[16, ["inline-array", "matrix", 3]]],
+  "smoke-spawn": [
+    [32, "matrix"],
+    [96, ["inline-array", "vector", 1]]
+  ],
+  "(post idle smoke-system)": [
+    [16, ["inline-array", "matrix", 1]]
+  ],
+  "(event idle slip-object)": [
+    [16, "event-message-block"]
   ]
-
-  /*
-  s4-0
-    0: int32
-    4: (u)int32
-    8: int32
-  */
 }

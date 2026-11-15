@@ -46133,7 +46133,7 @@
   )
 
 (define-extern V_R_MINE1_ARMED? symbol)
-(define-extern weapon-mask->type (function int int)) ;; weird plzcw case
+;; (define-extern weapon-mask->type (function int int)) ;; weird plzcw case
 (define-extern *weapon-suppression-table* (pointer (array symbol)))
 (define-extern v-wpn-base-common-trans (function uint :behavior vehicle-weapon-slot))
 (define-extern v-wpn-event-base (function process int symbol event-message-block object :behavior vehicle-weapon-slot))
@@ -58411,7 +58411,7 @@
     (particle-buffer-method-10 (_type_ texture-id) none) ;; 10
     (particle-buffer-method-11 (_type_) connection) ;; 11
     (particle-buffer-method-12 (_type_ prim-strip vector int float float) none) ;; 12
-    (particle-buffer-method-13 (_type_ prim-strip prim-strip float float) symbol) ;; 13
+    (particle-buffer-method-13 (_type_ prim-strip matrix float float) none) ;; 13
     )
   )
 
@@ -58427,8 +58427,8 @@
    (last-size                 float           :offset-assert 252)
    (damage                    float           :offset-assert 256)
    (last-lightning-sphere-pos vector :inline  :offset-assert 272)
-   (part-subsampler           sparticle-subsampler          :offset-assert 288)
-   (smoke-electric            engine          :offset-assert 292)
+   (part-subsampler           sparticle-subsampler        :offset-assert 288)
+   (smoke-electric            sparticle-launch-control    :offset-assert 292)
    (smoke-matrix              matrix :inline  :offset-assert 304)
    )
   :method-count-assert 44
@@ -58452,14 +58452,15 @@
   )
 
 (deftype lightning-sphere (process-drawable)
-  ((last-touched-by handle         :offset-assert 248)
+  ((root            collide-shape  :override)
+   (last-touched-by handle         :offset-assert 248)
    (start-time      int32          :offset-assert 256)
    (damage          float          :offset-assert 260)
    (l-control       lightning-control          :offset-assert 264)
    (lightning-time  int32          :offset-assert 268)
    (start           vector :inline :offset-assert 272)
    (end             vector :inline :offset-assert 288)
-   (zap-target      uint64         :offset-assert 304)
+   (zap-target      handle         :offset-assert 304 :handle-type process-drawable)
    (lightning-on    symbol         :offset-assert 312)
    (sound-id        uint32         :offset-assert 316)
    (owner-handle    handle         :offset-assert 320)
@@ -58484,7 +58485,7 @@
     wait-delay ;; 60
     )
   (:methods
-    (v-wpn-red-smoke-method-61 (_type_) none) ;; 61
+    (v-wpn-red-smoke-method-61 (_type_) object) ;; 61
     )
   )
 
@@ -58522,10 +58523,11 @@
   )
 
 (deftype slip-object (process-drawable)
-  ((start-time   int32   :offset-assert 248)
-   (damage       float   :offset-assert 252)
-   (fire-sound   basic   :offset-assert 256)
-   (owner-handle handle  :offset-assert 264)
+  ((root         collide-shape  :override)
+   (start-time   int32          :offset-assert 248)
+   (damage       float          :offset-assert 252)
+   (fire-sound   ambient-sound  :offset-assert 256)
+   (owner-handle handle         :offset-assert 264)
    )
   :method-count-assert 51
   :size-assert         #x110
@@ -58536,7 +58538,7 @@
   )
 
 (deftype oil-slick (process-drawable)
-  ((vehicle handle  :offset-assert 248)
+  ((vehicle handle  :offset-assert 248  :handle-type vehicle)
    )
   :method-count-assert 51
   :size-assert         #x100
@@ -58548,7 +58550,7 @@
 
 (deftype oil-emitter (process)
   ((emitting            basic                 :offset-assert 144)
-   (owning-vehicle      handle                :offset-assert 152)
+   (owning-vehicle      handle                :offset-assert 152  :handle-type wvehicle)
    (oil-trail           oil-trail             :offset-assert 160)
    (last-surface-pos    vector        :inline :offset-assert 176)
    (last-slip-spawn-pos vector        :inline :offset-assert 192)
@@ -58557,7 +58559,7 @@
    (state-time          int32                 :offset-assert 276)
    (spill-sound-id      uint32                :offset-assert 280)
    (damage              float                 :offset-assert 284)
-   (oil-slick           handle                :offset-assert 288)
+   (oil-slick           handle                :offset-assert 288  :handle-type oil-slick)
    )
   :method-count-assert 19
   :size-assert         #x128
@@ -58598,22 +58600,22 @@
   )
 
 (define-extern smoke-system-local-space (function particle-local-space-info int :behavior smoke-system))
-(define-extern sift-down (function pointer int int symbol))
-(define-extern heap-sort (function pointer int symbol))
+(define-extern sift-down (function (pointer float) int int symbol))
+(define-extern heap-sort (function (pointer float) int symbol))
 (define-extern clear-strip (function prim-strip none))
-;; (define-extern lightning-sphere-init-by-other function)
-;; (define-extern lightning-sphere-spawn function)
+(define-extern lightning-sphere-init-by-other (function process vector float float handle object :behavior lightning-sphere))
+(define-extern lightning-sphere-spawn (function process vector float float handle process))
 (define-extern vector+float*-ignore-w! (function vector vector vector float vector))
-;; (define-extern smoke-update function)
-;; (define-extern smoke-render function)
-;; (define-extern smoke-spawn function)
+(define-extern smoke-update (function none :behavior smoke-system))
+(define-extern smoke-render (function connection :behavior smoke-system))
+(define-extern smoke-spawn (function vector :behavior smoke-system))
 (define-extern smoke-system-init-by-other (function process float object :behavior smoke-system))
 (define-extern smoke-system-spawn (function process float process))
-;; (define-extern slip-object-init-by-other function)
-;; (define-extern slip-object-spawn function)
-;; (define-extern oil-slick-init-by-other function)
-;; (define-extern oil-slick-spawn function)
-;; (define-extern oil-trail-emit function)
+(define-extern slip-object-init-by-other (function process vector object float handle object :behavior slip-object))
+(define-extern slip-object-spawn (function process vector object float handle process))
+(define-extern oil-slick-init-by-other (function process object :behavior oil-slick))
+(define-extern oil-slick-spawn (function process process))
+(define-extern oil-trail-emit (function object :behavior oil-emitter))
 (define-extern oil-emitter-init-by-other (function process object :behavior oil-emitter))
 (define-extern oil-emitter-spawn (function process process process))
 (define-extern oil-flame-emitter-init-by-other (function process object :behavior oil-flame-emitter))
