@@ -1267,7 +1267,10 @@
     ["L57", "v-wpn-ptable"],
     ["L59", "v-wpn-ptable"],
     ["L61", "v-wpn-ptable"],
-    ["L63", "v-wpn-ptable"]
+    ["L63", "v-wpn-ptable"],
+    ["L65", "(array v-wpn-type)"],
+    ["L66", "(array v-wpn-type)"],
+    ["L67", "(array v-wpn-type)"]
   ],
   "wvehicle-weapons-proj": [
     ["L686", "vector"],

@@ -29868,6 +29868,7 @@
   )
 ;; ---game-h:attack-mask
 
+(declare-type v-wpn-type uint8)
 (deftype attack-info (structure)
   "Information about an incoming attack."
   ((trans                  vector           :inline :offset-assert 0)
@@ -29888,7 +29889,7 @@
    (rotate-to              degrees                  :offset-assert 120)
    (prev-state             state                    :offset-assert 124) ;; guessed by decompiler
    (id                     uint32                   :offset-assert 128)
-   (wpn-type               uint8                    :offset-assert 132) ;; was "count" ?
+   (wpn-type               v-wpn-type               :offset-assert 132) ;; was "count" in previous games, but inspect says wpn-type now
    (penetrate-using        penetrate                :offset-assert 136) ;; penetrate
    (damage                 float                    :offset-assert 144)
    (shield-damage          float                    :offset-assert 148)
@@ -31366,7 +31367,7 @@
    (velocity               vector                 :inline :offset-assert 80)
    (ignore-proc            handle                         :offset-assert 96 :handle-type process-drawable)
    (attacker               handle                         :offset-assert 104 :handle-type process-drawable)
-   (wpn-type               v-wpn-type-s8                  :offset-assert 112)
+   (wpn-type               int8                           :offset-assert 112)
    )
   :method-count-assert 9
   :size-assert         #x71
@@ -32455,9 +32456,9 @@
     (projectile-method-63 (_type_) none) ;; 63
     (projectile-method-64 (_type_) symbol) ;; 64
     (proj-event-handler (_type_ process int symbol event-message-block) object) ;; 65
-    (projectile-method-66 (_type_ process event-message-block) none) ;; 66
+    (projectile-method-66 (_type_ process-drawable event-message-block) object) ;; 66
     (projectile-method-67 (_type_ process) symbol) ;; 67
-    (projectile-method-68 (_type_ process object) object) ;; 68
+    (projectile-method-68 (_type_ process-drawable object) object) ;; 68
     (projectile-method-69 (_type_) object) ;; 69
     (projectile-method-70 (_type_) object) ;; 70
     (projectile-method-71 (_type_) int) ;; 71
@@ -45874,22 +45875,39 @@
 ;; +++v-wpn-type
 (defenum v-wpn-type
   :type uint8
-  (chicken-drone 0) ;; not sure about this one
-  (yellow-default-gun 1)
+  (empty 0) ;; used for children of yellow-grenade? v-wpn-chicken-drone-rapid-fire-control-params defaults to this too?
+  (yellow-default-gun 1) ;; they call it yellow but it's given its own v-wpn-color?
   (yellow-chain-gun 2)
-  (yellow-3 3)
-  (yellow-4 4)
-  (yellow-5 5)
-  (red-6 6) ;; missing from *v-wpn-available-red* ?
-  (vwt-7 7)
-  (red-8 8)
+  (yellow-grenade 3)
+  (yellow-guided-missile 4)
+  (yellow-success-seeker 5)
+  (red-chicken-drone 6) ;; v-wpn-type->color says this is red, but missing from *v-wpn-available-red* ?
+  (red-tractor-beam 7) ;; aka turbodash-seeker ;; v-wpn-type->color says this is red, but missing from *v-wpn-available-red* ?
+  (red-mine-a 8)
   (red-sentry-bot 9)
-  (red-or-purple-10 10) ;; only entry in *v-wpn-available-purple* ?
-  (red-11 11)
-  (red-12 12)
-  (bulldog 13)
-  (red-14 14) ;; missing from *v-wpn-available-red* ?
-  (yellow-15 15)
+  (purple-shield 10) ;; in both *v-wpn-available-red/purple*, v-wpn-type->color says this is red
+  (red-smoke 11) ;; aka lightning-sphere
+  (red-oil 12) ;; aka slip-object
+  (red-drone 13) ;; aka bulldog ;; *v-wpn-available-red*/v-wpn-type->color say this is red, but v-wpn-yellow-bulldog(-II)-rapid-fire-control-params disagrees?
+  (red-turbo-preventor 14) ;; missing from *v-wpn-available-red* ?
+  (yellow-seismic-blaster 15)
+  ;; they logior the above entries with 128 for powerup-level 2
+  (level2                         128)
+  (yellow-default-gun-level2      129)
+  (yellow-chain-gun-level2        130)
+  (yellow-grenade-level2          131)
+  (yellow-guided-missile-level2   132)
+  (yellow-success-seeker-level2   133)
+  (red-chicken-drone-level2       134)
+  (red-tractor-beam-level2        135)
+  (red-mine-b-level2              136)
+  (red-sentry-bot-level2          137) ;; also used by yellow-guided-missile if damage=30?
+  (purple-shield-level2           138)
+  (red-smoke-level2               139)
+  (red-oil-level2                 140)
+  (red-drone-level2               141)
+  (red-turbo-preventor-level2     142)
+  (yellow-seismic-blaster-level2  143)
   )
 ;; ---v-wpn-type
 
@@ -45899,29 +45917,6 @@
   :copy-entries v-wpn-type
   )
 ;; ---v-wpn-type-s8
-
-;; +++v-wpn-type-mask
-(defenum v-wpn-type-mask
-  :type uint16
-  :bitfield #t
-  (chicken-drone 0) ;; not sure about this one
-  (yellow-default-gun 1)
-  (yellow-chain-gun 2)
-  (yellow-3 3)
-  (yellow-4 4)
-  (yellow-5 5)
-  (red-6 6) ;; missing from *v-wpn-available-red* ?
-  (vwt-7 7)
-  (red-8 8)
-  (red-sentry-bot 9)
-  (red-or-purple-10 10) ;; only entry in *v-wpn-available-purple* ?
-  (red-11 11)
-  (red-12 12)
-  (bulldog 13)
-  (red-14 14) ;; missing from *v-wpn-available-red* ?
-  (yellow-15 15)
-  )
-;; ---v-wpn-type-mask
 
 (declare-type rapid-fire-control basic)
 (deftype vehicle-weapon-slot (process-drawable)
@@ -45944,7 +45939,7 @@
     (get-ammo-remaining (_type_) int) ;; 53
     (get-ammo-max (_type_) int) ;; 54
     (vehicle-weapon-slot-method-55 (_type_) int) ;; 55
-    (vehicle-weapon-slot-method-56 (_type_) handle) ;; 56
+    (vehicle-weapon-slot-method-56 (_type_) object) ;; 56 ;; v-wpn-red-mine-launcher needs to return a handle here
     (vehicle-weapon-slot-method-57 (_type_) symbol) ;; 57
     (vehicle-weapon-slot-method-58 (_type_ object) int) ;; 58
     (vehicle-weapon-slot-method-59 () none) ;; 59
@@ -58782,7 +58777,7 @@
 (define-extern sentrybot-poke-yaw! (function cspace transformq none :behavior red-sentry-bot))
 (define-extern sentrybot-poke-pitch! (function cspace transformq none :behavior red-sentry-bot))
 (define-extern red-sentry-bot-init-by-other (function vector quaternion vehicle int object :behavior red-sentry-bot))
-;; (define-extern red-sentry-bot-common-trans (function none :behavior red-sentry-bot)) ;; needs warning-hud-draw
+(define-extern red-sentry-bot-common-trans (function none :behavior red-sentry-bot))
 (define-extern red-sentry-bot-poll-target (function symbol :behavior red-sentry-bot))
 (define-extern sentry-bot-base-handler (function process int symbol event-message-block object :behavior red-sentry-bot))
 (define-extern v-wpn-yellow-bulldog-rapid-fire-control-params rapid-fire-params)
@@ -58905,11 +58900,11 @@
   )
 
 (define-extern v-wpn-base-init-by-other (function process-drawable v-wpn-type uint object :behavior vehicle-weapon-slot))
-(define-extern warning-hud-draw (function warning-hud-icon sphere vector int))
+(define-extern warning-hud-draw (function warning-hud-icon sphere vector none))
 (define-extern v-wpn-type->color (function v-wpn-type v-wpn-color))
 (define-extern v-wpn-type->gunmount-config (function v-wpn-type int))
 (define-extern v-wpn-missile-init-by-other (function process-drawable v-wpn-type uint object :behavior v-wpn-yellow-guided-missile))
-(define-extern make-vehicle-weapon-slot (function process-drawable wvehicle uint object :behavior vehicle-weapon-slot))
+(define-extern make-vehicle-weapon-slot (function v-wpn-type wvehicle uint object :behavior vehicle-weapon-slot))
 (define-extern v-wpn-choose-increasing-lethality (function v-wpn-color (array uint8) int))
 (define-extern v-wpn-get-mask (function wvehicle uint))
 (define-extern v-wpn-num-available (function v-wpn-color wvehicle int))
@@ -59723,8 +59718,8 @@
     (update-target-pos! (_type_) int) ;; 56
     (raceline-weapon-method-57 (_type_) none) ;; 57
     (update-visibility! (_type_) symbol) ;; 58
-    (raceline-weapon-method-59 (_type_) int) ;; 59
-    (raceline-weapon-method-60 (_type_) int) ;; 60
+    (get-wpn-type (_type_) int) ;; 59
+    (get-powerup-level (_type_) int) ;; 60
     (raceline-weapon-method-61 (_type_) float) ;; 61
     (raceline-weapon-method-62 (_type_ vector) float) ;; 62
     (raceline-weapon-method-63 (_type_ vector) object) ;; 63
@@ -59768,10 +59763,6 @@
     (chicken-drone-method-79 (_type_) float) ;; 79
     (chicken-drone-method-80 (_type_) particle-local-space-info) ;; 80
     )
-  (:state-methods
-    tracking ;; 50
-    die ;; 51
-    )
   )
 
 (deftype chicken-drone-2 (chicken-drone)
@@ -59788,10 +59779,6 @@
   :method-count-assert 79
   :size-assert         #x16c
   :flag-assert         #x4f00e0016c
-  (:state-methods
-    tracking ;; 50
-    die ;; 51
-    )
   )
 
 (deftype lightning-point (structure)

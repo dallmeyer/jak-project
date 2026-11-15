@@ -5133,14 +5133,21 @@
   "(method 52 v-wpn-yellow-grenade)": [[[8,12], "a0", "wvehicle"]],
   "(method 56 v-wpn-yellow-grenade)": [
     [[7,11], "a0", "wvehicle"],
-    [[24,28], "a0", "wvehicle"]
+    [[24,28], "a0", "wvehicle"],
+    [[422, 425], "v1", "float"],
+    [[442, 445], "v1", "float"],
+    [[462, 465], "v1", "float"],
+    [[498, 501], "v1", "float"],
+    [[362, 366], "v1", "v-wpn-type"]
   ],
   "vws-focus-search-base": [
     [[10,14], "a1", "wvehicle"],
     [126, "s5", "(pointer process-drawable)"]
   ],
   "(method 58 v-toad-shot)": [[[13,17], "a0", "process-focusable"]],
-  "(method 66 v-toad-shot)": [[[2,63], "s4", "touching-shapes-entry"]],
+  "(method 66 v-toad-shot)": [
+    [[2,63], "s4", "touching-shapes-entry"]
+  ],
   "explosion-init-by-other": [
     [109, "v1", "collide-shape"],
     [77, "a0", "collide-shape"]
@@ -5159,7 +5166,11 @@
   "gunmount-generic-event-handler": [[11, "s5", "vector"]],
   "muzzle-flash-event-handler": [[[10,30], "v1", "vehicle"]],
   "(method 52 v-wpn-yellow-guided-missile)": [[18, "s4", "wvehicle"]],
-  "(method 56 v-wpn-yellow-guided-missile)": [[[7,11], "a0", "wvehicle"]],
+  "(method 56 v-wpn-yellow-guided-missile)": [
+    [[7,11], "a0", "wvehicle"],
+    [[221, 225], "v1", "v-wpn-type"],
+    [[429, 433], "v1", "v-wpn-type"]
+  ],
   "(method 35 v-yellow-guided-missile)": [[28, "s5", "process-nettable"]],
   "(method 58 v-yellow-guided-missile)": [[33, "gp", "process-focusable"]],
   "(method 61 v-yellow-guided-missile)": [[85, "v1", "float"]],
@@ -5293,13 +5304,15 @@
   ],
   "(code backfiring v-wpn-yellow-seismic-blaster)": [
     [[6,10], "a0", "wvehicle"],
-    [[61,65], "a0", "wvehicle"]
+    [[61,65], "a0", "wvehicle"],
+    [[167, 171], "v1", "v-wpn-type"]
   ],
   "(enter backfiring v-wpn-yellow-seismic-blaster)": [[[9,13], "a0", "wvehicle"]],
   "(event backfiring v-wpn-yellow-seismic-blaster)": [[[14,18], "a0", "wvehicle"]],
   "(post firing v-wpn-yellow-seismic-blaster)": [
     [[55,59], "a0", "wvehicle"],
-    [[232,236], "s4", "wvehicle"]
+    [[232,236], "s4", "wvehicle"],
+    [[445, 449], "v1", "v-wpn-type"]
   ],
   "(exit firing v-wpn-yellow-seismic-blaster)": [[[6,10], "a0", "wvehicle"]],
   "(enter firing v-wpn-yellow-seismic-blaster)": [
@@ -5384,7 +5397,9 @@
   "v-wpn-type->gunmount-config": [[[12, 30], "v0", "gunmount-config"]],
   "(post impact v-yellow-guided-missile)": [
     [[118,136], "s3", "wvehicle"],
-    [[167,172], "s2", "wvehicle"]
+    [[167,172], "s2", "wvehicle"],
+    [[283, 287], "v1", "v-wpn-type"],
+    [[297, 301], "v1", "v-wpn-type"]
   ],
   "(enter impact v-yellow-guided-missile)": [[[126,130], "a0", "process-drawable"]],
   "(post launching v-yellow-guided-missile)": [[[42,45], "t9", "(function none)"]],
@@ -5442,7 +5457,10 @@
     [30, "v0", "handle"],
     [[64,68], "a0", "wvehicle"]
   ],
-  "(code firing v-wpn-red-mine-launcher)": [[[20,24], "a2", "wvehicle"]],
+  "(code firing v-wpn-red-mine-launcher)": [
+    [[20,24], "a2", "wvehicle"],
+    [31, "v0", "handle"]
+  ],
   "(code firing v-wpn-red-turbo-preventor)": [
     [[73,77], "a0", "wvehicle"],
     [286, "s5", "process-focusable"]
@@ -5457,7 +5475,8 @@
   "(event firing v-wpn-purple-shield)": [
     [[8,187], "gp", "rigid-body-impact"],
     [[67,71], "v1", "wvehicle"],
-    [[296,300], "a1", "wvehicle"]
+    [[296,300], "a1", "wvehicle"],
+    [[124,128], "v1", "v-wpn-type"]
   ],
   "(enter firing v-wpn-purple-shield)": [[[46, 50], "a0", "wvehicle"]],
   "(trans firing v-wpn-purple-shield)": [
@@ -5517,7 +5536,8 @@
   ],
   "(event idle slip-object)": [
     [[26,146], "gp", "touching-shapes-entry"],
-    [60, "s4", "vehicle"]
+    [60, "s4", "vehicle"],
+    [[131, 135], "v1", "v-wpn-type"]
   ],
   "(trans idle lightning-sphere)": [
     [[381, 388], "v1", "handle"],
@@ -5527,12 +5547,31 @@
     [[259, 262], "v1", "float"],
     [[509, 512], "v1", "float"],
     [[532, 535], "v1", "float"],
-    [[555, 558], "v1", "float"]
+    [[555, 558], "v1", "float"],
+    [[323, 327], "v1", "v-wpn-type"]
   ],
   "(method 9 particle-buffer)": [
     [44, "v1", "(pointer float)"],
     [47, "v1", "(pointer float)"],
     [64, "a0", "(pointer float)"],
     [65, "a0", "int"]
-  ]
+  ],
+  "(code die seeker)": [[[23, 27], "t9", "(function none)"]],
+  "(post tracking seeker)": [[[2, 5], "t9", "(function none)"]],
+  "(post tracking success-seeker)": [[[2, 5], "t9", "(function none)"]],
+  "(post tracking turbodash-seeker)": [[[2, 5], "t9", "(function none)"]],
+  "(code die chicken-drone)": [[[23, 27], "t9", "(function none)"]],
+  "(post tracking chicken-drone)": [[[2, 5], "t9", "(function none)"]],
+  "(method 59 turbodash-seeker)": [[[0,2], "v0", "v-wpn-type"]],
+  "(method 59 seeker)": [[[0,2], "v0", "v-wpn-type"]],
+  "(method 59 chicken-drone)": [[[0,2], "v0", "v-wpn-type"]],
+  "(method 69 raceline-weapon)": [[60, "v0", "v-wpn-type"]],
+  "(code impact v-toad-shot)": [[[95, 99], "v1", "v-wpn-type"]],
+  "guided-missile-gen-proj-targ-helper": [[[138, 142], "v1", "v-wpn-type"]],
+  "guided-missile-gen-proj-no-targ-helper": [[[123, 127], "v1", "v-wpn-type"]],
+  "(code firing-missiles red-sentry-bot)": [[[129, 133], "v1", "v-wpn-type"]],
+  "(code die mine-b)": [[[87, 91], "v1", "v-wpn-type"]],
+  "(code die mine-a)": [[[97, 101], "v1", "v-wpn-type"]],
+  "(method 12 rapid-fire-control)": [[[123, 129], "v1", "v-wpn-type"]],
+  "make-vehicle-weapon-slot": [[388, "v1", "(pointer process)"]]
 }
