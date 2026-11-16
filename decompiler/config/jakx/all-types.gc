@@ -31246,7 +31246,7 @@
    (callback             (function part-tracker vector)         :offset-assert 36) ;; guessed by decompiler
    (local-space-callback basic                                  :offset-assert 40)
    (target               process-drawable                       :offset-assert 44) ;; guessed by decompiler
-   (mat-joint            object                                 :offset-assert 48) ;; guessed by decompiler
+   (mat-joint            matrix                                 :offset-assert 48) ;; guessed by decompiler
    (subsampler-num       float                                  :offset-assert 52)
    )
   :method-count-assert 9
@@ -41394,7 +41394,7 @@
 ;; ---light-trails-h:light-trail-decision
 
 (deftype light-trail (prim-client)
-  ((crumb-array             (array uint8)             :offset-assert 4) ;; guessed by decompiler
+  ((crumb-array             (array uint8) :offset-assert 4) ;; guessed by decompiler
    (crumb-size              uint8                     :offset-assert 8)
    (crumb-count             int16                     :offset-assert 10)
    (max-crumb-count         int16                     :offset-assert 12)
@@ -44692,6 +44692,7 @@
    (vec0   vector           :inline :offset 32)
    (vec1   vector           :inline :offset 48)
    (quat1  quaternion       :inline :offset 64)
+   (mat0   matrix           :inline :offset 80)
    (vec2   vector           :inline :offset 80)
    (vec3   vector           :inline :offset 96)
    (vec4   vector           :inline :offset 112)
@@ -44719,6 +44720,23 @@
    (float6 float :offset 236)
    (float7 float :offset 240)
    (byte1 int8 :offset 244)
+   )
+  )
+
+(deftype vehicle-stack-type4 (structure)
+  (
+   (vec0        vector            :inline :offset 0)
+   (vec1        vector            :inline :offset 16)
+   (vec2        vector            :inline :offset 32)
+   (vec3        vector            :inline :offset 48)
+   (vec4        vector            :inline :offset 64)
+   (mat0        matrix            :inline :offset 96)
+   (glow-data   sprite-glow-data  :inline :offset 160)
+   (float6      float                     :offset 228)
+   (float7      float                     :offset 232)
+   (float8      float                     :offset 236)
+   (float9      float                     :offset 240)
+   (byte0       int8                      :offset 244)
    )
   )
 
@@ -45113,22 +45131,31 @@
 (deftype vehicle-particle-common-info (structure)
   ((sp-system2d             sparticle-system :offset-assert 0) ;; added
    (sp-system3d             sparticle-system :offset-assert 4) ;; added
+   (sp-systems              sparticle-system 2 :overlay-at sp-system2d)
    (part-thruster           sparticle-launcher :offset-assert 8) ;; added
    (part-thruster-x         sp-field-init-spec :offset-assert 12) ;; added
    (part-spec2              sp-field-init-spec :offset-assert 16) ;; added
    (part-quat               quaternion        :offset-assert 20) ;; added
    (part-vel                vector            :offset-assert 24) ;; added
-   (added-vec vector 2) ;; added
+   (added-vec               vector 2) ;; added
    (headlight-glow-template sprite-glow-data         :offset-assert 36)
    (taillight-glow-template sprite-glow-data         :offset-assert 40)
    (thruster-glow-template  sprite-glow-data         :offset-assert 44)
-   (pad2 uint32 6)
+   (mat-joint0              matrix                   :offset 48)
+   (mat-joint1              matrix                   :offset 52)
+   (mat-joint2              matrix                   :offset 56)
+   (mat-joint3              matrix                   :offset 60)
+   (mat-joint4              matrix                   :offset 64)
+   (mat-joint5              matrix                   :offset 68)
    (thrust-tex-id           uint32                   :offset-assert 72)
    (dark-thrust-tex-id      uint32                   :offset-assert 76)
-   (pad3 uint32 9)
+   (part-launcher0          sparticle-launcher       :offset-assert 80)
+   (part-launcher1          sparticle-launcher       :offset-assert 84)
+   (pad4                    uint32 7)
    (rgb                     rgbaf            :inline :offset-assert 128)
    (lights                  vu-lights                :offset-assert 144)
-   (pad4 uint32 2)
+   (pad5                    uint32)
+   (vec0                    vector                   :offset-assert 152)
    )
   :pack-me
   :method-count-assert 10
@@ -45302,6 +45329,13 @@
   )
 ;; ---vehicle-h:vehicle-flag
 
+(deftype vehicle-part-launcher-type (structure)
+  ((floats        float 2             :offset-assert 0)
+   (part-launcher sparticle-launcher  :offset-assert 8)
+   )
+  :pack-me
+  )
+
 ;; TODO - jakx more misaligned inline arrays?
 (declare-type driver process-focusable)
 (deftype vehicle (rigid-body-object)
@@ -45330,10 +45364,10 @@
    (side-x                          float                                       :offset-assert 684)
    (health                          float                                       :offset-assert 688)
    (damage-factor                   float                                       :offset-assert 692)
-   (pad3 uint32)
+   (vehicle-float-1                 float                                       :offset-assert 696) ;; used in (method 113 wvehicle)
    (speed-factor                    float                                       :offset-assert 700)
    (pad4 uint32 6)
-   (unk-vehicle-float-5 float :offset 724)
+   (vehicle-float-2                 float                                       :offset 724)
    (behavior                        uint64                                      :offset-assert 728)
    (cam-view                        int8                                        :offset-assert 736)
    (pad5 uint32)
@@ -45343,7 +45377,7 @@
    (pad6 uint32)
    (impact-proc                     handle                                      :offset-assert 768) ;; handle
    (net-player                      handle                                      :offset-assert 776) ;; probably net-player
-   (pad7 uint32)
+   (pad7 float) ;; used as float in (method 101 vehicle)
    (impact-time                     uint32                                      :offset-assert 788)
    (prev-impact-time                uint32                                      :offset-assert 792)
    (pad8 uint32 3)
@@ -45351,10 +45385,16 @@
    (pad9 uint32 3)
    (physics-enabled-time            uint32                                      :offset-assert 824)
    (pad10 uint32 7)
-   (unknown-vehicle-uint16-1 uint16 :offset 848)
+   (unknown-vehicle-uint16-1        uint16                                      :offset 848)
    (water-height                    float                                       :offset-assert 856)
-   (unknown-vehicle-float-6 float :offset 868)
-   (vehicle-float-2 float :offset 908)
+   (vehicle-float-3                 float                                       :offset 868)
+   (vehicle-sound-1                 sound-id                                    :offset 888)
+   (vehicle-uint32-1                uint32                                      :offset 892)
+   (vehicle-sound-2                 sound-id                                    :offset 896)
+   (vehicle-float-4                 float                                       :offset 904)
+   (vehicle-float-5                 float                                       :offset 908)
+   (part-launcher                   vehicle-part-launcher-type 6  :inline       :offset 912)
+   (vehicle-float-6                 float                                       :offset 1008)
    (sections vehicle-section 12 :inline :offset 1024 :score 1) ;; added, look at any of the `wcar files`
   ;;  (vehicle-section-00 vehicle-section :offset 1024 :score 999)
   ;;  (vehicle-section-02 vehicle-section :offset 1088 :score 999)
@@ -45369,10 +45409,6 @@
   ;;  (vehicle-section-12 vehicle-section :offset 1664 :score 999)
   ;;  (vehicle-section-2 vehicle-section :offset 1728 :score 999)
    (pad11 uint32 4)
-   (vehicle-sound-1 sound-id :offset 888)
-   (vehicle-uint32-1 uint32 :offset 892)
-   (vehicle-sound-2 sound-id :offset 896)
-   (vehicle-float-1 float :offset 904)
    (vehicle-unk-handle2             handle                                      :offset 1792)
    (pred                            net-predictor-sphcol                :inline :offset-assert 1808)
    (next-reliable-send-time         int32                                       :offset-assert 2116)
@@ -45413,7 +45449,7 @@
     ;; (vehicle-method-98 (_type_) none) ;; 98 ;; (vehicle-method-98 (_type_) none)
     (vehicle-method-99 (_type_) none) ;; 99 ;; (vehicle-method-99 (_type_) none)
     (vehicle-method-100 (_type_) none) ;; 100 ;; (vehicle-method-100 (_type_) none)
-    (vehicle-method-101 (_type_) none) ;; 101 ;; (vehicle-method-101 (_type_) none)
+    (vehicle-method-101 (_type_) symbol) ;; 101 ;; (vehicle-method-101 (_type_) none)
     (vehicle-method-102 (_type_) none) ;; 102 ;; (vehicle-method-102 (_type_) symbol)
     (vehicle-method-103 (_type_) none) ;; 103 ;; (vehicle-method-103 (_type_) none)
     (vehicle-method-104 (_type_) none) ;; 104 ;; (vehicle-method-104 (_type_) none)
@@ -45425,7 +45461,7 @@
     (vehicle-method-110 (_type_) none) ;; 110 ;; (vehicle-method-110 (_type_) none)
     (vehicle-method-111 (_type_ vector quaternion) none) ;; 111 ;; (get-linear-accel! (_type_ vector) none)
     (vehicle-method-112 (_type_) none) ;; 112 ;; (copy-vehicle-controls! (_type_ vehicle-controls) none)
-    (vehicle-method-113 (_type_) none) ;; 113 ;; (vehicle-method-113 (_type_ vector int int) none)
+    (vehicle-method-113 (_type_ vector int int) none) ;; 113 ;; (vehicle-method-113 (_type_ vector int int) none)
     (vehicle-method-114 (_type_) none) ;; 114 ;; (vehicle-method-114 (_type_ int) none)
     (vehicle-method-115 (_type_) none) ;; 115 ;; (vehicle-method-115 (_type_) none)
     (vehicle-method-116 (_type_) none) ;; 116 ;; (vehicle-method-116 (_type_ symbol) none)
@@ -45534,6 +45570,15 @@
   :size-assert         #x54
   :flag-assert         #x900000054
   )
+
+(deftype vehicle-draw-thruster-stack (structure)
+  ((params    vehicle-draw-thruster-params  :inline  :offset-assert 0)
+   (mat0      matrix                        :inline  :offset 96)
+   (vec0      vector                        :inline  :offset-assert 160)
+   (vec1      vector                        :inline  :offset-assert 176)
+   (tex-id    uint32                                 :offset-assert 192)
+   )
+)
 
 ;; TODO jakx - copied from jak3
 (deftype debug-vehicle-work (basic)
@@ -46152,7 +46197,7 @@
   ((info             vehicle-wheel-info               :offset-assert 0)
    (flags            uint8                            :offset-assert 4)
    (prev-flags       uint8                            :offset-assert 5)
-   (handle           handle                           :offset-assert 8) ;; handle
+   (handle           handle                           :offset-assert 8  :handle-type process-drawable) ;; handle
    (probe-local-pos  vector                   :inline :offset-assert 16)
    (probe-local-dir  vector                   :inline :offset-assert 32)
    (local-axis       vector                   :inline :offset-assert 48)
@@ -46184,7 +46229,7 @@
    (cos-susp-ang     float                            :offset-assert 252)
    (part-birth-accum sparticle-launch-control 4       :offset-assert 256) ;; guessed by decompiler
    (tread-time       uint32                           :offset-assert 272)
-   (tread-tracker    uint64                           :offset-assert 280) ;; handle
+   (tread-tracker    handle                           :offset-assert 280  :handle-type part-tracker)
    )
   :pack-me
   :method-count-assert 9
@@ -46400,9 +46445,9 @@
    (turbo-suppressor-particle      basic                             :offset-assert 4588)
    (dark-seeking-me                basic                             :offset-assert 4592)
    (dark-suck-sound-pending        int8                              :offset-assert 4596)
-   (vehicle-exhaust-subsampler     uint32                   2       :offset-assert 4600)
-   (wheel-launcher                 uint32                   4       :offset-assert 4608)
-   (wheel-fire-launcher            uint32                   4       :offset-assert 4624)
+   (vehicle-exhaust-subsampler     sparticle-subsampler     2        :offset-assert 4600)
+   (wheel-launcher                 part-tracker             4        :offset-assert 4608)
+   (wheel-fire-launcher            part-tracker             4        :offset-assert 4624)
    (hack-armed-right               basic                             :offset-assert 4640)
    (hack-armed-left                basic                             :offset-assert 4644)
    (shake-amount                   float                             :offset-assert 4648)
@@ -57717,19 +57762,27 @@
   :flag-assert         #x900000020
   )
 
+(deftype tire-trail-stack (structure)
+  ((vec0 vector :inline)
+   (vec1 vector :inline)
+   (time uint32)
+   )
+  )
+
 (deftype tire-trail (light-trail)
   ()
   :method-count-assert 25
   :size-assert         #x80
   :flag-assert         #x1900000080
   (:methods
-    (tire-trail-method-23 (_type_) none) ;; 23 ;; (tire-trail-method-23 (_type_ vector vector float) none)
-    (tire-trail-method-24 () none) ;; 24
+    (tire-trail-method-23 (_type_ vector vector float) none) ;; 23 ;; (tire-trail-method-23 (_type_ vector vector float) none)
+    (tire-trail-method-24 (_type_ vector vector float) none) ;; 24
     )
   )
 
 (deftype tire-trail-tracker (light-trail-tracker)
-  ()
+  ((trail tire-trail :override)
+   )
   :method-count-assert 24
   :size-assert         #xbc
   :flag-assert         #x18003000bc
@@ -57737,8 +57790,8 @@
     tracking ;; 15
     )
   (:methods
-    (tire-trail-tracker-method-22 () none) ;; 22
-    (tire-trail-tracker-method-23 () none) ;; 23
+    (tire-trail-tracker-method-22 (_type_) none) ;; 22
+    (tire-trail-tracker-method-23 (_type_) none) ;; 23
     )
   )
 

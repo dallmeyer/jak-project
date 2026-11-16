@@ -5573,5 +5573,68 @@
   "(code die mine-b)": [[[87, 91], "v1", "v-wpn-type"]],
   "(code die mine-a)": [[[97, 101], "v1", "v-wpn-type"]],
   "(method 12 rapid-fire-control)": [[[123, 129], "v1", "v-wpn-type"]],
-  "make-vehicle-weapon-slot": [[388, "v1", "(pointer process)"]]
+  "make-vehicle-weapon-slot": [[388, "v1", "(pointer process)"]],
+  "(method 80 v-drone)": [[[2, 91], "gp", "vehicle"]],
+  "(method 100 v-drone)": [[2, "v1", "collide-shape-prim-group"]],
+  "(method 101 vehicle)": [
+    [[141, 144], "v1", "float"],
+    [[163, 166], "v1", "float"],
+    [[184, 187], "v1", "float"],
+    [[223, 226], "v1", "float"],
+    [[262, 265], "v1", "float"],
+    [[323, 326], "v1", "float"],
+    [[347, 350], "v1", "float"],
+    [[365, 368], "v1", "float"],
+    [[386, 389], "v1", "float"],
+    [[407, 410], "v1", "float"],
+    [[433, 436], "v1", "float"],
+    [[481, 484], "v1", "float"],
+    [[503, 506], "v1", "float"]
+  ],
+  "(method 113 vehicle)": [
+    [[366, 369], "v1", "float"],
+    [[442, 445], "v1", "float"],
+    [[514, 517], "v1", "float"],
+    [332, "v1", "vehicle-part-launcher-type"]
+  ],
+  "(method 99 vehicle)": [
+    [4,  "a0", "vehicle"],
+    [8,  "a0", "vehicle"],
+    [12, "a0", "vehicle"],
+    [16, "a0", "vehicle"],
+    [20, "a0", "vehicle"],
+    [24, "a0", "vehicle"]
+  ],
+  "(method 113 wvehicle)": [
+    [[164, 728], "s5", "wvehicle-part-work"],
+    [603, "s4", "collide-shape-prim-group"]
+  ],
+  "(method 114 wvehicle)": [[43, "s2", "tire-trail-tracker"]],
+  "(method 23 tire-trail)": [[[18, 23], "v1", "tire-trail-crumb"]],
+  "(method 20 tire-trail)": [
+    [[6, 27], "s5", "tire-trail-crumb"],
+    [[12, 21], "s4", "tire-trail-crumb"]
+  ],
+  "(method 24 tire-trail)": [[[22, 73], "s5", "tire-trail-crumb"]]
+
+
+  /*
+  80: vector
+  144: matrix
+  ;; 208
+  224: vector
+  240: vector
+  256: vector
+  368: vector
+  400: vector
+  416: vector
+  480: byte
+  484: float
+  492: float
+  496: float
+  528: float
+  532: float
+  560: int (time-frame)
+  564: float
+  */
 }

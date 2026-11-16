@@ -925,6 +925,15 @@
     ["L96", "vector"],
     ["L95", "vector"]
   ],
+  "wcar-drone": [
+    ["L30", "vector"],
+    ["L31", "vector"],
+    ["L32", "vector"],
+    ["L33", "vector"],
+    ["L34", "vector"],
+    ["L35", "vector"],
+    ["L36", "vector"]
+  ],
   "wcar-falcon": [
     ["L101", "vector"],
     ["L100", "vector"],

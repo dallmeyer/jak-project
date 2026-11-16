@@ -816,16 +816,22 @@
     [48, "vector"]
   ],
   "(method 18 collide-shape-prim-mesh)": [[16, "collide-tri-result"]],
-  "(method 18 collide-shape-prim-sphere)": [
-    [48, ["inline-array", "vector", 6]]
-  ],
+  "(method 18 collide-shape-prim-sphere)": [[48, ["inline-array", "vector", 6]]],
   "(method 65 collide-shape-moving)": [[576, ["inline-array", "vector", 2]]],
   "(anon-function 5 gsound)": [
     [16, ["array", "symbol", 4]],
     [32, ["array", "symbol", 4]]
   ],
   "doppler-pitch-shift": [[16, ["inline-array", "vector", 2]]],
-  "(method 113 vehicle)": [[16, "vehicle-stack-type3"]],
+  "(method 113 vehicle)": [
+    [16, "vehicle-stack-type4"],
+    [288, "vector"],
+    [336, ["inline-array", "vector", 2]],
+    [304, "vector"],
+    [320, "vector"],
+    [368, "matrix-stack"],
+    [448, ["inline-array", "matrix", 1]]
+  ],
   "(code target-intro)": [[16, "vector"]],
   "particle-adgif-callback": [[16, ["inline-array", "vector", 4]]],
   "sp-adjust-launch": [[16, "matrix"]],
@@ -952,9 +958,7 @@
     [16, "explosion-cquery-stack"],
     [608, ["inline-array", "vector", 2]]
   ],
-  "explosion-handle-touch-without-ccheck": [
-    [16, ["inline-array", "vector", 2]]
-  ],
+  "explosion-handle-touch-without-ccheck": [[16, ["inline-array", "vector", 2]]],
   "(anon-function 25 script)": [
     [128, "part-tracker-init-params"],
     [192, "part-tracker-init-params"]
@@ -1045,9 +1049,7 @@
   "(anon-function 97 wvehicle-weapons-proj)": [[16, "quaternion"]],
   "(anon-function 99 wvehicle-weapons-proj)": [[16, "light-trail-tracker-spawn-params"]],
   "(method 35 mine-a)": [[16, "mystery-mine-a-type0"]],
-  "(method 35 net-projectile)": [
-    [16, "mystery-net-projectile-type0"]
-  ],
+  "(method 35 net-projectile)": [[16, "mystery-net-projectile-type0"]],
   "(method 54 raceline-weapon)": [
     [16, "race-mesh-slice-query"],
     [144, "race-line-query-info"]
@@ -1133,9 +1135,7 @@
     [32, "vector"],
     [64, "vector"]
   ],
-  "(code leaping-onto mine-b)": [
-    [16, ["inline-array", "vector", 1]]
-  ],
+  "(code leaping-onto mine-b)": [[16, ["inline-array", "vector", 1]]],
   "(code falling mine-a)": [[16, ["inline-array", "quaternion", 1]]],
   "(enter falling mine-a)": [[16, "light-trail-tracker-spawn-params"]],
   "warning-hud-draw": [
@@ -1185,17 +1185,23 @@
     [32, "matrix"],
     [96, ["inline-array", "vector", 1]]
   ],
-  "(post idle smoke-system)": [
-    [16, ["inline-array", "matrix", 1]]
-  ],
-  "(event idle slip-object)": [
-    [16, "event-message-block"]
-  ],
+  "(post idle smoke-system)": [[16, ["inline-array", "matrix", 1]]],
+  "(event idle slip-object)": [[16, "event-message-block"]],
   "(method 56 v-wpn-yellow-grenade)": [
     [32, "vector"],
     [64, "matrix"],
     [928, "vector"],
     [944, "vector"],
     [960, "quaternion"]
+  ],
+  "(method 61 v-drone)": [[16, "vehicle-thruster-work"]],
+  "(method 101 vehicle)": [[32, ["inline-array", "spark-launch-params", 2]]],
+  "(method 114 wvehicle)": [[16, "tire-trail-stack"]],
+  "(method 18 tire-trail)": [[16, ["inline-array", "vector", 2]]],
+  "(method 113 wvehicle)": [
+    [16, ["inline-array", "matrix", 1]],
+    [80, ["inline-array", "matrix", 1]],
+    [144, ["inline-array", "vector", 2]],
+    [176, "vehicle-draw-thruster-stack"]
   ]
 }
